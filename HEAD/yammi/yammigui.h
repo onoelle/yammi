@@ -22,73 +22,31 @@
 
 #include <kmainwindow.h>
 
-
+#include <qtimer.h>
 #include "options.h"
+#include "prefs.h"
+#include "mylist.h"
  
 
-// qt includes (non gui)
-#include <qsessionmanager.h>
-#include <qapplication.h>
-#include <qheader.h>
-#include <qregexp.h>
-#include <qdir.h>
-#include <qtextstream.h>
-#include <qstring.h>
-#include <qobject.h>
-#include <qdatetime.h>
-#include <qlist.h>
-#include <qtimer.h>
-#include <qevent.h>
 
-// qt includes (gui-stuff)
-#include <qtooltip.h>
-#include <qspinbox.h>
-#include <qlabel.h>
-#include <qpushbutton.h>
-#include <qhbox.h>
-#include <qvbox.h>
-#include <qpainter.h>
-#include <qpalette.h>
-#include <qpopupmenu.h>
-#include <qmessagebox.h>
-#include <qinputdialog.h>
-#include <qmenudata.h>
-#include <qmenubar.h>
-#include <qlistview.h>
-#include <qlineedit.h>
-#include <qmultilineedit.h>
-#include <qlayout.h>
-#include <qsplitter.h>
-#include <qstatusbar.h>
-#include <qfiledialog.h>
-#include <qtoolbar.h>
-#include <qtoolbutton.h>
-#include <qslider.h>
-#include <qcheckbox.h>
-#include <qcombobox.h>
-#include <qprogressdialog.h>
-#include <qsettings.h>
+class QSlider;
+class QListView;
+class QListViewItem;
+class QComboBox;
+class QPushButton;
+class QSpinBox;
 
+class YammiModel;
+class MediaPlayer;
+class MyListView;
+class LineEditShift;
+class Folder;
+class FolderGroups;
+class FolderSorted;
+class FolderCategories;
+class FolderMedia;
+class Song;
 
-// project includes
-#include "yammimodel.h"
-#include "song.h"
-#include "songentry.h"
-#include "songentryint.h"
-#include "songentryint2.h"
-#include "songentrystring.h"
-#include "songentrytimestamp.h"
-#include "songlistitem.h"
-#include "songinfo.h"
-#include "fuzzsrch.h"
-#include "folder.h"
-#include "foldergroups.h"
-#include "foldercategories.h"
-#include "foldermedia.h"
-#include "foldersorted.h"
-#include "mylistview.h"
-#include "lineeditshift.h"
-#include "mediaplayer.h"
 
 // -----------------------------------------------------------------
 
@@ -97,6 +55,8 @@
 /**
  * This is the main class: horribly huge... a total mess ... sorry...
  * I am working on cleaning it up...honestly...
+ *
+ * -> clean-up in progress..... (luis)
  */
 class YammiGui : public KMainWindow
 {
@@ -110,15 +70,86 @@ public:
 
 
 public:
-	YammiGui(QString baseDir);
+	YammiGui( );
 	virtual ~YammiGui();
-  
+	
+	/** Load the Song database.
+	  * @param db Database file. If empty the file set in yammi's config file, or 
+	  *           the default will be used */
+	void loadDatabase( const QString &db = QString::null );
+	
+	/** Start a count-down and then shut down yammi unless the user decides to cancel */
+	void shutdownSequence( );
+	
+	/** Yammi config options (preferences) */
+	Prefs config( ) const {return m_config;}
+public slots:
+	/** Seeks in the current song (if any) to position pos */
+	void seek( int pos );
+	
+	/** Execute a fuzzy search in the song database, and switch to the search-results view */
+	void searchSong( const QString &fuzzy );
+	
+ protected:
+	/** creates the internal MediaPlayer */
+	void loadMediaPlayer( );
+	/** save general Options like all bar positions and status as well as the geometry*/
+	void saveOptions();
+	/** read general Options again and initialize all variables*/
+	void readOptions();
+	
+	/** Save information that should be recovered when the app is restored*/
+	void saveProperties(KConfig *config);
+	/** Read information from last session when the app is restored by KDE*/
+	void readProperties(KConfig *config);
+	/** Return the configuration (preferences) object. This is not KDE's KConfig object*/
+	
+	/**
+	 * queryClose is called before the window is closed, either by the user
+	 * or by the session manager. If data has been modified, this function can 
+	 * be used to ask if the changes should be saved.
+	 * if queryClose returns false, the close event is rejected.
+	 * 
+	 * @return	True if window may be closed.
+	 */
+	virtual bool queryClose();
+
+	/**
+	 * queryExit is called just before the last window is closed (and the
+	 * application exits ).
+	 * There should not be any user interaction here (only severe errors), but
+	 * the function can be used to save configuration back, etc.
+	 *
+	 * @return	True if window may be closed.
+	 */
+	virtual bool queryExit();
+	
+protected slots:
+	/** Show/hide a toolbar after the correspondingt action is toggled by the user*/
+	void toolbarToggled( const QString& name = QString::null );
+	/** Turn on/off the sleep mode */
+	void changeSleepMode();
+private:
+	/** Setup UI-actions*/
+	void setupActions( );
+	
+private:
+	Prefs m_config;
+	QSlider *m_seekSlider;
+	LineEditShift *m_searchField;
+	bool m_sleepMode;
+	QSpinBox *m_sleepModeSpinBox;
+	QPushButton *m_sleepModeButton;
+	
+///////////////////////////////////////////////////////////////////////
+//TODO: Refactor/clean-up/check the methods/members from here on --in progress--....(luis)
+////////////	
+public:
 	// checks whether the swapped songs take more space than the given limit
 	void checkSwapSize();
 	void stopDragging();
 	YammiModel* getModel() { return model; };
-	void commitData(QSessionManager& sm);
-	void saveState(QSessionManager& sm);
+	
 	bool columnIsVisible(int column);
 	int mapToRealColumn(int column);
 	void mapVisibleColumnsToOriginals();
@@ -155,10 +186,11 @@ public slots:
 	
 	void autoplayFolder();
 
-public: // TODO
+public:
 	MediaPlayer*  player;
 	MyListView* songListView;
 	Folder* chosenFolder;
+	
 	
 	
 	// song that is currently played or 0 if not in database
@@ -180,49 +212,34 @@ public: // TODO
 	int fuzzyFolderNo;
 	bool columnVisible[MAX_COLUMN_NO];
 	int realColumnMap[MAX_COLUMN_NO];
-	int shuttingDown;
 	QString lastPrelistened;
 	MyList selectedSongs;
 	MyList searchResults;
 	bool isScanning;
-	void readSettings();
-	void writeSettings();
-	void moveEvent(QMoveEvent* e)         { updateGeometrySettings(); }
-	void resizeEvent(QResizeEvent* e)     { updateGeometrySettings(); }
-	void updateGeometrySettings();
 	void updateSongPopup();
 	void updateListViewColumns();
 
 protected:
 
-	void setupActions( );
 
-	void setupToolBars( );
+
 	void createMenuBar( );
 
 	
 	void createFolders( );
 	void createMainWidget( );
-	void loadMediaPlayer( );
+	
 	
 	// gui
 	//***************
 	QListView* folderListView;
-	LineEditShift* searchField;
 
-// 	KToolBar *m_mediaPlayerToolBar;
-// 	KToolBar*     mainToolBar;
-// 	KToolBar*     songActionsToolBar;
-// 	KToolBar*     prelistenToolBar;
-// 	KToolBar*     removableMediaToolBar;
-// 	KToolBar*     sleepModeToolBar;
 	
 //	QPushButton*	currentSongLabel;
 	QComboBox* mediaListCombo;
 	QPushButton* loadFromMediaButton;
-	QSpinBox* sleepModeSpinBox;
-	QLabel* sleepModeLabel;
-	QPushButton* sleepModeButton;
+	
+	
 	QPopupMenu* playListPopup;
 	QPopupMenu* songPopup;
 	QPopupMenu* songPlayPopup;
@@ -240,13 +257,15 @@ protected:
 	QPopupMenu*   toolbarsMenu;
 	QPopupMenu*   columnsMenu;
   
-	QSlider* songSlider;
-	bool isSongSliderGrabbed;
+	
+	
 	YammiModel* model;
 	// file that is currently played by player
 	QString currentFile;
 	// filename of new track being grabbed
 	QString grabbedTrackFilename;
+	
+	
 
 // move the following into a (desktop)settings class?
   int           geometryX;
@@ -259,8 +278,6 @@ protected:
 
 	QTimer regularTimer;
 	QTimer checkTimer;
-	QTimer typeTimer;
-	int songsUntilShutdown;
 
 	// folders
 	Folder* folderAll;
@@ -310,9 +327,8 @@ protected:
 //****************
 protected slots:
   void          toggleColumnVisibility(int column);
-  void toggleToolbar( const QString& name = QString::null );
-  void          finishInitialization();
-
+  
+  
 	void forAllSelectedEnqueue();
 	void forAllSelectedEnqueueAsNext();
 	void forAllSelectedPlayNow()            { forAllSelected(Song::PlayNow); }
@@ -326,18 +342,13 @@ protected slots:
   
   void toFromPlaylist();
   void saveColumnSettings();
-	void endProgram();
-	void shutDown();
-	void changeSleepMode();
-  void changeShutdownValue(int value);
+	
 	void setPreferences();
 	
-	void userTyped( const QString& searchStr );
-	void songSliderMoved();
-	void songSliderGrabbed();
+	
+	
 	void searchSimilar(int what);
 	void goToFolder(int what);
-	void searchFieldChanged();
 	void slotSongChanged();
 	void autoplayOff();
 	void autoplayLNP();

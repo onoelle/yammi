@@ -18,13 +18,10 @@
 #ifndef MYLISTVIEW_H
 #define MYLISTVIEW_H
 
-#include "songlistitem.h"
-#include "song.h"
-#include <qwidget.h>
 #include <qlistview.h>
 #include <qcursor.h>
-#include <iostream>
-using namespace std;
+
+class Song;
 
 
 

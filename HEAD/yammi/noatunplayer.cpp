@@ -152,10 +152,10 @@ int NoatunPlayer::getOtherPlayerId()
 void NoatunPlayer::onFade()
 {
   int fadeTime=getCurrentTime();
-  fade=fadeTime*100/model->config.fadeTime;
+  fade=fadeTime*100/model->config().fadeTime;
   if(fade<100) {
-    sendDcopCommandInt("setVolume(int)", 100-(fade*(100-model->config.fadeOutEnd)/100), fadeOut);
-    sendDcopCommandInt("setVolume(int)", model->config.fadeInStart+(fade*(100-model->config.fadeInStart)/100), fadeIn);
+    sendDcopCommandInt("setVolume(int)", 100-(fade*(100-model->config().fadeOutEnd)/100), fadeOut);
+    sendDcopCommandInt("setVolume(int)", model->config().fadeInStart+(fade*(100-model->config().fadeInStart)/100), fadeIn);
     fadeTimer.start( 200, TRUE );
   }
   else {
@@ -186,7 +186,7 @@ void NoatunPlayer::check()
         playlist->removeFirst();
         playlistChanged();
       }
-      if(playlist->count()>1 && model->config.fadeTime==0) {
+      if(playlist->count()>1 && model->config().fadeTime==0) {
         // no crossfading configured
         // heuristic: if we were at end of last song, we should start next one
         if(timeLeft<2000) {
@@ -201,8 +201,8 @@ void NoatunPlayer::check()
   timeLeft=getTotalTime()-getCurrentTime();
 
   // 2. check, whether we should initiate a song change (start crossfading)
-  if(model->config.fadeTime>0) {
-    if(getStatus()==PLAYING && timeLeft<model->config.fadeTime && timeLeft>0) {
+  if(model->config().fadeTime>0) {
+    if(getStatus()==PLAYING && timeLeft<model->config().fadeTime && timeLeft>0) {
       if(fade<100) {  // don't start fading if we are still fading last song? TODO: really?
         cout << "start crossfading, but we are still crossfading (" << fade << ")\n";
       }
@@ -227,12 +227,12 @@ void NoatunPlayer::startSongChange(bool withoutCrossfading)
     return;
   }
   PlayerStatus status=getStatus();
-  if(model->config.fadeTime==0 || withoutCrossfading || status!=PLAYING) {
+  if(model->config().fadeTime==0 || withoutCrossfading || status!=PLAYING) {
     // no crossfading
     clearActivePlayerPlaylist();
     QString location=model->checkAvailability(playlist->at(1)->song());
     if(location!="" && location!="never") {
-      playlistAdd(location, status==PLAYING || model->config.fadeTime==0);
+      playlistAdd(location, status==PLAYING || model->config().fadeTime==0);
       playlist->removeFirst();
     }
     playlistChanged();

@@ -38,7 +38,7 @@ void FolderGroups::update(MyList* allSongs, int sortBy)
 	// set sort order for grouping
 	allSongs->setSortOrderAndSort(sortBy, true);
 	
-  unsigned int threshold=(unsigned int)gYammiGui->getModel()->config.groupThreshold;
+  unsigned int threshold=(unsigned int)gYammiGui->config( ).groupThreshold;
   if(threshold<=0) {
     threshold=1;
   }
@@ -64,7 +64,7 @@ void FolderGroups::update(MyList* allSongs, int sortBy)
         break;
     }
     
-    if(gYammiGui->getModel()->config.lazyGrouping) {
+    if(gYammiGui->config( ).lazyGrouping) {
       // lazy grouping is not guaranteed to work, as the sorting might be different
       // (we sort once, and scan in linear time)
       QString last2=last.upper();

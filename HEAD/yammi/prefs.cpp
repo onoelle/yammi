@@ -14,17 +14,18 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-#include "options.h"
+
 #include "prefs.h"
-#include "yammigui.h"
 
-#include <qobject.h>
-#include <qdom.h>
-#include <qmessagebox.h>
+#include <kapplication.h>
+#include <kstandarddirs.h>
+#include <kconfig.h>
 
-using namespace std;
+#include "options.h"
 
-extern YammiGui* gYammiGui;
+#include <kdebug.h>
+
+
 
 /// sets preferences to the default values
 Prefs::Prefs(){
@@ -36,14 +37,12 @@ Prefs::~Prefs(){
 
 void Prefs::setDefaultValues(void) {
 	// general	
-	// media player: 0=XMMS, 1=Noatun
-	player = MEDIA_PLAYER_NOATUN;
-#ifdef ENABLE_XMMS
-	player = MEDIA_PLAYER_XMMS;
-#endif
+	// media player: 0=XMMS, 1=Noatun, 2=Arts
+	player = MEDIA_PLAYER_ARTSPLAYER;
 
 	yammiVersion = "1.2";
-	trashDir = "/mp3/trash/";
+	dbFile = KGlobal::dirs()->findResource("appdata","songdb.xml");
+	trashDir = QDir::homeDirPath() + "/Desktop/Trash";
 	scanDir = "/mp3/inbox/";
 	filenamePattern = "{artist} - {title}.{suffix}";
 	directoryPattern = "{artist}/{album}";
@@ -57,8 +56,8 @@ void Prefs::setDefaultValues(void) {
 	childSafe = false;
 	tagsConsistent = false;
 	filenamesConsistent = false;
-  ignoreCaseInFilenames = false;
-  capitalizeTags = true;
+	ignoreCaseInFilenames = false;
+	capitalizeTags = true;
 	criticalSize = 700;
 	secondSoundDevice="";
 	groupThreshold = 5;
@@ -81,270 +80,151 @@ void Prefs::setDefaultValues(void) {
 	swapDir = "/tmp/";
 	swapSize = 200;
 	mountMediaDir = true;
-	prefsFound = false;
-
 }
 
 
 /**
  * baseDir must be an existing and readable directory
  */
-bool Prefs::loadConfig(QString baseDir)
+bool Prefs::loadConfig( )
 {
-  qDebug("reading preferences...");
-
-  QDir dir(baseDir);
-  if(!dir.exists()) {
-    qWarning("ERROR: non-existing directory %s, does your home directory exist?", baseDir.latin1());
-    setDefaultValues();
-    addStandardPlugins();
-	  return false;    
-  }
-
-	// set yammis base directory
-  yammiBaseDir=baseDir+"/.yammi";
-  qDebug("yammiBaseDir: %s", yammiBaseDir.latin1());
-  
-  QDir yammiDir(yammiBaseDir);
-  if(!yammiDir.exists()) {
-		if(!startFirstTime(baseDir)) {
-      qWarning("problems on initializing yammi directory structure, but trying to continue...");
-      setDefaultValues();
-      addStandardPlugins();
-			return false;
-		}
-	}
-
-	// create a document
-	QDomDocument doc("prefs");
-
-	// open configuration file for parsing
-	QFile f(yammiBaseDir+"/prefs.xml");
-	if (!f.open(IO_ReadOnly)) {
-	  // set default value and save them
-    qDebug("configuration file could not be found, taking default values");
-		setDefaultValues();
-		addStandardPlugins();
-		return saveConfig();
-	}
-
-	// set file for parsing
-	if (!doc.setContent(&f)) {
-		QMessageBox::critical(gYammiGui, QObject::tr("Yammi"),
-			QObject::tr("Error parsing configuration file!"),
-			QMessageBox::Abort, 0, 0);
-
-    setDefaultValues();
-		addStandardPlugins();
-		f.close();
-		return false;
-	}
-
-	// close file
-	f.close();
-
-  qDebug("prefs found in %s/prefs.xml...", yammiBaseDir.latin1());
-  // 1: get prefs from file
-	prefsFound = true;
-
-	// general parameter
-	QString prefsVersion = getProperty(doc, "yammiVersion", yammiVersion);
-	if(prefsVersion != yammiVersion) {
-//		QMessageBox::information(gYammiGui, QObject::tr("Yammi"),
-//			QObject::tr("Reading preferences from an other version of Yammi\n"
-//         "In Yammi 0.8.2, the default action configuration\n(eg. for double click) has slightly changed...\n"
-//			   "...please check your settings!"),
-//			QMessageBox::Ok, 0, 0);
-  }
-	trashDir                     = getProperty(doc, "trashDir", trashDir);
-	scanDir                      = getProperty(doc, "scanDir", scanDir);
-	filenamePattern              = getProperty(doc, "filenamePattern", filenamePattern);
-	directoryPattern             = getProperty(doc, "directoryPattern", directoryPattern);
-	guessingMode                 = getProperty(doc, "guessingMode", player);
-	doubleClickAction            = (Song::action) getProperty(doc, "doubleClickAction", doubleClickAction);
-	middleClickAction            = (Song::action) getProperty(doc, "middleClickAction", middleClickAction);
-	controlClickAction           = (Song::action) getProperty(doc, "controlClickAction", controlClickAction);
-	shiftClickAction             = (Song::action) getProperty(doc, "shiftClickAction", shiftClickAction);
-	logging                      = getProperty(doc, "logging", logging);
-	childSafe                    = getProperty(doc, "childSafe", childSafe);
-	tagsConsistent               = getProperty(doc, "tagsConsistent", tagsConsistent);
-	filenamesConsistent          = getProperty(doc, "filenamesConsistent", filenamesConsistent);
-	ignoreCaseInFilenames        = getProperty(doc, "ignoreCaseInFilenames", ignoreCaseInFilenames);
-	capitalizeTags               = getProperty(doc, "capitalizeTags", capitalizeTags);
-	criticalSize                 = getProperty(doc, "criticalSize", criticalSize);
-	secondSoundDevice            = getProperty(doc, "secondSoundDevice", secondSoundDevice);
-	groupThreshold               = getProperty(doc, "groupThreshold", groupThreshold);
+	kdDebug()<<"loading Configuration..."<<endl;
+	
+	KConfig *cfg = kapp->config();
+	
+	cfg->setGroup("General Options");
+	trashDir                     = cfg->readEntry("trashDir", trashDir );
+	scanDir                      = cfg->readEntry("scanDir", scanDir);
+	filenamePattern              = cfg->readEntry("filenamePattern", filenamePattern);
+	directoryPattern             = cfg->readEntry("directoryPattern", directoryPattern);
+	guessingMode                 = cfg->readNumEntry("guessingMode", player);
+	doubleClickAction            = (Song::action) cfg->readNumEntry("doubleClickAction", doubleClickAction);
+	middleClickAction            = (Song::action) cfg->readNumEntry("middleClickAction", middleClickAction);
+	controlClickAction           = (Song::action) cfg->readNumEntry("controlClickAction", controlClickAction);
+	shiftClickAction             = (Song::action) cfg->readNumEntry("shiftClickAction", shiftClickAction);
+	logging                      = cfg->readBoolEntry("logging", logging);
+	childSafe                    = cfg->readBoolEntry("childSafe", childSafe);
+	tagsConsistent               = cfg->readBoolEntry("tagsConsistent", tagsConsistent);
+	filenamesConsistent          = cfg->readBoolEntry("filenamesConsistent", filenamesConsistent);
+	ignoreCaseInFilenames        = cfg->readBoolEntry("ignoreCaseInFilenames", ignoreCaseInFilenames);
+	capitalizeTags               = cfg->readBoolEntry("capitalizeTags", capitalizeTags);
+	criticalSize                 = cfg->readNumEntry("criticalSize", criticalSize);
+	secondSoundDevice            = cfg->readEntry("secondSoundDevice", secondSoundDevice);
+	groupThreshold               = cfg->readNumEntry("groupThreshold", groupThreshold);
 	if(groupThreshold < 1) {
 		groupThreshold = 1;
 	}
-	lazyGrouping                 = getProperty(doc, "lazyGrouping", lazyGrouping);
-	searchThreshold              = getProperty(doc, "searchThreshold", searchThreshold);
-	searchMaximumNoResults       = getProperty(doc, "searchMaximumNoResults", searchMaximumNoResults);
+	lazyGrouping                 = cfg->readBoolEntry("lazyGrouping", lazyGrouping);
+	searchThreshold              = cfg->readNumEntry("searchThreshold", searchThreshold);
+	searchMaximumNoResults       = cfg->readNumEntry("searchMaximumNoResults", searchMaximumNoResults);
 
-	player = getProperty(doc, "mediaPlayer", player);
-#ifndef ENABLE_XMMS
-	// xmms not enabled => set to noatun
-	if(player == MEDIA_PLAYER_XMMS)
-		player = MEDIA_PLAYER_NOATUN;
-#endif
-
-	// xmms specific
-	keepInXmms                   = getProperty(doc, "keepInXmms", keepInXmms);
-
-	// noatun specific
-	fadeTime                     = getProperty(doc, "fadeTime", fadeTime);
-	fadeOutEnd                   = getProperty(doc, "fadeOutEnd", fadeOutEnd);
-	fadeInStart                  = getProperty(doc, "fadeInStart", fadeInStart);
-
-	// plugins
-	grabAndEncodeCmd             = getProperty(doc, "grabAndEncodeCmd", grabAndEncodeCmd);
-	shutdownScript               = getProperty(doc, "shutdownScript", shutdownScript);
+	player = cfg->readNumEntry("mediaPlayer", MEDIA_PLAYER_ARTSPLAYER );
 	
-	pluginCommand                = getProperty(doc, "pluginCommand", pluginCommand);
-	pluginMenuEntry              = getProperty(doc, "pluginMenuEntry", pluginMenuEntry);
-	pluginCustomList             = getProperty(doc, "pluginCustomList", pluginCustomList);
-	pluginConfirm                = getProperty(doc, "pluginConfirm", pluginConfirm);
-	pluginMode                   = getProperty(doc, "pluginMode", pluginMode);
+	cfg->setGroup("Database");
+	dbFile = cfg->readEntry( "dbFile", dbFile );
+	kdDebug()<<"dbFile set to "<<dbFile<<endl;
+  
+	cfg->setGroup("Xmms");
+	keepInXmms                   = cfg->readNumEntry("keepInXmms", keepInXmms);
+
+	cfg->setGroup("General Options");
+	fadeTime                     = cfg->readNumEntry("fadeTime", fadeTime);
+	fadeOutEnd                   = cfg->readNumEntry("fadeOutEnd", fadeOutEnd);
+	fadeInStart                  = cfg->readNumEntry("fadeInStart", fadeInStart);
+
+	cfg->setGroup("Plugins");
+	grabAndEncodeCmd             = cfg->readEntry("grabAndEncodeCmd", grabAndEncodeCmd);
+	shutdownScript               = cfg->readEntry("shutdownScript", shutdownScript);
 	
-	// jukebox functions
-	mediaDir                     = getProperty(doc, "mediaDir", mediaDir);
-	mountMediaDir                = getProperty(doc, "mountMediaDir", mountMediaDir);
-	swapDir                      = getProperty(doc, "swapDir", swapDir);
-	swapSize                     = getProperty(doc, "swapSize", swapSize);
+// 	pluginCommand                = cfg->readEntry("pluginCommand", pluginCommand);
+// 	pluginMenuEntry              = cfg->readEntry("pluginMenuEntry", pluginMenuEntry);
+// 	pluginCustomList             = cfg->readEntry("pluginCustomList", pluginCustomList);
+// 	pluginConfirm                = cfg->readEntry("pluginConfirm", pluginConfirm);
+// 	pluginMode                   = cfg->readEntry("pluginMode", pluginMode);
+#warning
+	
+	cfg->setGroup("Jukebox");
+	mediaDir                     = cfg->readEntry("mediaDir", mediaDir);
+	mountMediaDir                = cfg->readBoolEntry("mountMediaDir", mountMediaDir);
+	swapDir                      = cfg->readEntry("swapDir", swapDir);
+	swapSize                     = cfg->readNumEntry("swapSize", swapSize);
 
-	if(prefsVersion != yammiVersion) {
-		addStandardPlugins();
-		saveConfig();
-	}
-
-	qDebug("..done");
+// 	if(prefsVersion != yammiVersion) {
+// 		addStandardPlugins();
+// 		saveConfig();
+// 	}
+	//addStandardPlugins();
+	kdDebug()<<"Config loaded"<<endl;
+	
 	return true;
 }
 
 /**
  * save preferences (if changed) to disk
  */
-bool Prefs::saveConfig(void)
+bool Prefs::saveConfig( )
 {
-	qDebug("saving preferences to %s/prefs.xml...", yammiBaseDir.latin1());
+	kdDebug()<<"saving Configuration..."<<endl;
 	
-	// create xml-file
-	QDomDocument doc("prefs");
-	QString empty("<?xml version=\"1.0\" encoding=\"UTF-16\"?>\n<prefs>\n</prefs>\n");
-	if(!doc.setContent(empty)) {
-		QMessageBox::critical(gYammiGui, QObject::tr("yammi"),
-			QObject::tr("Saving preferences failed!"),
-			QMessageBox::Ok, 0, 0);
-		return false;
-	}
+	KConfig *cfg = kapp->config();
 	
-	// iterate through properties and save each property as an element
-	// general
-	setProperty(doc, "yammiVersion", yammiVersion);
-	setProperty(doc, "trashDir", trashDir);
-	setProperty(doc, "scanDir", scanDir);
-	setProperty(doc, "filenamePattern", filenamePattern);
-	setProperty(doc, "directoryPattern", directoryPattern);
-	setProperty(doc, "guessingMode", guessingMode);
-	setProperty(doc, "doubleClickAction", doubleClickAction);
-	setProperty(doc, "middleClickAction", middleClickAction);
-	setProperty(doc, "controlClickAction", controlClickAction);
-	setProperty(doc, "shiftClickAction", shiftClickAction);
-	setProperty(doc, "logging", logging);
-	setProperty(doc, "childSafe", childSafe);
-	setProperty(doc, "tagsConsistent", tagsConsistent);
-	setProperty(doc, "filenamesConsistent", filenamesConsistent);
-	setProperty(doc, "ignoreCaseInFilenames", ignoreCaseInFilenames);
-	setProperty(doc, "capitalizeTags", capitalizeTags);
-	setProperty(doc, "criticalSize", criticalSize);
-	setProperty(doc, "secondSoundDevice", secondSoundDevice);
-	setProperty(doc, "groupThreshold", groupThreshold);
-	setProperty(doc, "lazyGrouping", lazyGrouping);
-	setProperty(doc, "searchThreshold", searchThreshold);
-	setProperty(doc, "searchMaximumNoResults", searchMaximumNoResults);
-	setProperty(doc, "mediaPlayer", player);
-	// xmms
-	setProperty(doc, "keepInXmms", keepInXmms);
-	// noatun
-	setProperty(doc, "fadeTime", fadeTime);
-	setProperty(doc, "fadeOutEnd", fadeOutEnd);
-	setProperty(doc, "fadeInStart", fadeInStart);
+	cfg->setGroup("General Options");
+	
+	cfg->writeEntry("trashDir", trashDir );
+	cfg->writeEntry("scanDir", scanDir);
+	cfg->writeEntry("filenamePattern", filenamePattern);
+	cfg->writeEntry("directoryPattern", directoryPattern);
+	cfg->writeEntry("guessingMode", player);
+	cfg->writeEntry("doubleClickAction", (int)doubleClickAction);
+	cfg->writeEntry("middleClickAction", (int)middleClickAction);
+	cfg->writeEntry("controlClickAction", (int)controlClickAction);
+	cfg->writeEntry("shiftClickAction", (int)shiftClickAction);
+	cfg->writeEntry("logging", logging);
+	cfg->writeEntry("childSafe", childSafe);
+	cfg->writeEntry("tagsConsistent", tagsConsistent);
+	cfg->writeEntry("filenamesConsistent", filenamesConsistent);
+	cfg->writeEntry("ignoreCaseInFilenames", ignoreCaseInFilenames);
+	cfg->writeEntry("capitalizeTags", capitalizeTags);
+	cfg->writeEntry("criticalSize", criticalSize);
+	cfg->writeEntry("secondSoundDevice", secondSoundDevice);
+	cfg->writeEntry("groupThreshold", groupThreshold);
+	
+	cfg->writeEntry("lazyGrouping", lazyGrouping);
+	cfg->writeEntry("searchThreshold", searchThreshold);
+	cfg->writeEntry("searchMaximumNoResults", searchMaximumNoResults);
+
+	cfg->writeEntry("mediaPlayer", MEDIA_PLAYER_ARTSPLAYER );
   
-	// plugins
-	setProperty(doc, "grabAndEncodeCmd", grabAndEncodeCmd);
-	setProperty(doc, "shutdownScript", shutdownScript);
-	setProperty(doc, "pluginCommand", pluginCommand);
-	setProperty(doc, "pluginMenuEntry", pluginMenuEntry);
-	setProperty(doc, "pluginCustomList", pluginCustomList);
-	setProperty(doc, "pluginConfirm", pluginConfirm);
-	setProperty(doc, "pluginMode", pluginMode);
-  
-	// jukebox functions
-	setProperty(doc, "mediaDir", mediaDir);
-	setProperty(doc, "mountMediaDir", mountMediaDir);
-	setProperty(doc, "swapDir", swapDir);
-	setProperty(doc, "swapSize", swapSize);
-
+	cfg->setGroup("Database");
 	
-	// save to file...
-	QString save = doc.toString();
-	QFile f2(yammiBaseDir + "/prefs.xml");
-	if(!f2.open(IO_WriteOnly)) {
-		QMessageBox::critical(gYammiGui, QObject::tr("yammi"),
-			QObject::tr("Could not save preferences!"),
-			QMessageBox::Ok, 0, 0);
-		return false;
-	}
-	f2.writeBlock ( save, save.length() );
-	f2.close();
+	cfg->writeEntry( "dbFile", dbFile );
+	
+	
+	cfg->setGroup("Xmms");
+	cfg->writeEntry("keepInXmms", keepInXmms);
 
-	qDebug("...done");
-  return true;
-}
+	cfg->setGroup("General Options");
+	cfg->writeEntry("fadeTime", fadeTime);
+	cfg->writeEntry("fadeOutEnd", fadeOutEnd);
+	cfg->writeEntry("fadeInStart", fadeInStart);
 
+	cfg->setGroup("Plugins");
+	cfg->writeEntry("grabAndEncodeCmd", grabAndEncodeCmd);
+	cfg->writeEntry("shutdownScript", shutdownScript);
+	
+	cfg->writeEntry("pluginCommand", pluginCommand);
+	cfg->writeEntry("pluginMenuEntry", pluginMenuEntry);
+	cfg->writeEntry("pluginCustomList", pluginCustomList);
+	cfg->writeEntry("pluginConfirm", pluginConfirm);
+	cfg->writeEntry("pluginMode", pluginMode);
+	
+	cfg->setGroup("Jukebox");
+	cfg->writeEntry("mediaDir", mediaDir);
+	cfg->writeEntry("mountMediaDir", mountMediaDir);
+	cfg->writeEntry("swapDir", swapDir);
+	cfg->writeEntry("swriteize", swapSize);
 
-/**
- * called when the program is started the first time by a user
- * (ie. there is no .yammi directory existing in the user's home dir)
- */
-bool Prefs::startFirstTime(QString& baseDir)
-{
-	qDebug("you seem to start Yammi for the first time!");
-	qDebug("creating directory .yammi in %s...", baseDir.latin1());
-
-  QDir d(baseDir);
- 	if(!d.mkdir(".yammi")) {
-		QMessageBox::critical(gYammiGui, QObject::tr("Yammi"),
-			QObject::tr("Could not create directory .yammi. Maybe you have no "
-			   "write access to directory %1!").arg(baseDir),
-			QMessageBox::Ok, 0, 0);
- 		return false;
- 	}
-
- 	d.cd(".yammi");
-
-	yammiBaseDir = d.absPath();
-
-	qDebug("Prefs::startFirstTime() Creating subdirectory categories to store your categories...");
- 	if(!d.mkdir("categories")) {
-		QMessageBox::critical(gYammiGui, QObject::tr("Yammi"),
-			QObject::tr("Could not create directory categories!"),
-			QMessageBox::Ok, 0, 0);
- 		return false;
- 	}
-	qDebug("Prefs::startFirstTime() ...done");
-
-	qDebug("Prefs::startFirstTime() Creating subdirectory media to store your media info...");
- 	if(!d.mkdir("media")) {
-		QMessageBox::critical(gYammiGui, QObject::tr("Yammi"),
-			QObject::tr("Could not create dirctory media!"),
-			QMessageBox::Ok, 0, 0);
- 		return false;
- 	}
-	qDebug("Prefs::startFirstTime() ...done");
- 	
-	qDebug("Prefs::startFirstTime() Every directory succesfully initialized");
-
+	kdDebug()<<"Config saved"<<endl;
 	return true;
 }
 
@@ -353,7 +233,7 @@ bool Prefs::startFirstTime(QString& baseDir)
  */
 void Prefs::addStandardPlugins()
 {
-	qDebug("Prefs::addStandardPlugins() adding Yammi's standard plugins to the plugin list");
+	kdDebug()<<"Prefs::addStandardPlugins() adding Yammi's standard plugins to the plugin list"<<endl;;
 
 	if(!pluginMenuEntry.contains("Create CD Label")) {
 		pluginMenuEntry.append("Create CD Label");
@@ -385,95 +265,7 @@ void Prefs::addStandardPlugins()
 		pluginConfirm.append("true");
 		pluginMode.append("group");
 	}
-	qDebug("Prefs::addStandardPlugins() done");	
-}
-
-/// get int property
-int Prefs::getProperty(const QDomDocument& doc, const QString& propName, int propDefault)
-{
-	return getProperty(doc, propName, QString().setNum(propDefault)).toInt();
-}
-
-/// get bool property
-bool Prefs::getProperty(const QDomDocument& doc, const QString& propName, bool propDefault)
-{
-	return getProperty(doc, propName, QString(propDefault ? "1" : "0")) == "1";
-}
-
-/// get string property
-QString Prefs::getProperty(const QDomDocument& doc, const QString& propName, const QString& propDefault)
-{	
-	QDomNodeList list = doc.elementsByTagName(propName);
-	if(list.count() > 0) {
-		QDomNode node = list.item(0); // we only retrieve first item
-		if(!node.isNull() && node.isElement()) {
-			QDomElement elem = node.toElement();
-			return elem.text();
-		}
-	}
-
-	// no tag found -> set default value
-	qDebug("Prefsl::getProperty() setting %s to default value: %s",
-		propName.latin1(), propDefault.latin1());
-
-	return propDefault;
-}
-
-/// get string list property
-QStringList Prefs::getProperty(const QDomDocument& doc, const QString& propName, const QStringList& propDefault)
-{	
-	QDomNodeList list = doc.elementsByTagName(propName);
-	int noEntries = list.count();
-
-	// default value for tag
-	if(noEntries == 0) {
-		qDebug("Prefsl::getProperty() setting %s to default list",
-			propName.latin1());
-		return propDefault;
-	}
-
-	// iterate through all items and append to stringList
-	QStringList stringList;
-	for(int i = 0; i < noEntries; i++) {
-		QDomNode node = list.item(i);
-		QDomElement elem = node.toElement();
-		stringList.append(elem.text());
-	}
-
-	return stringList;
-}
-
-/// set an int property
-void Prefs::setProperty(QDomDocument& doc, const QString& propName, int propValue)
-{
-	setProperty(doc, propName, QString("%1").arg(propValue));
-}
-
-/// set a bool property
-void Prefs::setProperty(QDomDocument& doc, const QString& propName, bool propValue)
-{
-	setProperty(doc, propName, QString("%1").arg(propValue));
-}
-/// set a string property
-void Prefs::setProperty(QDomDocument& doc, const QString& propName, const QString& propValue)
-{
-	QDomElement rootElem = doc.documentElement();
-	QDomElement elem = doc.createElement(propName);
-	QDomText domText=doc.createTextNode ( propValue );
-	elem.appendChild(domText);
-	rootElem.appendChild(elem);
-}
-
-/// set a string list property
-void Prefs::setProperty(QDomDocument& doc, const QString& propName, const QStringList& propValue)
-{
-	QDomElement rootElem = doc.documentElement();
-	for(unsigned int i=0; i<propValue.count(); i++) {
-		QDomElement elem = doc.createElement(propName);
-		QDomText domText=doc.createTextNode ( propValue[i] );
-		elem.appendChild(domText);
-		rootElem.appendChild(elem);
-	}
+	kdDebug()<<"Prefs::addStandardPlugins() done"<<endl;	
 }
 
 

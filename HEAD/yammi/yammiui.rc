@@ -33,36 +33,39 @@
   <Menu name="view"><text>View</text>
     <Action name="update_view"/>
     <Menu name="toolbars"><text>Toolbars</text>
-      <Action name="main_toolbar"/>
-      <Action name="media_player"/>
-      <Action name="songactions_toolbar"/>
-      <Action name="removablemedia_toolbar" />
-      <Action name="sleep_toolbar"/>
-      <Action name="prelisten_player"/>
+      <Action name="MainToolbar"/>
+      <Action name="MediaPlayerToolbar"/>
+      <Action name="SongActionsToolbar"/>
+      <Action name="RemovableMediaToolbar" />
+      <Action name="SleepModeToolbar"/>
+      <Action name="PrelistenToolbar"/>
     </Menu>
   </Menu>
 </MenuBar>
-<ToolBar name="media_player">
+<ToolBar name="MediaPlayerToolbar">
  <text>Media Player</text>
  <Action name="play_pause"/>
  <Action name="skip_backward"/>
  <Action name="skip_forward"/>
  <Action name="stop"/>
+ <Action name="seek"/>
 </ToolBar>
-<ToolBar name="main_toolbar">
+<ToolBar name="MainToolbar">
  <text>Main ToolBar</text>
+ <Action name="search"/>
 </ToolBar>
-<ToolBar name="prelisten_toolbar">
+<ToolBar name="PrelistenToolbar">
  <text>Prelisten</text>
  <Action name="prelisten_start"/>
  <Action name="prelisten_middle"/>
  <Action name="prelisten_end"/>
  <Action name="stop_prelisten"/>
 </ToolBar>
-<ToolBar name="sleep_toolbar">
+<ToolBar name="SleepModeToolbar">
  <text>Sleep</text>
+ <Action name="sleep_mode"/>
 </ToolBar>
-<ToolBar name="songactions_toolbar">
+<ToolBar name="SongActionsToolbar">
  <text>Song Actions</text>
    <Action name="prepend_selected"/>
    <Action name="append_selected"/>
@@ -72,8 +75,9 @@
    <Action name="info_selected"/>
    <Action name="tofrom_playlist"/>
 </ToolBar>
-<ToolBar name="removablemedia_toolbar">
+<ToolBar name="RemovableMediaToolbar">
  <text>Removable Media</text>
+ <Action name="load_media"/>
 </ToolBar>
 
 <Menu name="song_popup">

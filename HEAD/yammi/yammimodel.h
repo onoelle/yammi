@@ -22,60 +22,40 @@
 #ifndef YAMMIMODEL_H
 #define YAMMIMODEL_H
 
-
-
-// these are the includes I wanted to avoid (gui-stuff)
-#include <qprogressdialog.h>
-
-//#include <qapplication.h>
-#include <qheader.h>
-#include <qregexp.h>
-#include <qdir.h>
-#include <qdom.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <iostream>
-using namespace std;
-#include <qstring.h>
 #include <qobject.h>
-#include <qdatetime.h>
-#include <qlist.h>
-#include <qvector.h>
-#include <qtimer.h>
-#include <qevent.h>
-
-// my includes
-#include "song.h"
-#include "songentry.h"
-#include "songentrystring.h"
-#include "songentrytimestamp.h"
-
-#include "songinfo.h"
-#include "fuzzsrch.h"
-#include "prefs.h"
 #include "mylist.h"
-#include "mydatetime.h"
-#include "ConsistencyCheckParameter.h"
+#include "prefs.h"
+
+
+class YammiGui;
+class ConsistencyCheckParameter;
+class KProgressDialog;
+
+
 
 
 /**
  * this is the model of Yammi
  *	@author Brian O.Nlle
  */
+ //This is actually Yammi's Database....
 class YammiModel : public QObject {
     Q_OBJECT
 public:
 	/**
 	 * Constructor
-   */
-	YammiModel();
+	 */
+	YammiModel( YammiGui *y );
 	/**
 	 * Destructor
 	 */
 	~YammiModel();
+	
+	//FIXME temp.. while changing from model->config
+	Prefs config( );
 
 	// data representation
-  QString currentSongFilenameAtStartPlay;
+	QString currentSongFilenameAtStartPlay;
 	MyList allSongs; // all songs in database
 	MyList problematicSongs; // problematic songs (in consistency check)
 	MyList songHistory; // saved history of played songs
@@ -90,14 +70,10 @@ public:
 	int entriesAdded;
 	int corruptSongs;
 	bool _allSongsChanged;
-  bool _categoriesChanged;
+	bool _categoriesChanged;
 
-	// preferences
-	Prefs config;
-	bool noDatabaseFound;
-	bool noPrefsFound;
-	
-	bool traverse(QString path, QString filePattern, QProgressDialog* progress, QString mediaName=0);
+
+	bool traverse(QString path, QString filePattern, KProgressDialog* progress, QString mediaName=0);
 	Song* getSongFromFilename(QString filename);
 	QString checkAvailability(Song* s, bool touch=false);
 
@@ -116,10 +92,7 @@ public:
 	void removeMedia(QString mediaToDelete);
 	void renameMedia(QString oldMediaName, QString newMediaName);
 		
-	void readPreferences(QString baseDir);
-	void savePreferences();
-		
-	void readSongDatabase();
+	void readSongDatabase(  );
 	void saveSongDatabase();
 	
 	void readHistory();
@@ -132,13 +105,19 @@ public:
 public slots:
 	void save();
 	void saveAll();
-	void updateSongDatabase(QString scanDir, QString filePattern, QString mediaName, QProgressDialog* progress);
+	/**
+	* Updates the database by scanning harddisk
+	*  - if specified, checks existence of files in databse and updates/deletes entries
+	*  - scans recursively, starting from specified scanDir
+	*  - constructs song objects from all files matching the filePattern
+	*  - checks whether already existing, whether modified, if not => inserts into database */
+	void updateSongDatabase(QString scanDir, QString filePattern, QString mediaName, KProgressDialog* progress);
   void updateSongDatabase(QStringList list);
 	void addSongToDatabase(QString filename, QString mediaName);
-	bool checkConsistency(QProgressDialog* progress, MyList* selection, ConsistencyCheckParameter* p);
+	bool checkConsistency(KProgressDialog* progress, MyList* selection, ConsistencyCheckParameter* p);
 
 protected:
-  
+	YammiGui *m_yammi;
 };
 
 #endif

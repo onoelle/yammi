@@ -21,6 +21,7 @@
 #include "mediaplayer.h"
 #include <qprocess.h>
 #include <dcopclient.h>
+#include <qtimer.h>
 
 
 /**
@@ -36,7 +37,7 @@ public:
 
 protected:
   DCOPClient* client;
-	QTimer fadeTimer;
+  QTimer fadeTimer;
   int timeLeft;
   bool ensurePlayerIsRunning();
   void playlistAdd(QString filename, bool autoStart);

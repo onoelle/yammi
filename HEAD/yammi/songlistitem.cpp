@@ -17,6 +17,9 @@
 
 #include "songlistitem.h"
 #include "yammigui.h"
+#include "yammimodel.h"
+#include "folder.h"
+#include "foldersorted.h"
 #include "CMP3Info.h"
 
 extern YammiGui* gYammiGui;

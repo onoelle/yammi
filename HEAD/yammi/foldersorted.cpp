@@ -18,6 +18,8 @@
 #include "foldersorted.h"
 
 #include "yammigui.h"
+#include "songlistitem.h"
+#include "songentryint.h"
 
 using namespace std;
 

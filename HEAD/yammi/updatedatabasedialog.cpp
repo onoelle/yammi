@@ -15,13 +15,17 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qlineedit.h>
-#include <qobject.h>
-#include <qpushbutton.h>
-#include <qfiledialog.h>
-
 
 #include "updatedatabasedialog.h"
+
+#include <kfiledialog.h>
+#include <klocale.h>
+
+#include <qlineedit.h>
+#include <qpushbutton.h>
+
+
+
 
 UpdateDatabaseDialog::UpdateDatabaseDialog(QWidget *parent, const char *name )
   : UpdateDatabaseDialogBase(parent, name, true)
@@ -39,7 +43,7 @@ UpdateDatabaseDialog::~UpdateDatabaseDialog()
 // file dialog for scan dir
 void UpdateDatabaseDialog::chooseScanDir()
 {
-	QString dir=QFileDialog::getExistingDirectory(LineEditScanDir->text(), this, QString("yammi"), QString("choose scan directory"), true);
+	QString dir = KFileDialog::getExistingDirectory(LineEditScanDir->text(), this, i18n("choose scan directory"));
   if(!dir.isNull()) {
 		LineEditScanDir->setText(dir);
 	}

@@ -16,7 +16,14 @@
  ***************************************************************************/
 
 #include "mylistview.h"
+
+#include <qheader.h>
+
 #include "yammigui.h"
+#include "songlistitem.h"
+#include "song.h"
+#include "folder.h"
+
 
 using namespace std;
 
@@ -43,12 +50,13 @@ MyListView::~MyListView()
 void MyListView::sortColumnChanged(int column)
 {
   int newColumn=column+1;
-  if(sortOrder()==Qt::Descending) {
-		sortedBy=-newColumn;
-  }
-	else {
+  #warning this wont compile ( Qt::Descending  not found )
+//   if(sortOrder()==Qt::Descending) {
+// 		sortedBy=-newColumn;
+//   }
+// 	else {
 		sortedBy=newColumn;
-  }
+//   }
 }
 
 void MyListView::simulateMouseMove()

@@ -116,7 +116,7 @@ void XmmsPlayer::syncPlayer2Yammi(MyList* playlist)
     playlist->append(new SongEntryInt(check, playlist->count()+1));
 	}
 	// 3. delete all but the keepInXmms first songs
-	for(int i=xmms_remote_get_playlist_length(session)-1; i>=model->config.keepInXmms; i--) {
+	for(int i=xmms_remote_get_playlist_length(session)-1; i>=model->config().keepInXmms; i--) {
 		xmms_remote_playlist_delete(session, i);
 	}
 
@@ -134,7 +134,7 @@ void XmmsPlayer::syncYammi2Player(bool syncAll)
 {
 	// check whether xmms playlist is empty
 	if(xmms_remote_get_playlist_length(session)==0) {
-		for(int i=0; i<(int)playlist->count() && (i<model->config.keepInXmms || syncAll); i++) {
+		for(int i=0; i<(int)playlist->count() && (i<model->config().keepInXmms || syncAll); i++) {
 			gchar url[300];
 			strcpy(url, playlist->at(i)->song()->location());
 			xmms_remote_playlist_add_url_string(session, url);
@@ -148,7 +148,7 @@ void XmmsPlayer::syncYammi2Player(bool syncAll)
 	// if playlist too short => insert yammi entries
 	int iXmms=0;
 	int iYammi=0;
-	for(; iXmms<model->config.keepInXmms || ( syncAll && iYammi<(int)playlist->count() ); iXmms++, iYammi++) {
+	for(; iXmms<model->config().keepInXmms || ( syncAll && iYammi<(int)playlist->count() ); iXmms++, iYammi++) {
 
 		// check whether xmms playlist entry existing
 		if(iXmms<(int)xmms_remote_get_playlist_length(session)) {

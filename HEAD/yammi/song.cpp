@@ -111,7 +111,7 @@ int Song::create(const QString location, const QString mediaName, bool capitaliz
 	else {									// scanning removable media
 		this->filename="";
 		this->path="";
-		QString mountPath=gYammiGui->getModel()->config.mediaDir;
+		QString mountPath=gYammiGui->config().mediaDir;
 		QString locationOnMedia=location;
 		if(locationOnMedia.left(mountPath.length())!=mountPath)
 			cout << "warning: song file is not on the mount path\n";
@@ -364,7 +364,7 @@ void Song::guessTagsFromFilename(QString filename, QString path, QString* artist
   guessBase=guessBase.replace( QRegExp("_"), " " );							// replace "_" with " "
 
 
-  if(gYammiGui->getModel()->config.guessingMode==0) { //gYammiGui->getModel()->config.GUESSING_MODE_SIMPLE) {
+  if(gYammiGui->config().guessingMode==0) { //gYammiGui->getModel()->config.GUESSING_MODE_SIMPLE) {
 
     int pos=guessBase.find('-');
     if(pos!=-1) {
@@ -381,7 +381,7 @@ void Song::guessTagsFromFilename(QString filename, QString path, QString* artist
     }
   }
 
-  if(gYammiGui->getModel()->config.guessingMode==1) { //gYammiGui->getModel()->config.GUESSING_MODE_ADVANCED) {
+  if(gYammiGui->config().guessingMode==1) { //gYammiGui->getModel()->config.GUESSING_MODE_ADVANCED) {
     // eg "/artist/album/01 - trackname.mp3"
     //    pos1  pos2
 
@@ -1216,7 +1216,7 @@ QString Song::capitalize(QString str)
  */
 QString Song::constructFilename()
 {
-  QString pattern=gYammiGui->getModel()->config.filenamePattern;
+  QString pattern=gYammiGui->config().filenamePattern;
   QString filename=replacePlaceholders(pattern, 0);
   return makeValidFilename(filename, true);
 }
@@ -1227,7 +1227,7 @@ QString Song::constructFilename()
  */
 QString Song::constructPath()
 {
-  QString pattern=gYammiGui->getModel()->config.directoryPattern;
+  QString pattern=gYammiGui->config().directoryPattern;
   QString path=replacePlaceholders(pattern, 0);
   // now remove "empty navigation steps" such as "Madonna//Holiday.mp3" (because no album given)
   path.replace("//", "/");

@@ -195,39 +195,24 @@ void ArtsPlayer::syncYammi2Player(bool syncAll)
 
 bool ArtsPlayer::jumpTo(int value)
 {
-//  Arts::poTime* newPos=new Arts::poTime(value);
-//  m_currentPlay->seek(newPos);
-//  return true;
-  
-  if( m_currentPlay && m_currentPlay->state() == Arts::posPlaying ) {
-		m_currentPlay->halt( );
-  }
-	
-	if(!playlist->at(value)) {
+	if( !m_currentPlay || value < 0 || value > getTotalTime() )
 		return false;
-  }
-		
-	QString location = model->checkAvailability( playlist->at(value)->song() );
-	if( location == "" || location =="never" )
-	{
-		kdWarning()<<"Song "<<playlist->at(value)->song()<<"cannot be found : "<<location<<endl;
-		return false;
-	}
-	
-	m_currentPlay = m_factory->createPlayObject( location, true );
-	m_currentPlay->play( );
+	Arts::poTime t;
+	t.seconds =  value / 1000;
+	m_currentPlay->seek( t );
 	return true;
 }
 
 QString ArtsPlayer::getCurrentFile()
 {
-	if( m_currentSong ) {
-		kdDebug()<<"getCurrentFile() : "<<model->checkAvailability( m_currentSong->song() )<<endl;
+	if( m_currentSong ) 
+	{
 		return model->checkAvailability( m_currentSong->song() );
 	}
-  else {
-    return "";
-  }
+	else
+	{
+		return "";
+	}
 }
 
 int ArtsPlayer::getCurrentTime()

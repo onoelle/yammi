@@ -33,6 +33,13 @@
  */
 class Prefs {
 public: 
+	// constants
+	static const int MEDIA_PLAYER_XMMS = 0;
+	static const int MEDIA_PLAYER_NOATUN = 1;
+	static const int MEDIA_PLAYER_ARTSPLAYER = 2;
+	static const int GUESSING_MODE_SIMPLE = 0;
+	static const int GUESSING_MODE_ADVANCED = 1;
+
 	/**
 	 * Constructor. Set configuration values to default.
 	 */
@@ -42,13 +49,25 @@ public:
 	 * Destructor.
 	 */
 	~Prefs();
+	
+	/**
+	 * Load configuration.
+	 */
+	bool loadConfig( );
+	
+	/**
+	 * Save configuration
+	 */
+	bool saveConfig( );
 
-// constants
-	static const int MEDIA_PLAYER_XMMS = 0;
-	static const int MEDIA_PLAYER_NOATUN = 1;
-	static const int MEDIA_PLAYER_ARTSPLAYER = 2;
-	static const int GUESSING_MODE_SIMPLE = 0;
-	static const int GUESSING_MODE_ADVANCED = 1;
+	/**
+	 * Add yammi's standard plugins
+	 */
+	void addStandardPlugins(void);
+
+	///////////////////////////////////////
+	// song database file
+	QString dbFile;
   
 // general	
 	/** player which is used for playing songs */
@@ -62,7 +81,7 @@ public:
 	 */
 	QString trashDir; 
 	/** Yammi base directory for configuration files */
-	QString yammiBaseDir;
+// 	QString yammiBaseDir;
 	/** Filename pattern for renaming files */
 	QString filenamePattern;
 	/** Filename pattern for renaming files */
@@ -144,94 +163,13 @@ public:
 	QString mediaDir;
 	/** Directory for swapping */
 	QString swapDir;
-
-public:
-	/**
-	 * Save configuration
-	 */
-	bool saveConfig(void);
-
-	/**
-	 * Load configuration. Base directory can be set with \c setBaseDir.
-	 */
-	bool loadConfig(QString baseDir);
-
-	/**
-	 * return if preferences were found after calling \c loadConfig
-	 */
-	bool getPrefsFound(void) {		return prefsFound;	}
-
-	/**
-	 * Add yammi's standard plugins
-	 */
-	void addStandardPlugins(void);
-
+	
 private:
-	QString baseDir; /**< Base directory for yammi's configuration files */
-	bool prefsFound; /**< set if preferences were found after \c loadConfig */
 
 	/** 
 	 * Set configuration to default values
 	 */
 	void setDefaultValues(void);
-
-	/**
-	 * Creates yammi's directories
-	 */
-	bool startFirstTime(QString& baseDir);
-
-	/**
-	 * Get a \c QString property from \c QDomDocument object
-	 * \param doc XML document from who the \c propName tag should be read
-	 * \param propName XML tag which should be read
-	 * \param propDefault default value if tag isn't found
-	 * \return value of the tag parsed or the default value
-	 */
-	QString getProperty(const QDomDocument& doc, const QString& propName, const QString& propDefault);
-
-	/**
-	 * This is an overloaded member function for \c int values, provided for convenience. It behaves
-	 * essentially like the above function. 
-	 */
-	int getProperty(const QDomDocument& doc, const QString& propName, int propDefault);
-
-	/**
-	 * This is an overloaded member function for \c bool values, provided for convenience. It behaves
-	 * essentially like the above function. 
-	 */
-	bool getProperty(const QDomDocument& doc, const QString& propName, bool propDefault);
-
-	/**
-	 * This is an overloaded member function for \c QStringList values, provided for convenience. It behaves
-	 * essentially like the above function. 
-	 */
-	QStringList getProperty(const QDomDocument& doc, const QString& propName, const QStringList& propDefault);
-	
-	/**
-	 * Set a \c QString into a \c QDomDocument object on the given tag.
-	 * \param doc XML document which the tag should be written
-	 * \param propName Tag which the value should be written
-	 * \param propValue Value of the tag
-	 */
-	void setProperty(QDomDocument& doc, const QString& propName, const QString& propValue);
-
-	/**
-	 * This is an overloaded member function for \c int values, provided for convenience. It behaves
-	 * essentially like the above function. 
-	 */
-	void setProperty(QDomDocument& doc, const QString& propName, int propValue);
-
-	/**
-	 * This is an overloaded member function for \c bool values, provided for convenience. It behaves
-	 * essentially like the above function. 
-	 */
-	void setProperty(QDomDocument& doc, const QString& propName, bool propValue);
-
-	/**
-	 * This is an overloaded member function for \c QStringList values, provided for convenience. It behaves
-	 * essentially like the above function. 
-	 */
-	void setProperty(QDomDocument& doc, const QString& propName, const QStringList& propValue);
 
 };
 

@@ -103,8 +103,8 @@ public slots:
 	     Since there is no "Player's playlist" the implementation does nothing */
 	virtual void syncYammi2Player(bool syncAll);
 	/** Reimplemented from MediaPlayer.
-	     Jump ahead in the playlist
-	     @param value the number of songs to skip in the playlist */
+	     --> Seek : jump to position value within the song
+	     @param value the position in the song to seek to */
 	virtual bool jumpTo(int value);
 	/** Reimplemented from MediaPlayer.
 	     @return The file corresponding to the current song. */

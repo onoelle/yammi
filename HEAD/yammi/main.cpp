@@ -5,20 +5,20 @@
 *****************************************************************************/
 
 #include <kapplication.h>
+#include <kconfig.h>
 #include <kaboutdata.h>
 #include <kcmdlineargs.h>
 #include <klocale.h>
+#include <kmessagebox.h>
 #include <kdebug.h>
 
-#include <qwindowsstyle.h>
-#include <qtranslator.h>
-#include <qtextcodec.h>
 #include "yammigui.h"
-#include "yammiapplication.h"
 
 
 
-static KCmdLineOptions options[] = { { "d <dir>", I18N_NOOP("specifies location of .yammi dir (defaults to user home)"), 0 } };
+static KCmdLineOptions options[] = { 
+//{ "d <dir>", I18N_NOOP("specifies location of .yammi dir (defaults to user home)"), 0 },
+			{ "db <file>", I18N_NOOP("Specifies the location of the Song Database to use"), 0 } };
 static const char description[] =   I18N_NOOP("Yammi - Yet Another Music Manager I...");
 static const char version[] = "1.1";
 
@@ -52,30 +52,43 @@ int main( int argc, char **argv )
   
 
 
- 	KAboutData about("yammi", I18N_NOOP("Yammi"), version, description,
+	KAboutData about("yammi", I18N_NOOP("Yammi"), version, description,
                      KAboutData::License_GPL, "(C) 2001-2003 by Oliver Nölle", build_opts + "\n\n\nhave fun...", "http://yammi.sourceforge.net", "yammi-developer@lists.sourceforge.net");
 
 	KCmdLineArgs::init(argc, argv, &about);
-  KCmdLineArgs::addCmdLineOptions( options );
-	KApplication app;
+	KCmdLineArgs::addCmdLineOptions( options );
 	KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
-
-  QString baseDir;
-  QCString dir=args->getOption("d");
-  if(dir!=0) {
-    baseDir=dir;
-  }
-  else {
-    QDir d = QDir::home( );
-    baseDir=d.absPath();
-  }
-    
-
-  gYammiGui = new YammiGui(baseDir);
-  app.setMainWidget( gYammiGui );
-  gYammiGui->show();
-  args->clear();
-
+	QString db( args->getOption("db") );
+	
+	KApplication app;
+	YammiGui *yammi = new YammiGui( );
+	app.setMainWidget( yammi );
+	yammi->show();
+	
+	//give yammi a chance for a first draw
+	app.processEvents( );
+  
+	KConfig *cfg = app.config( );
+	if( cfg->getConfigState( ) == KConfig::ReadOnly || cfg->getConfigState( ) == KConfig::ReadWrite)
+	{
+		yammi->loadDatabase( db );
+	}
+	else
+	{//the configuration file could not be opened, most likely we are starting for the first time
+		QString msg( i18n( "Yammi - Yet Another Music Manager I...\n\n\n \
+It looks like you are starting Yammi for the first time...\n\n\
+Welcome to convenient song lookups and organization!\n\n\
+Please edit the settings (Settings -> Configure Yammi...)\n\
+to adjust your personal configuration and options\
+(especially the path to your media files).\n\
+Then perform a database update (Database -> Scan Harddisk...)\n\
+to scan your harddisk for media files.\n\n\
+Have fun using Yammi...\n\n\
+Check out Yammi's website for new versions and other info:\n\
+http://yammi.sourceforge.net " ) );
+		KMessageBox::information( 0L, msg );
+	}
+	args->clear();  
 	// gYammiGui has WDestructiveClose flag by default, so it will delete itself.
 	return app.exec();
 }

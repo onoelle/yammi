@@ -16,487 +16,513 @@
  ***************************************************************************/
 
 #include "yammimodel.h"
+
+#include <kapplication.h>
+#include <kstatusbar.h>
+#include <kprogress.h>
+#include <kstandarddirs.h>
+#include <kmessagebox.h>
+#include <klocale.h>
+
+#include <kdebug.h>
+
 #include "yammigui.h"
 #include "ApplyToAllBase.h"
 #include "options.h"
-
 #include "mediaplayer.h"
+#include "ConsistencyCheckParameter.h"
+#include "folder.h"
+#include "foldergroups.h"
+#include "foldercategories.h"
+#include "foldermedia.h"
+#include "foldersorted.h"
 
-using namespace std;
+//FIXME -<clean
+// // these are the includes I wanted to avoid (gui-stuff)
+#include <qcheckbox.h>
+// #include <qregexp.h>
+// #include <qdir.h>
+#include <qdom.h>
+// #include <stdlib.h>
+// #include <qstring.h>
+// #include <qobject.h>
+// #include <qdatetime.h>
+// #include <qlist.h>
+// #include <qvector.h>
+// #include <qtimer.h>
+// #include <qevent.h>
 
-extern YammiGui* gYammiGui;
+#include "song.h"
+#include "songentry.h"
+#include "songentryint.h"
+#include "songentrystring.h"
+#include "songentrytimestamp.h"
 
 
-YammiModel::YammiModel()
+#include "songinfo.h"
+#include "fuzzsrch.h"
+#include "prefs.h"
+#include "mylist.h"
+#include "mydatetime.h"
+
+
+YammiModel::YammiModel( YammiGui *y )
 {
+	m_yammi = y;
 }
 
 YammiModel::~YammiModel()
 {
-  this->currentSongFilenameAtStartPlay="";
+}
+
+Prefs YammiModel::config( )
+{ 
+	return m_yammi->config( );
 }
 
 
-/**
- * read preferences from xml-file
- * baseDir MUST be an existing and readable directory
- */
-void YammiModel::readPreferences(QString baseDir)
-{
-	config.loadConfig(baseDir);
-	noPrefsFound = !config.getPrefsFound();
-}
-
-
-/// save preferences (if changed) to disk
-void YammiModel::savePreferences()
-{
-	config.saveConfig();
-}
-
-
-
-/**
- * Reads the category from the found xml files in playlist directory.
- */
+// Reads the category from the found xml files in playlist directory.
 void YammiModel::readCategories()
 {
 	// read in all xml-files found in a given directory that represent a category
-	cout << "reading categories..." << flush;
+	kdDebug()<<"Reading categories..." <<endl;
 	
-  categoriesChanged(false);
-
-  QDir d(config.yammiBaseDir+"/categories");
-  if(!d.exists()) {
-    cout << "\ncould not read categories: directory categories not existing\n";
-    return;
-  }
-	d.setFilter( QDir::Files);
-	d.setSorting( QDir::DirsFirst );
-	const QFileInfoList *list = d.entryInfoList();
-	QFileInfoListIterator it( *list );      // create list iterator
-	QFileInfo *fi;                          // pointer for traversing
 	QDomDocument doc("category");
 	int count=0;
 
-	// for all categories found...
-	for ( ;(fi=it.current()); ++it ) {           // for each file
-		// skip non-xml-files
-		if (fi->extension(FALSE)!="xml") continue;
-		
-		QFile f( fi->filePath() );
+	QStringList cats = KGlobal::dirs()->findAllResources( "appdata","categories/*.xml", true );
+	for( QStringList::Iterator it = cats.begin(); it!=cats.end(); ++it )
+	{
+		kdDebug()<<"cat resource found: "<<*it<<endl;
+		QFile f( *it );
 		if ( !f.open( IO_ReadOnly ) )
+		{
+			kdError()<<"Could not open file for reading:"<<*it<<endl;
 			continue;
-		if ( !doc.setContent( &f ) ) {
+		}
+		if ( !doc.setContent( &f ) ) 
+		{
+			kdError()<<"Error reading file contents"<<*it<<endl;
 			f.close();
 			continue;
 		}
 		f.close();
-
 		// get root element
-		QDomElement docElem = doc.documentElement();
-		if(docElem.tagName()!="category") continue;
-		cout << "." << flush;		
-		QDomNode n = docElem.firstChild();
-   	QString categoryName(docElem.attribute("name"));
+		QDomElement e = doc.documentElement();
+		if(e.tagName()!="category") continue;
+		
+		QString name = e.attribute("name");
 		
 		// add category to database
 		count++;
-		MyList* ptr=new MyList;
-		allCategories.append(ptr);
-		categoryNames.append(categoryName);
+		MyList* category = new MyList;
+		allCategories.append(category);
+		categoryNames.append(name);
 
 		// add all songs contained
+		e = e.firstChild().toElement( );
 		int index=1;
-		while( !n.isNull() ) {
-			QDomElement e = n.toElement();						// try to convert the node to an element.
-			if( !e.isNull() ) { 											// the node is really an element.
-				QString artist=e.attribute("artist");
-				QString title=e.attribute("title");
-				QString album=e.attribute("album");
-				// search for item in allSongs
-				Song* found=allSongs.getSongByKey(artist, title, album);
-				if(found==0) {
-//					cout << "\ncategory item " << artist << " - " << title << " (" << album << ") not found in song database\n";
-				}
-				else {
-					SongEntryInt* toAdd=new SongEntryInt(found, index);
-					ptr->append(toAdd);
-					index++;
-				}
+		while( !e.isNull() ) 
+		{
+			QString artist = e.attribute("artist");
+			QString title  = e.attribute("title");
+			QString album  = e.attribute("album");
+			// search for item in allSongs
+			Song* s = allSongs.getSongByKey(artist, title, album);
+			if(!s)
+			{
+				kdWarning()<<"Song not found in database : "<<artist<<"/"<<title<<"/"<<album<<endl;
 			}
-			n = n.nextSibling();
+			else 
+			{
+				SongEntryInt* toAdd = new SongEntryInt(s, index);
+				category->append(toAdd);
+				index++;
+			}
+			e = e.nextSibling().toElement();
 		}
-  }
-	
-	cout << "\n..done (" << count << " categories)\n";
+	}
+	kdDebug()<<"done (" << count << " categories)"<<endl;
 }
 
-/**
- * Reads song history
- */
+
+// Reads song history
 void YammiModel::readHistory()
 {
- 	// read in history of songs from logfile
- 	cout << "reading song history..." << flush;
-	
+	kdDebug()<<"reading song history..."<<endl;
+
 	// new version, history as xml-file
 	QDomDocument doc( "history" );
-	QFile f( config.yammiBaseDir+"/history.xml" );
-	if ( !f.open( IO_ReadOnly ) ) {
-		cout << "\ncould not open history file... => no songs in history\n";
+	QString file = KGlobal::dirs()->findResource( "appdata","history.xml");
+	kdDebug()<<"appdata hist"<<file<<endl;
+	
+	QFile f( file );
+	if ( !f.open( IO_ReadOnly ) ) 
+	{
+		kdError()<<"could not open history file : "<<file<<endl;
 		return;
 	}
-	if ( !doc.setContent( &f ) ) {
-		cout << "\ncould not parse history file, incorrect xml format?\n";
+	if ( !doc.setContent( &f ) ) 
+	{
+		kdError()<<"could not parse history file, incorrect xml format? "<<file<<endl;
 		f.close();
 		return;
 	}
 	f.close();
 
 	QDomElement docElem = doc.documentElement();
-	QDomNode n = docElem.firstChild();
-	for(int i=0; !n.isNull(); i++) {
-		QDomElement e = n.toElement();						// try to convert the node to an element.
-		if( !e.isNull() ) { 											// the node is really an element.
-			if(i % 100==0)
-				cout << "." << flush;
-			QString artist=e.attribute("artist", "unknown");
-			QString title=e.attribute("title", "unknown");
-			QString album=e.attribute("album", "");
-			QString timestamp=e.attribute("timestamp", "");
+	QDomElement e = docElem.firstChild().toElement();
+	int i = 0; //FIXME replace for progress bar indicator?
+	while(!e.isNull())
+	{
+		if(i % 100==0)
+			cout<< "." <<flush;
+		QString artist = e.attribute("artist", "unknown");
+		QString title  = e.attribute("title", "unknown");
+		QString album  = e.attribute("album", "");
+		QString timestamp = e.attribute("timestamp", "");
 
-			// search for item in allSongs
-			Song* found=allSongs.getSongByKey(artist, title, album);
-			if(found==0) {
-				cout << "\nhistory item " << artist << " - " << title << " (" << album << ") not found in song database\n";
-			}
-			else {
- 				MyDateTime played;
- 				played.readFromString(timestamp);
- 				found->lastPlayed=played;
-  			SongEntryTimestamp* hEntry=new SongEntryTimestamp(found, &played);
- 				songHistory.append(hEntry);
-			}
- 		}
- 		n = n.nextSibling();
+		// search for item in allSongs
+		Song* s = allSongs.getSongByKey(artist, title, album);
+		if(!s)
+		{
+			kdWarning()<<"history item "<<artist<<"/"<<title<<"/"<<album<<" not found in song database"<<endl;
+		}
+		else
+		{
+ 			MyDateTime played;
+ 			played.readFromString(timestamp);
+ 			s->lastPlayed=played;
+  			SongEntryTimestamp* hEntry=new SongEntryTimestamp(s, &played);
+ 			songHistory.append(hEntry);
+		}
+ 		
+ 		e = e.nextSibling().toElement();
+		i++;
  	}
-	cout << "\n..done (" << songHistory.count() << " songs in history)\n";
+	kdDebug()<<"done (" << songHistory.count() << " songs in history)"<<endl;
 }
 
 /// saves the song history
 void YammiModel::saveHistory()
 {
-	cout << "saving history...\n";
-	
-	// create xml-file
+	kdDebug()<<"saving history..."<<endl;
+
 	QDomDocument doc( "history" );
-	QString empty("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<history>\n</history>\n");
-	if ( !doc.setContent( empty ) ) {
-		cout << "ERROR: could not create xml document for history file\n";
-		return;
-	}
-	QDomElement rootElem = doc.documentElement();
+	QDomElement root = doc.createElement("history");
+	doc.appendChild(root);
 	
 	// iterate through songs in history AND songsPlayed folder
 	// => save each song as a xml song element
-	for(SongEntry* entry=songHistory.first(); entry; entry=songHistory.next()) {
+	for(SongEntry* entry=songHistory.first(); entry; entry=songHistory.next()) 
+	{
 		QDomElement elem = doc.createElement( "song" );
-		elem.setAttribute( "artist", entry->song()->artist.utf8() );
-		elem.setAttribute( "title", entry->song()->title.utf8() );
-		elem.setAttribute( "album", entry->song()->album.utf8() );
-		elem.setAttribute( "timestamp", ((SongEntryTimestamp*)entry)->timestamp.writeToString().utf8() );
-		rootElem.appendChild( elem );		
+		elem.setAttribute( "artist", entry->song()->artist );
+		elem.setAttribute( "title", entry->song()->title );
+		elem.setAttribute( "album", entry->song()->album );
+		elem.setAttribute( "timestamp", ((SongEntryTimestamp*)entry)->timestamp.writeToString() );
+		root.appendChild( elem );
 	}
-	for(SongEntry* entry=songsPlayed.first(); entry; entry=songsPlayed.next()) {
+	for(SongEntry* entry=songsPlayed.first(); entry; entry=songsPlayed.next()) 
+	{
 		QDomElement elem = doc.createElement( "song" );
-		elem.setAttribute( "artist", entry->song()->artist.utf8() );
-		elem.setAttribute( "title", entry->song()->title.utf8() );
-		elem.setAttribute( "album", entry->song()->album.utf8() );
-		elem.setAttribute( "timestamp", ((SongEntryTimestamp*)entry)->timestamp.writeToString().utf8() );
-		rootElem.appendChild( elem );		
+		elem.setAttribute( "artist", entry->song()->artist );
+		elem.setAttribute( "title", entry->song()->title );
+		elem.setAttribute( "album", entry->song()->album );
+		elem.setAttribute( "timestamp", ((SongEntryTimestamp*)entry)->timestamp.writeToString() );
+		root.appendChild( elem );
 	}
 
 	// save history to file... (but first we make a backup of old file)
+	QString path = KGlobal::dirs()->saveLocation("appdata");
+	kdDebug()<<"Saving history file in directory"<<path<<endl;
 	QDir dir;
-	if(dir.rename(config.yammiBaseDir+"/history.xml", config.yammiBaseDir+"/history_backup.xml"))
-		cout << "backup of history saved in \"history_backup.xml\"\n";
-	QString save=doc.toString();
-	QFile f2( config.yammiBaseDir+"/history.xml");
-	if(!f2.open(IO_WriteOnly)) {
-		cout << "ERROR: could not save history\n";
+	if(dir.rename( path + "history.xml", path +"history_backup.xml"))
+		kdDebug()<<"backup of history saved in \"history_backup.xml\""<<endl;
+	QString contents = doc.toString();
+	QFile f( path + "history.xml");
+	if(!f.open(IO_WriteOnly)) 
+	{
+		kdError()<<"could not open history file for writing:"<<path<<"history.xml"<<endl;
 		return;
 	}
-	f2.writeBlock(save, save.length());
-	f2.close();
-	cout << " ...done\n";
+	f.writeBlock(contents, contents.length());
+	f.close();
+	kdDebug()<<"done"<<endl;
 }
 
 
 /// save categories (if changed) to xml-files
 void YammiModel::saveCategories()
 {
-	// save all categories to xml-files
-	cout << "saving categories...\n";
-	
-	QDir categoryDir( config.yammiBaseDir+"/categories");
-  if(!categoryDir.exists()) {
-    cout << "category directory not existing, creating it...\n";
-    categoryDir.mkdir(config.yammiBaseDir+"/categories");
-  }
-	// for all categories, check whether dirty: if yes => save
-	for( QListViewItem* f=gYammiGui->folderCategories->firstChild(); f; f=f->nextSibling() ) {
+	kdDebug()<<"Saving categories..."<<endl;
+	QString path = KGlobal::dirs()->saveLocation("appdata","categories/",true);
+	QString name;
+	kdDebug()<<"Saving categories in directory "<<path;
+
+	// save all categoreis marked as dirty
+	for( QListViewItem* f=m_yammi->folderCategories->firstChild(); f; f=f->nextSibling() ) 
+	{
 		Folder* folder=(Folder*)f;
 		if(!folder->songlist().dirty)
 			continue;
-		QString categoryName=folder->folderName();
-		cout << "folder " << categoryName << " (or songs therein) was modified, saving\n";
-		
-		// create xml-file
+		name = folder->folderName();
+		kdDebug()<<"Saving category: "<<name<<endl;
+
 		QDomDocument doc( "category" );
-		QString empty("<?xml version=\"1.0\" encoding=\"UTF-8\"?><!DOCTYPE songdb>\n<category>\n</category>\n");
-		if ( !doc.setContent( empty ) ) {
-			cout << "ERROR: could not create xml file for category " << categoryName << "\n";
+		QDomElement root = doc.createElement("category");
+		root.setAttribute("name", name);
+		doc.appendChild(root);
+		
+		for(Song* s = folder->firstSong(); s; s=folder->nextSong()) 
+		{
+			QDomElement elem = doc.createElement( "song" );
+			elem.setAttribute( "artist", s->artist );
+			elem.setAttribute( "title", s->title );
+			elem.setAttribute( "album", s->album );
+			root.appendChild( elem );
+		}
+		// save to file...
+		QString contents = doc.toString();
+		QFile f( path + name + ".xml" );
+		if ( !f.open( IO_WriteOnly  ) )
+		{
+			kdError()<<"Could not save category to file: "<<path<<name<<".xml"<<endl;
 			continue;
 		}
-		
-		QDomElement rootElem = doc.documentElement();
-		rootElem.setAttribute("name", categoryName);
-		
-		// for all songs contained in that category...
-		Song* s=folder->firstSong();
-		for(; s; s=folder->nextSong()) {
-			QDomElement elem = doc.createElement( "song" );
-			elem.setAttribute( "artist", s->artist.utf8() );
-			elem.setAttribute( "title", s->title.utf8() );
-			elem.setAttribute( "album", s->album.utf8() );
-			rootElem.appendChild( elem );
-		}
-		// save category to file...
-		QString save=doc.toString();
-		QString categoryFilename=QString("%1.xml").arg(categoryName);
-		QFile file( config.yammiBaseDir+"/categories/"+categoryFilename );
-		if ( !file.open( IO_WriteOnly  ) )
-			return;
-		file.writeBlock ( save, save.length() );
-		file.close();
+		f.writeBlock ( contents, contents.length() );
+		f.close();
 		folder->songlist().dirty=false;
 	}
-	cout << "..done\n";
+
 	categoriesChanged(false);
 }
 
 
 
-/** reads the yammi database (an xml-file with all song information)
- */
-void YammiModel::readSongDatabase()
+// reads the yammi database (an xml-file with all song information)
+void YammiModel::readSongDatabase(  )
 {
-  cout << "reading song database..." << flush;
-	// read in our xml-file
-	noDatabaseFound=true;
-	allSongsChanged(false);
 
-  QDomDocument doc( "songdb" );
-	QFile f( config.yammiBaseDir+"/songdb.xml" );
-	if ( !f.open( IO_ReadOnly ) ) {
-		cout << "\ncould not open song database file (first time started?)... => no songs in database\n";
-		cout << "edit the base directory in the preferences and perform a database update to scan for songs...\n";
-		return;
+	//FIXME - initialize model first!
+	kdDebug()<<"reading song database : db="<<m_yammi->config( ).dbFile<<endl;
+	QFile f( m_yammi->config( ).dbFile );
+	if( !f.open(IO_ReadOnly) )
+	{
+		kdDebug()<<"Could not open data base file. Checking at old location..."<<QDir::homeDirPath()<<"/.yammi/songdb.xml"<<endl;
+		f.setName( QDir::homeDirPath() + "/.yammi/songdb.xml" );
+		if( f.exists( ) && f.open(IO_ReadOnly) )
+		{//move db to new location (kde)
+			kdDebug()<<"reading DB from "<<f.name()<<endl;
+		}
+		else
+		{
+			QString msg( i18n( "The Song Database file could not be opened.\n\
+Please edit the settings (Settings -> Configure Yammi ...) and set the path to your Song Database\
+or perform a harddisk scan to create a new Database") );
+			KMessageBox::error( 0L, msg, i18n("Error opening Song Database") );
+			return;
+		}
 	}
-	if ( !doc.setContent( &f ) ) {
+	
+	QDomDocument doc("songdb");
+	if( !doc.setContent(&f) )
+	{
 		f.close();
+		QString msg = QString(i18n("Error reading database file:\n%1") ).arg(f.name());
+		KMessageBox::error(0L,msg,i18n("Error reading database"));
 		return;
 	}
 	f.close();
-
-	noDatabaseFound=false;
-	// get root element
-	QDomElement docElem = doc.documentElement();
-	QString version=docElem.attribute("yammiVersion", "no version");
-	if(version!=config.yammiVersion) {
-		QString msg("");
-		msg+="Your song database is from version "+version+" of Yammi.\n";
-		msg+="This Yammi version: "+config.yammiVersion+"\n\n";
-		if(version=="0.5.3" || version=="0.6" || version=="0.6.1" || version=="0.7" || version=="0.7.1" || version=="0.8.0beta" || version=="0.8.0" || version=="0.8.1" || version=="0.8.2" || version=="1.0-rc1" || version=="1.0") {
-			msg+="However, the database format did not change since then, so no worries!\n\n";
-      msg+="(The next time your database will be saved, it will be marked with the new version)";
-		}
-    else {  
-      if(version=="0.5.2" || version=="0.5.1" || version=="0.5" || version=="no version") {
-        msg+="Yammi can only read a song database saved with version 0.5.3 or later,\n";
-        msg+="sorry.............\n";
-        msg+="You can either get version 0.5.3 of Yammi\n";
-        msg+="and save your database with it,\n";
-        msg+="or you start with an empty database\n";
-        msg+="and scan your harddisk for your songs\n";
-        msg+="(categories and history will be lost, too!)\n\n";
-        msg+="I'm trying to read it anyway...";
-      }
-      else {
-        msg+="Your database is probably from a future version of Yammi!\n\n";
-        msg+="I cannot guarantee whether that might cause any problems...\n";
-        msg+="...so better be careful...";
-      }
-    }
-    
-		QMessageBox::information(gYammiGui, "Yammi", msg, "OK");
-    allSongsChanged(true);
+	QDomElement root = doc.documentElement( );
+	QString version = root.attribute("yammiVersion", "no version");
+	if(version=="0.5.2" || version=="0.5.1" || version=="0.5" || version=="no version")
+	{
+		QString msg( i18n("Your Song Database seems to be very old.\n You might need to create \
+a new Database and scan your harddisk for songs") );
+		KMessageBox::sorry( 0L, msg, i18n("Unknown Song Database version") );
+		//try to continue anyways...?
 	}
-	QDomNode n = docElem.firstChild();
-	for(int i=0; !n.isNull(); i++) {
-		QDomElement e = n.toElement();						// try to convert the node to an element.
-		if( !e.isNull() ) { 											// the node is really an element.
-			if(i % 100==0)
-				cout << "." << flush;
-			QString artist=e.attribute("artist", "unknown");
-			QString title=e.attribute("title", "unknown");
-			QString album=e.attribute("album", "");
-			QString filename=e.attribute("filename", "");
-			QString path=e.attribute("path", "");
-			QString comment=e.attribute("comment", "");
-			QString lengthStr=e.attribute("length", "0");
-			unsigned long length=atol(lengthStr);
-			QString bitrateStr=e.attribute("bitrate", "0");
-			int bitrate=atoi(bitrateStr);
-			QString yearStr=e.attribute("year", "0");
-			int year=atoi(yearStr);
-			QString trackNrStr=e.attribute("trackNr", "0");
-			int trackNr=atoi(trackNrStr);
-			QString genreNrStr=e.attribute("genreNr", "0");
-			int genreNr=atoi(genreNrStr);
-			
-			QString addedToStr=e.attribute("addedTo", "1/1/1970/00:00:00");
-			// read date as "dd/mm/yyyy, hh:mm:ss"
-			MyDateTime addedTo;
-			addedTo.readFromString(addedToStr);
-			
-			
-			Song* newSong=new Song(artist, title, album, filename, path, length, bitrate, addedTo, year, comment, trackNr, genreNr);
-			allSongs.appendSong( newSong );
+	
+	int total = root.attribute("count", "0").toInt( );
+	QDomElement e = root.firstChild().toElement();
+	
+	//FIXME - change this to a progress in the status bar instead...
+	KProgressDialog dia(0,0,i18n("Loading database"),i18n("Reading Song Database file"));
+	dia.setAllowCancel(false);
+	KProgress *p = dia.progressBar();
+	p->setTotalSteps( total );
+	int count = 0;
+	while( !e.isNull( ) )
+	{
+		p->setProgress( count );
+		
+		QString artist   = e.attribute("artist", "unknown");
+		QString title    = e.attribute("title", "unknown");
+		QString album    = e.attribute("album", "");
+		QString filename = e.attribute("filename", "");
+		QString path     = e.attribute("path", "");
+		QString comment  = e.attribute("comment", "");
+		
+		unsigned long length = e.attribute("length","0").toULong( );
+		int bitrate = e.attribute("bitrate", "0").toInt( );
+		int year = e.attribute("year", "0").toInt( );
+		int trackNr = e.attribute("trackNr", "0").toInt( );
+		int genreNr = e.attribute("genreNr", "0").toInt( );
+		
+		// read date as "dd/mm/yyyy, hh:mm:ss"
+		MyDateTime addedTo;
+		addedTo.readFromString(e.attribute("addedTo", "1/1/1970/00:00:00"));
+		
+		Song* s = new Song(artist, title, album, filename, path, length, bitrate, addedTo, year, comment, trackNr, genreNr);
+		allSongs.appendSong( s );
 
-			QDomNode child = e.firstChild();
-		  while( !child.isNull() ) {
-  	 		QDomElement mediaElem = child.toElement(); // try to convert the node to an element.
-				if( !mediaElem.isNull() ) { // the node was really an element.
-					QString mediaName=mediaElem.attribute("mediaName", "unspecified media");
-					QString mediaLocation=mediaElem.attribute("mediaLocation", "unspecified location");
-   				newSong->addMediaLocation(mediaName, mediaLocation);
-  	    }
-	      child = child.nextSibling();
+		QDomNode child = e.firstChild();
+		while( !child.isNull() )
+		{
+			QDomElement mediaElem = child.toElement(); // try to convert the node to an element.
+			if( !mediaElem.isNull() ) 
+			{
+				QString mediaName=mediaElem.attribute("mediaName", "unspecified media");
+				QString mediaLocation=mediaElem.attribute("mediaLocation", "unspecified location");
+				s->addMediaLocation(mediaName, mediaLocation);
 			}
+			child = child.nextSibling();
 		}
-		n = n.nextSibling();
+		
+		e = e.nextSibling().toElement();
+		count++;
 	}
-	cout << "\n..done (" << allSongs.count() << " songs)\n";
+	kdDebug()<<"Read "<<count<<" songs from DB. ( allSongs = "<<allSongs.count()<<" )"<<endl;
+	allSongsChanged( true );
 }
 
 /// saves the songs in allSongs into an xml-file
 void YammiModel::saveSongDatabase()
 {
-	cout << "saving database...\n";
+	kdDebug()<<"saving database..."<<endl;
 	int sumDirtyTags=0;
 	int sumDirtyFilenames=0;
-	for(Song* s=allSongs.firstSong(); s; s=allSongs.nextSong()) {
+	for(Song* s=allSongs.firstSong(); s; s=allSongs.nextSong()) 
+	{
 		if(s->tagsDirty)
 			sumDirtyTags++;
 		if(s->filenameDirty)
 			sumDirtyFilenames++;
 	}
-	if(config.tagsConsistent) {
-		cout << sumDirtyTags 			<< " dirty tags...\n";
-  }
-	if(config.filenamesConsistent) {
-		cout << sumDirtyFilenames << " dirty filenames...\n";
-  }
-
-	
-	// create xml-file
-	QDomDocument doc( "songdb" );
-	QString empty("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<songs yammiVersion=\""+config.yammiVersion+"\">\n</songs>\n");
-	if ( !doc.setContent( empty ) ) {
-		cout << "ERROR: could not create xml file for song database\n";
-		return;
+	if(m_yammi->config( ).tagsConsistent) 
+	{
+		kdDebug()<<sumDirtyTags<< " dirty tags..."<<endl;
 	}
-	QDomElement rootElem = doc.documentElement();
+	if(m_yammi->config( ).filenamesConsistent) 
+	{
+		kdDebug()<<sumDirtyFilenames<<" dirty filenames..."<<endl;
+	}
+
+	QDomDocument doc( "songdb" );
+	QDomElement root = doc.createElement("songs");
+	root.setAttribute("yammiVersion",m_yammi->config( ).yammiVersion);
+	doc.appendChild(root);
 	
 	// iterate through songs and save each song as a xml song element
 	int count=0;
-  bool haveToReloadPlaylist=false;
-  bool currentSongRenamed=false;    // set to true, if currently played song's filename is changed
-	for(Song* s=allSongs.firstSong(); s; s=allSongs.nextSong(), count++) {
-		// lets append a new element to the end of our xml database
+	bool haveToReloadPlaylist=false;
+	bool currentSongRenamed=false;    // set to true, if currently played song's filename is changed
+	for(Song* s = allSongs.firstSong(); s; s = allSongs.nextSong()) 
+	{
+		count++;
 		QDomElement elem = doc.createElement( "song" );
 		// consistencyMode: if song dirty, we make it consistent
-    if(s->tagsDirty && config.tagsConsistent) {
+		if(s->tagsDirty && m_yammi->config( ).tagsConsistent) 
+		{
 			s->saveTags();
-    }
-		if(s->filenameDirty && config.filenamesConsistent) {
+		}
+		if(s->filenameDirty && m_yammi->config( ).filenamesConsistent) 
+		{
 			s->correctFilename();
-      if(songsToPlay.containsSong(s)) {
-        haveToReloadPlaylist=true;
-        if(songsToPlay.firstSong()==s) {
-          currentSongRenamed=true;
-        }
-      }
-    }
-
-		
-		if(s->artist!="unknown")	elem.setAttribute( "artist", s->artist.utf8() );
-		if(s->title!="unknown")		elem.setAttribute( "title", s->title.utf8() );
-		if(s->album!="") 					elem.setAttribute( "album", s->album.utf8() );
-		if(s->bitrate!=0)					elem.setAttribute( "bitrate", QString("%1").arg(s->bitrate).utf8() );
-		if(s->comment!="")				elem.setAttribute( "comment", s->comment.utf8() );
-		if(s->filename!="")				elem.setAttribute( "filename", s->filename.utf8() );
-		if(s->length!=0)					elem.setAttribute( "length", QString("%1").arg(s->length).utf8() );
-		if(s->path!="")						elem.setAttribute( "path", s->path.utf8() );
-		if(s->year!=0)						elem.setAttribute( "year", QString("%1").arg(s->year).utf8() );
-		if(s->trackNr!=0)					elem.setAttribute( "trackNr", QString("%1").arg(s->trackNr).utf8() );
-		if(s->genreNr!=0)					elem.setAttribute( "genreNr", QString("%1").arg(s->genreNr).utf8() );
-		if(true)									elem.setAttribute( "addedTo", s->addedTo.writeToString().utf8());
-		
-		
-		for(unsigned int i=0; i<s->mediaName.count(); i++) {
+			if(songsToPlay.containsSong(s)) 
+			{
+				haveToReloadPlaylist=true;
+				if(songsToPlay.firstSong()==s) 
+				{
+					currentSongRenamed=true;
+				}
+			}
+		}
+		if(s->artist!="unknown")
+			elem.setAttribute( "artist", s->artist );
+		if(s->title!="unknown")
+			elem.setAttribute( "title", s->title );
+		if(s->album!="")
+			elem.setAttribute( "album", s->album);
+		if(s->bitrate!=0)
+			elem.setAttribute( "bitrate", QString("%1").arg(s->bitrate));
+		if(s->comment!="")
+			elem.setAttribute( "comment", s->comment );
+		if(s->filename!="")
+			elem.setAttribute( "filename", s->filename );
+		if(s->length!=0)
+			elem.setAttribute( "length", QString("%1").arg(s->length));
+		if(s->path!="")
+			elem.setAttribute( "path", s->path);
+		if(s->year!=0)
+			elem.setAttribute( "year", QString("%1").arg(s->year) );
+		if(s->trackNr!=0)
+			elem.setAttribute( "trackNr", QString("%1").arg(s->trackNr));
+		if(s->genreNr!=0)
+			elem.setAttribute( "genreNr", QString("%1").arg(s->genreNr));
+			
+		elem.setAttribute( "addedTo", s->addedTo.writeToString());
+		for(unsigned int i=0; i<s->mediaName.count(); i++) 
+		{
 			QDomElement media = doc.createElement( "media" );
-			media.setAttribute( "mediaName", s->mediaName[i].utf8());
-			media.setAttribute( "mediaLocation", s->mediaLocation[i].utf8());
+			media.setAttribute( "mediaName", s->mediaName[i]);
+			media.setAttribute( "mediaLocation", s->mediaLocation[i]);
 			elem.appendChild(media);
 		}
-		rootElem.appendChild( elem );
-		
+		root.appendChild( elem );
 	}
+	root.setAttribute("count",count);
+	
+	//save to the same file we opened...
+// 	// save songdb to file... (but first we make a backup of old file)
+// 	QString path = KGlobal::dirs()->saveLocation("appdata");
+// 	kdDebug()<<"Saving song database in directory "<<path<<endl;
+// 	QDir dir;
+// 	if(dir.rename(path+"songdb.xml", path+"songdb_backup.xml"))
+// 		kdDebug()<<"backup of songdb saved in \"songdb_backup.xml\""<<endl;
 
-		
-	// save songdb to file... (but first we make a backup of old file)
-	QDir dir;
-	if(dir.rename(config.yammiBaseDir+"/songdb.xml", config.yammiBaseDir+"/songdb_backup.xml"))
-		cout << "backup of songdb saved in \"songdb_backup.xml\"\n";
-	QString save=doc.toString();
-	QFile f2( config.yammiBaseDir+"/songdb.xml");
-	if(!f2.open(IO_WriteOnly)) {
-		cout << "ERROR: could not write song database\n";
+	QString contents = doc.toString();
+// 	QFile f( path + "songdb.xml");
+	QFile f( m_yammi->config().dbFile );
+	if(!f.open(IO_WriteOnly)) 
+	{
+		kdError()<<"could not open db file for writing:"<<m_yammi->config().dbFile<<endl;
 		return;
 	}
-	f2.writeBlock(save, save.length());
-	f2.close();
-  if(haveToReloadPlaylist) {
-    cout << "have to reload playlist to player...\n";
-    gYammiGui->player->clearPlaylist();
-    Song* save=0;
-    if(songsToPlay.count()>0) {
-      currentSongRenamed=(currentSongFilenameAtStartPlay!=songsToPlay.firstSong()->location());
-      cout << "currentSongRenamed: " << currentSongRenamed << "\n";
-    }
-    if(currentSongRenamed) {
-      save=songsToPlay.firstSong();
-      songsToPlay.removeSong(save);
-    }
-    gYammiGui->player->syncYammi2Player(false);
-    if(currentSongRenamed) {
-      songsToPlay.insert(0, new SongEntryInt(save, 0));
-    }
-  }
-	cout << " ...done\n";
+	f.writeBlock(contents, contents.length());
+	f.close();
+	if(haveToReloadPlaylist) 
+	{//FIXME!! this is kinda ugly...
+		kdDebug()<<"Reload playlist to player..."<<endl;
+		m_yammi->player->clearPlaylist();
+		Song* save=0;
+		if(songsToPlay.count()>0) 
+		{
+			currentSongRenamed=(currentSongFilenameAtStartPlay!=songsToPlay.firstSong()->location());
+		}
+		if(currentSongRenamed) 
+		{
+			save=songsToPlay.firstSong();
+		songsToPlay.removeSong(save);
+		}
+		m_yammi->player->syncYammi2Player(false);
+		if(currentSongRenamed) 
+		{
+			songsToPlay.insert(0, new SongEntryInt(save, 0));
+		}
+	}
+	kdDebug()<<"saving database: done"<<endl;
 	allSongsChanged(false);
 }
 
@@ -504,9 +530,9 @@ void YammiModel::saveSongDatabase()
 
 void YammiModel::allSongsChanged(bool changed)
 {
-	_allSongsChanged=changed;
-//  if(gYammiGui && gYammiGui->tbSaveDatabase)
-//    gYammiGui->tbSaveDatabase->setEnabled(_allSongsChanged || _categoriesChanged);
+	_allSongsChanged = changed;
+//  if(m_yammi && m_yammi->tbSaveDatabase)
+//    m_yammi->tbSaveDatabase->setEnabled(_allSongsChanged || _categoriesChanged);
 }
 
 bool YammiModel::allSongsChanged()
@@ -516,9 +542,9 @@ bool YammiModel::allSongsChanged()
 
 void YammiModel::categoriesChanged(bool changed)
 {
-	_categoriesChanged=changed;
-//  if(gYammiGui && gYammiGui->tbSaveDatabase)
-//  	gYammiGui->tbSaveDatabase->setEnabled(_allSongsChanged || _categoriesChanged);
+	_categoriesChanged = changed;
+//  if(m_yammi && m_yammi->tbSaveDatabase)
+//  	m_yammi->tbSaveDatabase->setEnabled(_allSongsChanged || _categoriesChanged);
 }
 
 bool YammiModel::categoriesChanged()
@@ -527,39 +553,42 @@ bool YammiModel::categoriesChanged()
 }
 
 
-/**
- * Updates the xml-database by scanning harddisk
- * - if specified, checks existence of files in databse and updates/deletes entries
- * - scans recursively, starting from specified scanDir
- * - constructs song objects from all files matching the filePattern
- * - checks whether already existing, whether modified, if not => inserts into database
- */
-void YammiModel::updateSongDatabase(QString scanDir, QString filePattern, QString mediaName, QProgressDialog* progress)
+
+//   Updates the xml-database by scanning harddisk
+void YammiModel::updateSongDatabase(QString scanDir, QString filePattern, QString mediaName, KProgressDialog* progress)
 {
 	entriesAdded=0;
 	corruptSongs=0;
-	if(config.childSafe)
+	if(m_yammi->config( ).childSafe)
+	{
+		kdWarning()<<"updateSongDatabase : childSafe --> request denied"<<endl;
 		return;
-  problematicSongs.clear();
-	if(mediaName==0) {
-		cout << "scanning harddisk for new songs... \n";
+	}
+	problematicSongs.clear();
+	if(mediaName==0)
+	{
+		kdDebug()<<"scanning harddisk for new songs..."<<endl;
 		// check that scanDir is an existing directory
 		QDir d(scanDir);
-		if(!d.exists()) {
-      QString msg="The base directory for scanning does not exist!\n";
-      msg+="Set value \"scanDir\" in preferences to an existing directory!";
-      QMessageBox::information( gYammiGui, "Yammi", msg, "Good idea!" );
+		if(!d.exists())
+		{
+			QString msg( i18n("The base directory for scanning does not exist!\n\
+Set value \"scanDir\" in the preferences to an existing directory!"));
+			KMessageBox::error( m_yammi, i18n("Yammi"), msg );
 		}
-		else {
+		else
+		{
 			traverse(scanDir, filePattern, progress);
- 			cout << "..finished scanning!\n";
-	 	}
+			kdDebug()<<"finished scanning!"<<endl;
+		}
 	}
-	else {				
-		cout << "scanning removable media for new songs... \n";
+	else 
+	{
+		kdDebug()<<"scanning removable media for new songs..."<<endl;
 		
 		// mount media dir
-		if(config.mountMediaDir) {
+		if(m_yammi->config( ).mountMediaDir) 
+		{
 			// linux specific
 			QString cmd;
 			cmd=QString("mount %1").arg(scanDir);
@@ -568,20 +597,22 @@ void YammiModel::updateSongDatabase(QString scanDir, QString filePattern, QStrin
 
 		// check that mediaDir is an existing directory
 		QDir d(scanDir);
-		if(!d.exists()) {
-      QString msg="The specified directory for removable media:\n";
-      msg+=QString("   %1\n").arg(scanDir);
-      msg+="does not exist or is not readable!\n";
-      msg+="Set value \"mediaDir\" in preferences to an existing directory!\n";
-      msg+="(if necessary, enable \"mount media\" in preferences)";
-      QMessageBox::information( gYammiGui, "Yammi", msg, "Good idea!" );
+		if(!d.exists())
+		{
+			QString msg(i18n("The specified directory for removable media:\n %1 \n\
+does not exist or is not redable!\n Set value \"mediaDir\" in the preferences to an existing directory!\n\
+(if necessary, enable the \"mount media\" option in the preferences)"));
+			msg.arg(scanDir);
+			KMessageBox::error( m_yammi, i18n("Yammi"), msg );
 		}
-		else {
+		else 
+		{
 			traverse(scanDir, filePattern, progress, mediaName);
- 			cout << "..finished scanning!\n";
-	 	}
+			kdDebug()<<"finished scanning!"<<endl;
+		}
 		// umount media dir
-		if(config.mountMediaDir) {
+		if(m_yammi->config( ).mountMediaDir) 
+		{
 			// linux specific
 			QString cmd;
 			cmd=QString("umount %1").arg(scanDir);
@@ -590,191 +621,204 @@ void YammiModel::updateSongDatabase(QString scanDir, QString filePattern, QStrin
 	}
 }
 
-
 void YammiModel::updateSongDatabase(QStringList list)
 {
 	entriesAdded=0;
 	corruptSongs=0;
-	if(config.childSafe)
+	if(m_yammi->config( ).childSafe)
+	{
+		kdWarning()<<"updateSongDatabase : childSafe --> request denied"<<endl;
 		return;
-  problematicSongs.clear();
-  // iterate over list of songs to add
-  QStringList::Iterator it = list.begin();
-  while( it != list.end() ) {
-    QString filename(*it);
-    if(filename.endsWith(".m3u")) {
-      QStringList* playlist=readM3uFile(filename);
-      QStringList::Iterator it2 = playlist->begin();
-      while( it2 != playlist->end() ) {
-        addSongToDatabase(QString(*it2), 0);
-        ++it2;
-      }
-      delete(playlist);
-    }
-    else {
-      addSongToDatabase(filename, 0);
-    }
-    ++it;
-  }
+	}
+	problematicSongs.clear();
+	// iterate over list of songs to add
+	for( QStringList::Iterator it = list.begin(); it!= list.end(); ++it )
+	{
+		QString filename(*it);
+		if(filename.endsWith(".m3u"))
+		{
+			QStringList* playlist = readM3uFile(filename);
+			for(QStringList::Iterator it2 = playlist->begin();it2 != playlist->end();++it)
+			{
+				addSongToDatabase(QString(*it2), 0);
+			}
+			delete playlist;
+			}
+		else 
+		{
+			addSongToDatabase(filename, 0);
+		}
+	}
 }
 
 
 
 /// traverses a directory recursively and processes all mp3 files
 /// returns false, if scanning was cancelled
-bool YammiModel::traverse(QString path, QString filePattern, QProgressDialog* progress, QString mediaName)
+bool YammiModel::traverse(QString path, QString filePattern, KProgressDialog* progress, QString mediaName)
 {
 	// leave out the following directories
-	if(path+"/"==config.trashDir || path+"/"==config.swapDir) {
-		cout << "skipping trash or swap directory: " << path << "\n";
+	if(path+"/"==m_yammi->config( ).trashDir || path+"/"==m_yammi->config( ).swapDir)
+	{
+		kdWarning()<<"skipping trash or swap directory: "<<path<<endl;
 		return true;
 	}
- 	
- 	cout << "scanning directory " << path << "\n";
-	progress->setLabelText("scanning directory "+path+"...");
-  progress->setProgress(0);
+	kdDebug()<<"scanning directory "<<path<<endl;
+	progress->setLabel(QString(i18n("scanning directory %1 ...")).arg(path));
+	progress->progressBar()->setProgress(0);
 //  qApp->processEvents();
 	
 	QDir d(path);
 
   // step 1: scan files
-	
-  d.setFilter(QDir::Files);
-  d.setNameFilter(filePattern);
+	d.setFilter(QDir::Files);
+	d.setNameFilter(filePattern);
 	d.setSorting( QDir::Name );
 	const QFileInfoList* list = d.entryInfoList();
 	int filesToScan=list->count();
-	progress->setTotalSteps(filesToScan);
-	QFileInfoListIterator it( *list );								      // create list iterator
-
+	progress->progressBar()->setTotalSteps(filesToScan);
+	QFileInfoListIterator it( *list );
 	int filesScanned=0;
-	for(QFileInfo *fi; (fi=it.current()); ++it ) {						// for each file/dir
+	for(QFileInfo *fi; (fi=it.current()); ++it )
+	{
 		filesScanned++;
-	  progress->setProgress(filesScanned);
+		progress->progressBar()->setProgress(filesScanned);
 //	  qApp->processEvents();
-		if(progress->wasCancelled()) {
+		if(progress->wasCancelled())
+		{
 			return false;
-    }
-			
+		}
 		// okay, we have a file to scan, try to add to database
 		addSongToDatabase(fi->filePath(), mediaName);
-  }
+	}
 
   // step 2: recursively scan subdirectories
 	QDir d2(path);
-  d2.setFilter(QDir::Dirs | QDir::Readable);
+	d2.setFilter(QDir::Dirs | QDir::Readable);
 	d2.setSorting( QDir::Name );
 	const QFileInfoList* list2 = d2.entryInfoList();
-	QFileInfoListIterator it2( *list2 );								      // create list iterator
+	QFileInfoListIterator it2( *list2 );
 
-	for(QFileInfo *fi2; (fi2=it2.current()); ++it2 ) {						// for each file/dir
+	for(QFileInfo *fi2; (fi2=it2.current()); ++it2 )
+	{
 		if(fi2->fileName()=="." || fi2->fileName()=="..")
-      continue;
-		if(traverse(fi2->filePath(), filePattern, progress, mediaName)==false) {
-      return false;
-    }
+			continue;
+		if(traverse(fi2->filePath(), filePattern, progress, mediaName) == false)
+		{
+			return false;
+		}
 	}
-  return true;      // scanning was not cancelled
+	return true;// scanning was not cancelled
 }
 
 
-/** adds a single songfile to the database */
+// adds a single songfile to the database
 void YammiModel::addSongToDatabase(QString filename, QString mediaName=0)
 {
- 	cout << "scanning file: " << filename << "...\n";
- 	bool found=false;
- 	for(Song* s=allSongs.firstSong(); s; s=allSongs.nextSong()) {
+	kdDebug()<<"adding file to db"<<filename<<endl;
+	bool found=false;
+	for(Song* s=allSongs.firstSong(); s; s=allSongs.nextSong())
+	{
  		// this check might fail when filename has strange characters?
- 		if(filename==s->location()) {
+ 		if(filename == s->location())
+		{
  			found=true;
- 			cout << "...existing\n";
  			// here we can fix/update our database with additional info...
-				
- 			/* eg:
- 			// add genre number to Song info
- 			Song* fixSong=new Song(fi->filePath());
- 			s->genreNr=fixSong->genreNr;
- 			delete(fixSong);
- 			allSongsChanged(true);
- 			*/
- 			break;
- 		}
- 	}
- 	if(found)
- 		return;
+//  			eg:
+//  			// add genre number to Song info
+//  			Song* fixSong=new Song(fi->filePath());
+//  			s->genreNr=fixSong->genreNr;
+//  			delete(fixSong);
+//  			allSongsChanged(true);
+			break;
+		}
+	}
+	if(found)
+		return;
 		
- 	// okay, new song (at least new filename/path) => construct song object
- 	Song* newSong=new Song();
-  newSong->create(filename, mediaName, config.capitalizeTags);
- 	if(newSong->corrupted) {
- 		cout << "new song file " << filename << " is corrupt (not readable for yammi), skipping\n";
- 		corruptSongs++;
- 		return;
- 	}
-						
- 	// check whether other version of this song existing (with same primary key)
- 	Song* s=allSongs.getSongByKey(newSong->artist, newSong->title, newSong->album);
- 	if(s!=0) {
- 		// yes, song with this key already existing!
- 		if(newSong->length==s->length && newSong->bitrate==s->bitrate && newSong->album==s->album) {
- 			// a) okay, we assume it is exactly the same song...
- 			if(mediaName==0) {
- 				// case 1: scanning harddisk
- 				if(s->filename=="") {
- 					// case 1a: song has no filename = was not available on harddisk
- 					// => make it available (at new location)
- 					s->setTo(newSong);
- 					allSongsChanged(true);
- 					delete(newSong);
- 					return;
- 				}
- 				else {
+	// okay, new song (at least new filename/path) => construct song object
+	Song* newSong = new Song();
+	newSong->create(filename, mediaName, m_yammi->config( ).capitalizeTags);
+	if(newSong->corrupted)
+	{
+		kdError()<<"new song file " <<filename<< " is corrupt (not readable for yammi), skipping"<<endl;
+		corruptSongs++;
+		return;
+	}
+	// check whether other version of this song existing (with same primary key)
+	Song* s = allSongs.getSongByKey(newSong->artist, newSong->title, newSong->album);
+	if(s!=0)
+	{
+		// yes, song with this key already existing!
+		if(newSong->length==s->length && newSong->bitrate==s->bitrate && newSong->album==s->album)
+		{
+			// a) okay, we assume it is exactly the same song...
+			if(mediaName==0)
+			{
+				// case 1: scanning harddisk
+				if(s->filename=="")
+				{
+					// case 1a: song has no filename = was not available on harddisk
+					// => make it available (at new location)
+					s->setTo(newSong);
+					allSongsChanged(true);
+					delete(newSong);
+					return;
+				}
+				else
+				{
  					// case 1b: song has filename
  					QFileInfo fileInfo(s->location());
- 					if(!fileInfo.exists()) {
+ 					if(!fileInfo.exists())
+					{
  						// but still not available => probably has been moved
- 						cout << "looks like file " << newSong->filename << " has been moved from " << s->path << " to " << newSong->path << ", correcting path info\n";
+ 						kdWarning()<<"looks like file " <<newSong->filename<< " has been moved from " <<s->path<< " to " <<newSong->path<< ", correcting path info"<<endl;
  						s->setTo(newSong);
  						allSongsChanged(true);
  						delete(newSong);
  						return;
  					}
  					// song is available, we don't need two songs => skip
- 					cout << "file " << newSong->filename << " already available at " << s->location() << ", skipping\n";
+ 					kdWarning()<<"file "<<newSong->filename<<" already available at " << s->location() << ", skipping"<<endl;
  					delete(newSong);
  					return;
  				}
  			}
- 			else {
+ 			else
+			{
  				// case 2: scanning removable media => add media, if not already added
  				bool exists=false;
  				for(unsigned int i=0; i<s->mediaName.count(); i++) {
  					if(s->mediaName[i]==mediaName)
  						exists=true;
  				}
- 				if(!exists) {
- 					cout << "adding media " << mediaName << " to mediaList in song " << s->displayName() << "\n";
+ 				if(!exists)
+				{
+ 					kdDebug()<<"adding media "<<mediaName <<" to mediaList in song "<<s->displayName()<<endl;
  					QString locationOnMedia=filename;
- 					if(locationOnMedia.left(config.mediaDir.length())!=config.mediaDir)
- 						cout << "strange error, scanning media, but file not on media\n";
- 					locationOnMedia=locationOnMedia.right(locationOnMedia.length()-config.mediaDir.length());							
+ 					if(locationOnMedia.left(m_yammi->config( ).mediaDir.length())!=m_yammi->config( ).mediaDir)
+ 						kdError()<<"strange error, scanning media, but file not on media"<<endl;
+ 					locationOnMedia=locationOnMedia.right(locationOnMedia.length()-m_yammi->config( ).mediaDir.length());							
  					s->addMediaLocation(mediaName, locationOnMedia);
  					allSongsChanged(true);
  				}
- 				else {
- 					cout << "song " << s->location() << " is already known to be on this media\n";
+ 				else
+				{
+ 					kdDebug()<<"song " << s->location() << " is already known to be on this media"<<endl;
  				}
  				return;
  			}
  		}
- 		else {
+ 		else
+		{
  			// b) not exactly the same => add as new (change title to make it unique)
  			// here we do not have to distinguish between harddisk and media
- 			cout << "seems like new song <" << newSong->artist << " - " << newSong->title << "> already existing...\n";
- 			cout << "(Yammi does not allow two songs with the same artist/title/album identification)\n";
+ 			kdWarning()<< "seems like new song <" << newSong->artist << " - " << newSong->title << "> already existing..."<<endl
+ 				   << "(Yammi does not allow two songs with the same artist/title/album identification)"<<endl;
  			int tryNo=2;
  			QString extTitle;
- 			for(bool notUnique=true; notUnique; tryNo++) {
+ 			for(bool notUnique=true; notUnique; tryNo++)
+			{
  				extTitle=newSong->title+QString("(%1)").arg(tryNo);
  				notUnique=(allSongs.getSongByKey(s->artist, extTitle, s->album)!=0);
  			}
@@ -786,11 +830,10 @@ void YammiModel::addSongToDatabase(QString filename, QString mediaName=0)
 	}
 	// new song, not in database yet
 	allSongs.appendSong(newSong);
- 	cout << "Song added: " << newSong->displayName() << "\n";
+	kdDebug()<<"Song added: "<<newSong->displayName()<<endl;
 	entriesAdded++;
- 	allSongsChanged(true);
+	allSongsChanged(true);
 }
-			
 
 /**
  * Read an m3u file, returning a list of strings
@@ -818,23 +861,24 @@ QStringList* YammiModel::readM3uFile(QString filename) {
  * checks consistency of all songs
  * @returns true, if consistent, false, if problematic songs were found
  */
-bool YammiModel::checkConsistency(QProgressDialog* progress, MyList* selection, ConsistencyCheckParameter* p)
+bool YammiModel::checkConsistency(KProgressDialog* progress, MyList* selection, ConsistencyCheckParameter* p)
 {
-	if(config.childSafe) {
-    cout << "sorry, not allowed in child-safe mode...\n";
-		return true;
-  }
+	if(m_yammi->config( ).childSafe)
+	{
+		kdWarning()<<"checkConsistency : childSafe --> request denied"<<endl;
+		return false;
+	}
   
-	cout << "checking consistency of database... \n";
+	kdDebug()<<"checking consistency of database..."<<endl;
 	problematicSongs.clear();
 
 	// 1. iterate through all songs in database
   if(p->checkForExistence || p->checkTags || p->checkFilenames) {
       
-    progress->setLabelText("Step 1: checking all songs in database...");
-    progress->setTotalSteps(selection->count());
-    progress->setProgress(0);
-    qApp->processEvents();
+    progress->setLabel("Step 1: checking all songs in database...");
+    progress->progressBar()->setTotalSteps(selection->count());
+    progress->progressBar()->setProgress(0);
+    kapp->processEvents();
 	
     // TODO: move this to constructor of p?
     p->dirtyTags=0;
@@ -855,7 +899,7 @@ bool YammiModel::checkConsistency(QProgressDialog* progress, MyList* selection, 
     int i=0;
     for(Song* s=selection->firstSong(); s; s=selection->nextSong(), i++) {
       if(i%10==0) {
-        progress->setProgress(i);
+        progress->progressBar()->setProgress(i);
       }
       if(progress->wasCancelled())
         break;		
@@ -868,7 +912,7 @@ bool YammiModel::checkConsistency(QProgressDialog* progress, MyList* selection, 
 
       if(diagnosis=="file not readable" && p->checkForExistence) {
         p->nonExisting++;
-        cout << "file not existing or readable: " << s->displayName();
+        kdError()<< "file not existing or readable: " << s->displayName()<<endl;
         bool onMedia=s->mediaName.count()>0;
         if(p->updateNonExisting) {
           // if we update, there are two cases:
@@ -881,8 +925,8 @@ bool YammiModel::checkConsistency(QProgressDialog* progress, MyList* selection, 
           }
           else {
             // 2. delete entry in database
-            cout << "deleting entry " << s->displayName();
-            gYammiGui->forSong(s, Song::DeleteEntry);
+            kdWarning()<< "deleting entry " << s->displayName()<<endl;
+            m_yammi->forSong(s, Song::DeleteEntry);
             p->nonExistingDeleted++;
           }
         }
@@ -1046,10 +1090,10 @@ bool YammiModel::checkConsistency(QProgressDialog* progress, MyList* selection, 
   
 	// 2. check for songs contained twice
   if(!progress->wasCancelled() && p->checkDoubles) {
-    progress->setLabelText("Step 2: check for song entries pointing to same file");
-    progress->setTotalSteps(allSongs.count());
-    progress->setProgress(0);
-    qApp->processEvents();
+    progress->setLabel("Step 2: check for song entries pointing to same file");
+    progress->progressBar()->setTotalSteps(allSongs.count());
+    progress->progressBar()->setProgress(0);
+    kapp->processEvents();
 	
     allSongs.setSortOrderAndSort(MyList::ByFilename + 16*(MyList::ByPath));
     Song* last=allSongs.firstSong();
@@ -1057,7 +1101,7 @@ bool YammiModel::checkConsistency(QProgressDialog* progress, MyList* selection, 
     // TODO: perform this check also only on the selected songs?
     for(Song* s=allSongs.nextSong(); s; s=allSongs.nextSong(), i++) {
       if(i % 20==0)
-        progress->setProgress(i);
+        progress->progressBar()->setProgress(i);
       if(progress->wasCancelled())
         break;		
       if(s->artist=="{wish}")			// ignore wishes
@@ -1067,56 +1111,50 @@ bool YammiModel::checkConsistency(QProgressDialog* progress, MyList* selection, 
 		
       // check for songs contained twice in database (but pointing to same file+path)
       if(last->location()==s->location()) {
-        cout << "two database entries pointing to same file: " << s->filename << ", deleting one\n";
-        allSongs.remove();		// problem, coz we are iterating through this list???
+        kdWarning()<<"two database entries pointing to same file: " << s->filename << ", deleting one"<<endl;
+        allSongs.remove();// problem, coz we are iterating through this list???
         allSongsChanged(true);
         p->doublesFound++;
         continue;
       }
-		
       last=s;
     }
 
     // 3. check for two songs with identical primary key
-    progress->setLabelText("Step 3: check for two songs with identical primary keys");
-    progress->setTotalSteps(allSongs.count());
-    progress->setProgress(0);
-    qApp->processEvents();
+    progress->setLabel("Step 3: check for two songs with identical primary keys");
+    progress->progressBar()->setTotalSteps(allSongs.count());
+    progress->progressBar()->setProgress(0);
+    kapp->processEvents();
 	
     allSongs.setSortOrderAndSort(MyList::ByKey);
     last=allSongs.firstSong();
     i=0;
     for(Song* s=allSongs.nextSong(); s; s=allSongs.nextSong(), i++) {
       if(i % 20==0)
-        progress->setProgress(i);
+        progress->progressBar()->setProgress(i);
       if(progress->wasCancelled())
         break;		
       if(s->artist=="{wish}")
         continue;
 	
       if(s->sameAs(last)) {
-        cout << "!!!   song contained twice: " << s->filename << ", check in problematic songs!\n";
+        kdError()<<"!!!   song contained twice: " << s->filename << ", check in problematic songs!"<<endl;
         problematicSongs.append(new SongEntryString(last, "contained twice(1)"));
         problematicSongs.append(new SongEntryString(s, "contained twice(2)"));
         p->doublesFound++;
       }
     }
   }
-
-
-
   // reset sortOrder
 	allSongs.setSortOrderAndSort(MyList::ByKey);
 
-	if(progress->wasCancelled()) {
-		cout << "..consistency check aborted\n";
-  }
-  else {
-    cout << "..consistency checked\n";    
-  }
+	if(progress->wasCancelled())
+		kdDebug()<<"consistency check aborted"<<endl;
+	else
+		kdDebug()<<"consistency checked"<<endl;    
 
 	if(problematicSongs.count()==0) {
-		cout << "Your Yammi database is nice and clean!\n";
+		kdDebug()<< "Your Yammi database is nice and clean!"<<endl;
 		return true;
 	}
 	else {
@@ -1128,17 +1166,21 @@ bool YammiModel::checkConsistency(QProgressDialog* progress, MyList* selection, 
 
 void YammiModel::removeCategory(QString categoryName)
 {
+	kdDebug()<<"remove category: "<<categoryName<<endl;
 	QString name=categoryNames.first();
 	int i=0;
-	for(MyList* ptr=allCategories.first(); ptr; ptr=allCategories.next(), i++) {
+	for(MyList* ptr=allCategories.first(); ptr; ptr=allCategories.next(), i++) 
+	{
 		QString name=categoryNames[i];
-		if(name==categoryName) {
-			cout << "found, deleting..\n";
+		if(name==categoryName) 
+		{
+			kdDebug()<<"category found, deleting..."<<endl;
 			allCategories.remove();
 			categoryNames.remove(categoryNames.at(i));
-			QDir d("/");
-			QString todel=QString("%1/categories/%2.xml").arg(config.yammiBaseDir).arg(categoryName);
-			d.remove(todel);
+			QString file = KGlobal::dirs()->findResource("appdata","categories/"+name+".xml");
+			kdDebug()<<"file to delete:"<<file<<endl;
+			QDir d;
+			d.remove(file);
 			break;
 		}
 	}
@@ -1147,27 +1189,29 @@ void YammiModel::removeCategory(QString categoryName)
 void YammiModel::renameCategory(QString oldCategoryName, QString newCategoryName)
 {
 	int i=0;
-	for(MyList* ptr=allCategories.first(); ptr; ptr=allCategories.next(), i++) {
+	for(MyList* ptr=allCategories.first(); ptr; ptr=allCategories.next(), i++)
+	{
 		QString name=categoryNames[i];
-		if(name==oldCategoryName) {
-			cout << "found, renaming..\n";
+		if(name==oldCategoryName)
+		{
+			kdDebug()<<"renaming category.."<<endl;
 			categoryNames[i]=newCategoryName;
 			ptr->dirty=true;
 			categoriesChanged(true);
 			QDir dir;
-			if(!dir.rename(	config.yammiBaseDir+"/categories/"+oldCategoryName+".xml",
-									config.yammiBaseDir+"/categories/"+newCategoryName+".xml"))
-				cout << "could not rename category file\n";
+			QString path = KGlobal::dirs()->saveLocation("appdata","categories/",false);
+			if(!dir.rename(path+oldCategoryName+".xml", path+newCategoryName+".xml"))
+				kdError()<<"could not rename category file:"<<path<<oldCategoryName<<".xml"<<endl;
 			break;
 		}
 	}
 }
 
-void YammiModel::newCategory(QString categoryName)
+void YammiModel::newCategory(QString name)
 {
-	MyList* newList=new MyList;
+	MyList* newList = new MyList;
 	allCategories.append(newList);
-	categoryNames.append(categoryName);
+	categoryNames.append(name);
 	newList->dirty=true;
 	categoriesChanged(true);
 }
@@ -1192,16 +1236,16 @@ void YammiModel::saveAll()
  * saves changed information (categories + songDatabase)
  */
 void YammiModel::save()
-{
-	QApplication::setOverrideCursor( Qt::waitCursor );
+{kdDebug()<<"model save()"<<endl;
+	KApplication::setOverrideCursor( Qt::waitCursor );
 	// save dirty categories
 	saveCategories();
 	if(allSongsChanged())
 		saveSongDatabase();
-	if(allSongsChanged() || config.logging)
+	if(allSongsChanged() || m_yammi->config( ).logging)
 		saveHistory();
 
-	QApplication::restoreOverrideCursor();
+	KApplication::restoreOverrideCursor();
 }
 
 
@@ -1210,7 +1254,7 @@ void YammiModel::save()
  */
 void YammiModel::removeMedia(QString mediaToDelete)
 {
-	cout << "removing media: " << mediaToDelete << "\n";
+	kdDebug()<<"removing media: "<<mediaToDelete<<endl;
 	for(Song* s=allSongs.firstSong(); s; s=allSongs.nextSong()) {
 		QStringList::Iterator it2 = s->mediaLocation.begin();
 		for ( QStringList::Iterator it = s->mediaName.begin(); it != s->mediaName.end(); ++it ) {
@@ -1225,8 +1269,9 @@ void YammiModel::removeMedia(QString mediaToDelete)
 	}
 	// now delete the directory (if existing)
 	// linux specific
-  QString cmd=QString("rm -r \"%1/media/%2\"").arg(config.yammiBaseDir).arg(mediaToDelete);
-	system(cmd);
+	kdWarning()<<"Remove media disabled"<<endl;
+// 	QString cmd=QString("rm -r \"%1/media/%2\"").arg(m_yammi->config( ).yammiBaseDir).arg(mediaToDelete);
+// 	system(cmd);
 	allSongsChanged(true);
 }
 
@@ -1237,9 +1282,9 @@ void YammiModel::renameMedia(QString oldMediaName, QString newMediaName)
 	}
 	// now move the directory (if existing)
 	QDir dir;
-	if(!dir.rename(	config.yammiBaseDir+"/media/"+oldMediaName,
-									config.yammiBaseDir+"/media/"+newMediaName))
-		cout << "could not rename media dir!\n";
+	QString path = KGlobal::dirs()->saveLocation("appdata","media/",false);
+	if(!dir.rename(path+oldMediaName, path+newMediaName))
+		kdDebug()<<"could not rename media dir!:"<<path+oldMediaName<<endl;
 	allSongsChanged(true);
 }
 
@@ -1248,7 +1293,7 @@ void YammiModel::renameMedia(QString oldMediaName, QString newMediaName)
 void YammiModel::markPlaylists(Song* s)
 {	
 	// for all categories, check whether they contain the song, if yes => mark as dirty
-	for( QListViewItem* f=gYammiGui->folderCategories->firstChild(); f; f=f->nextSibling() ) {
+	for( QListViewItem* f=m_yammi->folderCategories->firstChild(); f; f=f->nextSibling() ) {
 		Folder* folder=(Folder*)f;
 		if(folder->songlist().containsSong(s))
 			folder->songlist().dirty=true;
@@ -1266,7 +1311,7 @@ Song* YammiModel::getSongFromFilename(QString filename)
 	QString path=filename.left(pos+1);
 	QString lookFor=filename.right(filename.length()-pos-1);
 
-	if(path==config.swapDir) {
+	if(path==m_yammi->config( ).swapDir) {
 		for(SongEntry* entry=allSongs.first(); entry; entry=allSongs.next()) {
 			if(entry->song()->filename=="" && entry->song()->constructFilename()==lookFor)
 				return entry->song();
@@ -1299,7 +1344,7 @@ QString YammiModel::checkAvailability(Song* s, bool touch)
 //		cout << "song " << s->displayName() << "has location given, but file does not exist or is not readable!\n";
 	}
 	// no location given, check whether already existing in swap dir
-	QString dir=config.swapDir;
+	QString dir=m_yammi->config( ).swapDir;
 	QString filename=s->constructFilename();
 	QFileInfo fi(dir+filename);
 	if(fi.exists() && fi.isReadable()) {
