@@ -8,7 +8,7 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>549</width>
+            <width>592</width>
             <height>502</height>
         </rect>
     </property>
@@ -962,8 +962,8 @@ set to 0 to disable</string>
                                 <property name="text">
                                     <string>You have to restart Yammi after changing the media player!
 
-Noatun support is still experimental!
-Please disable "Allow Only One Instance of Noatun" and
+
+You MUST disable "Allow Only One Instance of Noatun" and
 "Process Playlist Items for Display" in Noatun configuration!</string>
                                 </property>
                             </widget>

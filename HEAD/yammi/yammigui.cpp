@@ -61,7 +61,7 @@ using namespace std;
 #include "ConsistencyCheckDialog.h"
 #include "ApplyToAllBase.h"
 
-#include "mp3info/CMP3Info.h"
+#include "CMP3Info.h"
 #include "ConsistencyCheckParameter.h"
 
 // kde includes
@@ -71,7 +71,7 @@ using namespace std;
 
 extern YammiGui* gYammiGui;
 
-static char* columnName[13] = {"Artist", "Title", "Album", "Length", "Year", "TrackNr", "Genre", "AddedTo", "Bitrate", "Filename", "Path", "Comment", "Last Played"};
+static char* columnName[13] = {QT_TR_NOOP("Artist"), QT_TR_NOOP("Title"), QT_TR_NOOP("Album"), QT_TR_NOOP("Length"), QT_TR_NOOP("Year"), QT_TR_NOOP("TrackNr"), QT_TR_NOOP("Genre"), QT_TR_NOOP("AddedTo"), QT_TR_NOOP("Bitrate"), QT_TR_NOOP("Filename"), QT_TR_NOOP("Path"), QT_TR_NOOP("Comment"), QT_TR_NOOP("Last Played")};
 
 /**
  * Constructor, sets up the whole application.
@@ -134,22 +134,22 @@ YammiGui::YammiGui(QString baseDir)
 	
 	// file menu
 	QPopupMenu* fileMenu = new QPopupMenu;
-	fileMenu->insertItem( "Quit", this, SLOT(endProgram()), CTRL+Key_Q );
-	mainMenu->insertItem( "&File", fileMenu );
+	fileMenu->insertItem( tr("Quit"), this, SLOT(endProgram()), CTRL+Key_Q );
+	mainMenu->insertItem( tr("&File"), fileMenu );
   
 	// edit menu
 	QPopupMenu* editMenu = new QPopupMenu;
-	editMenu->insertItem( "Select all",  this, SLOT(selectAll()));
-	editMenu->insertItem( "Invert selection",  this, SLOT(invertSelection()));
-	mainMenu->insertItem( "&Edit", editMenu );
+	editMenu->insertItem( tr("Select all"),  this, SLOT(selectAll()));
+	editMenu->insertItem( tr("Invert selection"),  this, SLOT(invertSelection()));
+	mainMenu->insertItem( tr("&Edit"), editMenu );
 
   // toolbars submenu
 	toolbarsMenu = new QPopupMenu;
-	toolbarsMenu->insertItem( "Main Toolbar",  this, SLOT(toggleMainToolbar()), 0, 1);
-	toolbarsMenu->insertItem( "Media Player Toolbar",  this, SLOT(toggleMediaPlayerToolbar()), 0, 2);
-	toolbarsMenu->insertItem( "Song Actions Toolbar",  this, SLOT(toggleSongActionsToolbar()), 0, 3);
-	toolbarsMenu->insertItem( "Removable Media Toolbar",  this, SLOT(toggleRemovableMediaToolbar()), 0, 4);
-	toolbarsMenu->insertItem( "Sleep Mode Toolbar",  this, SLOT(toggleSleepModeToolbar()), 0, 5);
+	toolbarsMenu->insertItem( tr("Main Toolbar"),  this, SLOT(toggleMainToolbar()), 0, 1);
+	toolbarsMenu->insertItem( tr("Media Player Toolbar"),  this, SLOT(toggleMediaPlayerToolbar()), 0, 2);
+	toolbarsMenu->insertItem( tr("Song Actions Toolbar"),  this, SLOT(toggleSongActionsToolbar()), 0, 3);
+	toolbarsMenu->insertItem( tr("Removable Media Toolbar"),  this, SLOT(toggleRemovableMediaToolbar()), 0, 4);
+	toolbarsMenu->insertItem( tr("Sleep Mode Toolbar"),  this, SLOT(toggleSleepModeToolbar()), 0, 5);
   // columns submenu
   columnsMenu = new QPopupMenu;
   for(int column=0; column<13; column++) {
@@ -174,49 +174,49 @@ YammiGui::YammiGui(QString baseDir)
   
   // view menu
 	QPopupMenu* viewMenu = new QPopupMenu;
-	viewMenu->insertItem( "Update Automatic Folder Structure",  this, SLOT(updateView()));
-	viewMenu->insertItem( "Toolbars", toolbarsMenu );
-	viewMenu->insertItem( "Columns", columnsMenu );
-	mainMenu->insertItem( "&View", viewMenu );
+	viewMenu->insertItem( tr("Update Automatic Folder Structure"),  this, SLOT(updateView()));
+	viewMenu->insertItem( tr("Toolbars"), toolbarsMenu );
+	viewMenu->insertItem( tr("Columns"), columnsMenu );
+	mainMenu->insertItem( tr("&View"), viewMenu );
 
   // database menu
   QPopupMenu* databaseMenu = new QPopupMenu;
-  databaseMenu->insertItem( "Save Database...",  model, SLOT(save()));
-	databaseMenu->insertItem( "Scan Harddisk...",  this, SLOT(updateSongDatabaseHarddisk()));
-	databaseMenu->insertItem( "Scan Removable Media...",  this, SLOT(updateSongDatabaseMedia()));
-	databaseMenu->insertItem( "Check Consistency...",  this, SLOT(forAllCheckConsistency()));
-	databaseMenu->insertItem( "Grab And Encode CD-Track...",  this, SLOT(grabAndEncode()));
-	mainMenu->insertItem( "&Database", databaseMenu );
+  databaseMenu->insertItem( tr("Save Database..."),  model, SLOT(save()));
+	databaseMenu->insertItem( tr("Scan Harddisk..."),  this, SLOT(updateSongDatabaseHarddisk()));
+	databaseMenu->insertItem( tr("Scan Removable Media..."),  this, SLOT(updateSongDatabaseMedia()));
+	databaseMenu->insertItem( tr("Check Consistency..."),  this, SLOT(forAllCheckConsistency()));
+	databaseMenu->insertItem( tr("Grab And Encode CD-Track..."),  this, SLOT(grabAndEncode()));
+	mainMenu->insertItem( tr("&Database"), databaseMenu );
 		
   // settings menu
   QPopupMenu* settingsMenu = new QPopupMenu;
-  settingsMenu->insertItem( "Configure Yammi...",  this, SLOT(setPreferences()));
-	mainMenu->insertItem( "&Settings", settingsMenu );
+  settingsMenu->insertItem( tr("Configure Yammi..."),  this, SLOT(setPreferences()));
+	mainMenu->insertItem( tr("&Settings"), settingsMenu );
 
   // playlist menu
   QPopupMenu* playlistMenu = new QPopupMenu;
-  playlistMenu->insertItem( "Switch to/from Playlist...",  this, SLOT(toFromPlaylist()));
-  playlistMenu->insertItem( "Clear Playlist...",  this, SLOT(clearPlaylist()));
-  playlistMenu->insertItem( "Shuffle Playlist...",  this, SLOT(shufflePlaylist()));
-	mainMenu->insertItem( "&Playlist", playlistMenu );
+  playlistMenu->insertItem( tr("Switch to/from Playlist..."),  this, SLOT(toFromPlaylist()));
+  playlistMenu->insertItem( tr("Clear Playlist..."),  this, SLOT(clearPlaylist()));
+  playlistMenu->insertItem( tr("Shuffle Playlist..."),  this, SLOT(shufflePlaylist()));
+	mainMenu->insertItem( tr("&Playlist"), playlistMenu );
 
   // autoplay menu
   autoplayMenu = new QPopupMenu;
-  autoplayMenu->insertItem( "Off",  this, SLOT(autoplayChanged(int)), 0, AUTOPLAY_OFF);
-	autoplayMenu->insertItem( "Longest Not Played",  this, SLOT(autoplayChanged(int)), 0, AUTOPLAY_LNP);
-	autoplayMenu->insertItem( "Random",  this, SLOT(autoplayChanged(int)), 0, AUTOPLAY_RANDOM);
+  autoplayMenu->insertItem( tr("Off"),  this, SLOT(autoplayChanged(int)), 0, AUTOPLAY_OFF);
+	autoplayMenu->insertItem( tr("Longest Not Played"),  this, SLOT(autoplayChanged(int)), 0, AUTOPLAY_LNP);
+	autoplayMenu->insertItem( tr("Random"),  this, SLOT(autoplayChanged(int)), 0, AUTOPLAY_RANDOM);
   autoplayMenu->insertSeparator();
   autoplayMenu->insertItem( "", AUTOPLAY_FOLDER);
   autoplayMode=AUTOPLAY_OFF;
   autoplayMenu->setItemChecked(autoplayMode, true);
 
-  mainMenu->insertItem( "&Autoplay", autoplayMenu );
+  mainMenu->insertItem( tr("&Autoplay"), autoplayMenu );
   
   // help menu
 	QPopupMenu* helpMenu = new QPopupMenu;
-	helpMenu->insertItem( "&Handbook...",  this, SLOT(openHelp()));
-	helpMenu->insertItem( "&About...", this, SLOT(aboutDialog()));
-	mainMenu->insertItem( "&Help", helpMenu );
+	helpMenu->insertItem( tr("&Handbook..."),  this, SLOT(openHelp()));
+	helpMenu->insertItem( tr("&About..."), this, SLOT(aboutDialog()));
+	mainMenu->insertItem( tr("&Help"), helpMenu );
 	
 
 
@@ -225,14 +225,14 @@ YammiGui::YammiGui(QString baseDir)
 	
   // mediaPlayer toolbar
   mediaPlayerToolBar = new QToolBar (this, "mediaPlayerToolbar");
-  mediaPlayerToolBar->setLabel( "Media Player Controls" );
-  tbPlayPause = new QToolButton( QPixmap((const char**)pause_xpm), "Play/Pause (F1)", QString::null,
+  mediaPlayerToolBar->setLabel( tr("Media Player Controls") );
+  tbPlayPause = new QToolButton( QPixmap((const char**)pause_xpm), tr("Play/Pause (F1)"), QString::null,
                            player, SLOT(playPause()), mediaPlayerToolBar);
-  tbStop = new QToolButton( QPixmap((const char**)stop_xpm), "Stop", QString::null,
+  tbStop = new QToolButton( QPixmap((const char**)stop_xpm), tr("Stop"), QString::null,
                            player, SLOT(stop()), mediaPlayerToolBar);
-  tbSkipBackward = new QToolButton( QPixmap((const char**)skipbackward_xpm), "Skip backward (F2 / SHIFT-F2)", QString::null,
+  tbSkipBackward = new QToolButton( QPixmap((const char**)skipbackward_xpm), tr("Skip backward (F2 / SHIFT-F2)"), QString::null,
  														this, SLOT(skipBackward()), mediaPlayerToolBar);
-  tbSkipForward = new QToolButton( QPixmap((const char**)skipforward_xpm), "Skip forward (F3 / SHIFT-F3)", QString::null,
+  tbSkipForward = new QToolButton( QPixmap((const char**)skipforward_xpm), tr("Skip forward (F3 / SHIFT-F3)"), QString::null,
                            this, SLOT(skipForward()), mediaPlayerToolBar);
   songSlider = new QSlider( QSlider::Horizontal, mediaPlayerToolBar, "songLength" );
   songSlider->setTickmarks(QSlider::Below);
@@ -253,69 +253,69 @@ YammiGui::YammiGui(QString baseDir)
 		
 	// main toolbar
 	mainToolBar = new QToolBar ( this, "mainToolBar");
-  mainToolBar->setLabel( "Main Toolbar" );
+  mainToolBar->setLabel( tr("Main Toolbar") );
 	QLabel *searchLabel = new QLabel(mainToolBar);
-	searchLabel->setText( "Search:" );
+	searchLabel->setText( tr("Search:") );
 	searchLabel->setFrameStyle( QFrame::NoFrame );
 	searchField = new LineEditShift ( mainToolBar );
 	connect( searchField, SIGNAL(textChanged(const QString&)), SLOT(userTyped(const QString&)) );
 	searchField->setFocus();
 	searchField->setFixedWidth(175);
-	QToolTip::add( searchField, "Fuzzy search (Ctrl-F)");
-	QPushButton* addToWishListButton=new QPushButton("to wishlist", mainToolBar);
-	QToolTip::add( addToWishListButton, "Add this entry to the database as a \"wish\"");
+	QToolTip::add( searchField, tr("Fuzzy search (Ctrl-F)"));
+	QPushButton* addToWishListButton=new QPushButton(tr("to wishlist"), mainToolBar);
+	QToolTip::add( addToWishListButton, tr("Add this entry to the database as a \"wish\""));
 	
 	// song actions	toolbar
 	songActionsToolBar = new QToolBar ( this, "songActionsToolBar");
-  songActionsToolBar->setLabel( "Song Actions" );
+  songActionsToolBar->setLabel( tr("Song Actions") );
 
 	// now all the buttons that correspond to context menu entries
-  new QToolButton (QPixmap(enqueue_xpm), "Enqueue at end (F5, SHIFT-F5 for random order)", QString::null,
+  new QToolButton (QPixmap(enqueue_xpm), tr("Enqueue at end (F5, SHIFT-F5 for random order)"), QString::null,
                            this, SLOT(forAllSelectedEnqueue()), songActionsToolBar);
-	new QToolButton (QPixmap(enqueueasnext_xpm), "Enqueue as next (F6, SHIFT-F6 for random order)", QString::null,
+	new QToolButton (QPixmap(enqueueasnext_xpm), tr("Enqueue as next (F6, SHIFT-F6 for random order)"), QString::null,
                            this, SLOT(forAllSelectedEnqueueAsNext()), songActionsToolBar);
-	new QToolButton (QPixmap(playnow_xpm), "Play now (F7 / SHIFT-F7)", QString::null,
+	new QToolButton (QPixmap(playnow_xpm), tr("Play now (F7 / SHIFT-F7)"), QString::null,
                            this, SLOT(forAllSelectedPlayNow()), songActionsToolBar);
-	new QToolButton (QPixmap(dequeueSong_xpm), "Dequeue Song (F8)", QString::null,
+	new QToolButton (QPixmap(dequeueSong_xpm), tr("Dequeue Song (F8)"), QString::null,
                            this, SLOT(forAllSelectedDequeue()), songActionsToolBar);
-	new QToolButton (QPixmap(dequeueAll_xpm), "Clear playlist (SHIFT-F8)", QString::null,
+	new QToolButton (QPixmap(dequeueAll_xpm), tr("Clear playlist (SHIFT-F8)"), QString::null,
                            this, SLOT(clearPlaylist()), songActionsToolBar);
-	new QToolButton (QPixmap(prelisten_xpm), "Prelisten (start) (F9)", QString::null,
+	new QToolButton (QPixmap(prelisten_xpm), tr("Prelisten (start) (F9)"), QString::null,
                            this, SLOT(forAllSelectedPrelistenStart()), songActionsToolBar);
-	new QToolButton (QPixmap(prelisten_xpm), "Prelisten (middle) (F10)", QString::null,
+	new QToolButton (QPixmap(prelisten_xpm), tr("Prelisten (middle) (F10)"), QString::null,
                            this, SLOT(forAllSelectedPrelistenMiddle()), songActionsToolBar);
-	new QToolButton (QPixmap(prelisten_xpm), "Prelisten (end) (F11)", QString::null,
+	new QToolButton (QPixmap(prelisten_xpm), tr("Prelisten (end) (F11)"), QString::null,
                            this, SLOT(forAllSelectedPrelistenEnd()), songActionsToolBar);
-	new QToolButton (QPixmap(stopPrelisten_xpm), "Stop prelisten (F12)", QString::null,
+	new QToolButton (QPixmap(stopPrelisten_xpm), tr("Stop prelisten (F12)"), QString::null,
                            this, SLOT(stopPrelisten()), songActionsToolBar);
-	new QToolButton (QPixmap(songinfo_xpm), "Info...", QString::null,
+	new QToolButton (QPixmap(songinfo_xpm), tr("Info..."), QString::null,
                            this, SLOT(forAllSelectedSongInfo()), songActionsToolBar);
-	new QToolButton (QPixmap(toFromPlaylist_xpm), "Switch to/from Playlist (CTRL-P)", QString::null,
+	new QToolButton (QPixmap(toFromPlaylist_xpm), tr("Switch to/from Playlist (CTRL-P)"), QString::null,
                            this, SLOT(toFromPlaylist()), songActionsToolBar);
 
 	// removable media management
 	removableMediaToolBar = new QToolBar ( this, "removableMediaToolBar");
-  removableMediaToolBar->setLabel( "Jukebox Functions" );
+  removableMediaToolBar->setLabel( tr("Jukebox Functions") );
 	QLabel *neededMediaLabel = new QLabel(removableMediaToolBar);
-	neededMediaLabel->setText( "Needed media:" );
+	neededMediaLabel->setText( tr("Needed media:") );
 	mediaListCombo = new QComboBox( FALSE, removableMediaToolBar, "mediaList Combo" );
 	mediaListCombo->setFixedWidth(150);
-	loadFromMediaButton=new QPushButton("load", removableMediaToolBar);
+	loadFromMediaButton=new QPushButton(tr("load"), removableMediaToolBar);
 	
 	// Sleep mode
 	sleepModeToolBar = new QToolBar ( this, "sleepModeToolBar");
-  sleepModeToolBar->setLabel( "Sleep Mode" );
+  sleepModeToolBar->setLabel( tr("Sleep Mode") );
 	songsUntilShutdown=-3;
 	sleepModeLabel = new QLabel(sleepModeToolBar);
-	sleepModeLabel->setText( "Sleep mode:" );
+	sleepModeLabel->setText( tr("Sleep mode:") );
 	sleepModeLabel->setFrameStyle( QFrame::NoFrame );
-	sleepModeButton=new QPushButton("(disabled)", sleepModeToolBar);
+	sleepModeButton=new QPushButton(tr("(disabled)"), sleepModeToolBar);
 	connect( sleepModeButton, SIGNAL( clicked() ), this, SLOT( changeSleepMode() ) );
-	QToolTip::add( sleepModeButton, "change sleep mode");
+	QToolTip::add( sleepModeButton, tr("change sleep mode"));
 	sleepModeSpinBox=new QSpinBox(1, 99, 1, sleepModeToolBar);
 	sleepModeSpinBox->setValue(songsUntilShutdown);
 	sleepModeSpinBox->setEnabled(false);
-	QToolTip::add( sleepModeSpinBox, "number songs until shutdown");
+	QToolTip::add( sleepModeSpinBox, tr("number songs until shutdown"));
   connect( sleepModeSpinBox, SIGNAL( valueChanged(int) ), this, SLOT( changeShutdownValue(int) ) );
 
 
@@ -329,7 +329,7 @@ YammiGui::YammiGui(QString baseDir)
   // set up the quick browser on the left
 	folderListView = new QListView( centralWidget );
 	folderListView->header()->setClickEnabled( FALSE );
-	folderListView->addColumn( "Quick Browser" );
+	folderListView->addColumn( tr("Quick Browser") );
 	folderListView->setRootIsDecorated( TRUE );
 	folderListView->setSorting(-1);
 	centralWidget->setResizeMode( folderListView, QSplitter::KeepSize );
@@ -352,45 +352,45 @@ YammiGui::YammiGui(QString baseDir)
 	cout << "setting up folders...\n";
 	
 	// folder containing all music
-	folderAll=new Folder( folderListView, QString("All Music"), &(model->allSongs));
+	folderAll=new Folder( folderListView, QString(tr("All Music")), &(model->allSongs));
 	
 	// folder containing all artists with more than <n> songs	
-	folderArtists = new FolderGroups( folderListView, QString( "Artists" ));
+	folderArtists = new FolderGroups( folderListView, QString( tr("Artists") ));
 	folderArtists->moveItem(folderAll);
 	folderArtists->update(&(model->allSongs), MyList::ByArtist);
 	
 	// folder containing all albums with more than <n> songs	
-	folderAlbums = new FolderGroups( folderListView, QString( "Albums" ));
+	folderAlbums = new FolderGroups( folderListView, QString( tr("Albums") ));
 	folderAlbums->moveItem(folderArtists);
 	folderAlbums->update(&(model->allSongs), MyList::ByAlbum);
 
 	// folder containing all genres with more than <n> songs	
-	folderGenres = new FolderGroups( folderListView, QString( "Genre" ));
+	folderGenres = new FolderGroups( folderListView, QString( tr("Genre") ));
 	folderGenres->moveItem(folderAlbums);
 	folderGenres->update(&(model->allSongs), MyList::ByGenre);
 
 	// folder containing all categories
-	folderCategories = new FolderCategories( folderListView, QString("Categories"));
+	folderCategories = new FolderCategories( folderListView, QString(tr("Categories")));
 	folderCategories->moveItem(folderGenres);
 	folderCategories->update(model->allCategories, model->categoryNames);
 	updateSongPopup();
 	
 	// folder containing media
-	folderMedia = new FolderMedia( folderListView, QString("Media"));
+	folderMedia = new FolderMedia( folderListView, QString(tr("Media")));
 	folderMedia->moveItem(folderCategories);
 	folderMedia->update(&(model->allSongs));
 
 	// folder containing currently played song
-	folderActual = new FolderSorted(folderListView, QString("Playlist"));
+	folderActual = new FolderSorted(folderListView, QString(tr("Playlist")));
 //	folderActual->moveItem(folderAll);
 	folderActual->update(&(model->songsToPlay));
 
 	// folder containing songs played in this session
-	folderSongsPlayed = new Folder(folderListView, QString("Songs Played"), &(model->songsPlayed));
+	folderSongsPlayed = new Folder(folderListView, QString(tr("Songs Played")), &(model->songsPlayed));
 	folderSongsPlayed->moveItem(folderCategories);
 
 	// folder containing history
-	folderHistory = new Folder(folderListView, QString("History"), &(model->songHistory));
+	folderHistory = new Folder(folderListView, QString(tr("History")), &(model->songHistory));
 	folderHistory->moveItem(folderSongsPlayed);
 
 	// folder containing unclassified songs
@@ -398,13 +398,13 @@ YammiGui::YammiGui(QString baseDir)
 		if(!entry->song()->classified)
 			model->unclassifiedSongs.append(entry);
 	}
-	folderUnclassified = new Folder(folderListView, QString("Unclassified"), &(model->unclassifiedSongs));
+	folderUnclassified = new Folder(folderListView, QString(tr("Unclassified")), &(model->unclassifiedSongs));
 	folderUnclassified->moveItem(folderMedia);
 		
-	folderSearchResults = new Folder( folderListView, QString("Search Results"), &searchResults );
+	folderSearchResults = new Folder( folderListView, QString(tr("Search Results")), &searchResults );
 	folderSearchResults->moveItem(folderActual);
 	
-	folderProblematic = new Folder( folderListView, QString("Problematic Songs") );
+	folderProblematic = new Folder( folderListView, QString(tr("Problematic Songs")) );
 	folderProblematic->moveItem(folderUnclassified);
 	cout << "..done\n";
 
@@ -485,24 +485,24 @@ YammiGui::YammiGui(QString baseDir)
 void YammiGui::finishInitialization()
 {
   // restore session settings
-  mainStatusBar->message("Welcome to Yammi "+model->config.yammiVersion, 10000);
+  mainStatusBar->message(tr("Welcome to Yammi ")+model->config.yammiVersion, 10000);
   changeToFolder(chosenFolder, true);
 	songListView->setSelected( songListView->firstChild(), TRUE );
 	songListView->setCurrentItem( songListView->firstChild() );
 	updateSongPopup();
   
 	if(model->noPrefsFound && model->noDatabaseFound) {
-		QMessageBox::information( this, "Yammi",	QString("Yammi - Yet Another Music Manager I...\n\n\n")+
-																					"It looks like you are starting Yammi the first time...\n\n"+
-                                          "   Welcome to convenient song lookups and organization!\n\n"+
-																					"Please edit the settings (Settings -> Configure Yammi...)\n"+
-																					"to adjust your personal configuration and options"+
-                                          "(especially the path to your media files).\n"+
-																					"Then perform a database update (Database -> Scan Harddisk...)\n"+
-																					"to scan your harddisk for media files.\n\n"+
-																					"Have fun using Yammi...\n\n"+
-																					"Check out Yammi's website for new versions and other info:\n"+
-																					"http://yammi.sourceforge.net");
+		QMessageBox::information( this, tr("Yammi"),	QString(tr("Yammi - Yet Another Music Manager I...\n\n\n"))+
+																					tr("It looks like you are starting Yammi the first time...\n\n")+
+                                          tr("   Welcome to convenient song lookups and organization!\n\n")+
+																					tr("Please edit the settings (Settings -> Configure Yammi...)\n")+
+																					tr("to adjust your personal configuration and options")+
+                                          tr("(especially the path to your media files).\n")+
+																					tr("Then perform a database update (Database -> Scan Harddisk...)\n")+
+																					tr("to scan your harddisk for media files.\n\n")+
+																					tr("Have fun using Yammi...\n\n")+
+																					tr("Check out Yammi's website for new versions and other info:\n")+
+																					tr("http://yammi.sourceforge.net"));
 	}
 
   // finish!
@@ -522,10 +522,10 @@ YammiGui::~YammiGui()
 {
 	cout << "trying to exit gracefully...\n";
 	if(model->allSongsChanged() || model->categoriesChanged()) {
-		QString msg="Save changes?\n\n";
-		msg+="If you don't save, all changes will be lost\n";
-		msg+="and the database might become inconsistent...\n";
-		if(QMessageBox::warning( this, "Yammi", msg, "Yes", "No")==0) {
+		QString msg=tr("Save changes?\n\n");
+		msg+=tr("If you don't save, all changes will be lost\n");
+		msg+=tr("and the database might become inconsistent...\n");
+		if(QMessageBox::warning( this, tr("Yammi"), msg, tr("Yes"), tr("No"))==0) {
 			model->save();
     }
 	}
@@ -607,7 +607,7 @@ void YammiGui::handleNewSong(Song* newSong)
 {
   currentSong=newSong;
   if(newSong==0) {
-    setCaption("Yammi - not playing");
+    setCaption(tr("Yammi - not playing"));
     currentFile="";
     songSlider->setValue(0);
     songSlider->setRange(0, 0);
@@ -729,14 +729,14 @@ void YammiGui::readSettings()
   }
 
   // chosen folder
-  chosenFolder=getFolderByName(settings.readEntry("/Yammi/folder/current", "All Music"));
+  chosenFolder=getFolderByName(settings.readEntry("/Yammi/folder/current", tr("All Music")));
   if(chosenFolder==0) {
     chosenFolder=folderAll;
   }  
 
   // autoplay folder
-  autoplayFoldername=settings.readEntry("/Yammi/folder/autoplay", "All Music");
-  autoplayMenu->changeItem(AUTOPLAY_FOLDER, "Folder: "+autoplayFoldername);
+  autoplayFoldername=settings.readEntry("/Yammi/folder/autoplay", tr("All Music"));
+  autoplayMenu->changeItem(AUTOPLAY_FOLDER, tr("Folder: ")+autoplayFoldername);
 
   // toolbars
   if(settings.readBoolEntry("/Yammi/toolbars/mainToolBar", true)) {
@@ -849,6 +849,24 @@ bool YammiGui::columnIsVisible(int column)
   return columnVisible[column];
 }
 
+
+int YammiGui::mapToRealColumn(int column)
+{
+  return realColumnMap[column];
+}
+
+void YammiGui::mapVisibleColumnsToOriginals()
+{
+  int visibleColumn=0;
+  for(int realColumn=0; realColumn<MAX_COLUMN_NO; realColumn++) {
+    if(columnVisible[realColumn]) {
+      realColumnMap[visibleColumn]=realColumn;
+      visibleColumn++;
+    }
+  }
+}
+
+
 /** Updates listview columns.
  * Tries to maintain the size and position of columns (as good as possible, as columns are changing)
  */
@@ -861,23 +879,23 @@ void YammiGui::updateListViewColumns()
   int current=0;
 
   if(chosenFolder==folderActual) {
-		songListView->addColumn( "Pos", 35);
+		songListView->addColumn( tr("Pos"), 35);
     current++;
   }
 	if(chosenFolder==folderHistory || chosenFolder==folderSongsPlayed) {
-		songListView->addColumn( "Played on", 135);
+		songListView->addColumn( tr("Played on"), 135);
     current++;
   }
 	if(chosenFolder==folderSearchResults) {
-		songListView->addColumn( "Match", 45);
+		songListView->addColumn( tr("Match"), 45);
     current++;
   }
 	if(chosenFolder==folderProblematic) {
-		songListView->addColumn( "Reason", 120);
+		songListView->addColumn( tr("Reason"), 120);
     current++;
   }
 	if(((QListViewItem*)chosenFolder)->parent()==folderCategories) {
-		songListView->addColumn( "Pos", 35);
+		songListView->addColumn( tr("Pos"), 35);
     current++;
   }
 		
@@ -1011,59 +1029,59 @@ void YammiGui::updateSongPopup()
 {
 	// submenu containing all categories
 	playListPopup = new QPopupMenu();
-	playListPopup->insertItem(QIconSet( QPixmap(newCategory_xpm)), "New Category...", this, SLOT(toCategory(int)), 0, 9999);
+	playListPopup->insertItem(QIconSet( QPixmap(newCategory_xpm)), tr("New Category..."), this, SLOT(toCategory(int)), 0, 9999);
 	for(unsigned int i=0; i<model->categoryNames.count(); i++) {
 		playListPopup->insertItem(QIconSet( QPixmap(in_xpm)), model->categoryNames[i], this, SLOT(toCategory(int)), 0, 10000+i);
 	}
 		
 	// define popup menu for songs
 	songPopup = new QPopupMenu( songListView );
-	songPopup->insertItem( "Song Name", 113 );
+	songPopup->insertItem( tr("Song Name"), 113 );
 	songPopup->insertSeparator();
 	
 	songPlayPopup = new QPopupMenu(songPopup);
 	
-	songPlayPopup->insertItem(getPopupIcon(Enqueue), "...Enqueue", this, SLOT(forSelection(int)), 0, Enqueue);
-	songPlayPopup->insertItem(getPopupIcon(EnqueueRandom), "...Enqueue (random)", this, SLOT(forSelection(int)), 0, EnqueueRandom);
-	songPlayPopup->insertItem(getPopupIcon(EnqueueAsNext), "...Enqueue as next", this, SLOT(forSelection(int)), 0, EnqueueAsNext);
-	songPlayPopup->insertItem(getPopupIcon(EnqueueAsNextRandom), "...Enqueue as next (random)", this, SLOT(forSelection(int)), 0, EnqueueAsNextRandom);
-	songPlayPopup->insertItem(getPopupIcon(PlayNow), "...Play now!", this, SLOT(forSelection(int)), 0, PlayNow);
-	songPlayPopup->insertItem(getPopupIcon(Dequeue), "...Dequeue", this, SLOT(forSelection(int)), 0, Dequeue);
-	songPopup->insertItem( "Play/Enqueue...", songPlayPopup);
+	songPlayPopup->insertItem(getPopupIcon(Enqueue), tr("...Enqueue"), this, SLOT(forSelection(int)), 0, Enqueue);
+	songPlayPopup->insertItem(getPopupIcon(EnqueueRandom), tr("...Enqueue (random)"), this, SLOT(forSelection(int)), 0, EnqueueRandom);
+	songPlayPopup->insertItem(getPopupIcon(EnqueueAsNext), tr("...Enqueue as next"), this, SLOT(forSelection(int)), 0, EnqueueAsNext);
+	songPlayPopup->insertItem(getPopupIcon(EnqueueAsNextRandom), tr("...Enqueue as next (random)"), this, SLOT(forSelection(int)), 0, EnqueueAsNextRandom);
+	songPlayPopup->insertItem(getPopupIcon(PlayNow), tr("...Play now!"), this, SLOT(forSelection(int)), 0, PlayNow);
+	songPlayPopup->insertItem(getPopupIcon(Dequeue), tr("...Dequeue"), this, SLOT(forSelection(int)), 0, Dequeue);
+	songPopup->insertItem( tr("Play/Enqueue..."), songPlayPopup);
 	
 	if(model->config.secondSoundDevice!="") {
 		songPrelistenPopup = new QPopupMenu(songPopup);
-		songPrelistenPopup->insertItem(getPopupIcon(PrelistenStart), "...start", this, SLOT(forSelection(int)), 0, PrelistenStart);
-		songPrelistenPopup->insertItem(getPopupIcon(PrelistenMiddle), "...middle", this, SLOT(forSelection(int)), 0, PrelistenMiddle);
-		songPrelistenPopup->insertItem(getPopupIcon(PrelistenEnd), "...end", this, SLOT(forSelection(int)), 0, PrelistenEnd);
-		songPopup->insertItem( "Prelisten to...", songPrelistenPopup);
+		songPrelistenPopup->insertItem(getPopupIcon(PrelistenStart), tr("...start"), this, SLOT(forSelection(int)), 0, PrelistenStart);
+		songPrelistenPopup->insertItem(getPopupIcon(PrelistenMiddle), tr("...middle"), this, SLOT(forSelection(int)), 0, PrelistenMiddle);
+		songPrelistenPopup->insertItem(getPopupIcon(PrelistenEnd), tr("...end"), this, SLOT(forSelection(int)), 0, PrelistenEnd);
+		songPopup->insertItem( tr("Prelisten to..."), songPrelistenPopup);
 	}
-	songPopup->insertItem(getPopupIcon(SongInfo), "Info...", this, SLOT(forSelection(int)), 0, SongInfo);
-	songPopup->insertItem( "Insert Into/Remove From...", playListPopup);
+	songPopup->insertItem(getPopupIcon(SongInfo), tr("Info..."), this, SLOT(forSelection(int)), 0, SongInfo);
+	songPopup->insertItem( tr("Insert Into/Remove From..."), playListPopup);
 
 	songSearchPopup = new QPopupMenu(songPopup);
-	songSearchPopup->insertItem( "Entry", this, SLOT(searchSimilar(int)), 0, 1000);
-	songSearchPopup->insertItem( "Artist", this, SLOT(searchSimilar(int)), 0, 1001);
-	songSearchPopup->insertItem( "Title", this, SLOT(searchSimilar(int)), 0, 1002);
-	songSearchPopup->insertItem( "Album", this, SLOT(searchSimilar(int)), 0, 1003);
-	songPopup->insertItem( "Search for similar...", songSearchPopup);
+	songSearchPopup->insertItem( tr("Entry"), this, SLOT(searchSimilar(int)), 0, 1000);
+	songSearchPopup->insertItem( tr("Artist"), this, SLOT(searchSimilar(int)), 0, 1001);
+	songSearchPopup->insertItem( tr("Title"), this, SLOT(searchSimilar(int)), 0, 1002);
+	songSearchPopup->insertItem( tr("Album"), this, SLOT(searchSimilar(int)), 0, 1003);
+	songPopup->insertItem( tr("Search for similar..."), songSearchPopup);
 	
 	if(model->config.childSafe)
 		return;
 	
 	songAdvancedPopup = new QPopupMenu(songPopup);
-	songAdvancedPopup->insertItem(getPopupIcon(Delete), "Delete...", this, SLOT(forSelection(int)), 0, Delete);
-	songAdvancedPopup->insertItem(getPopupIcon(MoveTo), "Move file to...", this, SLOT(forSelection(int)), 0, MoveTo);
-	songAdvancedPopup->insertItem(getPopupIcon(CheckConsistency), "Check Consistency", this, SLOT(forSelection(int)), 0, CheckConsistency);
-	songAdvancedPopup->insertItem(getPopupIcon(BurnToMedia), "Burn to Media...", this, SLOT(forSelection(int)), 0, BurnToMedia);
-	songPopup->insertItem( "Advanced...", songAdvancedPopup);
+	songAdvancedPopup->insertItem(getPopupIcon(Delete), tr("Delete..."), this, SLOT(forSelection(int)), 0, Delete);
+	songAdvancedPopup->insertItem(getPopupIcon(MoveTo), tr("Move file to..."), this, SLOT(forSelection(int)), 0, MoveTo);
+	songAdvancedPopup->insertItem(getPopupIcon(CheckConsistency), tr("Check Consistency"), this, SLOT(forSelection(int)), 0, CheckConsistency);
+	songAdvancedPopup->insertItem(getPopupIcon(BurnToMedia), tr("Burn to Media..."), this, SLOT(forSelection(int)), 0, BurnToMedia);
+	songPopup->insertItem( tr("Advanced..."), songAdvancedPopup);
 	
 	
 	pluginPopup = new QPopupMenu(songPopup);
 	for(unsigned int i=0; i<model->config.pluginMenuEntry.count(); i++) {
 		pluginPopup->insertItem( model->config.pluginMenuEntry[i], this, SLOT(forSelectionPlugin(int)), 0, 2000+i);
 	}
-	songPopup->insertItem( "Plugins...", pluginPopup);
+	songPopup->insertItem( tr("Plugins..."), pluginPopup);
 }
 
 
@@ -1170,7 +1188,7 @@ void YammiGui::decide(Song* s1, Song* s2)
 		def=2;
 	}
 				
-	int what=QMessageBox::critical( this, "Two identical songs", str1+"\n"+str2+"\n", "Keep both", "Keep s1", "Keep s2", def);
+	int what=QMessageBox::critical( this, tr("Two identical songs"), str1+"\n"+str2+"\n", tr("Keep both"), tr("Keep s1"), tr("Keep s2"), def);
 	if(what==0) {				// keep both => do nothing
 	}
 	if(what==1) {				// okay, delete s2
@@ -1434,7 +1452,7 @@ void YammiGui::adjustSongPopup()
 	QString label;
 	Song* first=selectedSongs.firstSong();
 	if (selected>1) 							// more than one song selected
-		label=QString("%1 songs selected").arg(selected);
+		label=QString(tr("%1 songs selected")).arg(selected);
 	else
 		label=first->displayName();
 	songPopup->changeItem ( 113, label);
@@ -1508,20 +1526,20 @@ void YammiGui::forSelectionPlugin(int pluginIndex)
   QString cmd=model->config.pluginCommand[pluginIndex];
 
   if(cmd.contains("%X")>0) {
-    QString dir=QFileDialog::getExistingDirectory(QString(""), this, QString("yammi"), QString("choose directory for plugin"), true);
+    QString dir=QFileDialog::getExistingDirectory(QString(""), this, QString("yammi"), QString(tr("choose directory for plugin")), true);
     if(dir.isNull())
       return;
     cmd.replace(QRegExp("%X"), dir);
   }
   if(cmd.contains("%Y")>0) {
-    QString file=QFileDialog::getSaveFileName(QString(""), 0, this, QString("yammi"), QString("choose file for plugin"));
+    QString file=QFileDialog::getSaveFileName(QString(""), 0, this, QString("yammi"), QString(tr("choose file for plugin")));
     if(file.isNull())
       return;
     cmd.replace(QRegExp("%Y"), file);
   }
   if(cmd.contains("%Z")>0) {
     bool ok;
-    QString inputString=QString(QInputDialog::getText( "Get input parameter", "Type in argument for plugin:", QLineEdit::Normal, QString(""), &ok, this ));
+    QString inputString=QString(QInputDialog::getText( tr("Get input parameter"), tr("Type in argument for plugin:"), QLineEdit::Normal, QString(""), &ok, this ));
     if(!ok) {
       return;
     }
@@ -1530,7 +1548,7 @@ void YammiGui::forSelectionPlugin(int pluginIndex)
 
 
   if(mode=="single") {
-    QProgressDialog progress( "Executing song plugin cmd...", "Cancel", 100, this, "progress", TRUE );
+    QProgressDialog progress( tr("Executing song plugin cmd..."), tr("Cancel"), 100, this, tr("progress"), TRUE );
     progress.setTotalSteps(selectedSongs.count());
     qApp->processEvents();
 
@@ -1540,12 +1558,12 @@ void YammiGui::forSelectionPlugin(int pluginIndex)
       
       if(index==1 && confirm) {
         // before  executing cmd on first song, ask user
-        QString msg="Execute the following command on each selected song?\n";
-        msg+="(here shown: values for first song)\n\n";
+        QString msg=tr("Execute the following command on each selected song?\n");
+        msg+=tr("(here shown: values for first song)\n\n");
         for(unsigned int i=0; i<cmd2.length(); i+=80) {
           msg+=cmd2.mid(i, 80)+"\n";
         }
-        if( QMessageBox::warning( this, "Yammi", msg, "Yes", "No")!=0) {
+        if( QMessageBox::warning( this, tr("Yammi"), msg, tr("Yes"), tr("No"))!=0) {
           return;
         }
       }
@@ -1576,15 +1594,15 @@ void YammiGui::forSelectionPlugin(int pluginIndex)
     if(confirm) {
       cout << "plugin command: " << cmd << "\n";
       cout << "custom list: " << customList << "\n";
-      QString msg="Execute the following command:\n";
+      QString msg=tr("Execute the following command:\n");
       for(unsigned int i=0; i<cmd.length(); i+=80) {
         msg+=cmd.mid(i, 80)+"\n";
         if(i>1200) {
-          msg+="\n...\n(command truncated)";
+          msg+=tr("\n...\n(command truncated)");
           break;
         }
       }
-      if( QMessageBox::warning( this, "Yammi", msg, "Yes", "No")!=0) {
+      if( QMessageBox::warning( this, tr("Yammi"), msg, tr("Yes"), tr("No"))!=0) {
         return;
       }
     }
@@ -1649,7 +1667,7 @@ void YammiGui::forSelectionSongInfo()
 	long double _size=0;
 	int _genreNr=0;
 		
-	SongInfoDialog si(this, "test", true);
+	SongInfoDialog si(this, tr("test"), true);
 	
 	// fill combobox with genres, but sort them first
 	QStringList genreList;
@@ -1751,18 +1769,18 @@ void YammiGui::forSelectionSongInfo()
 	si.ReadOnlyFilename->setText(_filename);
 	si.ReadOnlyProposedFilename->setText(_proposedFilename);
 	if(selected>1) {
-		si.LabelHeading->setText(QString("Mass editing: %1 songs").arg(selected));
-		si.LabelSize->setText("Size (total)");
-		si.LabelLength->setText("Length (total)");
+		si.LabelHeading->setText(QString(tr("Mass editing: %1 songs")).arg(selected));
+		si.LabelSize->setText(tr("Size (total)"));
+		si.LabelLength->setText(tr("Length (total)"));
 		QString x;		
-		si.ReadOnlyLength->setText(x.sprintf("%d:%02d:%02d (hh:mm:ss)", _length/(60*60), (_length % (60*60))/60, _length % 60));
+		si.ReadOnlyLength->setText(x.sprintf(tr("%d:%02d:%02d (hh:mm:ss)"), _length/(60*60), (_length % (60*60))/60, _length % 60));
 	}
 	else {
 		si.LabelHeading->setText(_artist+" - "+_title);
 		QString x;		
-		si.ReadOnlyLength->setText(x.sprintf("%2d:%02d (mm:ss)", _length/60, _length % 60));
+		si.ReadOnlyLength->setText(x.sprintf(tr("%2d:%02d (mm:ss)"), _length/60, _length % 60));
 	}
-	si.ReadOnlySize->setText( QString("%1 MB (%2 Bytes)")
+	si.ReadOnlySize->setText( QString(tr("%1 MB (%2 Bytes)"))
 				.arg( (float)_size/(float)(1024*1024) , 4,'f', 2 )
 				.arg( (float)_size                    ,10,'f', 0 )
 				);
@@ -1838,15 +1856,15 @@ void YammiGui::forSelectionBurnToMedia()
 	long double size=-1;
 
 	bool ok;
-	QString collName=QString(QInputDialog::getText( "collection name", "Please enter collection name:", QLineEdit::Normal, QString("my mp3 collection"), &ok, this ));
+	QString collName=QString(QInputDialog::getText( tr("collection name"), tr("Please enter collection name:"), QLineEdit::Normal, QString(tr("my mp3 collection")), &ok, this ));
 	if(!ok)
 		return;
 
-	QString startIndexStr=QString(QInputDialog::getText( "collection start number", "Please enter start index:", QLineEdit::Normal, QString("1"), &ok, this ));
+	QString startIndexStr=QString(QInputDialog::getText( tr("collection start number"), tr("Please enter start index:"), QLineEdit::Normal, QString("1"), &ok, this ));
 	if(!ok)
 		return;
 
-	QProgressDialog progress( "Preparing media...", "Cancel", 100, this, "progress", TRUE );
+	QProgressDialog progress( tr("Preparing media..."), tr("Cancel"), 100, this, tr("progress"), TRUE );
 	progress.setMinimumDuration(0);
 	progress.setAutoReset(false);
   progress.setProgress(0);
@@ -1870,7 +1888,7 @@ void YammiGui::forSelectionBurnToMedia()
 			mediaNo++;
 			mediaName=QString("%1_%2").arg(collName).arg(mediaNo);
 			mediaDir=QString(model->config.yammiBaseDir+"/media/"+mediaName);
-			progress.setLabelText("Preparing media "+mediaName);
+			progress.setLabelText(tr("Preparing media ")+mediaName);
       cout << "Preparing media " << mediaName << " (" << count << " files processed so far)...\n";
 			QDir dir(mediaDir);
       if(dir.exists()) {
@@ -1913,7 +1931,7 @@ void YammiGui::forSelectionBurnToMedia()
 	cout << "size in total: " << (int)(totalSize/1024.0/1024.0) << " MB\n";
 	folderMedia->update(&(model->allSongs));
 	model->allSongsChanged(true);
-	QString msg=QString("Result of \"Burn to media\" process:\n\n\
+	QString msg=QString(tr("Result of \"Burn to media\" process:\n\n\
   no of media: %1, (size limit: %2 MB)\n\
   first media index: %3\n\
   last media index: %4\n\
@@ -1927,11 +1945,11 @@ void YammiGui::forSelectionBurnToMedia()
   burning program of your choice and burn\n\
   each directory to a seperate CD.\n\
   (Depending on your burning program, you might have\n\
-  to check an option \"follow symlinks\" or similar).")
+  to check an option \"follow symlinks\" or similar)."))
   .arg(mediaNo+1-startIndex).arg(model->config.criticalSize).arg(startIndex).arg(mediaNo)
   .arg(count).arg((int)(size/1024.0/1024.0)).arg((int)(totalSize/1024.0/1024.0))
   .arg(model->config.yammiBaseDir+"/media/");
-	QMessageBox::information( this, "Yammi", msg, "Fine." );
+	QMessageBox::information( this, tr("Yammi"), msg, tr("Fine.") );
 }
 
 
@@ -2055,8 +2073,8 @@ void YammiGui::forSelectionCheckConsistency()
 {
   cout << this->selectedSongs.count() << " songs selected to check\n";
   
-	CheckConsistencyDialog d(this, "Check consistency - settings");
-  d.TextLabel1->setText(QString("checking %1 songs").arg(selectedSongs.count()));
+	CheckConsistencyDialog d(this, tr("Check consistency - settings"));
+  d.TextLabel1->setText(QString(tr("checking %1 songs")).arg(selectedSongs.count()));
   
 	// show dialog
 	int result=d.exec();
@@ -2072,7 +2090,7 @@ void YammiGui::forSelectionCheckConsistency()
   p.correctFilenames=d.CheckBoxCorrectFilenames->isChecked();
   p.checkDoubles=d.CheckBoxCheckDoubles->isChecked();
 
-  QProgressDialog progress( "Checking consistency...", "Cancel", 100, this, "progress", TRUE );
+  QProgressDialog progress( tr("Checking consistency..."), tr("Cancel"), 100, this, tr("progress"), TRUE );
 	progress.setMinimumDuration(0);
 	progress.setAutoReset(false);
   progress.setProgress(0);
@@ -2084,7 +2102,7 @@ void YammiGui::forSelectionCheckConsistency()
 	folderContentChanged(folderProblematic);
 
 	QString msg=QString(
-  "Result of consistency check:\n\n\
+  tr("Result of consistency check:\n\n\
   %1 problematic issues identified (check folder \"Problematic Songs\")\n\
       (that folder won't be saved)\n\
   %2 songs not existing, of these:\n\
@@ -2095,10 +2113,10 @@ void YammiGui::forSelectionCheckConsistency()
   %7 songs with inconsistent filename, of these:\n\
       %8 filenames corrected\n\
   %9 double entries found\
-  ").arg(model->problematicSongs.count()).arg(p.nonExisting).arg(p.nonExistingUpdated)
+  ")).arg(model->problematicSongs.count()).arg(p.nonExisting).arg(p.nonExistingUpdated)
   .arg(p.nonExistingDeleted).arg(p.dirtyTags).arg(p.tagsCorrected)
   .arg(p.dirtyFilenames).arg(p.filenamesCorrected).arg(p.doublesFound);  
-	QMessageBox::information( this, "Yammi", msg, "Fine." );
+	QMessageBox::information( this, tr("Yammi"), msg, tr("Fine.") );
 }
 
 /**
@@ -2132,7 +2150,7 @@ void YammiGui::forSelection(action act)
 //      cout << "dir: " << dir << "\n";
 //    return;
 //#else
-		dir=QFileDialog::getExistingDirectory(QString(""), this, QString("yammi"), QString("choose directory"), true);
+		dir=QFileDialog::getExistingDirectory(QString(""), this, QString(tr("yammi")), QString(tr("choose directory")), true);
 //#endif    
 		if(dir.isNull())
 			return;
@@ -2148,7 +2166,7 @@ void YammiGui::forSelection(action act)
 		if(selectedSongs.count()==1)
 			dd.LabelSongname->setText(selectedSongs.firstSong()->displayName());
 		else
-			dd.LabelSongname->setText(QString("Delete %1 songs").arg(selectedSongs.count()));
+			dd.LabelSongname->setText(QString(tr("Delete %1 songs")).arg(selectedSongs.count()));
 		// fill dialog with onMedia info...(for all toDelete songs)
 		for(Song* s=selectedSongs.firstSong(); s; s=selectedSongs.nextSong()) {
 			for(unsigned int i=0; i<s->mediaName.count(); i++) {
@@ -2255,12 +2273,12 @@ void YammiGui::forSong(Song* s, action act, QString dir)
       player->skipForward(shiftPressed);
     }
 			
-    mainStatusBar->message(QString("playing %1").arg(s->displayName()), 2000);
+    mainStatusBar->message(QString(tr("playing %1")).arg(s->displayName()), 2000);
 		break;
 		
 	case Enqueue:								// enqueue at end
 		folderActual->addSong(s);
-		mainStatusBar->message(QString("%1 enqueued at end").arg(s->displayName()), 3000);
+		mainStatusBar->message(QString(tr("%1 enqueued at end")).arg(s->displayName()), 3000);
 		break;
 				
 	case EnqueueAsNext: {				// enqueue as next
@@ -2271,7 +2289,7 @@ void YammiGui::forSong(Song* s, action act, QString dir)
 			model->songsToPlay.insert(1, new SongEntryInt(s, 13));
 		folderActual->correctOrder();
     player->syncYammi2Player(false);      
-		mainStatusBar->message(QString("%1 enqueued as next").arg(s->displayName()), 2000);
+		mainStatusBar->message(QString(tr("%1 enqueued as next")).arg(s->displayName()), 2000);
 	}
 		break;
 	
@@ -2286,7 +2304,7 @@ void YammiGui::forSong(Song* s, action act, QString dir)
 			if(check==s) {
 				model->songsToPlay.remove(i);
 				cout << "song removed\n";
-				mainStatusBar->message(QString("song %1 dequeued").arg(s->displayName()), 3000);
+				mainStatusBar->message(QString(tr("song %1 dequeued")).arg(s->displayName()), 3000);
 				i--;
 			}
 		}
@@ -2331,11 +2349,11 @@ void YammiGui::forSong(Song* s, action act, QString dir)
 		if(result==QDialog::Accepted) {
 			if(dd.CheckBoxDeleteFile->isChecked()) {
 				forSong(s, DeleteFile);				// 1. move songfile to trash
-				mainStatusBar->message(QString("%1 removed (file)").arg(s->displayName()), 2000);
+				mainStatusBar->message(QString(tr("%1 removed (file)")).arg(s->displayName()), 2000);
 			}
 			if(dd.CheckBoxDeleteDbEntry->isChecked()) {
 				forSong(s, DeleteEntry);			// 2. remove from database
-				mainStatusBar->message(QString("%1 removed (db entry)").arg(s->displayName()), 2000);
+				mainStatusBar->message(QString(tr("%1 removed (db entry)")).arg(s->displayName()), 2000);
 			}
 		}
 	} break;
@@ -2419,42 +2437,42 @@ void YammiGui::openHelp()
 /// display about dialog
 void YammiGui::aboutDialog()
 {
-  QString msg=QString("Yammi - Yet Another Music Manager I...\n\n\n");
+  QString msg=QString(tr("Yammi - Yet Another Music Manager I...\n\n\n"));
   msg+="Version "+model->config.yammiVersion+", 12-2001 - 5-2003 by Oliver Nölle\n";
-  msg+="Media player: "+player->getName()+"\n";
+  msg+=tr("Media player: ")+player->getName()+"\n";
   #ifdef ENABLE_XMMS
-  msg+="- XMMS support: yes\n";
+  msg+=tr("- XMMS support: yes\n");
   #else
-  msg+="- XMMS support: no\n";
+  msg+=tr("- XMMS support: no\n");
   #endif
   #ifdef ENABLE_NOATUN
-  msg+="- Noatun support: yes\n";
+  msg+=tr("- Noatun support: yes\n");
   #else
-  msg+="- Noatun support: no\n";
+  msg+=tr("- Noatun support: no\n");
   #endif
   #ifdef ENABLE_OGGLIBS
-  msg+="- ogglibs support: yes\n";
+  msg+=tr("- ogglibs support: yes\n");
   #else
-  msg+="- ogglibs support: no\n";
+  msg+=tr("- ogglibs support: no\n");
   #endif
   #ifdef ENABLE_ID3LIB
-  msg+="- id3lib support: yes\n";
+  msg+=tr("- id3lib support: yes\n");
   #else
-  msg+="- id3lib support: no\n";
+  msg+=tr("- id3lib support: no\n");
   #endif
-  msg+="\nProject home page: yammi.sourceforge.net\n\n\n";
-  msg+="Contact: oli.noelle@web.de\n\n";
-  msg+="have fun...\n";
-  QMessageBox::information( this, "Yammi",msg);
+  msg+=tr("\nProject home page: yammi.sourceforge.net\n\n\n");
+  msg+=tr("Contact: oli.noelle@web.de\n\n");
+  msg+=tr("have fun...\n");
+  QMessageBox::information( this, tr("Yammi"),msg);
 }
 
 
 /** creates a new category */
 bool YammiGui::newCategory(){
 	bool ok = false;
-	QString caption("Enter name for category");
-	QString message("Please enter name of category");
-	QString newName=QString(QInputDialog::getText( caption, message, QLineEdit::Normal, QString("new category"), &ok, this ));
+	QString caption(tr("Enter name for category"));
+	QString message(tr("Please enter name of category"));
+	QString newName=QString(QInputDialog::getText( caption, message, QLineEdit::Normal, QString(tr("new category")), &ok, this ));
 	if(!ok) {
     return false;
   }
@@ -2469,7 +2487,7 @@ void YammiGui::removeCategory()
 {
 	QListViewItem* i = folderListView->currentItem();
 	QString name=((Folder*)i)->folderName();
-	if( QMessageBox::warning( this, "Yammi", "Delete category \""+name+"\"?\n (will be deleted immediately!)", "Yes", "No")==0) {
+	if( QMessageBox::warning( this, tr("Yammi"), tr("Delete category \""+name+"\"?\n (will be deleted immediately!)"), tr("Yes"), tr("No"))==0) {
 		model->removeCategory(name);
 		folderCategories->update(model->allCategories, model->categoryNames);
 		updateSongPopup();
@@ -2481,7 +2499,7 @@ void YammiGui::renameCategory()
 	QListViewItem* i = folderListView->currentItem();
 	QString oldName=((Folder*)i)->folderName();
 	bool ok;
-	QString newName=QString(QInputDialog::getText( "collection name", "Please enter new name:", QLineEdit::Normal, oldName, &ok, this ));
+	QString newName=QString(QInputDialog::getText( tr("collection name"), tr("Please enter new name:"), QLineEdit::Normal, oldName, &ok, this ));
 	if(!ok)
 		return;
 
@@ -2499,7 +2517,7 @@ void YammiGui::autoplayFolder()
 {
 	Folder* f = (FolderSorted*)folderListView->currentItem();
   autoplayFoldername=f->folderName();
-  autoplayMenu->changeItem(AUTOPLAY_FOLDER, "Folder: "+autoplayFoldername);    
+  autoplayMenu->changeItem(AUTOPLAY_FOLDER, tr("Folder: ")+autoplayFoldername);
 }
 
 
@@ -2521,7 +2539,7 @@ void YammiGui::removeMedia()
 	QListViewItem *i = folderListView->currentItem();
 	Folder* chosenFolder = ( Folder* )i;
 	QString mediaName=chosenFolder->folderName();
-	if( QMessageBox::warning( this, "Yammi", "Remove media "+mediaName+" and the corresponding directory?\n(which contains the symbolic links to the songs)", "Yes", "No")!=0)
+	if( QMessageBox::warning( this, tr("Yammi"), tr("Remove media ")+mediaName+tr(" and the corresponding directory?\n(which contains the symbolic links to the songs)"), tr("Yes"), tr("No"))!=0)
 		return;
 	model->removeMedia(mediaName);
 	folderMedia->update(&(model->allSongs));
@@ -2533,7 +2551,7 @@ void YammiGui::renameMedia()
 	QListViewItem* i = folderListView->currentItem();
 	QString oldName=((Folder*)i)->folderName();
 	bool ok;
-	QString newName=QString(QInputDialog::getText( "Rename Media", "Please enter new name:", QLineEdit::Normal, oldName, &ok, this ));
+	QString newName=QString(QInputDialog::getText( tr("Rename Media"), tr("Please enter new name:"), QLineEdit::Normal, oldName, &ok, this ));
 	if(!ok)
 		return;
 	model->renameMedia(oldName, newName);
@@ -2589,9 +2607,9 @@ void YammiGui::clearPlaylist()
 
   bool saveCurrentSong=(currentSong!=0 && player->getStatus()!=STOPPED && model->songsToPlay.count()>1);
   ApplyToAllBase confirm(this, "confirmDialog", true);
-  QString msg=QString("Clear complete playlist?\n(%1 entries)").arg(model->songsToPlay.count());
+  QString msg=QString(tr("Clear complete playlist?\n(%1 entries)")).arg(model->songsToPlay.count());
   confirm.TextLabel->setText(msg);
-  confirm.CheckBoxApply->setText("including current song");
+  confirm.CheckBoxApply->setText(tr("including current song"));
   confirm.CheckBoxApply->setChecked(!saveCurrentSong);
   // show dialog
   int result=confirm.exec();
@@ -2740,8 +2758,8 @@ void YammiGui::autoFillPlaylist()
 void YammiGui::grabAndEncode()
 {
 	bool ok = false;
-	QString caption("Enter track number");
-	QString message("Please enter track number");
+	QString caption(tr("Enter track number"));
+	QString message(tr("Please enter track number"));
 	QString trackNrStr(QInputDialog::getText( caption, message, QLineEdit::Normal, QString("1"), &ok, this ));
 	if(!ok)
 		return;
@@ -2749,29 +2767,29 @@ void YammiGui::grabAndEncode()
 	if(trackNr<1)
 		return;
 	
-	caption="Enter artist";
-	message="Please enter artist";
-	QString artist(QInputDialog::getText( caption, message, QLineEdit::Normal, QString("MyArtist"), &ok, this ));
+	caption=tr("Enter artist");
+	message=tr("Please enter artist");
+	QString artist(QInputDialog::getText( caption, message, QLineEdit::Normal, QString(tr("MyArtist")), &ok, this ));
 	if(!ok)
 		return;
 	
-	caption="Enter title";
-	message="Please enter title";
-	QString title(QInputDialog::getText( caption, message, QLineEdit::Normal, QString("Fantastic Song"), &ok, this ));
+	caption=tr("Enter title");
+	message=tr("Please enter title");
+	QString title(QInputDialog::getText( caption, message, QLineEdit::Normal, QString(tr("Fantastic Song")), &ok, this ));
 	if(!ok)
 		return;
 	
-	QString filename=QString("%1%2 - %3.mp3").arg(model->config.scanDir).arg(artist).arg(title);
+	QString filename=QString(tr("%1%2 - %3.mp3")).arg(model->config.scanDir).arg(artist).arg(title);
   QFileInfo fi(filename);
   if(fi.exists()) {
-    QMessageBox::information( this, "Yammi", "The file\n"+filename+"\nalready exists!\n\nPlease choose a different artist/title combination.", "Ok");
+    QMessageBox::information( this, tr("Yammi"), tr("The file\n")+filename+tr("\nalready exists!\n\nPlease choose a different artist/title combination."), tr("Ok"));
     return;
   }
 	// linux specific
 	QString cmd=QString("%1 %2 \"%3\" \"%4\" \"%5\" &").arg(model->config.grabAndEncodeCmd).arg(trackNr).arg(artist).arg(title).arg(filename);
 	system(cmd);
 	grabbedTrackFilename=filename;
-	mainStatusBar->message("grabbing track, will be available shortly...", 30000);
+	mainStatusBar->message(tr("grabbing track, will be available shortly..."), 30000);
 	// now we start a timer to check for availability of new track every 5 seconds
 	QTimer* timer=new QTimer(this);
 	connect(timer, SIGNAL(timeout()), this, SLOT(checkForGrabbedTrack()) );
@@ -2792,7 +2810,7 @@ void YammiGui::checkForGrabbedTrack(){
 		cout << "new grabbed track " << grabbedTrackFilename << " is unreadable\n";
  		return;
  	}
-	mainStatusBar->message("grabbed song available", 20000);
+	mainStatusBar->message(tr("grabbed song available"), 20000);
   model->entriesAdded=0;
 	model->corruptSongs=0;
   model->problematicSongs.clear();
@@ -2801,11 +2819,11 @@ void YammiGui::checkForGrabbedTrack(){
 	updateView();
 	folderProblematic->update(&model->problematicSongs);
 	folderAll->updateTitle();
-  QString msg="Yammi tried to add the grabbed song to the database.\n\nSome statistics: \n\n";
-  msg+=QString("%1 songs added to database\n").arg(model->entriesAdded);
-  msg+=QString("%1 songs corrupt (=not added)\n").arg(model->corruptSongs);
-  msg+=QString("%1 problematic issues(check in folder Problematic Songs)").arg(model->problematicSongs.count());
-	QMessageBox::information( this, "Yammi", msg, "Fine." );
+  QString msg=tr("Yammi tried to add the grabbed song to the database.\n\nSome statistics: \n\n");
+  msg+=QString(tr("%1 songs added to database\n")).arg(model->entriesAdded);
+  msg+=QString(tr("%1 songs corrupt (=not added)\n")).arg(model->corruptSongs);
+  msg+=QString(tr("%1 problematic issues(check in folder Problematic Songs)")).arg(model->problematicSongs.count());
+	QMessageBox::information( this, tr("Yammi"), msg, tr("Fine.") );
 }
 
 void YammiGui::shutDown()
@@ -2813,14 +2831,14 @@ void YammiGui::shutDown()
   if(shuttingDown==0)				// canceled
 		return;
 	if(shuttingDown==1) {
-    QProgressDialog progress( "shuttind down now...", "Cancel", 10, this, "progress", TRUE );
+    QProgressDialog progress( tr("shuttind down now..."), tr("Cancel"), 10, this, tr("progress"), TRUE );
     progress.setMinimumDuration(0);
     int total=10;                 // number of seconds before shutdown...
     progress.setTotalSteps(total);
     progress.setProgress(0);
     for(int i=0; i<=total; i++) {
       progress.setProgress(i);
-      QString msg=QString("shutting down in %1 seconds").arg(total-i);
+      QString msg=QString(tr("shutting down in %1 seconds")).arg(total-i);
       progress.setLabelText(msg);
       qApp->processEvents();
       QTimer* ttimer=new QTimer();
@@ -3023,17 +3041,17 @@ void YammiGui::changeSleepMode()
  		qApp->beep();
  		shuttingDown=1;
 		songsUntilShutdown=3;
-		sleepModeButton->setText("shutdown");
+		sleepModeButton->setText(tr("shutdown"));
     sleepModeSpinBox->setValue(3);
  		sleepModeSpinBox->setEnabled(true);
 		cout << "sleep mode, press again to cancel...\n";
  		if(model->allSongsChanged() || model->categoriesChanged()) {
- 			if( QMessageBox::warning( this, "Yammi", "Save changes?\n(answering no will cancel sleep mode)", "Yes", "No")==0)
+ 			if( QMessageBox::warning( this, tr("Yammi"), tr("Save changes?\n(answering no will cancel sleep mode)"), tr("Yes"), tr("No"))==0)
  				model->save();
  			else {
  				shuttingDown=0;
  				songsUntilShutdown=-3;
-				sleepModeButton->setText("(disabled)");
+				sleepModeButton->setText(tr("(disabled)"));
         sleepModeSpinBox->setEnabled(false);
  				cout << "sleep mode cancelled!\n";
  			}
@@ -3043,7 +3061,7 @@ void YammiGui::changeSleepMode()
  		// shutdown -> disabled
  		qApp->beep();
  		songsUntilShutdown=-3;
-		sleepModeButton->setText("(disabled)");
+		sleepModeButton->setText(tr("(disabled)"));
 		sleepModeSpinBox->setEnabled(false);
  		shuttingDown=0;
  		cout << "sleep mode cancelled!\n";
@@ -3118,7 +3136,7 @@ void YammiGui::preListen(Song* s, int skipTo)
 
 void YammiGui::updateSongDatabaseHarddisk()
 {
-	UpdateDatabaseDialog d(this, "Update Database (harddisk) Dialog");
+	UpdateDatabaseDialog d(this, tr("Update Database (harddisk) Dialog"));
 
   d.LineEditScanDir->setText(model->config.scanDir);
   d.LineEditFilePattern->setText("*.mp3 *.ogg *.wav");
@@ -3135,7 +3153,7 @@ void YammiGui::updateSongDatabaseHarddisk()
 
 void YammiGui::updateSongDatabaseMedia()
 {
-	UpdateDatabaseMediaDialog d(this, "Update Database (media) Dialog");
+	UpdateDatabaseMediaDialog d(this, tr("Update Database (media) Dialog"));
 
   d.LineEditMediaDir->setText(model->config.mediaDir);
   d.LineEditFilePattern->setText("*.mp3 *.ogg *.wav");
@@ -3145,7 +3163,7 @@ void YammiGui::updateSongDatabaseMedia()
 	if(result!=QDialog::Accepted)
     return;
   if(d.LineEditMediaDir->text()=="") {
-    QMessageBox::information( this, "Yammi", "You have to enter a name for the media!", "Okay" );
+    QMessageBox::information( this, tr("Yammi"), tr("You have to enter a name for the media!"), tr("Okay") );
     return;
   }
 
@@ -3163,7 +3181,7 @@ void YammiGui::updateSongDatabase(QString scanDir, QString filePattern, QString 
   if(model->config.childSafe) {
     return;
   }
-  QProgressDialog progress( "Scanning...", "Cancel", 100, this, "progress", TRUE );
+  QProgressDialog progress( tr("Scanning..."), tr("Cancel"), 100, this, tr("progress"), TRUE );
 	progress.setMinimumDuration(0);
 	progress.setAutoReset(false);
   progress.setProgress(0);
@@ -3178,11 +3196,11 @@ void YammiGui::updateSongDatabase(QString scanDir, QString filePattern, QString 
 	folderProblematic->update(&model->problematicSongs);
   cout << "debug info: updating title of folderAll...\n";
 	folderAll->updateTitle();
-  QString msg="Updated your database.\n\nStatistics: \n\n";
-  msg+=QString("%1 songs added to database\n").arg(model->entriesAdded);
-  msg+=QString("%1 songs corrupt (=not added)\n").arg(model->corruptSongs);
-  msg+=QString("%1 songs problematic (check in folder Problematic Songs)\n").arg(model->problematicSongs.count());
-	QMessageBox::information( this, "Yammi", msg, "Fine." );
+  QString msg=tr("Updated your database.\n\nStatistics: \n\n");
+  msg+=QString(tr("%1 songs added to database\n")).arg(model->entriesAdded);
+  msg+=QString(tr("%1 songs corrupt (=not added)\n")).arg(model->corruptSongs);
+  msg+=QString(tr("%1 songs problematic (check in folder Problematic Songs)\n")).arg(model->problematicSongs.count());
+	QMessageBox::information( this, tr("Yammi"), msg, tr("Fine.") );
 
   // TODO: check update actions after scanning...without danger? (=> don't need to stop xmms?)
 //  player->syncPlayer2Yammi(folderActual);
@@ -3244,7 +3262,7 @@ void YammiGui::loadSongsFromMedia(QString mediaName)
 			songsToLoad++;
 	}
 	
-	QProgressDialog progress( "Loading song files...", "Cancel", songsToLoad, this, "progress", TRUE );
+	QProgressDialog progress( tr("Loading song files..."), tr("Cancel"), songsToLoad, this, tr("progress"), TRUE );
 	progress.setMinimumDuration(0);
   progress.setProgress(0);
 	qApp->processEvents();
@@ -3269,7 +3287,7 @@ void YammiGui::loadSongsFromMedia(QString mediaName)
 			for(unsigned int j=0; j<s->mediaLocation.count(); j++) {
 				if(s->mediaName[j]==mediaName) {				
 					cout << "loading song " << s->displayName() << "from " << mediaDir << s->mediaLocation[j] << "\n";
-					progress.setLabelText("loading song: "+s->displayName()+" ("+QString("%1").arg(i+1)+". in playlist)");
+					progress.setLabelText(tr("loading song: ")+s->displayName()+" ("+QString("%1").arg(i+1)+tr(". in playlist)"));
 			    progress.setProgress(loaded);
   			  qApp->processEvents();
 					if(progress.wasCancelled())
@@ -3330,7 +3348,7 @@ void YammiGui::checkPlaylistAvailability()
 		}
 	}
 	if(mediaListCombo->count()==0) {
-		mediaListCombo->insertItem("<none>");
+		mediaListCombo->insertItem(tr("<none>"));
 		loadFromMediaButton->setEnabled(false);
 	}
 	else {
@@ -3422,10 +3440,10 @@ void YammiGui::commitData(QSessionManager& sm )
   cout << "commitData() called\n";
   if ( sm.allowsInteraction() ) {
     if(model->allSongsChanged() || model->categoriesChanged()) {
-      QString msg="Save changes?\n\n";
-      msg+="If you don't save, all changes will be lost\n";
-      msg+="and the database might become inconsistent...\n";
-      switch( QMessageBox::warning(this, "Yammi", msg, "&Yes", "&No", "Cancel", 0, 2) ) {
+      QString msg=tr("Save changes?\n\n");
+      msg+=tr("If you don't save, all changes will be lost\n");
+      msg+=tr("and the database might become inconsistent...\n");
+      switch( QMessageBox::warning(this, tr("Yammi"), msg, tr("&Yes"), tr("&No"), tr("Cancel"), 0, 2) ) {
         case 0: // yes
           sm.release();
           // save document here; if saving fails, call sm.cancel()

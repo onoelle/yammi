@@ -40,6 +40,7 @@ protected:
   int           session;      // xmms session id
   int           timeLeft;
 	bool			    xmmsShuffleWasActivated;
+	bool			    xmmsRepeatWasActivated;
 	void			    myWait(int msecs);
 
 public slots:

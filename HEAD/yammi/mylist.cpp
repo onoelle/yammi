@@ -17,7 +17,7 @@
 
 #include "mylist.h"
 #include "song.h"
-#include "mp3info/CMP3Info.h"
+#include "CMP3Info.h"
 
 MyList::MyList()
 {

@@ -37,7 +37,7 @@ dnl Perform program name transformation
 AC_ARG_PROGRAM
 
 dnl Automake doc recommends to do this only here. (Janos)
-AM_INIT_AUTOMAKE(yammi,0.8.2)
+AM_INIT_AUTOMAKE(yammi,0.8.3)
 
 dnl generate a header that will have all the
 dnl #defines for conditional compilation
@@ -272,7 +272,7 @@ fi
 
 dnl add here all your Makefiles. These are created by configure
 dnl from Makefile.in which is create by automake from Makefile.am
-AC_OUTPUT(Makefile yammi/Makefile yammi/docs/Makefile yammi/docs/en/Makefile yammi/icons/Makefile yammi/mp3info/Makefile )
+AC_OUTPUT(Makefile yammi/Makefile yammi/docs/Makefile yammi/docs/en/Makefile yammi/icons/Makefile )
 
 AC_MSG_NOTICE( [
 Configuration for $PACKAGE $VERSION :

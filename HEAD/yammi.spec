@@ -3,16 +3,17 @@
 # the error to ian geiser <geiseri@msoe.edu>
 Summary:   An mp3 collection manager and search engine.
 Name:      yammi
-Version:   0.8.1
-Release:   control=CVS
+Version:   0.8.2
+Release:   1
 Copyright: GPL
 Vendor:    Oliver Nölle <oli.noelle@web.de>
 Url:       http://yammi.sourceforge.net
-Icon:     yammi.xpm
+Icon:      yammi.xpm
 Packager:  Oliver Nölle <oli.noelle@web.de>
-Group:     Multimedia::MP3
-Source:    yammi-0.8.1.tar.gz
-BuildRoot: 
+Group:     Applications/Multimedia
+Source:    yammi-0.8.2.tar.gz
+BuildRoot: %{_tmppath}/%{name}-buildroot
+
 
 %description
 Yet Another Music Manager I...Fastest and easiest access to your whole song collection!

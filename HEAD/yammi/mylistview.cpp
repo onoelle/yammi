@@ -36,9 +36,12 @@ MyListView::~MyListView()
 {
 }
 
+/**
+ * TODO: check!!!
+ */
 void MyListView::sortColumnChanged(int column)
 {
-	int newColumn=column+1;
+  int newColumn=column+1;
 	if(sortedBy==newColumn)
 		sortedBy=-sortedBy;
 	else

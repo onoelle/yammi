@@ -23,7 +23,7 @@ cflags=
 cppflags=
 cxxflags=\s-O3 -Wall
 ldadd=\s$(LIB_QT)
-ldflags=\s                                     \s
+ldflags=\s                                         \s
 
 [General]
 AMChanged=false
@@ -33,14 +33,14 @@ email=oli.noelle@web.de
 kdevprj_version=1.3
 lfv_open_groups=User Interface
 make_options=\s-j1
-makefiles=Makefile.am,yammi/Makefile.am,yammi/docs/Makefile.am,yammi/docs/en/Makefile.am,yammi/icons/Makefile.am,yammi/mp3info/Makefile.am
+makefiles=Makefile.am,yammi/Makefile.am,yammi/docs/Makefile.am,yammi/docs/en/Makefile.am,yammi/icons/Makefile.am
 modifyMakefiles=true
 project_name=Yammi
 project_type=normal_qt2
 sgml_file=/home/oliver/work/programming/yammi/yammi/docs/en/index.sgml
 short_info=Yet Another Music Manager I...,Fastest and easiest access to your whole song collection!
 sub_dir=yammi/
-version=0.8.2
+version=0.8.3
 version_control=CVS
 workspace=1
 
@@ -114,6 +114,42 @@ install=false
 install_location=
 type=SOURCE
 
+[yammi/CFrameHeader.cpp]
+dist=true
+install=false
+install_location=
+type=SOURCE
+
+[yammi/CFrameHeader.h]
+dist=true
+install=false
+install_location=
+type=HEADER
+
+[yammi/CMP3Info.cpp]
+dist=true
+install=false
+install_location=
+type=SOURCE
+
+[yammi/CMP3Info.h]
+dist=true
+install=false
+install_location=
+type=HEADER
+
+[yammi/CVBitRate.cpp]
+dist=true
+install=false
+install_location=
+type=SOURCE
+
+[yammi/CVBitRate.h]
+dist=true
+install=false
+install_location=
+type=HEADER
+
 [yammi/ConsistencyCheckDialog.cpp]
 dist=true
 install=false
@@ -145,8 +181,8 @@ install_location=
 type=SOURCE
 
 [yammi/Makefile.am]
-files=yammi/lo32-app-yammi.png,yammi/lo16-app-yammi.png,yammi/folder.cpp,yammi/folder.h,yammi/foldercategories.cpp,yammi/foldercategories.h,yammi/foldergroups.cpp,yammi/foldergroups.h,yammi/foldermedia.cpp,yammi/foldermedia.h,yammi/foldersorted.cpp,yammi/foldersorted.h,yammi/fuzzsrch.cpp,yammi/fuzzsrch.h,yammi/main.cpp,yammi/mydatetime.cpp,yammi/mydatetime.h,yammi/mylist.cpp,yammi/mylist.h,yammi/mylistview.cpp,yammi/mylistview.h,yammi/preferencesdialog.cpp,yammi/preferencesdialog.h,yammi/prefs.cpp,yammi/prefs.h,yammi/song.cpp,yammi/song.h,yammi/songentry.cpp,yammi/songentry.h,yammi/songentryint.cpp,yammi/songentryint.h,yammi/songentryint2.cpp,yammi/songentryint2.h,yammi/songentrystring.cpp,yammi/songentrystring.h,yammi/songentrytimestamp.cpp,yammi/songentrytimestamp.h,yammi/songinfo.cpp,yammi/songinfo.h,yammi/songlistitem.cpp,yammi/songlistitem.h,yammi/yammigui.cpp,yammi/yammigui.h,yammi/yammimodel.cpp,yammi/yammimodel.h,yammi/glib.h,yammi/glibconfig.h,yammi/xmmsctrl.h,yammi/updatedatabasedialog.cpp,yammi/updatedatabasedialog.h,yammi/options.h,yammi/updatedatabasemediadialog.cpp,yammi/updatedatabasemediadialog.h,yammi/lineeditshift.cpp,yammi/lineeditshift.h,yammi/mediaplayer.cpp,yammi/mediaplayer.h,yammi/xmmsplayer.cpp,yammi/xmmsplayer.h,yammi/yammiapplication.cpp,yammi/yammiapplication.h,yammi/vcedit.c,yammi/vcedit.h,yammi/acconfig.h,yammi/ConsistencyCheckDialog.cpp,yammi/ConsistencyCheckDialog.h,yammi/ConsistencyCheckParameter.h,yammi/ConsistencyCheckDialogBase.ui,yammi/DeleteDialog.ui,yammi/PreferencesDialogBase.ui,yammi/SongInfoDialog.ui,yammi/UpdateDatabaseDialogBase.ui,yammi/UpdateDatabaseMediaDialogBase.ui,yammi/i18n.h,yammi/noatunplayer.cpp,yammi/noatunplayer.h,yammi/ApplyToAllBase.ui,yammi/dummyplayer.h
-sub_dirs=docs,icons,mp3info
+files=yammi/lo32-app-yammi.png,yammi/lo16-app-yammi.png,yammi/folder.cpp,yammi/folder.h,yammi/foldercategories.cpp,yammi/foldercategories.h,yammi/foldergroups.cpp,yammi/foldergroups.h,yammi/foldermedia.cpp,yammi/foldermedia.h,yammi/foldersorted.cpp,yammi/foldersorted.h,yammi/fuzzsrch.cpp,yammi/fuzzsrch.h,yammi/main.cpp,yammi/mydatetime.cpp,yammi/mydatetime.h,yammi/mylist.cpp,yammi/mylist.h,yammi/mylistview.cpp,yammi/mylistview.h,yammi/preferencesdialog.cpp,yammi/preferencesdialog.h,yammi/prefs.cpp,yammi/prefs.h,yammi/song.cpp,yammi/song.h,yammi/songentry.cpp,yammi/songentry.h,yammi/songentryint.cpp,yammi/songentryint.h,yammi/songentryint2.cpp,yammi/songentryint2.h,yammi/songentrystring.cpp,yammi/songentrystring.h,yammi/songentrytimestamp.cpp,yammi/songentrytimestamp.h,yammi/songinfo.cpp,yammi/songinfo.h,yammi/songlistitem.cpp,yammi/songlistitem.h,yammi/yammigui.cpp,yammi/yammigui.h,yammi/yammimodel.cpp,yammi/yammimodel.h,yammi/glib.h,yammi/glibconfig.h,yammi/xmmsctrl.h,yammi/updatedatabasedialog.cpp,yammi/updatedatabasedialog.h,yammi/options.h,yammi/updatedatabasemediadialog.cpp,yammi/updatedatabasemediadialog.h,yammi/lineeditshift.cpp,yammi/lineeditshift.h,yammi/mediaplayer.cpp,yammi/mediaplayer.h,yammi/xmmsplayer.cpp,yammi/xmmsplayer.h,yammi/yammiapplication.cpp,yammi/yammiapplication.h,yammi/vcedit.c,yammi/vcedit.h,yammi/acconfig.h,yammi/ConsistencyCheckDialog.cpp,yammi/ConsistencyCheckDialog.h,yammi/ConsistencyCheckParameter.h,yammi/ConsistencyCheckDialogBase.ui,yammi/DeleteDialog.ui,yammi/PreferencesDialogBase.ui,yammi/SongInfoDialog.ui,yammi/UpdateDatabaseDialogBase.ui,yammi/UpdateDatabaseMediaDialogBase.ui,yammi/i18n.h,yammi/noatunplayer.cpp,yammi/noatunplayer.h,yammi/ApplyToAllBase.ui,yammi/dummyplayer.h,yammi/CFrameHeader.cpp,yammi/CFrameHeader.h,yammi/CMP3Info.cpp,yammi/CMP3Info.h,yammi/CVBitRate.cpp,yammi/CVBitRate.h
+sub_dirs=docs,icons
 type=prog_main
 
 [yammi/PreferencesDialogBase.ui]
@@ -534,49 +570,6 @@ dist=true
 install=false
 install_location=
 type=HEADER
-
-[yammi/mp3info/CFrameHeader.cpp]
-dist=true
-install=false
-install_location=
-type=SOURCE
-
-[yammi/mp3info/CFrameHeader.h]
-dist=true
-install=false
-install_location=
-type=HEADER
-
-[yammi/mp3info/CMP3Info.cpp]
-dist=true
-install=false
-install_location=
-type=SOURCE
-
-[yammi/mp3info/CMP3Info.h]
-dist=true
-install=false
-install_location=
-type=HEADER
-
-[yammi/mp3info/CVBitRate.cpp]
-dist=true
-install=false
-install_location=
-type=SOURCE
-
-[yammi/mp3info/CVBitRate.h]
-dist=true
-install=false
-install_location=
-type=HEADER
-
-[yammi/mp3info/Makefile.am]
-files=yammi/mp3info/CFrameHeader.cpp,yammi/mp3info/CFrameHeader.h,yammi/mp3info/CMP3Info.cpp,yammi/mp3info/CMP3Info.h,yammi/mp3info/CVBitRate.cpp,yammi/mp3info/CVBitRate.h
-sharedlib_LDFLAGS=-version-info 0:0:0
-sharedlib_rootname=mp3info
-sub_dirs=
-type=static_library
 
 [yammi/mydatetime.cpp]
 dist=true

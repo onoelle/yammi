@@ -17,7 +17,7 @@
 
 #include "songlistitem.h"
 #include "yammigui.h"
-#include "mp3info/CMP3Info.h"
+#include "CMP3Info.h"
 
 extern YammiGui* gYammiGui;
 
@@ -182,34 +182,35 @@ void SongListItem::paintCell( QPainter *p, const QColorGroup &cg,
 /**
  * This method cares about all non-character data (length, trackNr, ...)
  * character data is handled by the key() function
+ * visibleColumn is the original column number
  */
-int SongListItem::compare( QListViewItem *i, int column, bool ascending ) const
+int SongListItem::compare( QListViewItem *i, int visibleColumn, bool ascending ) const
 {
 	SongListItem* other=(SongListItem*)i;
 	int base=songEntry->getBase();
-	if(column<base) {
-		return songEntry->compare(column, other->songEntry);
+	if(visibleColumn<base) {
+		return songEntry->compare(visibleColumn, other->songEntry);
 	}
 	const Song* s=song();
 	const Song* s2=other->song();
-
+  int column=gYammiGui->mapToRealColumn(visibleColumn-base);
   // 0:artist, 1:title, 2:album
-	if(column==base+3)				// length
+	if(column==gYammiGui->COLUMN_LENGTH)				// length
 		return s->length - s2->length;
-	if(column==base+4)				// year
+	if(column==gYammiGui->COLUMN_YEAR)				// year
 		return s->year - s2->year;
-	if(column==base+5)				// trackNr
+	if(column==gYammiGui->COLUMN_TRACKNR)				// trackNr
 		return s->trackNr - s2->trackNr;
-	if(column==base+7)				// addedTo
+	if(column==gYammiGui->COLUMN_ADDED_TO)				// addedTo
 		return s->addedTo.secsTo(s2->addedTo);
-	if(column==base+8)				// bitrate
+	if(column==gYammiGui->COLUMN_BITRATE)				// bitrate
 		return s->bitrate - s2->bitrate;
 	// 9:filename, 10:path, 11:comment
-	if(column==base+12)				// last played
+	if(column==gYammiGui->COLUMN_LAST_PLAYED)				// last played
 		return s->lastPlayed.secsTo(s2->lastPlayed);
 	
 	// all other cases: call the key() method
-	return key(column, ascending).compare(other->key(column, ascending) );
+	return key(visibleColumn, ascending).compare(other->key(visibleColumn, ascending) );
 }
 
 /**
@@ -217,27 +218,29 @@ int SongListItem::compare( QListViewItem *i, int column, bool ascending ) const
  * (needed for sorting the listview)
  * tries to sort as reasonable as possible
  */
-QString SongListItem::key(int column, bool ascending) const
+QString SongListItem::key(int visibleColumn, bool ascending) const
 {
 	int base=songEntry->getBase();
-	const Song* s=song();
-	if(column<base) {
-		return songEntry->getKey(column);
+	if(visibleColumn<base) {
+		return songEntry->getKey(visibleColumn);
 	}
+
+  int column=gYammiGui->mapToRealColumn(visibleColumn-base);
+	const Song* s=song();
 	
-	if(column==base+0)				// artist
+	if(column==gYammiGui->COLUMN_ARTIST)				// artist
 		if(s->artist=="")
 			return " "+s->title;
 		else
 			return s->artist+s->title;
-	if(column==base+1)				// title
+	if(column==gYammiGui->COLUMN_TITLE)				// title
 		return s->title;
-	if(column==base+2)				// album
+	if(column==gYammiGui->COLUMN_ALBUM)				// album
 		if(s->album=="")
 			return " "+s->title;
 		else
 			return s->album+QString("%1").arg(s->trackNr, 2);       //			return s->album+s->title;
-	if(column==base+6)				// genre
+	if(column==gYammiGui->COLUMN_GENRE)				// genre
 		return QString("%1").arg(CMP3Info::getGenre(s->genreNr));
 	return text(column);
 }

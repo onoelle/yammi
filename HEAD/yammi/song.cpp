@@ -20,7 +20,7 @@
 #include "yammigui.h"
 #include "prefs.h"
 
-#include "mp3info/CMP3Info.h" /* used to retrieve mp3 layer info */
+#include "CMP3Info.h"
 
 #ifdef ENABLE_OGGLIBS
 #include "vcedit.h"

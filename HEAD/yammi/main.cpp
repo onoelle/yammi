@@ -6,8 +6,11 @@
 
 #include <qapplication.h>
 #include <qwindowsstyle.h>
+#include <qtranslator.h>
+#include <qtextcodec.h>
 #include "yammigui.h"
 #include "yammiapplication.h"
+
 
 //#include "options.h"
 //#ifdef ENABLE_NOATUN
@@ -38,9 +41,13 @@ int main( int argc, char **argv )
     }
   }
   YammiApplication application( argc, argv );
+        QTranslator translator( 0 );
+        translator.load( QString("yammi_de"), "/home/oliver/.yammi/" );
+//        translator.load( QString("yammi_") + QTextCodec::locale(), "." );
+        application.installTranslator( &translator );
 	// initialize gui
   YammiGui gui(arg1);
-	application.setMainWidget( &gui );
+ application.setMainWidget( &gui );
 	gui.show();
 	// enter event loop
 	return application.exec();

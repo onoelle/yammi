@@ -170,6 +170,8 @@ public:
   void          saveState(QSessionManager& sm);
   QString       makeReplacements(QString input, Song* s, int index);
   bool          columnIsVisible(int column);
+  int           mapToRealColumn(int column);
+  void          mapVisibleColumnsToOriginals();
   QString       getColumnName(int column);
 
 
@@ -191,6 +193,7 @@ public slots:
 //******************
 protected:
   bool          columnVisible[MAX_COLUMN_NO];
+  int           realColumnMap[MAX_COLUMN_NO];
 	int				    shuttingDown;
   QString       lastPrelistened;
 	MyList		    selectedSongs;

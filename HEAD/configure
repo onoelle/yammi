@@ -1569,7 +1569,7 @@ fi
 
 # Define the identity of the package.
 PACKAGE=yammi
-VERSION=0.8.2
+VERSION=0.8.3
 
 cat >>confdefs.h <<EOF
 #define PACKAGE "$PACKAGE"
@@ -19948,8 +19948,6 @@ fi
 echo "$as_me:19948: result: $USE_RPATH" >&5
 echo "${ECHO_T}$USE_RPATH" >&6
 
-# yyy: hacked by oliver, start if block for non-kde systems
-if test "x$configure_enable_KDE" = "xyes"; then
 echo "$as_me:19951: checking for KDE" >&5
 echo $ECHO_N "checking for KDE... $ECHO_C" >&6
 
@@ -21270,9 +21268,6 @@ if test $kde_qtver = 3; then
 
   LIBQT="$LIBQT $LIBDL"
 fi
-
-fi
-# yyy: hacked by oliver, end if block for non-kde systems
 
 echo "$as_me:21272: checking for Qt" >&5
 echo $ECHO_N "checking for Qt... $ECHO_C" >&6
@@ -22598,7 +22593,7 @@ if test "x$configure_enable_xmms" != "xyes" && test "x$configure_enable_noatun" 
 echo "$as_me: WARNING: ***BOTH xmms and noatun support are disabled, another media player with yammi plugins will be needed. *** " >&2;}
 fi
 
-ac_config_files="$ac_config_files Makefile yammi/Makefile yammi/docs/Makefile yammi/docs/en/Makefile yammi/icons/Makefile yammi/mp3info/Makefile"
+ac_config_files="$ac_config_files Makefile yammi/Makefile yammi/docs/Makefile yammi/docs/en/Makefile yammi/icons/Makefile"
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
 # tests run on this system so they can be shared between configure
@@ -22923,10 +22918,9 @@ do
   "yammi/docs/Makefile" ) CONFIG_FILES="$CONFIG_FILES yammi/docs/Makefile" ;;
   "yammi/docs/en/Makefile" ) CONFIG_FILES="$CONFIG_FILES yammi/docs/en/Makefile" ;;
   "yammi/icons/Makefile" ) CONFIG_FILES="$CONFIG_FILES yammi/icons/Makefile" ;;
-  "yammi/mp3info/Makefile" ) CONFIG_FILES="$CONFIG_FILES yammi/mp3info/Makefile" ;;
   "default-1" ) CONFIG_COMMANDS="$CONFIG_COMMANDS default-1" ;;
   "config.h" ) CONFIG_HEADERS="$CONFIG_HEADERS config.h" ;;
-  *) { { echo "$as_me:22924: error: invalid argument: $ac_config_target" >&5
+  *) { { echo "$as_me:22923: error: invalid argument: $ac_config_target" >&5
 echo "$as_me: error: invalid argument: $ac_config_target" >&2;}
    { (exit 1); exit 1; }; };;
   esac
@@ -23277,7 +23271,7 @@ done; }
   esac
 
   if test x"$ac_file" != x-; then
-    { echo "$as_me:23275: creating $ac_file" >&5
+    { echo "$as_me:23274: creating $ac_file" >&5
 echo "$as_me: creating $ac_file" >&6;}
     rm -f "$ac_file"
   fi
@@ -23295,7 +23289,7 @@ echo "$as_me: creating $ac_file" >&6;}
       -) echo $tmp/stdin ;;
       [\\/$]*)
          # Absolute (can't be DOS-style, as IFS=:)
-         test -f "$f" || { { echo "$as_me:23293: error: cannot find input file: $f" >&5
+         test -f "$f" || { { echo "$as_me:23292: error: cannot find input file: $f" >&5
 echo "$as_me: error: cannot find input file: $f" >&2;}
    { (exit 1); exit 1; }; }
          echo $f;;
@@ -23308,7 +23302,7 @@ echo "$as_me: error: cannot find input file: $f" >&2;}
            echo $srcdir/$f
          else
            # /dev/null tree
-           { { echo "$as_me:23306: error: cannot find input file: $f" >&5
+           { { echo "$as_me:23305: error: cannot find input file: $f" >&5
 echo "$as_me: error: cannot find input file: $f" >&2;}
    { (exit 1); exit 1; }; }
          fi;;
@@ -23369,7 +23363,7 @@ for ac_file in : $CONFIG_HEADERS; do test "x$ac_file" = x: && continue
   * )   ac_file_in=$ac_file.in ;;
   esac
 
-  test x"$ac_file" != x- && { echo "$as_me:23367: creating $ac_file" >&5
+  test x"$ac_file" != x- && { echo "$as_me:23366: creating $ac_file" >&5
 echo "$as_me: creating $ac_file" >&6;}
 
   # First look for the input files in the build tree, otherwise in the
@@ -23380,7 +23374,7 @@ echo "$as_me: creating $ac_file" >&6;}
       -) echo $tmp/stdin ;;
       [\\/$]*)
          # Absolute (can't be DOS-style, as IFS=:)
-         test -f "$f" || { { echo "$as_me:23378: error: cannot find input file: $f" >&5
+         test -f "$f" || { { echo "$as_me:23377: error: cannot find input file: $f" >&5
 echo "$as_me: error: cannot find input file: $f" >&2;}
    { (exit 1); exit 1; }; }
          echo $f;;
@@ -23393,7 +23387,7 @@ echo "$as_me: error: cannot find input file: $f" >&2;}
            echo $srcdir/$f
          else
            # /dev/null tree
-           { { echo "$as_me:23391: error: cannot find input file: $f" >&5
+           { { echo "$as_me:23390: error: cannot find input file: $f" >&5
 echo "$as_me: error: cannot find input file: $f" >&2;}
    { (exit 1); exit 1; }; }
          fi;;
@@ -23510,7 +23504,7 @@ cat >>$CONFIG_STATUS <<\EOF
   rm -f $tmp/in
   if test x"$ac_file" != x-; then
     if cmp -s $ac_file $tmp/config.h 2>/dev/null; then
-      { echo "$as_me:23508: $ac_file is unchanged" >&5
+      { echo "$as_me:23507: $ac_file is unchanged" >&5
 echo "$as_me: $ac_file is unchanged" >&6;}
     else
       ac_dir=`$as_expr X"$ac_file" : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
@@ -23635,7 +23629,7 @@ if test "$no_create" != yes; then
   $ac_cs_success || { (exit 1); exit 1; }
 fi
 
-{ echo "$as_me:23633:
+{ echo "$as_me:23632:
 Configuration for $PACKAGE $VERSION :
 --------------------------------
  Source code location .: $srcdir
@@ -23680,16 +23674,16 @@ Configuration for $PACKAGE $VERSION :
  and then 'make install' for installation.
  " >&6;}
 
-{ echo "$as_me:23678: WARNING: check to make sure the selected options are correct. " >&5
+{ echo "$as_me:23677: WARNING: check to make sure the selected options are correct. " >&5
 echo "$as_me: WARNING: check to make sure the selected options are correct. " >&2;}
 
-echo "$as_me:23681: checking for config.h" >&5
+echo "$as_me:23680: checking for config.h" >&5
 echo $ECHO_N "checking for config.h... $ECHO_C" >&6
 if test "${ac_cv_file_config_h+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else
   test "$cross_compiling" = yes &&
-  { { echo "$as_me:23687: error: cannot check for file existence when cross compiling" >&5
+  { { echo "$as_me:23686: error: cannot check for file existence when cross compiling" >&5
 echo "$as_me: error: cannot check for file existence when cross compiling" >&2;}
    { (exit 1); exit 1; }; }
 if test -r "config.h"; then
@@ -23698,13 +23692,13 @@ else
   ac_cv_file_config_h=no
 fi
 fi
-echo "$as_me:23696: result: $ac_cv_file_config_h" >&5
+echo "$as_me:23695: result: $ac_cv_file_config_h" >&5
 echo "${ECHO_T}$ac_cv_file_config_h" >&6
 if test $ac_cv_file_config_h = yes; then
-  { echo "$as_me:23699: WARNING: check the contents of 'config.h'" >&5
+  { echo "$as_me:23698: WARNING: check the contents of 'config.h'" >&5
 echo "$as_me: WARNING: check the contents of 'config.h'" >&2;}
 fi
 
-{ echo "$as_me:23703: WARNING: run ./configure --help to see all the options. " >&5
+{ echo "$as_me:23702: WARNING: run ./configure --help to see all the options. " >&5
 echo "$as_me: WARNING: run ./configure --help to see all the options. " >&2;}
 

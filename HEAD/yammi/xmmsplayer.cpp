@@ -40,16 +40,24 @@ XmmsPlayer::XmmsPlayer(int session, YammiModel* model)
   if(alreadyRunning) {
     cout << "xmms is already running\n";
   }
-  // check whether xmms is in shuffle mode: if yes, disable it
-  // (confuses Yammi's playlistmanagement)
+  // check whether xmms is in shuffle or repeat mode: if yes, disable it
   if(xmms_remote_is_shuffle(session)) {
     xmms_remote_toggle_shuffle(session);
     xmmsShuffleWasActivated=true;
-		cout << "switching off xmms shuffle mode (does confuse my playlist management otherwise)\n";
+		cout << "switching off xmms shuffle mode (please don't switch it on again...)\n";
   }
   else {
 	 	xmmsShuffleWasActivated=false;
   }
+  if(xmms_remote_is_repeat(session)) {
+    xmms_remote_toggle_repeat(session);
+    xmmsRepeatWasActivated=true;
+		cout << "switching off xmms repeat mode (please don't switch it on again...)\n";
+  }
+  else {
+	 	xmmsRepeatWasActivated=false;
+  }
+  
 #endif
 }
 
@@ -60,6 +68,10 @@ XmmsPlayer::~XmmsPlayer()
 	if(xmmsShuffleWasActivated) {
     cout << "switching xmms shuffle mode back on...\n";
 		xmms_remote_toggle_shuffle(session);
+  }
+	if(xmmsRepeatWasActivated) {
+    cout << "switching xmms repeat mode back on...\n";
+		xmms_remote_toggle_repeat(session);
   }
 #endif
 }
