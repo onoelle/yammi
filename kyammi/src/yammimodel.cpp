@@ -225,6 +225,7 @@ void YammiModel::saveHistory() {
     kdDebug() << "Saving history file in directory" << path << endl;
 
     QDomDocument doc;
+    doc.appendChild( doc.createProcessingInstruction( "xml", "version=\"1.0\" encoding=\"UTF-8\"" ) );    
     QDomElement root = doc.createElement("history");
     doc.appendChild(root);
 
@@ -255,15 +256,19 @@ void YammiModel::saveHistory() {
     QDir dir(path);
     if(dir.exists("history.xml") && dir.rename( path + "history.xml", path +"history_backup.xml")) {
         kdDebug() << "backup of history saved in \"history_backup.xml\"" << endl;
-	}
-    QString contents = doc.toString();
-    QFile f( path + "history.xml");
-    if(!f.open(IO_WriteOnly)) {
-        kdError() << "could not open history file for writing:" << path << "history.xml" << endl;
+    }
+    
+
+    QString filename(path + "history.xml");
+    QFile file(filename);
+    if(!file.open(IO_WriteOnly)) {
+        kdError() << "could not open file for writing:" << filename << endl;
         return;
     }
-    f.writeBlock(contents, contents.length());
-    f.close();
+    QTextStream str(&file);
+    str.setEncoding(QTextStream::UnicodeUTF8);
+    doc.save(str, 2);
+    file.close();
     kdDebug() << "done" << endl;
 }
 
@@ -298,9 +303,8 @@ void YammiModel::saveCategories() {
 
 bool YammiModel::saveList(MyList* list, QString path, QString filename)
 {
-	QFile f(path + "/" + filename + ".xml");
-
     QDomDocument doc;
+    doc.appendChild( doc.createProcessingInstruction( "xml", "version=\"1.0\" encoding=\"UTF-8\"" ) );
     QDomElement root = doc.createElement("category");
     root.setAttribute("name", filename);
     doc.appendChild(root);
@@ -313,14 +317,17 @@ bool YammiModel::saveList(MyList* list, QString path, QString filename)
         root.appendChild( elem );
     }
     // save to file...
-    QString contents = doc.toString();
-    if ( !f.open( IO_WriteOnly  ) ) {
-        kdError() << "Could not save folder " << filename << endl;
+    QString absoluteFilename(path + "/" + filename + ".xml");
+    QFile file(absoluteFilename);
+    if(!file.open(IO_WriteOnly)) {
+        kdError() << "Could not save folder " << absoluteFilename << endl;
         return false;
     }
-    f.writeBlock ( contents, contents.length() );
-    f.close();
-	return true;
+    QTextStream str(&file);
+    str.setEncoding(QTextStream::UnicodeUTF8);
+    doc.save(str, 2);
+    file.close();
+    return true;
 }
 
 

@@ -79,22 +79,22 @@ bool NoatunPlayer::ensurePlayerIsRunning() {
         QProcess proc;
         proc.addArgument("dcop");
         if ( !proc.start() ) {
-            kdDebug() << "ERROR: could not start dcop process\n";
+            kdError() << "could not start dcop process\n";
             return false;
         }
         while(proc.isRunning()) {}
         if(!proc.normalExit()) {
-            kdDebug() << "ERROR: normalExit is false for dcop command (trying to continue...)\n";
+            kdError() << "normalExit is false for dcop command (trying to continue...)\n";
         }
         while(replyStr=proc.readLineStdout()) {
             if(replyStr.startsWith("noatun")) {
                 //        kdDebug() << count << ". noatun process found: " << replyStr << "\n";
                 QString idStr=replyStr.mid(7);
                 if(idStr=="") {
-                    kdDebug() << "!!!!!!!!\nit looks like you have the following option checked in noatun:\n";
-                    kdDebug() << "\"allow only one instance\"\n";
-                    kdDebug() << "=> disable it first, restart noatun and then restart yammi!\n";
-                    kdDebug() << "(I think I feel like crashing now...)\n!!!!!!!\n";
+                    kdError() << "it looks like you have the following option checked in noatun:\n";
+                    kdError() << "\"allow only one instance\"\n";
+                    kdError() << "=> disable it first, restart noatun and then restart yammi!\n";
+                    kdFatal() << "(I think I feel like crashing now...)\n!!!!!!!\n";                    
                     return false;
                 }
                 int id=atoi(idStr);
@@ -108,9 +108,9 @@ bool NoatunPlayer::ensurePlayerIsRunning() {
             system("noatun");
         }
     }
-    if(count<2) {
-        kdDebug() << "ERROR: could not start the two required noatun instances!\n";
-        kdDebug() << "have you \"allow only one instance\" option checked? disable it first!\n";
+    if(count < 2) {
+        kdError() << "could not start the two required noatun instances!\n";
+        kdError() << "have you \"allow only one instance\" option checked? disable it first!\n";
         return false;
     }
     return true;

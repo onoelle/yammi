@@ -1,6 +1,8 @@
 ??.??.2005 version 1.2
 ######################
+- fixed: problems with umlauts in categories/history (saving to correct UTF-8 encoding now)
 - fixed: crash when scanning unreadable directories (eg. over samba shares)
+- fixed: exit program instead of infinite loop when noatun option "allow only one instance" checked
 - improved: updated italian translation
 
 
