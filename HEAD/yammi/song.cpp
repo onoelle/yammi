@@ -18,6 +18,7 @@
 
 #include "song.h"
 #include "yammigui.h"
+#include "prefs.h"
 
 #include "mp3info/CMP3Info.h"       // used to retrieve mp3 layer info
 
@@ -118,6 +119,7 @@ int Song::create(const QString location, const QString mediaName)
 	}
   this->filesize=fi->size();
 	QString saveFilename(fi->fileName());
+	QString savePath(fi->dirPath(TRUE));
 	delete fi;
 
 
@@ -127,8 +129,8 @@ int Song::create(const QString location, const QString mediaName)
   // get info about song object (bitrate, length, tags, ...)
 
   // guess artist/title from filename (in case no tags can be read)
-	QString ffArtist, ffTitle;
-  guessTagsFromFilename(saveFilename, &ffArtist, &ffTitle);
+	QString ffArtist, ffTitle, ffAlbum;
+  guessTagsFromFilename(saveFilename, savePath, &ffArtist, &ffTitle, &ffAlbum);
   bool treated=false;
 
 
@@ -170,6 +172,7 @@ int Song::create(const QString location, const QString mediaName)
       cout << "could not read tag information from mp3 file \"" << location << "\", guessing values from filename\n";
 			title=ffTitle;
 			artist=ffArtist;
+      album=ffAlbum;
     }
 
     // just in case: remove trailing mp3 in title
@@ -181,13 +184,20 @@ int Song::create(const QString location, const QString mediaName)
     // we have no id3lib support => we have to get info from filename
     title=ffTitle;
 		artist=ffArtist;
+    album=ffAlbum;
 #endif // ENABLE_ID3LIB
 
     treated=true;
   }
 
 
-
+  if(location.right(4).upper()==".TST") {
+    title=ffTitle;
+		artist=ffArtist;
+    album=ffAlbum;
+    treated=true;
+  }
+  
   // ogg object
   if(location.right(4).upper()==".OGG") {
     // get ogg info
@@ -203,6 +213,7 @@ int Song::create(const QString location, const QString mediaName)
       cout << "ogg tags empty, taking guessed info from filename...\n";
 			title=ffTitle;
 			artist=ffArtist;
+      album=ffAlbum;
 		}
     // just in case: remove trailing ogg in title
     if(title.right(4).upper()==".OGG") {
@@ -211,6 +222,7 @@ int Song::create(const QString location, const QString mediaName)
 #else
     artist=ffArtist;
     title=ffTitle;
+    album=ffAlbum;
 #endif // ENABLE_OGGLIBS
 
     treated=true;
@@ -228,6 +240,7 @@ int Song::create(const QString location, const QString mediaName)
     }
     artist=ffArtist;
     title=ffTitle;
+    album=ffAlbum;
     treated=true;
   }
 
@@ -238,6 +251,7 @@ int Song::create(const QString location, const QString mediaName)
     bitrate=0;
     length=0;
     artist="";
+    album="";
     title=saveFilename;
   }
 
@@ -273,30 +287,58 @@ bool Song::checkFilename()
  * So far, assumes a pattern of "artist - title.mp3"
  * \todo: add more sophisticated pattern (leading trackNr?, directory with album?)
  */
-void Song::guessTagsFromFilename(QString filename, QString* artist, QString* title)
+void Song::guessTagsFromFilename(QString filename, QString path, QString* artist, QString* title, QString* album)
 {
+  *album="";
   QString guessBase=filename;
-
   // remove suffix, if it looks like we have a suffix
   if(guessBase.at(guessBase.length()-4)=='.')
     guessBase=guessBase.left(guessBase.length()-4);
-
   guessBase=guessBase.replace( QRegExp("_"), " " );							// replace "_" with " "
 
-	int pos=guessBase.find('-');
-	if(pos!=-1) {
-		*artist=guessBase.left(pos);
-		*artist=artist->simplifyWhiteSpace();
-		*title=guessBase.right(guessBase.length()-pos-1);
-		*title=title->simplifyWhiteSpace();
-	}
-	else
-	{
-		*artist="unknown";
-		*title=guessBase;
-		*title=title->simplifyWhiteSpace();
-	}
-//  cout << "guessed artist: " << *artist << ", title: " << *title << "\n";
+
+  if(gYammiGui->getModel()->config.guessingMode==gYammiGui->getModel()->config.GUESSING_MODE_SIMPLE) {
+
+    int pos=guessBase.find('-');
+    if(pos!=-1) {
+      *artist=guessBase.left(pos);
+      *artist=artist->simplifyWhiteSpace();
+      *title=guessBase.right(guessBase.length()-pos-1);
+      *title=title->simplifyWhiteSpace();
+    }
+    else
+    {
+      *artist="unknown";
+      *title=guessBase;
+      *title=title->simplifyWhiteSpace();
+    }
+  }
+
+  if(gYammiGui->getModel()->config.guessingMode==gYammiGui->getModel()->config.GUESSING_MODE_ADVANCED) {
+    // eg "/artist/album/01 - trackname.mp3"
+    //    pos1  pos2
+
+    int pos2=path.findRev('/');
+    if(pos2>0) {
+      int pos1=path.findRev('/', pos2-1);
+      if(pos1>0) {
+        *artist=path.mid(pos1+1, pos2-pos1-1);
+      }
+      *album=path.mid(pos2+1);
+    }
+
+    int pos=guessBase.find('-');
+    if(pos!=-1) {
+      *title=guessBase.mid(pos+1);
+      *title=title->simplifyWhiteSpace();
+      QString trackNrStr=guessBase.left(pos);
+      trackNr=atoi(trackNrStr);
+    }
+    else
+    {
+      *title=guessBase;
+    }
+  }
 }
 
 

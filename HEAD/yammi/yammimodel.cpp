@@ -65,6 +65,8 @@ void YammiModel::readPreferences(QString baseDir)
 	QFile f( config.yammiBaseDir+"/prefs.xml" );
 	if ( !f.open( IO_ReadOnly ) ) {
 		cout << "no preferences found (first time started?)... using defaults\n";
+    addStandardPlugins();
+    savePreferences();
 		return;
 	}	
 	if ( !doc.setContent( &f ) ) {
@@ -81,11 +83,11 @@ void YammiModel::readPreferences(QString baseDir)
 	if(prefsVersion!=config.yammiVersion) {
 		cout << "reading preferences from other version of Yammi\n";
     cout << "normally does not create any problems, if unsure, check Yammi's settings...\n";
-    this->savePreferences();
   }
 	config.trashDir					=	getProperty(&doc, "trashDir", config.trashDir);
 	config.scanDir					=	getProperty(&doc, "scanDir", config.scanDir);
 	config.filenamePattern	=	getProperty(&doc, "filenamePattern", config.filenamePattern);
+  config.guessingMode			=	getProperty(&doc, "guessingMode", config.player);
 	config.doubleClickAction=	(action) getProperty(&doc, "doubleClickAction", config.doubleClickAction);
 	config.middleClickAction=	(action) getProperty(&doc, "middleClickAction", config.middleClickAction);
 	config.controlClickAction=(action) getProperty(&doc, "controlClickAction", config.controlClickAction);
@@ -107,17 +109,17 @@ void YammiModel::readPreferences(QString baseDir)
   config.player			      =	getProperty(&doc, "mediaPlayer", config.player);
 #ifndef ENABLE_XMMS
   // xmms not enabled => set to noatun
-  if(config.player==0)
-    config.player=1;
+  if(config.player==config.MEDIA_PLAYER_XMMS)
+    config.player=config.MEDIA_PLAYER_NOATUN;
 #endif
 #ifndef ENABLE_NOATUN
   // noatun not enabled => set to xmms
-  if(config.player==1)
-    config.player=0;
+  if(config.player==config.MEDIA_PLAYER_NOATUN)
+    config.player=config.MEDIA_PLAYER_XMMS;
 #endif
 #ifndef ENABLE_XMMS
 #ifndef ENABLE_NOATUN
-  cout << "ERROR: no media player support! (you need at least support for one media player compiled in)\n";
+  cout << "WARNING: no media player support! (you should have support for at least one media player compiled in)\n";
   config.player=-1;
 #endif
 #endif
@@ -146,6 +148,10 @@ void YammiModel::readPreferences(QString baseDir)
 	config.swapDir					=	getProperty(&doc, "swapDir", config.swapDir);
 	config.swapSize					=	getProperty(&doc, "swapSize", config.swapSize);
 	
+	if(prefsVersion!=config.yammiVersion) {
+    addStandardPlugins();
+    savePreferences();
+  }
 	cout << "..done\n";
 }
 
@@ -169,6 +175,7 @@ void YammiModel::savePreferences()
 	setProperty(&doc, "trashDir", 					config.trashDir);
 	setProperty(&doc, "scanDir", 						config.scanDir);
 	setProperty(&doc, "filenamePattern",		config.filenamePattern);
+	setProperty(&doc, "guessingMode", 			config.guessingMode);
 	setProperty(&doc, "doubleClickAction",	config.doubleClickAction);
 	setProperty(&doc, "middleClickAction",	config.middleClickAction);
 	setProperty(&doc, "controlClickAction",	config.controlClickAction);
@@ -210,8 +217,10 @@ void YammiModel::savePreferences()
 	// save to file...
 	QString save=doc.toString();
 	QFile f2( config.yammiBaseDir+"/prefs.xml" );
-	if ( !f2.open( IO_WriteOnly  ) )
+	if ( !f2.open( IO_WriteOnly  ) ) {
+ 		cout << "\nERROR: Could not save preferences";
 		return;
+  }
 	f2.writeBlock ( save, save.length() );
 	f2.close();
 	cout << " ...done\n";
@@ -308,10 +317,11 @@ void YammiModel::setProperty(QDomDocument* doc, const QString propName, const QS
 bool YammiModel::startFirstTime(QString baseDir)
 {
 	cout << "you seem to start Yammi for the first time!\n";
-	cout << "creating directory .yammi in your home directory...";
-	QDir d(baseDir);  // now points to home directory
+	cout << "creating directory .yammi in " << baseDir << "...";
+	QDir d(baseDir);
  	if ( !d.mkdir( ".yammi" ) ) {
- 		cout << "\nERROR: Could not create directory .yammi in your home directory...";
+ 		cout << "\nERROR: Could not create directory .yammi...\n";
+ 		cout << "maybe you have no write access to directory " << baseDir << "?\n";
  		return false;
  	}
  	d.cd(".yammi");
@@ -330,10 +340,59 @@ bool YammiModel::startFirstTime(QString baseDir)
  	}
 	cout << " ..done\n";
  	
-	cout << "Everything successfully initialized, have fun!\n";
+	cout << "Everything successfully initialized, have fun using Yammi!\n";
 	return true;
 }
 
+
+/**
+ * Add all the standard plugins (on switch to new version)
+ */
+void YammiModel::addStandardPlugins()
+{
+  cout << "adding Yammi's standard plugins to your plugin list.\n";
+  cout << "(just delete them, if you don't need them)\n";
+
+  if(!config.pluginMenuEntry->contains("Create CD Label")) {
+    config.pluginMenuEntry->append("Create CD Label");
+    config.pluginCommand->append("cdlabelgen -c \"Title\" -s \"Subtitle\" -b -w -i \"%l\" > %Y");
+    config.pluginCustomList->append("%i. %a - %t (%l)%");
+    config.pluginConfirm->append("true");
+    config.pluginMode->append("group");
+  }
+  
+  if(!config.pluginMenuEntry->contains("Export to m3u Playlist")) {
+    config.pluginMenuEntry->append("Export to m3u Playlist");
+    config.pluginCommand->append("echo -e \"#EXTM3U\n%l\" > %Y");
+    config.pluginCustomList->append("#EXTINF:%s,%a - %t%n%f%n");
+    config.pluginConfirm->append("true");
+    config.pluginMode->append("group");
+  }
+  
+  if(!config.pluginMenuEntry->contains("Burn with K3b(audio)")) {
+    config.pluginMenuEntry->append("Burn with K3b(audio)");
+    config.pluginCommand->append("echo -e \"#EXTM3U\n%l\" > /tmp/burnlist.m3u && k3b --audio /tmp/burnlist.m3u &");
+    config.pluginCustomList->append("#EXTINF:%s,%a - %t%n%f%n");
+    config.pluginConfirm->append("true");
+    config.pluginMode->append("group");
+  }
+  if(!config.pluginMenuEntry->contains("Burn with K3b(data)")) {
+    config.pluginMenuEntry->append("Burn with K3b(data)");
+    config.pluginCommand->append("k3b --data %L &");
+    config.pluginCustomList->append("\"%f\" ");
+    config.pluginConfirm->append("true");
+    config.pluginMode->append("group");
+  }
+/*
+  if(!config.pluginMenuEntry->contains("")) {
+    config.pluginMenuEntry->append("");
+    config.pluginCommand->append("");
+    config.pluginCustomList->append("");
+    config.pluginConfirm->append("true");
+    config.pluginMode->append("group");
+  }
+  */
+}
 
 
 /**
@@ -347,6 +406,10 @@ void YammiModel::readCategories()
   categoriesChanged(false);
 
   QDir d(config.yammiBaseDir+"/categories");
+  if(!d.exists()) {
+    cout << "\ncould not read categories\n";
+    return;
+  }
 	d.setFilter( QDir::Files);
 	d.setSorting( QDir::DirsFirst );
 	const QFileInfoList *list = d.entryInfoList();
@@ -469,7 +532,7 @@ void YammiModel::saveHistory()
 	QDomDocument doc( "history" );
 	QString empty("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<history>\n</history>\n");
 	if ( !doc.setContent( empty ) ) {
-		cout << "saving history failed!\n";
+		cout << "ERROR: could not create xml document for history file\n";
 		return;
 	}
 	QDomElement rootElem = doc.documentElement();
@@ -500,7 +563,7 @@ void YammiModel::saveHistory()
 	QString save=doc.toString();
 	QFile f2( config.yammiBaseDir+"/history.xml");
 	if(!f2.open(IO_WriteOnly)) {
-		cout << "\nERROR: could not write history\n";
+		cout << "ERROR: could not save history\n";
 		return;
 	}
 	f2.writeBlock(save, save.length());
@@ -527,8 +590,8 @@ void YammiModel::saveCategories()
 		QDomDocument doc( "category" );
 		QString empty("<?xml version=\"1.0\" encoding=\"UTF-8\"?><!DOCTYPE songdb>\n<category>\n</category>\n");
 		if ( !doc.setContent( empty ) ) {
-			cout << "ERROR: could not save categories!\n";
-			return;
+			cout << "ERROR: could not create xml file for category " << categoryName << "\n";
+			continue;
 		}
 		
 		QDomElement rootElem = doc.documentElement();
@@ -589,7 +652,7 @@ void YammiModel::readSongDatabase()
 		QString msg("");
 		msg+="Your song database is from version "+version+" of Yammi.\n";
 		msg+="This Yammi version: "+config.yammiVersion+"\n\n";
-		if(version=="0.5.3" || version=="0.6" || version=="0.6.1" || version=="0.7" || version=="0.7.1") {
+		if(version=="0.5.3" || version=="0.6" || version=="0.6.1" || version=="0.7" || version=="0.7.1" || version=="0.8.0beta") {
 			msg+="However, the database format did not change since then, so no worries!\n\n";
       msg+="(The next time your database will be saved, it will be marked with the new version)";
 		}
@@ -684,7 +747,7 @@ void YammiModel::saveSongDatabase()
 	QDomDocument doc( "songdb" );
 	QString empty("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<songs yammiVersion=\""+config.yammiVersion+"\">\n</songs>\n");
 	if ( !doc.setContent( empty ) ) {
-		cout << "saving failed!\n";
+		cout << "ERROR: could not create xml file for song database\n";
 		return;
 	}
 	QDomElement rootElem = doc.documentElement();
@@ -733,7 +796,7 @@ void YammiModel::saveSongDatabase()
 	QString save=doc.toString();
 	QFile f2( config.yammiBaseDir+"/songdb.xml");
 	if(!f2.open(IO_WriteOnly)) {
-		cout << "\nERROR: could not write song database\n";
+		cout << "ERROR: could not write song database\n";
 		return;
 	}
 	f2.writeBlock(save, save.length());

@@ -31,7 +31,13 @@ class Prefs {
 public: 
 	Prefs();
 	~Prefs();
-	
+
+// constants
+  static const int MEDIA_PLAYER_XMMS = 0;
+  static const int MEDIA_PLAYER_NOATUN = 1;
+  static const int GUESSING_MODE_SIMPLE = 0;
+  static const int GUESSING_MODE_ADVANCED = 1;
+  
 // general	
   int player;
 	QString yammiVersion;
@@ -39,6 +45,7 @@ public:
 	QString trashDir;					// our trashcan for songs (files will be moved to this dir on deleting)
 	QString yammiBaseDir;
   QString filenamePattern;
+  int guessingMode;
 	
 	action doubleClickAction;
 	action middleClickAction;

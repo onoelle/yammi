@@ -135,6 +135,8 @@ protected:
 	void 			setProperty(QDomDocument* doc, const QString propName, const QStringList* propValue);
 
 	bool			startFirstTime(QString baseDir);
+  void      addStandardPlugins();
+  
 };
 
 #endif

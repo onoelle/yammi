@@ -88,6 +88,7 @@ YammiGui::YammiGui(QString baseDir)
   // set up media player
   //********************
   player=0;
+  currentSong=0;
 #ifdef ENABLE_XMMS
   if(model->config.player==0) {
     cout << "media player: XMMS\n";
@@ -188,6 +189,7 @@ YammiGui::YammiGui(QString baseDir)
                            this, SLOT(skipForward()), mediaPlayerToolBar);
     songSlider = new QSlider( QSlider::Horizontal, mediaPlayerToolBar, "songLength" );
     songSlider->setTickmarks(QSlider::Below);
+    songSlider->setTickInterval(1000*60);
     songSlider->setFixedWidth(180);
     songSlider->setPaletteBackgroundColor(QColor(179, 218, 226));
     isSongSliderGrabbed=false;
@@ -402,7 +404,6 @@ YammiGui::YammiGui(QString baseDir)
 	shuttingDown=0;
 	controlPressed=false;
 	shiftPressed=false;
-	currentSong=0;
 	
   // finish initialization of player (if available)
   if(player!=0) {
@@ -458,6 +459,7 @@ void YammiGui::finishInitialization()
 																					"Please check out Yammi's website for new versions and other info:\n"+
 																					"http://yammi.sourceforge.net");
 	}
+
   // finish!
   cout << "initialisation successfully completed!\n";
 }
@@ -499,8 +501,8 @@ YammiGui::~YammiGui()
 
 
 /**
- * This slot is called on changes in the playlist (model->songsToPlay).
- * eg. signalled by the mediaplayer
+ * This slot is called on changes in the playlist (model->songsToPlay),
+ * signalled by the mediaplayer.
  */
 void YammiGui::updatePlaylist()
 {
@@ -510,14 +512,7 @@ void YammiGui::updatePlaylist()
   }
 
   // handle last song
-	if(currentSong!=0) {
-    // we put last song in folder songsPlayed
-		MyDateTime now;
-		SongEntryTimestamp* entry=new SongEntryTimestamp(currentSong, &currentSongStarted);
-		currentSong->lastPlayed=entry->timestamp;
-		folderSongsPlayed->addEntry(entry);		// append to songsPlayed
-  }
-
+  handleLastSong(currentSong);
   // handle new song
   if(model->songsToPlay.count()>0) {
     handleNewSong(model->songsToPlay.at(0)->song());
@@ -536,6 +531,34 @@ void YammiGui::updatePlaylist()
 		songListView->triggerUpdate();
 }
 
+
+
+
+/**
+ * Puts the song that was just played into folder songsPlayed.
+ */
+void YammiGui::handleLastSong(Song* lastSong)
+{
+  if(lastSong==0) {
+    return;
+  }
+  // we put last song in folder songsPlayed
+  // but first check, whether already in there (due to xmms status change bug)
+  if(model->songsPlayed.count()>=1) {
+    Song* lastLogged=((SongEntry*)model->songsPlayed.getLast())->song();
+    if(lastLogged==lastSong) {
+      return;
+    }
+  }
+  MyDateTime now;
+	SongEntryTimestamp* entry=new SongEntryTimestamp(lastSong, &currentSongStarted);
+	lastSong->lastPlayed=entry->timestamp;
+	folderSongsPlayed->addEntry(entry);		// append to songsPlayed
+}
+
+/**
+ * Called when a new song is played: updates title bar, songSlider, checks sleepMode
+ */
 void YammiGui::handleNewSong(Song* newSong)
 {
   currentSong=newSong;
@@ -554,7 +577,7 @@ void YammiGui::handleNewSong(Song* newSong)
     songsUntilShutdown--;
     sleepModeSpinBox->setValue(songsUntilShutdown);
     if(songsUntilShutdown==0) {
-      cout << "shutting down now...\n";
+      cout << "sleep mode: shutting down now...\n";
       shutDown();
     }
   }
@@ -565,7 +588,6 @@ void YammiGui::handleNewSong(Song* newSong)
   // setup songSlider
 //    songSlider->setRange(0, player->getTotalTime());
   songSlider->setRange(0, currentSong->length*1000);
-  songSlider->setTickInterval(1000*60);
 }
 
 /**
@@ -580,7 +602,8 @@ void YammiGui::updatePlayerStatus()
   if(player->getStatus()==PLAYING) {
     tbPlayPause->setIconSet(QIconSet(QPixmap((const char**)pause_xpm)));
     if(currentSong==0 || currentFile!=player->getCurrentFile()) {
-      handleNewSong(model->getSongFromFilename(player->getCurrentFile()));
+      handleLastSong(currentSong);
+      (model->getSongFromFilename(player->getCurrentFile()));
     }
   }
   else {
@@ -1406,6 +1429,7 @@ QString YammiGui::makeReplacements(QString input, Song* s, int index)
 	input.replace(QRegExp("%b"), QString("%1").arg(s->bitrate));
 	input.replace(QRegExp("%i"), QString("%1").arg(index));
 	input.replace(QRegExp("%l"), QString("%1:%2").arg((s->length) / 60).arg(lengthStr));
+	input.replace(QRegExp("%s"), QString("%1").arg(s->length));
   input.replace(QRegExp("%n"), "\n");
 	input.replace(QRegExp("%m"), mediaList);
   input.replace(QRegExp("%r"), trackNrStr);
@@ -2249,20 +2273,22 @@ void YammiGui::renameCategory()
 }
 
 
+/**
+ * Sets the selected autoplay folder to the currently selected folder.
+ * Updates the autoplayMenu.
+ */
 void YammiGui::autoplayFolder()
 {
 	Folder* f = (FolderSorted*)folderListView->currentItem();
-  if(autoplayFoldername!=f->folderName()) {
-    autoplayFoldername=f->folderName();
-    autoplayMenu->changeItem(AUTOPLAY_FOLDER, "Folder: "+autoplayFoldername);    
-  }
-  else {
-    autoplayFoldername="";
-    autoplayMenu->changeItem(AUTOPLAY_FOLDER, "no folder chosen");
-  }
+  autoplayFoldername=f->folderName();
+  autoplayMenu->changeItem(AUTOPLAY_FOLDER, "Folder: "+autoplayFoldername);    
 }
 
 
+/**
+ * Called, when the autoplayMode changed.
+ * Updates the autoplayMenu.
+ */
 void YammiGui::autoplayChanged(int mode)
 {
   autoplayMenu->setItemChecked(autoplayMode, false);
@@ -2403,6 +2429,7 @@ void YammiGui::autoFillPlaylist()
   Folder* toAddFrom=getFolderByName(autoplayFoldername);
   if(toAddFrom!=0 && toAddFrom->songList->count()>0) {
     // fill up from chosen autoplay folder
+    unsigned int noSongsBefore=folderActual->songList->count();
     int total=toAddFrom->songList->count();
 
     if(autoplayMode==AUTOPLAY_RANDOM) {
@@ -2419,13 +2446,23 @@ void YammiGui::autoFillPlaylist()
 
     if(autoplayMode==AUTOPLAY_LNP) {
       // method 2: try to pick the song we didn't play for longest time
-      toAddFrom->songList->setSortOrderAndSort(MyList::ByLastPlayed);
+      toAddFrom->songList->setSortOrderAndSort(MyList::ByLastPlayed, true);
       for(unsigned int i=0; i<toAddFrom->songList->count() && folderActual->songList->count()<5; i++) {
         Song* toAdd=toAddFrom->songList->at(i)->song();
         if(!(folderActual->songList->containsSong(toAdd))) {
           folderActual->addSong(toAdd);
         }
       }
+    }
+
+    // update view only if we really added songs
+    if(folderActual->songList->count()>noSongsBefore) {
+      player->syncYammi2Player(false);
+      // update view, if folderActual is currently shown folder
+      if(chosenFolder==folderActual || chosenFolder->folderName()==autoplayFoldername)
+        slotFolderChanged();
+      else
+        songListView->triggerUpdate();
     }
   }
 }

@@ -2,9 +2,9 @@
 <article>
 <title>The Yammi Handbook
 <author>Brian O.Nölle <tt>oli.noelle@web.de</tt>
-<date>Version 0.7 , Mon January 6 16:00:00 MET 2003
+<date>Version 0.8.0 , Mon January 6 16:00:00 MET 2003
 <abstract>
-This Handbook describes Yammi Version 0.7
+This Handbook describes Yammi Version 0.8.0
 </abstract>
 
 <toc>
@@ -560,7 +560,34 @@ Note that this folder will not be saved for the next session, so please resolve 
 inconsistencies immediately after checking consistency.
 
 <sect1> Burning files <p>
+For most users, there are two reasons to burn files on CDs:
 
+1. To burn an audio CD from a selection of songs, to play it on a normal CD player
+
+2. To make an backup of some files on harddisk to CD
+(possibly to remove the files locally and use the removable media management of Yammi).
+
+<sect2>Burning an audio CD from a selection of songs<p>
+I highly recommend the burning program K3b (running under KDE) to burn an audio CD.
+
+If you have k3b installed, you can simply select the songs you want to burn,
+and use the "Burn with K3b(audio)" plugin. It will start k3b, open a new audio project
+and add all selected songs to it.
+
+In that way, burning the favourite songs of your friend to an audio CD is easy as pie:
+
+1. Create a new category
+
+2. Let your friend put all favourite songs into that category
+
+3. Mark all songs of the category and select "Burn with K3b(audio)" from the plugin menu
+
+4. Start the burning process from within K3b.
+
+5. Deliver the CD ;-)
+
+
+<sect2>Burning files to CDs as backup<p>
 For assistance in burning files to a CD, do the following:
 
 1. select the songs you want to burn
@@ -796,7 +823,7 @@ after the time when they were played).
 
 <sect>Copyright<p>
 
-Yammi 0.7, Copyright 2002 Oliver Nölle, oli.noelle@web.de
+Yammi 0.8.0, Copyright 2002 Oliver Nölle, oli.noelle@web.de
 
 
 This program is free software; you can redistribute it and/or modify

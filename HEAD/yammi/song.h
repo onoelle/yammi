@@ -136,7 +136,7 @@ public:
 
   // general info (not specific to file format)
   //*************
-  void guessTagsFromFilename(QString filename, QString* artist, QString* title);
+  void guessTagsFromFilename(QString filename, QString path, QString* artist, QString* title, QString* album);
 
   // checking methods
 	bool checkTags();

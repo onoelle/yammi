@@ -24,13 +24,21 @@ int main( int argc, char **argv )
 //#ifdef ENABLE_NOATUN
 //  KCmdLineArgs::init(argc, argv, "Yammi", "", "");
 //#endif
-	YammiApplication application( argc, argv );
-	// initialize gui
   QString arg1="";
   if(argc>=2) {
     // argv[0] is the command name
     arg1=QString(argv[1]);
+    if(arg1=="-h" || arg1=="--help") {
+      cout << "Yammi - Yet Another Media Manager I...\n";
+      cout << "For information visit http://yammi.sourceforge.net\n\n";
+      cout << "usage: yammi [baseDir]\n\n";
+      cout << "baseDir determines where Yammi looks for the .yammi directory to store all its settings and database\n";
+      cout << "if not given, it will be the user's home directory (which should be fine)\n";
+      return 0;
+    }
   }
+  YammiApplication application( argc, argv );
+	// initialize gui
   YammiGui gui(arg1);
 	application.setMainWidget( &gui );
 	gui.show();

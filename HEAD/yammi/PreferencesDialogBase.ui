@@ -652,12 +652,21 @@
                                     </widget>
                                 </vbox>
                             </widget>
+                            <widget class="QPushButton" row="1" column="2">
+                                <property name="name">
+                                    <cstring>PushButtonPatternReplacements</cstring>
+                                </property>
+                                <property name="text">
+                                    <string>Replacements...</string>
+                                </property>
+                            </widget>
                             <widget class="QLabel" row="1" column="0">
                                 <property name="name">
                                     <cstring>LabelFilenamePattern</cstring>
                                 </property>
                                 <property name="text">
-                                    <string>filename pattern</string>
+                                    <string>filename pattern
+(for renaming files)</string>
                                 </property>
                                 <property name="toolTip" stdset="0">
                                     <string>The filename pattern to use for renaming files.</string>
@@ -671,13 +680,72 @@
                                     <string>The filename pattern to use for renaming files.</string>
                                 </property>
                             </widget>
-                            <widget class="QPushButton" row="1" column="2">
+                            <widget class="QLabel" row="2" column="0">
                                 <property name="name">
-                                    <cstring>PushButtonPatternReplacements</cstring>
+                                    <cstring>LabelGuessingPattern</cstring>
                                 </property>
                                 <property name="text">
-                                    <string>Replacements...</string>
+                                    <string>guessing pattern
+(if no tags available)</string>
                                 </property>
+                                <property name="toolTip" stdset="0">
+                                    <string>The filename pattern to use for renaming files.</string>
+                                </property>
+                            </widget>
+                            <widget class="QButtonGroup" row="2" column="1" rowspan="1" colspan="2">
+                                <property name="name">
+                                    <cstring>GuessingPatternButtonGroup</cstring>
+                                </property>
+                                <property name="enabled">
+                                    <bool>true</bool>
+                                </property>
+                                <property name="frameShape">
+                                    <enum>NoFrame</enum>
+                                </property>
+                                <property name="title">
+                                    <string></string>
+                                </property>
+                                <widget class="QRadioButton">
+                                    <property name="name">
+                                        <cstring>RadioButtonSimpleGuessmode</cstring>
+                                    </property>
+                                    <property name="geometry">
+                                        <rect>
+                                            <x>10</x>
+                                            <y>10</y>
+                                            <width>330</width>
+                                            <height>20</height>
+                                        </rect>
+                                    </property>
+                                    <property name="text">
+                                        <string>artist - title</string>
+                                    </property>
+                                    <property name="checked">
+                                        <bool>true</bool>
+                                    </property>
+                                    <property name="buttonGroupId">
+                                        <number>2</number>
+                                    </property>
+                                </widget>
+                                <widget class="QRadioButton">
+                                    <property name="name">
+                                        <cstring>RadioButtonAdvancedGuessmode</cstring>
+                                    </property>
+                                    <property name="geometry">
+                                        <rect>
+                                            <x>10</x>
+                                            <y>40</y>
+                                            <width>340</width>
+                                            <height>20</height>
+                                        </rect>
+                                    </property>
+                                    <property name="text">
+                                        <string>/artist/album/trackNr - title</string>
+                                    </property>
+                                    <property name="buttonGroupId">
+                                        <number>2</number>
+                                    </property>
+                                </widget>
                             </widget>
                         </grid>
                     </widget>

@@ -1,62 +1,47 @@
 TODO
 ----
-last update 5.3.2003
+last update 8.3.2003
 
 
-
-KNOWN BUGS
-----------
-- floating point exception when scanning wav file???
-- still problem of freezing xmms => xmms_remote_playlist_delete(0, 0)
-	(seems to be a bug in xmms, posted to bugs@xmms)
-- window geometry: sometimes window position gets shifted by the window decoration towards right lower corner
-- problems with filenames containing "ß"? (problem of qt/linux on fat filesystem?)
-- deleting a song that is currently played, then pressing "current" => crash
-
-for noatun support
-------------------
-- restart player after killed
-- playing songs not contained in Yammi's database might confuse yammi
-- both players:
-  - start (but song changed in between): update current
-  - use QProcess for XMMS? (noatun?)
-  - skip forward/backward when stopped
 
 for release 0.8.0
 -----------------
-- document k3b plugin configuration
-- command line option: yammi directory
-- check autoplay: if not enough songs in folderAutoplay (longest not played):
-    don't try all the time...
-- add a command-line option to start with different .yammi directory
-- plugin: publish a sample plugin (echo...) with all replacements
-- add default plugins on first start (if not already contained)
-- move rpms to sourceforge download server/system
+- read all emails since 0.7!!!
 
-- update credits
-- update homepage: move requirements and install into handbook?
-- on deleting a song: delete in *all* lists (history, categories, ...)
+- pack for distribution:
+  - update handbook
+  - update credits
+  - update homepage: move requirements and install into handbook?
+  - hack the configure script?
 
-- use QProcess instead of system() calls? (prelisten, xmms, noatun, shutdownscript, ...)
-- check consistency check (and consistencyModes!)
-- add to consistency check: update option for re-reading layer/tag info from existing songs
-- updating genre tag from outside of Yammi => update info in Yammi
-
-- alternative to mp3burn? => document Tom's script / document using k3b
-- extend the autoplay functionality
+- category folder: autoplay menu???
 - check: failing to load a media => crash? (tom)
-- folder for recent additions to database?
-- adding to media: don't add entries already existing
+
+0.8.1
+-----
+- Yammi running without valid player: create DummyPlayer class instead of all if(player!=0)
+- plugin: publish a sample plugin (echo...) with all replacements
+- document command line option: baseDir in handbook
+- for both media players:
+  - use QProcess for XMMS? (noatun?)
+  - skip forward/backward when stopped
+- move rpms to sourceforge download server/system
+- update current listview after song has been played: entry lastPlayed
+- fix: two albums having the same name appear as one album (heuristic: same album if in same dir?)
+- extensive testing with new user!!!
+- page up and down keys don't work after searching
+- load m3u files into a category
 - wrongly calculated song length for some songs, VBR? (tom, 8.12., )
 - evaluate TCON TTIT1 frame (tom, 8.12.)
 - remove/replace "current" button?
 - removing a song from playlist: only remove this one (idea: function "removeDuplicates" for playlist?)
-- Yammi running without valid player: create DummyPlayer class instead of all if(player!=0)
-- load m3u files into a category
-- page up and down keys dont work after searching
-
-0.8.1
------
+- adding to media: don't add entries already existing
+- folder for recent additions to database?
+- on deleting a song: delete in *all* lists (history, categories, ...)
+- use QProcess instead of system() calls? (prelisten, xmms, noatun, shutdownscript, ...)
+- check consistency check (and consistencyModes!)
+- add to consistency check: update option for re-reading layer/tag info from existing songs
+- updating genre tag from outside of Yammi => update info in Yammi
 
 - cleanup
   - clean up yammigui.h (protected/public) !!! (oh oh...)
@@ -75,25 +60,28 @@ for release 0.8.0
 
 for future releases
 -------------------
+- playing songs not contained in Yammi's database might confuse yammi (noatun/xmms)
 - new icon set for song actions (enqueue, playnow, ...)
 - split left tree into two lists: automatic folders and user folders?
 - stopping prelistening: cleaner approach with QProcess???
 - restoring window geometry issue
-- save more session settings?
 - provide a proper tgz binary release or rpm? provide translation ability? (po-file?)
 - saveFilename/renaming of file in song.cpp
-- extensive testing with new user!!!
-- clean up a lot...and complete documentation
-- dialog for burning files on cd/cdrecord plugin?
 - more tool tips
 - update database: text log window
 - search for similar: add an option to search for songs played "near" this one
 - statistic folder / more info in history folder
 - more options for burning folder
-- more evaluation of song logging:
-  - playing songs that haven't been played for quite a while
-- fix: two albums having the same name appear as one album
 
+
+KNOWN BUGS
+----------
+- floating point exception when scanning wav file???
+- still problem of freezing xmms => xmms_remote_playlist_delete(0, 0)
+	(seems to be a bug in xmms, posted to bugs@xmms)
+- window geometry: sometimes window position gets shifted by the window decoration towards right lower corner
+- problems with filenames containing "ß"? (problem of qt/linux on fat filesystem?)
+- deleting a song that is currently played, then pressing "current" => crash
 
 
 -----------------

@@ -34,7 +34,7 @@ public:
 	~XmmsPlayer();
 
 protected:
-  bool          ensureXmmsIsRunning();
+  bool          ensurePlayerIsRunning();
   int           session;      // xmms session id
   int           timeLeft;
 	bool			    xmmsShuffleWasActivated;

@@ -39,6 +39,8 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, const char *name, bool mod
 	LineEditTrashDir->setText(config->trashDir);
 	LineEditScanDir->setText(config->scanDir);
 	LineEditFilenamePattern->setText(config->filenamePattern);
+  RadioButtonSimpleGuessmode->setChecked(config->guessingMode==config->GUESSING_MODE_SIMPLE);
+  RadioButtonAdvancedGuessmode->setChecked(config->guessingMode==config->GUESSING_MODE_ADVANCED);
 	CheckBoxLogging->setChecked(config->logging);
 	CheckBoxChildSafe->setChecked(config->childSafe);
 	CheckBoxTagsConsistent->setChecked(config->tagsConsistent);
@@ -53,7 +55,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, const char *name, bool mod
 // xmms specific
   LineEditKeepInXmms->setText(QString("%1").arg(config->keepInXmms));
 #ifdef ENABLE_XMMS
-  RadioButtonXmms->setChecked(config->player==0);
+  RadioButtonXmms->setChecked(config->player==config->MEDIA_PLAYER_XMMS);
 #else
   RadioButtonXmms->setEnabled(false);
 	LineEditKeepInXmms->setEnabled(false);
@@ -64,7 +66,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, const char *name, bool mod
   LineEditFadeInStart->setText(QString("%1").arg(config->fadeInStart));
 
 #ifdef ENABLE_NOATUN
-  RadioButtonNoatun->setChecked(config->player==1);
+  RadioButtonNoatun->setChecked(config->player==config->MEDIA_PLAYER_NOATUN);
 #else
   RadioButtonNoatun->setEnabled(false);
 	LineEditFadeTime->setEnabled(false);
@@ -143,6 +145,10 @@ void PreferencesDialog::myAccept()
  	config->scanDir=LineEditScanDir->text();
  	config->mediaDir=LineEditMediaDir->text();
  	config->filenamePattern=LineEditFilenamePattern->text();
+  if(RadioButtonSimpleGuessmode->isChecked())
+    config->guessingMode=config->GUESSING_MODE_SIMPLE;
+  if(RadioButtonAdvancedGuessmode->isChecked())
+    config->guessingMode=config->GUESSING_MODE_ADVANCED;
  	if(config->trashDir.right(1)!="/")
  		config->trashDir+="/";
  	if(config->scanDir.right(1)!="/")
@@ -173,9 +179,9 @@ void PreferencesDialog::myAccept()
 // xmms specific
   config->keepInXmms=atoi(LineEditKeepInXmms->text());
   if(RadioButtonXmms->isChecked())
-    config->player=0;
+    config->player=config->MEDIA_PLAYER_XMMS;
   if(RadioButtonNoatun->isChecked())
-    config->player=1;
+    config->player=config->MEDIA_PLAYER_NOATUN;
 
 // noatun specific
  	config->fadeTime=atoi(LineEditFadeTime->text());
@@ -358,7 +364,7 @@ void PreferencesDialog::showReplacements()
   msg+="%p = Path, %F = Filename (without path)\n";
   msg+="%a = Artist, %t = Title\n";
   msg+="%u = albUm, %b = Bitrate\n";
-  msg+="%i = Index, %l = Length\n";
+  msg+="%i = Index, %s = Length (seconds), %l = Length(mm:ss)\n";
   msg+="%m = Media list, %n = Newline\n";
   msg+="%r = Track number\n";
   msg+="%X directory dialog, %Y file dialog\n";

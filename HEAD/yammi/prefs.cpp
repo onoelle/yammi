@@ -22,15 +22,17 @@ Prefs::Prefs(){
 // general	
   // media player: 0=XMMS, 1=Noatun
 #ifdef ENABLE_NOATUN
-  player=1;
+  player=MEDIA_PLAYER_NOATUN;
 #endif
 #ifdef ENABLE_XMMS
-  player=0;
+  player=MEDIA_PLAYER_XMMS;
 #endif
 	yammiVersion="0.8.0";
 	trashDir="/mp3/trash/";
 	scanDir="/mp3/inbox/";
   filenamePattern="%a - %t";
+  guessingMode=GUESSING_MODE_SIMPLE;
+  
 	doubleClickAction=None;
 	middleClickAction=None;
 	controlClickAction=None;
@@ -61,33 +63,6 @@ Prefs::Prefs(){
 	pluginCustomList = new QStringList();
 	pluginConfirm = new QStringList();
 	pluginMode = new QStringList();
-
-
-// define default plugins
-	pluginMenuEntry->append("Noatun: Enqueue");
-	pluginCommand->append("dcop noatun Noatun addFile \"%f\" 0");
-	pluginCustomList->append("");
-  pluginConfirm->append("false");
-  pluginMode->append("single");
-
-	pluginMenuEntry->append("Noatun: Play");
-	pluginCommand->append("dcop noatun Noatun addFile \"%f\" 1");
-	pluginCustomList->append("");
-  pluginConfirm->append("false");
-  pluginMode->append("single");
-
-  pluginMenuEntry->append("create cd label");
-	pluginCommand->append("cdlabelgen -c \"Title\" -s \"Subtitle\" -b -w -i \"%l\" > /tmp/cover.ps");
-	pluginCustomList->append("%i. %a - %t (%l)%");
-  pluginConfirm->append("true");
-  pluginMode->append("group");
-
-  pluginMenuEntry->append("export to playlist (m3u)");
-	pluginCommand->append("echo -e \"%l\" > /tmp/playlist.m3u");
-	pluginCustomList->append("%F%n");
-  pluginConfirm->append("true");
-  pluginMode->append("group");
-
 
 // jukebox functions
 	mediaDir="/dev/cdrom/";

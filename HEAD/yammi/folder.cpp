@@ -153,21 +153,24 @@ void Folder::updateTitle()
 void Folder::popup(QPoint point, QPopupMenu* contentMenu)
 {
 	allPopup=new QPopupMenu();
-  folderPopup = new QPopupMenu( 0 );
-	folderPopup->insertItem( "Autoplay", this, SLOT(autoplayFolder()), 0, 13);
-	if (folderPopup) {
-		allPopup->insertItem("Folder...", folderPopup);
-    if(gYammiGui->autoplayFoldername==this->folderName()) {
-      this->folderPopup->setItemChecked(13, true);
-    }
-    else {
-      this->folderPopup->setItemChecked(13, false);
-    }
+  // autoplay
+  allPopup->insertItem( "Autoplay", this, SLOT(autoplayFolder()), 0, 13);
+  if(gYammiGui->autoplayFoldername==this->folderName()) {
+    allPopup->setItemChecked(13, true);
   }
+  else {
+    allPopup->setItemChecked(13, false);
+  }
+
+  // folder popup as defined in subclass
+  if (folderPopup) {
+		allPopup->insertItem("Folder...", folderPopup);
+  }
+
+  // content menu (if folder contains at least one song)
 	if (contentMenu)
 		allPopup->insertItem("Content...", contentMenu);
-	if(folderPopup || contentMenu)
-		allPopup->popup(point);
+	allPopup->popup(point);
 }
 
 void Folder::autoplayFolder()

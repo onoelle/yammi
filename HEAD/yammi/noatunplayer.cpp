@@ -35,52 +35,9 @@ NoatunPlayer::NoatunPlayer(YammiModel* model)
   client = new DCOPClient();
   client->attach();
   QCString realAppId = client->registerAs("yammi");
-  cout << "dcop registered as: " << realAppId << "\n";
 #endif
 
-  int count=0;
-  QString replyStr;
-  for(int tries=0; count<2 && tries<10; tries++) {
-    count=0;
-    QProcess proc;
-    proc.addArgument("dcop");
-    if ( !proc.start() ) {
-      cout << "ERROR: could not start dcop process\n";
-      return;
-    }
-    while(proc.isRunning()) {}
-    if(!proc.normalExit()) {
-      cout << "ERROR: normalExit is false for dcop command\n";
-    }
-    while(replyStr=proc.readLineStdout()) {
-      if(replyStr.startsWith("noatun")) {
-        cout << count << ". noatun process found: " << replyStr << "\n";
-        QString idStr=replyStr.mid(7);
-        if(idStr=="") {
-          cout << "!!!!!!!!\nit looks like you have the following option checked in noatun:\n";
-          cout << "\"allow only one instance\"\n";
-          cout << "=> disable it first, restart noatun and then restart yammi!\n";
-          cout << "(I think I feel like crashing now...)\n!!!!!!!\n";
-          return;
-        }
-        int id=atoi(idStr);
-        playerId[count]=id;
-        count++;
-      }
-    }
-    for(int i=count; i<2; i++) {
-      // if not enough players running: start the missing ones!
-      cout << "trying to start another instance of noatun...\n";
-      system("noatun");
-    }
-  }
-  if(count<2) {
-    cout << "ERROR: could not start the two required noatun instances!\n";
-    cout << "have you \"allow only one instance\" option checked? disable it first!\n";
-    return;
-  }
-
-
+  ensurePlayerIsRunning();
   // find out which one of the players is playing and take that one as current player
   currentPlayer=1;
   if(getStatus()==STOPPED) {
@@ -132,10 +89,51 @@ void NoatunPlayer::clearPlaylist()
 
 
 
-// check whether noatun is running, if not: starts it!
-// returns, whether noatun was already running
+// check whether two instances of Noatun are running, if not: tries to start them
+// returns true on success
 bool NoatunPlayer::ensurePlayerIsRunning()
 {
+  int count=0;
+  QString replyStr;
+  for(int tries=0; count<2 && tries<10; tries++) {
+    count=0;
+    QProcess proc;
+    proc.addArgument("dcop");
+    if ( !proc.start() ) {
+      cout << "ERROR: could not start dcop process\n";
+      return false;
+    }
+    while(proc.isRunning()) {}
+    if(!proc.normalExit()) {
+      cout << "ERROR: normalExit is false for dcop command (trying to continue...)\n";
+    }
+    while(replyStr=proc.readLineStdout()) {
+      if(replyStr.startsWith("noatun")) {
+//        cout << count << ". noatun process found: " << replyStr << "\n";
+        QString idStr=replyStr.mid(7);
+        if(idStr=="") {
+          cout << "!!!!!!!!\nit looks like you have the following option checked in noatun:\n";
+          cout << "\"allow only one instance\"\n";
+          cout << "=> disable it first, restart noatun and then restart yammi!\n";
+          cout << "(I think I feel like crashing now...)\n!!!!!!!\n";
+          return false;
+        }
+        int id=atoi(idStr);
+        playerId[count]=id;
+        count++;
+      }
+    }
+    for(int i=count; i<2; i++) {
+      // if not enough players running: start the missing ones!
+      cout << "trying to start another instance of noatun...\n";
+      system("noatun");
+    }
+  }
+  if(count<2) {
+    cout << "ERROR: could not start the two required noatun instances!\n";
+    cout << "have you \"allow only one instance\" option checked? disable it first!\n";
+    return false;
+  }
   return true;
 }
 
@@ -204,7 +202,7 @@ void NoatunPlayer::check()
 
   // 2. check, whether we should initiate a song change (start crossfading)
   if(model->config.fadeTime>0) {
-    if(fade<100) {  // don't start fading if we are still fading last song? really? TODO?
+    if(fade<100) {  // don't start fading if we are still fading last song? TODO: really? 
       return;
     }
     if(getStatus()==PLAYING && timeLeft<model->config.fadeTime && timeLeft>0) {
@@ -223,15 +221,17 @@ void NoatunPlayer::startSongChange(bool withoutCrossfading)
     // we can't make a song change if there is no next song
     return;
   }
-  if(model->config.fadeTime==0 || withoutCrossfading) {
+  PlayerStatus status=getStatus();
+  if(model->config.fadeTime==0 || withoutCrossfading || status!=PLAYING) {
     // no crossfading
     clearPlaylist();
     QString location=model->checkAvailability(playlist->at(1)->song());
     if(location!="" && location!="never") {
-      playlistAdd(location, true);
+      playlistAdd(location, status==PLAYING);
       playlist->removeFirst();
     }
     playlistChanged();
+    statusChanged();
   }
   else {
     // crossfading
@@ -252,6 +252,12 @@ void NoatunPlayer::startSongChange(bool withoutCrossfading)
 }
 
 
+/**
+ * Adds a file to the current noatun player.
+ * Due to noatun's api via dcop, we can only add a song and start playing it
+ * immediately (or otherwise we can't "access" the song any more(eg. start playing it)).
+ * Therefore we simulate a passive add by pausing immediately after adding the song.
+*/
 void NoatunPlayer::playlistAdd(QString filename, bool autoStart, bool fakePassiveAdd)
 {
   int id=getCurrentPlayerId();
@@ -514,8 +520,11 @@ int NoatunPlayer::callGetInt(QString command, int id)
 
 #ifdef ENABLE_NOATUN
   QString str=QString("noatun-%1").arg(id);
-  if (!client->call(str.latin1(), QString("Noatun").latin1(), command.latin1(), data, replyType, replyData))
-    cout << "call() failed\n";
+  if (!client->call(str.latin1(), QString("Noatun").latin1(), command.latin1(), data, replyType, replyData)) {
+    cout << "call() failed, maybe noatun was closed?\n";
+    cout << "I will check now and restart noatun if necessary...\n";
+    ensurePlayerIsRunning();
+  }
   else {
     QDataStream reply(replyData, IO_ReadOnly);
     if (replyType == "int") {
