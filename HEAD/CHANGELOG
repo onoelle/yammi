@@ -1,6 +1,6 @@
 ########################
-??.??.2003 version 0.8.0
-- improved configure script and makefiles
+25.03.2003 version 0.8.0
+- changed and hopefully improved configure script and makefiles
 - added an advanced guessing mode (identifying "/artist/album/01 - trackname")
 - added command-line parameter to specify different base directory (for database and settings)
 - inserted a proper autoplay function (working on all folders)
