@@ -103,8 +103,13 @@ public:
     bool capitalizeTags;
 
 
-    /** Second sound device */
-    QString secondSoundDevice;
+    /** prelistening configuration */
+    QString prelistenMp3Command;
+    QString prelistenOggCommand;
+    QString prelistenWavCommand;
+    QString prelistenFlacCommand;
+    QString prelistenOtherCommand;
+    
     /** Group threshold */
     int groupThreshold;
     /** Lazy grouping activated */

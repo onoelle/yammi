@@ -28,7 +28,7 @@
 //#include "prefs.h"
 #include "mylist.h"
 #include "yammidcopiface.h"
-
+#include "kprocess.h"
 
 
 class QSlider;
@@ -63,7 +63,7 @@ class Prefs;
  */
 class YammiGui : public KMainWindow, virtual public YammiDcopIface {
     Q_OBJECT
-public:
+public:    
     /**
      * Determines the way the playlist is filled up when it contains less then 5 songs.
      */
@@ -170,6 +170,7 @@ private:
     QPushButton* m_sleepModeButton;
 
 public:
+    QString replacePrelistenSkip(QString input, int lengthInSeconds, int skipTo);
     // checks whether the swapped songs take more space than the given limit
     void checkSwapSize();
     void stopDragging();
@@ -379,6 +380,7 @@ protected:
     QTimer regularTimer;
     QTimer searchResultsTimer;
     QTimer checkTimer;
+    KProcess prelistenProcess;
 
     // folders
     Folder* folderAll;

@@ -57,6 +57,7 @@
 #include <kprogress.h>
 #include <kdebug.h>
 #include <kkeydialog.h>
+#include <kprocess.h>
 #include <dcopobject.h>
 
 
@@ -2865,69 +2866,88 @@ void YammiGui::changeSleepMode() {
  * stops playback on headphone
  */
 void YammiGui::stopPrelisten() {
-    if(config()->secondSoundDevice=="") {
-        cout << "prelisten feature: no sound device configured\n";
+    if(!prelistenProcess.isRunning()) {
+        kdDebug() << "looks like no prelisten process running..." << endl;
         return;
     }
-    // kill any previous prelisten process
-    // todo: would be better to remember the pid and kill more selectively... for now this must do...
-    if(lastPrelistened=="MP3") {
-        QString cmd1=QString("kill `ps h -o \"%p\" -C mpg123` 2&> /dev/null");
-        system(cmd1);
-        lastPrelistened="";
-    }
-    if(lastPrelistened=="OGG") {
-        QString cmd2=QString("kill `ps h -o \"%p\" -C ogg123` 2&> /dev/null");
-        system(cmd2);
-        lastPrelistened="";
-    }
-    if(lastPrelistened=="WAV") {
-        // how do we stop "play"? killing all sox processes is probably not always desired...
-        QString cmd3=QString("kill `ps h -o \"%p\" -C play` 2&> /dev/null");
-        system(cmd3);
-        QString cmd4=QString("kill `ps h -o \"%p\" -C sox` 2&> /dev/null");
-        system(cmd4);
-        lastPrelistened="";
+    bool result=prelistenProcess.kill(9);
+    if(!result) {
+        kdWarning() << "could not stop prelisten process!\n";
     }
 }
 
+/**
+ * Replace skipXYZ placeholders with computed values
+ */
+QString YammiGui::replacePrelistenSkip(QString input, int lengthInSeconds, int skipTo)
+{
+    int skipSeconds = lengthInSeconds * skipTo / 100;
+    int skipMilliSeconds = skipSeconds * 1000;
+    int skipFrames = skipSeconds * 38;
+    int skipSamples = skipSeconds * 441;
+
+    input.replace(QRegExp("\\{skipSeconds\\}"), QString("%1").arg(skipSeconds));
+    input.replace(QRegExp("\\{skipMilliSeconds\\}"), QString("%1").arg(skipMilliSeconds));
+    input.replace(QRegExp("\\{skipFrames\\}"), QString("%1").arg(skipFrames));
+    input.replace(QRegExp("\\{skipSamples\\}"), QString("%1").arg(skipSamples));
+    return input;
+}
+    
 /**
  * sends the song to headphones
  * skipTo: 0 = beginning of song, 100 = end
  */
 void YammiGui::preListen(Song* s, int skipTo) {
-    if(config()->secondSoundDevice=="") {
-        cout << "prelisten feature: no sound device configured\n";
-        return;
-    }
-
-    int seconds=s->length;
-
-    // first, kill any previous mpg123 prelisten process
+    // first, kill any previous prelisten process
     stopPrelisten();
-
-    // now play song via mpg123, ogg123 or aplay on sound device configured in prefs
+    
+    // now play song via configured command line tools
+    QString prelistenCmd;
     if(s->filename.right(3).upper()=="MP3") {
-        QString skip=QString(" --skip %1").arg(seconds*skipTo*38/100);
-        QString cmd=QString("mpg123 -a %1 %2 '%3' &").arg(config()->secondSoundDevice).arg(skip).arg(s->location());
-        kdDebug() << "command: " << cmd.local8Bit() << endl;
-        system(cmd);
+        prelistenCmd = config()->prelistenMp3Command;
         lastPrelistened="MP3";
     }
-    if(s->filename.right(3).upper()=="OGG") {
-        QString skip=QString(" --skip %1").arg(seconds*skipTo/100);
-        QString cmd=QString("ogg123 -d oss -odsp:%1 %2 '%3' &").arg(config()->secondSoundDevice).arg(skip).arg(s->location());
-        system(cmd);
+    else if(s->filename.right(3).upper()=="OGG") {
+        prelistenCmd = config()->prelistenOggCommand;
         lastPrelistened="OGG";
     }
-    if(s->filename.right(3).upper()=="WAV") {
-        QString skip=QString(" trim %1s").arg(seconds*skipTo*441);
-        QString cmd=QString("play -d %1 '%2' %3 &").arg(config()->secondSoundDevice).arg(s->location()).arg(skip);
-        cout << cmd << "\n";
-        system(cmd);
+    else if(s->filename.right(3).upper()=="WAV") {
+        prelistenCmd = config()->prelistenWavCommand;
         lastPrelistened="WAV";
     }
+    else if(s->filename.right(4).upper()=="FLAC") {
+        prelistenCmd = config()->prelistenFlacCommand;
+    }
+    else {
+        prelistenCmd = config()->prelistenOtherCommand;
+    }
 
+    if(prelistenCmd == "") {
+        kdDebug() << "no prelistening configured for this file type: " << s->filename << endl;
+        return;
+    }
+    
+    // prepare command
+    prelistenCmd = s->replacePlaceholders(prelistenCmd, 0);
+    prelistenCmd = replacePrelistenSkip(prelistenCmd, s->length, skipTo);        
+    kdDebug() << "prelisten command: " << prelistenCmd << endl;
+    
+    prelistenProcess.clearArguments();
+    prelistenProcess.setUseShell(true);
+    QStringList argList = QStringList::split( QChar('|'), prelistenCmd );
+    for ( QStringList::Iterator it = argList.begin(); it != argList.end(); ++it ) {
+        prelistenProcess << *it;
+    }
+    
+    if(prelistenProcess.isRunning()) {
+        kdDebug() << "waiting for prelisten process to die..." << endl;
+        prelistenProcess.detach();
+    }
+    
+    bool result = prelistenProcess.start(KProcess::OwnGroup, KProcess::NoCommunication);
+    if(!result) {
+        kdWarning() << "could not start prelisten process!\n";
+    }
 }
 
 void YammiGui::updateSongDatabaseHarddisk() {

@@ -13,10 +13,11 @@ MUST-HAVE
 - fix: noatun stops playback sometimes
 - add: publish plugin for html-export
 - add: info message on first startup/on importing old database (or menu entry for importing?)
-- add: make mpg123 and ogg123 configurable
+- add: warning if mass-tagging
 - simplify {wish} system: (make every entry with empty filename (no media) a wish?
 - child safe mode?
 - proper screenshots for website / freshmeat
+- song info dialog: disable ok button before any changes took place (filename check?)
 
 Idea: Database -> Statistics... dialog:
 - no songs

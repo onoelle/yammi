@@ -3,6 +3,7 @@
 - fixed: problems with umlauts in categories/history (saving to correct UTF-8 encoding now)
 - fixed: crash when scanning unreadable directories (eg. over samba shares)
 - fixed: exit program instead of infinite loop when noatun option "allow only one instance" checked
+- improved: prelisten functionality now fully configurable (also fixes prelistening to flac files)
 - improved: updated italian translation
 
 
