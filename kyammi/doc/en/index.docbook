@@ -91,7 +91,7 @@ and features intuitive and fast access to songs for playing or editing them.
 For playing songs Yammi currently supports three media player backends, namely XMMS
 (<ulink url="http://www.xmms.org">X MultiMedia System</ulink>), 
 <ulink url="http://noatun.kde.org">Noatun</ulink>
-or an internal <ulink url="http://www.arts-project.org/">arts player</ulink>.
+or an internal <ulink url="http://www.arts-project.org/">arts</ulink> player.
 
 </para>
 </abstract>
@@ -182,7 +182,7 @@ Therefore you never ever have to dig through your directory structure to find a 
 <para>
 Yammi organizes your songs into folders.
 On the one hand there are automatic folders such as one folder per artist, album, year and genre.
-On the other hand, custom folders (=playlists) can be created by the user.
+On the other hand, custom folders (comparable to playlists) can be created by the user.
 In the view of each folder, songs can be sorted after
 just every available information, eg. title, artist, length, most recently added songs,
 most recently played, bitrate...
@@ -227,39 +227,70 @@ Give it a try at <ulink url="http://yammi.sourceforge.net">The Yammi Homepage</u
 <title>Requirements</title>
 <sect2>
 <title>Mandatory</title>
-<para>
-- <ulink url="http://www.trolltech.com/products/qt/">Trolltech's QT</ulink>, version 3.x
 
-- libstdc++
+<itemizedlist>
+<listitem>
+<para>
+<ulink url="http://www.trolltech.com/products/qt/">Trolltech's QT</ulink>, version 3.x
 </para>
+</listitem>
+<listitem>
+<para>
+libstdc++
+</para>
+</listitem>
+</itemizedlist>
 </sect2>
 
 <sect2>
 <title>Optional (but recommended)</title>
+<itemizedlist>
+<listitem>
 <para>
 For reading id3 tags: <ulink url="http://www.id3lib.org">id3lib</ulink>, version 3.8.2 or higher
-(recommended: newest version).
-(-lid3 -lz)
+(recommended: newest version) (-lid3 -lz)
+</para>
+</listitem>
 
+<listitem>
+<para>
 For reading ogg tags and layer information: 
 <ulink url="http://www.vorbis.com/download_unix.psp">libvorbis, libvorbisfile and libogg</ulink>
 (-lvorbisfile -lvorbis -logg)
+</para>
+</listitem>
 
+<listitem>
+<para>
 For XMMS support:
 <ulink url="http://www.xmms.org">XMMS</ulink>, version 1.2.6 or later
 and glib (-lgtk -lgdk -lgmodule -lglib -ldl -lXi -lXext -lX11 -lm -lxmms)
+</para>
+</listitem>
 
 
+<listitem>
+<para>
 For listening to songs on a second soundcard during playback on your primary soundcard
 you need the command line tools mpg123 (for mp3 files), ogg123 (for ogg files) or play (for wav files).
+</para>
+</listitem>
 
+<listitem>
+<para>
 If you want to use the ripping and encoding function offered from within yammi,
 you need cdparanoia and (not)lame or other ripping/encoding tools, for details have a look
 at the script "yammiGrabAndEncode" included in the distribution.
+</para>
+</listitem>
 
+<listitem>
+<para>
 If you want to use certain plugins you might need other programs
 (such as k3b for the "Burn with K3b" plugins or cdlabelgen for the "Create CD Label" plugin).
 </para>
+</listitem>
+</itemizedlist>
 </sect2>
 
 <sect2>
@@ -267,24 +298,51 @@ If you want to use certain plugins you might need other programs
 <para>
 If you want to compile Yammi from source, you need additionally to the above
 mentioned requirements the following packages installed:
-
-Mandatory:
-- Xfree86-devel
-
-- qt3-devel
-
-For reading id3 tags:
-
-libz - sources
-
-For reading ogg tags and layer information: 
-
-libvorbis-dev
-
-For XMMS support:
-
-xmms-devel
 </para>
+
+<sect3>
+<title>Mandatory</title>
+
+<itemizedlist>
+<listitem>
+<para>
+Xfree86-devel
+</para>
+</listitem>
+
+<listitem>
+<para>
+qt3-devel
+</para>
+</listitem>
+</itemizedlist>
+</sect3>
+
+
+<sect3>
+<title>Optional</title>
+
+<itemizedlist>
+<listitem>
+<para>
+For reading id3 tags: libz
+</para>
+</listitem>
+
+<listitem>
+<para>
+For reading ogg tags and layer information: libvorbis-dev
+</para>
+</listitem>
+
+<listitem>
+<para>
+For XMMS support: xmms-devel
+</para>
+</listitem>
+</itemizedlist>
+</sect3>
+
 </sect2>
 </sect1>
 

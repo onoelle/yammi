@@ -1,15 +1,13 @@
 TODO
 ----
-last update 23.08.2004
+last update 01.09.2004
 
 
 for version 1.2-beta
 --------------------
+- application icon?
+- fix: handbook major issues?
 
-planned:
-- fix: appropriate info messages on first startup/on importing old database
-- fix: appropriate default size for yammi window on first startup
-- fix: xmms enqueue as next when stopped/paused does not work
 before release:
 - create a yammi entry on www.kde-apps.org
 - update website
@@ -19,6 +17,7 @@ before release:
 
 for version 1.2
 ---------------
+- add: info message on first startup/on importing old database
 review kde conformance:  
   - replace all couts with kdDebug/kdWarn/kdError
   - check lsm file

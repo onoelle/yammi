@@ -226,44 +226,4 @@ bool Prefs::saveConfig( )
 	return true;
 }
 
-/**
- * Add all the standard plugins (on switch to new version)
- */
-void Prefs::addStandardPlugins()
-{
-	kdDebug() << "Prefs::addStandardPlugins() adding Yammi's standard plugins to the plugin list\n";
-
-	if(!pluginMenuEntry.contains("Create CD Label")) {
-		pluginMenuEntry.append("Create CD Label");
-		pluginCommand.append("cdlabelgen -c \"Title\" -s \"Subtitle\" -b -w -i \"{customList}\" > {fileDialog}");
-		pluginCustomList.append("{index}. {artist} - {title} ({length})%");
-		pluginConfirm.append("true");
-		pluginMode.append("group");
-	}
-	
-	if(!pluginMenuEntry.contains("Export to m3u Playlist")) {
-		pluginMenuEntry.append("Export to m3u Playlist");
-		pluginCommand.append("echo -e \"#EXTM3U\n{customList}\" > {fileDialog}");
-		pluginCustomList.append("#EXTINF:{lengthInSeconds},{artist} - {title}{newline}{absoluteFilename}{newline}");
-		pluginConfirm.append("true");
-		pluginMode.append("group");
-	}
-	
-	if(!pluginMenuEntry.contains("Burn with K3b(audio)")) {
-		pluginMenuEntry.append("Burn with K3b(audio)");
-		pluginCommand.append("echo -e \"#EXTM3U\n{customList}\" > /tmp/burnlist.m3u && k3b --audiocd /tmp/burnlist.m3u &");
-		pluginCustomList.append("#EXTINF:{lengthInSeconds},{artist} - {title}{newline}{absoluteFilename}{newline}");
-		pluginConfirm.append("true");
-		pluginMode.append("group");
-	}
-	if(!pluginMenuEntry.contains("Burn with K3b(data)")) {
-		pluginMenuEntry.append("Burn with K3b(data)");
-		pluginCommand.append("k3b --datacd {customListViaFile} &");
-		pluginCustomList.append("\"{absoluteFilename}\" ");
-		pluginConfirm.append("true");
-		pluginMode.append("group");
-	}
-	kdDebug() << "Prefs::addStandardPlugins() done" << endl;	
-}
-
 

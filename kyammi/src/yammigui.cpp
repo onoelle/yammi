@@ -111,6 +111,7 @@ extern YammiGui* gYammiGui;
 /////////////////////////////////////////////////////////////////////////////////////////////
 YammiGui::YammiGui() : DCOPObject("YammiPlayer"), KMainWindow( ) {
     gYammiGui = this;
+    this->setGeometry(0, 0, 800, 600);
     
     // initialize some fields
     validState = false;
@@ -118,6 +119,11 @@ YammiGui::YammiGui() : DCOPObject("YammiPlayer"), KMainWindow( ) {
     chosenFolder = 0;
     folderToAdd = 0;
     selectionMode = SELECTION_MODE_USER_SELECTED;
+    isScanning = false;
+    controlPressed = false;
+    shiftPressed = false;
+    toFromRememberFolder=folderAll;
+    
     
     model = new YammiModel( this );
     config()->loadConfig();
@@ -129,11 +135,6 @@ YammiGui::YammiGui() : DCOPObject("YammiPlayer"), KMainWindow( ) {
     createFolders( );
 
     // final touches before start up
-    isScanning = false;
-    controlPressed = false;
-    shiftPressed = false;
-    toFromRememberFolder=folderAll;
-
     readOptions( );
 
     // from here: stuff that needs the options to be read already
@@ -1767,7 +1768,7 @@ void YammiGui::forSelectionCheckConsistency() {
 
 
 void YammiGui::forSelectionEnqueue( ) {
-    kdDebug() << "appendSelected( )" << endl;
+    kdDebug() << "appendSelected()" << endl;
     getSelectedSongs();
     int count = selectedSongs.count();
     if(count < 1) {
@@ -1786,8 +1787,7 @@ void YammiGui::forSelectionEnqueue( ) {
 }
 
 void YammiGui::forSelectionEnqueueAsNext( ) {
-    kdDebug() << "prependSelected( )" << endl;
-    // reverse the order, to get intended play order
+    kdDebug() << "prependSelected()" << endl;
     getSelectedSongs();
     int count = selectedSongs.count();
     if(count < 1) {
@@ -1796,22 +1796,20 @@ void YammiGui::forSelectionEnqueueAsNext( ) {
     if(shiftPressed) {
         selectedSongs.shuffle();
     }
+    // reverse the order, to get intended play order
     selectedSongs.reverse();
-    //FIXME - If the player is not playing, we can insert the items at pos 0
     for(Song* s = selectedSongs.firstSong(); s; s=selectedSongs.nextSong()) {
         if(model->songsToPlay.count()==0 || currentSong!=model->songsToPlay.at(0)->song() || player->getStatus() != PLAYING) {
-            kdDebug() << "enqueueAsNext: case 1\n";
             model->songsToPlay.insert(0, new SongEntryInt(s, 13));
         }
         else {
-            kdDebug() << "enqueueAsNext: case 2\n";
             model->songsToPlay.insert(1, new SongEntryInt(s, 13));
         }
     }
+    
     folderActual->correctOrder();
     player->syncYammi2Player();
     folderContentChanged(folderActual);
-    statusBar( )->message(QString(i18n("%1 Songs equeued as next")).arg(count), 2000);
 }
 
 
@@ -1829,49 +1827,50 @@ void YammiGui::forSelectionPrelisten(int where ) {
 
 
 void YammiGui::forSelectionPlayNow() { //FIXME - this does not work too well....
-    kdDebug() << "playSelected( )" << endl;
+    kdDebug() << "playSelected()" << endl;
     getSelectedSongs();
-    int count = selectedSongs.count();
-    if(count < 1) {
+    if(selectedSongs.count() < 1) {
         return;
     }
-    player->stop( );
+    int stateBefore = player->getStatus();
     forSelectionEnqueueAsNext();
     //this is not really clean, but...
-    player->skipForward(shiftPressed);
-    player->play( );
+    if(stateBefore == PLAYING) {
+        player->skipForward(shiftPressed);
+    }
+    player->play();
 }
 
 void YammiGui::forSelectionDequeue( ) {
     getSelectedSongs();
     int sortedByBefore=songListView->sortedBy;
-    for(Song* s=selectedSongs.firstSong(); s; s=selectedSongs.nextSong()) {
-        if(chosenFolder==folderActual) {
-            // song chosen from playlist => dequeue only the selected song entry (not all songs with that id)
-            QListViewItem* i=songListView->firstChild();
-            for(; i; i=i->itemBelow()) {						// go through list of songs
-                if(i->isSelected() && ((SongListItem*) i)->song()==s) {
-                    SongEntry* entry=((SongListItem*) i)->songEntry;
-                    int pos=((SongEntryInt*)entry)->intInfo-1;
-                    if(pos!=0 || player->getStatus()==STOPPED) {
-                        // only dequeue if not currently played song (or player stopped)
-                        model->songsToPlay.remove(pos);
-                        statusBar( )->message(QString(i18n("song %1 dequeued")).arg(s->displayName()), 3000);
-                    }
-                    break;
-                }
+    if(chosenFolder==folderActual) {
+        // song chosen from playlist => dequeue only the selected song entry (not all songs with that id)
+        for(QListViewItem* i=songListView->lastItem(); i; i=i->itemAbove()) {
+            if(!i->isSelected()) {
+                continue;
             }
-        } else {
-            // song chosen from other folder => dequeue ALL occurrences with that id
+            SongEntry* entry=((SongListItem*) i)->songEntry;
+            int pos=((SongEntryInt*)entry)->intInfo-1;
+            if(pos!=0 || player->getStatus()==STOPPED) {
+                // only dequeue if not currently played song (or player stopped)
+                kdDebug() << "song dequeued: " << entry->song()->displayName() << endl;
+                model->songsToPlay.remove(pos);
+            }
+        }
+    }
+    else {
+        // song chosen from other folder => dequeue ALL occurrences of each selected song
+        for(Song* s=selectedSongs.firstSong(); s; s=selectedSongs.nextSong()) {
             int i=1;
             if(player->getStatus()==STOPPED) {
                 i=0;
             }
             for(; i<(int)model->songsToPlay.count(); i++) {
-                Song* check=model->songsToPlay.at(i)->song();
-                if(check==s) {
+                Song* check = model->songsToPlay.at(i)->song();
+                if(check == s) {
                     model->songsToPlay.remove(i);
-                    statusBar( )->message(QString(i18n("song %1 dequeued")).arg(s->displayName()), 3000);
+                    kdDebug() << "song dequeued: " << s->displayName() << endl;
                     i--;
                 }
             }
@@ -3461,11 +3460,14 @@ bool YammiGui::setupActions( ) {
     QToolTip::add
         ( m_searchField, i18n("Fuzzy search (Ctrl-F)"));
     connect( m_searchField, SIGNAL(textChanged(const QString&)), SLOT(searchFieldChanged(const QString&)));
+/*
+    TODO: temporarily disabled before we have a better concept and have it documented properly...
     QPushButton *btn = new QPushButton(i18n("to wishlist"),w);
     connect( btn, SIGNAL( clicked() ), this, SLOT( addToWishList() ) );
-    QToolTip::add
-        ( btn, i18n("Add this entry to the database as a \"wish\""));
-    new KWidgetAction( w ,"Search",0, 0, 0,actionCollection(),"search");
+    QToolTip::add( btn, i18n("Add this entry to the database as a \"wish\""));
+*/
+    new KWidgetAction(w, "Search", 0, 0, 0, actionCollection(), "search");
+
 
     // removable media management
     w = new QHBox( );
@@ -3474,7 +3476,7 @@ bool YammiGui::setupActions( ) {
     mediaListCombo->setFixedWidth(150);
     loadFromMediaButton = new QPushButton(i18n("load"), w);
     connect( loadFromMediaButton, SIGNAL( clicked() ), this, SLOT( loadMedia() ) );
-    new KWidgetAction( w ,"Load media",0, 0, 0,actionCollection(),"load_media");
+    new KWidgetAction(w, "Load media", 0, 0, 0, actionCollection(), "load_media");
 
     // Sleep mode
     w = new QHBox( );

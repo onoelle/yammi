@@ -1,12 +1,13 @@
-# translation of kyammi.po to 
-# translation of kyammi.po to german 
+# translation of de.po to 
+# translation of kyammi.po to
+# translation of kyammi.po to german
 # Oliver Noelle <oli.noelle@web.de>, 2004.
 # Oliver Nölle <oliver@linux>, 2004.
 msgid ""
 msgstr ""
 "Last-Translator: Oliver Nölle <oliver@linux>\n"
-"PO-Revision-Date: 2004-08-15 18:30+0200\n"
-"Project-Id-Version: kyammi\n"
+"PO-Revision-Date: 2004-09-01 20:17+0200\n"
+"Project-Id-Version: de\n"
 "Language-Team:  <en@li.org>\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1553,7 +1554,7 @@ msgstr ""
 
 #: yammigui.cpp:3460
 msgid "to wishlist"
-msgstr ""
+msgstr "als Wunsch vormerken"
 
 #: yammigui.cpp:3463
 msgid "Add this entry to the database as a \"wish\""

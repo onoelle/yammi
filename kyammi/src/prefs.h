@@ -60,11 +60,6 @@ public:
      */
     bool saveConfig( );
 
-    /**
-     * Add yammi's standard plugins
-     */
-    void addStandardPlugins(void);
-
     ///////////////////////////////////////
     // directory where song database file and categories can be found
     QString databaseDir;

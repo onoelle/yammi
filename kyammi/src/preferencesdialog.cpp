@@ -131,6 +131,29 @@ void PreferencesDialog::insertPluginValues() {
     updatePlugin(0);
 }
 
+
+void PreferencesDialog::addStandardPlugins() {
+//    config->addStandardPlugins();
+	if(!_pluginMenuEntry.contains("Create CD Label")) {
+        newPlugin("Create CD Label", "cdlabelgen -c \"Title\" -s \"Subtitle\" -b -w -i \"{customList}\" > {fileDialog}", "{index}. {artist} - {title} ({length})%", "true", "group");
+	}
+	
+	if(!_pluginMenuEntry.contains("Export to m3u Playlist")) {
+		newPlugin("Export to m3u Playlist", "echo -e \"#EXTM3U\n{customList}\" > {fileDialog}", "#EXTINF:{lengthInSeconds},{artist} - {title}{newline}{absoluteFilename}{newline}", "true", "group" );
+	}
+	
+	if(!_pluginMenuEntry.contains("Burn with K3b(audio)")) {
+		newPlugin("Burn with K3b(audio)", "echo -e \"#EXTM3U\n{customList}\" > /tmp/burnlist.m3u && k3b --audiocd /tmp/burnlist.m3u &", "#EXTINF:{lengthInSeconds},{artist} - {title}{newline}{absoluteFilename}{newline}", "true", "group");
+	}
+	if(!_pluginMenuEntry.contains("Burn with K3b(data)")) {
+		newPlugin("Burn with K3b(data)", "k3b --datacd {customListViaFile} &", "\"{absoluteFilename}\" ", "true", "group");
+	}
+}
+
+
+
+
+
 void PreferencesDialog::myAccept() {
     // general
     config->trashDir=LineEditTrashDir->text();
@@ -313,6 +336,17 @@ void PreferencesDialog::newPlugin() {
     updatePlugin(ComboBoxPlugins->count()-1);
 }
 
+void PreferencesDialog::newPlugin(QString name, QString command, QString mode, QString customList, QString confirm) {
+    ComboBoxPlugins->insertItem(name);
+    _pluginMenuEntry.append(name);
+    _pluginCommand.append(command);
+    _pluginMode.append(mode);
+    _pluginCustomList.append(customList);
+    _pluginConfirm.append(confirm);
+    ComboBoxPlugins->setCurrentItem(ComboBoxPlugins->count()-1);
+    updatePlugin(ComboBoxPlugins->count()-1);
+}
+
 void PreferencesDialog::deletePlugin() {
     int pos=ComboBoxPlugins->currentItem();
     if(pos==0)
@@ -325,11 +359,6 @@ void PreferencesDialog::deletePlugin() {
     _pluginConfirm.remove(_pluginConfirm.at(pos-1));
     ComboBoxPlugins->setCurrentItem(0);
     updatePlugin(0);
-}
-
-void PreferencesDialog::addStandardPlugins() {
-    config->addStandardPlugins();
-    insertPluginValues();
 }
 
 void PreferencesDialog::showReplacements() {

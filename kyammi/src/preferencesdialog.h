@@ -28,40 +28,41 @@
   */
 
 class PreferencesDialog : public Preferences  {
-   Q_OBJECT
+    Q_OBJECT
 
-public: 
-	PreferencesDialog(QWidget *parent, const char *name, bool modal, Prefs* config);
-	~PreferencesDialog();
-	
+public:
+    PreferencesDialog(QWidget *parent, const char *name, bool modal, Prefs* config);
+    ~PreferencesDialog();
+
 public slots:
-	void myAccept();
-	
-	void chooseTrashDir();
-	void chooseMediaDir();
-	void chooseSwapDir();
-	
-	void updatePlugin(int newPos);
-	void updatePluginMenuEntry(const QString& newText);
-	void updatePluginCommand(const QString& newText);
-	void updatePluginCustomList(const QString& newText);
-  void updatePluginMode(int newPos);
-  void updatePluginConfirm(bool checked);
-	void newPlugin();
-	void deletePlugin();
-  void addStandardPlugins();
-  void showReplacements();
+    void myAccept();
+
+    void chooseTrashDir();
+    void chooseMediaDir();
+    void chooseSwapDir();
+
+    void updatePlugin(int newPos);
+    void updatePluginMenuEntry(const QString& newText);
+    void updatePluginCommand(const QString& newText);
+    void updatePluginCustomList(const QString& newText);
+    void updatePluginMode(int newPos);
+    void updatePluginConfirm(bool checked);
+    void newPlugin();
+    void newPlugin(QString name, QString command, QString mode, QString customList, QString confirm);
+    void deletePlugin();
+    void addStandardPlugins();
+    void showReplacements();
 
 protected:
-	Prefs* config;
-	QStringList _pluginMenuEntry;
-	QStringList _pluginCommand;
-	QStringList _pluginCustomList;
-	QStringList _pluginMode;
-	QStringList _pluginConfirm;
+    Prefs* config;
+    QStringList _pluginMenuEntry;
+    QStringList _pluginCommand;
+    QStringList _pluginCustomList;
+    QStringList _pluginMode;
+    QStringList _pluginConfirm;
 
-  void insertPluginValues();
-  
+    void insertPluginValues();
+
 };
 
 #endif
