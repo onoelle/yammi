@@ -26,12 +26,13 @@
 
 #ifdef ENABLE_OGGLIBS
 #include "vcedit.h"
-#include "glib.h"
 #endif
 
 using namespace std;
 
 extern YammiGui* gYammiGui;
+
+#define MAX_FILENAME_LENGTH 1000
 
 /**
  * creates a song object with default values
@@ -263,9 +264,7 @@ int Song::create(const QString location, const QString mediaName, bool capitaliz
   // wav object
 
   if(location.right(4).upper()==".WAV") {
-    char loc[1000];
-    strcpy(loc, location);
-    if(!getWavInfo(loc)) {
+    if(!getWavInfo(location)) {
       cout << "could not read wav header information from wav file \"" << location << "\"\n";
     }
     artist=ffArtist;
@@ -674,25 +673,19 @@ bool Song::setId3Tag(ID3_Tag* tag, ID3_FrameID frame, ID3_FieldID field, QString
   if (theFrame == NULL) {
     cout << "could not find frame " << frame << ", creating it...\n";
     newFrame->SetID(frame);
-
-// apparently the following line only works with id3lib3.8.x
-//    newFrame->GetField(field)->Set(content.latin1());
-    newFrame->Field(field).Set(content.latin1());
+    newFrame->Field(field).Set(content.local8Bit());
     tag->AddFrame(newFrame);
     return true;
   }
 
   // get field
-// apparently the following line only works with id3lib3.8.x
-//  ID3_Field* theField = theFrame->GetField(field);
   ID3_Field* theField = &(theFrame->Field(field));
   if (theField == NULL) {
     cout << "could not find field " << field << "\n";
     return false;
   }
 
-//  cout << "trying to set field to: " << content.latin1() << "\n";
-  theField->Set(content.latin1());
+  theField->Set(content.local8Bit());
   return true;
 }
 
@@ -705,9 +698,7 @@ bool Song::setId3Tag(ID3_Tag* tag, ID3_FrameID frame, ID3_FieldID field, QString
 bool Song::getMp3LayerInfo(QString filename)
 {
   CMP3Info* mp3Info = new CMP3Info();
-  char _filename[1000];
-  strcpy(_filename, filename);
-  int loadstate = mp3Info->loadInfo(_filename);
+  int loadstate = mp3Info->loadInfo(filename);
   if (loadstate!=0) {
     cout << "error on reading mp3 layer info: " << loadstate << "\n";
     return false;
@@ -819,8 +810,8 @@ QString Song::getOggComment(OggVorbis_File* oggfile, QString commentName)
 void Song::setOggComment(vorbis_comment* vc, QString key, QString value)
 {
   QString qstr=QString("%1=%2").arg(key).arg(value);
-  char* string=(char*) qstr.latin1();
-  vorbis_comment_add(vc, string);
+  QCString temp=qstr.local8Bit();
+  vorbis_comment_add(vc, temp.data());
   // any useful return value?
 }
 
@@ -1375,7 +1366,7 @@ void Song::moveTo(QString dir)
   }
     
   QString newLocation=QString("%3/%4").arg(dir).arg(filename);
-  kdDebug() << "newLocation: " << newLocation.latin1() << endl;
+  kdDebug() << "newLocation: " << newLocation.local8Bit() << endl;
 	QDir currentDir("/");
 	if(!currentDir.rename(location(), newLocation)) {
 		cout << "renaming failed! song: " << displayName() << ", new location: " << newLocation << "\n";

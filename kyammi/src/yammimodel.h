@@ -51,7 +51,7 @@ public:
 	 */
 	~YammiModel();
 	
-	//FIXME temp.. while changing from model->config
+	// FIXME: config should be in yammimodel, not yammigui?
 	Prefs config( );
 
 	// data representation

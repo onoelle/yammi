@@ -88,13 +88,13 @@ public:
   SELECTION_MODE_CUSTOM = 4};
 
 public:
-	YammiGui( );
+	YammiGui();
 	virtual ~YammiGui();
 	
 	/** Load the Song database.
 	  * @param db Database file. If empty the file set in yammi's config file, or 
 	  *           the default will be used */
-	void loadDatabase( const QString &db = QString::null );
+	void loadDatabase(QString databaseDir);
 	
 	/** Start a count-down and then shut down yammi unless the user decides to cancel */
 	void shutdownSequence( );
@@ -150,7 +150,7 @@ protected slots:
 	void changeSleepMode();
 private:
 	/** Setup UI-actions*/
-	void setupActions( );
+	bool setupActions( );
 	
 private:
 	Prefs m_config;

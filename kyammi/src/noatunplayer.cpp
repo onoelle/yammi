@@ -254,7 +254,7 @@ void NoatunPlayer::playlistAdd(QString filename, bool autoStart)
   arg << filename;
   arg << autoStart;
   
-  if (!client->send(str.latin1(), "Noatun", "addFile(QString, bool)", data)) {
+  if (!client->send(str.local8Bit(), "Noatun", "addFile(QString, bool)", data)) {
     cout << "nop\n";
   }
 }

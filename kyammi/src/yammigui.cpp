@@ -107,7 +107,7 @@ static QString columnName[] = { i18n("Artist"), i18n("Title"), i18n("Album"), i1
 extern YammiGui* gYammiGui;
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-YammiGui::YammiGui( ) : KMainWindow( ) {
+YammiGui::YammiGui() : KMainWindow( ) {
 
     //FIXME Warning!!!! gYammiGui is (should) be set in main, but there are calls in *this* constructor
     // that rely on the variable pointing to the yammi instance.. since the variable in main gets assigned
@@ -127,7 +127,10 @@ YammiGui::YammiGui( ) : KMainWindow( ) {
     connect( player, SIGNAL(playlistChanged()), this, SLOT(updatePlaylist()) );
     connect( player, SIGNAL(statusChanged()), this, SLOT(updatePlayerStatus()) );
 
-    setupActions( );
+    if(!setupActions()) {
+		kdFatal() << "could not setup actions, shutting down now\n";
+		KApplication::kApplication()->exit();
+	}
     createMainWidget( );
     createFolders( );
 
@@ -148,7 +151,7 @@ YammiGui::YammiGui( ) : KMainWindow( ) {
     }
 
     // connect all timers
-    // TODO: this should be probably done by a thread owned by the media player
+    // TODO: replace this checkTimer with a thread owned by the media player
     connect( &checkTimer, SIGNAL(timeout()), player, SLOT(check()) );
     checkTimer.start( 100, FALSE );
 	searchResultsUpdateNeeded=false;
@@ -169,10 +172,15 @@ YammiGui::YammiGui( ) : KMainWindow( ) {
     createMenuBar( );
 }
 
-void YammiGui::loadDatabase( const QString &db ) {
-    if(!db.isEmpty()) {
-        m_config.dbFile = db;
-    }
+void YammiGui::loadDatabase(QString databaseDir ) {
+	if(databaseDir.isEmpty()) {
+		databaseDir = KGlobal::dirs()->findResourceDir("appdata", "songdb.xml");
+		kdDebug() << "empty, using default: " << databaseDir << "\n";
+	}
+	if(databaseDir.isNull()) {
+		kdDebug() << "null\n";
+	}
+    m_config.databaseDir = databaseDir;
 	model->readSongDatabase();
     model->readCategories();
     model->readHistory();
@@ -1507,7 +1515,7 @@ void YammiGui::forSelectionBurnToMedia() {
     int startIndex=atoi(startIndexStr);
     int mediaNo=startIndex-1;
     QString mediaName=QString("%1_%2").arg(collName).arg(mediaNo);
-    QString mediaDir = KGlobal::dirs()->saveLocation("appdata","media/" + mediaName + "/",true);
+    QString mediaDir = config().databaseDir + "media/" + mediaName + "/";
     long double sizeLimit=(long double)m_config.criticalSize*1024.0*1024.0;
     int count=0;
     for(Song* s=selectedSongs.firstSong(); s; ) {
@@ -1520,7 +1528,7 @@ void YammiGui::forSelectionBurnToMedia() {
             // medium is full, prepare new one
             mediaNo++;
             mediaName=QString("%1_%2").arg(collName).arg(mediaNo);
-            mediaDir= KGlobal::dirs()->saveLocation("appdata","media/"+ mediaName + "/",true);
+            mediaDir= config().databaseDir + "media/"+ mediaName + "/";
             progress.setLabel(i18n("Preparing media ")+mediaName);
             cout << "Preparing media " << mediaName << " (" << count << " files processed so far)...\n";
             QDir dir(mediaDir);
@@ -1580,7 +1588,7 @@ void YammiGui::forSelectionBurnToMedia() {
                              to check an option \"follow symlinks\" or similar)."))
                 .arg(mediaNo+1-startIndex).arg(m_config.criticalSize).arg(startIndex).arg(mediaNo)
                 .arg(count).arg((int)(size/1024.0/1024.0)).arg((int)(totalSize/1024.0/1024.0))
-                .arg(KGlobal::dirs()->saveLocation("appdata","media/",false));
+                .arg(config().databaseDir + "media/");
     KMessageBox::information( this, msg );
 }
 
@@ -1869,7 +1877,7 @@ void YammiGui::forSelectionSongInfo( ) {
 	}
 	genreList.sort();
 	for ( QStringList::Iterator it = genreList.begin(); it != genreList.end(); ++it ) {
-		si.ComboBoxGenre->insertItem((*it).latin1());
+		si.ComboBoxGenre->insertItem(*it);
 	}
 
 	int selected=0;
@@ -2351,7 +2359,7 @@ void YammiGui::renameMedia() {
 
 /// invoke an externally configured program/script on the content of a folder
 void YammiGui::pluginOnFolder() {
-    QFile f(KGlobal::dirs()->saveLocation("appdata")+"plugin.temp" );
+    QFile f(config().databaseDir + "plugin.temp" );
     if ( !f.open( IO_WriteOnly  ) ) {
         return;
 	}
@@ -2780,20 +2788,20 @@ void YammiGui::preListen(Song* s, int skipTo) {
     // now play song via mpg123, ogg123 or aplay on sound device configured in prefs
     if(s->filename.right(3).upper()=="MP3") {
         QString skip=QString(" --skip %1").arg(seconds*skipTo*38/100);
-        QString cmd=QString("mpg123 -a %1 %2 \"%3\" &").arg(m_config.secondSoundDevice).arg(skip).arg(s->location());
-        kdDebug() << "command: " << cmd.latin1() << endl;
+        QString cmd=QString("mpg123 -a %1 %2 '%3' &").arg(m_config.secondSoundDevice).arg(skip).arg(s->location());
+        kdDebug() << "command: " << cmd.local8Bit() << endl;
         system(cmd);
         lastPrelistened="MP3";
     }
     if(s->filename.right(3).upper()=="OGG") {
         QString skip=QString(" --skip %1").arg(seconds*skipTo/100);
-        QString cmd=QString("ogg123 -d oss -odsp:%1 %2 \"%3\" &").arg(m_config.secondSoundDevice).arg(skip).arg(s->location());
+        QString cmd=QString("ogg123 -d oss -odsp:%1 %2 '%3' &").arg(m_config.secondSoundDevice).arg(skip).arg(s->location());
         system(cmd);
         lastPrelistened="OGG";
     }
     if(s->filename.right(3).upper()=="WAV") {
         QString skip=QString(" trim %1s").arg(seconds*skipTo*441);
-        QString cmd=QString("play -d %1 \"%2\" %3 &").arg(m_config.secondSoundDevice).arg(s->location()).arg(skip);
+        QString cmd=QString("play -d %1 '%2' %3 &").arg(m_config.secondSoundDevice).arg(s->location()).arg(skip);
         cout << cmd << "\n";
         system(cmd);
         lastPrelistened="WAV";
@@ -3234,7 +3242,7 @@ void YammiGui::createFolders( ) {
 }
 
 
-void YammiGui::setupActions( ) {
+bool YammiGui::setupActions( ) {
     KStdAction::quit(this, SLOT(close()), actionCollection());
 
     //Selection actions
@@ -3355,8 +3363,15 @@ void YammiGui::setupActions( ) {
     m_sleepModeSpinBox->setEnabled(m_sleepMode);
     new KWidgetAction( w ,"Sleep Mode",0, 0, 0,actionCollection(),"sleep_mode");
 
-    // the rc file should be installed (eg. in /opt/kde3/share/apps/yammi/yammiui.rc)
+    // the rc file must be installed (eg. in /opt/kde3/share/apps/yammi/yammiui.rc)
     createGUI();
+	// test whether file was found and loaded
+    QPopupMenu* anyMenu = (QPopupMenu *)factory()->container("player", this);
+	if(anyMenu == 0) {
+		kdFatal() << "you must have the file 'yammiui.rc' installed (eg. in /opt/kde3/share/apps/yammi/yammiui.rc)\n";
+		return false;
+	}
+	return true;
 }
 //////////////////
 

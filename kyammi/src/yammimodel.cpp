@@ -69,17 +69,26 @@ Prefs YammiModel::config( ) {
 }
 
 
-// Reads the category from the found xml files in playlist directory.
+/**
+ * Reads in all xml-files found in the database directory.
+ * Each xml file should represent one category.
+ */
 void YammiModel::readCategories() {
-    // read in all xml-files found in a given directory that represent a category
     kdDebug() << "Reading categories..." << endl;
 
     QDomDocument doc;
     int count=0;
 
-    QStringList cats = KGlobal::dirs()->findAllResources( "appdata","categories/*.xml", true );
-    int total=cats.count();
-    //FIXME - change this to a progress in the status bar instead...
+	QDir d(config().databaseDir + "categories");
+	if(!d.exists()) {
+    	kdDebug() << "could not read categories: directory categories not existing in directory " << config().databaseDir << endl;
+		categoriesChanged(false);
+		return;
+	}
+	QString filter("*.xml");
+	QStringList cats = d.entryList(filter, QDir::Files, QDir::DirsFirst);
+	
+   	int total=cats.count();
     KProgressDialog dia(0,0,i18n("Loading categories"),i18n("Reading categories..."), true);
     dia.setAllowCancel(false);
     dia.setMinimumDuration(0);
@@ -89,10 +98,11 @@ void YammiModel::readCategories() {
     for( QStringList::Iterator it = cats.begin(); it!=cats.end(); ++it, progressCount++ ) {
         p->setProgress( progressCount );
         kapp->eventLoop()->processEvents(QEventLoop::ExcludeUserInput);
-        kdDebug() << "category found: " << *it << endl;
-        QFile f( *it );
+		QString filename(d.absPath()+ "/" + (*it));
+        kdDebug() << "category found: " << filename << endl;
+        QFile f(filename);
         if ( !f.open( IO_ReadOnly ) ) {
-            kdError() << "Could not open file for reading:" << *it << endl;
+            kdError() << "Could not open file for reading:" << filename << endl;
             continue;
         }
         QString errorMsg;
@@ -100,7 +110,7 @@ void YammiModel::readCategories() {
         int errorColumn;
         if( !doc.setContent(&f, false, &errorMsg, &errorLine, &errorColumn) ) {
             QString msg = QString(i18n("Error reading categories file:\n%1\n(Error: %2, line %3, column %4)") ).arg(f.name()).arg(errorMsg).arg(errorLine).arg(errorColumn);
-            kdError() << "Error reading file contents: " << *it << endl << msg << endl;
+            kdError() << "Error reading file contents: " << filename << endl << msg << endl;
             f.close();
             continue;
         }
@@ -108,7 +118,7 @@ void YammiModel::readCategories() {
         // get root element
         QDomElement e = doc.documentElement();
         if(e.tagName()!="category") {
-            kdError() << "Does not seem to be a category xml file: " << *it << endl;
+            kdError() << "Does not seem to be a category xml file: " << filename << endl;
             continue;
         }
 
@@ -149,7 +159,7 @@ void YammiModel::readHistory() {
 
     // new version, history as xml-file
     QDomDocument doc;
-    QString file = KGlobal::dirs()->findResource( "appdata","history.xml");
+    QString file = config().databaseDir+"history.xml";
     kdDebug() << "appdata hist" << file << endl;
 
     QFile f( file );
@@ -233,27 +243,28 @@ void YammiModel::saveHistory() {
     root.setAttribute("count",count);
 
     // save history to file... (but first we make a backup of old file)
-    QString path = KGlobal::dirs()->saveLocation("appdata");
-    kdDebug()<<"Saving history file in directory"<<path<<endl;
+    QString path = config().databaseDir;
+    kdDebug() << "Saving history file in directory" << path << endl;
     QDir dir;
-    if(dir.rename( path + "history.xml", path +"history_backup.xml"))
-        kdDebug()<<"backup of history saved in \"history_backup.xml\""<<endl;
+    if(dir.rename( path + "history.xml", path +"history_backup.xml")) {
+        kdDebug() << "backup of history saved in \"history_backup.xml\"" << endl;
+	}
     QString contents = doc.toString();
     QFile f( path + "history.xml");
     if(!f.open(IO_WriteOnly)) {
-        kdError()<<"could not open history file for writing:"<<path<<"history.xml"<<endl;
+        kdError() << "could not open history file for writing:" << path << "history.xml" << endl;
         return;
     }
     f.writeBlock(contents, contents.length());
     f.close();
-    kdDebug()<<"done"<<endl;
+    kdDebug() << "done" << endl;
 }
 
 
 /// save categories (if changed) to xml-files
 void YammiModel::saveCategories() {
     kdDebug() << "Saving categories..." << endl;
-    QString path = KGlobal::dirs()->saveLocation("appdata","categories/",true);
+    QString path = config().databaseDir + "categories/";
     QString name;
     kdDebug() << "Saving categories in directory " << path << endl;
 
@@ -296,13 +307,13 @@ void YammiModel::saveCategories() {
 
 // reads the yammi database (an xml-file with all song information)
 void YammiModel::readSongDatabase(  ) {
-
-    //FIXME - initialize model first!
-    kdDebug() << "reading song database at: " << m_yammi->config( ).dbFile << endl;
-    QFile f( m_yammi->config( ).dbFile );
+    QString filename(config().databaseDir + "songdb.xml");
+	kdDebug() << "reading song database from: " << filename << endl;
+    QFile f(filename);
     if( !f.open(IO_ReadOnly) ) {
         f.setName( QDir::homeDirPath() + "/.yammi/songdb.xml" );
         kdDebug() << "Could not open database file, checking at old location: " << f.name() << endl;
+		// TODO: import old data!!!
         if( f.exists( ) && f.open(IO_ReadOnly) ) {
             kdDebug() << "reading database from old location (" << f.name() << ")\n";
         } else {
@@ -468,18 +479,17 @@ void YammiModel::saveSongDatabase() {
     }
     root.setAttribute("count",count);
 
-    //save to the same file we opened...
-    // 	// save songdb to file... (but first we make a backup of old file)
-    // 	QString path = KGlobal::dirs()->saveLocation("appdata");
-    kdDebug() << "Saving song database to file " << m_yammi->config().dbFile << endl;
+    // save songdb to file... (but first we make a backup of old file)
+	QString filename = config().databaseDir + "songdb.xml";
+    kdDebug() << "Saving song database to file " << filename << endl;
     QDir dir;
-    if(!dir.rename(m_yammi->config().dbFile, m_yammi->config().dbFile+"_backup")) {
-        kdDebug() << "could not make backup of songdb..." << endl;
+    if(!dir.rename(filename, filename + "_backup")) {
+        kdDebug() << "could not make backup of file " << filename << endl;
     }
 
-    QFile file(m_yammi->config().dbFile);
+    QFile file(filename);
     if(!file.open(IO_WriteOnly)) {
-        kdError() << "could not open db file for writing:" << m_yammi->config().dbFile << endl;
+        kdError() << "could not open file for writing:" << filename << endl;
         return;
     }
     QTextStream str(&file);
@@ -657,14 +667,14 @@ bool YammiModel::traverse(QString path, QString filePattern, KProgressDialog* pr
             continue;
         }
         if(fi2->isSymLink()) {
-            kdDebug()<<"skipping symlink " << fi2->filePath() << endl;
+            kdDebug() << "skipping symlink " << fi2->filePath() << endl;
             continue;
         }
         if(traverse(fi2->filePath(), filePattern, progress, mediaName) == false) {
             return false;
         }
     }
-    return true;// scanning was not cancelled
+    return true;
 }
 
 
@@ -1094,19 +1104,21 @@ bool YammiModel::checkConsistency(KProgressDialog* progress, MyList* selection, 
 
 
 void YammiModel::removeCategory(QString categoryName) {
-    kdDebug()<<"remove category: "<<categoryName<<endl;
+    kdDebug() << "remove category: " << categoryName << endl;
     QString name=categoryNames.first();
     int i=0;
     for(MyList* ptr=allCategories.first(); ptr; ptr=allCategories.next(), i++) {
         QString name=categoryNames[i];
         if(name==categoryName) {
-            kdDebug()<<"category found, deleting..."<<endl;
+            kdDebug() << "category found, deleting..." << endl;
             allCategories.remove();
             categoryNames.remove(categoryNames.at(i));
-            QString file = KGlobal::dirs()->findResource("appdata","categories/"+name+".xml");
-            kdDebug()<<"file to delete:"<<file<<endl;
+            QString file = config().databaseDir + "categories/" + name + ".xml";
+            kdDebug() << "file to delete:" << file << endl;
             QDir d;
-            d.remove(file);
+			if(!d.remove(file)) {
+				kdWarning() << "could not delete a category file: " << file << endl;
+			}
             break;
         }
     }
@@ -1117,14 +1129,14 @@ void YammiModel::renameCategory(QString oldCategoryName, QString newCategoryName
     for(MyList* ptr=allCategories.first(); ptr; ptr=allCategories.next(), i++) {
         QString name=categoryNames[i];
         if(name==oldCategoryName) {
-            kdDebug()<<"renaming category.."<<endl;
+            kdDebug() << "renaming category.." << endl;
             categoryNames[i]=newCategoryName;
             ptr->dirty=true;
             categoriesChanged(true);
             QDir dir;
-            QString path = KGlobal::dirs()->saveLocation("appdata","categories/",false);
+            QString path = config().databaseDir + "categories/";
             if(!dir.rename(path+oldCategoryName+".xml", path+newCategoryName+".xml"))
-                kdError()<<"could not rename category file:"<<path<<oldCategoryName<<".xml"<<endl;
+                kdError() << "could not rename category file:" << path << oldCategoryName << ".xml" << endl;
             break;
         }
     }
@@ -1203,9 +1215,9 @@ void YammiModel::renameMedia(QString oldMediaName, QString newMediaName) {
     }
     // now move the directory (if existing)
     QDir dir;
-    QString path = KGlobal::dirs()->saveLocation("appdata","media/",false);
+    QString path = config().databaseDir + "media/";
     if(!dir.rename(path+oldMediaName, path+newMediaName)) {
-        kdDebug()<<"could not rename media dir!:"<<path+oldMediaName<<endl;
+        kdDebug() << "could not rename media dir!:" << path + oldMediaName << endl;
     }
     allSongsChanged(true);
 }

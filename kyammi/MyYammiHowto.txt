@@ -19,6 +19,30 @@ ESC + :w    save file
 ESC + :q    quit vi
 
 
+SmokeTest
+---------
+1. delete all installed files (rm -r /opt/kde/share/apps/yammi, rm -r /home/oliver/.kde/share/config/yammirc)
+2. fresh install of yammi
+3. check that files get installed in correct places
+4. startup without any existing configuration files or database
+5. scan harddisk, save database
+   - create an empty category, create a category and insert 2 songs
+6. exit yammi
+
+7. start again
+8. verify that database+categories were correctly saved
+9. with all media players:
+   - empty playlist
+   - enqueue song
+   - start playing
+   - enqueue song
+   - enqueue as next
+   - play now
+   - stop, start
+   - pause
+   - ...
+   
+
 
 prepare Release
 ---------------

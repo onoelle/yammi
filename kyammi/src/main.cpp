@@ -12,6 +12,8 @@
 #include <kmessagebox.h>
 #include <kdebug.h>
 #include <config.h>
+#include <kglobal.h>
+#include <kstandarddirs.h>
 
 #include "yammigui.h"
 
@@ -19,7 +21,7 @@
 
 static KCmdLineOptions options[] = { 
 //{ "d <dir>", I18N_NOOP("specifies location of .yammi dir (defaults to user home)"), 0 },
-			{ "db <file>", I18N_NOOP("Specifies the location of the Song Database to use"), 0 } };
+			{ "databasedir <dir>", I18N_NOOP("Specifies the directory of yammi data (defaults to ~/.yammi/)"), 0 } };
 static const char description[] =   I18N_NOOP("Yammi - Yet Another Music Manager I...");
 static const char version[] = VERSION;
 
@@ -51,34 +53,28 @@ int main( int argc, char **argv )
 	build_opts+=i18n("- id3lib support: no\n");
 #endif
   
-
-
-//	KAboutData about("yammi", I18N_NOOP("Yammi"), version, description,
-//                     KAboutData::License_GPL, "(C) 2001-2004 by Oliver Nölle", build_opts + "\n\n\nhave fun...", "http://yammi.sourceforge.net", "yammi-developer@lists.sourceforge.net");
 	KAboutData about("yammi", I18N_NOOP("Yammi"), version, description,
                      KAboutData::License_GPL, "(C) 2001-2004 by Oliver Noelle", build_opts, "http://yammi.sourceforge.net", "yammi-developer@lists.sourceforge.net");
 
 	KCmdLineArgs::init(argc, argv, &about);
 	KCmdLineArgs::addCmdLineOptions( options );
 	KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
-	QString db( args->getOption("db") );
-	
 	srand(time(NULL));
 	KApplication app;
-	YammiGui *yammi = new YammiGui( );
+	YammiGui *yammi = new YammiGui();
 	app.setMainWidget( yammi );
 	yammi->show();
-	
-	//give yammi a chance for a first draw
+	// give yammi a chance for a first draw
 	app.processEvents( );
   
 	KConfig *cfg = app.config( );
 	if( cfg->getConfigState( ) == KConfig::ReadOnly || cfg->getConfigState( ) == KConfig::ReadWrite)
 	{
-		yammi->loadDatabase( db );
+		QString databaseDir( args->getOption("databasedir") );
+		yammi->loadDatabase(databaseDir);
 	}
-	else
-	{//the configuration file could not be opened, most likely we are starting for the first time
+	else {
+		//the configuration file could not be opened, most likely we are starting for the first time
 		QString msg( i18n( "Yammi - Yet Another Music Manager I...\n\n\n \
 It looks like you are starting Yammi for the first time...\n\n\
 Welcome to convenient music organization!\n\n\

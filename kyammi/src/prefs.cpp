@@ -38,11 +38,10 @@ Prefs::~Prefs(){
 
 void Prefs::setDefaultValues(void) {
 	// general	
-	// media player: 0=XMMS, 1=Noatun, 2=Arts
 	mediaPlayer = MEDIA_PLAYER_ARTSPLAYER;
 
 	yammiVersion = VERSION;
-	dbFile = KGlobal::dirs()->findResource("appdata","songdb.xml");
+	databaseDir = KGlobal::dirs()->findResourceDir("appdata","songdb.xml");
 	trashDir = QDir::homeDirPath() + "/Desktop/Trash";
 	scanDir = "/mp3/inbox/";
 	guessingMode = GUESSING_MODE_SIMPLE;
@@ -113,10 +112,6 @@ bool Prefs::loadConfig( )
 	searchThreshold              = cfg->readNumEntry("searchThreshold", searchThreshold);
 	mediaPlayer = cfg->readNumEntry("mediaPlayer", mediaPlayer);
 	
-	cfg->setGroup("Database");
-	dbFile = cfg->readEntry( "dbFile", dbFile );
-	kdDebug()<<"dbFile set to "<<dbFile<<endl;
-  
 	cfg->setGroup("Xmms");
 	keepInXmms                   = cfg->readNumEntry("keepInXmms", keepInXmms);
 
@@ -188,9 +183,6 @@ bool Prefs::saveConfig( )
 	cfg->writeEntry("searchThreshold", searchThreshold);
 	cfg->writeEntry("mediaPlayer", mediaPlayer );
   
-	cfg->setGroup("Database");
-	cfg->writeEntry( "dbFile", dbFile );
-	
 	cfg->setGroup("Xmms");
 	cfg->writeEntry("keepInXmms", keepInXmms);
 
@@ -242,7 +234,7 @@ bool Prefs::saveConfig( )
  */
 void Prefs::addStandardPlugins()
 {
-	kdDebug() << "Prefs::addStandardPlugins() adding Yammi's standard plugins to the plugin list" << endl;;
+	kdDebug() << "Prefs::addStandardPlugins() adding Yammi's standard plugins to the plugin list\n";
 
 	if(!pluginMenuEntry.contains("Create CD Label")) {
 		pluginMenuEntry.append("Create CD Label");

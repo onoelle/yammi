@@ -42,7 +42,7 @@ SongInfo::initCommon() {
     }
     genreList.sort();
     for ( QStringList::Iterator it = genreList.begin(); it != genreList.end(); ++it ) {
-        si.ComboBoxGenre->insertItem((*it).latin1());
+        si.ComboBoxGenre->insertItem(*it);
     }
 }
 

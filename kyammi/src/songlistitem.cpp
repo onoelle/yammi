@@ -253,5 +253,7 @@ QString SongListItem::key(int visibleColumn, bool) const
 			return s->album+QString("%1").arg(s->trackNr, 2);
 	if(column==gYammiGui->COLUMN_GENRE)
 		return QString("%1").arg(CMP3Info::getGenre(s->genreNr));
+	if(column==gYammiGui->COLUMN_PATH)
+		return s->path+s->filename;
 	return text(column);
 }

@@ -91,7 +91,7 @@ which allows convenient and fast access to any songs.</description>
       <hidenonlocation>false</hidenonlocation>
     </groups>
     <tree>
-      <hidepatterns/>
+      <hidepatterns></hidepatterns>
       <hidenonprojectfiles>false</hidenonprojectfiles>
     </tree>
   </kdevfileview>
@@ -143,11 +143,11 @@ which allows convenient and fast access to any songs.</description>
   <kdevdebugger>
     <general>
       <dbgshell>libtool</dbgshell>
-      <programargs></programargs>
-      <gdbpath></gdbpath>
-      <configGdbScript></configGdbScript>
-      <runShellScript></runShellScript>
-      <runGdbScript></runGdbScript>
+      <programargs/>
+      <gdbpath/>
+      <configGdbScript/>
+      <runShellScript/>
+      <runGdbScript/>
       <breakonloadinglibs>true</breakonloadinglibs>
       <separatetty>false</separatetty>
       <floatingtoolbar>false</floatingtoolbar>
@@ -194,8 +194,8 @@ which allows convenient and fast access to any songs.</description>
     <bzip>false</bzip>
     <archname/>
     <appname>yammi</appname>
-    <version>1.2-alpha</version>
-    <release>1.2-alpha</release>
+    <version>1.2-alpha-2</version>
+    <release>1.2-alpha-2</release>
     <vendor>oliver.noelle</vendor>
     <licence>GPL</licence>
     <summary>Yet Another Music Manager I...</summary>
