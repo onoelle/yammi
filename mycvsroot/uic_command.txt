@@ -1,3 +1,4 @@
+# added
 uic -o songinfodialog.h SongInfoDialog.ui				// erzeugt header
 uic -i songinfodialog.h -o songinfodialog.cpp SongInfoDialog.ui 	// erzeugt source
 uic -o preferencesdialogbase.h PreferencesDialogBase.ui
