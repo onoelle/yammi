@@ -1,23 +1,18 @@
 TODO
 ----
-last update 16.05.2004
+last update 27.05.2004
 
 
 for version 1.2-alpha
 ---------------------
 main purpose: clean up, so other people can more easily contribute to the project
 
-- check conformance to kde standards, such as:
-  - check icons: fix transparency or remove old ones
 - check/resolve bugs on sf
-- check compiling: warnings
 - check all TODOs / FIXMEs
-- fix song info for multiple songs
-- make mpg123 and ogg123 configurable?
-- fix or delete child-safe mode
-- fix second view menu / behaviour on hiding columns the first time
-- implement skip backwards in artsplayer
+- fix: song info for multiple songs
+- fix: double click / middle click action
 - handle unplayable files (wishes, text files) => 1. dequeue on second position or 2. introduce file types and different behaviour
+- check dialog spacing & co (eg. guessing pattern!)
 
 for version 1.2-beta
 --------------------
@@ -25,7 +20,11 @@ check kde conformance:
   - standard kde i18n schema: add a translation and test it
   - replace cout with kdDebug/kdWarn/kdError
   - check lsm file
+  - check icons: fix transparency or use standard ones
+- fix or delete child-safe mode
+- fix: integrate columns menu into view menu
 - make follow symlinks a configurable option?
+- make mpg123 and ogg123 configurable?
 - saveFilename/renaming of file in song.cpp (there was something I can't remember)
 - make proposed filename change while you type
 - implement onPlayed and afterPlayed plugin types
@@ -37,7 +36,8 @@ check kde conformance:
 - on deleting a song: delete in *all* lists (history, categories, ...)
 - write little random(int range) method?
 - plugin: publish a sample plugin (echo...) with all replacements
-
+- replace QListView with KListView
+  - and other QClasses too?
 
 for version 1.2
 ---------------
@@ -50,8 +50,9 @@ for version 1.2
 for version 1.4
 ---------------
 - use Scott Wheelers taglib for reading metadata
+- make yammi properly multithreaded
 - rating of tracks
-- subfolders ?
+- allow subfolders for categories?
 
 
 ideas (for which I probably don't have the time to implement)
@@ -70,6 +71,7 @@ enhancements
 - integrate musicbrainz
 - integrate: show cover of album
 - kde panel applet with search field
+- replace mediaplayer with "KMediaPlayer" interface for easier supporting other kde media players?
 
 refactorings/fixes
 ------------------
