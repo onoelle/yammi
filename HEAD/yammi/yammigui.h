@@ -250,6 +250,7 @@ public:
 	bool isScanning;
   void updateSongPopup();
 	void updateListViewColumns();
+  void setSelectionMode(int mode);
 
 protected:
 	void createMenuBar( );
@@ -300,6 +301,7 @@ protected:
   QStringList   columnOrder;
   int           columnWidth[MAX_COLUMN_NO];
 
+  int           selectionMode;
 
 	QTimer regularTimer;
 	QTimer checkTimer;

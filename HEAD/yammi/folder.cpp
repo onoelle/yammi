@@ -178,8 +178,7 @@ void Folder::popup(QPoint point, QPopupMenu* contentMenu)
 	if (contentMenu) {
 		allPopup->insertItem("Content...", contentMenu);
   }
-	allPopup->popup(point);
-  cout << "after folder popup!\n";
+	allPopup->exec(point);
 }
 
 void Folder::autoplayFolder()

@@ -141,8 +141,9 @@ YammiGui::YammiGui( ) : KMainWindow( )
 	gYammiGui = this;
 	
 	m_config.loadConfig( );
-	currentSong=0;
-	chosenFolder=0;
+	currentSong = 0;
+	chosenFolder = 0;
+  selectionMode = 0;
 	
 	// set up model
 	model = new YammiModel( this );
@@ -1408,18 +1409,15 @@ void YammiGui::adjustSongPopup()
 }
 
 
-/// folder popup menu
+/**
+ * Popup menu on a folder
+ */
 void YammiGui::slotFolderPopup( QListViewItem* Item, const QPoint & point, int )
 {
 	QListViewItem *i = folderListView->currentItem();
 	Folder* chosenFolder = ( Folder* )i;
-
-	// get selection: complete folder content (shown in songlist)
-	// (take the order as shown in the songlist)
-	selectedSongs.clear();
-	for(QListViewItem* i=songListView->firstChild(); i; i=i->itemBelow()) {						// go through list of songs
-		selectedSongs.appendSong(((SongListItem*) i)->song());
-  }
+  setSelectionMode(1);
+  getSelectedSongs();
 	if(selectedSongs.count()==0) {
 		// no songs in this folder
 		chosenFolder->popup( point, 0);
@@ -1427,6 +1425,7 @@ void YammiGui::slotFolderPopup( QListViewItem* Item, const QPoint & point, int )
 	}
 	adjustSongPopup();
 	chosenFolder->popup( point, songPopup);
+  setSelectionMode(0);
 }
 
 
@@ -1704,14 +1703,24 @@ void YammiGui::getCurrentSong()
 void YammiGui::getSelectedSongs()
 {
 	selectedSongs.clear();
-  
-	QListViewItem* i=songListView->firstChild();
-	for(; i; i=i->itemBelow()) {						// go through list of songs
-		if(i->isSelected()) {
-			Song* s=((SongListItem*) i)->song();
-			selectedSongs.appendSong(s);
-		}
-	}
+
+  if(selectionMode == 0) {
+    // get songs selected in listview
+  	QListViewItem* i=songListView->firstChild();
+	  for(; i; i=i->itemBelow()) {						// go through list of songs
+		  if(i->isSelected()) {
+			  Song* s=((SongListItem*) i)->song();
+  			selectedSongs.appendSong(s);
+	  	}
+  	}
+  }
+  if(selectionMode == 1) {
+    // get songs from currently selected folder: complete folder content
+  	// take the order as shown in the songlist
+	  for(QListViewItem* i=songListView->firstChild(); i; i=i->itemBelow()) {
+		  selectedSongs.appendSong(((SongListItem*) i)->song());
+    }
+  }
 }
 
 /// makes a list of all songs in database
@@ -1862,8 +1871,8 @@ void YammiGui::forSelectionPlay( )
 
 void YammiGui::forSelectionDequeue( )
 {
-  int sortedByBefore=songListView->sortedBy;
 	getSelectedSongs();
+  int sortedByBefore=songListView->sortedBy;
 	for(Song* s=selectedSongs.firstSong(); s; s=selectedSongs.nextSong()) {
     if(chosenFolder==folderActual) {
       // song chosen from playlist => dequeue only the selected song entry (not all songs with that id)
@@ -1914,10 +1923,10 @@ void YammiGui::forSelectionSongInfo( )
 {
 	getSelectedSongs();
 	int count = selectedSongs.count();
-	if(count < 1)
+	if(count < 1) {
 		return;
-	if(count == 1 )
-	{
+  }
+	if(count == 1 ) {
 		Song *s = selectedSongs.first( )->song();
 		songInfo(s);
 		return;
@@ -1933,8 +1942,9 @@ void YammiGui::forSelectionDelete( )
 {
 	getSelectedSongs();
 	int count = selectedSongs.count();
-	if(count < 1)
+	if(count < 1) {
 		return;
+  }
 
   // determine delete mode
 	bool deleteFile=false;
@@ -3649,3 +3659,8 @@ void YammiGui::seek( int pos )
 	player->jumpTo(pos);
 }
 
+
+void YammiGui::setSelectionMode(int mode)
+{
+  selectionMode = mode;
+}
