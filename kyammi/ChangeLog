@@ -2,7 +2,7 @@
 ############################
 - added italian translation (thanks to Alessandro)
 - added spanish translation (thanks to Miguel)
-- added GStreamer support (thanks to Martin)
+- added GStreamer support (experimental, thanks to Martin)
 
 - fixed: proper escaping of filenames for playing in artsplayer or noatun (eg. files containing '#')
 - fixed: starting yammi via yammi.desktop file (no more console opened)
@@ -12,7 +12,9 @@
 - fixed: suffix "..mp3" shown in proposed filename in song info dialog
 - fixed: corrected makefile.am in icons to correctly create directories
 - fixed: crash on closing yammi (correctly waiting for search thread to terminate)
-
+- fixed: yammi can be called with --nofork option now (for debugging?)
+- fixed: scanning id3 tags with umlaute in certain environments (=> calling Link() on id3lib with local8Bit() conversion)
+- fixed: conflict on findSignal() for XmmsPlayer / NoatunPlayer
 
 14.09.2004 version 1.2-beta
 ###########################

@@ -79,11 +79,6 @@ public slots:
 
 protected slots:  
   void onFade();
-
-signals:
-  void playlistChanged();
-  void statusChanged();
-
 };
 
 #endif

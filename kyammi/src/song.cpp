@@ -432,7 +432,7 @@ void Song::guessTagsFromFilename(QString filename, QString path, QString* artist
  */
 bool Song::getMp3Tags(QString filename) {
     ID3_Tag tag;
-    tag.Link(filename, ID3TT_ALL);
+    tag.Link(filename.local8Bit(), ID3TT_ALL);
     bool foundSomething=false;
     QString str;
 
@@ -540,7 +540,7 @@ bool Song::getId3Tag(ID3_Tag* tag, ID3_FrameID frame, ID3_FieldID field, QString
  */
 bool Song::setMp3Tags(QString filename) {
     ID3_Tag tag;
-    tag.Link(filename, ID3TT_ALL);
+    tag.Link(filename.local8Bit(), ID3TT_ALL);
 
     // title
     if(title!="") {
@@ -1324,9 +1324,9 @@ void Song::moveTo(QString dir) {
     }
 
     QString newLocation=QString("%3/%4").arg(dir).arg(filename);
-    kdDebug() << "newLocation: " << newLocation.local8Bit() << endl;
-    QDir currentDir("/");
-    if(!currentDir.rename(location(), newLocation)) {
+//    kdDebug() << "newLocation: (local8Bit) " << newLocation.local8Bit() << endl;
+    QDir currentDir;
+    if((currentDir.rename(location(), newLocation, TRUE)) == FALSE) {
         kdDebug() << "renaming failed! song: " << displayName() << ", old location: " << location() << "proposed new location: " << newLocation << "\n";
     } else {
         path=dir;

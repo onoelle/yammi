@@ -2968,7 +2968,8 @@ void YammiGui::updateSongDatabaseHarddisk() {
 }
 
 void YammiGui::updateSongDatabaseSingleFile() {
-    QStringList files = KFileDialog::getOpenFileNames( config()->scanDir,QString::null, this, i18n("Open file(s) to import"));
+    QStringList files = KFileDialog::getOpenFileNames( ":singleFile", QString::null, this, i18n("Open file(s) to import"));
+//    QStringList files = KFileDialog::getOpenFileNames( config()->scanDir, QString::null, this, i18n("Open file(s) to import"));
     if(files.count()==0) {
         return;
     }

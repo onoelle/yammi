@@ -79,36 +79,18 @@ If you know why it fails and can fix it, even better, patches are more than welc
 Known workarounds if compilation fails
 **************************************
 
+"Import selected files" crashes while in KFileDialog
+----------------------------------------------------
+=> disable Preview funktionality (bug in KDE 3.2.1?)
+
+Cannot delete files from within Yammi
+-------------------------------------
+on my system deleting songs (=moving their files to the trash dir) did not work when the trash dir
+was configured to ~/Desktop/Trash
+=> set it to another directory
 
 QT libs not found
 -----------------
 try one of the following (change the location to the location where your qt libs are):
 ./configure --with-qt-includes=/usr/include/qt3
 ./configure --with-extra-libs=/opt/kde3/lib
-
-ID3_NR_OF_V1_GENRES' undeclared
--------------------------------
-Compilation stops with an error like
-CMP3Info.cpp: In function `static int CMP3Info::getMaxGenreNr()':
-CMP3Info.cpp:175: `ID3_NR_OF_V1_GENRES' undeclared (first use this function)
-
-1. get a newer id3lib version (recommended)
-2. patch CMP3Info.cpp:
-
-| @@ -7,12 +7,12 @@
-|
-|  #include "../options.h"
-|
-| -#ifdef ENABLE_ID3LIB
-| +#ifndef ENABLE_ID3LIB
-|  // to have the genres from id3lib available
-|  #include <id3/globals.h>
-|  #endif
-|
-| -#ifndef ENABLE_ID3LIB
-| +#ifdef ENABLE_ID3LIB
-|  // if we don't have id3lib...we have to use this table
-|  #define ID3_NR_OF_V1_GENRES 148
-|  static char* ID3_v1_genre_description[ID3_NR_OF_V1_GENRES] =
-`----
-

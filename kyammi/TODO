@@ -1,17 +1,16 @@
 TODO
 ----
-last update 11.10.2004
+last update 01.12.2004
 
 
 for version 1.2-beta-2
 ----------------------
-- fix: conflict on findSignal() (on starting noatun player)
-- fix: crash on adding a single file to database
 - fix: go to folder via keyboard: select proper song (not by right click)
 - fix: noatun stops playback sometimes
-- fix: delete songs???
 - fix: handbook major issues (updating and formatting)
 - publish plugin for html-export
+- add tag reading (id3) for flac files
+
 
 for version 1.2
 ---------------
@@ -25,7 +24,6 @@ for version 1.2
 - implement onPlayed and afterPlayed plugin types
 - on deleting a song: delete in *all* lists (history, categories, ...)
 - make follow symlinks a configurable option?
-- make restore playlist + position a configurable option
 - make mpg123 and ogg123 configurable
 - reformat all files with kdevelop?
 - simplify {wish} system: (make every entry with empty filename (no media) a wish?

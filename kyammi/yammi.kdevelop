@@ -103,7 +103,7 @@ which allows convenient and fast access to any songs.
       <abortonerror>false</abortonerror>
       <numberofjobs>1</numberofjobs>
       <dontact>false</dontact>
-      <makebin></makebin>
+      <makebin/>
     </make>
   </kdevautoproject>
   <kdevfileview>
@@ -113,9 +113,11 @@ which allows convenient and fast access to any songs.
       <group pattern="*.png" name="Icons" />
       <group pattern="*.po;*.ts" name="Translations" />
       <group pattern="*" name="Others" />
+      <hidenonprojectfiles>false</hidenonprojectfiles>
+      <hidenonlocation>true</hidenonlocation>
     </groups>
     <tree>
-      <hidepatterns/>
+      <hidepatterns></hidepatterns>
       <hidenonprojectfiles>false</hidenonprojectfiles>
     </tree>
   </kdevfileview>
@@ -168,10 +170,10 @@ which allows convenient and fast access to any songs.
     <general>
       <dbgshell>libtool</dbgshell>
       <programargs>--nofork</programargs>
-      <gdbpath></gdbpath>
-      <configGdbScript></configGdbScript>
-      <runShellScript></runShellScript>
-      <runGdbScript></runGdbScript>
+      <gdbpath/>
+      <configGdbScript/>
+      <runShellScript/>
+      <runGdbScript/>
       <breakonloadinglibs>true</breakonloadinglibs>
       <separatetty>false</separatetty>
       <floatingtoolbar>false</floatingtoolbar>

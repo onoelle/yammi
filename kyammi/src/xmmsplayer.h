@@ -66,10 +66,6 @@ public slots:
     int getCurrentTime();
     int getTotalTime();
     void quit();
-
-signals:
-    void playlistChanged();
-    void statusChanged();
 };
 
 
