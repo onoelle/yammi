@@ -90,7 +90,7 @@ and features intuitive and fast access to songs for playing or editing them.
 
 For playing songs Yammi currently supports three media player backends, namely XMMS
 (<ulink url="http://www.xmms.org">X MultiMedia System</ulink>), 
-<ulink url="http://www.noatun.kde.org">Noatun</ulink>
+<ulink url="http://noatun.kde.org">Noatun</ulink>
 or an internal <ulink url="http://www.arts-project.org/">arts player</ulink>.
 
 </para>
@@ -169,7 +169,7 @@ invoke other programs or custom scripts such as k3b, cdlabelgen, ... to burn CDs
 </para>
 
 <para>
-The feature that distinguishes this tool from others is probably the extremely powerful fuzzy (tolerant)
+The feature that distinguishes this tool from others is an extremely powerful fuzzy (tolerant)
 search function, that is still as intuitive and easy as it can get:
 Type in anything that you are looking for (eg. artist, title, album, comment) and within a second Yammi
 will provide a list of "best matches", using a clever fuzzy search algorithm.
@@ -180,9 +180,10 @@ Therefore you never ever have to dig through your directory structure to find a 
 </para>
 
 <para>
-Yammi also offers a folder structure to organize your songs. Songs are inserted automatically
-into artist, album and genre folders, and custom folders (=playlists) can be created by the user.
-In each folder, songs can be sorted after
+Yammi organizes your songs into folders.
+On the one hand there are automatic folders such as one folder per artist, album, year and genre.
+On the other hand, custom folders (=playlists) can be created by the user.
+In the view of each folder, songs can be sorted after
 just every available information, eg. title, artist, length, most recently added songs,
 most recently played, bitrate...
 </para>
