@@ -36,7 +36,7 @@ dnl Perform program name transformation
 AC_ARG_PROGRAM
 
 dnl Automake doc recommends to do this only here. (Janos)
-AM_INIT_AUTOMAKE(yammi, 1.2-alpha-2) dnl searches for some needed programs
+AM_INIT_AUTOMAKE(yammi, 1.2-alpha-3) dnl searches for some needed programs
 
 KDE_SET_PREFIX
 
@@ -61,13 +61,13 @@ dnl PACKAGE set before
 AC_C_BIGENDIAN
 AC_CHECK_KDEMAXPATHLEN
 
-AH_TEMPLATE( [ENABLE_ID3LIB], [Support reading and writing MP3 tags] )
-AH_TEMPLATE( [ENABLE_OGGLIBS], [Support reading and writing OGG tags] )
-AH_TEMPLATE( [ENABLE_XMMS], [Support xmms as media player] )
-
 dnl -------------------------------
 dnl Configure switches.
 dnl -------------------------------
+
+AH_TEMPLATE( [ENABLE_ID3LIB], [Support reading and writing MP3 tags] )
+AH_TEMPLATE( [ENABLE_OGGLIBS], [Support reading and writing OGG tags] )
+AH_TEMPLATE( [ENABLE_XMMS], [Support xmms as media player] )
 
 AC_ARG_ENABLE( [xmms],
                AC_HELP_STRING( [--disable-xmms],

@@ -47,14 +47,14 @@ SmokeTest
 prepare Release
 ---------------
 check:
+- check yammi version in configure.in(.in)
 - AUTHORS/CREDITS
 - README
 - TODO/CHANGELOG
-- any couts that should be deleted?
-- update aboutDialog() in yammigui.cpp
+- start program and check output: any couts/kdDebugs() that should be deleted?
 
 In kdevelop
-1. distclean
-2. autoconf and automake
-3. configure
+1. Build -> distclean
+2. Build -> Run automake & friends
+3. Build -> Run configure
 4. Tools -> Project Distribution & Publishing -> make distribution

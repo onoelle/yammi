@@ -18,8 +18,6 @@ PROBLEMS???
 Yammi has some dependencies/requirements that can be switched off:
 
 
-Attention:
-----------
 id3lib (http://www.id3lib.org)
 ------------------------------
 Needed for reading id3 tags. Recommended if you use mp3 files.
@@ -51,8 +49,12 @@ to disable support for ogg files.
 
 Install path
 ------------
-The default install path is /usr/local. If this is not the desired path,
-use the --prefix switch to change the install path.
+You should set KDEDIR to your global kde installation (eg. /opt/kde3) by calling
+  export KDEDIR=/opt/kde3
+before calling "./configure".
+In that way you ensure that all files will be installed to the correct location.
+
+You can also use the --prefix switch to the configure script to change the install path.
 For example, use
 ./configure --prefix=/opt/kde3
 and the binary should be installed as /opt/kde3/bin/yammi
@@ -63,10 +65,15 @@ Still problems???
 -----------------
 As I am not an expert in configure scripts and makefiles, the provided ones might not work
 on your system and configuration.
-If you can't compile yammi at all, please drop me a short email with the error message along
-with some information about your configuration (QT+KDE version, distribution, id3lib version, ...),
-hopefully I can fix it for the next version.
-If you know why it fails and can fix it, even better, but please drop me a note, too... THANKS!!!
+If you can't compile yammi at all, please drop a short email to the yammi-developer mailing list
+    yammi-developer@lists.sourceforge.net
+with the error message along with some information about your configuration:
+- KDE version
+- QT version
+- which distribution you are using
+- the complete output of the ./configure command
+Hopefully I can fix it for the next version.
+If you know why it fails and can fix it, even better, patches are more than welcome... THANKS!!!
 
 
 Known workarounds if compilation fails

@@ -361,7 +361,8 @@ void PreferencesDialog::showReplacements() {
     msg+="{inputString} (input string dialog, returns entered string)\n\n";
 
     msg+="Replacements for command (group mode):\n";
-    msg+="{customListViaFile} (custom list, via file / cat command)\n";
     msg+="{customList} (custom list, directly)\n";
+    msg+="{customListFile} (filename of custom list)\n";
+    msg+="{customListViaFile} (custom list, via file / cat command)\n";
     QMessageBox::information( this, "Yammi",msg);
 }

@@ -127,49 +127,50 @@ YammiGui::YammiGui() : KMainWindow( ) {
     connect( player, SIGNAL(playlistChanged()), this, SLOT(updatePlaylist()) );
     connect( player, SIGNAL(statusChanged()), this, SLOT(updatePlayerStatus()) );
 
+	validState = false;
     if(!setupActions()) {
-		kdFatal() << "could not setup actions, shutting down now\n";
-		KApplication::kApplication()->exit();
+		return;
 	}
-    createMainWidget( );
-    createFolders( );
+	createMainWidget( );
+	createFolders( );
 
-    // final touches before start up
-    isScanning = false;
-    controlPressed = false;
-    shiftPressed = false;
-    toFromRememberFolder=folderAll;
+	// final touches before start up
+	isScanning = false;
+	controlPressed = false;
+	shiftPressed = false;
+	toFromRememberFolder=folderAll;
 
-    // finish initialization of player
-    player->syncPlayer2Yammi(&(model->songsToPlay));
-    player->syncYammi2Player(false);
-    checkPlaylistAvailability();
+	// finish initialization of player
+	player->syncPlayer2Yammi(&(model->songsToPlay));
+	player->syncYammi2Player(false);
+	checkPlaylistAvailability();
 
-    // check whether player is playing, if not: start playing!
-    if(folderActual->songlist().count() > 0 && player->getStatus()!=PLAYING ) {
-        player->play();
-    }
+	// check whether player is playing, if not: start playing!
+	if(folderActual->songlist().count() > 0 && player->getStatus()!=PLAYING ) {
+		player->play();
+	}
 
-    // connect all timers
-    // TODO: replace this checkTimer with a thread owned by the media player
-    connect( &checkTimer, SIGNAL(timeout()), player, SLOT(check()) );
-    checkTimer.start( 100, FALSE );
+	// connect all timers
+	// TODO: replace this checkTimer with a thread owned by the media player
+	connect( &checkTimer, SIGNAL(timeout()), player, SLOT(check()) );
+	checkTimer.start( 100, FALSE );
 	searchResultsUpdateNeeded=false;
 	searchThread = new SearchThread(this);
 	searchThread->start();
-    connect( &regularTimer, SIGNAL(timeout()), SLOT(onTimer()) );
-    regularTimer.start( 500, FALSE );	// call onTimer twice a second
-    connect( &searchResultsTimer, SIGNAL(timeout()), SLOT(updateSearchResults()) );
-    searchResultsTimer.start( 10, FALSE );
+	connect( &regularTimer, SIGNAL(timeout()), SLOT(onTimer()) );
+	regularTimer.start( 500, FALSE );	// call onTimer twice a second
+	connect( &searchResultsTimer, SIGNAL(timeout()), SLOT(updateSearchResults()) );
+	searchResultsTimer.start( 10, FALSE );
 
-    //let KDE save and restore the main window settings (geometry, toolbar position, etc)
-    //setAutoSaveSettings( );
-    //FIXME - why setAutoSaveSettings is not working...it sounds like KDE should do this automatically
-    // but it doesn't
-    readOptions( );
+	//let KDE save and restore the main window settings (geometry, toolbar position, etc)
+	//setAutoSaveSettings( );
+	//FIXME - why setAutoSaveSettings is not working...it sounds like KDE should do this automatically
+	// but it doesn't
+	readOptions( );
 
-    // from here: stuff that needs the options to be read already
-    createMenuBar( );
+	// from here: stuff that needs the options to be read already
+	createMenuBar( );
+	validState = true;
 }
 
 void YammiGui::loadDatabase(QString databaseDir) {
@@ -1127,7 +1128,6 @@ void YammiGui::updateSearchResults()
 	folderSearchResults->updateTitle();
 	folderContentChanged(folderSearchResults);
 	if(!m_acceptSearchResults) {
-		kdDebug() << "not interested in showing results any more\n";
 		return;
 	}
 
@@ -1145,7 +1145,6 @@ void YammiGui::updateSearchResults()
     for(int j=0; item && j<noSelected; j++, item=item->nextSibling()) {
        	item->setSelected(true);											// select first anyway
     }
-	kdDebug() << "...done\n";
 	searchResultsUpdateNeeded=false;
 }
 
@@ -1461,12 +1460,14 @@ void YammiGui::forSelectionPlugin(int pluginIndex) {
 
         //TODO: luis, the following lines were commented out, any particular reason?
         // custom list can be long => we put it into a file...
-        QFile customListFile(m_config.trashDir+"/customlist.txt");
+		QString customListFilename(m_config.databaseDir+"customlist.temp");
+        QFile customListFile(customListFilename);
         customListFile.open(IO_WriteOnly);
         customListFile.writeBlock( customList, qstrlen(customList) );
         customListFile.close();
-        cmd.replace(QRegExp("{customListViaFile}"), "`cat "+m_config.trashDir+"/customlist.txt`");
         cmd.replace(QRegExp("{customList}"), customList);
+        cmd.replace(QRegExp("{customListFile}"), customListFilename);
+        cmd.replace(QRegExp("{customListViaFile}"), "`cat " + customListFilename + "`");
 
         if(confirm) {
             QString msg=i18n("Execute the following command:\n");
@@ -1961,8 +1962,9 @@ void YammiGui::forSelectionSongInfo( ) {
 		}
 	}
 
-	if(selected>=10)
+	if(selected>=10) {
 		QApplication::restoreOverrideCursor();
+	}
 	
 	// now edit the (common) info
 	si.LineEditArtist->setText(_artist);
@@ -1971,8 +1973,6 @@ void YammiGui::forSelectionSongInfo( ) {
 	si.LineEditComment->setText(_comment);
 	if(_year!="0")			si.LineEditYear->setText(_year);
 	if(_trackNr!="0")		si.LineEditTrack->setText(_trackNr);
-//	MyDateTime d=_addedTo;
-//	if(_addedTo.isValid())
 	if(_addedTo.isValid())
 		si.LineEditAddedTo->setText(_addedTo.writeToString());
 	else
@@ -2388,7 +2388,6 @@ void YammiGui::pluginOnFolder() {
         return;
 	}
     QTextStream str(&f);
-    cout << " ...done\n";
 
     for(Song* s=chosenFolder->firstSong(); s; s=chosenFolder->nextSong()) {
         cout << s->path << "/" << s->filename << "\n";
@@ -3388,7 +3387,7 @@ bool YammiGui::setupActions( ) {
 	// test whether file was found and loaded
     QPopupMenu* anyMenu = (QPopupMenu *)factory()->container("player", this);
 	if(anyMenu == 0) {
-		kdFatal() << "you must have the file 'yammiui.rc' installed (eg. in /opt/kde3/share/apps/yammi/yammiui.rc)\n";
+		kdError() << "you must have the file 'yammiui.rc' installed (eg. in /opt/kde3/share/apps/yammi/yammiui.rc)\n";
 		return false;
 	}
 	return true;
@@ -3424,6 +3423,10 @@ void YammiGui::createMenuBar( ) {
 void YammiGui::createSongPopup() {
     kdDebug() << "creating song popup\n";
     songPopup = (QPopupMenu *)factory()->container("song_popup", this);
+	if(songPopup == 0) {
+		kdFatal() << "yammiui.rc not installed correctly!!!\n";
+		return;
+	}
     songPopup->insertItem( "", 113, 0);
     songPopup->insertSeparator(1);
     playListPopup = new QPopupMenu(songPopup);

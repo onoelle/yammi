@@ -697,7 +697,7 @@ void YammiModel::addSongToDatabase(QString filename, QString mediaName=0) {
     Song* newSong = new Song();
     newSong->create(filename, mediaName, m_yammi->config( ).capitalizeTags);
     if(newSong->corrupted) {
-        kdError()<<"new song file " <<filename<< " is corrupt (not readable for yammi), skipping"<<endl;
+        kdError() << "new song file " << filename << " is corrupt (not readable for yammi), skipping" << endl;
         corruptSongs++;
         return;
     }
@@ -721,14 +721,14 @@ void YammiModel::addSongToDatabase(QString filename, QString mediaName=0) {
                     QFileInfo fileInfo(s->location());
                     if(!fileInfo.exists()) {
                         // but still not available => probably has been moved
-                        kdWarning()<<"looks like file " <<newSong->filename<< " has been moved from " <<s->path<< " to " <<newSong->path<< ", correcting path info"<<endl;
+                        kdWarning() << "looks like file " << newSong->filename << " has been moved from " << s->path << " to " << newSong->path << ", correcting path info" << endl;
                         s->setTo(newSong);
                         allSongsChanged(true);
                         delete(newSong);
                         return;
                     }
                     // song is available, we don't need two songs => skip
-                    kdWarning()<<"file "<<newSong->filename<<" already available at " << s->location() << ", skipping"<<endl;
+                    kdWarning() << "file " << newSong->filename << " already available at " << s->location() << ", skipping" << endl;
                     delete(newSong);
                     return;
                 }
@@ -740,15 +740,15 @@ void YammiModel::addSongToDatabase(QString filename, QString mediaName=0) {
                         exists=true;
                 }
                 if(!exists) {
-                    kdDebug()<<"adding media "<<mediaName <<" to mediaList in song "<<s->displayName()<<endl;
+                    kdDebug() << "adding media " << mediaName << " to mediaList in song " << s->displayName() << endl;
                     QString locationOnMedia=filename;
                     if(locationOnMedia.left(m_yammi->config( ).mediaDir.length())!=m_yammi->config( ).mediaDir)
-                        kdError()<<"strange error, scanning media, but file not on media"<<endl;
+                        kdError() << "strange error, scanning media, but file not on media" << endl;
                     locationOnMedia=locationOnMedia.right(locationOnMedia.length()-m_yammi->config( ).mediaDir.length());
                     s->addMediaLocation(mediaName, locationOnMedia);
                     allSongsChanged(true);
                 } else {
-                    kdDebug()<<"song " << s->location() << " is already known to be on this media"<<endl;
+                    kdDebug() << "song " << s->location() << " is already known to be on this media" << endl;
                 }
                 return;
             }
@@ -804,7 +804,7 @@ QStringList* YammiModel::readM3uFile(QString filename) {
  */
 bool YammiModel::checkConsistency(KProgressDialog* progress, MyList* selection, ConsistencyCheckParameter* p) {
     if(m_yammi->config( ).childSafe) {
-        kdWarning()<<"checkConsistency : childSafe --> request denied"<<endl;
+        kdWarning() << "checkConsistency : childSafe --> request denied" << endl;
         return false;
     }
 

@@ -154,6 +154,7 @@ private:
 	
 private:
 	Prefs m_config;
+	bool validState;
 	QSlider *m_seekSlider;
 	LineEditShift *m_searchField;
 	bool searchResultsUpdateNeeded;
@@ -171,6 +172,7 @@ public:
 	void stopDragging();
 	void requestSearchResultsUpdate(MyList* results);
 	YammiModel* getModel() { return model; };
+	bool isValidState() { return validState; };
 	
 	bool columnIsVisible(int column);
 	int mapToRealColumn(int column);

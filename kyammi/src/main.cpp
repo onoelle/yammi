@@ -62,7 +62,11 @@ int main( int argc, char **argv )
 	KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
 	srand(time(NULL));
 	KApplication app;
-	YammiGui *yammi = new YammiGui();
+	YammiGui* yammi = new YammiGui();
+	if(!yammi->isValidState()) {
+		kdDebug() << "shutting down now...\n";
+		return 1;
+	}
 	app.setMainWidget( yammi );
 	yammi->show();
 	// give yammi a chance for a first draw

@@ -27,7 +27,7 @@
 
 
 XmmsPlayer::XmmsPlayer(int session, YammiModel* model) : MediaPlayer( model ) {
-
+	this->session=session;
     bool alreadyRunning=ensurePlayerIsRunning();
     if(alreadyRunning) {
         kdDebug() << "xmms is already running\n";
@@ -47,7 +47,6 @@ XmmsPlayer::XmmsPlayer(int session, YammiModel* model) : MediaPlayer( model ) {
     } else {
         xmmsRepeatWasActivated=false;
     }
-
 }
 
 
@@ -69,19 +68,25 @@ XmmsPlayer::~XmmsPlayer() {
  */
 bool XmmsPlayer::ensurePlayerIsRunning() {
     if(xmms_remote_is_running(session)) {
+		kdDebug() << "running instance of xmms found\n";
         return true;
     }
 
     kdDebug() << "xmms not running, starting it...\n";
     system("xmms &");
 
-    while(!xmms_remote_is_running(session)) {
-        kdDebug() << "waiting for xmms...\n";
+	int i;
+    for(i=0; !xmms_remote_is_running(session) && i<100; i++) {
+		kdDebug() << "waiting for xmms to be ready ( " << i << " of 100 tries)\n";
         myWait(100);
     }
-    // to be sure, we wait another 100ms before starting interaction with Xmms
-    myWait(100);
+	if(i==100) {
+		kdError() << "could not connect to xmms, try starting it by hand and start yammi again!\n";
+		return false;
+	}
+    // to be sure, we wait another 100ms before starting any interaction with xmms
     kdDebug() << "...xmms is up!\n";
+    myWait(100);
     return false;
 }
 

@@ -1,13 +1,17 @@
-2004-06-29 Oliver Nölle <oli.noelle@web.de>
-	- fixed loading database from different directory / importing old one 
-	- improved debug messages on loading/saving 
-
-2004-06-27 Oliver Nölle <oli.noelle@web.de>
-	- fixed fixed-size (g)char arrays/string handling 
-	- fixed (to be completed): loading database from a given dir 
-
-??.??.2004 version 1.2-alpha-3
+02.07.2004 version 1.2-alpha-3
 ##############################
+Fixed some major bugs:
+- fixed: importing old database
+  (if you already used another 1.2-alpha version of yammi and have an empty song database now:
+   if you delete the directory ~/.kde/share/apps/yammi, then yammi will automatically import your old
+   database from ~/.yammi)
+- fixed: updating id3 tags did not work if no tags were present in the file
+- fixed: loading database from a given dir (using a command line parameter, try "yammi -h")
+- fixed: connecting to xmms
+- fixed: yammiui.rc not installed => aborting with correct error message
+  (you have to have the yammiui.rc file correctly installed at (eg.) /opt/kde3/share/apps/yammi/yammiui.rc,
+  please set KDEDIR to (eg.) /opt/kde3 before calling configure: "export KDEDIR=/opt/kde3")
+- fixed: qt versions of .ui files (now QT >= 3.2 should be sufficient for compiling)
 - fixed: fixed-size (g)char arrays: now using QString classes whenever possible
 
 
