@@ -701,8 +701,13 @@ bool YammiModel::traverse(QString path, QString filePattern, KProgressDialog* pr
 
 	for(QFileInfo *fi2; (fi2=it2.current()); ++it2 )
 	{
-		if(fi2->fileName()=="." || fi2->fileName()=="..")
+		if(fi2->fileName()=="." || fi2->fileName()=="..") {
 			continue;
+    }
+    if(fi2->isSymLink()) {
+	    kdDebug()<<"skipping symlink " << fi2->filePath() << endl;
+      continue;
+    }
 		if(traverse(fi2->filePath(), filePattern, progress, mediaName) == false)
 		{
 			return false;

@@ -775,7 +775,8 @@ QString Song::getOggComment(OggVorbis_File* oggfile, QString commentName)
 	vorbis_comment* ourComment = ov_comment(oggfile, -1);
 
 	for(int i=0; i < (*ourComment).comments; i++)	{
-		QString curstr((*ourComment).user_comments[i]);
+    // QString curstr((*ourComment).user_comments[i]);
+    QString curstr = QString::fromUtf8((*ourComment).user_comments[i], -1);
 		if( curstr.left(commentName.length()).upper() == commentName.upper()) {
 			return curstr.right(curstr.length() - commentName.length() - 1);
 		}

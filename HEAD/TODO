@@ -1,6 +1,6 @@
 TODO
 ----
-last update 26.1.2004
+last update 25.02.2004
 
 - clean up the content of this file!!!
 
@@ -21,11 +21,12 @@ main purpose: clean up, so other people can more easily contribute to the projec
 
 - clean up CVS repo
 - check bugs on sf
-- check all TODOs
+- check all TODOs / FIXMEs
 - make proposed filename change while you change things
 - fix song info for multiple songs
 - make mpg123 and ogg123 configurable?
 - implement onPlayed and afterPlayed plugin types
+- make follow symlinks an option?
 
 for version 1.0.1
 -----------------
