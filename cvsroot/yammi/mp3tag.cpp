@@ -24,7 +24,7 @@ MP3Tag::MP3Tag() {
   album[0] = 0;
   year[0] = 0;
   comment[0] = 0;
-  genre[0] = 0;
+//  genre[0] = 0;
   gennum = -1;
   trackNr= -1;
 }
@@ -36,7 +36,7 @@ void MP3Tag::clear(){
   *album   = '\0';
   *year    = '\0';
   *comment = '\0';
-  *genre   = '\0';
+//  *genre   = '\0';
   gennum = -1;
   trackNr= -1;
 }
@@ -112,12 +112,7 @@ bool MP3Tag::saveTags(QFile* f){
 	  song.comment[28]=0;
 	  song.comment[29]=(unsigned char)trackNr;
 	}
-
-//  if (gennum >= maxGenres) song.genre = 0;
-//  else {
-//    temp = gennum;
-//    song.genre = (unsigned char) temp;
-//  }
+  song.genre = (unsigned char) gennum;
 
   if(!f->at(f->size()-128)){
 		cout << "error saving tags (1)\n";

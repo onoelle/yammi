@@ -19,11 +19,13 @@
 #include "song.h"
 #include "mp3tag.h"
 #include "mp3_layer.h"
+#include "yammigui.h"
 
+extern YammiGui* gYammiGui;
 
 /** constructs a song object with the given parameters
  */
-Song::Song(QString artist, QString title, QString album, QString filename, QString path, int length, int bitrate, MyDateTime addedTo, int year, QString comment, int trackNr)
+Song::Song(QString artist, QString title, QString album, QString filename, QString path, int length, int bitrate, MyDateTime addedTo, int year, QString comment, int trackNr, int genreNr)
 {
 	classified=false;
 	tagsDirty=false;
@@ -38,6 +40,7 @@ Song::Song(QString artist, QString title, QString album, QString filename, QStri
 	this->addedTo=addedTo;
 	this->comment=comment;
 	this->trackNr=trackNr;
+	this->genreNr=genreNr;
 	this->year=year;
 	this->lastPlayed.setDate(QDate(1900,1,1));
 	this->lastPlayed.setTime(QTime(0,0,0));
@@ -71,6 +74,7 @@ Song::Song(const QString location)
 	this->comment="";
 	this->year=0;
 	this->trackNr=0;
+	this->genreNr=0;
 	this->lastPlayed.setDate(QDate(1900,1,1));
 	this->lastPlayed.setTime(QTime(0,0,0));
 
@@ -147,6 +151,7 @@ Song::Song(const QString location)
 		this->comment=tag.comment;
 		this->comment=this->comment.simplifyWhiteSpace();
 		this->trackNr=tag.trackNr;
+		this->genreNr=tag.gennum;
 		QString strYear;
 		strYear=tag.year;
 		sscanf(strYear, "%d", &(this->year));
@@ -211,7 +216,7 @@ Song::Song(const QString location)
 	title=capitalize(title);
 	
 	corrupted=false;
-	checkConsistency();
+	checkConsistency(gYammiGui->getModel()->config.tagsConsistent, gYammiGui->getModel()->config.filenamesConsistent);
 }
 	
 
@@ -239,6 +244,7 @@ bool Song::checkTags()
 		// häh??? why does application of left (on an empty string) change the string???
 		if(strcmp(this->comment.latin1(), tag.comment)!=0) {same=false;cout << "(comment)"; }
 		if(this->trackNr!=0 && this->trackNr!=tag.trackNr) {same=false; cout << "(trackNr)"; }
+		if(this->genreNr!=tag.gennum)  {same=false; cout << "(genreNr)"; }
 		QString strYear;
 		int intYear;
 		strYear=tag.year;
@@ -267,6 +273,7 @@ bool Song::saveTags()
 	tag.spacecopy(tag.year, tmpYear.data(), 4);
 	tag.spacecopy(tag.comment, this->comment.latin1(), 30);
 	tag.trackNr=this->trackNr;
+	tag.gennum=this->genreNr;
 	
 	// open file
 	QString location=this->path+"/"+this->filename;
@@ -361,6 +368,7 @@ void Song::setTo(Song* s)
 	this->artistSure=s->artistSure;
 	this->titleSure=s->titleSure;
 	this->trackNr=s->trackNr;
+	this->genreNr=s->genreNr;
 }
 
 /** check songfile (exists and readable)
@@ -382,39 +390,45 @@ bool Song::checkReadability()
  * - file exists and readable
  * - id3 tags
  * - consistency with filename
- * @returns true on wish or song okay
- * false on song unreadable, tags dirty, filename dirty
+ * @returns "" on wish or song okay
+ * diagnosis string on song unreadable, tags dirty, filename dirty
  */
-bool Song::checkConsistency()
+QString Song::checkConsistency(bool requireConsistentTags, bool requireConsistentFilename)
 {
 	//	if(location()="")
 	//		return true; ??
+	QString diagnosis="";
 	
 	if(artist=="{wish}")							// ignore wishes 	
-		return true;
+		return diagnosis;
  	
 	if(!checkReadability()) {
-		return false;
+		diagnosis+="song file not readable. ";
+		return diagnosis;
 	}
+	
 	
 	tagsDirty=false;
+	if(requireConsistentTags) {
+		// checking tags
+	 	if(!checkTags()) {
+			cout << "tags on file " << this->filename << " are not set correctly...\n";
+			tagsDirty=true;
+			diagnosis+="tags not set correctly. ";
+		}
+	}
+	
 	filenameDirty=false;
-	
-	// checking tags
- 	if(!checkTags()) {
-		cout << "tags on file " << this->filename << " are not set correctly...\n";
-		tagsDirty=true;
+	if(requireConsistentFilename) {
+		// checking filename
+		if(!checkFilename()) {
+			cout << "file " << this->filename << " does not have correct filename\n";
+			filenameDirty=true;
+			diagnosis+="filename not consistent. ";
+		}
 	}
 	
-	// checking filename
-	if(!checkFilename()) {
-		cout << "file " << this->filename << " does not have correct filename\n";
-		filenameDirty=true;
-	}
-//	if(tagsDirty || filenameDirty)
-//		return false;
-	
-	return true;
+	return diagnosis;
 }
 
 

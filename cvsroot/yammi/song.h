@@ -50,13 +50,13 @@ class Song
 {
 public:
 	/// default constructor
-	Song(QString artist, QString title, QString album, QString filename, QString path, int length, int bitrate, MyDateTime addedTo, int year, QString comment, int trackNr);
+	Song(QString artist, QString title, QString album, QString filename, QString path, int length, int bitrate, MyDateTime addedTo, int year, QString comment, int trackNr, int genreNr);
 	
 	/// constructs a song object from a given file
 	Song(const QString filename);
 	
-	/// check consistency (and make consistent)
-	bool checkConsistency();
+	/// check consistency
+	QString checkConsistency(bool requireConsistentTags, bool requireConsistentFilename);
 	
 	// checking methods
 	bool checkTags();
@@ -96,6 +96,8 @@ public:
 	int trackNr;														// trackNr on CD
 	int year;																// year of song
 	int bitrate;														// bitrate in kbps
+	int genreNr;														// genre
+
 	// file and mp3-layer info
 	QString filename;												// filename, excluding path
 	QString path;														// path to file, excluding filename, no trailing slash
@@ -116,7 +118,6 @@ public:
 	bool tagsDirty;
 	bool filenameDirty;
 	
-//	int genre;														// sorry, I'm not using genre (so far)
 
 };
 

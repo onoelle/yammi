@@ -58,6 +58,7 @@
 #include <qtimer.h>
 #include <qevent.h>
 #include <qtooltip.h>
+#include <qslider.h>
 
 // xmms control
 #include <xmms/xmmsctrl.h>
@@ -130,6 +131,7 @@ protected:
 	QPopupMenu* 	songPlayPopup;
 	QPopupMenu* 	songPrelistenPopup;
 	QPopupMenu* 	songAdvancedPopup;
+	QPopupMenu* 	songSearchPopup;
 	QPopupMenu* 	folderPopup;
 	QMenuBar*			mainMenu;
 	QPopupMenu* 	fileMenu;
@@ -138,6 +140,8 @@ protected:
 	QPopupMenu* 	helpMenu;
 	QStatusBar* 	mainStatusBar;					// status bar
 	QToolBar*			toolBar;								// tool bar
+	QSlider*			songSlider;
+	bool					isSongSliderGrabbed;
 public:	
 	QToolButton*	tbSaveDatabase;
 protected:
@@ -162,6 +166,9 @@ protected slots:
 	void				openHelp();
 	void				aboutDialog();
 	void				userTyped( const QString& searchStr );
+	void				songSliderMoved();
+	void				songSliderGrabbed();
+	void				searchSimilar(int what);
 	void				searchFieldChanged();
 	void				slotFolderChanged();
 	void				slotSongChanged();

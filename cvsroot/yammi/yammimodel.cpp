@@ -296,8 +296,10 @@ void YammiModel::readHistory()
 	}
 	
 	char buf[200];
+	int counter=0;
 	// read in line per line
 	while( f.readLine(buf, 200)>0 ) {
+		counter++;
 		QString entry(buf);
 		// not very nice, I know... (change logfile also to correct xml format?)
 		int pos1=entry.find('>', 0);
@@ -323,7 +325,7 @@ void YammiModel::readHistory()
 		}
   }
 	f.close();	
-	cout << "..done\n";
+	cout << "..done (" << counter << " entries)\n";
 }
 
 
@@ -430,6 +432,8 @@ void YammiModel::readSongDatabase()
 			int year=atoi(yearStr);
 			QString trackNrStr=e.attribute("trackNr", "0");
 			int trackNr=atoi(trackNrStr);
+			QString genreNrStr=e.attribute("genreNr", "0");
+			int genreNr=atoi(genreNrStr);
 			
 			QString addedToStr=e.attribute("addedTo", "1/1/1970/00:00:00");
 			// read date as "dd/mm/yyyy, hh:mm:ss"
@@ -437,7 +441,7 @@ void YammiModel::readSongDatabase()
 			addedTo.readFromString(addedToStr);
 			
 			
-			Song* newSong=new Song(artist, title, album, filename, path, length, bitrate, addedTo, year, comment, trackNr);
+			Song* newSong=new Song(artist, title, album, filename, path, length, bitrate, addedTo, year, comment, trackNr, genreNr);
 			allSongs.appendSong( newSong );
 
 			QDomNode child = e.firstChild();
@@ -505,6 +509,8 @@ void YammiModel::saveSongDatabase()
 		if(s->title!="unknown")		elem.setAttribute( "title", s->title );
 		if(s->year!=0)						elem.setAttribute( "year", QString("%1").arg(s->year) );
 		if(s->trackNr!=0)					elem.setAttribute( "trackNr", QString("%1").arg(s->trackNr) );
+		if(s->genreNr!=0)					elem.setAttribute( "genreNr", QString("%1").arg(s->genreNr) );
+		
 		
 		for(unsigned int i=0; i<s->mediaName.count(); i++) {
 			QDomElement media = doc.createElement( "media" );
@@ -623,13 +629,14 @@ void YammiModel::traverse(QString path)
 				found=true;
 				
 				// here we can fix/update our database with additional info...
-				/*
+				
+				// add genre number to Song info
 				Song* fixSong=new Song(fi->filePath());
-				eg. s->year=fixSong->year;
-				eg. s->trackNr=fixSong->trackNr;
+				s->genreNr=fixSong->genreNr;
+//				eg. s->trackNr=fixSong->trackNr;
 				delete(fixSong);
 				allSongsChanged(true);
-				*/
+				
 				break;
 			}
 		}
@@ -703,9 +710,9 @@ bool YammiModel::checkConsistency()
 	int sumDirtyTags=0;
 	int sumDirtyFilenames=0;
 	for(Song* s=allSongs.firstSong(); s; s=allSongs.nextSong()) {
-		if(s->checkConsistency()==false) {
-			if(problematicSongs.containsSong(s)==0)
-				problematicSongs.append(new SongEntryString(s, "checkConsistency failed"));
+		QString diagnosis=s->checkConsistency(config.tagsConsistent, config.filenamesConsistent);
+		if(diagnosis!="") {
+			problematicSongs.append(new SongEntryString(s, diagnosis));
 		}
 		if(s->tagsDirty)
 			sumDirtyTags++;
@@ -732,9 +739,9 @@ bool YammiModel::checkConsistency()
 		if(last->filename==s->filename) {
 			cout << "X: song contained twice: " << s->filename << ", keep both?\n";
 			cout << "path1: " << s->path << ", path2: " << last->path << "\n";
-			if(problematicSongs.containsSong(last)==0)
+			//if(problematicSongs.containsSong(last)==0)
 				problematicSongs.append(new SongEntryString(last, "contained twice(X)"));
-			if(problematicSongs.containsSong(s)==0)
+			//if(problematicSongs.containsSong(s)==0)
 				problematicSongs.append(new SongEntryString(s, "contained twice(X)"));
 		}
 		last=s;
@@ -751,26 +758,24 @@ bool YammiModel::checkConsistency()
 		// check for songs contained twice in database (but pointing to same file+path)
 		if(last->artist==s->artist && last->title==s->title) {
 			cout << "!!!   song contained twice: " << s->filename << ", keep both?\n";
-			if(problematicSongs.containsSong(last)==0)
+//			if(problematicSongs.containsSong(last)==0)
 				problematicSongs.append(new SongEntryString(last, "contained twice(1)"));
-			if(problematicSongs.containsSong(s)==0)
-				problematicSongs.append(new SongEntryString(last, "contained twice(2)"));
+//			if(problematicSongs.containsSong(s)==0)
+				problematicSongs.append(new SongEntryString(s, "contained twice(2)"));
 		}
 	}
 	
-	if(sumDirtyTags+sumDirtyFilenames==0)
+	cout << "..consistency checked\n";
+	if(problematicSongs.count()==0) {
 		cout << "your yammi database is nice and clean!\n";
+		return true;
+	}
 	else {
 		cout << sumDirtyTags				<< " dirty tags\n";
 		cout << sumDirtyFilenames		<< " dirty filenames\n";
-	}
-	
-	cout << "..consistency checked\n";
-	if(sumDirtyTags+sumDirtyFilenames>0) {
 		allSongsChanged(true);
 		return false;
 	}
-	return true;
 }
 
 

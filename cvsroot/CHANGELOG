@@ -2,8 +2,12 @@ done
 ----
 
 ??? version 0.4
+- 15. 3. new checkConsistency diagnosis
+					tags/filename will only be checked if enabled in prefs
+- 14. 3. added basic support for id3 genres (sorted list would be nice)
+- 14. 3. added "search for similar" to context menu
 
-
+- 18. 2. added slider for song position
 - 17. 2. logging of songs is now done at every songchange, not when ending program
 - 17. 2. added lastPlayed attribute to songs, computed when reading history
 - 15. 2. bugfix: scanning from non existing directory

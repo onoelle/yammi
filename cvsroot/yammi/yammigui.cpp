@@ -92,7 +92,7 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
 	mainMenu->insertItem( "&Help", helpMenu );
 	
 	// toolbar
-	toolBar = new QToolBar ( this, "toolbar label");
+	toolBar = new QToolBar ( this, "toolbar");
   toolBar->setLabel( "Operations" );
 	tbSaveDatabase = new QToolButton( QPixmap(filesave_xpm), "Save database (Ctrl-S)", QString::null,
 														model, SLOT(save()), toolBar);
@@ -107,7 +107,7 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
 		
 	QLabel *searchLabel = new QLabel(toolBar);
 	searchLabel->setFrameStyle( QFrame::Panel | QFrame::Sunken );
-	searchLabel->setText( "  Search: " );
+	searchLabel->setText( "Search:" );
 	searchLabel->setFrameStyle( QFrame::NoFrame );
 	searchField = new QLineEdit ( toolBar );
 	connect( searchField, SIGNAL(textChanged(const QString&)), SLOT(userTyped(const QString&)) );
@@ -116,12 +116,18 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
 	QToolTip::add( searchField, "fuzzy search (Ctrl-F)");
 	
 	// button "add to wishlist"	
-	QPushButton* addToWishListButton=new QPushButton("add to wishlist", toolBar);
+	QPushButton* addToWishListButton=new QPushButton("..to wishlist", toolBar);
 	// current song label
-	QPushButton* currentSongLabel=new QPushButton("current song...", toolBar);	
+	QPushButton* currentSongLabel=new QPushButton("current song..", toolBar);
+	songSlider = new QSlider( QSlider::Horizontal, toolBar, "songLength" );
+	songSlider->setTickmarks(QSlider::Below);
+	songSlider->setFixedWidth(180);
+	isSongSliderGrabbed=false;
+	connect( songSlider, SIGNAL(sliderReleased()), SLOT(songSliderMoved()) );
+	connect( songSlider, SIGNAL(sliderPressed()), SLOT(songSliderGrabbed()) );
 	
 	QToolBar* toolBar2 = new QToolBar ( this, "toolbar2");
-  toolBar2->setLabel( "Operations2" );
+  toolBar2->setLabel( "song actions" );
 
 	// now all the buttons that correspond to context menu entries
 	tbEnqueue = new QToolButton (QPixmap(enqueue_xpm), "Enqueue at end (F5)", QString::null,
@@ -282,7 +288,7 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
 	// check whether xmms is playing, if not: start playing!
 	if(!xmms_remote_is_playing(0)) {
 		xmms_remote_play(0);
-		cout << "yammi is not playing, starting it...\n";
+		cout << "xmms is not playing, starting it...\n";
 	}
 	syncXmms2Yammi();
 
@@ -367,6 +373,8 @@ void YammiGui::updateListViewColumns()
 	songListView->addColumn( "Year", 50);
 	songListView->setColumnAlignment( 4, Qt::AlignRight );
 	songListView->addColumn( "Track", 40);
+	songListView->setColumnAlignment( 5, Qt::AlignRight );
+	songListView->addColumn( "Genre", 40);
 	songListView->setColumnAlignment( 5, Qt::AlignRight );
 	songListView->addColumn( "Added to", 60);
 	songListView->setColumnAlignment( 6, Qt::AlignRight );
@@ -492,6 +500,13 @@ void YammiGui::updateSongPopup()
 	songPopup->insertItem( "Insert Into...", playListPopup);
 	if(model->config.childSafe)
 		return;
+
+	songSearchPopup = new QPopupMenu(songPopup);
+	songSearchPopup->insertItem( "Entry", this, SLOT(searchSimilar(int)), 0, 0);
+	songSearchPopup->insertItem( "Artist", this, SLOT(searchSimilar(int)), 0, 1);
+	songSearchPopup->insertItem( "Title", this, SLOT(searchSimilar(int)), 0, 2);
+	songSearchPopup->insertItem( "Album", this, SLOT(searchSimilar(int)), 0, 3);
+	songPopup->insertItem( "Search for similar...", songSearchPopup);
 	
 	songAdvancedPopup = new QPopupMenu(songPopup);
 	songAdvancedPopup->insertItem( "Delete", this, SLOT(forSelection(int)), 0, Delete);
@@ -520,7 +535,7 @@ void YammiGui::addToWishList()
 {
 	QString toAdd=searchField->text();
 	MyDateTime wishDate=wishDate.currentDateTime();
-	Song* newSong=new Song("{wish}", toAdd, "", "", "", 0, 0, wishDate, 0, "", 0);
+	Song* newSong=new Song("{wish}", toAdd, "", "", "", 0, 0, wishDate, 0, "", 0, 0);
 	model->allSongs.appendSong( newSong );
 	model->allSongsChanged(true);
 	folderAll->update(&(model->allSongs));
@@ -617,12 +632,38 @@ void YammiGui::decide(Song* s1, Song* s2)
 }
 
 
+
 void YammiGui::userTyped( const QString& searchStr )
 {
 	if(searchStr.length()<1) return;
 	typeTimer.stop();
 	typeTimer.start( 300, TRUE );
 //	searchFieldChanged();
+}
+
+
+/// searches for similar entries like the current song
+void YammiGui::searchSimilar(int what)
+{
+	QString searchFor;
+	getCurrentSong();
+	Song* refSong=selectedSongs.firstSong();
+	switch(what)
+	{
+		case 1:
+			searchFor=refSong->artist;
+			break;
+		case 2:
+			searchFor=refSong->title;
+			break;
+		case 3:
+			searchFor=refSong->album;
+			break;
+		default:
+			searchFor=refSong->displayName();
+	}		
+	searchField->setText(searchFor);
+	searchFieldChanged();
 }
 
 
@@ -894,13 +935,20 @@ void YammiGui::slotFolderPopup( QListViewItem* Item, const QPoint & point, int )
  */
 void YammiGui::forSelectionSongInfo()
 {
-	QString _artist, _title, _album, _comment, _path, _filename, _year, _trackNr;
+	QString _artist, _title, _album, _comment, _path, _filename, _year, _trackNr, _bitrate;
 	MyDateTime _addedTo;
 	int _length=0;
 	long double _size=0;
+	int _genreNr=0;
 		
 	int selected=0;
 	SongInfoDialog si(this, "test", true);
+	
+	// fill combobox with genres
+	si.ComboBoxGenre->insertItem("");
+	for(int genreNr=0; genreNr<=ID3v1_MaxGenreNr; genreNr++) {
+		si.ComboBoxGenre->insertItem(QString("%1 (%2)").arg(ID3v1_Genre[genreNr]).arg(genreNr));
+	}
 	
 	for(Song* s=selectedSongs.firstSong(); s; s=selectedSongs.nextSong()) {
 		selected++;
@@ -934,6 +982,8 @@ void YammiGui::forSelectionSongInfo()
 			_year=QString("%1").arg(s->year);
 			_path=s->path;
 			_filename=s->filename;
+			_bitrate=QString("%1 kb/s").arg(s->bitrate);
+			_genreNr=s->genreNr;
 		}
 		else {
 			if(_addedTo!=s->addedTo)					_addedTo=MyDateTime();
@@ -945,6 +995,8 @@ void YammiGui::forSelectionSongInfo()
 			if(_year!=QString("%1").arg(s->year))					_year="!";
 			if(_path!=s->path)								_path="!";
 			if(_filename!=s->filename)				_filename="!";
+			if(_bitrate!=QString("%1").arg(s->bitrate))					_bitrate="!";
+			if(_genreNr!=s->genreNr)					_genreNr=-1;
 		}
 	}
 
@@ -981,7 +1033,8 @@ void YammiGui::forSelectionSongInfo()
 				.arg( (float)_size/(float)(1024*1024) , 4,'f', 2 )
 				.arg( (float)_size                    ,10,'f', 0 )
 				);
-		
+	si.ReadOnlyBitrate->setText(_bitrate);
+	si.ComboBoxGenre->setCurrentItem(_genreNr+1);
 	
 	// show dialog
 	int result=si.exec();
@@ -1006,6 +1059,11 @@ void YammiGui::forSelectionSongInfo()
 			newAddedTo.readFromString(si.LineEditAddedTo->text());
 			if(newAddedTo.isValid())
 				if(newAddedTo!=s->addedTo) { s->addedTo=newAddedTo; change=true; }
+			int tryGenreNr=si.ComboBoxGenre->currentItem()-1;
+			if(tryGenreNr!=-1) {
+				if(tryGenreNr!=s->genreNr) {s->genreNr=tryGenreNr; change=true; }
+			}
+			
 			if(change) {
 				model->allSongsChanged(true);
 				s->tagsDirty=true;						// mark song as dirty(tags)
@@ -1124,8 +1182,6 @@ void YammiGui::forSelection(action act)
 	
 	// OKAY: go through list of songs
 	for(Song* s=selectedSongs.firstSong(); s; s=selectedSongs.nextSong()) {
-		cout << "for loop: " << s->displayName() << "\n";
-		
 		if(act==Delete) {
 			if(deleteFile)	forSong(s, DeleteFile);
 			if(deleteEntry)	forSong(s, DeleteEntry);
@@ -1229,7 +1285,7 @@ void YammiGui::syncYammi2Xmms(bool syncAll)
 				if(check==s)
 					continue;		// okay, both are the same
 				// ups, different!
-				cout << "song entry " << i << " different => deleting and replacing all following!\n";
+//				cout << "song entry " << i << " different => deleting and replacing all following!\n";
 				for(int toDel=xmms_remote_get_playlist_length(0)-1; toDel>=i; toDel--) {
 					// delete all following
 					xmms_remote_playlist_delete(0, toDel);
@@ -1342,9 +1398,9 @@ void YammiGui::forSong(Song* s, action act, QString dir=0)
 	 {
 		if(s->filename=="")
 			return;
-		if(s->checkConsistency()==false) {
-			if(model->problematicSongs.containsSong(s)==0)
-				model->problematicSongs.appendSong(s);
+		QString diagnosis=s->checkConsistency(model->config.tagsConsistent, model->config.filenamesConsistent);
+		if(diagnosis!="") {
+			model->problematicSongs.append(new SongEntryString(s, diagnosis));
 		}
 	 }
 		break;
@@ -1574,6 +1630,21 @@ void YammiGui::xmms_clearPlaylist()
 */
 }
 
+/// called whenever user grabs the songSlider
+/// causes xmms to jump to the given song position
+void YammiGui::songSliderGrabbed()
+{
+	isSongSliderGrabbed=true;
+}
+
+/// called whenever user released the songSlider
+/// causes xmms to jump to the given song position
+void YammiGui::songSliderMoved()
+{
+	isSongSliderGrabbed=false;
+	xmms_remote_jump_to_time(0, songSlider->value());
+}
+
 /**
  * onTimer is called periodically to do some things independently of any user action
  * - cutShort
@@ -1589,6 +1660,22 @@ void YammiGui::onTimer()
  		char file[200];
   	int pos=xmms_remote_get_playlist_pos(0);
 		strcpy(file, xmms_remote_get_playlist_file(0, pos));
+		
+		gint outputTime=outputTime=xmms_remote_get_output_time(0);
+		// adjust songSlider (if user is not currently dragging it around)
+		if(!isSongSliderGrabbed)
+			songSlider->setValue(outputTime);
+		
+		/*	some xmms statistics...
+		gint len=xmms_remote_get_playlist_length(0);
+		gint pTime=xmms_remote_get_playlist_time(0, 0);
+		gint rate, freq, nch;
+		xmms_remote_get_info(0, &rate, &freq, &nch);
+		cout << "outputTime: " << outputTime << ", length: " << len << ", pTime: "
+		<< pTime << ", rate: " << rate << ", freq: " << freq << ", nch " << nch << "\n";
+		*/
+		
+
 		
 		if(currentFile!=file) {
 		// *** song change detected ***
@@ -1608,11 +1695,19 @@ void YammiGui::onTimer()
 			}
 			
 			currentSong=getSongFromFilename(QString(file));
+			// setup songSlider
+			gint outputTime=outputTime=xmms_remote_get_output_time(0);
+			
+			gint pTime=xmms_remote_get_playlist_time(0, pos);
+			songSlider->setRange(0, pTime);
+			songSlider->setTickInterval(1000*60);
+
+			
 
 			// song entry found
 			if(currentSong!=0) {
-				
 				SongEntryTimestamp* entry=new SongEntryTimestamp(currentSong);
+				currentSong->lastPlayed=entry->timestamp;
 				model->songsPlayed.append(entry);		// append to songsPlayed
 				folderSongsPlayed->update(&(model->songsPlayed));
 				if(model->config.logging)
@@ -1627,7 +1722,7 @@ void YammiGui::onTimer()
 		  		xmms_remote_playlist_delete(0, 0);
 		  		model->songsToPlay.removeFirst();
 		  	}
-		  	cout << "removed " << i << " entries from xmms/yammi\n";
+//		  	cout << "removed " << i << " entries from xmms/yammi\n";
 		  	
 		  	// should just check, not change anything:
 		  	syncYammi2Xmms();
@@ -1756,7 +1851,7 @@ void YammiGui::shutDown()
 
 void YammiGui::keyPressEvent(QKeyEvent* e)
 {
-	cout << "key(): " << e->key() << "text(): " << e->text() << "ascii(): " << e->ascii() << "\n";
+//	cout << "key(): " << e->key() << "text(): " << e->text() << "ascii(): " << e->ascii() << "\n";
 	int key=e->key();
 	switch(key) {
 		case Key_F1:
@@ -1932,7 +2027,6 @@ void YammiGui::updateSongDatabase()
 
 void YammiGui::stopDragging()
 {
-	cout << "stop dragging\n";
 	// here we have to synchronize with xmms playlist
 	model->songsToPlay.clear();
 	for ( QListViewItem* item=songListView->firstChild(); item; item=item->nextSibling() ) {

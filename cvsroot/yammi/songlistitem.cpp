@@ -17,6 +17,7 @@
 
 #include "songlistitem.h"
 #include "yammigui.h"
+#include "mp3tag.h"
 
 extern YammiGui* gYammiGui;
 
@@ -40,18 +41,22 @@ SongListItem::SongListItem( QListView *parent, SongEntry *entry, SongListItem* a
 	}
 	if(s->year!=0)				setText( base+4, QString("%1").arg(s->year));
   if(s->trackNr!=0)			setText( base+5, QString("%1").arg(s->trackNr));
-	setText( base+6, s->addedTo.writeToString());
-  if(s->bitrate!=0)			setText( base+7, QString("%1").arg(s->bitrate));
-  if(s->filename!="")		setText( base+8, s->filename );
-  if(s->path!="")				setText( base+9, s->path );
-  if(s->comment!="")		setText( base+10, s->comment );
+	int index=s->genreNr;
+	if(index>ID3v1_MaxGenreNr)
+		index=-1;
+  if(index!=-1)					setText( base+6, QString("%1 (%2)").arg(ID3v1_Genre[index]).arg(s->genreNr));
+	setText( base+7, s->addedTo.writeToString());
+  if(s->bitrate!=0)			setText( base+8, QString("%1").arg(s->bitrate));
+  if(s->filename!="")		setText( base+9, s->filename );
+  if(s->path!="")				setText( base+10, s->path );
+  if(s->comment!="")		setText( base+11, s->comment );
 	MyDateTime never;
 	never.setDate(QDate(1900,1,1));
 	never.setTime(QTime(0,0,0));
   if(s->lastPlayed!=never)
-												setText( base+11, s->lastPlayed.writeToString() );
+												setText( base+12, s->lastPlayed.writeToString() );
 	else
-												setText( base+11, "never" );
+												setText( base+12, "never" );
 }
 
 void SongListItem::paintCell( QPainter *p, const QColorGroup &cg,
