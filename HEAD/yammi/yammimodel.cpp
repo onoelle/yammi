@@ -17,7 +17,9 @@
 
 #include "yammimodel.h"
 #include "yammigui.h"
+#include "ApplyToAllBase.h"
 #include "options.h"
+
 
 using namespace std;
 
@@ -81,6 +83,9 @@ void YammiModel::readPreferences()
 	config.criticalSize			=	getProperty(&doc, "criticalSize", config.criticalSize);
 	config.secondSoundDevice=	getProperty(&doc, "secondSoundDevice", config.secondSoundDevice);
 	config.groupThreshold	=		getProperty(&doc, "groupThreshold", config.groupThreshold);
+  if(config.groupThreshold<1) {
+    config.groupThreshold=1;
+  }
 	config.lazyGrouping			=	getProperty(&doc, "lazyGrouping", config.lazyGrouping);
 	config.searchThreshold	=	getProperty(&doc, "searchThreshold", config.searchThreshold);
 	config.searchMaximumNoResults	=	getProperty(&doc, "searchMaximumNoResults", config.searchMaximumNoResults);
@@ -149,6 +154,7 @@ void YammiModel::savePreferences()
 	setProperty(&doc, "yammiVersion",				config.yammiVersion);
 	setProperty(&doc, "trashDir", 					config.trashDir);
 	setProperty(&doc, "scanDir", 						config.scanDir);
+	setProperty(&doc, "filenamePattern",		config.filenamePattern);
 	setProperty(&doc, "doubleClickAction",	config.doubleClickAction);
 	setProperty(&doc, "middleClickAction",	config.middleClickAction);
 	setProperty(&doc, "controlClickAction",	config.controlClickAction);
@@ -1021,6 +1027,9 @@ bool YammiModel::checkConsistency(QProgressDialog* progress, MyList* selection, 
     p->nonExistingDeleted=0;
     p->nonExistingUpdated=0;
     p->tagsCorrected=0;
+
+    p->correctTagsConfirmed=-1;
+    p->correctFilenamesConfirmed=-1;
     
     int i=0;
     for(Song* s=selection->firstSong(); s; s=selection->nextSong(), i++) {
@@ -1064,9 +1073,36 @@ bool YammiModel::checkConsistency(QProgressDialog* progress, MyList* selection, 
       if(diagnosis.contains("tags not correct") && p->checkTags) {
         p->dirtyTags++;
         if(p->correctTags) {
-          if(s->saveTags()) {
-            p->tagsCorrected++;
-            diagnosis.replace(QRegExp("tags not correct"), "tags corrected");
+
+          bool reallyCorrect;
+          if(p->correctTagsConfirmed==-1) {
+            // warning dialog!
+            ApplyToAllBase confirm(progress, "confirmDialog", true);
+            QString msg=QString("Correct tags in file\n\n%1?").arg(s->filename);
+            confirm.TextLabel->setText(msg);
+            // show dialog
+            int result=confirm.exec();
+            if(result==QDialog::Accepted) {
+              reallyCorrect=true;
+              if(confirm.CheckBoxApply->isChecked()) {
+                p->correctTagsConfirmed=1;
+              }
+            }
+            else {
+              reallyCorrect=false;
+              if(confirm.CheckBoxApply->isChecked()) {
+                p->correctTagsConfirmed=0;
+              }
+            }
+          }
+          else {
+            reallyCorrect=(p->correctTagsConfirmed==1);
+          }
+          if(reallyCorrect) {
+            if(s->saveTags()) {
+              p->tagsCorrected++;
+              diagnosis.replace(QRegExp("tags not correct"), "tags corrected");
+            }
           }
         }
       }
@@ -1074,9 +1110,35 @@ bool YammiModel::checkConsistency(QProgressDialog* progress, MyList* selection, 
         problematicSongs.append(new SongEntryString(s, diagnosis));
         p->dirtyFilenames++;
         if(p->correctFilenames) {
-          if(s->saveFilename()) {
-            diagnosis.replace(QRegExp("filename not consistent"), "filename corrected");
-            p->filenamesCorrected++;
+          bool reallyCorrect;
+          if(p->correctFilenamesConfirmed==-1) {
+            // warning dialog!
+            ApplyToAllBase confirm(progress, "confirmDialog", true);
+            QString msg=QString("Correct filename in file\n\n%1?").arg(s->filename);
+            confirm.TextLabel->setText(msg);
+            // show dialog
+            int result=confirm.exec();
+            if(result==QDialog::Accepted) {
+              reallyCorrect=true;
+              if(confirm.CheckBoxApply->isChecked()) {
+                p->correctFilenamesConfirmed=1;
+              }
+            }
+            else {
+              reallyCorrect=false;
+              if(confirm.CheckBoxApply->isChecked()) {
+                p->correctFilenamesConfirmed=0;
+              }
+            }
+          }
+          else {
+            reallyCorrect=(p->correctFilenamesConfirmed==1);
+          }
+          if(reallyCorrect) {
+            if(s->saveFilename()) {
+              diagnosis.replace(QRegExp("filename not consistent"), "filename corrected");
+              p->filenamesCorrected++;
+            }
           }
         }
       }

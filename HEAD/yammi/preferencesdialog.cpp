@@ -25,6 +25,7 @@
 #include <qvaluelist.h>
 #include <qcheckbox.h>
 #include <qinputdialog.h>
+#include <qmessagebox.h>
 
 #include "song.h"
 
@@ -123,6 +124,10 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, const char *name, bool mod
 	connect( CheckBoxPluginConfirm, SIGNAL( toggled(bool) ), this, SLOT (updatePluginConfirm(bool) ) );
 	connect( PushButtonNewPlugin, SIGNAL( clicked() ), this, SLOT( newPlugin() ) );
 	connect( PushButtonDeletePlugin, SIGNAL( clicked() ), this, SLOT( deletePlugin() ) );
+
+	connect( PushButtonPatternReplacements, SIGNAL( clicked() ), this, SLOT( showReplacements() ) );
+	connect( PushButtonPluginReplacements, SIGNAL( clicked() ), this, SLOT( showReplacements() ) );
+  
 	
 	connect( ButtonOK, SIGNAL( clicked() ), this, SLOT( myAccept() ) );
 }
@@ -341,4 +346,24 @@ void PreferencesDialog::deletePlugin()
 	_pluginConfirm->remove(_pluginConfirm->at(pos-1));
 	ComboBoxPlugins->setCurrentItem(0);
 	updatePlugin(0);
+}
+
+void PreferencesDialog::showReplacements()
+{
+  QString msg("");
+  msg+="Replacements for filename pattern, command (single mode)\n";
+  msg+="or custom list (group mode):\n";
+  msg+="%f = Filename, %W filename Without suffix\n";
+  msg+="%p = Path, %F = Filename (without path)\n";
+  msg+="%a = Artist, %t = Title\n";
+  msg+="%u = albUm, %b = Bitrate\n";
+  msg+="%i = Index, %l = Length\n";
+  msg+="%m = Media list, %n = Newline\n";
+  msg+="%r = Track number\n";
+  msg+="%X directory dialog, %Y file dialog\n";
+  msg+="%Z input string dialog\n\n";
+
+  msg+="Replacements for command (group mode):\n";
+  msg+="%l = custom list (via cat command) %L = custom list (directly)\n";
+  QMessageBox::information( this, "Yammi",msg);
 }

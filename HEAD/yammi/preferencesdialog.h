@@ -50,6 +50,7 @@ public slots:
   void updatePluginConfirm(bool checked);
 	void newPlugin();
 	void deletePlugin();
+  void showReplacements();
 
 protected:
 	Prefs* config;

@@ -60,6 +60,7 @@ fi
 
 AC_MSG_CHECKING(for ogg libs for reading ogg tags)
 if test "x$enable_ogglibs" = xyes; then
+    LIBS="-lglib $LIBS"
     AC_DEFINE(ENABLE_OGGLIBS)
     AC_MSG_RESULT(yes)
 else
@@ -85,9 +86,10 @@ else
 fi
 
 
+dnl if proper kde app: add "-lkdeui -lkio "
 AC_MSG_CHECKING(for noatun support)
 if test "x$enable_noatun" = xyes; then
-    LIBS="-lkdecore -lkdeui -lkio $LIBS"
+    LIBS="-lkdecore $LIBS"
     AC_DEFINE(ENABLE_NOATUN)
     AC_MSG_RESULT(yes)
 else

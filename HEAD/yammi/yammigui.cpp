@@ -102,14 +102,14 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
     player = new NoatunPlayer(model);         // use noatun as media player    
   }
 #endif
-  if(model->config.player==-1 || player==0) {
-    // TODO: make yammi work without a player?
-    cout << "ERROR: no valid media player configured, shutting down...\n";
-    exit(2);
+  if(player==0) {
+    cout << "WARNING: no media player support compiled in, only limited functionality available!\n";
   }
-  // connect player and yammi via signals
-	connect( player, SIGNAL(playlistChanged()), this, SLOT(updatePlaylist()) );
-	connect( player, SIGNAL(statusChanged()), this, SLOT(updatePlayerStatus()) );
+  else {
+    // connect player and yammi via signals
+    connect( player, SIGNAL(playlistChanged()), this, SLOT(updatePlaylist()) );
+    connect( player, SIGNAL(statusChanged()), this, SLOT(updatePlayerStatus()) );
+  }
 
 
   model->readSongDatabase();					// read song database
@@ -163,24 +163,26 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
 	
 	
 	
-  // media player toolbar
-  QToolBar* mediaPlayerToolBar = new QToolBar (this, "mediaPlayerToolbar");
-  mediaPlayerToolBar->setLabel( "Media Player Controls" );
-  tbPlayPause = new QToolButton( QPixmap((const char**)pause_xpm), "Play/Pause (F1)", QString::null,
+  if(player!=0) {
+    // media player toolbar
+    QToolBar* mediaPlayerToolBar = new QToolBar (this, "mediaPlayerToolbar");
+    mediaPlayerToolBar->setLabel( "Media Player Controls" );
+    tbPlayPause = new QToolButton( QPixmap((const char**)pause_xpm), "Play/Pause (F1)", QString::null,
                            player, SLOT(playPause()), mediaPlayerToolBar);
-	new QToolButton( QPixmap((const char**)stop_xpm), "Stop", QString::null,
+    new QToolButton( QPixmap((const char**)stop_xpm), "Stop", QString::null,
                            player, SLOT(stop()), mediaPlayerToolBar);
-	new QToolButton( QPixmap((const char**)skipbackward_xpm), "Skip backward (F2 / SHIFT-F2)", QString::null,
+    new QToolButton( QPixmap((const char**)skipbackward_xpm), "Skip backward (F2 / SHIFT-F2)", QString::null,
  														this, SLOT(skipBackward()), mediaPlayerToolBar);
-	new QToolButton( QPixmap((const char**)skipforward_xpm), "Skip forward (F3 / SHIFT-F3)", QString::null,
+    new QToolButton( QPixmap((const char**)skipforward_xpm), "Skip forward (F3 / SHIFT-F3)", QString::null,
                            this, SLOT(skipForward()), mediaPlayerToolBar);
-	songSlider = new QSlider( QSlider::Horizontal, mediaPlayerToolBar, "songLength" );
-	songSlider->setTickmarks(QSlider::Below);
-	songSlider->setFixedWidth(180);
-  songSlider->setPaletteBackgroundColor(QColor(179, 218, 226));
-	isSongSliderGrabbed=false;
-	connect( songSlider, SIGNAL(sliderReleased()), SLOT(songSliderMoved()) );
-	connect( songSlider, SIGNAL(sliderPressed()), SLOT(songSliderGrabbed()) );
+    songSlider = new QSlider( QSlider::Horizontal, mediaPlayerToolBar, "songLength" );
+    songSlider->setTickmarks(QSlider::Below);
+    songSlider->setFixedWidth(180);
+    songSlider->setPaletteBackgroundColor(QColor(179, 218, 226));
+    isSongSliderGrabbed=false;
+    connect( songSlider, SIGNAL(sliderReleased()), SLOT(songSliderMoved()) );
+    connect( songSlider, SIGNAL(sliderPressed()), SLOT(songSliderGrabbed()) );
+  }
 		
 	// main toolbar
 	QToolBar* toolBar = new QToolBar ( this, "toolbar");
@@ -394,34 +396,29 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
 	shiftPressed=false;
 	currentSong=0;
 	
-
-  // TODO: check...
-  player->syncPlayer2Yammi(&(model->songsToPlay));
-  player->syncYammi2Player(false);
-  checkPlaylistAvailability();
-
-  if(folderActual->songList->count()>0) {
-    // check whether player is playing, if not: start playing!
-    if(player->getStatus()!=PLAYING) {
-      cout << "media player is not playing, starting it...\n";
-      player->play();
+  // finish initialization of player (if available)
+  if(player!=0) {
+    player->syncPlayer2Yammi(&(model->songsToPlay));
+    player->syncYammi2Player(false);
+    checkPlaylistAvailability();
+  
+    if(folderActual->songList->count()>0) {
+      // check whether player is playing, if not: start playing!
+      if(player->getStatus()!=PLAYING) {
+        cout << "media player is not playing, starting it...\n";
+        player->play();
+      }
     }
+    // TODO: this should be probably done by a thread owned by the media player
+    connect( &checkTimer, SIGNAL(timeout()), player, SLOT(check()) );
+    checkTimer.start( 200, FALSE );
   }
-/*
-  if(player->getStatus()!=PLAYING)
-    tbPlayPause->setIconSet(QIconSet(QPixmap((const char**)play_xpm)));
-  else
-    tbPlayPause->setIconSet(QIconSet(QPixmap((const char**)pause_xpm)));
-*/
 
 	// connect all timers
   connect( &regularTimer, SIGNAL(timeout()), SLOT(onTimer()) );
   regularTimer.start( 500, FALSE );	// call onTimer twice a second
 	connect( &typeTimer, SIGNAL(timeout()), SLOT(searchFieldChanged()) );
 
-  // TODO: this should be probably done by a thread owned by the media player
-  connect( &checkTimer, SIGNAL(timeout()), player, SLOT(check()) );
-  checkTimer.start( 200, FALSE );
 
   // finish!
   cout << "initialisation successfully completed!\n";
@@ -474,8 +471,10 @@ YammiGui::~YammiGui()
 	}
   updateGeometrySettings();
   writeSettings();
-	player->syncYammi2Player(true);
-  delete(player);
+  if(player!=0) {
+    player->syncYammi2Player(true);    
+    delete(player);
+  }
 	cout << "goodbye!\n";
 }
 
@@ -546,16 +545,25 @@ void YammiGui::updatePlaylist()
  */
 void YammiGui::updatePlayerStatus()
 {
-  if(player->getStatus()==PLAYING)
+  if(player==0) {
+    return;
+  }
+  if(player->getStatus()==PLAYING) {
     tbPlayPause->setIconSet(QIconSet(QPixmap((const char**)pause_xpm)));
-  else
+    if(currentSong==0) {
+      currentSong=model->getSongFromFilename(player->getCurrentFile());
+    }
+  }
+  else {
     tbPlayPause->setIconSet(QIconSet(QPixmap((const char**)play_xpm)));
-  // check for sleep mode
+  }
+
+  // check, if we stopped because playlist empty and sleep mode activated
   if(songsUntilShutdown>0) {
-    if(player->getStatus()==STOPPED) {
+    if(player->getStatus()==STOPPED && model->songsToPlay.count()==0) {
       cout << "shutting down now...\n";
       shutDown();
-    }    
+    }
   }
 }
 
@@ -1314,7 +1322,7 @@ QString YammiGui::makeReplacements(QString input, Song* s, int index)
   QString filenameWithoutSuffix=s->filename.left(suffixPos);
   // trackNr
   QString trackNrStr;
-  if(s->trackNr==-1)
+  if(s->trackNr==0)
     trackNrStr="";
   else
     trackNrStr=QString("%1").arg(s->trackNr);
@@ -1776,7 +1784,7 @@ void YammiGui::forSelectionCheckConsistency()
 
 	QString msg=QString(
   "Result of consistency check:\n\n\
-  %1 songs were found problematic (check folder \"Problematic Songs\")\n\
+  %1 problematic issues identified (check folder \"Problematic Songs\")\n\
       (that folder won't be saved)\n\
   %2 songs not existing, of these:\n\
       %3 entries updated (filename cleared)\n\
@@ -1892,7 +1900,9 @@ void YammiGui::forSelection(action act)
 		slotFolderChanged();
 	}
 	if(act==Enqueue || act==EnqueueAsNext || act==Dequeue) {
-		player->syncYammi2Player(false);
+    if(player!=0) {
+      player->syncYammi2Player(false);
+    }
 		if(chosenFolder==folderActual)
 			slotFolderChanged();
 		else
@@ -1917,21 +1927,23 @@ void YammiGui::forSong(Song* s, action act, QString dir)
 
 		forSong(s, EnqueueAsNext);
 
-    if(player->getStatus()==STOPPED) {
-      // case 1: player stopped (this is a bit dirty...)
-      player->play();
-    }
-    else if(player->getStatus()==PAUSED) {
-      // case 2: player paused => start playing
-      player->skipForward(shiftPressed);
-      player->play();      
-    }
-    else if(player->getStatus()==PLAYING) {
-      // case 3: player is playing
-      player->skipForward(shiftPressed);
-    }
+    if(player!=0) {
+      if(player->getStatus()==STOPPED) {
+        // case 1: player stopped (this is a bit dirty...)
+        player->play();
+      }
+      else if(player->getStatus()==PAUSED) {
+        // case 2: player paused => start playing
+        player->skipForward(shiftPressed);
+        player->play();      
+      }
+      else if(player->getStatus()==PLAYING) {
+        // case 3: player is playing
+        player->skipForward(shiftPressed);
+      }
 			
-		mainStatusBar->message(QString("playing %1").arg(s->displayName()), 2000);
+      mainStatusBar->message(QString("playing %1").arg(s->displayName()), 2000);
+    }
 		break;
 		
 	case Enqueue:								// enqueue at end
@@ -1946,7 +1958,9 @@ void YammiGui::forSong(Song* s, action act, QString dir)
 		else
 			model->songsToPlay.insert(1, new SongEntryInt(s, 13));
 		folderActual->correctOrder();
-		player->syncYammi2Player(false);
+    if(player!=0) {
+      player->syncYammi2Player(false);      
+    }
 		mainStatusBar->message(QString("%1 enqueued as next").arg(s->displayName()), 2000);
 	}
 		break;
@@ -1954,8 +1968,10 @@ void YammiGui::forSong(Song* s, action act, QString dir)
 	case Dequeue: {
 		// search for selected song and dequeue
 		int i=1;
-		if(player->getStatus()==STOPPED)
-			i=0;
+    if(player!=0) {
+      if(player->getStatus()==STOPPED)
+        i=0;
+    }
 		for(; i<(int)model->songsToPlay.count(); i++) {
 			Song* check=model->songsToPlay.at(i)->song();
 			if(check==s) {
@@ -2222,7 +2238,7 @@ void YammiGui::clearPlaylist()
 	if(model->config.childSafe)
 		return;
 	Song* save=0;
-	if(currentSong!=0 && player->getStatus()!=STOPPED && model->songsToPlay.count()>1) {
+	if(currentSong!=0 && player!=0 && player->getStatus()!=STOPPED && model->songsToPlay.count()>1) {
     if( QMessageBox::warning( this, "Yammi", "Clear complete playlist?\n(except currently played song)", "Yes", "No")!=0)
       return;
     save=model->songsToPlay.firstSong();
@@ -2236,7 +2252,9 @@ void YammiGui::clearPlaylist()
 		folderActual->addSong(save);
 	else
 		folderActual->updateTitle();
-	player->syncYammi2Player(false);
+  if(player!=0) {
+    player->syncYammi2Player(false);
+  }
 	if(chosenFolder==folderActual)
 		slotFolderChanged();
 	else
@@ -2254,7 +2272,9 @@ void YammiGui::songSliderGrabbed()
 void YammiGui::songSliderMoved()
 {
 	isSongSliderGrabbed=false;
-	player->jumpTo(songSlider->value());
+  if(player!=0) {
+    player->jumpTo(songSlider->value());
+  }
 }
 
 
@@ -2269,6 +2289,9 @@ void YammiGui::onTimer()
 {	
   if(isScanning) {
     // we don't want to perform any update actions while Yammi is scanning...
+    return;
+  }
+  if(player==0) {
     return;
   }
   
@@ -2395,7 +2418,9 @@ void YammiGui::shutDown()
       }
     }
     
-		player->quit();                                 	// properly close player (for xmms: will save playlist)
+		if(player!=0) {
+      player->quit();                                 	// properly close player (for xmms: will save playlist) 
+    }
     if(model->config.shutdownScript!="")
       system(model->config.shutdownScript+" &");			// invoke shutdown script
     endProgram();
@@ -2419,16 +2444,24 @@ void YammiGui::keyPressEvent(QKeyEvent* e)
 //      cout << "shift pressed\n";
 			break;
 		case Key_F1:
-			player->playPause();
+			if(player!=0) {
+        player->playPause();
+      }
 			break;
 		case Key_F2:
-      player->skipBackward(shiftPressed);
+			if(player!=0) {
+        player->skipBackward(shiftPressed);
+      }
 			break;
 		case Key_F3:
- 			player->skipForward(shiftPressed);
+      if(player!=0) {
+        player->skipForward(shiftPressed);
+      }
 			break;
 		case Key_F4:
-			player->stop();
+      if(player!=0) {
+        player->stop();
+      }
 			break;
 		case Key_F5:
 			forAllSelected(Enqueue);
@@ -2733,7 +2766,7 @@ void YammiGui::stopDragging()
 	((FolderSorted*)chosenFolder)->syncWithListView(songListView);
 	slotFolderChanged();
 
-	if(chosenFolder==folderActual) {
+	if(chosenFolder==folderActual && player!=0) {
 		player->syncYammi2Player(false);
 	}
 	
@@ -2827,8 +2860,10 @@ void YammiGui::loadSongsFromMedia(QString mediaName)
 		cmd=QString("umount %1").arg(model->config.mediaDir);
 		system(cmd);
 	}
-	
-	player->syncYammi2Player(false);
+
+  if(player!=0) {
+    player->syncYammi2Player(false);
+  }
 	checkPlaylistAvailability();
 	if(chosenFolder==folderActual) {
 		slotFolderChanged();
@@ -2914,12 +2949,16 @@ void YammiGui::checkSwapSize()
 
 void YammiGui::skipForward()
 {
-  player->skipForward(shiftPressed);
+  if(player!=0) {
+    player->skipForward(shiftPressed);
+  }
 }
 
 void YammiGui::skipBackward()
 {
-  player->skipBackward(shiftPressed);
+  if(player!=0) {
+    player->skipBackward(shiftPressed);
+  }
 }
 
 

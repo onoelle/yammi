@@ -81,42 +81,28 @@ NoatunPlayer::NoatunPlayer(YammiModel* model)
   }
 
 
-  // TODO: find out whether one of the players is playing and don't change that one...
-  cout << "stopping player 1...\n";
+  // find out which one of the players is playing and take that one as current player
   currentPlayer=1;
-  clearPlaylist();
+  if(getStatus()==STOPPED) {
+    currentPlayer=0;
+  }
+   
+  // this will be the inactive player
+  cout << "clearing other's player playlist...\n";
+  currentPlayer=(currentPlayer+1) % 2;
   sendDcopCommandInt("setVolume(int)", 0);
-//  stop();
+  clearPlaylist();
 
-
-  cout << "starting player 0...\n";
-  currentPlayer=0;
-
-//  clearPlaylist();
-//  syncPlayer2Yammi(playlist);
+  // this will be the active player
+  currentPlayer=(currentPlayer+1) % 2;
   sendDcopCommandInt("setVolume(int)", 100);
   fade=100;
   connect( &fadeTimer, SIGNAL(timeout()), SLOT(onFade()) );
-//  statusChanged();
-  
-/* TODO:
-  if(xmms_remote_is_shuffle(session)) {
-    xmms_remote_toggle_shuffle(session);
-    shuffleWasActivated=true;
-		cout << "switching off xmms shuffle mode (does confuse my playlist management otherwise)\n";
-  }
-  else {
-	 	shuffleWasActivated=false;
-  }
-  */
 }
+
 
 NoatunPlayer::~NoatunPlayer()
 {
-	if(shuffleWasActivated) {
-    // TODO:
-//    cout << "switching noatun shuffle mode back on...\n";
-  }
 }
 
 
@@ -151,10 +137,6 @@ void NoatunPlayer::clearPlaylist()
 bool NoatunPlayer::ensurePlayerIsRunning()
 {
   return true;
-  cout << "noatun not running, starting it...\n";
-  // TODO: start noatun if necessary
-  cout << "...noatun is up!\n";
-  return false;
 }
 
 int NoatunPlayer::getCurrentPlayerId()
@@ -200,15 +182,16 @@ void NoatunPlayer::check()
   if(newStatus!=lastStatus) {
     lastStatus=newStatus;
     if(newStatus==STOPPED) {
-      // if player stopped and only one song left in playlist, we should remove it?
-      if(playlist->count()==1) {
+      // heuristic: if we were at end of last song and only one song left in playlist
+      // => we should remove it
+      if(playlist->count()==1 && timeLeft<2000) {
         sendDcopCommand(QString("removeCurrent()"));
         playlist->removeFirst();
         playlistChanged();
       }
       if(playlist->count()>1 && model->config.fadeTime==0) {
         // no crossfading configured
-        // if we were at end of song, we should probably start next one...(not optimal)
+        // heuristic: if we were at end of last song, we should start next one
         if(timeLeft<2000) {
           startSongChange();
         }

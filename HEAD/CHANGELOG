@@ -1,17 +1,18 @@
 ########################
-13.02.2003 version 0.7.1
+13.02.2003 version 0.8beta???
 - support for noatun!!! (controlling two noatun instances via dcop, enabling crossfading!)
   - added configuration for crossfading with noatun
   - cleaned up the abstract media player class and communication between player and Yammi
     (=> enabling to more easily support other players)
 - introduced an option to configure the filename pattern
+- added warning dialog boxes when correcting tags or filenames
 - added a field "proposed filename" to song info dialog, changed labels to (read-only)lineEdit widgets
 - using genre table provided with id3lib
 - little changes to configure.in (no more checking for id3lib, you have to disable it manually if needed)
 - added some replacements: %X, %Y, %W, %L, %r
 - added "insert into->new category" (finally, Tom!)
 - minor bugfixes
-- started cleaning up code...
+- started cleaning up code...(eg. abstract media player class)
 
 ######################
 14.12.2002 version 0.7

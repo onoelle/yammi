@@ -38,6 +38,7 @@ public:
 	Song*			firstSong();
 	Song*			nextSong();
 	Song*			prevSong();
+  Song*     currentSong() { return current; }
 	
 	void			appendSong(Song* s);					// appends <s> as simple SongEntry
 	void			removeSong(Song* toDelete);		// removes all occurences of SongEntry with pointer to <toDelete>
@@ -67,6 +68,7 @@ public:
 	
 protected:
 	int sortOrder;
+  Song* current;
 };
 
 #endif

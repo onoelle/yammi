@@ -34,27 +34,27 @@ Song* MyList::firstSong()
 {
 	SongEntry* entry=first();
 	if(entry)
-		return entry->song();
+		return current=entry->song();
 	else
-		return 0;
+		return current=0;
 }
 
 Song* MyList::nextSong()
 {
 	SongEntry* entry=next();
 	if(entry)
-		return entry->song();
+		return current=entry->song();
 	else
-		return 0;
+		return current=0;
 }
 
 Song* MyList::prevSong()
 {
 	SongEntry* entry=prev();
 	if(entry)
-		return entry->song();
+		return current=entry->song();
 	else
-		return 0;
+		return current=0;
 }
 
 void MyList::appendSong(Song* s)

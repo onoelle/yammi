@@ -15,9 +15,9 @@
  *                                                                         *
  ***************************************************************************/
 
+
 #ifndef XMMSPLAYER_H
 #define XMMSPLAYER_H
-
 
 #include "mediaplayer.h"
 
@@ -34,8 +34,9 @@ public:
 	~XmmsPlayer();
 
 protected:
-  bool ensureXmmsIsRunning();
+  bool          ensureXmmsIsRunning();
   int           session;      // xmms session id
+  int           timeLeft;
 	bool			    xmmsShuffleWasActivated;
 	void			    myWait(int msecs);
 

@@ -15,14 +15,16 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "options.h"
-#ifdef ENABLE_XMMS
- 
 #include "xmmsplayer.h"
+#include "options.h"
+
+#ifdef ENABLE_XMMS
+#include <xmmsctrl.h>        // xmms control
+#endif
+
 #include <iostream>
 using namespace std;
 #include <stdlib.h>
-#include <xmmsctrl.h>        // xmms control
 
 // TODO: remove! use signals!
 #include "yammigui.h"
@@ -31,6 +33,7 @@ extern YammiGui* gYammiGui;
 
 XmmsPlayer::XmmsPlayer(int session, YammiModel* model)
 {
+#ifdef ENABLE_XMMS
   this->session=session;
   this->model=model;
   this->playlist=&(model->songsToPlay);
@@ -49,15 +52,18 @@ XmmsPlayer::XmmsPlayer(int session, YammiModel* model)
   else {
 	 	xmmsShuffleWasActivated=false;
   }
+#endif
 }
 
 
 XmmsPlayer::~XmmsPlayer()
 {
+#ifdef ENABLE_XMMS
 	if(xmmsShuffleWasActivated) {
     cout << "switching xmms shuffle mode back on...\n";
 		xmms_remote_toggle_shuffle(session);
   }
+#endif
 }
 
 
@@ -67,6 +73,7 @@ XmmsPlayer::~XmmsPlayer()
  */
 bool XmmsPlayer::ensureXmmsIsRunning()
 {
+#ifdef ENABLE_XMMS
   if(xmms_remote_is_running(session)) {
     return true;
   }
@@ -80,6 +87,7 @@ bool XmmsPlayer::ensureXmmsIsRunning()
   // to be sure, we wait another 100ms before starting interaction with Xmms
   myWait(100);
   cout << "...xmms is up!\n";
+#endif
   return false;
 }
 
@@ -91,6 +99,7 @@ bool XmmsPlayer::ensureXmmsIsRunning()
  */
 void XmmsPlayer::syncPlayer2Yammi(MyList* playlist)
 {
+#ifdef ENABLE_XMMS
 	// 1. delete all songs already played
 	for(int i=xmms_remote_get_playlist_pos(session)-1; i>=0; i--) {
 		xmms_remote_playlist_delete(session, i);
@@ -114,6 +123,7 @@ void XmmsPlayer::syncPlayer2Yammi(MyList* playlist)
   playlistChanged();
   lastStatus=getStatus();
   statusChanged();  
+#endif
 }
 
 
@@ -123,6 +133,7 @@ void XmmsPlayer::syncPlayer2Yammi(MyList* playlist)
  */
 void XmmsPlayer::syncYammi2Player(bool syncAll)
 {
+#ifdef ENABLE_XMMS
 	// check whether xmms playlist is empty
 	if(xmms_remote_get_playlist_length(session)==0) {
 		for(int i=0; i<(int)playlist->count() && (i<model->config.keepInXmms || syncAll); i++) {
@@ -245,31 +256,37 @@ void XmmsPlayer::syncYammi2Player(bool syncAll)
 		xmms_remote_set_playlist_pos(0, 0);
 	}
 */
-
+#endif
 }
 
 
 /// start playing
 bool XmmsPlayer::play()
 {
+#ifdef ENABLE_XMMS
 	xmms_remote_play(session);
   return true;
+#endif
 }
 
 
 /// pause
 bool XmmsPlayer::pause()
 {
+#ifdef ENABLE_XMMS
 	xmms_remote_pause(session);
   return true;
+#endif
 }
 
 
 /// toggle between play and pause
 bool XmmsPlayer::playPause()
 {
+#ifdef ENABLE_XMMS
   ensureXmmsIsRunning();
 	xmms_remote_play_pause(session);
+#endif
   return true;
 }
 
@@ -277,6 +294,7 @@ bool XmmsPlayer::playPause()
 /// skip forward in playlist (if desired without crossfading)
 bool XmmsPlayer::skipForward(bool withoutCrossfading)
 {
+#ifdef ENABLE_XMMS
   ensureXmmsIsRunning();
   if(withoutCrossfading) {
     xmms_remote_pause(session);
@@ -286,6 +304,7 @@ bool XmmsPlayer::skipForward(bool withoutCrossfading)
   if(withoutCrossfading) {
     xmms_remote_play(session);
   }
+#endif
   return true;
 }
 
@@ -294,6 +313,7 @@ bool XmmsPlayer::skipForward(bool withoutCrossfading)
 /// TODO: clean up, make independent of Yammi?
 bool XmmsPlayer::skipBackward(bool withoutCrossfading)
 {
+#ifdef ENABLE_XMMS
   ensureXmmsIsRunning();
   if(withoutCrossfading) {
     xmms_remote_pause(session);
@@ -325,20 +345,24 @@ bool XmmsPlayer::skipBackward(bool withoutCrossfading)
   if(withoutCrossfading) {
     xmms_remote_play(session);
   }
+#endif
   return true;
 }
 
 /// stop playback
 bool XmmsPlayer::stop()
 {
+#ifdef ENABLE_XMMS
   ensureXmmsIsRunning();
 	xmms_remote_stop(session);
+#endif
   return true;
 }
 
 
 PlayerStatus XmmsPlayer::getStatus()
 {
+#ifdef ENABLE_XMMS
   if(xmms_remote_is_playing(session)) {
     // xmms playing or paused
     if(!xmms_remote_is_paused(session))
@@ -347,47 +371,64 @@ PlayerStatus XmmsPlayer::getStatus()
       return PAUSED;
   }
   else
+#endif
     return STOPPED;
 }
 
 /// get current position in song
 int XmmsPlayer::getCurrentTime()
 {
+#ifdef ENABLE_XMMS
   return xmms_remote_get_output_time(session);
+#else
+  return 0;
+#endif
 }
 
 /// get total time of current song
 int XmmsPlayer::getTotalTime()
 {
+#ifdef ENABLE_XMMS
   int pos=xmms_remote_get_playlist_pos(session);
   return xmms_remote_get_playlist_time(session, pos);
+#else
+  return 0;
+#endif
 }
 
 /// jump to position in song
 bool XmmsPlayer::jumpTo(int value)
 {
+#ifdef ENABLE_XMMS
   xmms_remote_jump_to_time(session, value);
+#endif
   return true;
 }
 
 /// return current filename
 QString XmmsPlayer::getCurrentFile()
 {
+#ifdef ENABLE_XMMS
   int pos=xmms_remote_get_playlist_pos(session);
   return QString(xmms_remote_get_playlist_file(session, pos));
+#else
+  return "";
+#endif
 }
 
 
 
 void XmmsPlayer::check()
 {
+#ifdef ENABLE_XMMS
   // 1. check, whether status has changed
   PlayerStatus newStatus=getStatus();
   if(newStatus!=lastStatus) {
     lastStatus=newStatus;
     if(newStatus==STOPPED) {
-      // if player stopped and only one song left in playlist, we should remove it?
-      if(playlist->count()==1) {
+      // heuristic: if player stopped and only one song left in playlist
+      // => we should remove it
+      if(playlist->count()==1 && timeLeft<2000) {
         xmms_remote_playlist_delete(session, 0);
         playlist->removeFirst();
         playlistChanged();
@@ -396,6 +437,9 @@ void XmmsPlayer::check()
     statusChanged();
   }
 
+  timeLeft=getTotalTime()-getCurrentTime();
+
+  // 2. remove already played songs
   if(lastStatus!=STOPPED) {
     for(int i=0; true ; i++) {
 	    int check=xmms_remote_get_playlist_pos(session);
@@ -422,13 +466,16 @@ void XmmsPlayer::check()
       playlistChanged();
     }
   }
+#endif
 }
 
 
 /// quit player
 void XmmsPlayer::quit()
 {
+#ifdef ENABLE_XMMS
   xmms_remote_quit(session);
+#endif
 }
 
 void XmmsPlayer::myWait(int msecs)
@@ -447,7 +494,3 @@ void XmmsPlayer::myWait(int msecs)
 		cout << "outputTime: " << outputTime << ", length: " << len << ", pTime: "
 		<< pTime << ", rate: " << rate << ", freq: " << freq << ", nch " << nch << "\n";
 */
-
-
-#endif
-

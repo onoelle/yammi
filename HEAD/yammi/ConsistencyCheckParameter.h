@@ -25,7 +25,9 @@ public:
   bool updateNonExisting;
   bool checkTags;
   bool correctTags;
+  int correctTagsConfirmed;
   bool checkFilenames;
+  int correctFilenamesConfirmed;
   bool correctFilenames;
   bool checkDoubles;
 
