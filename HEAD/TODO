@@ -13,8 +13,13 @@ KNOWN BUGS
 	(seems to be a bug in xmms, posted to bugs@xmms)
 
 
-for release 0.6.1
+for release 0.7beta
 -----------------
+- key events (shift/control/ skip im)
+- saving tags?
+- columns
+
+
 to shutdown kde in a better way:
 
 dcop ksmserver ksmserver "logout" 0 2 0   (what's the third param for?)

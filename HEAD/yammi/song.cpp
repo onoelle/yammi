@@ -119,52 +119,75 @@ int Song::create(const QString location, const QString mediaName)
 
 
   // step 2:
-  // if mp3: get layer info and tags
+  // get info about song object (bitrate, length, tags, ...)
   
-  // guess artist/title from filename (if no id3 tags or in case of overlength)
+  // guess artist/title from filename (in case no tags can be read)
 	QString ffArtist, ffTitle;
   guessTagsFromFilename(saveFilename, &ffArtist, &ffTitle);
 
+
+  // mp3 object
   if(filename.right(4).upper()==".MP3") {
     // get mp3 layer info
-    getLayerInfo(location);
+    getMp3LayerInfo(location);
 
-    // get id3 tags with id3lib...
-    getTags(location);
+    // get id3 tags
+    getMp3Tags(location);
 
     // now perform some consistency checks on the read tags...
-    
+
     // check whether artist/title exceeding 30 characters of id3 tags
+    // (due to the fact that upto id3 v1.1, the length was restricted to 30 characters)
+    // if so, we might be able to retrieve the complete artist/title from the filename
     if(ffArtist.upper()!=this->artist.upper()) {
 			if(ffArtist.length()>30 && ffArtist.left(29)==this->artist.left(29) && artist.length()<=30) {
 				cout << "artist exceeding 30 characters, taking full artist from filename\n";
-				this->artist=ffArtist;
+				artist=ffArtist;
 			}
 		}
 		if(ffTitle.upper()!=this->title.upper()) {
 			if(ffTitle.length()>30 && ffTitle.left(29)==this->title.left(29) && title.length()<=30) {
 				cout << "title exceeding 30 characters, taking full title from filename\n";
-				this->title=ffTitle;
+				title=ffTitle;
 			}
 		}
 
 		// in case the id3 tags are empty => better trust filename info
-		if(this->title=="" && this->artist=="") {
+		if(title=="" && artist=="") {
 			title=ffTitle;
 			artist=ffArtist;
 		}
-    // remove trailing mp3 in title
+    // just in case: remove trailing mp3 in title
     if(title.right(4).upper()==".MP3")
       title=title.left(title.length()-4);
-    
+
   }
+
+  // ogg object
+  else if(filename.right(4).upper()==".OGG") {
+    // get ogg info
+    getOggInfo(location);
+
+		// in case the ogg tags are empty => better trust filename info
+		if(title=="" && artist=="") {
+      cout << "ogg tags empty, taking guessed info from filename...\n";
+			title=ffTitle;
+			artist=ffArtist;
+		}
+    // just in case: remove trailing ogg in title
+    if(title.right(4).upper()==".OGG")
+      title=title.left(title.length()-4);
+
+  }
+  
   else {
-    cout << filename << "apparently no mp3 file...\n";
-    cout << "  => cannot read mp3 layer info and tags, but guessing artist and title from filename\n";
-    this->bitrate=0;
-    this->length=0;
-    this->artist=ffArtist;
-    this->title=ffTitle;
+    cout << filename << "apparently no mp3 or ogg file...\n";
+    cout << "  => cannot read information such as bitrate, length and tags\n";
+    cout << "  => Yammi tries to guess artist and title from filename (using the \"artist - title\" pattern\n";
+    bitrate=0;
+    length=0;
+    artist=ffArtist;
+    title=ffTitle;
   }
 
 	
@@ -194,9 +217,9 @@ bool Song::checkFilename()
 
 
 
-/** get id3 tags from the specified file (using id3lib)
+/** get id3 tags from the specified mp3 file (using id3lib)
  */
-bool Song::getTags(QString filename)
+bool Song::getMp3Tags(QString filename)
 {
   ID3_Tag tag;
   tag.Link(filename, ID3TT_ALL);
@@ -339,9 +362,9 @@ bool Song::getId3Tag(ID3_Tag* tag, ID3_FrameID frame, ID3_FieldID field, QString
 
 
 
-/** save id3 tags to the specified file (using id3lib)
+/** save id3 tags to the specified mp3 file (using id3lib)
  */
-bool Song::setTags(QString filename)
+bool Song::setMp3Tags(QString filename)
 {
   ID3_Tag tag;
   tag.Link(filename, ID3TT_ALL);
@@ -436,8 +459,13 @@ bool Song::setId3Tag(ID3_Tag* tag, ID3_FrameID frame, ID3_FieldID field, QString
  */
 void Song::guessTagsFromFilename(QString filename, QString* artist, QString* title)
 {
-	QString guessBase=filename.left(filename.length()-4);					// remove .mp3 suffix
-	guessBase=guessBase.replace( QRegExp("_"), " " );							// replace "_" with " "
+  QString guessBase=filename;
+
+  // remove suffix, if it looks like we have a suffix
+  if(guessBase.at(guessBase.length()-3)=='.')
+    guessBase=guessBase.left(guessBase.length()-4);
+
+  guessBase=guessBase.replace( QRegExp("_"), " " );							// replace "_" with " "
 
 	int pos=guessBase.find('-');
 	if(pos!=-1) {
@@ -452,6 +480,7 @@ void Song::guessTagsFromFilename(QString filename, QString* artist, QString* tit
 		*title=guessBase;
 		*title=title->simplifyWhiteSpace();
 	}
+  cout << "guessed artist: " << *artist << ", title: " << *title << "\n";
 }
 
 
@@ -460,7 +489,7 @@ void Song::guessTagsFromFilename(QString filename, QString* artist, QString* tit
 /** Gets the mp3 layer info (ie. for our purpose: bitrate and length) from the file.
  * For VBR songs: retrieves the average bitrate.
  */
-bool Song::getLayerInfo(QString filename)
+bool Song::getMp3LayerInfo(QString filename)
 {
   CMP3Info* mp3Info = new CMP3Info();
   char _filename[1000];
@@ -478,11 +507,58 @@ bool Song::getLayerInfo(QString filename)
 
 
 
+/** Gets bitrate, length and tags from an ogg file (using libvorbis)
+ * Thanks to Philip Scott! <scotty@philipscott.freeserve.co.uk>
+ */
+bool Song::getOggInfo(QString filename)
+{
+  OggVorbis_File oggfile;
+	FILE* ourfile;
+
+	ourfile=fopen(filename, "r");
+  if(ourfile==0)
+    return false;
+	int succ=ov_open(ourfile, &oggfile, NULL, 0);
+
+  this->title   = getOggComment(&oggfile, "title");
+  this->artist  = getOggComment(&oggfile, "artist");
+	this->album   = getOggComment(&oggfile, "album");
+	this->comment = getOggComment(&oggfile, "comment");
+  QString trackNrStr=getOggComment(&oggfile, "tracknumber");
+  this->trackNr = atoi(trackNrStr);
+  QString yearStr=getOggComment(&oggfile, "year");
+  this->year    = atoi(yearStr);
+
+  this->length  = (int)ov_time_total(&oggfile, -1);
+	this->bitrate = ov_bitrate(&oggfile, -1)/1000;
+  return true;
+}
+
+
+/** Gets a specific ogg comment.
+ */
+QString Song::getOggComment(OggVorbis_File* oggfile, QString commentName)
+{
+	vorbis_comment* ourComment = ov_comment(oggfile, -1);
+  cout << "looking for: " << commentName << "\n";
+  
+	for(int i=0; i < (*ourComment).comments; i++)	{
+    cout << "i: " << i << "\n";
+		QString curstr((*ourComment).user_comments[i]);
+		if( curstr.left(commentName.length()) == commentName) {
+      cout << "match found for name: " << commentName << ", string: " << curstr << "name.length(): " << commentName.length() << ", curstr.length(): " << curstr.length() << "\n";
+			return curstr.right(curstr.length() - commentName.length() - 1);
+		}
+	}
+  // nothing found => return empty string
+	return "";
+}
 
 
 
 
-/// check id3 tags (if songfile available)
+
+/// check tags (if songfile available)
 /// true: tags correctly set
 /// false: differences between database info and tags in file
 bool Song::checkTags()
@@ -500,17 +576,29 @@ bool Song::checkTags()
   int _trackNr=this->trackNr;
   int _genreNr=this->genreNr;
   
-  if(this->getTags(location())) {
-    // tags exist => compare to our fields
-		same=true;
-    if(_album     != this->album)    {same=false; cout << "(album)"; }
-		if(_artist    != this->artist)   {same=false; cout << "(artist)"; }
-		if(_comment   != this->comment)  {same=false; cout << "(comment)"; }
-    if(_title     != this->title)    {same=false; cout << "(title)"; }
-    if(_year      != this->year)     {same=false; cout << "(year)"; }
-		if(_trackNr   != this->trackNr)  {same=false; cout << "(trackNr)"; }
-		if(_genreNr   != this->genreNr)  {same=false; cout << "(genreNr)"; }
-	}
+  if(filename.right(4).upper()==".MP3")
+    if(!this->getMp3Tags(location()))
+      return false;
+
+  else if(filename.right(4).upper()==".OGG")
+    if(!this->getOggInfo(location()))
+      return false;
+
+  else
+    return true;
+
+  // tags exist => compare to our fields
+  same=true;
+  if(_album     != this->album)    {same=false; cout << "(album)"; }
+  if(_artist    != this->artist)   {same=false; cout << "(artist)"; }
+  if(_comment   != this->comment)  {same=false; cout << "(comment)"; }
+  if(_title     != this->title)    {same=false; cout << "(title)"; }
+  if(_year      != this->year)     {same=false; cout << "(year)"; }
+  if(_trackNr   != this->trackNr)  {same=false; cout << "(trackNr)"; }
+  if(_genreNr   != this->genreNr)  {same=false; cout << "(genreNr)"; }
+
+  if(same)            // no differences
+    return true;
 
   this->album=_album;
   this->artist=_artist;
@@ -520,7 +608,7 @@ bool Song::checkTags()
   this->trackNr=_trackNr;
   this->genreNr=_genreNr;
 
-  return same;
+  return false;
 }
 
 /// save id3 tags to file
@@ -537,8 +625,13 @@ bool Song::saveTags()
 		tagsDirty=false;
 		return true;
 	}
-	
-  setTags(location());
+
+  if(filename.right(4).upper()==".MP3")
+    setMp3Tags(location());
+  else if(filename.right(4).upper()==".OGG")
+    cout << "saving ogg tags not supported yet\n";
+  else
+    return true;
 
 	cout << "id3 tags corrected in file " << this->filename << "\n";
 	tagsDirty=false;

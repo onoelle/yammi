@@ -1,4 +1,4 @@
-# KDE tags expanded automatically by am_edit - $Revision: 1.9 $ 
+# KDE tags expanded automatically by am_edit - $Revision: 1.10 $ 
 # Makefile.in generated automatically by automake 1.5 from Makefile.am.
 
 # Copyright 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001
@@ -237,7 +237,7 @@ SOURCES = mp3info/CVBitRate.cpp mp3info/CMP3Info.cpp mp3info/CFrameHeader.cpp up
 INTERFACES = UpdateDatabaseDialogBase.ui YammiGuiBase.ui WorkDialogBase.ui SongInfoDialog.ui PreferencesDialogBase.ui DeleteDialog.ui 
 TRANSLATIONS = 
 KDE_OPTIONS = qtonly
-yammi_LDADD = ./mp3info/libmp3info.a -lxmms -lid3 $(LIB_QT) $(LIBSOCKET)
+yammi_LDADD = ./mp3info/libmp3info.a -lxmms -lid3 -lvorbis -lvorbisfile $(LIB_QT) $(LIBSOCKET)
 
 SUBDIRS = docs icons mp3info 
 
@@ -541,7 +541,7 @@ distclean-tags:
 
 #>- DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 #>+ 4
-KDE_DIST=WorkDialogBase.h DeleteDialog.h PreferencesDialogBase.h YammiGuiBase.h UpdateDatabaseDialogBase.h yammi SongInfoDialog.h 
+KDE_DIST=WorkDialogBase.h DeleteDialog.h PreferencesDialogBase.h YammiGuiBase.h UpdateDatabaseDialogBase.h SongInfoDialog.h 
 
 DISTFILES= $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST) $(KDE_DIST)
 

@@ -1961,6 +1961,10 @@ void YammiGui::xmms_playPause()
 /// skip forward in playlist
 void YammiGui::xmms_skipForward()
 {
+  if(controlPressed) {
+    xmms_skipForwardIm();
+    return;
+  }
   ensureXmmsIsRunning();
   int x= xmms_remote_get_playlist_pos(0);
 	xmms_remote_set_playlist_pos(0, x+1);
@@ -1971,7 +1975,10 @@ void YammiGui::xmms_skipForwardIm()
 {
   ensureXmmsIsRunning();
 	xmms_remote_pause(0);
+  bool save=controlPressed;
+  controlPressed=false;
 	xmms_skipForward();
+  controlPressed=save;
 	xmms_remote_play(0);
 }	
 
@@ -1979,7 +1986,10 @@ void YammiGui::xmms_skipBackwardIm()
 {
   ensureXmmsIsRunning();
 	xmms_remote_pause(0);
+  bool save=controlPressed;
+  controlPressed=false;
 	xmms_skipBackward();
+  controlPressed=save;
 	xmms_remote_play(0);
 }
 
@@ -1987,6 +1997,10 @@ void YammiGui::xmms_skipBackwardIm()
 // skip backward in playlist
 void YammiGui::xmms_skipBackward()
 {
+  if(controlPressed) {
+    xmms_skipBackwardIm();
+    return;
+  }
   ensureXmmsIsRunning();
   int count=model->songsPlayed.count();
 	if(count==0)			// empty folder songsPlayed => can's skip backwards
@@ -2344,6 +2358,7 @@ void YammiGui::keyPressEvent(QKeyEvent* e)
 	switch(key) {
 		case Key_Control:
 			controlPressed=true;
+      cout << "control pressed\n";
 			break;
 		case Key_Shift:
 			shiftPressed=true;
@@ -2352,13 +2367,13 @@ void YammiGui::keyPressEvent(QKeyEvent* e)
 			xmms_playPause();
 			break;
 		case Key_F2:
-			if(e->state()==ShiftButton)
+			if(controlPressed) //e->state()==ShiftButton)
 				xmms_skipBackwardIm();
 			else
 				xmms_skipBackward();
 			break;
 		case Key_F3:
-			if(e->state()==ShiftButton)
+			if(controlPressed) //e->state()==ShiftButton)
 				xmms_skipForwardIm();
 			else
 				xmms_skipForward();
@@ -2374,7 +2389,7 @@ void YammiGui::keyPressEvent(QKeyEvent* e)
 			forAllSelected(EnqueueAsNext);
 			break;
 		case Key_F7:
-			if(e->state()==ShiftButton) {
+			if(controlPressed) {//e->state()==ShiftButton) {
         // play immediately (without crossfading)
       	if(xmms_remote_is_playing(0))
     			xmms_remote_pause(0);
@@ -2382,7 +2397,7 @@ void YammiGui::keyPressEvent(QKeyEvent* e)
  			forAllSelected(PlayNow);
 			break;
 		case Key_F8:
-			if(e->state()==ShiftButton)
+			if(controlPressed) //e->state()==ShiftButton)
 				xmms_clearPlaylist();
 			else
 				forAllSelected(Dequeue);
@@ -2457,11 +2472,28 @@ void YammiGui::keyPressEvent(QKeyEvent* e)
 			break;
 		
 		case Key_S:		// Ctrl-S
-			if(e->state()!=ControlButton)
+			if(controlPressed) //e->state()!=ControlButton)
 				break;
 			model->save();
 			break;
 		
+		default:
+			e->ignore();
+	}
+}
+
+void YammiGui::keyReleaseEvent(QKeyEvent* e)
+{
+	cout << "release key(): " << e->key() << "text(): " << e->text() << "ascii(): " << e->ascii() << "\n";
+	int key=e->key();
+	switch(key) {
+		case Key_Control:
+			controlPressed=false;
+      cout << "control released\n";
+			break;
+		case Key_Shift:
+			shiftPressed=false;
+			break;
 		default:
 			e->ignore();
 	}
@@ -2509,21 +2541,6 @@ void YammiGui::changeShutdownValue(int value)
 
 
 
-void YammiGui::keyReleaseEvent(QKeyEvent* e)
-{
-//	cout << "release key(): " << e->key() << "text(): " << e->text() << "ascii(): " << e->ascii() << "\n";
-	int key=e->key();
-	switch(key) {
-		case Key_Control:
-			controlPressed=false;
-			break;
-		case Key_Shift:
-			shiftPressed=false;
-			break;
-		default:
-			e->ignore();
-	}
-}
 // stops playback on headphone
 void YammiGui::stopPrelisten()
 {

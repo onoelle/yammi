@@ -1,18 +1,19 @@
-8.9. 2002??? version 0.7 !!!
+8.9. 2002??? version 0.7beta
 ############################
-- new id3 layer reading
-- new id3 tags reading with id3lib
+- improved icons for controlling media player (ie. currently xmms)
+- added basic support for .ogg files (Thanks to Philip Scott!)
+  - no saving of ogg tags yet
+- new id3 layer reading (using a modified CMP3Info class
+  (from http://home.swipnet.se/grd/mp3info/mp3doc.html)
+- new mechanism to read id3 tags (now using id3lib, see http://www.id3lib.org)
 - improved plugin configuration
 - added a dialog for scanning harddisk, allowing:
   - option to check existence of files in Yammi's database, if necessary update or delete the entry
   - scan arbitrary files (eg. ogg vorbis, wav, ...anything you like)
     (however, only on mp3 files Yammi will be able to read the id3 tags)
-- tested dcop commands for sending a song to noatun / for shutting down kde in a regular way
-=> see homepage
+- successfully tested dcop commands for sending a song to noatun / for shutting down kde in a regular way
+=> see plugin page on homepage for examples
 - stored column size and position in songlist
-
-- icons?
-- id3lib?
 
 
 

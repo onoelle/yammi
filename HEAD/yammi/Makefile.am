@@ -8,7 +8,7 @@ SOURCES = mp3info/CVBitRate.cpp mp3info/CMP3Info.cpp mp3info/CFrameHeader.cpp up
 INTERFACES = UpdateDatabaseDialogBase.ui YammiGuiBase.ui WorkDialogBase.ui SongInfoDialog.ui PreferencesDialogBase.ui DeleteDialog.ui 
 TRANSLATIONS = 
 KDE_OPTIONS = qtonly
-yammi_LDADD   = ./mp3info/libmp3info.a -lxmms -lid3 $(LIB_QT) $(LIBSOCKET)
+yammi_LDADD   = ./mp3info/libmp3info.a -lxmms -lid3 -lvorbis -lvorbisfile $(LIB_QT) $(LIBSOCKET)
 
 SUBDIRS = docs icons mp3info 
 

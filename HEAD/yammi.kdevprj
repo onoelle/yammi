@@ -16,8 +16,8 @@ bin_program=yammi
 cflags=
 cppflags=
 cxxflags=\s-O3 -Wall
-ldadd=-lxmms -lid3 $(LIB_QT)
-ldflags=\s          \s
+ldadd=-lxmms -lid3 -lvorbis -lvorbisfile $(LIB_QT)
+ldflags=\s                \s
 
 [General]
 AMChanged=false

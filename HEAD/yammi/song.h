@@ -31,6 +31,8 @@
 #include "mydatetime.h"
 
 #include <id3/tag.h>                // used to read id3 tags
+#include <vorbis/vorbisfile.h>      // for reading ogg infos
+#include <string>                   // needed by ogg functions
 
 
 // all possible actions for a single or a selection of songs
@@ -66,15 +68,30 @@ public:
 	/// check consistency
 	QString checkConsistency(bool requireConsistentTags, bool requireConsistentFilename);
 	
+
+  // specific to mp3 objects
+  //************************
+
   // id3 tag reading / guessing
-  bool getTags(QString filename);
-  bool setTags(QString filename);
+  bool getMp3Tags(QString filename);
+  bool setMp3Tags(QString filename);
   bool getId3Tag(ID3_Tag* tag, ID3_FrameID frame, ID3_FieldID field, QString* content);
   bool setId3Tag(ID3_Tag* tag, ID3_FrameID frame, ID3_FieldID field, QString content, ID3_Frame* newFrame);
-  void guessTagsFromFilename(QString filename, QString* artist, QString* title);
 
   // mp3 layer info
-  bool getLayerInfo(QString filename);
+  bool getMp3LayerInfo(QString filename);
+
+
+  // specific to ogg objects
+  //************************
+  
+  bool getOggInfo(QString filename);
+  QString getOggComment(OggVorbis_File* oggfile, QString name);
+
+
+  // general info (not specific to file format)
+  //*************
+  void guessTagsFromFilename(QString filename, QString* artist, QString* title);
 
   // checking methods
 	bool checkTags();
@@ -116,14 +133,14 @@ public:
 	QString comment;												// comment
 	int trackNr;														// trackNr on CD
 	int year;																// year of song
-	int bitrate;														// bitrate in kbps
 	int genreNr;														// genre (index number)
 
-	// file and mp3-layer info
+	// file info
 	QString filename;												// filename, excluding path
 	QString path;														// path to file, excluding filename, no trailing slash
 	unsigned long filesize;									// filesize in bytes
 	int length;															// length of song in seconds
+	int bitrate;														// bitrate in kbps
 	
 	// additional database info
 	MyDateTime addedTo;											// when song was added to my database
