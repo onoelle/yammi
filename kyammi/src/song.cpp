@@ -209,13 +209,10 @@ bool Song::readTags(QString filename) {
     comment = TStringToQString( tag->comment() ).stripWhiteSpace();
     year = (int) tag->year();
     trackNr = (int) tag->track();
-    QString genreStr;
-    genreStr = TStringToQString( tag->genre() ).stripWhiteSpace();
     genreNr = TagLib::ID3v1::genreIndex(tag->genre());
     if(genreNr == 255) {
         genreNr = -1;
     }
-    kdDebug() << "genre found: " << genreStr << ", index: " << genreNr << endl;
     return true;
 }
 
@@ -416,8 +413,7 @@ bool Song::getWavInfo(QString filename) {
 
 /**
  * check tags (if songfile available)
- * true: tags correctly set
- * false: differences between database info and tags in file
+ * @return true if tags correctly set, false if differences between database info and tags in file
  */
 bool Song::checkTags() {
     if(filename=="") {      // song not on local harddisk => we can't check
@@ -438,7 +434,7 @@ bool Song::checkTags() {
     int _trackNr=this->trackNr;
     int _genreNr=this->genreNr;
 
-    if(!readTags(filename)) {
+    if(!readTags(location())) {
         guessTagsFromFilename(filename, path, &artist, &title, &album);
     }
     
