@@ -18,6 +18,8 @@
 #include "mylistview.h"
 #include "yammigui.h"
 
+using namespace std;
+
 extern YammiGui* gYammiGui;
 
 MyListView::MyListView(QWidget *parent, const char *name ) : QListView(parent,name)

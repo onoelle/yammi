@@ -17,6 +17,8 @@
 
 #include "yammigui.h"
 
+using namespace std;
+
 // include pixmaps
 
 // general
@@ -55,6 +57,7 @@
 #include "WorkDialogBase.h"
 #include "updatedatabasedialog.h"
 #include "updatedatabasemediadialog.h"
+#include "ConsistencyCheckDialogBase.h"
 
 #include "mp3info/CMP3Info.h"
 
@@ -396,9 +399,9 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
 	if(model->noPrefsFound && model->noDatabaseFound) {
 		QMessageBox::information( this, "Yammi",	QString("Yammi - Yet Another Music Manager I...\n\n\n")+
 																					"It looks like you are starting Yammi the first time...\n\n"+
-																					"Please edit the preferences (File Menu -> Preferences)\n"+
+																					"Please edit the settings (Settings -> Configure Yammi...)\n"+
 																					"to adjust the path configuration and all other options,\n"+
-																					"then perform a database update (File Menu -> Update Database)\n"+
+																					"then perform a database update (Database -> Scan Harddisk...)\n"+
 																					"to scan your harddisk for mp3 files.\n\n"+
 																					"have fun...\n\n"+
 																					"Check out Yammi's website for new versions and other info:\n"+
@@ -1490,7 +1493,19 @@ void YammiGui::forAll(action act)
 /// check consistency, fill up list of problematic songs
 void YammiGui::forAllCheckConsistency()
 {
-	QProgressDialog progress( "Checking consistency...", "Cancel", 100, this, "progress", TRUE );
+	CheckConsistencyDialogBase d(this, "Check consistency - settings");
+
+//  d.LineEditScanDir->setText(model->config.scanDir);
+//  d.LineEditFilePattern->setText("*.mp3 *.ogg *.wav");
+	// show dialog
+	int result=d.exec();
+	if(result!=QDialog::Accepted)
+    return;
+
+//  bool checkExistence=d.CheckBoxExistenceCheck->isChecked();
+
+
+  QProgressDialog progress( "Checking consistency...", "Cancel", 100, this, "progress", TRUE );
 	progress.setMinimumDuration(0);
 	progress.setAutoReset(false);
   progress.setProgress(0);
@@ -2458,8 +2473,7 @@ void YammiGui::updateSongDatabaseHarddisk()
 
   QString scanDir=d.LineEditScanDir->text();
   QString filePattern=d.LineEditFilePattern->text();
-  bool checkExistence=d.CheckBoxExistenceCheck->isChecked();
-  updateSongDatabase(checkExistence, scanDir, filePattern, 0);
+  updateSongDatabase(scanDir, filePattern, 0);
 }
 
 
@@ -2483,12 +2497,12 @@ void YammiGui::updateSongDatabaseMedia()
   QString mediaName=d.LineEditMediaName->text();
   QString mediaDir=d.LineEditMediaDir->text();
   QString filePattern=d.LineEditFilePattern->text();
-  updateSongDatabase(false, mediaDir, filePattern, mediaName);
+  updateSongDatabase(mediaDir, filePattern, mediaName);
 }
 
 
 
-void YammiGui::updateSongDatabase(bool checkExistence, QString scanDir, QString filePattern, QString media)	
+void YammiGui::updateSongDatabase(QString scanDir, QString filePattern, QString media)	
 {
 	QProgressDialog progress( "Scanning...", "Cancel", 100, this, "progress", TRUE );
 	progress.setMinimumDuration(0);
@@ -2496,7 +2510,7 @@ void YammiGui::updateSongDatabase(bool checkExistence, QString scanDir, QString 
   progress.setProgress(0);
 	qApp->processEvents();
 	
-	model->updateSongDatabase(checkExistence, scanDir, filePattern, media, &progress);
+	model->updateSongDatabase(scanDir, filePattern, media, &progress);
   cout << "debug info: updating view...\n";
 	updateView();
   cout << "debug info: updating folder problematic...\n";

@@ -23,6 +23,9 @@
 #include <qwidget.h>
 #include <qlistview.h>
 #include <iostream>
+using namespace std;
+
+
 
 /**extends the QListView class, esp. for dragging songs...
   *@author Oliver Nölle

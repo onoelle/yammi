@@ -17,11 +17,14 @@
 
 #include "xmmsplayer.h"
 #include <iostream>
+using namespace std;
 #include <stdlib.h>
 // xmms control
 #include <xmmsctrl.h>
 
 #include "yammigui.h"
+
+
 
 // should also be removed to make it cleaner!!!
 extern YammiGui* gYammiGui;

@@ -1,7 +1,7 @@
 #include "CMP3Info.h"
 
-#include <iostream.h>
-
+#include <iostream>
+using namespace std;
 #include <qfile.h>
 #include <qdatastream.h>
 
@@ -231,6 +231,7 @@ int CMP3Info::getNumberOfFrames() {
            For our purpose, just getting the average frame size, will make the
            padding obsolete, so our formula looks like:
 
+
            FrameSize = (layer1?12:144) * 1000 * BitRate / SampleRate;
         */
            
@@ -310,10 +311,9 @@ QString CMP3Info::getGenre(int index)
                               "Drum Solo","Acapella","Euro-House","Dance Hall"
                              };
 
-  if(index<=MAX_GENRE_NR && index>=0)
-    return QString(table[index]);
-  else
+  if(index>MAX_GENRE_NR || index<0)
     return QString("not supported");
+  return QString(table[index]);
 }
 
 // returns the index of a given genre string, or -1 if not found
@@ -343,5 +343,6 @@ int CMP3Info::getGenreIndex(QString genre)
     if(QString(table[i])==genre)
       return i;
   }
+  cout << "genre not found\n";
   return -1;
 }

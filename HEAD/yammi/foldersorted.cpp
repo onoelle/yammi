@@ -19,6 +19,8 @@
 
 #include "yammigui.h"
 
+using namespace std;
+
 extern YammiGui* gYammiGui;
 
 

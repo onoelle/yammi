@@ -26,6 +26,7 @@
 #include "glib.h"
 #endif
 
+using namespace std;
 
 extern YammiGui* gYammiGui;
 
@@ -777,6 +778,9 @@ bool Song::getWavInfo(QString filename)
     WaveHeader header;
     stream.readRawBytes((char*)&header, sizeof(WaveHeader));
     wavFile.close();
+//    cout << "header data: nChannels: " << header.nChannels << ", wBitsPerSample: " << header.wBitsPerSample << "\n";
+//    cout << "nSamplesPerSec: " << header.nSamplesPerSec << ", filesize: " << header.filesize << ", avgBytesPerSec: " << header.nAvgBytesPerSec << "\n";
+//    cout << "formatChunkSize: " << header.formatChunkSize << ", dataChunkSize: " << header.dataChunkSize << "\n";
     
     if(header.nChannels==0 || header.nSamplesPerSec==0 || header.wBitsPerSample==0) {
       cout << "length calculation of file " << filename << " would have yielded division by zero, debug info:\n";
@@ -787,8 +791,10 @@ bool Song::getWavInfo(QString filename)
       length=1;
     }
     else {
+      cout << "calculating length\bitrate...\n";
       this->length=((((header.dataChunkSize * 8) / header.nChannels) / header.nSamplesPerSec) / header.wBitsPerSample);
       this->bitrate=header.nAvgBytesPerSec * 8 / 1000;
+      cout << "...done!\n";
       this->comment=QString("%1, %2 KHz, %3 bit").arg(header.nChannels==2 ? "stereo" : "mono").arg(header.nSamplesPerSec).arg(header.wBitsPerSample);
     }
     return true;
@@ -889,23 +895,24 @@ bool Song::saveTags()
 #ifdef ENABLE_ID3LIB
   if(filename.right(4).upper()==".MP3") {
     setMp3Tags(location());
+    cout << "id3 tags corrected in file " << this->filename << "\n";
     treated=true;
   }
 #endif
 
 #ifdef ENABLE_OGGLIBS
   if(filename.right(4).upper()==".OGG") {
-//    cout << "saving ogg tags not supported yet\n";
     setOggTags(location());    
+    cout << "ogg tags corrected in file " << this->filename << "\n";
     treated=true;
-//    return true;
   }
 #endif
 
-  if(!treated)
+  if(!treated) {
+    cout << "cannot set tags on file " << this->filename << " (only possible for mp3 and ogg files)\n";    
     return true;
+  }
 
-	cout << "id3 tags corrected in file " << this->filename << "\n";
 	tagsDirty=false;
 	return true;
 }
@@ -1021,24 +1028,20 @@ bool Song::checkReadability()
  * - file exists and readable
  * - id3 tags
  * - consistency with filename
- * @returns "" on wish or song okay
- * diagnosis string on song unreadable, tags dirty, filename dirty
+ * @returns "" on song okay (or wish or filename==""), or on error:
+ * "file not readable", "tags not set correctly", "filename not consistent"
  */
 QString Song::checkConsistency(bool requireConsistentTags, bool requireConsistentFilename)
 {
-	//	if(location()="")
-	//		return true; ??
 	QString diagnosis="";
 	
 	if(artist=="{wish}")							// ignore wishes... 	
-		return diagnosis;
+		return "";
 	if(filename=="")									// ...and songs not on harddisk
-		return diagnosis;
+		return "";
  	
-	if(!checkReadability()) {
-		diagnosis+="song file not readable. ";
-		return diagnosis;
-	}
+	if(checkReadability()==false)
+		return "file not readable";
 	
 	
 	tagsDirty=false;
@@ -1047,7 +1050,7 @@ QString Song::checkConsistency(bool requireConsistentTags, bool requireConsisten
 	 	if(!checkTags()) {
 			cout << "tags on file " << this->filename << " are not set correctly...\n";
 			tagsDirty=true;
-			diagnosis+="tags not set correctly. ";
+			diagnosis+="tags not correct ";
 		}
 	}
 	
@@ -1057,10 +1060,9 @@ QString Song::checkConsistency(bool requireConsistentTags, bool requireConsisten
 		if(!checkFilename()) {
 			cout << "file " << this->filename << " does not have correct filename\n";
 			filenameDirty=true;
-			diagnosis+="filename not consistent. ";
+			diagnosis+="filename not consistent ";
 		}
 	}
-	
 	return diagnosis;
 }
 
@@ -1080,7 +1082,7 @@ QString Song::capitalize(QString str)
 
 	
 /**
- * Constructs a filename following the "artist - title.mp3" pattern.
+ * Constructs a filename following the "artist - title.suffix" pattern.
  * Should take care of special characters not allowed in filenames.
  */
 QString Song::constructFilename()

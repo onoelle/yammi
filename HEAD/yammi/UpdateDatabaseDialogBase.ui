@@ -8,8 +8,8 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>370</width>
-            <height>230</height>
+            <width>373</width>
+            <height>136</height>
         </rect>
     </property>
     <property name="caption">
@@ -131,14 +131,6 @@
             </property>
             <property name="text">
                 <string>Cancel</string>
-            </property>
-        </widget>
-        <widget class="QCheckBox" row="3" column="0" rowspan="1" colspan="3">
-            <property name="name">
-                <cstring>CheckBoxExistenceCheck</cstring>
-            </property>
-            <property name="text">
-                <string>check for existence of songs in database</string>
             </property>
         </widget>
     </grid>

@@ -17,7 +17,6 @@
 
 #include "lineeditshift.h"
 
-//#include <iostream.h>
 #include <qevent.h>
 #include <qnamespace.h>
 

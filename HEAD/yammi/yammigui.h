@@ -25,7 +25,8 @@
 // general includes
 #include <stdlib.h>
 #include <stdio.h>
-#include <iostream.h>
+#include <iostream>
+using namespace std;
 
 // qt includes (non gui)
 #include <qsessionmanager.h>
@@ -205,7 +206,7 @@ protected slots:
 
 	void				updateSongDatabaseHarddisk();
 	void				updateSongDatabaseMedia();
-	void				updateSongDatabase(bool checkExistence, QString scanDir, QString filePattern, QString media);
+	void				updateSongDatabase(QString scanDir, QString filePattern, QString media);
 	void				updateView();
 		
 	// song action slots
@@ -226,9 +227,11 @@ protected slots:
 //	void				forSelectionPluginPlaylist(int pluginIndex);
 	void				forSelectionPlugin(int pluginIndex);
 	void				forSelectionBurnToMedia();
-		
+
+public:		
 	void				forSong(Song* s, action act, QString dir=0);
-	
+protected:
+
 	void				forAllSelectedEnqueue()            { forAllSelected(Enqueue); }
 	void				forAllSelectedEnqueueAsNext()      { forAllSelected(EnqueueAsNext); }
 	void				forAllSelectedPlayNow()            { forAllSelected(PlayNow); }

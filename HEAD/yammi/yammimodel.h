@@ -34,7 +34,8 @@
 #include <qdom.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <iostream.h>
+#include <iostream>
+using namespace std;
 #include <qstring.h>
 #include <qobject.h>
 #include <qdatetime.h>
@@ -119,7 +120,7 @@ public:
 public slots:
 	void			save();
 	void			saveAll();
-	void			updateSongDatabase(bool checkExistence, QString scanDir, QString filePattern, QString mediaName, QProgressDialog* progress);
+	void			updateSongDatabase(QString scanDir, QString filePattern, QString mediaName, QProgressDialog* progress);
 	void			addSongToDatabase(QString filename, QString mediaName);
 	bool			checkConsistency(QProgressDialog* progress);
 
