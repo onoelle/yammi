@@ -1,0 +1,1667 @@
+# translation of kyammi.po to 
+# translation of kyammi.po to german 
+# Oliver Noelle <oli.noelle@web.de>, 2004.
+# Oliver Nölle <oliver@linux>, 2004.
+msgid ""
+msgstr ""
+"Last-Translator: Oliver Nölle <oliver@linux>\n"
+"PO-Revision-Date: 2004-08-15 18:30+0200\n"
+"Project-Id-Version: kyammi\n"
+"Language-Team:  <en@li.org>\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.3.1\n"
+"MIME-Version: 1.0\n"
+
+#: ConsistencyCheckDialog.cpp:12
+msgid "Check consistency - settings"
+msgstr "Konsistenz-Check Einstellungen"
+
+#: foldermedia.cpp:43
+msgid "Not on media"
+msgstr "Nicht auf Medium"
+
+#: main.cpp:24
+msgid "Specifies the database directory"
+msgstr "Gibt das Datenbank-Verzeichnis an"
+
+#: main.cpp:26
+msgid "Yammi - Yet Another Music Manager I..."
+msgstr ""
+
+#: main.cpp:38
+msgid "- Arts  support: yes\n"
+msgstr "- Arts  Unterstützung: ja\n"
+
+#: main.cpp:39
+msgid "- Noatun support: yes\n"
+msgstr ""
+
+#: main.cpp:41
+msgid "- XMMS support: yes\n"
+msgstr ""
+
+#: main.cpp:43
+msgid "- XMMS support: no\n"
+msgstr ""
+
+#: main.cpp:47
+msgid "- ogglibs support: yes\n"
+msgstr ""
+
+#: main.cpp:49
+msgid "- ogglibs support: no\n"
+msgstr ""
+
+#: main.cpp:52
+msgid "- id3lib support: yes\n"
+msgstr ""
+
+#: main.cpp:54
+msgid "- id3lib support: no\n"
+msgstr ""
+
+#: main.cpp:57 yammigui.cpp:1483 yammigui.cpp:1780 yammigui.cpp:2994
+#: yammigui.cpp:3074 yammimodel.cpp:569 yammimodel.cpp:592
+msgid "Yammi"
+msgstr ""
+
+#: preferencesdialog.cpp:213
+msgid "choose trash directory"
+msgstr ""
+
+#: preferencesdialog.cpp:221 updatedatabasemediadialog.cpp:42
+msgid "choose media directory"
+msgstr ""
+
+#: preferencesdialog.cpp:229
+msgid "choose swap directory"
+msgstr ""
+
+#: rc.cpp:1
+msgid "Player"
+msgstr ""
+
+#: rc.cpp:2 yammigui.cpp:3338
+msgid "Playlist"
+msgstr ""
+
+#: rc.cpp:3 rc.cpp:95
+msgid "Database"
+msgstr ""
+
+#: rc.cpp:4
+msgid "Autoplay"
+msgstr ""
+
+#: rc.cpp:6
+msgid "Toolbars"
+msgstr ""
+
+#: rc.cpp:7 rc.cpp:129
+msgid "Media Player"
+msgstr ""
+
+#: rc.cpp:8
+msgid "Main ToolBar"
+msgstr ""
+
+#: rc.cpp:9 rc.cpp:14
+msgid "Prelisten"
+msgstr ""
+
+#: rc.cpp:10
+msgid "Sleep"
+msgstr ""
+
+#: rc.cpp:11
+msgid "Song Actions"
+msgstr ""
+
+#: rc.cpp:12 rc.cpp:178
+msgid "Removable Media"
+msgstr ""
+
+#: rc.cpp:13
+msgid "Play/Enqueue"
+msgstr ""
+
+#: rc.cpp:15
+msgid "Go to folder..."
+msgstr ""
+
+#: rc.cpp:16
+msgid "Search for similar..."
+msgstr ""
+
+#: rc.cpp:17
+msgid "Advanced..."
+msgstr ""
+
+#: rc.cpp:18
+msgid "confirm"
+msgstr ""
+
+#: rc.cpp:21
+msgid "Abort"
+msgstr ""
+
+#: rc.cpp:23
+msgid "apply answer to all affected items"
+msgstr ""
+
+#: rc.cpp:24
+msgid "Check consistency of song database"
+msgstr ""
+
+#: rc.cpp:25
+msgid "Options for consistency check"
+msgstr ""
+
+#: rc.cpp:26
+msgid "Start Check..."
+msgstr ""
+
+#: rc.cpp:28
+msgid "Replacements..."
+msgstr ""
+
+#: rc.cpp:30
+msgid "check for existence of files"
+msgstr ""
+
+#: rc.cpp:31
+msgid "Checks, whether the file is existing and readable"
+msgstr ""
+
+#: rc.cpp:32
+msgid "update/delete non existing entries"
+msgstr ""
+
+#: rc.cpp:33
+msgid ""
+"Entries not existing at their saved location are updated (existing on media) "
+"or deleted (not existing on any media)"
+msgstr ""
+
+#: rc.cpp:35
+msgid "check tags"
+msgstr ""
+
+#: rc.cpp:36
+msgid "Checks, whether the (mp3/ogg) tags are consistent with Yammi's database"
+msgstr ""
+
+#: rc.cpp:37
+msgid "Yammi database => File Tags"
+msgstr ""
+
+#: rc.cpp:38
+msgid "File Tags => Yammi database"
+msgstr ""
+
+#: rc.cpp:39
+msgid "correct inconsistent tags"
+msgstr ""
+
+#: rc.cpp:40
+msgid ""
+"If tags do not correspond to the information in Yammi's database, they wil "
+"be corrected."
+msgstr ""
+
+#: rc.cpp:42
+msgid "check filenames"
+msgstr ""
+
+#: rc.cpp:43
+msgid "Checks, whether the filenames correspond to the configured filename scheme"
+msgstr ""
+
+#: rc.cpp:44
+msgid "correct inconsistent filenames"
+msgstr ""
+
+#: rc.cpp:45
+msgid ""
+"If filenames differ from the configured filename scheme, they will be "
+"corrected"
+msgstr ""
+
+#: rc.cpp:46 rc.cpp:48 rc.cpp:54 rc.cpp:56 rc.cpp:120 rc.cpp:123
+msgid "The filename pattern to use for renaming files."
+msgstr ""
+
+#: rc.cpp:47 rc.cpp:122
+msgid ""
+"filename pattern\n"
+"(for renaming files)"
+msgstr ""
+
+#: rc.cpp:50
+msgid "check directories"
+msgstr ""
+
+#: rc.cpp:51
+msgid "Checks, whether the directories correspond to the configured directory scheme"
+msgstr ""
+
+#: rc.cpp:52
+msgid "correct inconsistent directories"
+msgstr ""
+
+#: rc.cpp:53
+msgid ""
+"If directories differ from the configured directory scheme, the files will "
+"be moved"
+msgstr ""
+
+#: rc.cpp:55
+msgid ""
+"directory pattern\n"
+"(for moving files)"
+msgstr ""
+
+#: rc.cpp:57
+msgid "delete empty directories"
+msgstr ""
+
+#: rc.cpp:58
+msgid "If directories are empty after moving files, these will be removed."
+msgstr ""
+
+#: rc.cpp:60
+msgid "check for doubles"
+msgstr ""
+
+#: rc.cpp:61
+msgid "checks for entries that are contained twice in Yammi's database"
+msgstr ""
+
+#: rc.cpp:62
+msgid "DeleteDialog"
+msgstr ""
+
+#: rc.cpp:63
+msgid "delete database entry (in Yammi's database)"
+msgstr ""
+
+#: rc.cpp:64
+msgid "deletes the database entry in Yammi's database (does not affect the file)"
+msgstr ""
+
+#: rc.cpp:65
+msgid "Delete a song entry and/or its file"
+msgstr ""
+
+#: rc.cpp:66
+msgid "delete file (on harddisk)"
+msgstr ""
+
+#: rc.cpp:67
+msgid ""
+"deletes the file on harddisk (if you keep the database entry, this song "
+"needs to be loaded for playing)"
+msgstr ""
+
+#: rc.cpp:68 rc.cpp:71
+msgid "shows a list of media, on which the song(s) to delete can be found"
+msgstr ""
+
+#: rc.cpp:69
+msgid "song to delete..."
+msgstr ""
+
+#: rc.cpp:70
+msgid ""
+"For your information:\n"
+"Song is contained on media"
+msgstr ""
+
+#: rc.cpp:74
+msgid "Edit Preferences"
+msgstr ""
+
+#: rc.cpp:76
+msgid "don't make any changes"
+msgstr ""
+
+#: rc.cpp:78
+msgid "Accept & Save configuration"
+msgstr ""
+
+#: rc.cpp:79
+msgid "General"
+msgstr ""
+
+#: rc.cpp:80
+msgid "Mouse configuration / Default actions for..."
+msgstr ""
+
+#: rc.cpp:81 rc.cpp:83
+msgid "the action that is performed when double-clicking on a song in the song list"
+msgstr ""
+
+#: rc.cpp:82
+msgid "doubleclick"
+msgstr ""
+
+#: rc.cpp:84 rc.cpp:86
+msgid ""
+"the action that is performed when clicking with middle mouse button on a "
+"song in the song list"
+msgstr ""
+
+#: rc.cpp:85
+msgid "middle click"
+msgstr ""
+
+#: rc.cpp:87
+msgid "Searching"
+msgstr ""
+
+#: rc.cpp:88 rc.cpp:90
+msgid ""
+"determines how many hits will be shown when searching. Must be between 0 and "
+"100, reasonable values are around 25."
+msgstr ""
+
+#: rc.cpp:89
+msgid "threshold"
+msgstr ""
+
+#: rc.cpp:91 rc.cpp:102
+msgid "Misc"
+msgstr ""
+
+#: rc.cpp:92 rc.cpp:94
+msgid "This device is used (with mpg123) to send songs to your headphone."
+msgstr ""
+
+#: rc.cpp:93
+msgid "second sound device (eg. /dev/dsp1)"
+msgstr ""
+
+#: rc.cpp:96
+msgid "Path to files"
+msgstr ""
+
+#: rc.cpp:97 rc.cpp:186 rc.cpp:194 rc.cpp:230 rc.cpp:243
+msgid "..."
+msgstr ""
+
+#: rc.cpp:98 rc.cpp:187 rc.cpp:195 rc.cpp:231 rc.cpp:244
+msgid "choose directory"
+msgstr ""
+
+#: rc.cpp:99
+msgid "trash directory for deleted song files"
+msgstr ""
+
+#: rc.cpp:100
+msgid ""
+"songs deleted in yammi will be moved to this directory and this directory "
+"will be skipped when scanning"
+msgstr ""
+
+#: rc.cpp:101
+msgid "base directory for all mp3 files managed by yammi"
+msgstr ""
+
+#: rc.cpp:103
+msgid "logging of played songs"
+msgstr ""
+
+#: rc.cpp:104
+msgid "logs all played songs with a timestamp to a file"
+msgstr ""
+
+#: rc.cpp:105
+msgid "child safe mode"
+msgstr ""
+
+#: rc.cpp:106
+msgid ""
+"if activated, some potentially dangerous actions are not allowed (eg. "
+"deleting a song). To disable this, you need a password..."
+msgstr ""
+
+#: rc.cpp:107
+msgid "lazy grouping"
+msgstr ""
+
+#: rc.cpp:108
+msgid ""
+"if enabled, considers eg. \"The_Doors\" the same as \"THE DOORS\" for "
+"grouping"
+msgstr ""
+
+#: rc.cpp:109
+msgid "group threshold"
+msgstr ""
+
+#: rc.cpp:110 rc.cpp:111
+msgid ""
+"the minimum number for a subfolder to be created (Folder Albums, Artists and "
+"Genres)"
+msgstr ""
+
+#: rc.cpp:112
+msgid "Consistency Mode"
+msgstr ""
+
+#: rc.cpp:113
+msgid "keep tags consistent"
+msgstr ""
+
+#: rc.cpp:114
+msgid ""
+"synchronizes the id3-tags of the mp3 files with the yammi database "
+"information. If activated, yammi modifies the tags of your mp3 files!"
+msgstr ""
+
+#: rc.cpp:115
+msgid "ignore case on filename check"
+msgstr ""
+
+#: rc.cpp:117
+msgid "capitalize tags on new songs"
+msgstr ""
+
+#: rc.cpp:118
+msgid "Capitalizes artist, title and album of a newly added Song"
+msgstr ""
+
+#: rc.cpp:119
+msgid ""
+"guessing pattern\n"
+"(if no tags available)"
+msgstr ""
+
+#: rc.cpp:124
+msgid "/artist/album/trackNr - title"
+msgstr ""
+
+#: rc.cpp:125
+msgid "artist - title"
+msgstr ""
+
+#: rc.cpp:126
+msgid "keep filenames consistent"
+msgstr ""
+
+#: rc.cpp:127
+msgid ""
+"Synchronizes the filenames of the mp3 files according to the information in "
+"the yammi database. If activated, yammi renames your mp3 files!"
+msgstr ""
+
+#: rc.cpp:128
+msgid "MediaPlayer"
+msgstr ""
+
+#: rc.cpp:130
+msgid "XMMS"
+msgstr ""
+
+#: rc.cpp:131
+msgid "ArtsPlayer"
+msgstr ""
+
+#: rc.cpp:132
+msgid "Noatun"
+msgstr ""
+
+#: rc.cpp:133
+msgid "Noatun settings"
+msgstr ""
+
+#: rc.cpp:134
+msgid "Crossfading"
+msgstr ""
+
+#: rc.cpp:135 rc.cpp:141
+msgid "The total time of crossfading (in seconds)"
+msgstr ""
+
+#: rc.cpp:136
+msgid "fade out end %"
+msgstr ""
+
+#: rc.cpp:137 rc.cpp:138
+msgid "Volume in percentage to fade out to"
+msgstr ""
+
+#: rc.cpp:139 rc.cpp:143
+msgid "Volume in percentage to fade in from"
+msgstr ""
+
+#: rc.cpp:140
+msgid ""
+"fading time (ms),\n"
+"set to 0 to disable"
+msgstr ""
+
+#: rc.cpp:142
+msgid "fade in start %"
+msgstr ""
+
+#: rc.cpp:144
+msgid ""
+"You MUST disable\n"
+"\"Allow Only One Instance of Noatun\" and\n"
+"\"Process Playlist Items for Display\"\n"
+"in Noatun configuration!"
+msgstr ""
+
+#: rc.cpp:145
+msgid "XMMS settings"
+msgstr ""
+
+#: rc.cpp:146 rc.cpp:148
+msgid "the number of songs to keep in Xmms playlist"
+msgstr ""
+
+#: rc.cpp:147
+msgid "songs in playlist"
+msgstr ""
+
+#: rc.cpp:149
+msgid "ArtsPlayer settings"
+msgstr ""
+
+#: rc.cpp:150
+msgid "- no settings yet -"
+msgstr ""
+
+#: rc.cpp:151 rc.cpp:158
+msgid "Plugins"
+msgstr ""
+
+#: rc.cpp:152
+msgid "grab and encode script"
+msgstr ""
+
+#: rc.cpp:153 rc.cpp:156
+msgid "a script to grab a track from cd and encode to mp3"
+msgstr ""
+
+#: rc.cpp:154
+msgid "shutdown script"
+msgstr ""
+
+#: rc.cpp:155 rc.cpp:157
+msgid ""
+"a script that is invoked on shutdown(computer) mode (pressing PAUSE two "
+"times)"
+msgstr ""
+
+#: rc.cpp:159
+msgid ""
+"Plugins can be invoked on a selection of songs from the context menu.\n"
+"\n"
+"Single mode = executed once for each song\n"
+"Group mode = executed once for the selection"
+msgstr ""
+
+#: rc.cpp:160
+msgid "Plugin Mode"
+msgstr ""
+
+#: rc.cpp:161
+msgid "New Entry"
+msgstr ""
+
+#: rc.cpp:162
+msgid "Delete Entry"
+msgstr ""
+
+#: rc.cpp:163
+msgid "Add Standard Plugins"
+msgstr ""
+
+#: rc.cpp:164
+msgid "Adds all standard plugins (if not already existing)"
+msgstr ""
+
+#: rc.cpp:165
+msgid "menu entry"
+msgstr ""
+
+#: rc.cpp:166 rc.cpp:175
+msgid "the entry to appear in the context menu"
+msgstr ""
+
+#: rc.cpp:167
+msgid "command"
+msgstr ""
+
+#: rc.cpp:168
+msgid ""
+"a script that is invoked for all selected songs via context menu (%1 will be "
+"replaced by song name)"
+msgstr ""
+
+#: rc.cpp:169
+msgid "Placeholders..."
+msgstr ""
+
+#: rc.cpp:170
+msgid "custom list"
+msgstr ""
+
+#: rc.cpp:171
+msgid ""
+"a script that is invoked for a playlist file generated from all selected "
+"songs (%1 will be replaced with the m3u filename)"
+msgstr ""
+
+#: rc.cpp:172
+msgid "ask for confirmation"
+msgstr ""
+
+#: rc.cpp:173
+msgid "popup a message box before executing the command"
+msgstr ""
+
+#: rc.cpp:174
+msgid ""
+"See Yammi's homepage for useful plugin configurations:\n"
+"             http://yammi.sourceforge.net"
+msgstr ""
+
+#: rc.cpp:176
+msgid "a script that is invoked for all selected songs"
+msgstr ""
+
+#: rc.cpp:177
+msgid "defines the list format (if %l replacement is used in command)"
+msgstr ""
+
+#: rc.cpp:179
+msgid ""
+"These settings configure the \"Jukebox\" capabilities of Yammi,\n"
+"that is loading songs that are not available on the harddisk\n"
+"from removable media.\n"
+"\n"
+"While running, Yammi will always show\n"
+"a list of needed media for the actual playlist, \n"
+"and songs can be loaded from those media\n"
+"into a swap directory."
+msgstr ""
+
+#: rc.cpp:180
+msgid "Removable Media Management"
+msgstr ""
+
+#: rc.cpp:181
+msgid "max size of media for burning (MB)"
+msgstr ""
+
+#: rc.cpp:182 rc.cpp:183
+msgid "indicates maximum size in MB for one media (eg. 700 for a CD-R)"
+msgstr ""
+
+#: rc.cpp:184
+msgid "swap directory"
+msgstr ""
+
+#: rc.cpp:185 rc.cpp:198
+msgid "directory where songs from removable media will be swapped"
+msgstr ""
+
+#: rc.cpp:188
+msgid "mount and umount the media directory"
+msgstr ""
+
+#: rc.cpp:189
+msgid ""
+"try to mount and umount the swap directory before and after loading songs "
+"from removable media"
+msgstr ""
+
+#: rc.cpp:190 rc.cpp:192
+msgid "directory where removable media will be mounted"
+msgstr ""
+
+#: rc.cpp:191
+msgid "media directory (mount point)"
+msgstr ""
+
+#: rc.cpp:193 rc.cpp:197
+msgid ""
+"when the swapped songs use more than this value, the least recently used "
+"(LRU) are deleted"
+msgstr ""
+
+#: rc.cpp:196
+msgid "maximum swap size (MB)"
+msgstr ""
+
+#: rc.cpp:199
+msgid "show and edit song info"
+msgstr ""
+
+#: rc.cpp:200
+msgid "song info..."
+msgstr ""
+
+#: rc.cpp:201
+msgid "tag information"
+msgstr ""
+
+#: rc.cpp:202 yammigui.cpp:104
+msgid "Album"
+msgstr ""
+
+#: rc.cpp:203 yammigui.cpp:106
+msgid "Comment"
+msgstr ""
+
+#: rc.cpp:204 yammigui.cpp:105 yammigui.cpp:3326
+msgid "Year"
+msgstr ""
+
+#: rc.cpp:205 yammigui.cpp:104
+msgid "Title"
+msgstr ""
+
+#: rc.cpp:206
+msgid "Track"
+msgstr ""
+
+#: rc.cpp:207 yammigui.cpp:105 yammigui.cpp:3322
+msgid "Genre"
+msgstr ""
+
+#: rc.cpp:208 yammigui.cpp:104
+msgid "Artist"
+msgstr ""
+
+#: rc.cpp:212
+msgid "database info"
+msgstr ""
+
+#: rc.cpp:213
+msgid "Added to database"
+msgstr ""
+
+#: rc.cpp:214
+msgid "Indicates the date when this song was added to the database"
+msgstr ""
+
+#: rc.cpp:215
+msgid "not implemented yet..."
+msgstr ""
+
+#: rc.cpp:216
+msgid "Last time played"
+msgstr ""
+
+#: rc.cpp:217
+msgid "read only"
+msgstr ""
+
+#: rc.cpp:218
+msgid "Size"
+msgstr ""
+
+#: rc.cpp:219 yammigui.cpp:106
+msgid "Path"
+msgstr ""
+
+#: rc.cpp:220
+msgid "proposed Filename:"
+msgstr ""
+
+#: rc.cpp:221
+msgid ""
+"Shows the filename that Yammi would propose using the defined filename "
+"pattern."
+msgstr ""
+
+#: rc.cpp:222 yammigui.cpp:106
+msgid "Filename"
+msgstr ""
+
+#: rc.cpp:223 yammigui.cpp:104
+msgid "Length"
+msgstr ""
+
+#: rc.cpp:224 rc.cpp:226
+msgid "lists all media containing this song"
+msgstr ""
+
+#: rc.cpp:225 yammigui.cpp:3334
+msgid "Media"
+msgstr ""
+
+#: rc.cpp:227 yammigui.cpp:105
+msgid "Bitrate"
+msgstr ""
+
+#: rc.cpp:228
+msgid "Update Database - Scan Harddisk"
+msgstr ""
+
+#: rc.cpp:229 rc.cpp:247
+msgid "Start Scan..."
+msgstr ""
+
+#: rc.cpp:232 rc.cpp:233 rc.cpp:235 rc.cpp:238 rc.cpp:246 rc.cpp:248
+#: rc.cpp:252 rc.cpp:253 rc.cpp:255 rc.cpp:256
+msgid ""
+"yammi will search in this directory (and recursive in all subdirectories) "
+"for new song files"
+msgstr ""
+
+#: rc.cpp:234
+msgid "base directory for scanning"
+msgstr ""
+
+#: rc.cpp:236
+msgid "Options for scanning your harddisk"
+msgstr ""
+
+#: rc.cpp:237 rc.cpp:254
+msgid "pattern of files to import"
+msgstr ""
+
+#: rc.cpp:240
+msgid "follow symbolic links"
+msgstr ""
+
+#: rc.cpp:241
+msgid ""
+"Choose whether yammi should follow symbolic links when traversing the "
+"directory structure"
+msgstr ""
+
+#: rc.cpp:242
+msgid "Update Database - Scan Media"
+msgstr ""
+
+#: rc.cpp:245
+msgid "media directory"
+msgstr ""
+
+#: rc.cpp:249
+msgid "Options for scanning a media (e.g. CD)"
+msgstr ""
+
+#: rc.cpp:251
+msgid "name of medium"
+msgstr ""
+
+#: rc.cpp:257
+msgid "mount directory"
+msgstr ""
+
+#: _translatorinfo.cpp:1
+msgid ""
+"_: NAME OF TRANSLATORS\n"
+"Your names"
+msgstr ""
+
+#: _translatorinfo.cpp:3
+msgid ""
+"_: EMAIL OF TRANSLATORS\n"
+"Your emails"
+msgstr ""
+
+#: updatedatabasedialog.cpp:31
+msgid "Update Database (harddisk)"
+msgstr ""
+
+#: updatedatabasedialog.cpp:56
+msgid "choose scan directory"
+msgstr ""
+
+#: yammigui.cpp:105
+msgid "TrackNr"
+msgstr ""
+
+#: yammigui.cpp:105
+msgid "AddedTo"
+msgstr ""
+
+#: yammigui.cpp:106
+msgid "Last Played"
+msgstr ""
+
+#: yammigui.cpp:363 yammigui.cpp:3311
+msgid "All Music"
+msgstr ""
+
+#: yammigui.cpp:364 yammigui.cpp:2432
+msgid "Folder: "
+msgstr ""
+
+#: yammigui.cpp:402
+msgid ""
+"The Song Database has been modified.\n"
+"Do you want to save the changes?"
+msgstr ""
+
+#: yammigui.cpp:403
+msgid "Database modified"
+msgstr ""
+
+#: yammigui.cpp:429
+msgid "Shutting down in %1 seconds"
+msgstr ""
+
+#: yammigui.cpp:430
+msgid "Shutting down..."
+msgstr ""
+
+#: yammigui.cpp:558
+msgid "Yammi - not playing"
+msgstr ""
+
+#: yammigui.cpp:590
+msgid "Pause"
+msgstr ""
+
+#: yammigui.cpp:593 yammigui.cpp:3379
+msgid "Play"
+msgstr ""
+
+#: yammigui.cpp:780 yammigui.cpp:796
+msgid "Pos"
+msgstr ""
+
+#: yammigui.cpp:784
+msgid "Played on"
+msgstr ""
+
+#: yammigui.cpp:788
+msgid "Match"
+msgstr ""
+
+#: yammigui.cpp:792
+msgid "Reason"
+msgstr ""
+
+#: yammigui.cpp:960
+msgid "New Category..."
+msgstr ""
+
+#: yammigui.cpp:1074
+msgid ""
+"Two identical songs: \n"
+"s1: %1\n"
+"s2: %2\n"
+"Do you want to delete one of them?"
+msgstr ""
+
+#: yammigui.cpp:1075
+msgid "Delete s1"
+msgstr ""
+
+#: yammigui.cpp:1075
+msgid "Delete s2"
+msgstr ""
+
+#: yammigui.cpp:1369
+msgid "%1 songs selected"
+msgstr ""
+
+#: yammigui.cpp:1449
+msgid "choose directory for plugin"
+msgstr ""
+
+#: yammigui.cpp:1455
+msgid "choose file for plugin"
+msgstr ""
+
+#: yammigui.cpp:1462
+msgid "Get input parameter"
+msgstr ""
+
+#: yammigui.cpp:1462
+msgid "Type in argument for plugin:"
+msgstr ""
+
+#: yammigui.cpp:1473
+msgid "Execute the following command on each selected song?\n"
+msgstr ""
+
+#: yammigui.cpp:1474
+msgid ""
+"(here shown: values for first song)\n"
+"\n"
+msgstr ""
+
+#: yammigui.cpp:1483
+msgid "Executing song plugin cmd..."
+msgstr ""
+
+#: yammigui.cpp:1516
+msgid "Execute the following command:\n"
+msgstr ""
+
+#: yammigui.cpp:1520
+msgid ""
+"\n"
+"...\n"
+"(command truncated)"
+msgstr ""
+
+#: yammigui.cpp:1545
+msgid "Select destination directory"
+msgstr ""
+
+#: yammigui.cpp:1568 yammigui.cpp:2380
+msgid "collection name"
+msgstr ""
+
+#: yammigui.cpp:1568
+msgid "Please enter collection name:"
+msgstr ""
+
+#: yammigui.cpp:1568
+msgid "my mp3 collection"
+msgstr ""
+
+#: yammigui.cpp:1572
+msgid "collection start number"
+msgstr ""
+
+#: yammigui.cpp:1572
+msgid "Please enter start index:"
+msgstr ""
+
+#: yammigui.cpp:1576
+msgid "Preparing media..."
+msgstr ""
+
+#: yammigui.cpp:1600
+msgid "Preparing media "
+msgstr ""
+
+#: yammigui.cpp:1642
+msgid ""
+"Result of \"Burn to media\" process:\n"
+"\n"
+"                             no of media: %1, (size limit: %2 MB)\n"
+"                             first media index: %3\n"
+"                             last media index: %4\n"
+"                             no of files: %5\n"
+"                             size of last media: %6 MB\n"
+"                             size in total: %7 MB\n"
+"\n"
+"\n"
+"                             You have now for each medium a directory in\n"
+"                             %8,\n"
+"                             containing symbolic links to all contained "
+"songs.\n"
+"\n"
+"                             For burning these files to a CD, you can use a\n"
+"                             burning program of your choice and burn\n"
+"                             each directory to a seperate CD.\n"
+"                             (Depending on your burning program, you might "
+"have\n"
+"                             to check an option \"follow symlinks\" or "
+"similar)."
+msgstr ""
+
+#: yammigui.cpp:1768
+msgid "checking %1 songs"
+msgstr ""
+
+#: yammigui.cpp:1780
+msgid "Checking consistency..."
+msgstr ""
+
+#: yammigui.cpp:1792
+msgid ""
+"Result of consistency check:\n"
+"\n"
+"                         %1 problematic issues identified (check folder "
+"\"Problematic Songs\")\n"
+"                         (that folder won't be saved)\n"
+"                         %2 songs not existing, of these:\n"
+"                         %3 entries updated (filename cleared)\n"
+"                         \t%4 entries deleted (because not existing on any "
+"media)\n"
+"                         %5 songs with inconsistent tags, of these:\n"
+"                         \t%6 tags corrected\n"
+"                         %7 songs with inconsistent filename, of these:\n"
+"                         \t%8 filenames corrected\n"
+msgstr ""
+
+#: yammigui.cpp:1803
+msgid ""
+"%1 songs with inconsistent path, of these:\n"
+"                      \t%2 paths corrected\n"
+"                      %3 double entries found\n"
+msgstr ""
+
+#: yammigui.cpp:1825
+msgid "%1 Songs equeued at end of playlist"
+msgstr ""
+
+#: yammigui.cpp:1852
+msgid "%1 Songs equeued as next"
+msgstr ""
+
+#: yammigui.cpp:1897 yammigui.cpp:1912
+msgid "song %1 dequeued"
+msgstr ""
+
+#: yammigui.cpp:2064
+msgid "Mass editing: %1 songs"
+msgstr ""
+
+#: yammigui.cpp:2065
+msgid "Size (total)"
+msgstr ""
+
+#: yammigui.cpp:2066
+msgid "Length (total)"
+msgstr ""
+
+#: yammigui.cpp:2068
+#, c-format
+msgid "%d:%02d:%02d (hh:mm:ss)"
+msgstr ""
+
+#: yammigui.cpp:2072
+#, c-format
+msgid "%2d:%02d (mm:ss)"
+msgstr ""
+
+#: yammigui.cpp:2074
+msgid "%1 MB (%2 Bytes)"
+msgstr ""
+
+#: yammigui.cpp:2210
+msgid "Delete %1 songs"
+msgstr ""
+
+#: yammigui.cpp:2346
+msgid "Enter name for category"
+msgstr ""
+
+#: yammigui.cpp:2347
+msgid "Please enter name of category"
+msgstr ""
+
+#: yammigui.cpp:2348
+msgid "new category"
+msgstr ""
+
+#: yammigui.cpp:2365
+msgid ""
+"Delete category %1 ?\n"
+" (will be deleted immediately!)"
+msgstr ""
+
+#: yammigui.cpp:2380 yammigui.cpp:2465
+msgid "Please enter new name:"
+msgstr ""
+
+#: yammigui.cpp:2398
+msgid "Choose a Playlist to insert"
+msgstr ""
+
+#: yammigui.cpp:2452
+msgid ""
+"Remove media %1 and the corresponding directory?\n"
+"                               (which contains the symbolic links to the "
+"songs)"
+msgstr ""
+
+#: yammigui.cpp:2465
+msgid "Rename Media"
+msgstr ""
+
+#: yammigui.cpp:2520
+msgid ""
+"Clear complete playlist?\n"
+"(%1 entries)"
+msgstr ""
+
+#: yammigui.cpp:2522
+msgid "including current song"
+msgstr ""
+
+#: yammigui.cpp:2643
+msgid "Enter track number"
+msgstr ""
+
+#: yammigui.cpp:2644
+msgid "Please enter track number"
+msgstr ""
+
+#: yammigui.cpp:2652
+msgid "Enter artist"
+msgstr ""
+
+#: yammigui.cpp:2653
+msgid "Please enter artist"
+msgstr ""
+
+#: yammigui.cpp:2654
+msgid "MyArtist"
+msgstr ""
+
+#: yammigui.cpp:2658
+msgid "Enter title"
+msgstr ""
+
+#: yammigui.cpp:2659
+msgid "Please enter title"
+msgstr ""
+
+#: yammigui.cpp:2660
+msgid "Fantastic Song"
+msgstr ""
+
+#: yammigui.cpp:2664
+#, c-format
+msgid "%1%2 - %3.mp3"
+msgstr ""
+
+#: yammigui.cpp:2667
+msgid ""
+"The file\n"
+"%1\n"
+"already exists!\n"
+"\n"
+"Please choose a different artist/title combination."
+msgstr ""
+
+#: yammigui.cpp:2675
+msgid "grabbing track, will be available shortly..."
+msgstr ""
+
+#: yammigui.cpp:2696
+msgid "grabbed song available"
+msgstr ""
+
+#: yammigui.cpp:2705
+msgid ""
+"Yammi tried to add the grabbed song to the database.\n"
+"\n"
+"Some statistics: \n"
+"\n"
+msgstr ""
+
+#: yammigui.cpp:2706 yammigui.cpp:2959 yammigui.cpp:3011
+msgid "%1 songs added to database\n"
+msgstr ""
+
+#: yammigui.cpp:2707 yammigui.cpp:2960 yammigui.cpp:3012
+msgid "%1 songs corrupt (=not added)\n"
+msgstr ""
+
+#: yammigui.cpp:2708
+msgid "%1 problematic issues(check in folder Problematic Songs)"
+msgstr ""
+
+#: yammigui.cpp:2852
+msgid ""
+"The Database has been modified. Save changes?\n"
+"(answering no will cancel sleep mode)"
+msgstr ""
+
+#: yammigui.cpp:2861
+msgid "shutdown"
+msgstr ""
+
+#: yammigui.cpp:2861 yammigui.cpp:3478
+msgid "(disabled)"
+msgstr ""
+
+#: yammigui.cpp:2948
+msgid "Open file(s) to import"
+msgstr ""
+
+#: yammigui.cpp:2958 yammigui.cpp:3010
+msgid ""
+"Updated your database.\n"
+"\n"
+"Statistics: \n"
+"\n"
+msgstr ""
+
+#: yammigui.cpp:2961 yammigui.cpp:3013
+msgid "%1 songs problematic (check in folder Problematic Songs)\n"
+msgstr ""
+
+#: yammigui.cpp:2967
+msgid "Update Database (media) Dialog"
+msgstr ""
+
+#: yammigui.cpp:2977
+msgid "You have to enter a name for the media!"
+msgstr ""
+
+#: yammigui.cpp:2994
+msgid "Scanning..."
+msgstr ""
+
+#: yammigui.cpp:3074
+msgid "Loading song files..."
+msgstr ""
+
+#: yammigui.cpp:3100
+msgid "loading song: "
+msgstr ""
+
+#: yammigui.cpp:3100
+msgid ". in playlist)"
+msgstr ""
+
+#: yammigui.cpp:3162
+msgid "<none>"
+msgstr ""
+
+#: yammigui.cpp:3281
+msgid "Quick Browser"
+msgstr ""
+
+#: yammigui.cpp:3314
+msgid "Artists"
+msgstr ""
+
+#: yammigui.cpp:3318
+msgid "Albums"
+msgstr ""
+
+#: yammigui.cpp:3330
+msgid "Categories"
+msgstr ""
+
+#: yammigui.cpp:3341
+msgid "Songs Played"
+msgstr ""
+
+#: yammigui.cpp:3345
+msgid "History"
+msgstr ""
+
+#: yammigui.cpp:3349
+msgid "Unclassified"
+msgstr ""
+
+#: yammigui.cpp:3352
+msgid "Search Results"
+msgstr ""
+
+#: yammigui.cpp:3355
+msgid "Problematic Songs"
+msgstr ""
+
+#: yammigui.cpp:3358
+msgid "Recent Additions"
+msgstr ""
+
+#: yammigui.cpp:3376
+msgid "Invert selection"
+msgstr ""
+
+#: yammigui.cpp:3381
+msgid "Skip Backward"
+msgstr ""
+
+#: yammigui.cpp:3382
+msgid "Skip Forward"
+msgstr ""
+
+#: yammigui.cpp:3385
+msgid "Track position"
+msgstr ""
+
+#: yammigui.cpp:3391
+msgid "Save Database"
+msgstr ""
+
+#: yammigui.cpp:3392
+msgid "Scan Harddisk..."
+msgstr ""
+
+#: yammigui.cpp:3393
+msgid "Scan Removable Media..."
+msgstr ""
+
+#: yammigui.cpp:3394
+msgid "Import Selected File(s)..."
+msgstr ""
+
+#: yammigui.cpp:3395 yammigui.cpp:3414
+msgid "Check Consistency..."
+msgstr ""
+
+#: yammigui.cpp:3396
+msgid "Grab And Encode CD-Track..."
+msgstr ""
+
+#: yammigui.cpp:3399
+msgid "Shuffle Playlist..."
+msgstr ""
+
+#: yammigui.cpp:3400
+msgid "Clear Playlist"
+msgstr ""
+
+#: yammigui.cpp:3401
+msgid "Switch to/from Playlist"
+msgstr ""
+
+#: yammigui.cpp:3404
+msgid "Enqueue as next (prepend)"
+msgstr ""
+
+#: yammigui.cpp:3405
+msgid "Enqueue at end (append)"
+msgstr ""
+
+#: yammigui.cpp:3406
+msgid "Play Now!"
+msgstr ""
+
+#: yammigui.cpp:3407
+msgid "Dequeue Songs"
+msgstr ""
+
+#: yammigui.cpp:3408
+msgid "Prelisten start"
+msgstr ""
+
+#: yammigui.cpp:3409
+msgid "Prelisten middle"
+msgstr ""
+
+#: yammigui.cpp:3410
+msgid "Prelisten end"
+msgstr ""
+
+#: yammigui.cpp:3411
+msgid "Song Info..."
+msgstr ""
+
+#: yammigui.cpp:3412
+msgid "Delete Song..."
+msgstr ""
+
+#: yammigui.cpp:3413
+msgid "Burn To Media"
+msgstr ""
+
+#: yammigui.cpp:3415
+msgid "Move Files"
+msgstr ""
+
+#: yammigui.cpp:3416
+msgid "Search for similar entry"
+msgstr ""
+
+#: yammigui.cpp:3417
+msgid "Search for similar artist"
+msgstr ""
+
+#: yammigui.cpp:3418
+msgid "Search for similar title"
+msgstr ""
+
+#: yammigui.cpp:3419
+msgid "Search for similar album"
+msgstr ""
+
+#: yammigui.cpp:3420
+msgid "Goto artist"
+msgstr ""
+
+#: yammigui.cpp:3421
+msgid "Goto album"
+msgstr ""
+
+#: yammigui.cpp:3422
+msgid "Goto genre"
+msgstr ""
+
+#: yammigui.cpp:3424
+msgid "Stop prelisten"
+msgstr ""
+
+#: yammigui.cpp:3430
+msgid "Longest not played"
+msgstr ""
+
+#: yammigui.cpp:3432
+msgid "Random"
+msgstr ""
+
+#: yammigui.cpp:3434
+msgid "Unknown"
+msgstr ""
+
+#: yammigui.cpp:3445
+msgid "Update Automatic Folder Structure"
+msgstr ""
+
+#: yammigui.cpp:3454
+msgid "Search:"
+msgstr ""
+
+#: yammigui.cpp:3458
+msgid "Fuzzy search (Ctrl-F)"
+msgstr ""
+
+#: yammigui.cpp:3460
+msgid "to wishlist"
+msgstr ""
+
+#: yammigui.cpp:3463
+msgid "Add this entry to the database as a \"wish\""
+msgstr ""
+
+#: yammigui.cpp:3468
+msgid "Needed media:"
+msgstr ""
+
+#: yammigui.cpp:3471
+msgid "load"
+msgstr ""
+
+#: yammigui.cpp:3477
+msgid "Sleep mode:"
+msgstr ""
+
+#: yammigui.cpp:3480
+msgid "toggle sleep mode"
+msgstr ""
+
+#: yammigui.cpp:3484
+msgid "number songs until shutdown"
+msgstr ""
+
+#: yammigui.cpp:3511
+msgid "Columns"
+msgstr ""
+
+#: yammigui.cpp:3537
+msgid "Insert Into/Remove From..."
+msgstr ""
+
+#: yammigui.cpp:3539
+msgid "Plugins..."
+msgstr ""
+
+#: yammimodel.cpp:83
+msgid ""
+"Error reading categories file:\n"
+"%1\n"
+"(Error: %2, line %3, column %4)"
+msgstr ""
+
+#: yammimodel.cpp:147
+msgid "Loading categories"
+msgstr ""
+
+#: yammimodel.cpp:147
+msgid "Reading categories..."
+msgstr ""
+
+#: yammimodel.cpp:190
+msgid "Loading song history"
+msgstr ""
+
+#: yammimodel.cpp:190
+msgid "Reading song history..."
+msgstr ""
+
+#: yammimodel.cpp:344
+msgid ""
+"Error reading database file:\n"
+"%1\n"
+"(Error: %2, line %3, column %4)"
+msgstr ""
+
+#: yammimodel.cpp:345
+msgid "Error reading database"
+msgstr ""
+
+#: yammimodel.cpp:352
+msgid ""
+"Your Song Database seems to be very old.\n"
+" You might need to create                           a new Database and scan "
+"your harddisk for songs"
+msgstr ""
+
+#: yammimodel.cpp:354
+msgid "Unknown Song Database version"
+msgstr ""
+
+#: yammimodel.cpp:362
+msgid "Loading database"
+msgstr ""
+
+#: yammimodel.cpp:362
+msgid "Reading Song Database file"
+msgstr ""
+
+#: yammimodel.cpp:567
+msgid ""
+"The base directory for scanning does not exist!\n"
+"                              Set value \"scanDir\" in the preferences to an "
+"existing directory!"
+msgstr ""
+
+#: yammimodel.cpp:588
+msgid ""
+"The specified directory for removable media:\n"
+" %1 \n"
+"                             does not exist or is not redable!\n"
+" Set value \"mediaDir\" in the preferences to an existing directory!\n"
+"                             (if necessary, enable the \"mount media\" "
+"option in the preferences)"
+msgstr ""
+
+#: yammimodel.cpp:641
+msgid "scanning directory %1 ..."
+msgstr ""
+
