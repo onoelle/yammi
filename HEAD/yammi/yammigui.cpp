@@ -123,11 +123,11 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
 	searchField = new QLineEdit ( toolBar );
 	connect( searchField, SIGNAL(textChanged(const QString&)), SLOT(userTyped(const QString&)) );
 	searchField->setFocus();
-	searchField->setFixedWidth(180);
+	searchField->setFixedWidth(175);
 	QToolTip::add( searchField, "Fuzzy search (Ctrl-F)");
 	
 	// button "add to wishlist"	
-	QPushButton* addToWishListButton=new QPushButton("..to wishlist", toolBar);
+	QPushButton* addToWishListButton=new QPushButton("to wishlist", toolBar);
 	QToolTip::add( addToWishListButton, "Add this entry to the database as a \"wish\"");
 	
 	// current song label
@@ -955,24 +955,16 @@ void YammiGui::slotFolderPopup( QListViewItem* Item, const QPoint & point, int )
 void YammiGui::forSelectionPluginSong(int pluginIndex)
 {
 	pluginIndex-=2000;
-	QProgressDialog progress( "Executing song plugin cmd...", "Cancel", 100, this, "progress", TRUE );
+
+  QProgressDialog progress( "Executing song plugin cmd...", "Cancel", 100, this, "progress", TRUE );
 	progress.setMinimumDuration(0);
 	progress.setTotalSteps(selectedSongs.count());	
 
-	int index=0;
+	int index=1;
 	for(Song* s=selectedSongs.firstSong(); s; s=selectedSongs.nextSong(), index++) {
 		QString cmd=(*model->config.pluginSongCmd)[pluginIndex];
-		cmd.replace(QRegExp("%f"), s->location());
-		cmd.replace(QRegExp("%F"), s->filename);
-		cmd.replace(QRegExp("%p"), s->path);
-		cmd.replace(QRegExp("%a"), s->artist);
-		cmd.replace(QRegExp("%t"), s->title);
-		cmd.replace(QRegExp("%i"), QString("%1").arg(index+1));
-		QString lengthStr=QString("%1").arg(s->length % 60);
-		if(lengthStr.length()==1)
-	  	lengthStr="0"+lengthStr;		
-		cmd.replace(QRegExp("%l"), QString("%1:%2").arg((s->length) / 60).arg(lengthStr));
-		if(index==0) {
+    cmd=makeReplacements(cmd, s, index);
+		if(index==1) {
 			// before executing cmd on first song, ask user
 			QString msg="Execute the following command on each selected song?\n";
 			msg+="(here shown: values for first song)\n\n";
@@ -990,7 +982,30 @@ void YammiGui::forSelectionPluginSong(int pluginIndex)
 }
 
 
-
+QString YammiGui::makeReplacements(QString input, Song* s, int index)
+{
+  input.replace(QRegExp("%f"), s->location());
+	input.replace(QRegExp("%F"), s->filename);
+	input.replace(QRegExp("%p"), s->path);
+	input.replace(QRegExp("%a"), s->artist);
+	input.replace(QRegExp("%t"), s->title);
+	input.replace(QRegExp("%u"), s->album);
+	input.replace(QRegExp("%b"), QString("%1").arg(s->bitrate));
+	input.replace(QRegExp("%i"), QString("%1").arg(index));
+	QString lengthStr=QString("%1").arg(s->length % 60);
+	if (lengthStr.length()==1)
+	 	lengthStr="0"+lengthStr;
+	input.replace(QRegExp("%l"), QString("%1:%2").arg((s->length) / 60).arg(lengthStr));
+  input.replace(QRegExp("%n"), "\n");
+	QString mediaList="";
+	for(unsigned int i=0; i<s->mediaName.count(); i++) {
+		if(i!=0)
+			mediaList+=", ";
+		mediaList+=s->mediaName[i];
+	}
+	input.replace(QRegExp("%m"), mediaList);
+  return input;  
+}
 
 
 // creates a playlist (or a space-seperated list of songs) and executes
@@ -998,57 +1013,22 @@ void YammiGui::forSelectionPluginSong(int pluginIndex)
 void YammiGui::forSelectionPluginPlaylist(int pluginIndex)
 {
 	pluginIndex-=3000;
-	// string to keep all filenames (quoted and space-seperated)
-	QString filenameList="";
-	QString songnameList="";
-	QString customList="";
 	
-	// file for temporarily storing the playlist in
-	QFile f(model->config.yammiBaseDir+"/plugin.m3u" );
-	if ( !f.open( IO_WriteOnly  ) )
-		return;
-	QTextStream str(&f);
-
 	int index=1;	
+	QString customList="";
 	for(Song* s=selectedSongs.firstSong(); s; s=selectedSongs.nextSong(), index++) {
 		QString entry=(*model->config.pluginPlaylistCustomList)[pluginIndex];
-		entry.replace(QRegExp("%a"), s->artist);
-		entry.replace(QRegExp("%t"), s->title);
-		entry.replace(QRegExp("%u"), s->album);
-		entry.replace(QRegExp("%b"), QString("%1").arg(s->bitrate));
-		entry.replace(QRegExp("%i"), QString("%1").arg(index));
-		QString lengthStr=QString("%1").arg(s->length % 60);
-		if (lengthStr.length()==1)
-	  	lengthStr="0"+lengthStr;		
-		entry.replace(QRegExp("%l"), QString("%1:%2").arg((s->length) / 60).arg(lengthStr));
-		entry.replace(QRegExp("%n"), "\n");
-		QString mediaList="";
-		for(unsigned int i=0; i<s->mediaName.count(); i++) {
-			if(i!=0)
-				mediaList+=", ";
-			mediaList+=s->mediaName[i];
-		}
-		entry.replace(QRegExp("%m"), mediaList);
-		str << s->location() << "\n";
-		filenameList+="\""+s->location()+"\" ";
-		songnameList+=s->displayName()+"%";
-		customList+=entry;
+		customList+=makeReplacements(entry, s, index);
 	}
-	f.close();
-	cout << "playlist written to: " << model->config.yammiBaseDir+"/plugin.m3u\n";
 	QString cmd=(*model->config.pluginPlaylistCmd)[pluginIndex];
 	
-	cmd.replace(QRegExp("%f"), filenameList);
-	cmd.replace(QRegExp("%s"), songnameList);
-
   // custom list can be long => better put it into a file...
   // old version: cmd.replace(QRegExp("%l"), customList);
-  QFile customListFile("/tmp/customlist.txt");
+  QFile customListFile(model->config.yammiBaseDir+"/customlist.txt");
   customListFile.open(IO_WriteOnly);
   customListFile.writeBlock( customList, qstrlen(customList) );
   customListFile.close();
-  cmd.replace(QRegExp("%l"), "`cat /tmp/customlist.txt`");
-	cmd.replace(QRegExp("%m"), model->config.yammiBaseDir+"/plugin.m3u\"");
+  cmd.replace(QRegExp("%l"), "`cat "+model->config.yammiBaseDir+"/customlist.txt`");
 
 	QString msg="Execute the following command:\n";
 	for(unsigned int i=0; i<cmd.length(); i+=80) {
@@ -1060,10 +1040,7 @@ void YammiGui::forSelectionPluginPlaylist(int pluginIndex)
 	}
 		
 	if( QMessageBox::warning( this, "Yammi", msg, "Yes", "No")==0) {
-//    QProcess* proc = new QProcess( this );
-//    proc->addArgument( cmd );
-//    proc->start();
-        system(cmd);
+    system(cmd);
   }
 }
 

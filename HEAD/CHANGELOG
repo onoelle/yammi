@@ -9,6 +9,9 @@
 - Yammi finally gets an individual icon (for titlebar and kicker)
 - toolbutton + key-combination (SHIFT-F7) for playing a song immediately without crossfading
 - bugfix: defined playlist plugins show up in context menu now
+- improved handling of customlist in playlist plugin
+  (gets written/read from a file now instead of simply inserted into the command)
+- simplified sleep mode (shutdown mode), added dialog box to cancel the shutdown
 
 
 #######################

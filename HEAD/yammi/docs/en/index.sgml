@@ -11,10 +11,10 @@ This Handbook describes Yammi Version 0.6
 <toc>
 
 <sect>Introduction<p>
-Yammi stands for "Yet Another Music Manager I..." and is a tool to manage your mp3 collection.
+Yammi ("Yet Another Music Manager I...") is a tool to manage your mp3 collection.
 It is centered around an intuitive graphical user interface and a song database,
-which allows very convenient and fast access to any mp3 songs.
-For playing songs the program serves as a front-end for XMMS
+which allows convenient and fast access to any mp3 songs.
+For playing songs the program uses XMMS
 (<htmlurl url="http://www.xmms.org" name = "X MultiMedia System">).
 So far, Yammi only supports Xmms and the mp3 format.<p>
 Yammi enables you to
@@ -46,17 +46,17 @@ anyway - even if you are horribly misspelling them in the search.
 This fuzzy search works just as you would expect it, even with a few thousand songs in the database.
 <p>
 
-With the help of Yammi you will never again encounter the pain of digging through your directory structures
-to find a particular song. Yammi also offers to create playlists/categories of songs, and sort songs after
-just every available information, enabling you to sort your songs on
-title, artist, length, most recently added songs, most recently played, bitrate, filename, comment...
+With Yammi you don't need to dig through your directory structure to find a particular song.
+Yammi also offers to create playlists/categories of songs, and sort songs after
+just every available information, eg. title, artist, length, most recently added songs,
+most recently played, bitrate...
 <p>
 
 Yammi does as an excellent job on a party. In connection with Xmms'
 <htmlurl url="http://www.netcologne.de/~nc-eisenlpe2/xmms-crossfade/" name="crossfading plugin">
 (<htmlurl url="http://volnorm.sourceforge.net/" name="volume normalization"> might be useful, too)
 and a second sound card (to listen to songs on a headphone) it almost replaces the DJ,
-and is still extremely easy to use allowing even people with no computer experience to DJ the party.
+and is still extremely easy to use even for people with little computer experience.
 <p>
 
 Yammi does also a good job in replacing your CD-player. In connection with a infrared receiver and
@@ -66,14 +66,13 @@ with a remote control, even enabling you to turn off your computer via remote co
 <p>
 
 
-Although I tried my best, I can take no liability that my program
-is not causing any damage to your mp3 collection or anything else...
+Although I tried my best, I can take no liability that Yammi is not causing any damage
+to your mp3 collection, to your speakers or your neighbour...
 
 
 <sect1>Changes
 <p>
 For changes, see the file CHANGELOG included in the distribution.
-Note that Yammi now requires Xmms 1.2.6 or later!
 <p>
 
 <sect>Installation
@@ -655,19 +654,16 @@ very little knowledge of computers to do any harm to your mp3 collection by
 accident.
 
 <sect1> Shutdown script <p>
-If you press PAUSE, Yammi goes into shutdown(normal) mode:
-It plays two more songs, and then automatically Yammi exits.
+If you enable Yammi's shutdown mode by pressing the button in the toolbar,
+Yammi will shut down in the following two cases:
 
-If you press PAUSE again, Yammi goes into shutdown(computer) mode:
-Now it does not only exit from Yammi, but invokes a script which can eg.
-shutdown your computer. The name of the script to invoke can be changed
-in the preferences.
-This feature is supposed to work like a timer on a stereo.
+- the number of songs to play (visible and editable in the toolbar) has reached 0
+- XMMS stops playback (only if it STOPS, PAUSING playback will have no effect)
 
-If you press PAUSE again, Yammi cancels the shutdown mode.
+If there is a shutdown script specified in the preferences, this script will be invoked on
+shutting down.
+This can be used to shutdown the computer, simulating the functionality of a timer on a stereo.
 
-To increase or decrease the number of songs that will be played until shutdown,
-you can use the Page Up or Down keys.
 
 <sect1> Removable Media Management <p>
 Yammi has support to function as a "Jukebox". That is, you don't need all your

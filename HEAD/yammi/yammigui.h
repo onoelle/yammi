@@ -112,6 +112,7 @@ public:
   YammiModel* getModel() { return model; };
 
 protected:
+  QString   makeReplacements(QString input, Song* s, int index);
 	void			myWait(int msecs);
 	int				shuttingDown;
 	bool			xmmsShuffleWasActivated;

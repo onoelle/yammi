@@ -701,7 +701,7 @@
                                 <number>0</number>
                             </property>
                             <property name="spacing">
-                                <number>6</number>
+                                <number>2</number>
                             </property>
                             <widget class="QGroupBox" row="2" column="0" rowspan="1" colspan="2">
                                 <property name="name">
@@ -793,9 +793,10 @@
                                                     <cstring>TextLabel1</cstring>
                                                 </property>
                                                 <property name="text">
-                                                    <string>This command can be invoked from the 
-context menu and will be executed once 
-for each song in the selection.</string>
+                                                    <string>This command can be invoked on a 
+selection of songs from the context menu.
+It will be executed once for each song 
+in the selection.</string>
                                                 </property>
                                             </widget>
                                             <widget class="QLabel" row="0" column="3" rowspan="3" colspan="1">
@@ -808,8 +809,9 @@ for each song in the selection.</string>
 %F = filename (without path)
 %p = path (without filename)
 %a = artist, %t = title
-%i = index
-%l = song time</string>
+%u = album, %b = bitrate
+%i = index, %l = length
+%m = media list, %n = newline</string>
                                                 </property>
                                             </widget>
                                             <widget class="QComboBox" row="0" column="0" rowspan="1" colspan="2">
@@ -903,10 +905,8 @@ for each song in the selection.</string>
                                                     <cstring>TextLabel3</cstring>
                                                 </property>
                                                 <property name="text">
-                                                    <string>Replacements for command:
-%m = filename of m3u playlist
-%f = list of quoted filenames
-%s = list of "artist - title"
+                                                    <string>Replacements for 
+command:
 %l = custom list</string>
                                                 </property>
                                             </widget>
@@ -942,10 +942,10 @@ for each song in the selection.</string>
                                                     <cstring>TextLabel1_2</cstring>
                                                 </property>
                                                 <property name="text">
-                                                    <string>This command can be invoked
-from the context menu and will
-build a list  of songs and 
-execute the command on it.</string>
+                                                    <string>This command can be invoked on a 
+selection of songs from the context menu.
+It will be executed once for the
+whole selection.</string>
                                                 </property>
                                             </widget>
                                             <widget class="QLineEdit" row="4" column="3" rowspan="1" colspan="2">
@@ -961,13 +961,11 @@ execute the command on it.</string>
                                                     <cstring>TextLabel3_2</cstring>
                                                 </property>
                                                 <property name="text">
-                                                    <string>... for custom list:
-%a = artist, %t = title
-%u = album, %b = bitrate
-%i = index in list
-%l = length (mm:ss)
-%n = newline
-%m = media list</string>
+                                                    <string>Replacements for
+custom list:
+All replacements
+listed above
+(for Plugin on songs)</string>
                                                 </property>
                                             </widget>
                                             <widget class="QLabel" row="4" column="2">
