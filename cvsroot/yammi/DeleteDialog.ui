@@ -1,0 +1,160 @@
+<!DOCTYPE UI><UI>
+<class>DeleteDialog</class>
+<widget>
+    <class>QDialog</class>
+    <property stdset="1">
+        <name>name</name>
+        <cstring>DeleteDialog</cstring>
+    </property>
+    <property stdset="1">
+        <name>geometry</name>
+        <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>381</width>
+            <height>203</height>
+        </rect>
+    </property>
+    <property stdset="1">
+        <name>caption</name>
+        <string>DeleteDialog</string>
+    </property>
+    <widget>
+        <class>QCheckBox</class>
+        <property stdset="1">
+            <name>name</name>
+            <cstring>CheckBoxDeleteFile</cstring>
+        </property>
+        <property stdset="1">
+            <name>geometry</name>
+            <rect>
+                <x>10</x>
+                <y>100</y>
+                <width>190</width>
+                <height>20</height>
+            </rect>
+        </property>
+        <property stdset="1">
+            <name>text</name>
+            <string>delete file</string>
+        </property>
+    </widget>
+    <widget>
+        <class>QCheckBox</class>
+        <property stdset="1">
+            <name>name</name>
+            <cstring>CheckBoxDeleteDbEntry</cstring>
+        </property>
+        <property stdset="1">
+            <name>geometry</name>
+            <rect>
+                <x>10</x>
+                <y>70</y>
+                <width>190</width>
+                <height>20</height>
+            </rect>
+        </property>
+        <property stdset="1">
+            <name>text</name>
+            <string>delete database entry</string>
+        </property>
+    </widget>
+    <widget>
+        <class>QPushButton</class>
+        <property stdset="1">
+            <name>name</name>
+            <cstring>PushButtonOK</cstring>
+        </property>
+        <property stdset="1">
+            <name>geometry</name>
+            <rect>
+                <x>20</x>
+                <y>150</y>
+                <width>101</width>
+                <height>31</height>
+            </rect>
+        </property>
+        <property stdset="1">
+            <name>text</name>
+            <string>OK</string>
+        </property>
+    </widget>
+    <widget>
+        <class>QPushButton</class>
+        <property stdset="1">
+            <name>name</name>
+            <cstring>PushButtonCancel</cstring>
+        </property>
+        <property stdset="1">
+            <name>geometry</name>
+            <rect>
+                <x>140</x>
+                <y>150</y>
+                <width>101</width>
+                <height>31</height>
+            </rect>
+        </property>
+        <property stdset="1">
+            <name>text</name>
+            <string>Cancel</string>
+        </property>
+    </widget>
+    <widget>
+        <class>QLabel</class>
+        <property stdset="1">
+            <name>name</name>
+            <cstring>TextLabel1</cstring>
+        </property>
+        <property stdset="1">
+            <name>geometry</name>
+            <rect>
+                <x>70</x>
+                <y>20</y>
+                <width>171</width>
+                <height>20</height>
+            </rect>
+        </property>
+        <property stdset="1">
+            <name>font</name>
+            <font>
+                <pointsize>14</pointsize>
+                <bold>1</bold>
+            </font>
+        </property>
+        <property stdset="1">
+            <name>text</name>
+            <string>delete a song</string>
+        </property>
+    </widget>
+    <widget>
+        <class>QComboBox</class>
+        <property stdset="1">
+            <name>name</name>
+            <cstring>ComboBoxOnMedia</cstring>
+        </property>
+        <property stdset="1">
+            <name>geometry</name>
+            <rect>
+                <x>230</x>
+                <y>100</y>
+                <width>141</width>
+                <height>20</height>
+            </rect>
+        </property>
+    </widget>
+</widget>
+<connections>
+    <connection>
+        <sender>PushButtonOK</sender>
+        <signal>clicked()</signal>
+        <receiver>DeleteDialog</receiver>
+        <slot>accept()</slot>
+    </connection>
+    <connection>
+        <sender>PushButtonCancel</sender>
+        <signal>clicked()</signal>
+        <receiver>DeleteDialog</receiver>
+        <slot>reject()</slot>
+    </connection>
+</connections>
+</UI>

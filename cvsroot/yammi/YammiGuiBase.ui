@@ -1,0 +1,27 @@
+<!DOCTYPE UI><UI>
+<class>YammiGuiBase</class>
+<widget>
+    <class>QWidget</class>
+    <property stdset="1">
+        <name>name</name>
+        <cstring>YammiGuiBase</cstring>
+    </property>
+    <property stdset="1">
+        <name>geometry</name>
+        <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>592</width>
+            <height>480</height>
+        </rect>
+    </property>
+    <property stdset="1">
+        <name>caption</name>
+        <string>QT Designer-based</string>
+    </property>
+    <property>
+        <name>toolTip</name>
+        <string>tool tippi</string>
+    </property>
+</widget>
+</UI>

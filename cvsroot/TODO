@@ -1,0 +1,35 @@
+todo-list
+---------
+
+for next release
+----------------
+- touch history file on first startup
+- prefs for second sound device
+- tool tips?
+- no concistency mode guarantees untouched mp3s???
+
+
+- check update view actions after changes to database
+- better documentation
+- show history of logfile
+
+
+for future releases
+-------------------
+- more options for burning folder
+- more options for keeping consistency
+
+- fix: two albums having the same name appear as one album
+- fix: doesn't show meaningful value for bitrate and length when variable bitrate
+- fix: some mp3s appear as corrupted (layer information not readable?)
+	
+
+todo (later)
+------------
+- replace id3 tag handling (and mp3 layer info?) with something better
+  (probably switching to id v2 tags, using a library)
+- port to windows?
+- more detailed logging + evaluation of log info
+  - playing songs that haven't been played for quite a while
+- put it all into a proper database (upto 5000 songs I think it'll do as is)
+
