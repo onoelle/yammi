@@ -180,7 +180,7 @@ YammiGui::YammiGui( ) : KMainWindow( )
 	connect( &regularTimer, SIGNAL(timeout()), SLOT(onTimer()) );
 	regularTimer.start( 500, FALSE );	// call onTimer twice a second
 	
-	//let KDE save and resotre the main window settings (geometry, toolbar position, etc)
+	//let KDE save and restore the main window settings (geometry, toolbar position, etc)
 	//setAutoSaveSettings( );
 	//FIXME - why setAutoSaveSettings is not working...it sounds like KDE should do this automatically
 	// but it doesn't
@@ -663,10 +663,11 @@ void YammiGui::updateView(bool startup)
 	folderSearchResults->update(searchResults);
   
   if(startup) {
-    // this might be only necessary on startup?
+    // this is only necessary on startup
     folderActual->update(model->songsToPlay);
     folderCategories->update(model->allCategories, model->categoryNames);
     folderMedia->update(&(model->allSongs));
+    createSongPopup();
   }
 
 	model->unclassifiedSongs.clear();
@@ -882,20 +883,19 @@ void YammiGui::setPreferences()
 
 
 /**
- * Updates the popup-menu for songs wrt. available categories and plugins
- * TODO: xmlui
+ * Updates the songPopup submenus with available categories and plugins
  */
 void YammiGui::updateSongPopup()
 {
-  songPopup = (QPopupMenu *)factory()->container("song_popup", this);
-  songPopup->insertItem( "", 113, 0);
-
-  playListPopup = new QPopupMenu();
+  playListPopup->clear();
 	playListPopup->insertItem(QIconSet( QPixmap(newCategory_xpm)), i18n("New Category..."), this, SLOT(toCategory(int)), 0, 9999);
 	for(unsigned int i=0; i<model->categoryNames.count(); i++) {
 		playListPopup->insertItem(QIconSet( QPixmap(in_xpm)), model->categoryNames[i], this, SLOT(toCategory(int)), 0, 10000+i);
 	}
-	songPopup->insertItem( i18n("Insert Into/Remove From..."), playListPopup, -1, -1);
+  pluginPopup->clear();
+  for(unsigned int i=0; i<m_config.pluginMenuEntry.count(); i++) {
+		pluginPopup->insertItem( m_config.pluginMenuEntry[i], this, SLOT(forSelectionPlugin(int)), 0, 2000+i);
+	}
 //FIXMENow check this
 /*<<<<<<< yammigui.cpp
 	songGoToPopup = new QPopupMenu(songPopup);
@@ -924,11 +924,6 @@ void YammiGui::updateSongPopup()
 	
 =======
 >>>>>>> 1.78 */
-	pluginPopup = new QPopupMenu(songPopup);
-	for(unsigned int i=0; i<m_config.pluginMenuEntry.count(); i++) {
-		pluginPopup->insertItem( m_config.pluginMenuEntry[i], this, SLOT(forSelectionPlugin(int)), 0, 2000+i);
-	}
-	songPopup->insertItem( i18n("Plugins..."), pluginPopup);
 
 //	songGoToPopup = new QPopupMenu(songPopup);
 //	songGoToPopup->insertItem( i18n("...Artist"), this, SLOT(goToFolder(int)), 0, 2001);
@@ -1044,8 +1039,6 @@ void YammiGui::toCategory(int index)
 
 	model->categoriesChanged(true);
   folderContentChanged(categoryFolder);
-
-	updateSongPopup();
 }
 
 
@@ -2568,7 +2561,6 @@ void YammiGui::loadM3uIntoCategory()
   // update category content
 	model->categoriesChanged(true);
   folderContentChanged(categoryFolder);
-	updateSongPopup();
 }
 
 
@@ -3239,14 +3231,25 @@ void YammiGui::invertSelection(){
 }
 
 
-// if known media inserted, loads all songs occurring in playlist into swap dir
+/**
+ * Tries to load all songs of the playlist that need to be swapped into the swap dir,
+ * assuming the chosen media is inserted.
+ * Mounts the media if necessary/configured.
+ */
 void YammiGui::loadSongsFromMedia(QString mediaName)
 {
-	int songsToLoad=0;
+  // find out how many songs we try to load from the chosen media
+  // (to indicate proper progress)
+  int songsToLoad=0;
 	for(unsigned int i=1; i<model->songsToPlay.count(); i++) {
 		Song* s=model->songsToPlay.at(i)->song();
-		if(model->checkAvailability(s)=="")
-			songsToLoad++;
+		for(unsigned int j=0; j<s->mediaLocation.count(); j++) {
+		  if(s->mediaName[j]==mediaName) {
+  		  if(model->checkAvailability(s)=="") {
+  			  songsToLoad++;
+        }
+      }
+    }
 	}	
 	KProgressDialog progress( this,0, i18n("Yammi"), i18n("Loading song files..."),true);
 	progress.progressBar()->setTotalSteps(songsToLoad);
@@ -3256,7 +3259,6 @@ void YammiGui::loadSongsFromMedia(QString mediaName)
 	
 	QString mediaDir=m_config.mediaDir;
 	QString swapDir=m_config.swapDir;
-	// mount swap dir
 	if(m_config.mountMediaDir) {
 		// linux specific
 		QString cmd;
@@ -3267,20 +3269,23 @@ void YammiGui::loadSongsFromMedia(QString mediaName)
 	// (that are not available so far)
 	int loaded=0;
 	for(unsigned int i=1; i<model->songsToPlay.count(); i++) {
-		if(progress.wasCancelled())
+		if(progress.wasCancelled()) {
 			break;
+    }
 		Song* s=model->songsToPlay.at(i)->song();
-		if(model->checkAvailability(s)=="") {
-			for(unsigned int j=0; j<s->mediaLocation.count(); j++) {
-				if(s->mediaName[j]==mediaName) {
+		for(unsigned int j=0; j<s->mediaLocation.count(); j++) {
+			if(s->mediaName[j]==mediaName) {
+		    if(model->checkAvailability(s)=="") {
 					cout << "loading song " << s->displayName() << "from " << mediaDir << s->mediaLocation[j] << "\n";
 					progress.setLabel(tr("loading song: ")+s->displayName()+" ("+QString("%1").arg(i+1)+tr(". in playlist)"));
 			    progress.progressBar()->setProgress(loaded);
   			  kapp->processEvents();
-					if(progress.wasCancelled())
+					if(progress.wasCancelled()) {
 						break;
+          }
 					QString filename=s->constructFilename();
-					QString cmd;
+          // linux specific
+          QString cmd;
 					cmd=QString("cp \"%1%2\" \"%3%4.part\"").arg(mediaDir).arg(s->mediaLocation[j]).arg(swapDir).arg(filename);
 					system(cmd);
 					QDir dir;
@@ -3308,10 +3313,11 @@ void YammiGui::loadSongsFromMedia(QString mediaName)
   songListView->triggerUpdate();
 }
 
-// manages loading songfiles from removable media
+/**
+ * Manages loading songfiles from removable media
+ */
 void YammiGui::checkPlaylistAvailability()
 {
-//	cout << "checking availability...\n";
 	// iterate through playlist & check whether we need to load songs to swap dir
 
 	// collect all possibly required media into a listbox,
@@ -3350,8 +3356,9 @@ void YammiGui::loadMedia()
 }
 
 /**
- * checks whether the swapped songs take more space than the given limit
- * if they do, we delete the least recently used song files
+ * Checks whether the swapped songs take more space than the given limit.
+ * If they do, we delete the least recently used song files, until we are below
+ * the limit again.
  */
 void YammiGui::checkSwapSize()
 {
@@ -3367,29 +3374,40 @@ void YammiGui::checkSwapSize()
 	QFileInfoListIterator it( *list );
 
 	for(QFileInfo *fi; (fi=it.current()); ++it ) {
-		if (fi->isDir())							// if directory...		=> skip
+		if (fi->isDir()) {							// if directory...		=> skip
 			continue;
-		if ((fi->extension(FALSE)).upper()!="MP3")		// only count our swapped files
-			continue;
+    }
 
 		if(size+fi->size()>sizeLimit) {
 			// swap dir too full, delete this entry
 			cout << "removing from swap dir: " << fi->fileName() << "\n";
 			QDir dir;
-			if(!dir.remove(path+fi->fileName()))
-				cout << "could not remove LRU song from swbackwards";
+			if(!dir.remove(path+fi->fileName())) {
+				cout << "could not remove LRU song from swapdir";
+      }
 		}
-		else
+		else {
 			size+=fi->size();
+    }
 	}
 }
 
 
+/**
+ * Tells the media player to skip to the next song.
+ */
 void YammiGui::skipForward()
 {
   player->skipForward(shiftPressed);
 }
 
+/**
+ * Performs a skip backward with a little trick:
+ * Prepends the last played song to the playlist,
+ * then tells the media player to skip backward.
+ * Also removes this last played song from the songsPlayed folder,
+ * as it will be inserted again after being played.
+ */
 void YammiGui::skipBackward()
 {
   int count=model->songsPlayed.count();
@@ -3401,17 +3419,13 @@ void YammiGui::skipBackward()
 	// 1. get and remove last song from songsPlayed
 	Song* last=model->songsPlayed.at(count-1)->song();
 	model->songsPlayed.remove(count-1);
-//  model->songsToPlay->insert(0, new SongEntry(0, last);
-//	currentSong=0;
 	folderActual->insertSong(last, 0);
-
   player->skipBackward(shiftPressed);
 
   // skipping backward creates a new entry in songsPlayed that we don't want
   // => remove it again
 	model->songsPlayed.remove(model->songsPlayed.count()-1);
   folderSongsPlayed->updateTitle();
-	// update necessary?
   folderContentChanged(folderActual);
   folderContentChanged(folderSongsPlayed);
 }
@@ -3701,7 +3715,29 @@ void YammiGui::createMenuBar( )
 	mainMenu->insertItem( i18n("&View"), viewMenu );
 }
 
+/**
+ * Creates the song popup menu from the xml gui framework.
+ * Also populates the submenus for categories and plugins.
+ * These have to be updated with updateSongPopup on each change in existing categories
+ * or plugins.
+ */
+void YammiGui::createSongPopup()
+{
+  songPopup = (QPopupMenu *)factory()->container("song_popup", this);
+  songPopup->insertItem( "", 113, 0);
+  playListPopup = new QPopupMenu(songPopup);
+	songPopup->insertItem( i18n("Insert Into/Remove From..."), playListPopup, -1, -1);
+	pluginPopup = new QPopupMenu(songPopup);
+	songPopup->insertItem( i18n("Plugins..."), pluginPopup, -1, -1);
+  // now we populate the submenus
+  updateSongPopup();
+}
 
+/**
+ * Tells the media player to jump with the playback to the given position
+ * within the currently played song.
+ * 0 = beginning, 100 = end?
+ */
 void YammiGui::seek( int pos )
 {
 	kdDebug()<<"seek song to pos "<<pos<<endl;

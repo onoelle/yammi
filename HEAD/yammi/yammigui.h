@@ -216,7 +216,7 @@ public:
 	MyList selectedSongs;
 	MyList searchResults;
 	bool isScanning;
-	void updateSongPopup();
+  void updateSongPopup();
 	void updateListViewColumns();
 
 protected:
@@ -224,8 +224,7 @@ protected:
 
 
 	void createMenuBar( );
-
-	
+  void createSongPopup( );
 	void createFolders( );
 	void createMainWidget( );
 	

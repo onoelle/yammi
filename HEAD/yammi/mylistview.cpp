@@ -74,9 +74,7 @@ void MyListView::simulateMouseMove()
  */
 void MyListView::contentsMousePressEvent ( QMouseEvent * e)
 {
-  
   if(gYammiGui->chosenFolder->isSorted() && sortedBy==1 && e->button()==LeftButton) {
-//    cout << "conditions for dragging true!\n";
     dragPoint=e->globalPos();
 		dragItem=itemAt(viewport()->mapFromGlobal(dragPoint));
 		if(dragItem) {

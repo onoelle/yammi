@@ -1327,12 +1327,14 @@ Song* YammiModel::getSongFromFilename(QString filename)
 }
 
 
-/** checks whether a song is available on the local harddisk
- * or needs to be retrieved from a removable media
- * if song available, returns the complete path+filename to the songfile
- * (if in swap dir, the file will be touched to implement the LRU strategy)
- * if not yet available, returns ""
- * if never available, returns "never"
+/**
+ * Checks whether a song is available on the local harddisk
+ * or needs to be retrieved from a removable media.
+ * If song is available, returns the absolute path+filename to the songfile.
+ * (if song is in swap dir and touch is set to true,
+ * the file will be touched to implement a kind of LRU strategy)
+ * If not yet available, returns "".
+ * If song will never be available because it is not contained on any media, returns "never".
  */
 QString YammiModel::checkAvailability(Song* s, bool touch)
 {
@@ -1341,10 +1343,10 @@ QString YammiModel::checkAvailability(Song* s, bool touch)
 		if(fi.exists() && fi.isReadable()) {
 			return s->location();
 		}
-//		cout << "song " << s->displayName() << "has location given, but file does not exist or is not readable!\n";
+		cout << "warning: song " << s->displayName() << "has location given, but file does not exist or is not readable!\n";
 	}
 	// no location given, check whether already existing in swap dir
-	QString dir=m_yammi->config( ).swapDir;
+	QString dir=m_yammi->config().swapDir;
 	QString filename=s->constructFilename();
 	QFileInfo fi(dir+filename);
 	if(fi.exists() && fi.isReadable()) {
@@ -1353,7 +1355,7 @@ QString YammiModel::checkAvailability(Song* s, bool touch)
 			QString cmd;
 			cmd=QString("touch \"%1\"").arg(dir+filename);
 			system(cmd);
-/*		does not work: touching a file
+/*		does not work: touching a file using QT classes...
 			QFile touchFile(dir+filename);
 			if(!touchFile.open(IO_ReadWrite))
 				cout << "could not touch songfile (for LRU method)\n";
@@ -1367,9 +1369,11 @@ QString YammiModel::checkAvailability(Song* s, bool touch)
 	}
 
 	// not available, need to load it from media
-	if(s->mediaLocation.count()!=0)
+	if(s->mediaLocation.count()!=0) {
 		return "";
-	else
+  }
+	else {
 		return "never";
+  }
 }
 
