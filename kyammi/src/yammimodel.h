@@ -27,6 +27,7 @@
 class YammiGui;
 class ConsistencyCheckParameter;
 class KProgressDialog;
+class Folder;
 
 
 
@@ -78,7 +79,10 @@ public:
     void allSongsChanged(bool changed);
 
     void readCategories();
+    bool readFolder(MyList* list, QString filename);
     void saveCategories();
+    bool saveFolder(Folder* folder, QString path, QString folderName);
+
     void newCategory(QString categoryName);
     void removeCategory(QString categoryName);
     void renameCategory(QString oldCategoryName, QString newCategoryName);

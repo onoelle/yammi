@@ -69,6 +69,68 @@ Prefs YammiModel::config( ) {
 }
 
 
+
+/**
+ * Reads from an xml file all existing songs into a given folder.
+ * Not existing songs will be forgotten.
+ * Creates a new category, if no folder given.
+ */
+bool YammiModel::readFolder(MyList* list, QString filename)
+{
+    QFile f(filename);
+    if ( !f.open( IO_ReadOnly ) ) {
+        kdError() << "Could not open file for reading:" << filename << endl;
+        return false;
+    }
+    QString errorMsg;
+    int errorLine;
+    int errorColumn;
+    QDomDocument doc;
+    if( !doc.setContent(&f, false, &errorMsg, &errorLine, &errorColumn) ) {
+        QString msg = QString(i18n("Error reading categories file:\n%1\n(Error: %2, line %3, column %4)") ).arg(f.name()).arg(errorMsg).arg(errorLine).arg(errorColumn);
+        kdError() << "Error reading file contents: " << filename << endl << msg << endl;
+        f.close();
+        return false;
+    }
+    f.close();
+    // get root element
+    QDomElement e = doc.documentElement();
+    if(e.tagName()!="category") {
+        kdError() << "Does not seem to be a category xml file: " << filename << endl;
+        return false;
+    }
+
+    QString name = e.attribute("name");
+
+    if(list == 0) {
+		// add category to database
+    	list = new MyList;
+    	allCategories.append(list);
+    	categoryNames.append(name);
+	}
+
+    // add all songs contained
+    e = e.firstChild().toElement( );
+    int index=1;
+    while( !e.isNull() ) {
+        QString artist = e.attribute("artist");
+        QString title  = e.attribute("title");
+        QString album  = e.attribute("album");
+        // search for item in allSongs
+        Song* s = allSongs.getSongByKey(artist, title, album);
+        if(!s) {
+            kdWarning() << "Song not found in database : " << artist << "/" << title << "/" << album << endl;
+        } else {
+            SongEntryInt* toAdd = new SongEntryInt(s, index);
+            list->append(toAdd);
+            index++;
+        }
+        e = e.nextSibling().toElement();
+    }
+	return true;
+}
+
+
 /**
  * Reads in all xml-files found in the database directory.
  * Each xml file should represent one category.
@@ -95,61 +157,16 @@ void YammiModel::readCategories() {
     KProgress *p = dia.progressBar();
     p->setTotalSteps( total );
     int progressCount=0;
-    QDomDocument doc;
     for( QStringList::Iterator it = cats.begin(); it!=cats.end(); ++it, progressCount++ ) {
         p->setProgress( progressCount );
         kapp->eventLoop()->processEvents(QEventLoop::ExcludeUserInput);
 		QString filename(d.absPath()+ "/" + (*it));
         kdDebug() << "category found: " << filename << endl;
-        QFile f(filename);
-        if ( !f.open( IO_ReadOnly ) ) {
-            kdError() << "Could not open file for reading:" << filename << endl;
-            continue;
-        }
-        QString errorMsg;
-        int errorLine;
-        int errorColumn;
-        if( !doc.setContent(&f, false, &errorMsg, &errorLine, &errorColumn) ) {
-            QString msg = QString(i18n("Error reading categories file:\n%1\n(Error: %2, line %3, column %4)") ).arg(f.name()).arg(errorMsg).arg(errorLine).arg(errorColumn);
-            kdError() << "Error reading file contents: " << filename << endl << msg << endl;
-            f.close();
-            continue;
-        }
-        f.close();
-        // get root element
-        QDomElement e = doc.documentElement();
-        if(e.tagName()!="category") {
-            kdError() << "Does not seem to be a category xml file: " << filename << endl;
-            continue;
-        }
-
-        QString name = e.attribute("name");
-
-        // add category to database
-        count++;
-        MyList* category = new MyList;
-        allCategories.append(category);
-        categoryNames.append(name);
-
-        // add all songs contained
-        e = e.firstChild().toElement( );
-        int index=1;
-        while( !e.isNull() ) {
-            QString artist = e.attribute("artist");
-            QString title  = e.attribute("title");
-            QString album  = e.attribute("album");
-            // search for item in allSongs
-            Song* s = allSongs.getSongByKey(artist, title, album);
-            if(!s) {
-                kdWarning() << "Song not found in database : " << artist << "/" << title << "/" << album << endl;
-            } else {
-                SongEntryInt* toAdd = new SongEntryInt(s, index);
-                category->append(toAdd);
-                index++;
-            }
-            e = e.nextSibling().toElement();
-        }
+		if(readFolder(0, filename)) {
+			count++;
+		}
     }
+	kdDebug() << count << " categories read" << endl;
     categoriesChanged(false);
 }
 
@@ -270,42 +287,49 @@ void YammiModel::saveCategories() {
 
     // save all categories marked as dirty
 	// TODO: not nice: we depend on the folder structure of the gui to iterate over categories...
-    QString name;
+    QString categoryName;
     for( QListViewItem* f=m_yammi->folderCategories->firstChild(); f; f=f->nextSibling() ) {
         Folder* folder=(Folder*)f;
-        kdDebug() << "category " << folder->folderName() << endl;
+        categoryName = folder->folderName();
+        kdDebug() << "category " << categoryName << endl;
         if(!folder->songlist().dirty) {
             kdDebug() << "...clean\n";
 			continue;
 		}
-        name = folder->folderName();
-        kdDebug() << "...dirty, saving..." << endl;
-
-        QDomDocument doc;
-        QDomElement root = doc.createElement("category");
-        root.setAttribute("name", name);
-        doc.appendChild(root);
-
-        for(Song* s = folder->firstSong(); s; s=folder->nextSong()) {
-            QDomElement elem = doc.createElement( "song" );
-            elem.setAttribute( "artist", s->artist );
-            elem.setAttribute( "title", s->title );
-            elem.setAttribute( "album", s->album );
-            root.appendChild( elem );
-        }
-        // save to file...
-        QString contents = doc.toString();
-        QFile f( path + name + ".xml" );
-        if ( !f.open( IO_WriteOnly  ) ) {
-            kdError() << "Could not save category to file: " << path << name << ".xml" << endl;
-            continue;
-        }
-        f.writeBlock ( contents, contents.length() );
-        f.close();
+        kdDebug() << "...dirty, saving..." << endl;        
+		saveFolder(folder, path, categoryName);
         folder->songlist().dirty=false;
     }
 
     categoriesChanged(false);
+}
+
+
+bool YammiModel::saveFolder(Folder* folder, QString path, QString folderName)
+{
+	QFile f(path + "/" + folderName + ".xml");
+
+    QDomDocument doc;
+    QDomElement root = doc.createElement("category");
+    root.setAttribute("name", folderName);
+    doc.appendChild(root);
+
+    for(Song* s = folder->firstSong(); s; s=folder->nextSong()) {
+        QDomElement elem = doc.createElement( "song" );
+        elem.setAttribute( "artist", s->artist );
+        elem.setAttribute( "title", s->title );
+        elem.setAttribute( "album", s->album );
+        root.appendChild( elem );
+    }
+    // save to file...
+    QString contents = doc.toString();
+    if ( !f.open( IO_WriteOnly  ) ) {
+        kdError() << "Could not save folder " << folderName << endl;
+        return false;
+    }
+    f.writeBlock ( contents, contents.length() );
+    f.close();
+	return true;
 }
 
 
@@ -554,10 +578,10 @@ void YammiModel::updateSongDatabase(QString scanDir, QString filePattern, QStrin
             KMessageBox::error( m_yammi, i18n("Yammi"), msg );
         } else {
             traverse(scanDir, filePattern, progress);
-            kdDebug()<<"finished scanning!"<<endl;
+            kdDebug() << "finished scanning!" << endl;
         }
     } else {
-        kdDebug()<<"scanning removable media for new songs..."<<endl;
+        kdDebug() << "scanning removable media for new songs..." << endl;
 
         // mount media dir
         if(m_yammi->config( ).mountMediaDir) {
@@ -577,7 +601,7 @@ void YammiModel::updateSongDatabase(QString scanDir, QString filePattern, QStrin
             KMessageBox::error( m_yammi, i18n("Yammi"), msg );
         } else {
             traverse(scanDir, filePattern, progress, mediaName);
-            kdDebug()<<"finished scanning!"<<endl;
+            kdDebug() << "finished scanning!" << endl;
         }
         // umount media dir
         if(m_yammi->config( ).mountMediaDir) {
@@ -619,13 +643,13 @@ void YammiModel::updateSongDatabase(QStringList list) {
 bool YammiModel::traverse(QString path, QString filePattern, KProgressDialog* progress, QString mediaName) {
     // leave out the following directories
     if(path+"/"==m_yammi->config( ).trashDir || path+"/"==m_yammi->config( ).swapDir) {
-        kdWarning()<<"skipping trash or swap directory: "<<path<<endl;
+        kdWarning() << "skipping trash or swap directory: " << path << endl;
         return true;
     }
-    kdDebug()<<"scanning directory "<<path<<endl;
+    kdDebug() << "scanning directory " << path<<endl;
     progress->setLabel(QString(i18n("scanning directory %1 ...")).arg(path));
     progress->progressBar()->setProgress(0);
-    //  qApp->processEvents();
+    kapp->processEvents();
 
     QDir d(path);
 
@@ -641,7 +665,6 @@ bool YammiModel::traverse(QString path, QString filePattern, KProgressDialog* pr
     for(QFileInfo *fi; (fi=it.current()); ++it ) {
         filesScanned++;
         progress->progressBar()->setProgress(filesScanned);
-        //	  qApp->processEvents();
         if(progress->wasCancelled()) {
             return false;
         }
@@ -674,7 +697,7 @@ bool YammiModel::traverse(QString path, QString filePattern, KProgressDialog* pr
 
 // adds a single songfile to the database
 void YammiModel::addSongToDatabase(QString filename, QString mediaName=0) {
-    kdDebug()<<"adding file to db"<<filename<<endl;
+    kdDebug() << "adding file to db" << filename << endl;
     bool found=false;
     for(Song* s=allSongs.firstSong(); s; s=allSongs.nextSong()) {
         // this check might fail when filename has strange characters?

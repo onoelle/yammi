@@ -113,6 +113,10 @@ public slots:
  protected:
 	/** creates the internal MediaPlayer */
 	void loadMediaPlayer( );
+	/** connect media player and yammi via signals */
+	void connectMediaPlayer();
+	void disconnectMediaPlayer();
+	
 	/** save general Options like all bar positions and status as well as the geometry*/
 	void saveOptions();
 	/** read general Options again and initialize all variables*/
@@ -272,9 +276,7 @@ public:
   void setSelectionMode(SelectionMode mode);
 
   	/* DCOP functions, skipForward and skipBackward are used as is */
-  	void playPause();
 	void play();
-	void stop();
 	void pause();
 	
 	void aplayOff();
@@ -459,6 +461,11 @@ protected slots:
 	void renameMedia();
 	void grabAndEncode();
 	void addFolderContentSnappy();
+
+	// dcop acessible functions	
+	void stop();
+  	void playPause();
+	
 };
 
 #endif

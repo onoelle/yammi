@@ -20,7 +20,7 @@
     <Action name="scan_hd"/>
     <Action name="scan_media"/>
     <Action name="import_file"/>
-    <Action name="check_consistency"/>
+    <Action name="check_consistency_all"/>
     <Action name="grab"/>
   </Menu>
   <Menu name="ap"><text>Autoplay</text>
@@ -67,12 +67,12 @@
 </ToolBar>
 <ToolBar name="SongActionsToolbar">
  <text>Song Actions</text>
-   <Action name="prepend_selected"/>
    <Action name="append_selected"/>
+   <Action name="prepend_selected"/>
    <Action name="play_selected"/>
    <Action name="toggle_playlist"/>
    <Action name="dequeue_selected"/>
-   <Action name="clear_playlist"/>
+<!--   <Action name="clear_playlist"/> -->
    <Action name="info_selected"/>
 </ToolBar>
 <ToolBar name="RemovableMediaToolbar">

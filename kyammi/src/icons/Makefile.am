@@ -1,7 +1,7 @@
 ####### kdevelop will overwrite this part!!! (begin)##########
 
-# TOD: I did not find how to do this with automake manager, so I edited this file by hand
-# I start to hate automake manager
+# TODO: I did not find how to do this with automake manager, so I edited this file by hand
+# ...I start to hate automake manager
 # - how is it supposed to work?
 # - and where do I find good docs (and not "to be written..." all over)
 
@@ -19,7 +19,12 @@ install-data-local:
 	$(INSTALL_DATA) $(srcdir)/prelisten_middle.png $(kde_datadir)/yammi/icons/crystalsvg/22x22/actions/prelisten_middle.png
 	$(INSTALL_DATA) $(srcdir)/prelisten_end.png $(kde_datadir)/yammi/icons/crystalsvg/22x22/actions/prelisten_end.png
 	$(INSTALL_DATA) $(srcdir)/toggle_playlist.png $(kde_datadir)/yammi/icons/crystalsvg/22x22/actions/toggle_playlist.png
-	
+
+	$(INSTALL_DATA) $(srcdir)/yammi16x16.png $(kde_icondir)/crystalsvg/16x16/apps/yammi.png
+	$(INSTALL_DATA) $(srcdir)/yammi32x32.png $(kde_icondir)/crystalsvg/32x32/apps/yammi.png
+	$(INSTALL_DATA) $(srcdir)/yammi48x48.png $(kde_icondir)/crystalsvg/48x48/apps/yammi.png
+	$(INSTALL_DATA) $(srcdir)/yammi64x64.png $(kde_icondir)/crystalsvg/64x64/apps/yammi.png
+
 uninstall-local:
 	-rm -f $(kde_datadir)/yammi/icons/crystalsvg/22x22/actions/enqueue_asnext.png
 	-rm -f $(kde_datadir)/yammi/icons/crystalsvg/22x22/actions/enqueue.png
@@ -29,5 +34,9 @@ uninstall-local:
 	-rm -f $(kde_datadir)/yammi/icons/crystalsvg/22x22/actions/prelisten_end.png
 	-rm -f $(kde_datadir)/yammi/icons/crystalsvg/22x22/actions/stop_prelisten.png
 	-rm -f $(kde_datadir)/yammi/icons/crystalsvg/22x22/actions/toggle_playlist.png
+	-rm -f $(kde_icondir)/crystalsvg/16x16/apps/yammi.png
+	-rm -f $(kde_icondir)/crystalsvg/32x32/apps/yammi.png
+	-rm -f $(kde_icondir)/crystalsvg/48x48/apps/yammi.png
+	-rm -f $(kde_icondir)/crystalsvg/64x64/apps/yammi.png
 
 ####### kdevelop will overwrite this part!!! (end)############

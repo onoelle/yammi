@@ -1,21 +1,17 @@
 TODO
 ----
-last update 21.07.2004
+last update 27.07.2004
 
 
 for version 1.2-beta
 --------------------
 in progress:
-- update and publish yammi handbook (switch from sgml to docbook format)
+- update and publish yammi handbook (switch from sgml to docbook format, document requirements for compiling)
+- verify functionality: change media player on the fly
+- verify functionality: save + restore playlist (+ song position) on shutdown/startup
 
 planned:
-- FIX: check consistency for whole song database: only one song selected
-- save + restore playlist (+ song position) on shutdown/startup
 - BUG: cannot sort files according to path => cannot reproduce this bug on my system
-- FIX: progress dialog on scanning harddisk disappears
-- improve "Play now" icon
-- CHECK: umlaute in tags?
-- CHECK: enqueuing songs => player starts to play immediately
 - improve: wishlist items
 - define and execute smoke tests (write little script with all configure options)
 - check all TODOs / FIXMEs
@@ -29,18 +25,11 @@ check kde conformance:
   - check lsm file
   - check icons: fix transparency or use standard ones
 - clean up: song info for multiple songs
-- fix or delete child-safe mode
-- fix: integrate columns menu into view menu as a submenu
 - make follow symlinks a configurable option?
 - make mpg123 and ogg123 configurable?
 - saveFilename/renaming of file in song.cpp (there was something I can't remember)
 - make proposed filename change while you type in songinfo dialog
 - implement onPlayed and afterPlayed plugin types
-- check again: crash on clearing playlist including currently played song?
-- check skip backward functionality & filling up songPlayed list!!!
-- finish documenting requirements for compiling in handbook
-- if you start yammi, while xmms has a song in its play list and then enqueue
-  and play a song in yammi, the song previously played in xmms is played instead.
 - on deleting a song: delete in *all* lists (history, categories, ...)
 - plugin: publish a sample plugin (echo...) with all replacements
 - consistency check:
@@ -48,12 +37,22 @@ check kde conformance:
 - comment in replacements?
 - check dialog spacing & co (eg. guessing pattern!)
 - fix i18n strings to be ready for internationalization
-- fix: 0-length ogg file makes yammi crash?
 - fix: appropriate info messages on first startup/on importing old database
 - fix: appropriate default size for yammi window on first startup
+tag-related: (switch to taglib?)
+- fix: 0-length ogg file makes yammi crash?
+- CHECK: umlaute in tags?
+media-player-related:
+- CHECK: enqueuing songs => player starts to play immediately
+- check again: crash on clearing playlist including currently played song?
+- check skip backward functionality & filling up songPlayed list!!!
+- if you start yammi, while xmms has a song in its play list and then enqueue
+  and play a song in yammi, the song previously played in xmms is played instead.
+
 
 for version 1.2
 ---------------
+- fix: integrate columns menu into view menu as a submenu
 - reformat all files with kdevelop?
 - simplify {wish} system: (make every entry with empty filename (no media) a wish?
 - fix all outstanding known bugs

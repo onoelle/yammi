@@ -1356,10 +1356,7 @@ QString Song::getSongAction(int index) {
  */
 QString Song::replacePlaceholders(QString input, int index) {
     // 1. prepare strings
-    // length (mm:ss)  TODO: (hh:mm:ss if necessary)
-    QString secondsStr=QString("%1").arg(length % 60);
-    secondsStr.rightJustify(2,'0');
-    QString lengthStr=QString("%1:%2").arg((length) / 60).arg(secondsStr);
+	QString lengthStr;
 
     // medialist
     QString mediaList="";
@@ -1393,7 +1390,7 @@ QString Song::replacePlaceholders(QString input, int index) {
     input.replace(QRegExp("\\{album\\}"), album);
     input.replace(QRegExp("\\{bitrate\\}"), QString("%1").arg(bitrate));
     input.replace(QRegExp("\\{index\\}"), QString("%1").arg(index));
-    input.replace(QRegExp("\\{length\\}"), lengthStr);
+    input.replace(QRegExp("\\{length\\}"), lengthStr.sprintf("%2d:%02d", length/60, length % 60));
     input.replace(QRegExp("\\{lengthInSeconds\\}"), QString("%1").arg(length));
     input.replace(QRegExp("\\{newline\\}"), "\n");
     input.replace(QRegExp("\\{mediaList\\}"), mediaList);

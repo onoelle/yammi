@@ -43,7 +43,7 @@ ArtsPlayer::ArtsPlayer(YammiModel *yammi)
 
 ArtsPlayer::~ArtsPlayer()
 {
-	kdDebug()<<"---ArtsPlayer::~ArtsPlayer(YammiModel *yammi)"<<endl;
+	kdDebug() << "---ArtsPlayer::~ArtsPlayer(YammiModel *yammi)" << endl;
 	quit( );
 	delete m_factory;
 	delete m_server;
@@ -59,7 +59,7 @@ void ArtsPlayer::check()
 		{
 			if( m_currentSong->song( ) == playlist->firstSong( ) )
 			{
-				kdDebug()<<"Song finished... get new one!"<<endl;
+				kdDebug() << "Song finished... get new one!" << endl;
 				playlist->removeFirst( );
 				delete m_currentPlay;
 				m_currentPlay = 0;
@@ -116,7 +116,7 @@ bool ArtsPlayer::play()
 	QString location = model->checkAvailability( m_currentSong->song() );
 	if( location == "" || location == "never" )
 	{
-		kdWarning()<<"Song "<<m_currentSong->song()<<"cannot be found : "<<location<<endl;
+		kdWarning() << "Song " << m_currentSong->song() << "cannot be found : " << location << endl;
 		return false;
 	}
 	m_currentPlay = m_factory->createPlayObject( location, true );

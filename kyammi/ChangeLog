@@ -12,6 +12,11 @@ Minor:
 - fixed: shuffle playlist/toggle_playlist are back in the playlist menu
 - fixed: search for similar: put the search text into the search field
 - fixed: behaviour of shift+up/down after search (when focus still in search field)
+- fixed: proper replacements of placeholders in group mode
+- fixed: progress dialog disappearing on scanning harddisk
+- fixed: restore autoplay mode on startup
+- fixed: check consistency for whole song database: only one song selected
+
 
 
 02.07.2004 version 1.2-alpha-3

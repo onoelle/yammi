@@ -109,6 +109,7 @@ extern YammiGui* gYammiGui;
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 YammiGui::YammiGui() : DCOPObject("YammiPlayer"), KMainWindow( ) {
+	validState = false;
 
     //FIXME Warning!!!! gYammiGui is (should) be set in main, but there are calls in *this* constructor
     // that rely on the variable pointing to the yammi instance.. since the variable in main gets assigned
@@ -124,12 +125,6 @@ YammiGui::YammiGui() : DCOPObject("YammiPlayer"), KMainWindow( ) {
     // set up model
     model = new YammiModel( this );
 
-    loadMediaPlayer( );
-    // connect player and yammi via signals
-    connect( player, SIGNAL(playlistChanged()), this, SLOT(updatePlaylist()) );
-    connect( player, SIGNAL(statusChanged()), this, SLOT(updatePlayerStatus()) );
-
-	validState = false;
     if(!setupActions()) {
 		return;
 	}
@@ -142,32 +137,6 @@ YammiGui::YammiGui() : DCOPObject("YammiPlayer"), KMainWindow( ) {
 	shiftPressed = false;
 	toFromRememberFolder=folderAll;
 
-	// finish initialization of player
-	player->syncPlayer2Yammi(&(model->songsToPlay));
-	player->syncYammi2Player(false);
-	checkPlaylistAvailability();
-
-	// check whether player is playing, if not: start playing!
-	if(folderActual->songlist().count() > 0 && player->getStatus()!=PLAYING ) {
-		player->play();
-	}
-
-	// connect all timers
-	// TODO: replace this checkTimer with a thread owned by the media player
-	connect( &checkTimer, SIGNAL(timeout()), player, SLOT(check()) );
-	checkTimer.start( 100, FALSE );
-	searchResultsUpdateNeeded=false;
-	searchThread = new SearchThread(this);
-	searchThread->start();
-	connect( &regularTimer, SIGNAL(timeout()), SLOT(onTimer()) );
-	regularTimer.start( 500, FALSE );	// call onTimer twice a second
-	connect( &searchResultsTimer, SIGNAL(timeout()), SLOT(updateSearchResults()) );
-	searchResultsTimer.start( 10, FALSE );
-
-	//let KDE save and restore the main window settings (geometry, toolbar position, etc)
-	//setAutoSaveSettings( );
-	//FIXME - why setAutoSaveSettings is not working...it sounds like KDE should do this automatically
-	// but it doesn't
 	readOptions( );
 
 	// from here: stuff that needs the options to be read already
@@ -175,7 +144,38 @@ YammiGui::YammiGui() : DCOPObject("YammiPlayer"), KMainWindow( ) {
 	validState = true;
 }
 
+/**
+ * connect media player and yammi via signals
+ */
+void YammiGui::connectMediaPlayer() {
+    connect( player, SIGNAL(playlistChanged()), this, SLOT(updatePlaylist()) );
+    connect( player, SIGNAL(statusChanged()), this, SLOT(updatePlayerStatus()) );
+	connect( &checkTimer, SIGNAL(timeout()), player, SLOT(check()) );
+}
+
+void YammiGui::disconnectMediaPlayer() {
+    disconnect( player, SIGNAL(playlistChanged()), this, SLOT(updatePlaylist()) );
+    disconnect( player, SIGNAL(statusChanged()), this, SLOT(updatePlayerStatus()) );
+	disconnect( &checkTimer, SIGNAL(timeout()), player, SLOT(check()) );
+}
+
+
+
 void YammiGui::loadDatabase(QString databaseDir) {
+	loadMediaPlayer( );
+	// TODO: replace this checkTimer with a thread owned by the media player
+	connectMediaPlayer( );
+
+	// connect all timers
+	searchResultsUpdateNeeded=false;
+	searchThread = new SearchThread(this);
+	searchThread->start();
+	connect( &regularTimer, SIGNAL(timeout()), SLOT(onTimer()) );
+	connect( &searchResultsTimer, SIGNAL(timeout()), SLOT(updateSearchResults()) );
+	
+	// TODO: make yammi topmost window (does not work: setActiveWindow())
+
+	
 	if(databaseDir.isEmpty()) {
 		databaseDir = KGlobal::dirs()->findResourceDir("appdata", "songdb.xml");
 		if(databaseDir.isNull()) {
@@ -214,6 +214,16 @@ void YammiGui::loadDatabase(QString databaseDir) {
 		}
 	}
 	model->readSongDatabase();
+	// finish initialization of player
+	//player->syncPlayer2Yammi(&(model->songsToPlay));
+	model->readFolder(&(model->songsToPlay), m_config.databaseDir + "/" + "playqueue.xml");
+	folderActual->update(folderActual->songlist());
+	player->syncYammi2Player(false);
+	checkPlaylistAvailability();
+	// check whether player is playing, if not: start playing!
+	if(folderActual->songlist().count() > 0 && player->getStatus()!=PLAYING ) {
+		player->play();
+	}
     model->readCategories();
     model->readHistory();
 	// update dynamic folders based on database contents
@@ -232,6 +242,9 @@ void YammiGui::loadDatabase(QString databaseDir) {
         f=folderAll;
     }
     changeToFolder(f, true);
+	checkTimer.start( 100, FALSE );
+	regularTimer.start( 500, FALSE );
+	searchResultsTimer.start( 10, FALSE );
 }
 
 void YammiGui::saveOptions() {
@@ -330,7 +343,8 @@ void YammiGui::readOptions() {
     }
     autoplayFoldername=cfg->readEntry("AutoplayFolder", i18n("All Music"));
     m_currentAutoPlay->setText(i18n("Folder: ")+autoplayFoldername);
-    int autoplayMode=cfg->readNumEntry( "AutoplayMode", AUTOPLAY_OFF);
+    autoplayMode=cfg->readNumEntry( "AutoplayMode", AUTOPLAY_OFF);
+	kdDebug() << "autoplay mode: " << autoplayMode << endl;
     switch(autoplayMode) {
     case AUTOPLAY_OFF:
         m_autoplayActionOff->setChecked(true);
@@ -449,7 +463,9 @@ void YammiGui::toolbarToggled( const QString& name ) {
 
 //****************************************************************************************************//
 YammiGui::~YammiGui() {
-    player->syncYammi2Player(true);
+//    player->syncYammi2Player(true);
+	// save playlist
+	model->saveFolder(folderActual, m_config.databaseDir, "playqueue");
     delete player;
 	searchThread->stopThread();
 	searchFieldChangedIndicator.wakeOne();
@@ -896,15 +912,30 @@ void YammiGui::saveColumnSettings() {
 
 /// opens the preferences dialogue
 void YammiGui::setPreferences() {
-    PreferencesDialog d(this, "preferencesDialog", true, &m_config);
+    int playerBefore=config().mediaPlayer;
+	
+	PreferencesDialog d(this, "preferencesDialog", true, &m_config);
 
     // show dialog
     int result=d.exec();
 
-    if(result==QDialog::Accepted) {
-        updateSongPopup();
-        m_config.saveConfig();
-    }
+    if(result!=QDialog::Accepted) {
+		return;
+	}
+    updateSongPopup();
+    m_config.saveConfig();
+	if(playerBefore != config().mediaPlayer) {
+		kdDebug() << "trying to switch media player...\n";
+		disconnectMediaPlayer();
+		kdDebug() << "old player disconnected\n";
+	    delete player;
+		kdDebug() << "old player deleted\n";
+		loadMediaPlayer();
+		kdDebug() << "new media player loaded...\n";
+		connectMediaPlayer();
+		kdDebug() << "new media player connected...\n";
+		player->syncYammi2Player(false);
+	}
 }
 
 
@@ -1467,9 +1498,9 @@ void YammiGui::forSelectionPlugin(int pluginIndex) {
         customListFile.open(IO_WriteOnly);
         customListFile.writeBlock( customList, qstrlen(customList) );
         customListFile.close();
-        cmd.replace(QRegExp("{customList}"), customList);
-        cmd.replace(QRegExp("{customListFile}"), customListFilename);
-        cmd.replace(QRegExp("{customListViaFile}"), "`cat " + customListFilename + "`");
+        cmd.replace(QRegExp("\\{customList\\}"), customList);
+        cmd.replace(QRegExp("\\{customListFile\\}"), customListFilename);
+        cmd.replace(QRegExp("\\{customListViaFile\\}"), "`cat " + customListFilename + "`");
 
         if(confirm) {
             QString msg=i18n("Execute the following command:\n");
@@ -1723,6 +1754,7 @@ void YammiGui::forAllCheckConsistency() {
 }
 
 void YammiGui::forSelectionCheckConsistency() {
+    getSelectedSongs();
     CheckConsistencyDialog d(this, &(m_config.consistencyPara));
     d.TextLabel1->setText(QString(i18n("checking %1 songs")).arg(selectedSongs.count()));
 
@@ -1766,7 +1798,7 @@ void YammiGui::forSelectionCheckConsistency() {
 }
 
 void YammiGui::forSelectionEnqueue( ) {
-    kdDebug()<<"appendSelected( )"<<endl;
+    kdDebug() << "appendSelected( )" << endl;
     getSelectedSongs();
     int count = selectedSongs.count();
     if(count < 1) {
@@ -1785,7 +1817,7 @@ void YammiGui::forSelectionEnqueue( ) {
 }
 
 void YammiGui::forSelectionEnqueueAsNext( ) {
-    kdDebug()<<"prependSelected( )"<<endl;
+    kdDebug() << "prependSelected( )" << endl;
     // reverse the order, to get intended play order
     getSelectedSongs();
     int count = selectedSongs.count();
@@ -2926,15 +2958,18 @@ void YammiGui::updateSongDatabase(QString scanDir, QString filePattern, QString 
     if(m_config.childSafe) {
         return;
     }
-    KProgressDialog progress( this,0,i18n("Yammi"),i18n ("Scanning..."),true);
+    KProgressDialog progress( this, 0, i18n("Yammi"), i18n ("Scanning..."), true);
     progress.setMinimumDuration(0);
     progress.setAutoReset(false);
+	progress.setAutoClose(false);
+	progress.setAllowCancel(true);
     progress.progressBar()->setProgress(0);
     kapp->processEvents();
 
     isScanning=true;
     model->updateSongDatabase(scanDir, filePattern, media, &progress);
 
+	progress.close();
     updateView();
     folderProblematic->update(model->problematicSongs);
     folderAll->updateTitle();
@@ -3307,8 +3342,8 @@ bool YammiGui::setupActions( ) {
     new KAction(i18n("Invert selection"),0,0,this,SLOT(invertSelection()), actionCollection(),"invert_selection");
 
     //Media player actions
-    m_playPauseAction = new KAction(i18n("Play"),"player_play",KShortcut(Key_F1),player,SLOT(playPause()), actionCollection(),"play_pause");
-    new KAction(i18n("Stop"),"player_stop",KShortcut(Key_F4),player,SLOT(stop()),actionCollection(),"stop");
+    m_playPauseAction = new KAction(i18n("Play"), "player_play", KShortcut(Key_F1), this, SLOT(playPause()), actionCollection(),"play_pause");
+    new KAction(i18n("Stop"), "player_stop", KShortcut(Key_F4), this, SLOT(stop()), actionCollection(), "stop");
     new KAction(i18n("Skip Backward"),"player_rew",KShortcut(Key_F2),this,SLOT(skipBackward()), actionCollection(),"skip_backward");
     new KAction(i18n("Skip Forward"),"player_fwd",KShortcut(Key_F3),this,SLOT(skipForward()), actionCollection(),"skip_forward");
     m_seekSlider = new TrackPositionSlider( QSlider::Horizontal, 0L, "seek_slider");
@@ -3327,7 +3362,7 @@ bool YammiGui::setupActions( ) {
     new KAction(i18n("Scan Harddisk..."),"fileimport",0,this,SLOT(updateSongDatabaseHarddisk()), actionCollection(),"scan_hd");
     new KAction(i18n("Scan Removable Media..."),"fileimport",0,this,SLOT(updateSongDatabaseMedia()), actionCollection(),"scan_media");
     new KAction(i18n("Import Selected File(s)..."),"edit_add",0,this,SLOT(updateSongDatabaseSingleFile()), actionCollection(),"import_file");
-    new KAction(i18n("Check Consistency..."),"spellcheck",0,this,SLOT(forAllCheckConsistency()), actionCollection(),"check_consistency");
+    new KAction(i18n("Check Consistency..."),"spellcheck",0,this,SLOT(forAllCheckConsistency()), actionCollection(),"check_consistency_all");
     new KAction(i18n("Grab And Encode CD-Track..."),"cd",0,this,SLOT(grabAndEncode()), actionCollection(),"grab");
 
     // playlist actions
@@ -3346,6 +3381,7 @@ bool YammiGui::setupActions( ) {
     new KAction(i18n("Song Info..."), "info", KShortcut(Key_I), this, SLOT(forSelectionSongInfo()), actionCollection(), "info_selected");
     new KAction(i18n("Delete Song..."), 0, 0, this, SLOT(forSelectionDelete()), actionCollection(), "delete_selected");
     new KAction(i18n("Burn To Media"), 0, 0, this, SLOT(forSelectionBurnToMedia()), actionCollection(), "burn_selected");
+    new KAction(i18n("Check Consistency..."),"spellcheck",0,this,SLOT(forSelectionCheckConsistency()), actionCollection(),"check_consistency");
     new KAction(i18n("Move Files"), 0, 0, this, SLOT(forSelectionMove()), actionCollection(), "move_selected");
     new KAction(i18n("Search for similar entry"), 0, 0, this, SLOT(searchForSimilarEntry()), actionCollection(), "search_similar_entry");
     new KAction(i18n("Search for similar artist"), 0, 0, this, SLOT(searchForSimilarArtist()), actionCollection(), "search_similar_artist");
@@ -3356,7 +3392,8 @@ bool YammiGui::setupActions( ) {
     new KAction(i18n("Goto genre"), 0, 0, this, SLOT(gotoFolderGenre()), actionCollection(), "goto_genre_folder");
 
     new KAction(i18n("Stop prelisten"),"stop_prelisten",KShortcut(Key_F12),this,SLOT(stopPrelisten()),actionCollection(),"stop_prelisten");
-    // autoplay actions
+    
+	// autoplay actions
     KToggleAction *ta;
     m_autoplayActionOff = new KRadioAction(i18n("Off"),0,0,this,SLOT(autoplayOff()),actionCollection(),"autoplay_off");
     m_autoplayActionOff->setExclusiveGroup("autoplay");
