@@ -51,65 +51,66 @@ dnl -------------------------------
 dnl Checks for libraries.
 dnl -------------------------------
 
+# standard C++ library
+AC_CHECK_LIB( stdc++, cout, , AC_MSG_ERROR( *** stdc++ library is required *** ), )
+
 dnl XMMS support
-AC_MSG_CHECKING(for xmms support)
-if test "x$enable_xmms" = xyes; then
-    LIBS="-lxmms $LIBS"
-    AC_DEFINE(ENABLE_XMMS)
-    AC_MSG_RESULT(yes)
+if test "x$enable_xmms" = "xyes"; then
+    AC_CHECK_LIB( xmms, xmms_remote_get_version, , enable_xmms=no, )
+fi
+if test "x$enable_xmms" != "xyes"; then
+    AC_MSG_WARN( *** xmms support disabled *** )
 else
-    echo "*** xmms support disabled ***"
-    AC_MSG_RESULT(no)
+    AC_DEFINE(ENABLE_XMMS)
+    AC_MSG_NOTICE( *** xmms support enabled *** )
 fi
 
 dnl Noatun/KDE support (for proper kde app: add "-lkdeui -lkio ")
-AC_MSG_CHECKING(for noatun support)
-if test "x$enable_noatun" = xyes; then
+if test "x$enable_noatun" = "xyes"; then
+dnl does not work yet:    AC_CHECK_LIB( noatun, NoatunApp::preferences, , enable_noatun=no )
     LIBS="-lkdecore $LIBS"
-    AC_DEFINE(ENABLE_NOATUN)
-    AC_MSG_RESULT(yes)
+fi
+if test "x$enable_noatun" != "xyes"; then
+    AC_MSG_WARN( *** noatun support disabled *** )
 else
-    echo "*** noatun support disabled ***"
-    AC_MSG_RESULT(no)
+    AC_DEFINE(ENABLE_NOATUN)
+    AC_MSG_NOTICE( *** noatun support enabled *** )
+fi
+
+if [test "x$enable_xmms" != "xyes"] && [test "x$enable_noatun" != "xyes"] ; then
+    AC_MSG_NOTICE( *** Warning: No media player available! (either xmms or noatun support is strongly recommended) *** )
 fi
 
 dnl OGG vorbis libraries
-if test "x$enable_ogglibs" = xyes; then
-    dnl Libraries required for reading ogg tags, if not found 'enable_ogglibs' is disabled
-    AC_CHECK_LIB(ogg, ogg_sync_init, , enable_ogglibs=no)
-    AC_CHECK_LIB(vorbis, vorbis_comment_init, , enable_ogglibs=no)
-    AC_CHECK_LIB(vorbisfile, ov_open, , enable_ogglibs=no)
-fi
-
-AC_MSG_CHECKING(for ogg libs for reading ogg tags)
-if test "x$enable_ogglibs" = xyes; then
-    LIBS="-lglib $LIBS"
+if test "x$enable_ogglibs" = "xyes"; then
+   dnl Libraries required for reading ogg tags, if not found 'enable_ogglibs' is disabled
+    AC_CHECK_LIB(ogg, ogg_sync_init, , enable_ogglibs=no, )
+    AC_CHECK_LIB(vorbis, vorbis_comment_init, , enable_ogglibs=no, )
+    AC_CHECK_LIB(vorbisfile, ov_open, , enable_ogglibs=no, )
     AC_DEFINE(ENABLE_OGGLIBS)
-    AC_MSG_RESULT(yes)
-else
-    echo "*** Warning: ogg libs support disabled => no reading/writing of tags in ogg files! ***"
-    AC_MSG_RESULT(no)
 fi
 
+if test "x$enable_ogglibs" != "xyes"; then
+    AC_MSG_WARN( *** Warning: ogg libs support disabled => no reading/writing of tags in ogg files! *** )
+else
+    AC_MSG_NOTICE( reading/writing of tags in ogg files is supported )
+fi
 
 dnl id3lib library
-AC_MSG_CHECKING(for id3lib support)
-if test "x$enable_id3lib" = xyes; then
-dnl    LIBS="-lid3lib $LIBS"
-dnl    AC_CHECK_LIB(id3lib, , , enable_id3lib=no)
-dnl
-    AC_SEARCH_LIBS(ID3Tag_Link,"id3" "id3 -lstdc++" "id3 -lz" "id3 -lz -lstdc++",,AC_MSG_ERROR(id3lib not found))
-dnl Needed to link correctly with id3lib 3.8.0
-    LIBS="-lz -lstdc++ $LIBS"
-    AC_DEFINE(ENABLE_ID3LIB)
-    AC_MSG_RESULT(yes)
-else
-    echo "*** Warning: id3lib support disabled => no reading/writing of tags in mp3 files! ***"
-    AC_MSG_RESULT(no)
+if test "x$enable_id3lib" = "xyes"; then
+    AC_CHECK_LIB( id3, ID3Tag_Link, , enable_id3lib=no,
+		-lz )
+    # if still adding libid3 then...
+    if test "x$enable_id3lib" = "xyes"; then
+        AC_CHECK_LIB( z, deflate, , enable_id3lib=no, )
+    fi
 fi
-
-
-
+if test "x$enable_id3lib" != "xyes"; then
+    AC_MSG_WARN( *** Warning: id3lib support disabled => no reading/writing of tags in mp3 files! *** )
+else
+    AC_MSG_NOTICE( reading/writing of tags in MP3 files is supported )
+    AC_DEFINE(ENABLE_ID3LIB)
+fi
 
 
 dnl ---------------------
@@ -155,6 +156,7 @@ Configuration for $PACKAGE $VERSION :
    you should re-run configure, giving a suitable path with the --prefix option
    For example ./configure --prefix=/opt/kde3
 
- Now type 'make' to build $PACKAGE $VERSION,
+ Look for any WARNINGS output by the configure script
+ If you're satisfied, type 'make' to build $PACKAGE $VERSION,
  and then 'make install' for installation.
 "

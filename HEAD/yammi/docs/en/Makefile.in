@@ -1,4 +1,4 @@
-# KDE tags expanded automatically by am_edit - $Revision: 1.17 $ 
+# KDE tags expanded automatically by am_edit - $Revision: 1.22 $ 
 # Makefile.in generated automatically by automake 1.5 from Makefile.am.
 
 # Copyright 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001
@@ -365,71 +365,71 @@ uninstall-am: uninstall-info-am uninstall-local
 
 
 install-data-local:
-#>- 	$(mkinstalldirs) /opt/kde3/share/doc/HTML/en/yammi/
+#>- 	$(mkinstalldirs) $(KDEDIR)/share/doc/HTML/en/yammi/
 #>+ 1
-	$(mkinstalldirs) $(DESTDIR)/opt/kde3/share/doc/HTML/en/yammi/
-#>- 	$(INSTALL_DATA) $(srcdir)/index-1.html /opt/kde3/share/doc/HTML/en/yammi/index-1.html
+	$(mkinstalldirs) $(DESTDIR)$(KDEDIR)/share/doc/HTML/en/yammi/
+#>- 	$(INSTALL_DATA) $(srcdir)/index-1.html $(KDEDIR)/share/doc/HTML/en/yammi/index-1.html
 #>+ 1
-	$(INSTALL_DATA) $(srcdir)/index-1.html $(DESTDIR)/opt/kde3/share/doc/HTML/en/yammi/index-1.html
-#>- 	$(mkinstalldirs) /opt/kde3/share/doc/HTML/en/yammi/
+	$(INSTALL_DATA) $(srcdir)/index-1.html $(DESTDIR)$(KDEDIR)/share/doc/HTML/en/yammi/index-1.html
+#>- 	$(mkinstalldirs) $(KDEDIR)/share/doc/HTML/en/yammi/
 #>+ 1
-	$(mkinstalldirs) $(DESTDIR)/opt/kde3/share/doc/HTML/en/yammi/
-#>- 	$(INSTALL_DATA) $(srcdir)/index-2.html /opt/kde3/share/doc/HTML/en/yammi/index-2.html
+	$(mkinstalldirs) $(DESTDIR)$(KDEDIR)/share/doc/HTML/en/yammi/
+#>- 	$(INSTALL_DATA) $(srcdir)/index-2.html $(KDEDIR)/share/doc/HTML/en/yammi/index-2.html
 #>+ 1
-	$(INSTALL_DATA) $(srcdir)/index-2.html $(DESTDIR)/opt/kde3/share/doc/HTML/en/yammi/index-2.html
-#>- 	$(mkinstalldirs) /opt/kde3/share/doc/HTML/en/yammi/
+	$(INSTALL_DATA) $(srcdir)/index-2.html $(DESTDIR)$(KDEDIR)/share/doc/HTML/en/yammi/index-2.html
+#>- 	$(mkinstalldirs) $(KDEDIR)/share/doc/HTML/en/yammi/
 #>+ 1
-	$(mkinstalldirs) $(DESTDIR)/opt/kde3/share/doc/HTML/en/yammi/
-#>- 	$(INSTALL_DATA) $(srcdir)/index-3.html /opt/kde3/share/doc/HTML/en/yammi/index-3.html
+	$(mkinstalldirs) $(DESTDIR)$(KDEDIR)/share/doc/HTML/en/yammi/
+#>- 	$(INSTALL_DATA) $(srcdir)/index-3.html $(KDEDIR)/share/doc/HTML/en/yammi/index-3.html
 #>+ 1
-	$(INSTALL_DATA) $(srcdir)/index-3.html $(DESTDIR)/opt/kde3/share/doc/HTML/en/yammi/index-3.html
-#>- 	$(mkinstalldirs) /opt/kde3/share/doc/HTML/en/yammi/
+	$(INSTALL_DATA) $(srcdir)/index-3.html $(DESTDIR)$(KDEDIR)/share/doc/HTML/en/yammi/index-3.html
+#>- 	$(mkinstalldirs) $(KDEDIR)/share/doc/HTML/en/yammi/
 #>+ 1
-	$(mkinstalldirs) $(DESTDIR)/opt/kde3/share/doc/HTML/en/yammi/
-#>- 	$(INSTALL_DATA) $(srcdir)/index-4.html /opt/kde3/share/doc/HTML/en/yammi/index-4.html
+	$(mkinstalldirs) $(DESTDIR)$(KDEDIR)/share/doc/HTML/en/yammi/
+#>- 	$(INSTALL_DATA) $(srcdir)/index-4.html $(KDEDIR)/share/doc/HTML/en/yammi/index-4.html
 #>+ 1
-	$(INSTALL_DATA) $(srcdir)/index-4.html $(DESTDIR)/opt/kde3/share/doc/HTML/en/yammi/index-4.html
-#>- 	$(mkinstalldirs) /opt/kde3/share/doc/HTML/en/yammi/
+	$(INSTALL_DATA) $(srcdir)/index-4.html $(DESTDIR)$(KDEDIR)/share/doc/HTML/en/yammi/index-4.html
+#>- 	$(mkinstalldirs) $(KDEDIR)/share/doc/HTML/en/yammi/
 #>+ 1
-	$(mkinstalldirs) $(DESTDIR)/opt/kde3/share/doc/HTML/en/yammi/
-#>- 	$(INSTALL_DATA) $(srcdir)/index-5.html /opt/kde3/share/doc/HTML/en/yammi/index-5.html
+	$(mkinstalldirs) $(DESTDIR)$(KDEDIR)/share/doc/HTML/en/yammi/
+#>- 	$(INSTALL_DATA) $(srcdir)/index-5.html $(KDEDIR)/share/doc/HTML/en/yammi/index-5.html
 #>+ 1
-	$(INSTALL_DATA) $(srcdir)/index-5.html $(DESTDIR)/opt/kde3/share/doc/HTML/en/yammi/index-5.html
-#>- 	$(mkinstalldirs) /opt/kde3/share/doc/HTML/en/yammi/
+	$(INSTALL_DATA) $(srcdir)/index-5.html $(DESTDIR)$(KDEDIR)/share/doc/HTML/en/yammi/index-5.html
+#>- 	$(mkinstalldirs) $(KDEDIR)/share/doc/HTML/en/yammi/
 #>+ 1
-	$(mkinstalldirs) $(DESTDIR)/opt/kde3/share/doc/HTML/en/yammi/
-#>- 	$(INSTALL_DATA) $(srcdir)/index-6.html /opt/kde3/share/doc/HTML/en/yammi/index-6.html
+	$(mkinstalldirs) $(DESTDIR)$(KDEDIR)/share/doc/HTML/en/yammi/
+#>- 	$(INSTALL_DATA) $(srcdir)/index-6.html $(KDEDIR)/share/doc/HTML/en/yammi/index-6.html
 #>+ 1
-	$(INSTALL_DATA) $(srcdir)/index-6.html $(DESTDIR)/opt/kde3/share/doc/HTML/en/yammi/index-6.html
-#>- 	$(mkinstalldirs) /opt/kde3/share/doc/HTML/en/yammi/
+	$(INSTALL_DATA) $(srcdir)/index-6.html $(DESTDIR)$(KDEDIR)/share/doc/HTML/en/yammi/index-6.html
+#>- 	$(mkinstalldirs) $(KDEDIR)/share/doc/HTML/en/yammi/
 #>+ 1
-	$(mkinstalldirs) $(DESTDIR)/opt/kde3/share/doc/HTML/en/yammi/
-#>- 	$(INSTALL_DATA) $(srcdir)/index.html /opt/kde3/share/doc/HTML/en/yammi/index.html
+	$(mkinstalldirs) $(DESTDIR)$(KDEDIR)/share/doc/HTML/en/yammi/
+#>- 	$(INSTALL_DATA) $(srcdir)/index.html $(KDEDIR)/share/doc/HTML/en/yammi/index.html
 #>+ 1
-	$(INSTALL_DATA) $(srcdir)/index.html $(DESTDIR)/opt/kde3/share/doc/HTML/en/yammi/index.html
+	$(INSTALL_DATA) $(srcdir)/index.html $(DESTDIR)$(KDEDIR)/share/doc/HTML/en/yammi/index.html
 
 uninstall-local:
-#>- 	-rm -f /opt/kde3/share/doc/HTML/en/yammi/index-1.html
+#>- 	-rm -f $(KDEDIR)/share/doc/HTML/en/yammi/index-1.html
 #>+ 1
-	-rm -f $(DESTDIR)/opt/kde3/share/doc/HTML/en/yammi/index-1.html
-#>- 	-rm -f /opt/kde3/share/doc/HTML/en/yammi/index-2.html
+	-rm -f $(DESTDIR)$(KDEDIR)/share/doc/HTML/en/yammi/index-1.html
+#>- 	-rm -f $(KDEDIR)/share/doc/HTML/en/yammi/index-2.html
 #>+ 1
-	-rm -f $(DESTDIR)/opt/kde3/share/doc/HTML/en/yammi/index-2.html
-#>- 	-rm -f /opt/kde3/share/doc/HTML/en/yammi/index-3.html
+	-rm -f $(DESTDIR)$(KDEDIR)/share/doc/HTML/en/yammi/index-2.html
+#>- 	-rm -f $(KDEDIR)/share/doc/HTML/en/yammi/index-3.html
 #>+ 1
-	-rm -f $(DESTDIR)/opt/kde3/share/doc/HTML/en/yammi/index-3.html
-#>- 	-rm -f /opt/kde3/share/doc/HTML/en/yammi/index-4.html
+	-rm -f $(DESTDIR)$(KDEDIR)/share/doc/HTML/en/yammi/index-3.html
+#>- 	-rm -f $(KDEDIR)/share/doc/HTML/en/yammi/index-4.html
 #>+ 1
-	-rm -f $(DESTDIR)/opt/kde3/share/doc/HTML/en/yammi/index-4.html
-#>- 	-rm -f /opt/kde3/share/doc/HTML/en/yammi/index-5.html
+	-rm -f $(DESTDIR)$(KDEDIR)/share/doc/HTML/en/yammi/index-4.html
+#>- 	-rm -f $(KDEDIR)/share/doc/HTML/en/yammi/index-5.html
 #>+ 1
-	-rm -f $(DESTDIR)/opt/kde3/share/doc/HTML/en/yammi/index-5.html
-#>- 	-rm -f /opt/kde3/share/doc/HTML/en/yammi/index-6.html
+	-rm -f $(DESTDIR)$(KDEDIR)/share/doc/HTML/en/yammi/index-5.html
+#>- 	-rm -f $(KDEDIR)/share/doc/HTML/en/yammi/index-6.html
 #>+ 1
-	-rm -f $(DESTDIR)/opt/kde3/share/doc/HTML/en/yammi/index-6.html
-#>- 	-rm -f /opt/kde3/share/doc/HTML/en/yammi/index.html
+	-rm -f $(DESTDIR)$(KDEDIR)/share/doc/HTML/en/yammi/index-6.html
+#>- 	-rm -f $(KDEDIR)/share/doc/HTML/en/yammi/index.html
 #>+ 1
-	-rm -f $(DESTDIR)/opt/kde3/share/doc/HTML/en/yammi/index.html
+	-rm -f $(DESTDIR)$(KDEDIR)/share/doc/HTML/en/yammi/index.html
 
 ####### kdevelop will overwrite this part!!! (end)############
 # Tell versions [3.59,3.63) of GNU make to not export all variables.

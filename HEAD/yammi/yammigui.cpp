@@ -2196,14 +2196,14 @@ void YammiGui::openHelp()
 	// linux specific
 	// hardcoded path, we should probably read $KDEDIR or something instead...
   // (but I don't know how to do that...)
-	system("konqueror /opt/kde3/share/doc/HTML/en/yammi/index.html &");
+	system("konqueror $KDEDIR/share/doc/HTML/en/yammi/index.html &");
 }
 
 /// display about dialog
 void YammiGui::aboutDialog()
 {
   QString msg=QString("Yammi - Yet Another Music Manager I...\n\n\n");
-  msg+="Version "+model->config.yammiVersion+", 12-2001 - 2-2003 by Oliver Nölle\n";
+  msg+="Version "+model->config.yammiVersion+", 12-2001 - 3-2003 by Oliver Nölle\n";
   #ifdef ENABLE_XMMS
   msg+="- XMMS support: yes\n";
   #else

@@ -23,12 +23,12 @@ cflags=
 cppflags=
 cxxflags=\s-O3 -Wall
 ldadd=\s$(LIB_QT)
-ldflags=\s                                 \s
+ldflags=\s                                  \s
 
 [General]
 AMChanged=false
 author=Oliver Nölle
-configure_args=\s--build=i386-linux --host=i386-linux --target=i386-linux
+configure_args=\s--build=i386-linux --host=i386-linux --target=i386-linux\s
 email=oli.noelle@web.de
 kdevprj_version=1.3
 lfv_open_groups=
@@ -185,43 +185,43 @@ type=normal
 [yammi/docs/en/index-1.html]
 dist=true
 install=true
-install_location=/opt/kde3/share/doc/HTML/en/yammi/index-1.html
+install_location=$$(KDEDIR)/share/doc/HTML/en/yammi/index-1.html
 type=DATA
 
 [yammi/docs/en/index-2.html]
 dist=true
 install=true
-install_location=/opt/kde3/share/doc/HTML/en/yammi/index-2.html
+install_location=$$(KDEDIR)/share/doc/HTML/en/yammi/index-2.html
 type=DATA
 
 [yammi/docs/en/index-3.html]
 dist=true
 install=true
-install_location=/opt/kde3/share/doc/HTML/en/yammi/index-3.html
+install_location=$$(KDEDIR)/share/doc/HTML/en/yammi/index-3.html
 type=DATA
 
 [yammi/docs/en/index-4.html]
 dist=true
 install=true
-install_location=/opt/kde3/share/doc/HTML/en/yammi/index-4.html
+install_location=$$(KDEDIR)/share/doc/HTML/en/yammi/index-4.html
 type=DATA
 
 [yammi/docs/en/index-5.html]
 dist=true
 install=true
-install_location=/opt/kde3/share/doc/HTML/en/yammi/index-5.html
+install_location=$$(KDEDIR)/share/doc/HTML/en/yammi/index-5.html
 type=DATA
 
 [yammi/docs/en/index-6.html]
 dist=true
 install=true
-install_location=/opt/kde3/share/doc/HTML/en/yammi/index-6.html
+install_location=$$(KDEDIR)/share/doc/HTML/en/yammi/index-6.html
 type=DATA
 
 [yammi/docs/en/index.html]
 dist=true
 install=true
-install_location=/opt/kde3/share/doc/HTML/en/yammi/index.html
+install_location=$$(KDEDIR)/share/doc/HTML/en/yammi/index.html
 type=DATA
 
 [yammi/docs/en/index.sgml]
@@ -827,7 +827,7 @@ type=DATA
 [yammiGrabAndEncode]
 dist=true
 install=true
-install_location=/usr/local/bin/yammiGrabAndEncode
+install_location=$$(prefix)/bin/yammiGrabAndEncode
 type=SCRIPT
 
 [yammiMp3Edit]

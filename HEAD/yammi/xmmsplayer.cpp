@@ -249,8 +249,8 @@ bool XmmsPlayer::play()
 {
 #ifdef ENABLE_XMMS
 	xmms_remote_play(session);
-  return true;
 #endif
+  return true;
 }
 
 
@@ -259,8 +259,8 @@ bool XmmsPlayer::pause()
 {
 #ifdef ENABLE_XMMS
 	xmms_remote_pause(session);
-  return true;
 #endif
+  return true;
 }
 
 

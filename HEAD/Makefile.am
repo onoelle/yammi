@@ -5,11 +5,11 @@ SUBDIRS = yammi
 EXTRA_DIST = yammi.kdevprj admin CHANGELOG yammiGrabAndEncode AUTHORS INSTALL README TODO CREDITS yammiMp3Edit yammiDmburn 
 
 install-exec-local:
-	$(mkinstalldirs) /usr/local/bin/
-	$(INSTALL_SCRIPT) yammiGrabAndEncode /usr/local/bin/yammiGrabAndEncode
+	$(mkinstalldirs) $(prefix)/bin/
+	$(INSTALL_SCRIPT) yammiGrabAndEncode $(prefix)/bin/yammiGrabAndEncode
 
 uninstall-local:
-	-rm -f /usr/local/bin/yammiGrabAndEncode
+	-rm -f $(prefix)/bin/yammiGrabAndEncode
 
 ####### kdevelop will overwrite this part!!! (end)############
 # not a GNU package. You can remove this line, if 

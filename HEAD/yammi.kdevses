@@ -3,29 +3,47 @@
 <KDevPrjSession>
 <LastCompileConfig>(Default)</LastCompileConfig>
  <Mainframe MaximizeMode="1" />
- <DocsAndViews NumberOfDocuments="11" >
-<Doc0 CursorPosLine="76" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="16" FileName="/home/oliver/work/programming/yammi/configure.in" >
+ <DocsAndViews NumberOfDocuments="20" >
+<Doc0 CursorPosLine="156" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="32" FileName="/home/oliver/work/programming/yammi/configure.in" >
 <View0 Top="23" Width="400" Attach="1" Height="300" Left="3" Focus="0" Type="KWriteView" MinMaxMode="0" />  </Doc0>
   <Doc1 CursorPosLine="393" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="16" FileName="/home/oliver/work/programming/yammi/yammi/yammimodel.cpp" >
-<View0 Top="44" Width="687" Attach="1" Height="422" Left="24" Focus="0" Type="KWriteView" MinMaxMode="0" />  </Doc1>
-  <Doc2 CursorPosLine="430" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="23" FileName="/home/oliver/work/programming/yammi/yammi/xmmsplayer.cpp" >
-<View0 Top="65" Width="687" Attach="1" Height="422" Left="45" Focus="0" Type="KWriteView" MinMaxMode="0" />  </Doc2>
+<View0 Top="44" Width="738" Attach="1" Height="424" Left="24" Focus="0" Type="KWriteView" MinMaxMode="0" />  </Doc1>
+  <Doc2 CursorPosLine="311" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="0" FileName="/home/oliver/work/programming/yammi/yammi/xmmsplayer.cpp" >
+<View0 Top="65" Width="738" Attach="1" Height="424" Left="45" Focus="0" Type="KWriteView" MinMaxMode="0" />  </Doc2>
   <Doc3 CursorPosLine="10" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="25" FileName="/home/oliver/work/programming/yammi/CREDITS" >
-<View0 Top="86" Width="687" Attach="1" Height="452" Left="66" Focus="0" Type="KWriteView" MinMaxMode="0" />  </Doc3>
-  <Doc4 CursorPosLine="13" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="0" FileName="/home/oliver/work/programming/yammi/TODO" >
-<View0 Top="84" Width="693" Attach="1" Height="478" Left="84" Focus="1" Type="KWriteView" MinMaxMode="2" />  </Doc4>
+<View0 Top="86" Width="738" Attach="1" Height="424" Left="66" Focus="0" Type="KWriteView" MinMaxMode="0" />  </Doc3>
+  <Doc4 CursorPosLine="2" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="0" FileName="/home/oliver/work/programming/yammi/TODO" >
+<View0 Top="107" Width="687" Attach="1" Height="469" Left="87" Focus="0" Type="KWriteView" MinMaxMode="0" />  </Doc4>
   <Doc5 CursorPosLine="233" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="0" FileName="/home/oliver/work/programming/yammi/yammi/noatunplayer.cpp" >
-<View0 Top="128" Width="687" Attach="1" Height="452" Left="108" Focus="0" Type="KWriteView" MinMaxMode="0" />  </Doc5>
+<View0 Top="128" Width="738" Attach="1" Height="424" Left="108" Focus="0" Type="KWriteView" MinMaxMode="0" />  </Doc5>
   <Doc6 CursorPosLine="36" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="28" FileName="/home/oliver/work/programming/yammi/yammi/xmmsplayer.h" >
-<View0 Top="149" Width="687" Attach="1" Height="452" Left="129" Focus="0" Type="KWriteView" MinMaxMode="0" />  </Doc6>
-  <Doc7 CursorPosLine="3093" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="2" FileName="/home/oliver/work/programming/yammi/yammi/yammigui.cpp" >
-<View0 Top="170" Width="687" Attach="1" Height="452" Left="150" Focus="0" Type="KWriteView" MinMaxMode="0" />  </Doc7>
+<View0 Top="149" Width="687" Attach="1" Height="469" Left="129" Focus="0" Type="KWriteView" MinMaxMode="0" />  </Doc6>
+  <Doc7 CursorPosLine="2204" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="0" FileName="/home/oliver/work/programming/yammi/yammi/yammigui.cpp" >
+<View0 Top="147" Width="693" Attach="1" Height="448" Left="147" Focus="1" Type="KWriteView" MinMaxMode="2" />  </Doc7>
   <Doc8 CursorPosLine="45" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="15" FileName="/home/oliver/work/programming/yammi/yammi/noatunplayer.h" >
-<View0 Top="191" Width="687" Attach="1" Height="452" Left="171" Focus="0" Type="KWriteView" MinMaxMode="0" />  </Doc8>
+<View0 Top="191" Width="687" Attach="1" Height="469" Left="171" Focus="0" Type="KWriteView" MinMaxMode="0" />  </Doc8>
   <Doc9 CursorPosLine="592" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="16" FileName="/home/oliver/work/programming/yammi/yammi/docs/en/index.sgml" >
 <View0 Top="212" Width="687" Attach="1" Height="452" Left="192" Focus="0" Type="KWriteView" MinMaxMode="0" />  </Doc9>
-  <Doc10 CursorPosLine="53" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="0" FileName="/home/oliver/work/programming/yammi/yammi/mediaplayer.h" >
-<View0 Top="233" Width="687" Attach="1" Height="452" Left="213" Focus="0" Type="KWriteView" MinMaxMode="0" />  </Doc10> </DocsAndViews>
+  <Doc10 CursorPosLine="52" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="22" FileName="/home/oliver/work/programming/yammi/yammi/mediaplayer.h" >
+<View0 Top="233" Width="687" Attach="1" Height="469" Left="213" Focus="0" Type="KWriteView" MinMaxMode="0" />  </Doc10>
+  <Doc11 CursorPosLine="588" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="29" FileName="/home/oliver/work/programming/yammi/Makefile.in" >
+<View0 Top="254" Width="687" Attach="1" Height="452" Left="234" Focus="0" Type="KWriteView" MinMaxMode="0" />  </Doc11>
+  <Doc12 CursorPosLine="0" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="0" FileName="/home/oliver/work/programming/yammi/Makefile.am" >
+<View0 Top="275" Width="687" Attach="1" Height="452" Left="255" Focus="0" Type="KWriteView" MinMaxMode="0" />  </Doc12>
+  <Doc13 CursorPosLine="1" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="0" FileName="/home/oliver/work/programming/yammi/yammi/song.cpp" >
+<View0 Top="296" Width="687" Attach="1" Height="452" Left="276" Focus="0" Type="KWriteView" MinMaxMode="0" />  </Doc13>
+  <Doc14 CursorPosLine="39" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="47" FileName="/home/oliver/work/programming/yammi/Makefile" >
+<View0 Top="317" Width="738" Attach="1" Height="318" Left="297" Focus="0" Type="KWriteView" MinMaxMode="0" />  </Doc14>
+  <Doc15 CursorPosLine="44" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="24" FileName="/home/oliver/work/programming/yammi/yammi/prefs.h" >
+<View0 Top="338" Width="738" Attach="1" Height="410" Left="318" Focus="0" Type="KWriteView" MinMaxMode="0" />  </Doc15>
+  <Doc16 CursorPosLine="15" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="28" FileName="/home/oliver/work/programming/yammi/config.h" >
+<View0 Top="359" Width="738" Attach="1" Height="410" Left="339" Focus="0" Type="KWriteView" MinMaxMode="0" />  </Doc16>
+  <Doc17 CursorPosLine="70" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="0" FileName="/home/oliver/work/programming/yammi/oli_configure.in" >
+<View0 Top="380" Width="738" Attach="1" Height="410" Left="360" Focus="0" Type="KWriteView" MinMaxMode="0" />  </Doc17>
+  <Doc18 CursorPosLine="0" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="0" FileName="/home/oliver/work/programming/yammi/yammi/docs/Makefile.am" >
+<View0 Top="23" Width="738" Attach="1" Height="410" Left="381" Focus="0" Type="KWriteView" MinMaxMode="0" />  </Doc18>
+  <Doc19 CursorPosLine="6" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="18" FileName="/home/oliver/work/programming/yammi/yammi/docs/en/Makefile.am" >
+<View0 Top="44" Width="738" Attach="1" Height="410" Left="402" Focus="0" Type="KWriteView" MinMaxMode="0" />  </Doc19> </DocsAndViews>
  <CompileConfigs>
 <Release>
 <Architecture>i386</Architecture>

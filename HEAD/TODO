@@ -1,21 +1,28 @@
 TODO
 ----
-last update 8.3.2003
+last update 16.3.2003
 
 
 
 for release 0.8.0
 -----------------
-- read all emails since 0.7!!!
-
 - pack for distribution:
   - update handbook
-  - update credits
-  - update homepage: move requirements and install into handbook?
-  - hack the configure script?
+  - update homepage: move and update "requirements" and "installation" into handbook?
 
 - category folder: autoplay menu???
 - check: failing to load a media => crash? (tom)
+- signal to YammiGui::null ???
+- warning foldergroups.h:0 no relevant classes found?
+
+
+user feedback via email:
+------------------------
+- incorrect tracknumbers are shown in some cases where tracknumber is undefined (0).
+- rating of tracks
+- folder for recent additions
+- loading/saving of playlists (saving is already possible via plugin)
+
 
 0.8.1
 -----
@@ -26,6 +33,7 @@ for release 0.8.0
   - use QProcess for XMMS? (noatun?)
   - skip forward/backward when stopped
 - move rpms to sourceforge download server/system
+- view menu: hide some columns
 - update current listview after song has been played: entry lastPlayed
 - fix: two albums having the same name appear as one album (heuristic: same album if in same dir?)
 - extensive testing with new user!!!

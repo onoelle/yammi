@@ -1,3 +1,4 @@
+
 /***************************************************************************
                           foldergroups.h  -  description
                              -------------------
@@ -24,9 +25,8 @@
 /**
   *@author Brian O.Nölle
   */
-
 class FolderGroups : public Folder  {
-//	Q_OBJECT
+	Q_OBJECT
 public:
 	FolderGroups( QListView* parent, QString title);
 	~FolderGroups();

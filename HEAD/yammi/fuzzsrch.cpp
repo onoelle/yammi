@@ -215,7 +215,7 @@ int FuzzySearch::prepareString(char* convStr, const char* originStr)
 			break;
 		case ',': *tmpPtr = ' '; break; // so, diese Sonderzeichen kommen alle vor, alle in spaces umwandeln...
 		case '-': *tmpPtr = ' '; break;
-		case '.': *tmpPtr--    ; break; // for yammi: discard them (R.E.M = REM)
+		case '.': tmpPtr--     ; break; // for yammi: discard them (R.E.M = REM)
 		case '(': *tmpPtr = ' '; break;
 		case ')': *tmpPtr = ' '; break;
 		case '*': *tmpPtr = ' '; break;

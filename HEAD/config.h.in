@@ -25,6 +25,9 @@
 /* Define if you have the <inttypes.h> header file. */
 #undef HAVE_INTTYPES_H
 
+/* Define if you have the `id3' library (-lid3). */
+#undef HAVE_LIBID3
+
 /* Define if you have libjpeg */
 #undef HAVE_LIBJPEG
 
@@ -37,11 +40,17 @@
 /* Define if you have a working libpthread (will enable threaded code) */
 #undef HAVE_LIBPTHREAD
 
+/* Define if you have the `stdc++' library (-lstdc++). */
+#undef HAVE_LIBSTDC__
+
 /* Define if you have the `vorbis' library (-lvorbis). */
 #undef HAVE_LIBVORBIS
 
 /* Define if you have the `vorbisfile' library (-lvorbisfile). */
 #undef HAVE_LIBVORBISFILE
+
+/* Define if you have the `xmms' library (-lxmms). */
+#undef HAVE_LIBXMMS
 
 /* Define if you have libz */
 #undef HAVE_LIBZ
