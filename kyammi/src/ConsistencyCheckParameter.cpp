@@ -33,8 +33,9 @@ void ConsistencyCheckParameter::setDefaults()
 	checkFilenames=true;
 	checkForExistence=true;
 	checkTags=true;
-	correctDirectories=false;
+	ignoreCaseInFilenames=false;
 	correctFilenames=false;
+	correctDirectories=false;
 	correctTags=false;
 	deleteEmptyDirectories=false;
 	ignoreCaseInFilenames=false;

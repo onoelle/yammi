@@ -1,4 +1,4 @@
-<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
+<!DOCTYPE UI><UI version="3.0" stdsetdef="1">
 <class>Preferences</class>
 <widget class="QDialog">
     <property name="name">
@@ -491,17 +491,6 @@
                                     <string>synchronizes the id3-tags of the mp3 files with the yammi database information. If activated, yammi modifies the tags of your mp3 files!</string>
                                 </property>
                             </widget>
-                            <widget class="QCheckBox" row="1" column="2">
-                                <property name="name">
-                                    <cstring>CheckBoxIgnoreCaseInFilenames</cstring>
-                                </property>
-                                <property name="text">
-                                    <string>ignore case on filename check</string>
-                                </property>
-                                <property name="toolTip" stdset="0">
-                                    <string></string>
-                                </property>
-                            </widget>
                             <widget class="QCheckBox" row="0" column="2">
                                 <property name="name">
                                     <cstring>CheckBoxCapitalizeTags</cstring>
@@ -560,7 +549,7 @@
                                     <string>guessing pattern (if no tags available)</string>
                                 </property>
                                 <property name="toolTip" stdset="0">
-                                    <string>The filename pattern to use for renaming files.</string>
+                                    <string>guessing pattern used when adding new songs and no tags available</string>
                                 </property>
                             </widget>
                             <widget class="QButtonGroup" row="3" column="0">
@@ -658,7 +647,7 @@
                                             <cstring>LineEditTrashDir</cstring>
                                         </property>
                                         <property name="toolTip" stdset="0">
-                                            <string>base directory for all mp3 files managed by yammi</string>
+                                            <string>songs deleted in yammi will be moved to this directory and this directory will be skipped when scanning</string>
                                         </property>
                                     </widget>
                                 </grid>
@@ -1593,19 +1582,40 @@ loaded from those media into a swap directory.</string>
     <tabstop>LineEditSecondSoundDevice</tabstop>
     <tabstop>ButtonOK</tabstop>
     <tabstop>ButtonCancel</tabstop>
+    <tabstop>LineEditTrashDir</tabstop>
+    <tabstop>ButtonChooseTrashDir</tabstop>
+    <tabstop>CheckBoxTagsConsistent</tabstop>
+    <tabstop>CheckBoxFilenamesConsistent</tabstop>
+    <tabstop>RadioButtonSimpleGuessmode</tabstop>
+    <tabstop>CheckBoxCapitalizeTags</tabstop>
+    <tabstop>CheckBoxLogging</tabstop>
+    <tabstop>CheckBoxLazyGrouping</tabstop>
+    <tabstop>SpinBoxGroupThreshold</tabstop>
+    <tabstop>CheckBoxChildSafe</tabstop>
+    <tabstop>RadioButtonXmms</tabstop>
+    <tabstop>LineEditKeepInXmms</tabstop>
+    <tabstop>LineEditFadeTime</tabstop>
+    <tabstop>LineEditFadeOutEnd</tabstop>
+    <tabstop>LineEditFadeInStart</tabstop>
     <tabstop>LineEditGrabAndEncodeCmd</tabstop>
     <tabstop>LineEditShutdownScript</tabstop>
     <tabstop>ComboBoxPlugins</tabstop>
     <tabstop>PushButtonNewPlugin</tabstop>
     <tabstop>PushButtonDeletePlugin</tabstop>
+    <tabstop>ComboBoxPluginMode</tabstop>
+    <tabstop>CheckBoxPluginConfirm</tabstop>
+    <tabstop>PushButtonAddStandardPlugins</tabstop>
+    <tabstop>PushButtonPluginReplacements</tabstop>
     <tabstop>LineEditPluginMenuEntry</tabstop>
     <tabstop>LineEditPluginCommand</tabstop>
+    <tabstop>LineEditPluginCustomList</tabstop>
     <tabstop>LineEditMediaDir</tabstop>
     <tabstop>ButtonChooseMediaDir</tabstop>
     <tabstop>LineEditSwapDir</tabstop>
     <tabstop>ButtonChooseSwapDir</tabstop>
     <tabstop>LineEditSwapSize</tabstop>
     <tabstop>CheckBoxMountMediaDir</tabstop>
+    <tabstop>LineEditCriticalSize</tabstop>
     <tabstop>TabWidget2</tabstop>
 </tabstops>
 <includes>

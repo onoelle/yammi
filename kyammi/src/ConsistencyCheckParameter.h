@@ -39,9 +39,11 @@ public:
     bool correctTags;
     int correctTagsConfirmed;
     int correctTagsDirection;          // 0 = yammi => file tags, 1 = file tags => yammi
+    
+    /** Ignore case in filenames (if keeping them consistent */
+    bool ignoreCaseInFilenames;    
     bool checkFilenames;
     QString filenamePattern;
-    bool ignoreCaseInFilenames;
     int correctFilenamesConfirmed;
     bool correctFilenames;
     bool checkDirectories;

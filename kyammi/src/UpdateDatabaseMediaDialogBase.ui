@@ -8,7 +8,7 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>380</width>
+            <width>423</width>
             <height>267</height>
         </rect>
     </property>
@@ -89,7 +89,6 @@
             <property name="font">
                 <font>
                     <family>Nimbus Sans l [Urw]</family>
-                    <pointsize>12</pointsize>
                     <bold>1</bold>
                     <italic>1</italic>
                 </font>
@@ -176,6 +175,15 @@
         <slot>reject()</slot>
     </connection>
 </connections>
+<tabstops>
+    <tabstop>LineEditMediaDir</tabstop>
+    <tabstop>ButtonChooseMediaDir</tabstop>
+    <tabstop>CheckBoxMountMediaDir</tabstop>
+    <tabstop>LineEditFilePattern</tabstop>
+    <tabstop>LineEditMediaName</tabstop>
+    <tabstop>PushButtonOk</tabstop>
+    <tabstop>PushButtonCancel</tabstop>
+</tabstops>
 <pixmapinproject/>
 <layoutdefaults spacing="6" margin="11"/>
 </UI>

@@ -43,8 +43,6 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, const char *name, bool mod
     CheckBoxChildSafe->setChecked(config->childSafe);
     CheckBoxTagsConsistent->setChecked(config->tagsConsistent);
     CheckBoxFilenamesConsistent->setChecked(config->filenamesConsistent);
-    // TODO: fix!
-    CheckBoxIgnoreCaseInFilenames->setChecked(config->ignoreCaseInFilenames);
     CheckBoxCapitalizeTags->setChecked(config->capitalizeTags);
     LineEditCriticalSize->setText(QString("%1").arg(config->criticalSize));
     LineEditSecondSoundDevice->setText(config->secondSoundDevice);
@@ -150,7 +148,6 @@ void PreferencesDialog::myAccept() {
     config->logging=CheckBoxLogging->isChecked();
     config->tagsConsistent=CheckBoxTagsConsistent->isChecked();
     config->filenamesConsistent=CheckBoxFilenamesConsistent->isChecked();
-    config->ignoreCaseInFilenames=CheckBoxIgnoreCaseInFilenames->isChecked();
     config->capitalizeTags=CheckBoxCapitalizeTags->isChecked();
     if(config->childSafe && !CheckBoxChildSafe->isChecked()) {
         bool ok;

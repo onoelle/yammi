@@ -1,4 +1,4 @@
-<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
+<!DOCTYPE UI><UI version="3.0" stdsetdef="1">
 <class>CheckConsistencyDialogBase</class>
 <widget class="QDialog">
     <property name="name">
@@ -9,7 +9,7 @@
             <x>0</x>
             <y>0</y>
             <width>733</width>
-            <height>655</height>
+            <height>711</height>
         </rect>
     </property>
     <property name="caption">
@@ -50,167 +50,7 @@
                 <string>Consistency Check</string>
             </property>
         </widget>
-        <widget class="QButtonGroup" row="2" column="0" rowspan="1" colspan="2">
-            <property name="name">
-                <cstring>buttonGroup5</cstring>
-            </property>
-            <property name="sizePolicy">
-                <sizepolicy>
-                    <hsizetype>1</hsizetype>
-                    <vsizetype>5</vsizetype>
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                </sizepolicy>
-            </property>
-            <property name="title">
-                <string></string>
-            </property>
-            <grid>
-                <property name="name">
-                    <cstring>unnamed</cstring>
-                </property>
-                <widget class="QCheckBox" row="0" column="0" rowspan="1" colspan="2">
-                    <property name="name">
-                        <cstring>CheckBoxCheckTags</cstring>
-                    </property>
-                    <property name="text">
-                        <string>check tags</string>
-                    </property>
-                    <property name="toolTip" stdset="0">
-                        <string>Checks, whether the (mp3/ogg) tags are consistent with Yammi's database</string>
-                    </property>
-                </widget>
-                <spacer row="1" column="0">
-                    <property name="name">
-                        <cstring>Spacer1_2</cstring>
-                    </property>
-                    <property name="orientation">
-                        <enum>Horizontal</enum>
-                    </property>
-                    <property name="sizeType">
-                        <enum>Fixed</enum>
-                    </property>
-                    <property name="sizeHint">
-                        <size>
-                            <width>40</width>
-                            <height>16</height>
-                        </size>
-                    </property>
-                </spacer>
-                <spacer row="2" column="0">
-                    <property name="name">
-                        <cstring>Spacer1_2_2</cstring>
-                    </property>
-                    <property name="orientation">
-                        <enum>Horizontal</enum>
-                    </property>
-                    <property name="sizeType">
-                        <enum>Fixed</enum>
-                    </property>
-                    <property name="sizeHint">
-                        <size>
-                            <width>40</width>
-                            <height>16</height>
-                        </size>
-                    </property>
-                </spacer>
-                <widget class="QComboBox" row="2" column="1">
-                    <item>
-                        <property name="text">
-                            <string>Yammi database =&gt; File Tags</string>
-                        </property>
-                    </item>
-                    <item>
-                        <property name="text">
-                            <string>File Tags =&gt; Yammi database</string>
-                        </property>
-                    </item>
-                    <property name="name">
-                        <cstring>ComboBoxCorrectTagsDirection</cstring>
-                    </property>
-                    <property name="sizePolicy">
-                        <sizepolicy>
-                            <hsizetype>1</hsizetype>
-                            <vsizetype>0</vsizetype>
-                            <horstretch>0</horstretch>
-                            <verstretch>0</verstretch>
-                        </sizepolicy>
-                    </property>
-                </widget>
-                <widget class="QCheckBox" row="1" column="1">
-                    <property name="name">
-                        <cstring>CheckBoxCorrectTags</cstring>
-                    </property>
-                    <property name="text">
-                        <string>correct inconsistent tags</string>
-                    </property>
-                    <property name="toolTip" stdset="0">
-                        <string>If tags do not correspond to the information in Yammi's database, they wil be corrected.</string>
-                    </property>
-                </widget>
-            </grid>
-        </widget>
-        <widget class="QButtonGroup" row="1" column="0" rowspan="1" colspan="2">
-            <property name="name">
-                <cstring>buttonGroup3</cstring>
-            </property>
-            <property name="sizePolicy">
-                <sizepolicy>
-                    <hsizetype>1</hsizetype>
-                    <vsizetype>5</vsizetype>
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                </sizepolicy>
-            </property>
-            <property name="title">
-                <string></string>
-            </property>
-            <grid>
-                <property name="name">
-                    <cstring>unnamed</cstring>
-                </property>
-                <widget class="QCheckBox" row="0" column="0" rowspan="1" colspan="2">
-                    <property name="name">
-                        <cstring>CheckBoxCheckForExistence</cstring>
-                    </property>
-                    <property name="text">
-                        <string>check for existence of files</string>
-                    </property>
-                    <property name="toolTip" stdset="0">
-                        <string>Checks, whether the file is existing and readable</string>
-                    </property>
-                </widget>
-                <widget class="QCheckBox" row="1" column="1">
-                    <property name="name">
-                        <cstring>CheckBoxUpdateNonExisting</cstring>
-                    </property>
-                    <property name="text">
-                        <string>update/delete non existing entries</string>
-                    </property>
-                    <property name="toolTip" stdset="0">
-                        <string>Entries not existing at their saved location are updated (existing on media) or deleted (not existing on any media)</string>
-                    </property>
-                </widget>
-                <spacer row="1" column="0">
-                    <property name="name">
-                        <cstring>Spacer1</cstring>
-                    </property>
-                    <property name="orientation">
-                        <enum>Horizontal</enum>
-                    </property>
-                    <property name="sizeType">
-                        <enum>Fixed</enum>
-                    </property>
-                    <property name="sizeHint">
-                        <size>
-                            <width>40</width>
-                            <height>16</height>
-                        </size>
-                    </property>
-                </spacer>
-            </grid>
-        </widget>
-        <widget class="QPushButton" row="6" column="2">
+        <widget class="QPushButton" row="7" column="2">
             <property name="name">
                 <cstring>PushButtonOk</cstring>
             </property>
@@ -226,7 +66,7 @@
                 <string>Start Check...</string>
             </property>
         </widget>
-        <widget class="QPushButton" row="6" column="3">
+        <widget class="QPushButton" row="7" column="3">
             <property name="name">
                 <cstring>PushButtonCancel</cstring>
             </property>
@@ -242,7 +82,7 @@
                 <string>Exit</string>
             </property>
         </widget>
-        <widget class="QPushButton" row="6" column="0">
+        <widget class="QPushButton" row="7" column="0">
             <property name="name">
                 <cstring>PushButtonPatternReplacements</cstring>
             </property>
@@ -250,7 +90,7 @@
                 <string>Pattern Replacements...</string>
             </property>
         </widget>
-        <spacer row="6" column="1">
+        <spacer row="7" column="1">
             <property name="name">
                 <cstring>Spacer1_5_2</cstring>
             </property>
@@ -267,94 +107,7 @@
                 </size>
             </property>
         </spacer>
-        <widget class="QButtonGroup" row="3" column="0" rowspan="1" colspan="2">
-            <property name="name">
-                <cstring>buttonGroup6</cstring>
-            </property>
-            <property name="sizePolicy">
-                <sizepolicy>
-                    <hsizetype>1</hsizetype>
-                    <vsizetype>5</vsizetype>
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                </sizepolicy>
-            </property>
-            <property name="title">
-                <string></string>
-            </property>
-            <grid>
-                <property name="name">
-                    <cstring>unnamed</cstring>
-                </property>
-                <widget class="QCheckBox" row="0" column="0" rowspan="1" colspan="3">
-                    <property name="name">
-                        <cstring>CheckBoxCheckFilenames</cstring>
-                    </property>
-                    <property name="text">
-                        <string>check filenames</string>
-                    </property>
-                    <property name="toolTip" stdset="0">
-                        <string>Checks, whether the filenames correspond to the configured filename scheme</string>
-                    </property>
-                </widget>
-                <widget class="QCheckBox" row="1" column="1" rowspan="1" colspan="2">
-                    <property name="name">
-                        <cstring>CheckBoxCorrectFilenames</cstring>
-                    </property>
-                    <property name="text">
-                        <string>correct inconsistent filenames</string>
-                    </property>
-                    <property name="toolTip" stdset="0">
-                        <string>If filenames differ from the configured filename scheme, they will be corrected</string>
-                    </property>
-                </widget>
-                <spacer row="1" column="0">
-                    <property name="name">
-                        <cstring>Spacer1_4</cstring>
-                    </property>
-                    <property name="orientation">
-                        <enum>Horizontal</enum>
-                    </property>
-                    <property name="sizeType">
-                        <enum>Fixed</enum>
-                    </property>
-                    <property name="sizeHint">
-                        <size>
-                            <width>40</width>
-                            <height>16</height>
-                        </size>
-                    </property>
-                </spacer>
-                <widget class="QLabel" row="2" column="0" rowspan="1" colspan="2">
-                    <property name="name">
-                        <cstring>LabelFilenamePattern</cstring>
-                    </property>
-                    <property name="text">
-                        <string>pattern:</string>
-                    </property>
-                    <property name="toolTip" stdset="0">
-                        <string>The filename pattern to use for renaming files.</string>
-                    </property>
-                </widget>
-                <widget class="QLineEdit" row="2" column="2">
-                    <property name="name">
-                        <cstring>LineEditFilenamePattern</cstring>
-                    </property>
-                    <property name="sizePolicy">
-                        <sizepolicy>
-                            <hsizetype>7</hsizetype>
-                            <vsizetype>0</vsizetype>
-                            <horstretch>0</horstretch>
-                            <verstretch>0</verstretch>
-                        </sizepolicy>
-                    </property>
-                    <property name="toolTip" stdset="0">
-                        <string>The filename pattern to use for renaming files.</string>
-                    </property>
-                </widget>
-            </grid>
-        </widget>
-        <widget class="QButtonGroup" row="4" column="0" rowspan="1" colspan="2">
+        <widget class="QButtonGroup" row="5" column="0" rowspan="1" colspan="2">
             <property name="name">
                 <cstring>buttonGroup7</cstring>
             </property>
@@ -461,39 +214,7 @@
                 </widget>
             </grid>
         </widget>
-        <widget class="QButtonGroup" row="5" column="0" rowspan="1" colspan="2">
-            <property name="name">
-                <cstring>buttonGroup8</cstring>
-            </property>
-            <property name="sizePolicy">
-                <sizepolicy>
-                    <hsizetype>1</hsizetype>
-                    <vsizetype>5</vsizetype>
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                </sizepolicy>
-            </property>
-            <property name="title">
-                <string></string>
-            </property>
-            <grid>
-                <property name="name">
-                    <cstring>unnamed</cstring>
-                </property>
-                <widget class="QCheckBox" row="0" column="0">
-                    <property name="name">
-                        <cstring>CheckBoxCheckDoubles</cstring>
-                    </property>
-                    <property name="text">
-                        <string>check for doubles</string>
-                    </property>
-                    <property name="toolTip" stdset="0">
-                        <string>checks for entries that are contained twice in Yammi's database</string>
-                    </property>
-                </widget>
-            </grid>
-        </widget>
-        <widget class="KTextEdit" row="1" column="2" rowspan="5" colspan="2">
+        <widget class="KTextEdit" row="1" column="2" rowspan="6" colspan="2">
             <property name="name">
                 <cstring>TextEditOutput</cstring>
             </property>
@@ -536,6 +257,317 @@
                 <string>output of consistency check</string>
             </property>
         </widget>
+        <widget class="QButtonGroup" row="1" column="0" rowspan="1" colspan="2">
+            <property name="name">
+                <cstring>buttonGroup3</cstring>
+            </property>
+            <property name="sizePolicy">
+                <sizepolicy>
+                    <hsizetype>1</hsizetype>
+                    <vsizetype>5</vsizetype>
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                </sizepolicy>
+            </property>
+            <property name="title">
+                <string></string>
+            </property>
+            <grid>
+                <property name="name">
+                    <cstring>unnamed</cstring>
+                </property>
+                <widget class="QCheckBox" row="0" column="0" rowspan="1" colspan="2">
+                    <property name="name">
+                        <cstring>CheckBoxCheckForExistence</cstring>
+                    </property>
+                    <property name="text">
+                        <string>check for existence of files</string>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>Checks, whether the file is existing and readable</string>
+                    </property>
+                </widget>
+                <widget class="QCheckBox" row="1" column="1">
+                    <property name="name">
+                        <cstring>CheckBoxUpdateNonExisting</cstring>
+                    </property>
+                    <property name="text">
+                        <string>update/delete non existing entries</string>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>Entries not existing at their saved location are updated (existing on media) or deleted (not existing on any media)</string>
+                    </property>
+                </widget>
+                <spacer row="1" column="0">
+                    <property name="name">
+                        <cstring>Spacer1</cstring>
+                    </property>
+                    <property name="orientation">
+                        <enum>Horizontal</enum>
+                    </property>
+                    <property name="sizeType">
+                        <enum>Fixed</enum>
+                    </property>
+                    <property name="sizeHint">
+                        <size>
+                            <width>40</width>
+                            <height>16</height>
+                        </size>
+                    </property>
+                </spacer>
+            </grid>
+        </widget>
+        <widget class="QButtonGroup" row="2" column="0" rowspan="1" colspan="2">
+            <property name="name">
+                <cstring>buttonGroup5</cstring>
+            </property>
+            <property name="sizePolicy">
+                <sizepolicy>
+                    <hsizetype>1</hsizetype>
+                    <vsizetype>5</vsizetype>
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                </sizepolicy>
+            </property>
+            <property name="title">
+                <string></string>
+            </property>
+            <grid>
+                <property name="name">
+                    <cstring>unnamed</cstring>
+                </property>
+                <widget class="QCheckBox" row="0" column="0" rowspan="1" colspan="2">
+                    <property name="name">
+                        <cstring>CheckBoxCheckTags</cstring>
+                    </property>
+                    <property name="text">
+                        <string>check tags</string>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>Checks, whether the (mp3/ogg) tags are consistent with Yammi's database</string>
+                    </property>
+                </widget>
+                <spacer row="1" column="0">
+                    <property name="name">
+                        <cstring>Spacer1_2</cstring>
+                    </property>
+                    <property name="orientation">
+                        <enum>Horizontal</enum>
+                    </property>
+                    <property name="sizeType">
+                        <enum>Fixed</enum>
+                    </property>
+                    <property name="sizeHint">
+                        <size>
+                            <width>40</width>
+                            <height>16</height>
+                        </size>
+                    </property>
+                </spacer>
+                <spacer row="2" column="0">
+                    <property name="name">
+                        <cstring>Spacer1_2_2</cstring>
+                    </property>
+                    <property name="orientation">
+                        <enum>Horizontal</enum>
+                    </property>
+                    <property name="sizeType">
+                        <enum>Fixed</enum>
+                    </property>
+                    <property name="sizeHint">
+                        <size>
+                            <width>40</width>
+                            <height>16</height>
+                        </size>
+                    </property>
+                </spacer>
+                <widget class="QComboBox" row="2" column="1">
+                    <item>
+                        <property name="text">
+                            <string>Yammi database =&gt; File Tags</string>
+                        </property>
+                    </item>
+                    <item>
+                        <property name="text">
+                            <string>File Tags =&gt; Yammi database</string>
+                        </property>
+                    </item>
+                    <property name="name">
+                        <cstring>ComboBoxCorrectTagsDirection</cstring>
+                    </property>
+                    <property name="sizePolicy">
+                        <sizepolicy>
+                            <hsizetype>1</hsizetype>
+                            <vsizetype>0</vsizetype>
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                        </sizepolicy>
+                    </property>
+                </widget>
+                <widget class="QCheckBox" row="1" column="1">
+                    <property name="name">
+                        <cstring>CheckBoxCorrectTags</cstring>
+                    </property>
+                    <property name="text">
+                        <string>correct inconsistent tags</string>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>If tags do not correspond to the information in Yammi's database, they wil be corrected.</string>
+                    </property>
+                </widget>
+            </grid>
+        </widget>
+        <widget class="QButtonGroup" row="4" column="0" rowspan="1" colspan="2">
+            <property name="name">
+                <cstring>buttonGroup6</cstring>
+            </property>
+            <property name="sizePolicy">
+                <sizepolicy>
+                    <hsizetype>1</hsizetype>
+                    <vsizetype>5</vsizetype>
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                </sizepolicy>
+            </property>
+            <property name="title">
+                <string></string>
+            </property>
+            <grid>
+                <property name="name">
+                    <cstring>unnamed</cstring>
+                </property>
+                <widget class="QCheckBox" row="0" column="0" rowspan="1" colspan="3">
+                    <property name="name">
+                        <cstring>CheckBoxCheckFilenames</cstring>
+                    </property>
+                    <property name="text">
+                        <string>check filenames</string>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>Checks, whether the filenames correspond to the configured filename scheme</string>
+                    </property>
+                </widget>
+                <widget class="QCheckBox" row="1" column="1" rowspan="1" colspan="2">
+                    <property name="name">
+                        <cstring>CheckBoxCorrectFilenames</cstring>
+                    </property>
+                    <property name="text">
+                        <string>correct inconsistent filenames</string>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>If filenames differ from the configured filename scheme, they will be corrected</string>
+                    </property>
+                </widget>
+                <spacer row="1" column="0">
+                    <property name="name">
+                        <cstring>Spacer1_4</cstring>
+                    </property>
+                    <property name="orientation">
+                        <enum>Horizontal</enum>
+                    </property>
+                    <property name="sizeType">
+                        <enum>Fixed</enum>
+                    </property>
+                    <property name="sizeHint">
+                        <size>
+                            <width>40</width>
+                            <height>16</height>
+                        </size>
+                    </property>
+                </spacer>
+                <widget class="QLabel" row="2" column="0" rowspan="1" colspan="2">
+                    <property name="name">
+                        <cstring>LabelFilenamePattern</cstring>
+                    </property>
+                    <property name="text">
+                        <string>pattern:</string>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>The filename pattern to use for renaming files.</string>
+                    </property>
+                </widget>
+                <widget class="QLineEdit" row="2" column="2">
+                    <property name="name">
+                        <cstring>LineEditFilenamePattern</cstring>
+                    </property>
+                    <property name="sizePolicy">
+                        <sizepolicy>
+                            <hsizetype>7</hsizetype>
+                            <vsizetype>0</vsizetype>
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                        </sizepolicy>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>The filename pattern to use for renaming files.</string>
+                    </property>
+                </widget>
+            </grid>
+        </widget>
+        <widget class="QButtonGroup" row="6" column="0" rowspan="1" colspan="2">
+            <property name="name">
+                <cstring>buttonGroup8</cstring>
+            </property>
+            <property name="sizePolicy">
+                <sizepolicy>
+                    <hsizetype>1</hsizetype>
+                    <vsizetype>5</vsizetype>
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                </sizepolicy>
+            </property>
+            <property name="title">
+                <string></string>
+            </property>
+            <grid>
+                <property name="name">
+                    <cstring>unnamed</cstring>
+                </property>
+                <widget class="QCheckBox" row="0" column="0">
+                    <property name="name">
+                        <cstring>CheckBoxCheckDoubles</cstring>
+                    </property>
+                    <property name="text">
+                        <string>check for doubles</string>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>checks for entries that are contained twice in Yammi's database</string>
+                    </property>
+                </widget>
+            </grid>
+        </widget>
+        <widget class="QButtonGroup" row="3" column="0" rowspan="1" colspan="2">
+            <property name="name">
+                <cstring>buttonGroup8_2</cstring>
+            </property>
+            <property name="sizePolicy">
+                <sizepolicy>
+                    <hsizetype>1</hsizetype>
+                    <vsizetype>5</vsizetype>
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                </sizepolicy>
+            </property>
+            <property name="title">
+                <string></string>
+            </property>
+            <grid>
+                <property name="name">
+                    <cstring>unnamed</cstring>
+                </property>
+                <widget class="QCheckBox" row="0" column="0">
+                    <property name="name">
+                        <cstring>CheckBoxIgnoreCase</cstring>
+                    </property>
+                    <property name="text">
+                        <string>ignore case in filename checks</string>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>ignore case differences in filename / directory check</string>
+                    </property>
+                </widget>
+            </grid>
+        </widget>
     </grid>
 </widget>
 <connections>
@@ -546,6 +578,26 @@
         <slot>reject()</slot>
     </connection>
 </connections>
+<tabstops>
+    <tabstop>CheckBoxCheckForExistence</tabstop>
+    <tabstop>CheckBoxUpdateNonExisting</tabstop>
+    <tabstop>CheckBoxCheckTags</tabstop>
+    <tabstop>CheckBoxCorrectTags</tabstop>
+    <tabstop>ComboBoxCorrectTagsDirection</tabstop>
+    <tabstop>CheckBoxIgnoreCase</tabstop>
+    <tabstop>CheckBoxCheckFilenames</tabstop>
+    <tabstop>CheckBoxCorrectFilenames</tabstop>
+    <tabstop>LineEditFilenamePattern</tabstop>
+    <tabstop>CheckBoxCheckDirectories</tabstop>
+    <tabstop>CheckBoxCorrectDirectories</tabstop>
+    <tabstop>LineEditDirectoryPattern</tabstop>
+    <tabstop>CheckBoxDeleteEmptyDirectories</tabstop>
+    <tabstop>CheckBoxCheckDoubles</tabstop>
+    <tabstop>PushButtonPatternReplacements</tabstop>
+    <tabstop>PushButtonOk</tabstop>
+    <tabstop>PushButtonCancel</tabstop>
+    <tabstop>TextEditOutput</tabstop>
+</tabstops>
 <pixmapinproject/>
 <layoutdefaults spacing="6" margin="11"/>
 </UI>

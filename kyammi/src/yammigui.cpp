@@ -2117,7 +2117,7 @@ void YammiGui::forSelectionSongInfo( ) {
         if(change) {
             model->allSongsChanged(true);
             s->tagsDirty=true;						// mark song as dirty(tags)
-            s->filenameDirty=(s->checkFilename(config()->ignoreCaseInFilenames)==false);
+            s->filenameDirty=(s->checkFilename(config()->consistencyPara.ignoreCaseInFilenames)==false);
             // update affected songs in view
             for(SongListItem* i=(SongListItem*)songListView->firstChild(); i; i=(SongListItem*)i->itemBelow()) {
                 if(i->song()!=s) {

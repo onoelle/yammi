@@ -1,12 +1,62 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
 <!DOCTYPE KDevPrjSession>
 <KDevPrjSession>
- <DocsAndViews NumberOfDocuments="1" >
+ <DocsAndViews NumberOfDocuments="11" >
   <Doc0 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/TODO" >
-   <View0 line="0" Type="???" >
-    <AdditionalSettings Top="1" Width="1202" Attach="1" Height="836" Left="1" MinMaxMode="0" />
+   <View0 line="9" Type="???" >
+    <AdditionalSettings Top="1" Width="1204" Attach="1" Height="795" Left="1" MinMaxMode="0" />
    </View0>
   </Doc0>
+  <Doc1 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/src/yammigui.cpp" >
+   <View0 line="3394" Type="???" >
+    <AdditionalSettings Top="1" Width="1203" Attach="1" Height="795" Left="1" MinMaxMode="0" />
+   </View0>
+  </Doc1>
+  <Doc2 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/src/yammigui.h" >
+   <View0 line="450" Type="???" >
+    <AdditionalSettings Top="1" Width="1203" Attach="1" Height="795" Left="1" MinMaxMode="0" />
+   </View0>
+  </Doc2>
+  <Doc3 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/src/song.h" >
+   <View0 line="76" Type="???" >
+    <AdditionalSettings Top="1" Width="1203" Attach="1" Height="795" Left="1" MinMaxMode="0" />
+   </View0>
+  </Doc3>
+  <Doc4 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/src/yammimodel.h" >
+   <View0 line="103" Type="???" >
+    <AdditionalSettings Top="1" Width="1203" Attach="1" Height="795" Left="1" MinMaxMode="0" />
+   </View0>
+  </Doc4>
+  <Doc5 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/src/ConsistencyCheckParameter.cpp" >
+   <View0 line="45" Type="???" >
+    <AdditionalSettings Top="1" Width="1203" Attach="1" Height="795" Left="1" MinMaxMode="0" />
+   </View0>
+  </Doc5>
+  <Doc6 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/src/ConsistencyCheckParameter.h" >
+   <View0 line="29" Type="???" >
+    <AdditionalSettings Top="1" Width="1203" Attach="1" Height="795" Left="1" MinMaxMode="0" />
+   </View0>
+  </Doc6>
+  <Doc7 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/src/ConsistencyCheckDialog.h" >
+   <View0 line="18" Type="???" >
+    <AdditionalSettings Top="1" Width="1203" Attach="1" Height="795" Left="1" MinMaxMode="0" />
+   </View0>
+  </Doc7>
+  <Doc8 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/src/ConsistencyCheckDialog.cpp" >
+   <View0 line="60" Type="???" >
+    <AdditionalSettings Top="1" Width="1204" Attach="1" Height="795" Left="1" MinMaxMode="0" />
+   </View0>
+  </Doc8>
+  <Doc9 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/src/yammimodel.cpp" >
+   <View0 line="432" Type="???" >
+    <AdditionalSettings Top="1" Width="1204" Attach="1" Height="795" Left="1" MinMaxMode="0" />
+   </View0>
+  </Doc9>
+  <Doc10 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/Makefile.am" >
+   <View0 line="0" Type="???" >
+    <AdditionalSettings Top="1" Width="1203" Attach="1" Height="795" Left="1" MinMaxMode="0" />
+   </View0>
+  </Doc10>
  </DocsAndViews>
  <pluginList>
   <kdevbookmarks>

@@ -1,4 +1,4 @@
-<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
+<!DOCTYPE UI><UI version="3.0" stdsetdef="1">
 <class>SongInfoDialog</class>
 <widget class="QDialog">
     <property name="name">
@@ -478,11 +478,17 @@
     <tabstop>LineEditYear</tabstop>
     <tabstop>LineEditTrack</tabstop>
     <tabstop>ComboBoxGenre</tabstop>
+    <tabstop>ReadOnlyLength</tabstop>
     <tabstop>ComboBoxMedia</tabstop>
+    <tabstop>ReadOnlySize</tabstop>
+    <tabstop>ReadOnlyBitrate</tabstop>
+    <tabstop>ReadOnlyPath</tabstop>
+    <tabstop>ReadOnlyFilename</tabstop>
+    <tabstop>ReadOnlyProposedFilename</tabstop>
     <tabstop>LineEditAddedTo</tabstop>
+    <tabstop>LineEditLastPlayed</tabstop>
     <tabstop>PushButtonOK</tabstop>
     <tabstop>PushButtonCancel</tabstop>
-    <tabstop>LineEditLastPlayed</tabstop>
 </tabstops>
 <layoutdefaults spacing="6" margin="11"/>
 </UI>

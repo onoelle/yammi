@@ -22,3 +22,10 @@ dist-hook:
 	cd $(top_distdir) && $(MAKE) -f admin/Makefile.common subdirs
 
 METASOURCES = AUTO
+noinst_HEADERS =  yammiGrabAndEncode
+
+install-data-local:
+	$(INSTALL) yammiGrabAndEncode $(kde_bindir)/yammiGrabAndEncode
+
+uninstall-local:
+	-rm -f $(kde_bindir)/yammiGrabAndEncode

@@ -48,6 +48,7 @@ void ConsistencyCheckDialog::setParameter() {
     CheckBoxCheckForExistence->setChecked(p->checkForExistence);
     CheckBoxUpdateNonExisting->setChecked(p->updateNonExisting);
     CheckBoxCheckTags->setChecked(p->checkTags);
+    CheckBoxIgnoreCase->setChecked(p->ignoreCaseInFilenames);
     CheckBoxCorrectTags->setChecked(p->correctTags);
     CheckBoxCheckFilenames->setChecked(p->checkFilenames);
     CheckBoxCorrectFilenames->setChecked(p->correctFilenames);
@@ -63,11 +64,10 @@ void ConsistencyCheckDialog::myAccept() {
     p->checkForExistence=CheckBoxCheckForExistence->isChecked();
     p->updateNonExisting=CheckBoxUpdateNonExisting->isChecked();
     p->checkTags=CheckBoxCheckTags->isChecked();
+    p->ignoreCaseInFilenames=CheckBoxIgnoreCase->isChecked();
     p->correctTags=CheckBoxCorrectTags->isChecked();
     p->correctTagsDirection=ComboBoxCorrectTagsDirection->currentItem();
     p->checkFilenames=CheckBoxCheckFilenames->isChecked();
-    // TODO: fix!
-    //    p->ignoreCaseInFilenames=m_config.ignoreCaseInFilenames;
     p->correctFilenames=CheckBoxCorrectFilenames->isChecked();
     p->checkDirectories=CheckBoxCheckDirectories->isChecked();
     p->correctDirectories=CheckBoxCorrectDirectories->isChecked();
@@ -460,4 +460,3 @@ void ConsistencyCheckDialog::showReplacements() {
     msg+=Song::getReplacementsDescription();
     QMessageBox::information( this, "Yammi",msg);
 }
-

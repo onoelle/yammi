@@ -51,7 +51,6 @@ void Prefs::setDefaultValues(void) {
 	childSafe = false;
 	tagsConsistent = false;
 	filenamesConsistent = false;
-	ignoreCaseInFilenames = false;
 	capitalizeTags = true;
 	criticalSize = 700;
 	secondSoundDevice="";
@@ -97,7 +96,6 @@ bool Prefs::loadConfig( )
 	childSafe                    = cfg->readBoolEntry("childSafe", childSafe);
 	tagsConsistent               = cfg->readBoolEntry("tagsConsistent", tagsConsistent);
 	filenamesConsistent          = cfg->readBoolEntry("filenamesConsistent", filenamesConsistent);
-	ignoreCaseInFilenames        = cfg->readBoolEntry("ignoreCaseInFilenames", ignoreCaseInFilenames);
 	capitalizeTags               = cfg->readBoolEntry("capitalizeTags", capitalizeTags);
 	criticalSize                 = cfg->readNumEntry("criticalSize", criticalSize);
 	secondSoundDevice            = cfg->readEntry("secondSoundDevice", secondSoundDevice);
@@ -136,7 +134,8 @@ bool Prefs::loadConfig( )
     cfg->setGroup("ConsistencyCheck");
 	consistencyPara.checkDirectories	= cfg->readBoolEntry("checkDirectories", consistencyPara.checkDirectories);
 	consistencyPara.checkDoubles		= cfg->readBoolEntry("checkDoubles", consistencyPara.checkDoubles);
-	consistencyPara.checkFilenames		= cfg->readBoolEntry("checkFilenames", consistencyPara.checkFilenames);
+	consistencyPara.ignoreCaseInFilenames = cfg->readBoolEntry("ignoreCaseInFilenames", consistencyPara.ignoreCaseInFilenames);
+    consistencyPara.checkFilenames		= cfg->readBoolEntry("checkFilenames", consistencyPara.checkFilenames);
 	consistencyPara.checkForExistence	= cfg->readBoolEntry("checkForExistence", consistencyPara.checkForExistence);
 	consistencyPara.checkTags			= cfg->readBoolEntry("checkTags", consistencyPara.checkTags);
 	consistencyPara.correctDirectories	= cfg->readBoolEntry("correctDirectories", consistencyPara.correctDirectories);
