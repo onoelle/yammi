@@ -117,7 +117,7 @@ public:
   void      saveState(QSessionManager& sm);
 
 protected:
-  
+  bool      isScanning;
   void      songChange(Song* lastSong, QString newFile);
   void      readSettings();
   void      writeSettings();

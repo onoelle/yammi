@@ -35,17 +35,19 @@ void FolderGroups::update(MyList* allSongs, int sortBy)
 		delete(toDelete);
 	}
 	
-	// init folder Groups/Artists
-	allSongs->setSortOrderAndSort(sortBy);
+	// set sort order for grouping
+	allSongs->setSortOrderAndSort(sortBy, true);
 	
 	QString last("xxxyyy");
 	int count=0;
 	int groupCount=0;
 	bool same=false;
-	for(Song* s=allSongs->firstSong(); s; s=allSongs->nextSong()) {
+  int index=0;
+	for(Song* s=allSongs->firstSong(); s; s=allSongs->nextSong(), index++) {
     QString next;
-		if(sortBy==MyList::ByArtist)
+		if(sortBy==MyList::ByArtist) {
       next=s->artist;
+    }
 		if(sortBy==MyList::ByAlbum)
 			next=s->album;
 		if(sortBy==MyList::ByGenre)

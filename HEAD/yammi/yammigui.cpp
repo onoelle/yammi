@@ -95,6 +95,7 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
 	model->readCategories();						// read categories
 	model->readHistory();								// read history
 	folderAutoplay=0;
+  isScanning=false;
 
 	// set up gui
 	//****************************
@@ -566,11 +567,11 @@ void YammiGui::updateListViewColumns(Folder* oldFolder, Folder* newFolder)
 	songListView->addColumn( "Track", 40);
 	songListView->setColumnAlignment( offset+5, Qt::AlignRight );
 	songListView->addColumn( "Genre", 40);
-	songListView->setColumnAlignment( offset+5, Qt::AlignRight );
+//	songListView->setColumnAlignment( offset+6, Qt::AlignRight );
 	songListView->addColumn( "Added to", 60);
-	songListView->setColumnAlignment( offset+6, Qt::AlignRight );
-	songListView->addColumn( "Bitrate", 40);
 	songListView->setColumnAlignment( offset+7, Qt::AlignRight );
+	songListView->addColumn( "Bitrate", 40);
+	songListView->setColumnAlignment( offset+8, Qt::AlignRight );
 	songListView->addColumn( "Filename", 80);
 	songListView->addColumn( "Path", 80);
 	songListView->addColumn( "Comment", 100);
@@ -2100,7 +2101,11 @@ void YammiGui::songSliderMoved()
  */
 void YammiGui::onTimer()
 {	
-//	cout << "calling onTimer\n";
+  if(isScanning) {
+    // we don't want to perform any update actions while Yammi is scanning...
+    return;
+  }
+  
 	// perform these actions only if player is playing or paused
 	if(player->getStatus()!=STOPPED) {
   	
@@ -2625,9 +2630,11 @@ void YammiGui::updateSongDatabase(QString scanDir, QString filePattern, QString 
 	progress.setAutoReset(false);
   progress.setProgress(0);
 	qApp->processEvents();
-	
+
+  isScanning=true;
 	model->updateSongDatabase(scanDir, filePattern, media, &progress);
   cout << "debug info: updating view...\n";
+  
 	updateView();
   cout << "debug info: updating folder problematic...\n";
 	folderProblematic->update(&model->problematicSongs);
@@ -2640,6 +2647,10 @@ void YammiGui::updateSongDatabase(QString scanDir, QString filePattern, QString 
   msg+=QString("%1 entries updated\n").arg(model->entriesUpdated);
   msg+=QString("%1 entries deleted\n").arg(model->entriesDeleted);
 	QMessageBox::information( this, "Yammi", msg, "Fine." );
+
+  // TODO: check update actions after scanning...without danger? (=> don't need to stop xmms?)
+//  player->syncPlayer2Yammi(folderActual);
+  isScanning=false;
 
 /*
 TODO: show most recently added songs in songlist

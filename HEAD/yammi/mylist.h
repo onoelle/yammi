@@ -49,7 +49,7 @@ public:
 	
 	int				compareItems( QCollection::Item item1, QCollection::Item item2);
 	int				myCompare(Song* song1, Song* song2, int sortBy);
-	void			setSortOrderAndSort(int newSortOrder);
+	void			setSortOrderAndSort(int newSortOrder, bool sortAnyway=false);
 
 	
 	static const int ByTitle=1;

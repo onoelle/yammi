@@ -102,9 +102,9 @@ Song* MyList::getSongByKey(QString artist, QString title, QString album)
 }
 
 // set the sort order and sort if sort order changed
-void MyList::setSortOrderAndSort(int newSortOrder)
+void MyList::setSortOrderAndSort(int newSortOrder, bool sortAnyway)
 {
-	if(sortOrder!=newSortOrder) {
+	if(sortOrder!=newSortOrder || sortAnyway) {
 		sortOrder=newSortOrder;
 		sort();
 	}

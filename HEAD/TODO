@@ -1,6 +1,6 @@
 TODO
 ----
-last update 10.12.2002
+last update 12.12.2002
 
 
 KNOWN BUGS
@@ -20,6 +20,7 @@ for release 0.7.1
 -----------------
 - on deleting a song: delete in *all* lists (history, categories, ...)
 
+- add to consistency check: update option for re-reading layer/tag info from existing songs
 - test jukebox functionality
 - check: failing to load a media => crash? (tom)
 - menu entry for inserting a song into a new category (tom)
