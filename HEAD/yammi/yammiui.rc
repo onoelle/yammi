@@ -77,7 +77,6 @@
 </ToolBar>
 
 <Menu name="song_popup">
-  <Action name="info_selected"/>
   <Separator/>
   <Menu name="play_enqueue"><text>Play/Enqueue</text>
     <Action name="append_selected"/>
@@ -90,10 +89,7 @@
     <Action name="prelisten_middle"/>
     <Action name="prelisten_end"/>
   </Menu>
-  <Menu name="advanced"><text>Advanced...</text>
-    <Action name="check_consistency"/>
-    <Action name="delete_selected"/>
-  </Menu>
+  <Action name="info_selected"/>
   </Menu>
   <Menu name="goto"><text>Go to folder...</text>
     <Action name="goto_artist_folder"/>
@@ -105,6 +101,10 @@
     <Action name="search_similar_artist"/>
     <Action name="search_similar_title"/>
     <Action name="search_similar_album"/>
+  </Menu>
+  <Menu name="advanced"><text>Advanced...</text>
+    <Action name="check_consistency"/>
+    <Action name="delete_selected"/>
   </Menu>
 </Menu>
 

@@ -83,9 +83,7 @@ YammiGui::YammiGui(QString baseDir) : KMainWindow( )
 //FIXME Warning!!!! gYammiGui is (should) be set in main, but there are calls in *this* constructor 
 // that rely on the variable pointing to the yammi instance.. since the variable in main gets assigned
 // after the constructor has finished, we need to do this here, until the code is cleaned up
-	gYammiGui = this;
-//	setIcon(QPixmap(yammiicon_xpm));
-	
+	gYammiGui = this;	
 	currentSong=0;
 	chosenFolder=0;
 	
@@ -594,7 +592,6 @@ void YammiGui::updateView(bool startup)
     // this might be only necessary on startup?
     folderActual->update(model->songsToPlay);
     folderCategories->update(model->allCategories, model->categoryNames);
-    updateSongPopup();
     folderMedia->update(&(model->allSongs));
   }
 
@@ -811,19 +808,20 @@ void YammiGui::setPreferences()
 
 
 /**
- * Updates the popup-menu for songs, especially available categories
+ * Updates the popup-menu for songs wrt. available categories and plugins
  * TODO: xmlui
  */
 void YammiGui::updateSongPopup()
 {
   songPopup = (QPopupMenu *)factory()->container("song_popup", this);
+  songPopup->insertItem( "", 113, 0);
 
   playListPopup = new QPopupMenu();
 	playListPopup->insertItem(QIconSet( QPixmap(newCategory_xpm)), i18n("New Category..."), this, SLOT(toCategory(int)), 0, 9999);
 	for(unsigned int i=0; i<model->categoryNames.count(); i++) {
 		playListPopup->insertItem(QIconSet( QPixmap(in_xpm)), model->categoryNames[i], this, SLOT(toCategory(int)), 0, 10000+i);
 	}
-	songPopup->insertItem( i18n("Insert Into/Remove From..."), playListPopup, -1, 3);
+	songPopup->insertItem( i18n("Insert Into/Remove From..."), playListPopup, -1, -1);
 
 	pluginPopup = new QPopupMenu(songPopup);
 	for(unsigned int i=0; i<model->config.pluginMenuEntry.count(); i++) {
@@ -845,8 +843,9 @@ void YammiGui::updateSongPopup()
 //	songSearchPopup->insertItem( i18n("Album"), this, SLOT(searchSimilar(int)), 0, 1003);
 //	songPopup->insertItem( i18n("Search for similar..."), songSearchPopup);
 
-	if(model->config.childSafe)
+	if(model->config.childSafe) {
 		return;
+  }
 
 	songAdvancedPopup = new QPopupMenu(songPopup);
 //	songAdvancedPopup->insertItem(getPopupIcon(Song::Delete), i18n("Delete..."), this, SLOT(forSelection(int)), 0, Song::Delete);
@@ -1088,6 +1087,7 @@ void YammiGui::searchFieldChanged()
 	for(; noResults<model->config.searchMaximumNoResults && bme[noResults] && bme[noResults]->sim>(model->config.searchThreshold*10); noResults++) {
 		searchResults.append( new SongEntryInt2 ((Song*)bme[noResults]->objPtr, bme[noResults]->sim) );
 	}
+  folderSearchResults->updateTitle();
   folderContentChanged(folderSearchResults);
   if(chosenFolder!=folderSearchResults) {
     // we better reset these settings to not confuse the user with his own changes
@@ -1293,9 +1293,6 @@ void YammiGui::doSongPopup(QPoint point)
 /// adjust SongPopup corresponding to <selectedSongs>
 void YammiGui::adjustSongPopup()
 {
-  // TODO: do we really want to take this item for showing the title?
-  KAction* songTitel = actionCollection()->action("info_selected");
-
 	int selected=selectedSongs.count();
   QString label;
  	Song* first=selectedSongs.firstSong();
@@ -1305,10 +1302,7 @@ void YammiGui::adjustSongPopup()
 	else {
 		label=first->displayName();
   }
-  if(songTitel!=0) {
-    songTitel->setText(label);
-  }
-//  songPopup->changeItem ( 113, label);
+  songPopup->changeItem ( 113, label);
 
 /*
   songGoToPopup->changeItem( 2001, first->artist);
@@ -3378,7 +3372,6 @@ void YammiGui::saveState(QSessionManager& sm )
 
 void YammiGui::commitData(QSessionManager& sm )
 {
-  cout << "commitData() called\n";
   if ( sm.allowsInteraction() ) {
     if(model->allSongsChanged() || model->categoriesChanged()) {
       QString msg=i18n("Save changes?\n\n");

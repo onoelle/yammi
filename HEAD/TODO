@@ -1,6 +1,6 @@
 TODO
 ----
-last update 6.1.2004
+last update 26.1.2004
 
 - clean up the content of this file!!!
 
@@ -9,7 +9,8 @@ for version 1.2
 ---------------
 main purpose: clean up, so other people can more easily contribute to the project
 
-- check KActions (eg: context menu: song info)
+- check KActions
+- fix: updateSongPopup inserts the menu items another time after an update
 - implement moving files
 
 - check conformance to kde standards, such as:
@@ -24,13 +25,13 @@ main purpose: clean up, so other people can more easily contribute to the projec
 - check all TODOs
 - make proposed filename change while you change things
 - fix song info for multiple songs
+- make mpg123 and ogg123 configurable?
+- fix rmb menu on songs/folders
 
 for version 1.0.1
 -----------------
 - check again: crash on clearing playlist including currently played song?
-- check sorting after "added to": incorrect sort order?
 - check skip backward functionality & filling up songPlayed list!!!
-- review translation capability (put translation files into /usr/share/...?)
 - if you start yammi, while xmms has a song in its play list and then enqueue
   and play a song in yammi, the song previously played in xmms is played instead.
 - deal with "unplayable files" (pictures, texts) in playlist (dequeue on 2. position?)
@@ -39,6 +40,7 @@ for version 1.0.1
 
 later...
 --------
+- add new plugin types: "on song played", "after song played"
 - extend consistency check to not only rename, but also move files within certain folder structure
 - rating of tracks
 - subfolders
