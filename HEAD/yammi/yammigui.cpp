@@ -160,6 +160,13 @@ YammiGui::YammiGui(QString baseDir)
   settingsMenu->insertItem( "Configure Yammi...",  this, SLOT(setPreferences()));
 	mainMenu->insertItem( "&Settings", settingsMenu );
 
+  // playlist menu
+  QPopupMenu* playlistMenu = new QPopupMenu;
+  playlistMenu->insertItem( "Switch to/from Playlist...",  this, SLOT(toFromPlaylist()));
+  playlistMenu->insertItem( "Clear Playlist...",  this, SLOT(clearPlaylist()));
+  playlistMenu->insertItem( "Shuffle Playlist...",  this, SLOT(shufflePlaylist()));
+	mainMenu->insertItem( "&Playlist", playlistMenu );
+
   // autoplay menu
   autoplayMenu = new QPopupMenu;
   autoplayMenu->insertItem( "Off",  this, SLOT(autoplayChanged(int)), 0, AUTOPLAY_OFF);
@@ -235,15 +242,15 @@ YammiGui::YammiGui(QString baseDir)
   toolBar2->setLabel( "Song Actions" );
 
 	// now all the buttons that correspond to context menu entries
-	new QToolButton (QPixmap(enqueue_xpm), "Enqueue at end (F5)", QString::null,
+  new QToolButton (QPixmap(enqueue_xpm), "Enqueue at end (F5, SHIFT-F5 for random order)", QString::null,
                            this, SLOT(forAllSelectedEnqueue()), toolBar2);
-	new QToolButton (QPixmap(enqueueasnext_xpm), "Enqueue as next (F6)", QString::null,
+	new QToolButton (QPixmap(enqueueasnext_xpm), "Enqueue as next (F6, SHIFT-F6 for random order)", QString::null,
                            this, SLOT(forAllSelectedEnqueueAsNext()), toolBar2);
 	new QToolButton (QPixmap(playnow_xpm), "Play now (F7 / SHIFT-F7)", QString::null,
                            this, SLOT(forAllSelectedPlayNow()), toolBar2);
 	new QToolButton (QPixmap(dequeueSong_xpm), "Dequeue Song (F8)", QString::null,
                            this, SLOT(forAllSelectedDequeue()), toolBar2);
-	new QToolButton (QPixmap(dequeueAll_xpm), "Clear playlist (CTRL-F8)", QString::null,
+	new QToolButton (QPixmap(dequeueAll_xpm), "Clear playlist (SHIFT-F8)", QString::null,
                            this, SLOT(clearPlaylist()), toolBar2);
 	new QToolButton (QPixmap(prelisten_xpm), "Prelisten (start) (F9)", QString::null,
                            this, SLOT(forAllSelectedPrelistenStart()), toolBar2);
@@ -509,7 +516,6 @@ YammiGui::~YammiGui()
  */
 void YammiGui::updatePlaylist()
 {
-  cout << "updatePlaylist called\n";
   // prepare: stop user dragging action if necessary
   if(songListView->dragging) {
     stopDragging();
@@ -860,11 +866,13 @@ void YammiGui::updateSongPopup()
 	
 	songPlayPopup = new QPopupMenu(songPopup);
 	
-	songPlayPopup->insertItem(getPopupIcon(Enqueue), "...Enqueue", this, SLOT(forSelection(int)), 0, Enqueue);		
-	songPlayPopup->insertItem(getPopupIcon(EnqueueAsNext), "...Play as next", this, SLOT(forSelection(int)), 0, EnqueueAsNext);
+	songPlayPopup->insertItem(getPopupIcon(Enqueue), "...Enqueue", this, SLOT(forSelection(int)), 0, Enqueue);
+	songPlayPopup->insertItem(getPopupIcon(EnqueueRandom), "...Enqueue (random)", this, SLOT(forSelection(int)), 0, EnqueueRandom);
+	songPlayPopup->insertItem(getPopupIcon(EnqueueAsNext), "...Enqueue as next", this, SLOT(forSelection(int)), 0, EnqueueAsNext);
+	songPlayPopup->insertItem(getPopupIcon(EnqueueAsNextRandom), "...Enqueue as next (random)", this, SLOT(forSelection(int)), 0, EnqueueAsNextRandom);
 	songPlayPopup->insertItem(getPopupIcon(PlayNow), "...Play now!", this, SLOT(forSelection(int)), 0, PlayNow);
 	songPlayPopup->insertItem(getPopupIcon(Dequeue), "...Dequeue", this, SLOT(forSelection(int)), 0, Dequeue);
-	songPopup->insertItem( "Play...", songPlayPopup);
+	songPopup->insertItem( "Play/Enqueue...", songPlayPopup);
 	
 	if(model->config.secondSoundDevice!="") {
 		songPrelistenPopup = new QPopupMenu(songPopup);
@@ -887,11 +895,10 @@ void YammiGui::updateSongPopup()
 		return;
 	
 	songAdvancedPopup = new QPopupMenu(songPopup);
-	songAdvancedPopup->insertItem( "Delete...", this, SLOT(forSelection(int)), 0, Delete);
-	songAdvancedPopup->insertItem( "Move file to...", this, SLOT(forSelection(int)), 0, MoveTo);
-	songAdvancedPopup->insertItem( "Check Consistency", this, SLOT(forSelection(int)), 0, CheckConsistency);
-	songAdvancedPopup->insertItem( "Burn to Media...", this, SLOT(forSelection(int)), 0, BurnToMedia);
-//	songAdvancedPopup->insertItem( "Autoplay", this, SLOT(forSelection(int)), 0, AutoPlay);
+	songAdvancedPopup->insertItem(getPopupIcon(Delete), "Delete...", this, SLOT(forSelection(int)), 0, Delete);
+	songAdvancedPopup->insertItem(getPopupIcon(MoveTo), "Move file to...", this, SLOT(forSelection(int)), 0, MoveTo);
+	songAdvancedPopup->insertItem(getPopupIcon(CheckConsistency), "Check Consistency", this, SLOT(forSelection(int)), 0, CheckConsistency);
+	songAdvancedPopup->insertItem(getPopupIcon(BurnToMedia), "Burn to Media...", this, SLOT(forSelection(int)), 0, BurnToMedia);
 	songPopup->insertItem( "Advanced...", songAdvancedPopup);
 	
 	
@@ -1997,6 +2004,24 @@ void YammiGui::forSelection(action act)
 	}
 
 	
+	if(act==EnqueueAsNext) {
+    // reverse the order, to get intended play order
+    selectedSongs.reverse();
+  }
+  if(act==EnqueueRandom) {
+    selectedSongs.shuffle();
+    act=Enqueue;
+  }
+  if(act==EnqueueAsNextRandom) {
+    selectedSongs.shuffle();
+    act=EnqueueAsNext;
+  }
+  if(act==PlayNow) {
+    // reverse the order, but keep first song
+    SongEntry* first=selectedSongs.take(0);
+    selectedSongs.reverse();
+    selectedSongs.prepend(first);
+  }
 	
 	// OKAY: go through list of songs
 	for(Song* s=selectedSongs.firstSong(); s; s=selectedSongs.nextSong()) {
@@ -2366,6 +2391,25 @@ void YammiGui::pluginOnFolder()
 
 
 
+/// clear all playlist items except currently played song
+void YammiGui::shufflePlaylist()
+{
+  if(model->songsToPlay.count()<=1) {
+    // shuffling 0 or 1 song does not make too much sense...
+    return;
+  }
+  Song* firstSong=0;
+  if(player->getStatus()!=STOPPED) {
+    firstSong=model->songsToPlay.take(0)->song();
+  }
+  model->songsToPlay.shuffle();
+  if(firstSong!=0) {
+    model->songsToPlay.prepend(new SongEntryInt(firstSong, 0));
+  }
+  folderActual->correctOrder();
+  folderContentChanged(folderActual);
+  player->syncYammi2Player(false);
+}
 
 
 /// clear all playlist items except currently played song
@@ -2659,10 +2703,20 @@ void YammiGui::keyPressEvent(QKeyEvent* e)
       player->stop();
 			break;
 		case Key_F5:
-			forAllSelected(Enqueue);
+			if(shiftPressed) {
+        forAllSelected(EnqueueRandom);
+      }
+      else {
+        forAllSelected(Enqueue);
+      }
 			break;
 		case Key_F6:
-			forAllSelected(EnqueueAsNext);
+			if(shiftPressed) {
+        forAllSelected(EnqueueAsNextRandom);
+      }
+      else {
+        forAllSelected(EnqueueAsNext);
+      }
 			break;
 		case Key_F7:
  			forAllSelected(PlayNow);

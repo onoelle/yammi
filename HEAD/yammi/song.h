@@ -42,12 +42,12 @@ using namespace std;
 #endif
 
 // all possible actions for a single or a selection of songs
-// caution: corresponds to the static songAction field in Song
-enum action {	None, Enqueue, EnqueueAsNext, PlayNow, SongInfo,
+// caution: corresponds to the static songAction field in class Song (song.cpp)
+enum action {	None, Enqueue, EnqueueRandom, EnqueueAsNext, EnqueueAsNextRandom, PlayNow, SongInfo,
 							PrelistenStart, PrelistenMiddle, PrelistenEnd,
 							Delete, DeleteFile, DeleteEntry,
 							CheckConsistency, MoveTo,
-							Dequeue, BurnToMedia, AutoPlay
+							Dequeue, BurnToMedia
 };
 
 #define MAX_SONG_ACTION 17

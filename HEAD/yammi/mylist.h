@@ -24,10 +24,11 @@
 
 
 /**
- * This class extends QPtrList (with fixed type <SongEntry>)
- * enables sorting
- * enables adding/removing/searching SongEntry or Song types...
- * otherwise, use exactly as QPtrList<SongEntry>
+ * This class extends QPtrList (with fixed type <SongEntry>).
+ * It can be used everytime when you need to deal with a collection of songs/song entries.
+ * - enables sorting
+ * - enables adding/removing/searching SongEntry or Song types...
+ * Otherwise, use exactly as QPtrList<SongEntry>.
 */
 class MyList : public QPtrList<SongEntry> {
 
@@ -38,9 +39,6 @@ public:
 	Song*			firstSong();
 	Song*			nextSong();
 	Song*			prevSong();
-//	Song*			currentSong();
-//	uint			atSong();
-//	Song*			atSong( uint );
 
 	void			appendSong(Song* s);					// appends <s> as simple SongEntry
 	void			removeSong(Song* toDelete);		// removes all occurences of SongEntry with pointer to <toDelete>
@@ -52,7 +50,8 @@ public:
 	int				myCompare(Song* song1, Song* song2, int sortBy);
   int       getSortOrder() { return sortOrder; }
   void			setSortOrderAndSort(int newSortOrder, bool sortAnyway=false);
-
+  void      reverse();
+  void      shuffle();
 	
 	static const int ByTitle=1;
 	static const int ByArtist=2;

@@ -160,7 +160,8 @@ bool Prefs::loadConfig(void)
 	if(prefsVersion != yammiVersion) {
 		QMessageBox::information(gYammiGui, QObject::tr("Yammi"),
 			QObject::tr("Reading preferences from an other version of Yammi\n"
-			   "Normally this does not create any problems, if unsure check settings!"),
+         "In Yammi 0.8.2, the default action configuration\n(eg. for double click) has slightly changed...\n"
+			   "...please check your settings!"),
 			QMessageBox::Ok, 0, 0);
   }
 	trashDir                     = getProperty(doc, "trashDir", trashDir);

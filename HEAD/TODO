@@ -1,6 +1,6 @@
 TODO
 ----
-last update 25.4.2003
+last update 5.5.2003
 
 
 
@@ -18,6 +18,8 @@ user feedback via email:
 0.8.2
 -----
 - song length <5s: noatun stops playing
+- no crossfading with noatun: noatun stops
+- check: moving songs in playlist not possible (on Mandrake?)
 - remove/replace "current" button?
 - {wish} in playlist: noatun stops playing
 - view menu: hide some columns
@@ -25,11 +27,13 @@ user feedback via email:
 - removing a song from playlist: only remove this one (idea: function "removeDuplicates" for playlist?)
 - update database: select a single file
 - make configurable/auto-detected forbidden characters: http://osdev.berlios.de/osd-fs.html
+- preserve file permissions?
 
 1.0
 ---
 - polish GUI... (esp. the "butt ugly" icons?)
 - on deleting a song: delete in *all* lists (history, categories, ...)
+- write little random(int range) method?
 - plugin: publish a sample plugin (echo...) with all replacements
 - document command line option: baseDir in handbook
 - extensive testing with new user!!!

@@ -1,5 +1,5 @@
 ########################
-01.05.2003??? version 0.8.2
+??11.05.2003 version 0.8.2
 - "longest not played" now chooses randomly from the candidate songs (if more than one song with same timestamp)
 - switch to/from playlist with toolbutton or keyboard (CTRL-P)
 - patch from Stefan applied (cleaning up and probably fixing some memory leaks)
@@ -12,6 +12,10 @@
 - dialog for clearing playlist improved
 - check for existing file on grabAndEncode
 - changed the executable in the grabAndEncode script from "notlame" to "lame" (as this is the executable on my system)
+- fixed writing ogg tag album ("testing album" bug)
+- fixed behavior (song order) when using EnqueueAsNext/PlayNow on more than one song
+- added EnqueueRandom and EnqueueAsNextRandom (enqueue with a random order of songs)
+- added "Shuffle Playlist" as an item into new menu "Playlist"
 
 ########################
  version 0.8.1

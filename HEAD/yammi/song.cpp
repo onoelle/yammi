@@ -745,7 +745,7 @@ bool Song::setOggTags(QString filename)
 
   // album
   if( album!="" ) {
-    string  = g_strconcat("album=", "testing album", NULL);
+    string  = g_strconcat("album=", album.latin1(), NULL);
     vorbis_comment_add(vc, string);
     g_free(string);
   }
@@ -773,7 +773,7 @@ bool Song::setOggTags(QString filename)
 
   if( genreNr!=-1) {
     QString genreStr=CMP3Info::getGenre(genreNr);
-    cout << "genre as string: " << genreStr << "\n";
+//    cout << "genre as string: " << genreStr << "\n";
     string  = g_strconcat("genre=", genreStr.latin1(), NULL);
     vorbis_comment_add(vc, string);
     g_free(string);
@@ -1212,11 +1212,11 @@ void Song::moveTo(QString dir)
 
 QString Song::getSongAction(int index)
 {
-  const char* songAction[] = {"None", "Enqueue", "EnqueueAsNext", "PlayNow", "SongInfo",
+  const char* songAction[] = {"None", "Enqueue", "EnqueueRandom", "EnqueueAsNext", "EnqueueAsNextRandom", "PlayNow", "SongInfo",
 							"PrelistenStart", "PrelistenMiddle", "PrelistenEnd",
 							"Delete", "DeleteFile", "DeleteEntry",
 							"CheckConsistency", "MoveTo",
-							"Dequeue", "BurnToMedia", "AutoPlay" };
+							"Dequeue", "BurnToMedia" };
   if(index<=MAX_SONG_ACTION)
     return QString(songAction[index]);
   else

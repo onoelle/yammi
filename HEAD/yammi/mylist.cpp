@@ -196,3 +196,39 @@ int MyList::myCompare(Song* song1, Song* song2, int sortBy)
 	return 0;
 }
 
+/**
+ * Reverses the order of all entries in this list.
+ */
+void MyList::reverse()
+{
+  int noItems=count();
+  for(int i=0; i<noItems; i++) {
+    SongEntry* entry=take(i);
+    prepend(entry);
+  }
+}
+
+/**
+ * Shuffles the order of all entries in this list.
+ */
+void MyList::shuffle()
+{
+  // 1. copy all items to a temp list
+  MyList tempList;
+  while(!isEmpty()) {
+    tempList.append(take(0));
+  }
+
+  while(!tempList.isEmpty()) {
+    int songsLeft=tempList.count();
+    // create random number
+    QDateTime dt = QDateTime::currentDateTime();
+    QDateTime xmas( QDate(2050,12,24), QTime(17,00) );
+    int chosen=(dt.secsTo(xmas) + dt.time().msec()) % songsLeft;
+    if(chosen<0) {
+      chosen=-chosen;
+    }
+    append(tempList.take(chosen));
+  }
+}
+

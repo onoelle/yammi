@@ -279,7 +279,9 @@ protected slots:
   void          finishInitialization();
 
 	void				  forAllSelectedEnqueue()            { forAllSelected(Enqueue); }
+	void				  forAllSelectedEnqueueRandom()      { forAllSelected(EnqueueRandom); }
 	void				  forAllSelectedEnqueueAsNext()      { forAllSelected(EnqueueAsNext); }
+	void				  forAllSelectedEnqueueAsNextRandom(){ forAllSelected(EnqueueAsNextRandom); }
 	void				  forAllSelectedPlayNow()            { forAllSelected(PlayNow); }
 	void				  forAllSelectedPrelistenStart()     { forAllSelected(PrelistenStart); }
 	void				  forAllSelectedPrelistenMiddle()    { forAllSelected(PrelistenMiddle); }
@@ -288,6 +290,7 @@ protected slots:
 	void				  forAllSelectedSongInfo()           { forAllSelected(SongInfo); }
   void				  preListen(Song* s, int skipTo);  ///< sends the song to headphones
   void				  stopPrelisten();
+  void          shufflePlaylist();
   void          clearPlaylist();
   void          toFromPlaylist();
   void          saveColumnSettings();
