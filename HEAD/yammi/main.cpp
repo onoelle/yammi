@@ -18,11 +18,7 @@
 
 
 
-static KCmdLineOptions options[] =
-{
-	KCmdLineLastOption
-};
-
+static KCmdLineOptions options[] = { { "d <dir>", I18N_NOOP("specifies location of .yammi dir (defaults to user home)"), 0 } };
 static const char description[] =   I18N_NOOP("Yammi - Yet Another Music Manager I...");
 static const char version[] = "1.1";
 
@@ -60,12 +56,20 @@ int main( int argc, char **argv )
                      KAboutData::License_GPL, "(C) 2001-2003 by Oliver Nölle", build_opts + "\n\n\nhave fun...", "http://yammi.sourceforge.net", "yammi-developer@lists.sourceforge.net");
 
 	KCmdLineArgs::init(argc, argv, &about);
-	KCmdLineArgs::addCmdLineOptions( options );
+  KCmdLineArgs::addCmdLineOptions( options );
 	KApplication app;
 	KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
 
-	QDir d = QDir::home( );
-  QString baseDir=d.absPath();
+  QString baseDir;
+  QCString dir=args->getOption("d");
+  if(dir!=0) {
+    baseDir=dir;
+  }
+  else {
+    QDir d = QDir::home( );
+    baseDir=d.absPath();
+  }
+    
 
   gYammiGui = new YammiGui(baseDir);
   app.setMainWidget( gYammiGui );

@@ -25,12 +25,14 @@ AC_ARG_PROGRAM
 dnl Automake doc recommends to do this only here. (Janos)
 AM_INIT_AUTOMAKE(yammi,1.1)
 
+KDE_SET_PREFIX
+
 dnl for non KDE applications
-AC_PREFIX_DEFAULT(/usr/local)
-if test "x$prefix" = "xNONE"; then
-  prefix=$ac_default_prefix
-  ac_configure_args="$ac_configure_args --prefix $prefix"
-fi
+dnl AC_PREFIX_DEFAULT(/usr/local)
+dnl if test "x$prefix" = "xNONE"; then
+dnl   prefix=$ac_default_prefix
+dnl   ac_configure_args="$ac_configure_args --prefix $prefix"
+dnl fi
 
 dnl generate a header that will have all the
 dnl #defines for conditional compilation
@@ -180,8 +182,6 @@ if test "x$configure_enable_xmms" = "xyes"; then
     AC_DEFINE( [ENABLE_XMMS], [1] )
 fi
 
-
-dnl Noatun support (for proper kde app: add "-lkdeui -lkio ")
 
 dnl ---------------------
 dnl end of library checks
