@@ -6,6 +6,7 @@
 - fixed the sorting bug when hiding columns
 - added a "Go to folder..." functionality in song context menu to quickly go to corresponding album/artist/genre folder
 - added a "Load .m3u into category" menu entry with the corresponding functionality
+- fixed a bug when invoking "Play now" on multiple songs (first songs were not enqueued)
 
 ########################
 14.05.2003 version 0.8.2

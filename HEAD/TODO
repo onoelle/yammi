@@ -1,6 +1,6 @@
 TODO
 ----
-last update 10.7.2003
+last update 13.7.2003
 
 
 user wishes:
@@ -12,7 +12,6 @@ user wishes:
 
 for version 1.0-rc1
 -------------------
-- playnow/enqueueasnext: for multiple songs/empty playlist... sometimes looses the first songs!
 - check for existence of directory categories when saving categories
 - integrate AM_XMMS macro from configure.in_orig
 - update database: allow to select file/m3u/directory
@@ -33,6 +32,7 @@ for version 1.0
 
 later...
 --------
+- history of visited folders + "go back" button
 - any ripping plugin? have a look at existing ripping programs suitable to be called as plugin
 - xml export plugin?
 - "rescan tags"-button in song info dialog or in consistency check?
@@ -63,9 +63,6 @@ even later...
   - skip forward/backward when stopped
 - fix: two albums having the same name appear as one album (heuristic: same album if in same dir?)
 - page up and down keys don't work after searching
-- load m3u files into a category
-- wrongly calculated song length for some songs, VBR? (tom, 8.12., )
-- evaluate TCON TTIT1 frame (tom, 8.12.)
 - use QProcess instead of system() calls? (prelisten, xmms, noatun, shutdownscript, ...)
 
 - cleanup
@@ -76,10 +73,8 @@ even later...
 - speed up loading of categories? (binary search)
 - xmms lock file?  => not easy to determine whether xmms is running or just lock file present
   maybe start xmms with QProcess?
-- incorrect track numbers if track number not present (tom) => maybe problem of old id3lib?
 - simplify {wish} system: (make every entry with empty filename (no media) a wish?
 - playing songs not contained in Yammi's database might confuse yammi (noatun/xmms)
-- new icon set for song actions (enqueue, playnow, ...)
 - split left tree into two lists: automatic folders and user folders?
 - stopping prelistening: cleaner approach with QProcess???
 - saveFilename/renaming of file in song.cpp

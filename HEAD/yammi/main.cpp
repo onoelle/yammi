@@ -60,7 +60,7 @@ int main( int argc, char **argv )
   cout << "trying to load translation file " << filename << " in directory " << yammiBaseDir << "\n";
   bool success=translator.load(filename , yammiBaseDir);
   if(!success) {
-    cout << "translation file not found, probably using english version\n";
+    cout << "translation file not found, using english...\n";
   }
   application.installTranslator( &translator );
   

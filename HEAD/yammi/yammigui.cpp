@@ -1500,8 +1500,11 @@ void YammiGui::adjustSongPopup()
 	songPopup->changeItem ( 113, label);
 
   songGoToPopup->changeItem( 2001, first->artist);
+  songGoToPopup->setItemEnabled(2001, getFolderByName(first->artist)!=0);
   songGoToPopup->changeItem( 2002, first->artist+" - "+first->album);
+  songGoToPopup->setItemEnabled(2002, getFolderByName(first->artist+" - "+first->album)!=0);
   songGoToPopup->changeItem( 2003, CMP3Info::getGenre(first->genreNr));
+  songGoToPopup->setItemEnabled(2003, getFolderByName(CMP3Info::getGenre(first->genreNr))!=0);
   	
 	// for each category: determine whether first song contained or not
 	// we don't check whether all selected songs are contained, just first
@@ -2188,7 +2191,8 @@ void YammiGui::forSelection(action act)
 	// 1. destination directory
 	QString dir;
 	if(act==MoveTo) {
-		// let user choose directory (we should provide a starting directory???)
+		// let user choose directory
+    QString startPath=selectedSongs.firstSong()->path;
 //#ifdef ENABLE_NOATUN
 //    cout << "trying...\n";
 //    dir=KFileDialog::getOpenFileName(QString("/mm"), QString("*.mp3"), this, QString("yammi"));
@@ -2196,7 +2200,7 @@ void YammiGui::forSelection(action act)
 //      cout << "dir: " << dir << "\n";
 //    return;
 //#else
-		dir=QFileDialog::getExistingDirectory(QString(""), this, QString(tr("yammi")), QString(tr("choose directory")), true);
+		dir=QFileDialog::getExistingDirectory(startPath, this, QString(tr("yammi")), QString(tr("choose directory")), true);
 //#endif    
 		if(dir.isNull())
 			return;
@@ -2249,10 +2253,16 @@ void YammiGui::forSelection(action act)
     act=EnqueueAsNext;
   }
   if(act==PlayNow) {
-    // reverse the order, but keep first song
-    SongEntry* first=selectedSongs.take(0);
-    selectedSongs.reverse();
-    selectedSongs.prepend(first);
+    if(selectedSongs.count()>1) {
+      // do a forSelection(PlayNow) for first song, a forSelection(EnqueueAsNext) for the rest
+      SongEntry* first=selectedSongs.take(0);
+      forSelection(EnqueueAsNext);
+      forSong(first->song(), PlayNow);
+      player->syncYammi2Player(false);
+      folderContentChanged(folderActual);
+      checkPlaylistAvailability();
+      return;  // we are done
+    }
   }
 	
 	// OKAY: go through list of songs
@@ -2304,20 +2314,27 @@ void YammiGui::forSong(Song* s, action act, QString dir)
 		}
 
 		forSong(s, EnqueueAsNext);
+    player->syncYammi2Player(false);
 
     if(player->getStatus()==STOPPED) {
       // case 1: player stopped (this is a bit dirty...)
+      cout << "PlayNow: case a\n";
       player->play();
     }
     else if(player->getStatus()==PAUSED) {
       // case 2: player paused => start playing
       player->skipForward(shiftPressed);
-      player->play();      
+      player->play();
+      cout << "PlayNow: case b\n";      
     }
     else if(player->getStatus()==PLAYING) {
       // case 3: player is playing
       player->skipForward(shiftPressed);
+      cout << "PlayNow: case c\n";
     }
+    // call check() manually so that subsequent enqueue actions are performed
+    // on current playlist and status
+    player->check();
 			
     mainStatusBar->message(QString(tr("playing %1")).arg(s->displayName()), 2000);
 		break;
@@ -2329,12 +2346,15 @@ void YammiGui::forSong(Song* s, action act, QString dir)
 				
 	case EnqueueAsNext: {				// enqueue as next
 		// songsToPlay is empty, or first song is still to play
-		if(model->songsToPlay.count()==0 || currentSong!=model->songsToPlay.at(0)->song())
+		if(model->songsToPlay.count()==0 || currentSong!=model->songsToPlay.at(0)->song()) {
 			model->songsToPlay.insert(0, new SongEntryInt(s, 13));
-		else
+      cout << "EnqueueAsNext: case a\n";
+    }
+		else {
 			model->songsToPlay.insert(1, new SongEntryInt(s, 13));
+      cout << "EnqueueAsNext: case b\n";
+    }
 		folderActual->correctOrder();
-    player->syncYammi2Player(false);      
 		mainStatusBar->message(QString(tr("%1 enqueued as next")).arg(s->displayName()), 2000);
 	}
 		break;

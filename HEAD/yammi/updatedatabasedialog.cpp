@@ -40,7 +40,14 @@ UpdateDatabaseDialog::~UpdateDatabaseDialog()
 void UpdateDatabaseDialog::chooseScanDir()
 {
 	QString dir=QFileDialog::getExistingDirectory(LineEditScanDir->text(), this, QString("yammi"), QString("choose scan directory"), true);
-	if(!dir.isNull()) {
+  if(!dir.isNull()) {
 		LineEditScanDir->setText(dir);
 	}
+/*
+  QFileDialog* fd = new QFileDialog( LineEditScanDir->text(), 0, this, "choose scan directory", true );
+  fd->setMode( QFileDialog::Directory || QFileDialog::ExistingFile );
+  if ( fd->exec() != QDialog::Accepted )
+    return;
+	LineEditScanDir->setText(fd->selectedFile());
+*/
 }

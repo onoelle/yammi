@@ -34,6 +34,7 @@ class MyList : public QPtrList<SongEntry> {
 
 public: 
 	MyList();
+  MyList(MyList* listToCopy);
 	~MyList();
 	
 	Song*			firstSong();
@@ -41,6 +42,7 @@ public:
 	Song*			prevSong();
 
 	void			appendSong(Song* s);					// appends <s> as simple SongEntry
+	void			appendList(MyList* list);			// appends a whole list of song entrys
 	void			removeSong(Song* toDelete);		// removes all occurences of SongEntry with pointer to <toDelete>
 	int				containsSong(Song* lookup);		// returns the number of occurences of the song
   int       containsSelection(MyList* selection);

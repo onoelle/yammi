@@ -507,9 +507,15 @@ void YammiModel::updateSongDatabase(QString scanDir, QString filePattern, QStrin
 		// check that scanDir is an existing directory
 		QDir d(scanDir);
 		if(!d.exists()) {
-      QString msg="The base directory for scanning does not exist!\n";
-      msg+="Set value \"scanDir\" in preferences to an existing directory!";
-      QMessageBox::information( gYammiGui, "Yammi", msg, "Good idea!" );
+      if(QFile::exists(scanDir)) {
+        cout << "file existing!\n";
+        addSongToDatabase(scanDir, mediaName);
+      }
+      else {
+        QString msg="The base directory for scanning does not exist!\n";
+        msg+="Set value \"scanDir\" in preferences to an existing directory!";
+        QMessageBox::information( gYammiGui, "Yammi", msg, "Good idea!" );
+      }
 		}
 		else {
 			traverse(scanDir, filePattern, progress);

@@ -24,9 +24,9 @@
 /**
   *@author Oliver Nölle
   */
-
-class UpdateDatabaseDialog : public UpdateDatabaseDialogBase  {
-   Q_OBJECT
+class UpdateDatabaseDialog : public UpdateDatabaseDialogBase
+{
+  Q_OBJECT
 public: 
 	UpdateDatabaseDialog(QWidget *parent=0, const char *name=0);
 	~UpdateDatabaseDialog();

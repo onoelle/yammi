@@ -30,6 +30,24 @@ MyList::~MyList()
 }
 
 
+MyList::MyList(MyList* listToClone) {
+	sortOrder=ByKey;
+	dirty=false;
+  SongEntry* s=listToClone->first();
+  while(s != 0) {
+    append(s);
+    s=listToClone->next();
+  }
+}
+
+void MyList::appendList(MyList* list) {
+  SongEntry* s=list->first();
+  while(s != 0) {
+    append(s);
+    s=list->next();
+  }  
+}
+
 Song* MyList::firstSong()
 {
 	SongEntry* entry=first();
