@@ -1,7 +1,12 @@
 ??.??.2005 version 1.2
 ######################
 - fixed: artsplayer crash
+- fixed: yammi becoming unresponsive if noatun not available (thanks to Bernhard)
+- fixed: character conversion when reading characters from id3 tags (using fromLocal8Bit on reading tags)
+- fixed: deleting files (moving to trash dir) if moving across partitions (thanks to Bernhard)
+- fixed: deadlock when closing yammi while initialization
 - improved: application icon (thanks to Alessandro)
+
 
 13.12.2004 version 1.2-rc
 #########################

@@ -14,8 +14,10 @@
 #include <config.h>
 #include <kglobal.h>
 #include <kstandarddirs.h>
+#include <qeventloop.h>
 
 #include "yammigui.h"
+
 
 
 
@@ -71,8 +73,10 @@ int main( int argc, char **argv )
 	app.setMainWidget( yammi );
 	yammi->show();
 	// give yammi a chance for a first draw
-	app.processEvents( );
-  
+	//app.processEvents( );
+    app.eventLoop()->processEvents(QEventLoop::ExcludeUserInput);
+    //QApplication::eventLoop()->processEvents( QEventLoop::ExcludeUserInput );
+//     
 	KConfig *cfg = app.config( );
 	if( cfg->getConfigState( ) == KConfig::ReadOnly || cfg->getConfigState( ) == KConfig::ReadWrite)
 	{
