@@ -115,6 +115,7 @@ public:
   bool setId3Tag(ID3_Tag* tag, ID3_FrameID frame, ID3_FieldID field, QString content, ID3_Frame* newFrame);
 
 #endif
+
   // mp3 layer info (does not need id3lib)
   bool getMp3LayerInfo(QString filename);
 

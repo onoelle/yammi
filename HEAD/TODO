@@ -12,6 +12,12 @@ KNOWN BUGS
 - problems with filenames containing "ß"? (problem of qt/linux on fat filesystem?)
 - deleting a song that is currently played, then pressing "current" => crash
 
+for noatun support
+------------------
+on stop: update play/pause icon
+
+swap management: in song: method getFilename() vs. getRealFilename() (fast)???
+
 
 for release 0.7.1
 -----------------

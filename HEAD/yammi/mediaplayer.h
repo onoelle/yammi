@@ -43,6 +43,7 @@ public:
 
 protected:
   PlayerStatus status;
+  PlayerStatus lastStatus;
   YammiModel*   model;        // TODO: can we remove this to make it cleaner?
   MyList* playlist;
 
@@ -66,6 +67,7 @@ public slots:
 
 signals:
   virtual void playlistChanged() = 0;         // should be emitted, if the playlist of player changed (eg. song change)
+  virtual void statusChanged() = 0;           // should be emitted, if status of player changed (eg. play -> pause)
   
 };
 

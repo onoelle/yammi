@@ -85,6 +85,7 @@ bool XmmsPlayer::ensureXmmsIsRunning()
 /**
  * Writes all songs found in xmms playlist to Yammi's playlist.
  * Clears xmms playlist except for the first config.keepInXmms songs.
+ * Only called on Yammi startup.
  */
 void XmmsPlayer::syncPlayer2Yammi(MyList* playlist)
 {
@@ -101,12 +102,16 @@ void XmmsPlayer::syncPlayer2Yammi(MyList* playlist)
 		if(!check)	// song not found in database
 			continue;
     // TODO: we have to append a SongEntryInt!!!
-		playlist->appendSong(check);
+    playlist->append(new SongEntryInt(check, playlist->count()+1));
 	}
 	// 3. delete all but the keepInXmms first songs
 	for(int i=xmms_remote_get_playlist_length(session)-1; i>=model->config.keepInXmms; i--) {
 		xmms_remote_playlist_delete(session, i);
 	}
+
+  playlistChanged();
+  lastStatus=getStatus();
+  statusChanged();  
 }
 
 
@@ -374,6 +379,13 @@ QString XmmsPlayer::getCurrentFile()
 
 void XmmsPlayer::check()
 {
+  // 1. check, whether status has changed
+  PlayerStatus newStatus=getStatus();
+  if(newStatus!=lastStatus) {
+    lastStatus=newStatus;
+    statusChanged();
+  }
+
   if(!xmms_remote_is_playing(session)) {
     // if player stopped and only one song left in playlist, we should probably(?) remove it
     // not too nice and clean, I know...
@@ -381,6 +393,7 @@ void XmmsPlayer::check()
  	    xmms_remote_playlist_delete(session, 0);
       if(playlist->count()>=1) {
         playlist->removeFirst();
+        playlistChanged();
       }
     }
   }

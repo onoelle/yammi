@@ -149,6 +149,8 @@ public slots:
   void				  checkForGrabbedTrack();
 	void				  slotFolderChanged();
   void          songChange();
+  void          updatePlaylist();
+  void          updatePlayerStatus();
   void          selectAll();									  /** selects all in songListView */
   void          invertSelection();							/** inverts selection in songListView */
 

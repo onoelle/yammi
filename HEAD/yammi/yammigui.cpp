@@ -104,7 +104,9 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
     cout << "ERROR: no media player configured, shutting down...\n";
     exit(2);
   }
-
+  // connect player and yammi via signals
+	connect( player, SIGNAL(playlistChanged()), this, SLOT(updatePlaylist()) );
+	connect( player, SIGNAL(statusChanged()), this, SLOT(updatePlayerStatus()) );
 
 
   model->readSongDatabase();					// read song database
@@ -473,6 +475,32 @@ YammiGui::~YammiGui()
 }
 
 
+/**
+ * This slot should be called on changes in the playlist (model->songsToPlay).
+ * eg. signalled by the mediaplayer
+ */
+void YammiGui::updatePlaylist()
+{
+  cout << "updatePlaylist() called\n";
+  folderActual->correctOrder();
+  songChange();
+	if(chosenFolder==folderActual)
+		slotFolderChanged();
+	else
+		songListView->triggerUpdate();
+}
+
+/**
+ * This slot should be called on changes in the player status.
+ * eg. signalled by the mediaplayer
+ */
+void YammiGui::updatePlayerStatus()
+{
+  if(player->getStatus()==PLAYING)
+    tbPlayPause->setIconSet(QIconSet(QPixmap((const char**)pause_xpm)));
+  else
+    tbPlayPause->setIconSet(QIconSet(QPixmap((const char**)play_xpm)));  
+}
 
 
 void YammiGui::writeSettings()
@@ -2158,19 +2186,13 @@ void YammiGui::onTimer()
 	// perform these actions only if player is playing or paused
 	if(player->getStatus()!=STOPPED) {
   	
-		// check whether currently played song has changed
-    QString file=player->getCurrentFile();
-
     // adjust songSlider (if user is not currently dragging it around)
 		int outputTime=player->getCurrentTime();
-		if(!isSongSliderGrabbed && player->getStatus() != PAUSED)
+		if(!isSongSliderGrabbed && player->getStatus() != PAUSED) {
 			songSlider->setValue(outputTime);
+    }
 
-    if(player->getStatus()==PAUSED)
-      tbPlayPause->setIconSet(QIconSet(QPixmap((const char**)play_xpm)));
-    else
-      tbPlayPause->setIconSet(QIconSet(QPixmap((const char**)pause_xpm)));
-    
+    // check for autplay function: fill up playlist?
     if(folderActual->songList->count()<5 && this->folderAutoplay!=0) {
       cout << "not enough songs in playlist, filling up from Autoplay category\n";
       // fill up from autoplay folder
@@ -2186,17 +2208,20 @@ void YammiGui::onTimer()
       folderActual->addSong(folderAutoplay->songList->at(chosen)->song());
     }
 
-                
     // TODO: remove this, and only react to playlistChanged signal from media player?
-    if(currentFile!=file) {
-      songChange(currentSong, file);
-    }
+		// check whether currently played song has changed
+//  QString file=player->getCurrentFile();                
+//  if(currentFile!=file) {
+//    songChange(currentSong, file);
+//  }
+
 	}
 	else {				// player stopped
+/*
     if(songSlider->value()!=0) {
       // player has just stopped
-      songChange(currentSong, "");
-      tbPlayPause->setIconSet(QIconSet(QPixmap((const char**)play_xpm)));            
+//      songChange(currentSong, "");
+      songChange();
     }
     else {
       // player is still stopped => nothing to do...      
@@ -2211,7 +2236,9 @@ void YammiGui::onTimer()
         }
       }
     }
+    */
 	}
+  
 
 }
 
@@ -2280,7 +2307,7 @@ void YammiGui::songChange(Song* lastSong, QString newFile)
 //  player->removePlayed();
 //	folderActual->correctOrder();
 
-	// should just check and fill up, not change anything:
+	// should just check and fill up, not change anything
 	player->syncYammi2Player(false);
 
 	// update view, if folderActual is currently shown folder
@@ -2291,11 +2318,12 @@ void YammiGui::songChange(Song* lastSong, QString newFile)
 }
 
 
-/** (new version)
+/**
  * Called on a playlist change initiated by player (last song finished).
  */
 void YammiGui::songChange()
 {
+  cout << "songChange() called\n";
   // prepare: stop user dragging action
   if(songListView->dragging)
     stopDragging();
@@ -2308,38 +2336,36 @@ void YammiGui::songChange()
 		folderSongsPlayed->addEntry(entry);		// append to songsPlayed
   }
 
-  currentSong=model->songsToPlay.at(0)->song();
-  currentFile=currentSong->location();
-  
-  if(songsUntilShutdown>0) {
-    songsUntilShutdown--;
-    sleepModeSpinBox->setValue(songsUntilShutdown);
-		if(songsUntilShutdown==0) {
-			cout << "shutting down now...\n";
-			shutDown();
-		}
-  }
-
-  if(currentFile!="") {
+  // do the following only if there is a new current song
+  if(model->songsToPlay.count()>0) {
+    currentSong=model->songsToPlay.at(0)->song();
+    // TODO: take swapped file?
+    currentFile=currentSong->location();
     currentSongStarted=currentSongStarted.currentDateTime();
+  
+    if(songsUntilShutdown>0) {
+      songsUntilShutdown--;
+      sleepModeSpinBox->setValue(songsUntilShutdown);
+      if(songsUntilShutdown==0) {
+        cout << "shutting down now...\n";
+        shutDown();
+      }
+    }
 
-    // song entry found
-    if(currentSong!=0) {
-      // set title to currently played song
-      setCaption("Yammi: "+currentSong->displayName());
-    }
-    else {				// song not found in database
-      setCaption("Yammi - song not in database");
-    }
+    // set title to currently played song
+    setCaption("Yammi: "+currentSong->displayName());
+
     // setup songSlider
-    int totalTime=player->getTotalTime();
-    songSlider->setRange(0, totalTime);
+//    songSlider->setRange(0, player->getTotalTime());
+    songSlider->setRange(0, currentSong->length*1000);
     songSlider->setTickInterval(1000*60);
   }
   else {
     setCaption("Yammi - not playing");
     currentSong=0;
+    currentFile="";
     songSlider->setValue(0);
+    songSlider->setRange(0, 0);
   }
 
 	// update view, if folderActual is currently shown folder

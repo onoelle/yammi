@@ -76,7 +76,8 @@ protected slots:
   void onFade();
 
 signals:
-  void playlistChanged();  
+  void playlistChanged();
+  void statusChanged();
 
 };
 

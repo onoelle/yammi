@@ -20,17 +20,13 @@
 using namespace std;
 #include <stdlib.h>
 #include <qprocess.h>
-
-// TODO: remove, use signal!
-#include "yammigui.h"
-extern YammiGui* gYammiGui;
-
-
+#include "songentryint.h"
 
 NoatunPlayer::NoatunPlayer(YammiModel* model)
 {
   this->model=model;
   playlist=&(model->songsToPlay);
+  lastStatus=STOPPED;
 
   // register ourselve
   client = new DCOPClient();
@@ -96,6 +92,7 @@ NoatunPlayer::NoatunPlayer(YammiModel* model)
   sendDcopCommandInt("setVolume(int)", 100);
   fade=100;
   connect( &fadeTimer, SIGNAL(timeout()), SLOT(onFade()) );
+//  statusChanged();
   
 /* TODO:
   if(xmms_remote_is_shuffle(session)) {
@@ -177,7 +174,7 @@ void NoatunPlayer::onFade()
     // set volume to 100 of fadeIn player, remove song of fadeOut player
     sendDcopCommandInt("setVolume(int)", 100, fadeIn);
     sendDcopCommandInt("setVolume(int)", 0, fadeOut);
-    sendDcopCommand(QString("removeCurrent()"), fadeOut);    
+    sendDcopCommand(QString("removeCurrent()"), fadeOut);
   }
   
 }
@@ -188,8 +185,15 @@ void NoatunPlayer::onFade()
  */
 void NoatunPlayer::check()
 {
-  // don't start fading if we are still fading last song
-  if(fade<100) {
+  // 1. check, whether status has changed
+  PlayerStatus newStatus=getStatus();
+  if(newStatus!=lastStatus) {
+    lastStatus=newStatus;
+    statusChanged();
+  }
+
+  // 2. check, whether we should initiate a song change (start crossfading)
+  if(fade<100) {  // don't start fading if we are still fading last song? really? TODO?
     return;
   }
   int timeLeft=getTotalTime()-getCurrentTime();
@@ -209,11 +213,15 @@ void NoatunPlayer::startSongChange()
 
   clearPlaylist();
   if(playlist->count()>=2) {
-    playlistAdd(playlist->at(1)->song()->location(), true);
-    playlist->removeFirst();
-    // TODO: notify yammi!
+    QString location=model->checkAvailability(playlist->at(1)->song());
+    if(location!="" && location!="never") {
+      playlistAdd(location, true);
+      playlist->removeFirst();
+    }
   }
+  playlistChanged();
 }
+
 
 void NoatunPlayer::playlistAdd(QString filename, bool autoStart, int id)
 {
@@ -333,7 +341,7 @@ int NoatunPlayer::getTotalTime()
   return callGetInt("length()");
 }
 
-
+// only called on startup of yammi
 void NoatunPlayer::syncPlayer2Yammi(MyList* playlist)
 {
   // go back as long as the result of currentFile() changes...
@@ -350,14 +358,17 @@ void NoatunPlayer::syncPlayer2Yammi(MyList* playlist)
     Song* toAdd=model->getSongFromFilename(file);
     if(toAdd!=0) {
       // TODO: we have to append a SongEntryInt!!!
-      playlist->appendSong(toAdd);
+      playlist->append(new SongEntryInt(toAdd, playlist->count()+1));
     }
     else {
       cout << "song not in database: " << file << "\n";
     }
     sendDcopCommand(QString("removeCurrent()"));
   }
-  gYammiGui->slotFolderChanged();
+  playlistChanged();
+  lastStatus=getStatus();
+  statusChanged();
+  syncYammi2Player(false);
 }
 
 
@@ -369,12 +380,24 @@ void NoatunPlayer::syncYammi2Player(bool syncAll)
 
   cout << "syncing Yammi2player(1)...\n";
   // 1. sync current song
-  QString current=getCurrentFile();
-  if(current!=playlist->at(0)->song()->filename) {
+  QString noatunCurrent=getCurrentFile();
+  // the following is necessary for swapped songs...
+	QString location=model->checkAvailability(playlist->at(0)->song());
+  while(location=="" || location=="never") {
+    cout << "song not available (try to first enqueue and load from a media)\n";
+    playlist->removeFirst();
+    location=model->checkAvailability(playlist->at(0)->song());
+    playlistChanged();
+  }
+  if(location=="" || location=="never") {
+    return;
+  }
+  QString yammiCurrent=location.right(location.length()-location.findRev('/')-1);
+  if(noatunCurrent!=yammiCurrent) {
     cout << "setting Noatun's current to Yammi's current\n";
-    cout << "noatun file: |" << current << "|, yammi current: " << playlist->at(0)->song()->filename << "\n";
+    cout << "noatun file: |" << noatunCurrent << "|, yammi current: " << yammiCurrent << "\n";
     clearPlaylist();
-    playlistAdd(playlist->at(0)->song()->location(), false);
+    playlistAdd(location, false);
     sendDcopCommandInt("setVolume(int)", 100);
   }
 }

@@ -1090,7 +1090,16 @@ QString Song::capitalize(QString str)
  */
 QString Song::constructFilename()
 {
-	QString s=this->artist+" - "+this->title+this->filename.right(4);
+  QString suffix=this->filename.right(4);
+  if(suffix=="") {
+    // this is the case for swapping songs: they don't have a filename!
+    cout << "have to look up suffix...\n";
+    if(mediaLocation.count()<1) {
+      cout << "assuming suffix \".mp3\"...\n";
+    }
+    suffix=mediaLocation[0].right(4);
+  }
+  QString s=this->artist+" - "+this->title+suffix;
 //	QCString s2=QFile::encodeName(s);
 //	QString s3=QFile::decodeName(s2);
 //	cout << "raw name: " << s << ", encodedName: " << s2 << ", decodedName: " << s3 << "\n";
