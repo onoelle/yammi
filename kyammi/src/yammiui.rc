@@ -23,7 +23,7 @@
     <Action name="check_consistency_all"/>
     <Action name="grab"/>
   </Menu>
-  <Menu name="ap"><text>Autoplay</text>
+  <Menu name="autoplay"><text>Autoplay</text>
     <Action name="autoplay_off"/>
     <Action name="autoplay_longest"/>
     <Action name="autoplay_random"/>

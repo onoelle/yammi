@@ -691,11 +691,12 @@ bool Song::getOggInfo(QString filename) {
     FILE* ourfile;
 
     ourfile=fopen(filename, "r");
-    if(ourfile==0)
+    if(ourfile==0) {
         return false;
+    }
     int succ=ov_open(ourfile, &oggfile, NULL, 0);
     if(succ!=0) {
-        cout << "error in opening ogg file (" << filename << "), return value of ov_open: " << succ << "\n";
+        kdDebug() << "error in opening ogg file (" << filename << "), return value of ov_open: " << succ << "\n";
         fclose(ourfile);
     }
 

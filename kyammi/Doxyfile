@@ -4,7 +4,7 @@
 # Project related configuration options
 #---------------------------------------------------------------------------
 PROJECT_NAME           = yammi
-PROJECT_NUMBER         = 1.2-alpha-3
+PROJECT_NUMBER         = 1.2-beta
 OUTPUT_DIRECTORY       = /home/brian/work/programming/kyammi/apidocs
 OUTPUT_LANGUAGE        = English
 USE_WINDOWS_ENCODING   = NO

@@ -23,12 +23,6 @@ check kde conformance:
 - check dialog spacing & co (eg. guessing pattern!)
 - fix: appropriate info messages on first startup/on importing old database
 - fix: appropriate default size for yammi window on first startup
-tag-related: (switch to taglib?)
-- fix: 0-length ogg file makes yammi crash?
-- CHECK: umlaute in tags?
-media-player-related:
-- check again: crash on clearing playlist including currently played song?
-- fix: xmms stopped, enqueue as next: does not work
 before release:
 - fix i18n strings to be ready for internationalization
 - check all TODOs / FIXMEs
@@ -41,15 +35,12 @@ before release:
 
 for version 1.2
 ---------------
-- skipForward in noatun while still crossfading: take current volume as start of crossfading
 - implement onPlayed and afterPlayed plugin types
 - on deleting a song: delete in *all* lists (history, categories, ...)
 - make follow symlinks a configurable option?
 - make replace playlist + position a configurable option?
 - make mpg123 and ogg123 configurable?
 - improve: yammi handbook (beautify, update)
-- verify functionality: change media player on the fly, restore song position:
-  - fix: seek to song position when song stopped (artsplayer, xmms?)
 - fix: integrate columns menu into view menu as a submenu
 - reformat all files with kdevelop?
 - simplify {wish} system: (make every entry with empty filename (no media) a wish?
@@ -59,6 +50,14 @@ for version 1.2
 - fix all outstanding known bugs
 - polish user interface
 - add translation(s)?
+- speedup startup by starting media players in background (noatun, xmms)
+tag-related: (switch to taglib?)
+- fix: 0-length ogg file makes yammi crash?
+- CHECK: umlaute in tags?
+media-player-related:
+- fix: skipForward in noatun while still crossfading: take current volume as start of crossfading
+- fix: xmms stopped, enqueue as next: does not work
+
 
 
 for version 1.4
@@ -72,6 +71,13 @@ for version 1.4
 - use a player thread for mediaplayer
 - rating of songs
 - allow subfolders for categories?
+
+
+non-reproducable bugs
+#####################
+(given the date, when I could not reproduce the bug anymore)
+- (15.08.) crash on clearing playlist including currently played song (which media player?)
+
 
 
 ideas (for which I probably don't have the time to implement)

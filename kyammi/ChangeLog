@@ -3,12 +3,14 @@
 Major:
 - added: dcop interface (thanks to Daniel Raneland)
 - added: toolbar button for "Switch to/from playlist"
+- added: configurable key bindings (according to kde standard)
 - fixed: compiling with --disable-xmms
-- added: key bindings configure dialog
 
 Minor:
-- started to port yammi handbook from sgml to docbook format (including requirements for installation / compilation)
-- fixed: only selecting first 201 songs in folder popup menu
+- ported yammi handbook from sgml to docbook format
+  - including documented requirements for installation / compilation
+- improved: media player can be changed on-the-fly (no restart of yammi necessary)
+- fixed: bug: only selecting first 201 songs in folder popup menu
 - fixed: saving setting for filenamePattern (like "*.mp3 *.ogg")
 - fixed: shuffle playlist/toggle_playlist are back in the playlist menu
 - fixed: search for similar: put the search text into the search field
@@ -17,9 +19,8 @@ Minor:
 - fixed: progress dialog disappearing on scanning harddisk
 - fixed: restore on startup: autoplay mode, playlist, song position
 - fixed: check consistency for whole song database: only one song selected
-- improved: no restart of yammi necessary for change of media player
 - fixed: media player integration: cleanup and fixed some incorrect behaviour in noatun and artsplayer
-
+- fixed: appropriate applicaton icon installed
 
 
 02.07.2004 version 1.2-alpha-3
