@@ -63,31 +63,30 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, const char *name, bool mod
 	LineEditKeepInXmms->setEnabled(false);
 #endif
 
+  // noatun specific
   LineEditFadeTime->setText(QString("%1").arg(config->fadeTime));
   LineEditFadeOutEnd->setText(QString("%1").arg(config->fadeOutEnd));
   LineEditFadeInStart->setText(QString("%1").arg(config->fadeInStart));
-
-#ifdef ENABLE_NOATUN
   RadioButtonNoatun->setChecked(config->player==config->MEDIA_PLAYER_NOATUN);
-#else
-  RadioButtonNoatun->setEnabled(false);
-	LineEditFadeTime->setEnabled(false);
-	LineEditFadeOutEnd->setEnabled(false);
-	LineEditFadeInStart->setEnabled(false);
-#endif
 
+  // artsplayer specific
+  RadioButtonArtsPlayer->setChecked(config->player==config->MEDIA_PLAYER_ARTSPLAYER);
   
-	for(int i=0; i<Song::getMaxSongAction(); i++)
+	for(int i=0; i<Song::getMaxSongAction(); i++) {
 		ComboBoxDoubleClickAction->insertItem(Song::getSongAction(i));
+  }
 	ComboBoxDoubleClickAction->setCurrentItem(config->doubleClickAction);
-	for(int i=0; i<Song::getMaxSongAction(); i++)
+	for(int i=0; i<Song::getMaxSongAction(); i++) {
 		ComboBoxMiddleClickAction->insertItem(Song::getSongAction(i));
+  }
 	ComboBoxMiddleClickAction->setCurrentItem(config->middleClickAction);
-	for(int i=0; i<Song::getMaxSongAction(); i++)
+	for(int i=0; i<Song::getMaxSongAction(); i++) {
 		ComboBoxControlClickAction->insertItem(Song::getSongAction(i));
+  }
 	ComboBoxControlClickAction->setCurrentItem(config->controlClickAction);
-	for(int i=0; i<Song::getMaxSongAction(); i++)
+	for(int i=0; i<Song::getMaxSongAction(); i++) {
 		ComboBoxShiftClickAction->insertItem(Song::getSongAction(i));
+  }
 	ComboBoxShiftClickAction->setCurrentItem(config->shiftClickAction);
 
 	// jukebox functions
@@ -182,10 +181,16 @@ void PreferencesDialog::myAccept()
 
 // xmms specific
   config->keepInXmms=atoi(LineEditKeepInXmms->text());
-  if(RadioButtonXmms->isChecked())
+  if(RadioButtonXmms->isChecked()) {
     config->player=config->MEDIA_PLAYER_XMMS;
-  if(RadioButtonNoatun->isChecked())
+  }
+  if(RadioButtonNoatun->isChecked()) {
     config->player=config->MEDIA_PLAYER_NOATUN;
+  }
+  if(RadioButtonArtsPlayer->isChecked()) {
+    config->player=config->MEDIA_PLAYER_ARTSPLAYER;
+  }
+  
 
 // noatun specific
  	config->fadeTime=atoi(LineEditFadeTime->text());

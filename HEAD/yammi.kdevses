@@ -1,34 +1,61 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
 <!DOCTYPE KDevPrjSession>
 <KDevPrjSession>
-<LastCompileConfig>(Default)</LastCompileConfig>
+ <LastCompileConfig>(Default)</LastCompileConfig>
  <Mainframe MaximizeMode="1" />
- <DocsAndViews NumberOfDocuments="11" >
-<Doc0 CursorPosLine="876" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="0" FileName="/home/oliver/work/programming/yammi/yammi/yammigui.cpp" >
-<View0 Top="25" Width="400" Attach="1" Height="300" Left="3" Focus="0" Type="KWriteView" MinMaxMode="0" />  </Doc0>
-  <Doc1 CursorPosLine="62" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="0" FileName="/home/oliver/work/programming/yammi/yammi/folder.cpp" >
-<View0 Top="48" Width="738" Attach="1" Height="461" Left="26" Focus="0" Type="KWriteView" MinMaxMode="0" />  </Doc1>
-  <Doc2 CursorPosLine="18" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="0" FileName="/home/oliver/work/programming/yammi/CHANGELOG" >
-<View0 Top="71" Width="738" Attach="1" Height="461" Left="49" Focus="0" Type="KWriteView" MinMaxMode="0" />  </Doc2>
-  <Doc3 CursorPosLine="19" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="0" FileName="/home/oliver/work/programming/yammi/TODO" >
-<View0 Top="94" Width="738" Attach="1" Height="436" Left="72" Focus="0" Type="KWriteView" MinMaxMode="0" />  </Doc3>
-  <Doc4 CursorPosLine="53" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="35" FileName="/home/oliver/work/programming/yammi/yammi/foldermedia.cpp" >
-<View0 Top="117" Width="738" Attach="1" Height="436" Left="95" Focus="0" Type="KWriteView" MinMaxMode="0" />  </Doc4>
-  <Doc5 CursorPosLine="512" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="71" FileName="/home/oliver/work/programming/yammi/yammi/docs/en/index.sgml" >
-<View0 Top="115" Width="744" Attach="1" Height="448" Left="115" Focus="1" Type="KWriteView" MinMaxMode="2" />  </Doc5>
-  <Doc6 CursorPosLine="283" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="0" FileName="/home/oliver/work/programming/yammi/yammi/yammigui.h" >
-<View0 Top="163" Width="738" Attach="1" Height="420" Left="141" Focus="0" Type="KWriteView" MinMaxMode="0" />  </Doc6>
-  <Doc7 CursorPosLine="37" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="1" FileName="/home/oliver/work/programming/yammi/yammi/prefs.cpp" >
-<View0 Top="209" Width="738" Attach="1" Height="444" Left="187" Focus="0" Type="KWriteView" MinMaxMode="0" />  </Doc7>
-  <Doc8 CursorPosLine="27" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="0" FileName="/home/oliver/work/programming/yammi/yammi/lineeditshift.h" >
-<View0 Top="209" Width="738" Attach="1" Height="444" Left="187" Focus="0" Type="KWriteView" MinMaxMode="0" />  </Doc8>
-  <Doc9 CursorPosLine="0" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="6" FileName="/home/oliver/work/programming/yammi/yammi/lineeditshift.cpp" >
-<View0 Top="232" Width="738" Attach="1" Height="444" Left="210" Focus="0" Type="KWriteView" MinMaxMode="0" />  </Doc9>
-  <Doc10 CursorPosLine="323" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="4" FileName="/home/oliver/work/programming/yammi/yammi/yammimodel.cpp" >
-<View0 Top="255" Width="738" Attach="1" Height="444" Left="233" Focus="0" Type="KWriteView" MinMaxMode="0" />  </Doc10> </DocsAndViews>
+ <DocsAndViews NumberOfDocuments="16" >
+  <Doc0 CursorPosLine="109" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="25" FileName="/home/brian/work/programming/yammi/yammi/yammigui.h" >
+   <View0 Top="25" Width="400" Attach="1" Height="300" Left="3" Focus="0" Type="KWriteView" MinMaxMode="0" />
+  </Doc0>
+  <Doc1 CursorPosLine="279" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="0" FileName="/home/brian/work/programming/yammi/yammi/yammigui.cpp" >
+   <View0 Top="48" Width="400" Attach="1" Height="300" Left="26" Focus="0" Type="KWriteView" MinMaxMode="0" />
+  </Doc1>
+  <Doc2 CursorPosLine="22" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="2" FileName="/home/brian/work/programming/yammi/yammi/main.cpp" >
+   <View0 Top="71" Width="769" Attach="1" Height="431" Left="49" Focus="0" Type="KWriteView" MinMaxMode="0" />
+  </Doc2>
+  <Doc3 CursorPosLine="21" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="0" FileName="/home/brian/work/programming/yammi/yammi/yammiapplication.h" >
+   <View0 Top="94" Width="769" Attach="1" Height="448" Left="72" Focus="0" Type="KWriteView" MinMaxMode="0" />
+  </Doc3>
+  <Doc4 CursorPosLine="0" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="0" FileName="/home/brian/work/programming/yammi/yammi/yammiapplication.cpp" >
+   <View0 Top="117" Width="769" Attach="1" Height="448" Left="95" Focus="0" Type="KWriteView" MinMaxMode="0" />
+  </Doc4>
+  <Doc5 CursorPosLine="0" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="0" FileName="/home/brian/work/programming/yammi/yammi/icons/play.xpm" >
+   <View0 Top="140" Width="769" Attach="1" Height="431" Left="118" Focus="0" Type="KWriteView" MinMaxMode="0" />
+  </Doc5>
+  <Doc6 CursorPosLine="1" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="13" FileName="/home/brian/work/programming/yammi/yammi/icons/prelistenMiddle.xpm" >
+   <View0 Top="163" Width="769" Attach="1" Height="431" Left="141" Focus="0" Type="KWriteView" MinMaxMode="0" />
+  </Doc6>
+  <Doc7 CursorPosLine="1" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="13" FileName="/home/brian/work/programming/yammi/yammi/icons/prelistenStart.xpm" >
+   <View0 Top="186" Width="769" Attach="1" Height="431" Left="164" Focus="0" Type="KWriteView" MinMaxMode="0" />
+  </Doc7>
+  <Doc8 CursorPosLine="0" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="0" FileName="/home/brian/work/programming/yammi/yammi/icons/stopPrelisten.xpm" >
+   <View0 Top="209" Width="769" Attach="1" Height="431" Left="187" Focus="0" Type="KWriteView" MinMaxMode="0" />
+  </Doc8>
+  <Doc9 CursorPosLine="1" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="13" FileName="/home/brian/work/programming/yammi/yammi/icons/toFromPlaylist.xpm" >
+   <View0 Top="232" Width="769" Attach="1" Height="431" Left="210" Focus="0" Type="KWriteView" MinMaxMode="0" />
+  </Doc9>
+  <Doc10 CursorPosLine="1" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="13" FileName="/home/brian/work/programming/yammi/yammi/icons/prelistenEnd.xpm" >
+   <View0 Top="255" Width="769" Attach="1" Height="431" Left="233" Focus="0" Type="KWriteView" MinMaxMode="0" />
+  </Doc10>
+  <Doc11 CursorPosLine="1" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="13" FileName="/home/brian/work/programming/yammi/yammi/icons/playnow.xpm" >
+   <View0 Top="278" Width="769" Attach="1" Height="431" Left="256" Focus="0" Type="KWriteView" MinMaxMode="0" />
+  </Doc11>
+  <Doc12 CursorPosLine="0" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="0" FileName="/home/brian/work/programming/yammi/yammi/icons/notin.xpm" >
+   <View0 Top="301" Width="769" Attach="1" Height="431" Left="279" Focus="0" Type="KWriteView" MinMaxMode="0" />
+  </Doc12>
+  <Doc13 CursorPosLine="1" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="13" FileName="/home/brian/work/programming/yammi/yammi/icons/enqueueasnext.xpm" >
+   <View0 Top="324" Width="769" Attach="1" Height="431" Left="302" Focus="0" Type="KWriteView" MinMaxMode="0" />
+  </Doc13>
+  <Doc14 CursorPosLine="155" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="0" FileName="/home/brian/work/programming/yammi/yammi/prefs.cpp" >
+   <View0 Top="322" Width="775" Attach="1" Height="459" Left="322" Focus="1" Type="KWriteView" MinMaxMode="2" />
+  </Doc14>
+  <Doc15 CursorPosLine="314" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="1" FileName="/home/brian/work/programming/yammi/yammi/yammimodel.cpp" >
+   <View0 Top="370" Width="769" Attach="1" Height="431" Left="348" Focus="0" Type="KWriteView" MinMaxMode="0" />
+  </Doc15>
+ </DocsAndViews>
  <CompileConfigs>
-<Release>
-<Architecture>i386</Architecture>
+  <Release>
+   <Architecture>i386</Architecture>
    <Platform>linux</Platform>
    <VPATHSubdir>/home/oliver/work/programming/yammi/</VPATHSubdir>
    <CFLAGS/>
@@ -36,4 +63,7 @@
    <CXXFLAGS> -O3 -W  -Wtraditional -Wundef -Wpointer-arith -Wbad-function-cast -Wcast-qual -Wcast-align -Wwrite-strings -Wconversion -Wsign-compare -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wmissing-declarations -Wredundant-decls -Wnested-externs -Winline -Wold-style-cast -Woverloaded-virtual -Wsynth -Werror</CXXFLAGS>
    <AdditCXXFLAGS/>
    <LDFLAGS/>
-   <ConfigureArgs> --build=i386-linux --host=i386-linux --target=i386-linux --prefix=/opt/kde3 --disable-debug --enable-strict </ConfigureArgs>  </Release> </CompileConfigs></KDevPrjSession>
+   <ConfigureArgs> --build=i386-linux --host=i386-linux --target=i386-linux --prefix=/opt/kde3 --disable-debug --enable-strict </ConfigureArgs>
+  </Release>
+ </CompileConfigs>
+</KDevPrjSession>

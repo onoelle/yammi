@@ -37,14 +37,12 @@ Prefs::~Prefs(){
 void Prefs::setDefaultValues(void) {
 	// general	
 	// media player: 0=XMMS, 1=Noatun
-#ifdef ENABLE_NOATUN
 	player = MEDIA_PLAYER_NOATUN;
-#endif
 #ifdef ENABLE_XMMS
 	player = MEDIA_PLAYER_XMMS;
 #endif
 
-	yammiVersion = "1.0";
+	yammiVersion = "1.1";
 	trashDir = "/mp3/trash/";
 	scanDir = "/mp3/inbox/";
 	filenamePattern = "%a - %t";
@@ -151,11 +149,11 @@ bool Prefs::loadConfig(QString baseDir)
 	// general parameter
 	QString prefsVersion = getProperty(doc, "yammiVersion", yammiVersion);
 	if(prefsVersion != yammiVersion) {
-		QMessageBox::information(gYammiGui, QObject::tr("Yammi"),
-			QObject::tr("Reading preferences from an other version of Yammi\n"
-         "In Yammi 0.8.2, the default action configuration\n(eg. for double click) has slightly changed...\n"
-			   "...please check your settings!"),
-			QMessageBox::Ok, 0, 0);
+//		QMessageBox::information(gYammiGui, QObject::tr("Yammi"),
+//			QObject::tr("Reading preferences from an other version of Yammi\n"
+//         "In Yammi 0.8.2, the default action configuration\n(eg. for double click) has slightly changed...\n"
+//			   "...please check your settings!"),
+//			QMessageBox::Ok, 0, 0);
   }
 	trashDir                     = getProperty(doc, "trashDir", trashDir);
 	scanDir                      = getProperty(doc, "scanDir", scanDir);
@@ -186,17 +184,6 @@ bool Prefs::loadConfig(QString baseDir)
 	// xmms not enabled => set to noatun
 	if(player == MEDIA_PLAYER_XMMS)
 		player = MEDIA_PLAYER_NOATUN;
-#endif
-#ifndef ENABLE_NOATUN
-	// noatun not enabled => set to xmms
-	if(player == MEDIA_PLAYER_NOATUN)
-		player = MEDIA_PLAYER_XMMS;
-#endif
-#ifndef ENABLE_XMMS
-#ifndef ENABLE_NOATUN
-	qWarning("No media player support! (you should have support for at least one media player compiled in)");
-	player = -1;
-#endif
 #endif
 
 	// xmms specific

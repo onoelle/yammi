@@ -20,11 +20,7 @@
 
 #include "mediaplayer.h"
 #include <qprocess.h>
-
-// this class only works as expected if the following define is true!
-#ifdef ENABLE_NOATUN
 #include <dcopclient.h>
-#endif
 
 
 /**
@@ -39,13 +35,11 @@ public:
   QString getName() {return "noatun";}
 
 protected:
-#ifdef ENABLE_NOATUN
   DCOPClient* client;
-#endif
 	QTimer fadeTimer;
   int timeLeft;
   bool ensurePlayerIsRunning();
-  void playlistAdd(QString filename, bool autoStart, bool fakePassiveAdd=true);
+  void playlistAdd(QString filename, bool autoStart);
   void sendDcopCommand(QString command, int id=0);
   void sendDcopCommandInt(QString command, int param, int id=0);
   int callGetInt(QString command, int id=0);

@@ -47,22 +47,15 @@ class MediaPlayer : public QObject
   Q_OBJECT
 
 public: 
-	MediaPlayer();
+	MediaPlayer( YammiModel *yammi );
 	virtual ~MediaPlayer();
-  virtual QString getName() = 0;
-
-protected:
-  PlayerStatus status;
-  PlayerStatus lastStatus;
-  YammiModel*   model;        // TODO: can we remove this to make it cleaner?
-  MyList* playlist;
-
-public:
-  virtual void clearPlaylist() = 0;
+	virtual QString getName() = 0;
+	
+	virtual void clearPlaylist() = 0;
   
 public slots:
   virtual void check() = 0;
-  virtual PlayerStatus getStatus()           { return status; }
+  virtual PlayerStatus getStatus() { return status; }
   virtual bool play() = 0;
   virtual bool pause() = 0;
   virtual bool stop() = 0;
@@ -78,10 +71,17 @@ public slots:
   virtual void quit() = 0;
 
 signals:
-  // the following signals should be implemented
-  // we don't declare them here, as that causes conflicts in findSignal()...
-//  virtual void playlistChanged() = 0;         // should be emitted, if the playlist of player changed (eg. song change)
-//  virtual void statusChanged() = 0;           // should be emitted, if status of player changed (eg. play -> pause)
+         // should be emitted, if the playlist of player changed (eg. song change)
+  	void playlistChanged();
+	// should be emitted, if status of player changed (eg. play -> pause)
+	void statusChanged();
+	
+protected:
+  PlayerStatus status;
+  PlayerStatus lastStatus;
+  YammiModel*   model;        // TODO: can we remove this to make it cleaner?
+  MyList* playlist;
+	
   
 };
 

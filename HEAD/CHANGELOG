@@ -1,5 +1,20 @@
+??.??.2003 version 1.1
 ######################
-??.09.2003 version 1.0
+- first version developed and tested on new development environment (Suse 9.0)
+  - kde 3.1.4, gcc 3.3.1, qt 3.2.1, kdevelop 2.1.5
+  - autoconf 2.5.7, automake 1.7.6
+  - noatun 2.2.1, xmms 1.2.8
+  - ...
+- requires KDE now
+  => --disable-KDE and --disable-noatun switches removed from configure script
+- repaired broken communication behavior (apparently due to newer version of noatun)
+- applied patch from Luis (thanks!!!):
+  - support for arts media player
+  - changes towards making yammi a proper kde application
+
+
+######################
+24.10.2003 version 1.0
 - added a "go to fuzzy folder" functionality using yammi's fuzzy search capabilities for switching to a folder:
   press Ctrl-G to switch to the folder best matching your search term
   (press multiple times to iterate over the best matches)

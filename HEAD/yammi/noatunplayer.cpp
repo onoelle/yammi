@@ -24,18 +24,16 @@ using namespace std;
 #include <qprocess.h>
 #include "songentryint.h"
 
-NoatunPlayer::NoatunPlayer(YammiModel* model)
+NoatunPlayer::NoatunPlayer(YammiModel* model) : MediaPlayer( model )
 {
-  this->model=model;
-  playlist=&(model->songsToPlay);
-  lastStatus=STOPPED;
+//  this->model=model;
+//  playlist=&(model->songsToPlay);
+//  lastStatus=STOPPED;
 
-#ifdef ENABLE_NOATUN
   // register ourselve
   client = new DCOPClient();
   client->attach();
   QCString realAppId = client->registerAs("yammi");
-#endif
 
   ensurePlayerIsRunning();
   // find out which one of the players is playing and take that one as current player
@@ -72,6 +70,11 @@ NoatunPlayer::~NoatunPlayer()
  */
 void NoatunPlayer::clearActivePlayerPlaylist()
 {
+  // this seems to be a new dcop command for clearing playlist
+  // present since which version of noatun???
+  sendDcopCommand(QString("clear()"));
+  return;
+/*  
   // go back as long as the result of currentFile() changes...
   // TODO: a song queued twice?
   QString prev=getCurrentFile();
@@ -80,10 +83,11 @@ void NoatunPlayer::clearActivePlayerPlaylist()
     prev=getCurrentFile();
     sendDcopCommand(QString("back()"));
   }
+
   // now delete entries as long as currentFile()!=""
   for(QString file=getCurrentFile(); file!=""; file=getCurrentFile()) {
     sendDcopCommand(QString("removeCurrent()"));
-  }
+  }*/
 }
 
 
@@ -163,7 +167,7 @@ void NoatunPlayer::onFade()
     // set volume to 100 of fadeIn player, remove song of fadeOut player
     sendDcopCommandInt("setVolume(int)", 100, fadeIn);
     sendDcopCommandInt("setVolume(int)", 0, fadeOut);
-    sendDcopCommand(QString("removeCurrent()"), fadeOut);
+    sendDcopCommand(QString("clear()"), fadeOut);
   }
   
 }
@@ -182,7 +186,7 @@ void NoatunPlayer::check()
       // heuristic: if we were at end of last song and only one song left in playlist
       // => we should remove it
       if(playlist->count()==1 && timeLeft<2000) {
-        sendDcopCommand(QString("removeCurrent()"));
+        sendDcopCommand(QString("clear()"));
         playlist->removeFirst();
         playlistChanged();
       }
@@ -244,26 +248,24 @@ void NoatunPlayer::startSongChange(bool withoutCrossfading)
     fadeOut=getCurrentPlayerId();
     currentPlayer=(currentPlayer+1) % 2;
     fadeIn=getCurrentPlayerId();
-    fadeTimer.start( 200, TRUE );       // change volume every 200ms
-
-    clearActivePlayerPlaylist();
+//    clearActivePlayerPlaylist();
     QString location=model->checkAvailability(playlist->at(1)->song());
     if(location!="" && location!="never") {
       playlistAdd(location, true);
+      // sometimes player does not start to play???
+      sendDcopCommand("play()");
       playlist->removeFirst();
     }
     playlistChanged();
+    fadeTimer.start( 200, TRUE );       // change volume every 200ms
   }
 }
 
 
 /**
  * Adds a file to the current noatun player.
- * Due to noatun's api via dcop, we can only add a song and start playing it
- * immediately (or otherwise we can't "access" the song any more(eg. start playing it)).
- * Therefore we simulate a passive add by pausing immediately after adding the song.
 */
-void NoatunPlayer::playlistAdd(QString filename, bool autoStart, bool fakePassiveAdd)
+void NoatunPlayer::playlistAdd(QString filename, bool autoStart)
 {
   int id=getCurrentPlayerId();
   QString str=QString("noatun-%1").arg(id);
@@ -271,15 +273,10 @@ void NoatunPlayer::playlistAdd(QString filename, bool autoStart, bool fakePassiv
   QDataStream arg(data, IO_WriteOnly);
 
   arg << filename;
-  arg << fakePassiveAdd;
+  arg << autoStart;
   
-#ifdef ENABLE_NOATUN
   if (!client->send(str.latin1(), "Noatun", "addFile(QString, bool)", data)) {
     cout << "nop\n";
-  }
-#endif
-  if(!autoStart) {
-    pause();
   }
 }
 
@@ -424,7 +421,7 @@ void NoatunPlayer::syncYammi2Player(bool syncAll)
 {
   if(playlist->count()==0) {
     // playlist empty
-    sendDcopCommand(QString("removeCurrent()"));
+    sendDcopCommand(QString("clear()"));
     return;
   }
 
@@ -457,7 +454,7 @@ void NoatunPlayer::syncYammi2Player(bool syncAll)
       if(location=="" || location=="never") {
         continue;
       }
-      playlistAdd(location, true, false);
+      playlistAdd(location, true);
     }
     return;
   }
@@ -483,11 +480,9 @@ void NoatunPlayer::sendDcopCommandInt(QString command, int param, int id)
   QDataStream arg(data, IO_WriteOnly);
   arg << param;
 
-#ifdef ENABLE_NOATUN
   if (!client->send(str.latin1(), "Noatun", command.latin1(), data)) {
-    cout << "some error using DCOP.\n";
+    cout << "communicating with noatun: some error using DCOP.\n";
   }
-#endif
 }
 
 
@@ -501,14 +496,9 @@ void NoatunPlayer::sendDcopCommand(QString command, int id)
   QByteArray data;
   QDataStream arg(data, IO_WriteOnly);
 
-#ifdef ENABLE_NOATUN
   if (!client->send(str.latin1(), "Noatun", command.latin1(), data)) {
-    cout << "xmms-kde: there was some error using DCOP.\n";
+    cout << "communicating with noatun: some error using DCOP.\n";
   }
-  else {
-//    cout << "xmms-kde: success\n";
-  }
-#endif
 }
 
 
@@ -523,7 +513,6 @@ int NoatunPlayer::callGetInt(QString command, int id)
 
   int result=0;
 
-#ifdef ENABLE_NOATUN
   QString str=QString("noatun-%1").arg(id);
   if (!client->call(str.latin1(), QString("Noatun").latin1(), command.latin1(), data, replyType, replyData)) {
     cout << "call() failed, maybe noatun was closed?\n";
@@ -537,7 +526,6 @@ int NoatunPlayer::callGetInt(QString command, int id)
     } else
       cout << "unexpected type of dcop reply (int expected): " << replyType << "\n";
   }
-#endif
   return result;
 }
 
@@ -553,7 +541,6 @@ QString NoatunPlayer::callGetString(QString command, int id)
 
   QString result="";
 
-#ifdef ENABLE_NOATUN
   QString str=QString("noatun-%1").arg(id);
   if (!client->call(str.latin1(), QString("Noatun").latin1(), command.latin1(), data, replyType, replyData))
     cout << "call() failed\n";
@@ -564,6 +551,5 @@ QString NoatunPlayer::callGetString(QString command, int id)
     } else
       cout << "unexpected type of dcop reply (QString expected): " << replyType << "\n";
   }
-#endif
   return result;
 }

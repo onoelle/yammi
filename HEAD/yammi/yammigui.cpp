@@ -20,40 +20,7 @@
 using namespace std;
 
 // include pixmaps
-
-// general
-#include "icons/yammiicon.xpm"
-#include "icons/in.xpm"
-#include "icons/notin.xpm"
-#include "icons/some_in.xpm"
-#include "icons/newCategory.xpm"
-
-// media player actions
-// now using the icons from multimedia chrome from mediabuilder.com:
-// http://mediabuilder.com/ds_icons_multimedia_chrome_page_aa.html
-#include "icons/play.xpm"
-#include "icons/pause.xpm"
-#include "icons/stop.xpm"
-#include "icons/skipforward.xpm"
-#include "icons/skipbackward.xpm"
-
-// song actions
-#include "icons/defaultDoubleClick.xpm"
-#include "icons/defaultMiddleClick.xpm"
-#include "icons/defaultControlClick.xpm"
-#include "icons/defaultShiftClick.xpm"
-#include "icons/prelistenStart.xpm"
-#include "icons/prelistenMiddle.xpm"
-#include "icons/prelistenEnd.xpm"
-#include "icons/playnow.xpm"
-#include "icons/enqueue.xpm"
-#include "icons/enqueueasnext.xpm"
-#include "icons/dequeueSong.xpm"
-#include "icons/dequeueAll.xpm"
-#include "icons/songinfo.xpm"
-#include "icons/stopPrelisten.xpm"
-#include "icons/toFromPlaylist.xpm"
-
+#include "yammiicons.h"
 
 // dialog includes
 #include "preferencesdialog.h"
@@ -67,9 +34,11 @@ using namespace std;
 #include "ConsistencyCheckParameter.h"
 
 // kde includes
-//#ifdef ENABLE_NOATUN
-//#include "kfiledialog.h"
-//#endif
+#include "kfiledialog.h"
+
+#include "artsplayer.h"
+#include "dummyplayer.h"
+#include <kdebug.h>
 
 extern YammiGui* gYammiGui;
 
@@ -108,30 +77,8 @@ YammiGui::YammiGui(QString baseDir)
   player=0;
   currentSong=0;
   chosenFolder=0;
-#ifdef ENABLE_XMMS
-  if(model->config.player==0) {
-    cout << "media player: XMMS\n";
-    cout << "     (if nothing happens after this line, you probably have to remove the xmms lock file (/tmp/xmms_<user>.0) and try again.\n";
-    player = new XmmsPlayer(0, model);         // use xmms as media player (session 0)
-  }
-#endif
 
-#ifdef ENABLE_NOATUN
-  if(model->config.player==1) {
-    cout << "media player: Noatun\n";
-    player = new NoatunPlayer(model);         // use noatun as media player    
-  }
-#endif
-  if(player==0) {
-    cout << "WARNING: no media player support compiled in, only limited functionality available!\n";
-    player = new DummyPlayer();
-  }
-  else {
-    // connect player and yammi via signals
-    connect( player, SIGNAL(playlistChanged()), this, SLOT(updatePlaylist()) );
-    connect( player, SIGNAL(statusChanged()), this, SLOT(updatePlayerStatus()) );
-  }
-
+  loadPlayer();
 
   model->readSongDatabase();					// read song database
 	model->readCategories();						// read categories
@@ -2325,19 +2272,14 @@ void YammiGui::forSelection(action act)
 	if(act==MoveTo) {
 		// let user choose directory
     QString startPath=selectedSongs.firstSong()->path;
-//#ifdef ENABLE_NOATUN
-//    cout << "trying...\n";
-//    dir=KFileDialog::getOpenFileName(QString("/mm"), QString("*.mp3"), this, QString("yammi"));
-//    if(dir!=0)
-//      cout << "dir: " << dir << "\n";
-//    return;
-//#else
-		dir=QFileDialog::getExistingDirectory(startPath, this, QString(tr("yammi")), QString(tr("choose directory")), true);
-//#endif    
-		if(dir.isNull())
+    dir=KFileDialog::getOpenFileName(startPath, QString("*.mp3"), this, QString("yammi"));
+//		dir=QFileDialog::getExistingDirectory(startPath, this, QString(tr("yammi")), QString(tr("choose directory")), true);
+		if(dir.isNull()) {
 			return;
-		if(dir.right(1)=="/")						// strip trailing slash
+    }
+		if(dir.right(1)=="/") {						// strip trailing slash
 			dir=dir.left(dir.length()-1);
+    }
 	}
 			
 	// 2. determine delete mode
@@ -2666,11 +2608,7 @@ void YammiGui::aboutDialog()
   #else
   msg+=tr("- XMMS support: no\n");
   #endif
-  #ifdef ENABLE_NOATUN
   msg+=tr("- Noatun support: yes\n");
-  #else
-  msg+=tr("- Noatun support: no\n");
-  #endif
   #ifdef ENABLE_OGGLIBS
   msg+=tr("- ogglibs support: yes\n");
   #else
@@ -3883,3 +3821,27 @@ void YammiGui::forAllSelectedEnqueueAsNext()
 }
 
 
+void YammiGui::loadPlayer( )
+{
+
+	switch(model->config.player)
+	{
+		case 0:
+			player = new XmmsPlayer(0, model);
+			break;
+		case 1:
+			player = new NoatunPlayer(model);
+			break;
+		case 2:
+			player = new Yammi::ArtsPlayer(model);
+			break;
+		default:
+			kdWarning()<<"Player : "<<model->config.player<<" unknown. Falling back to DummyPlayer"<<endl;
+			player = new DummyPlayer( model );
+	}
+	// connect player and yammi via signals
+	connect( player, SIGNAL(playlistChanged()), this, SLOT(updatePlaylist()) );
+	connect( player, SIGNAL(statusChanged()), this, SLOT(updatePlayerStatus()) );
+	
+	kdDebug()<<"MediaPlayer setup: "<<player->getName( )<<endl;
+}

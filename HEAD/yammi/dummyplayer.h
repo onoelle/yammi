@@ -27,10 +27,10 @@
 class DummyPlayer : public MediaPlayer  {
   Q_OBJECT
 public: 
-	DummyPlayer() {};
-	~DummyPlayer() {};
+	DummyPlayer( YammiModel *y) : MediaPlayer(y) {};
+	virtual ~DummyPlayer() {};
 
-  QString getName() {return "dummy";}
+	QString getName() {return "dummy";}
 
 public:
   void clearPlaylist() {};

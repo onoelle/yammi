@@ -17,7 +17,13 @@
 
 #include "mediaplayer.h"
 
-MediaPlayer::MediaPlayer(){
+MediaPlayer::MediaPlayer( YammiModel *yammi )
+{
+	model = yammi;
+	playlist = &(model->songsToPlay);
+	status = lastStatus = STOPPED;
 }
-MediaPlayer::~MediaPlayer(){
+
+MediaPlayer::~MediaPlayer()
+{
 }

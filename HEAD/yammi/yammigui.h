@@ -92,15 +92,14 @@ using namespace std;
 #include "mylistview.h"
 #include "lineeditshift.h"
 #include "mediaplayer.h"
-#include "dummyplayer.h"
+//#include "dummyplayer.h"
 
 #ifdef ENABLE_XMMS
 #include "xmmsplayer.h"
 #endif
 
-#ifdef ENABLE_NOATUN
 #include "noatunplayer.h"
-#endif
+#include <kmainwindow.h>
 // -----------------------------------------------------------------
 
 
@@ -196,6 +195,9 @@ public slots:
 // protected members
 //******************
 protected:
+
+	/** Load the MediaPlayer according to the current set-up */
+	void loadPlayer( );
   Folder*       fuzzyFolderList[FUZZY_FOLDER_LIST_SIZE];
   QString       fuzzyFolderName;
   int           fuzzyFolderNo;

@@ -4,29 +4,57 @@
 **
 *****************************************************************************/
 
-#include <qapplication.h>
+#include <kapplication.h>
+#include <kaboutdata.h>
+#include <kcmdlineargs.h>
+#include <klocale.h>
+#include <kdebug.h>
+
+//#include <qapplication.h>
 #include <qwindowsstyle.h>
 #include <qtranslator.h>
 #include <qtextcodec.h>
 #include "yammigui.h"
 #include "yammiapplication.h"
 
+static const char description[] =   I18N_NOOP("Yammi ");
 
-//#include "options.h"
-//#ifdef ENABLE_NOATUN
-//#include <kcmdlineargs.h>
-//#endif
+static KCmdLineOptions options[] =
+{
+	KCmdLineLastOption
+};
+
+static const char version[] = "1.1";
 
 // global pointer to YammiGui
 YammiGui* gYammiGui;
+
 /**
  * main method, starts the whole application
  */
 int main( int argc, char **argv )
 {
-//#ifdef ENABLE_NOATUN
-//  KCmdLineArgs::init(argc, argv, "Yammi", "", "");
-//#endif
+
+ 	KAboutData about("Yammi", I18N_NOOP("yammi"), version, description,
+                     KAboutData::License_GPL, "(C) 2003 Yammi", 0, 0, "yammi@sourceforge.net");
+
+	KCmdLineArgs::init(argc, argv, &about);
+	KCmdLineArgs::addCmdLineOptions( options );
+	KApplication app;
+	KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
+
+	QDir d = QDir::home( );
+  QString baseDir=d.absPath();
+
+  gYammiGui = new YammiGui(baseDir);
+  app.setMainWidget( gYammiGui );
+  gYammiGui->show();
+  args->clear();
+
+	// gYammiGui has WDestructiveClose flag by default, so it will delete itself.
+	return app.exec();
+
+/*
   QString arg1="";
   if(argc>=2) {
     // argv[0] is the command name
@@ -70,4 +98,6 @@ int main( int argc, char **argv )
 	gui.show();
 	// enter event loop
 	return application.exec();
+#endif
+  */
 }
