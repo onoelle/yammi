@@ -62,6 +62,7 @@ int main( int argc, char **argv )
 	KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
 	QString db( args->getOption("db") );
 	
+	srand(time(NULL));
 	KApplication app;
 	YammiGui *yammi = new YammiGui( );
 	app.setMainWidget( yammi );

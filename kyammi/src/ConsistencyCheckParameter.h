@@ -24,6 +24,7 @@ public:
   static const int YAMMI2TAGS = 0;
   static const int TAGS2YAMMI = 1;
 
+  ConsistencyCheckParameter();
   bool checkForExistence;
   bool updateNonExisting;
   bool checkTags;

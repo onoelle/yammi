@@ -265,10 +265,10 @@ public:
 
 protected:
 	void createMenuBar( );
-  void createSongPopup( );
+	void createSongPopup( );
 	void createFolders( );
 	void createMainWidget( );
-	
+	static int randomNum(int numbers = RAND_MAX);
 	
 	// gui
 	//***************
@@ -429,4 +429,3 @@ protected slots:
 };
 
 #endif
-

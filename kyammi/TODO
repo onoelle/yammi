@@ -12,6 +12,11 @@ main purpose: clean up, so other people can more easily contribute to the projec
 - handle unplayable files (wishes, text files) => 1. dequeue on second position or 2. introduce file types and different behaviour
 - check dialog spacing & co (eg. guessing pattern!)
 - icons for enqueing: add big "plus"
+- 0 MB files => 560 Bytes shown in song info dialog?
+- consistency check:
+  - option to remove empty directories when moving songs
+  - better dialog texts (which song is moved?, better explanations what happens/examples?)
+- fix: progress dialog on plugins before confirmation
 
 for version 1.2-beta
 --------------------

@@ -284,7 +284,7 @@ void YammiGui::readOptions() {
     for(int i=0; i<MAX_COLUMN_NO; i++) {
         columnWidth[i]=cfg->readNumEntry(QString("column%1Width").arg(i));
     }
-    autoplayFoldername=cfg->readEntry("AutoplayFolder", tr("All Music"));
+    autoplayFoldername=cfg->readEntry("AutoplayFolder", i18n("All Music"));
     m_currentAutoPlay->setText(i18n("Folder: ")+autoplayFoldername);
     int autoplayMode=cfg->readNumEntry( "AutoplayMode", AUTOPLAY_OFF);
     switch(autoplayMode) {
@@ -1388,29 +1388,27 @@ void YammiGui::forSelectionPlugin(int pluginIndex) {
 
 
     if(mode=="single") {
+        if(confirm) {
+            QString sampleCmd=selectedSongs.firstSong()->replacePlaceholders(cmd, 1);
+            QString msg=i18n("Execute the following command on each selected song?\n");
+            msg+=i18n("(here shown: values for first song)\n\n");
+            for(unsigned int i=0; i<sampleCmd.length(); i+=80) {
+                msg+=sampleCmd.mid(i, 80)+"\n";
+            }
+            if( KMessageBox::warningYesNo( this,msg ) != KMessageBox::Yes) {
+                return;
+            }
+        }
+        int index=1;
         KProgressDialog progress( this,0, i18n("Yammi"),i18n("Executing song plugin cmd..."),true);
         progress.progressBar()->setTotalSteps(selectedSongs.count());
-        kapp->processEvents();
-
-        int index=1;
-        for(Song* s=selectedSongs.firstSong(); s; s=selectedSongs.nextSong(), index++) {
+		for(Song* s=selectedSongs.firstSong(); s; s=selectedSongs.nextSong(), index++) {
             QString cmd2=s->replacePlaceholders(cmd, index);
-
-            if(index==1 && confirm) {
-                // before  executing cmd on first song, ask user
-                QString msg=i18n("Execute the following command on each selected song?\n");
-                msg+=i18n("(here shown: values for first song)\n\n");
-                for(unsigned int i=0; i<cmd2.length(); i+=80) {
-                    msg+=cmd2.mid(i, 80)+"\n";
-                }
-                if( KMessageBox::warningYesNo( this,msg ) != KMessageBox::Yes) {
-                    return;
-                }
-            }
             progress.progressBar()->setProgress(index);
             kapp->processEvents();
-            if(progress.wasCancelled())
+            if(progress.wasCancelled()) {
                 return;
+			}
             system(cmd2);
         }
     }
@@ -1433,8 +1431,6 @@ void YammiGui::forSelectionPlugin(int pluginIndex) {
         cmd.replace(QRegExp("{customList}"), customList);
 
         if(confirm) {
-            cout << "plugin command: " << cmd << "\n";
-            cout << "custom list: " << customList << "\n";
             QString msg=i18n("Execute the following command:\n");
             for(unsigned int i=0; i<cmd.length(); i+=80) {
                 msg+=cmd.mid(i, 80)+"\n";
@@ -1886,8 +1882,9 @@ void YammiGui::forSelectionSongInfo( ) {
 			
 		// get filesize
 		QFile file(s->location());
-		if(file.exists())
+		if(file.exists()) {
 			_size+=file.size();
+		}
 		_length+=s->length;
 	
 		// insert all media, over that songs are distributed
@@ -1917,7 +1914,7 @@ void YammiGui::forSelectionSongInfo( ) {
       _lastTimePlayed=s->lastPlayed;
 		}
 		else {
-			if(_addedTo!=s->addedTo)          _addedTo=invalid; //.setDate(QDate::fromString(""));
+			if(_addedTo!=s->addedTo)          _addedTo=invalid;
 			if(_album!=s->album)							_album="!";
 			if(_artist!=s->artist)						_artist="!";
 			if(_comment!=s->comment)					_comment="!";
@@ -1966,29 +1963,30 @@ void YammiGui::forSelectionSongInfo( ) {
 	si.ReadOnlyFilename->setText(_filename);
 	si.ReadOnlyProposedFilename->setText(_proposedFilename);
 	if(selected>1) {
-		si.LabelHeading->setText(QString(tr("Mass editing: %1 songs")).arg(selected));
-		si.LabelSize->setText(tr("Size (total)"));
-		si.LabelLength->setText(tr("Length (total)"));
+		si.LabelHeading->setText(QString(i18n("Mass editing: %1 songs")).arg(selected));
+		si.LabelSize->setText(i18n("Size (total)"));
+		si.LabelLength->setText(i18n("Length (total)"));
 		QString x;		
-		si.ReadOnlyLength->setText(x.sprintf(tr("%d:%02d:%02d (hh:mm:ss)"), _length/(60*60), (_length % (60*60))/60, _length % 60));
+		si.ReadOnlyLength->setText(x.sprintf(i18n("%d:%02d:%02d (hh:mm:ss)"), _length/(60*60), (_length % (60*60))/60, _length % 60));
 	}
 	else {
 		si.LabelHeading->setText(_artist+" - "+_title);
 		QString x;		
-		si.ReadOnlyLength->setText(x.sprintf(tr("%2d:%02d (mm:ss)"), _length/60, _length % 60));
+		si.ReadOnlyLength->setText(x.sprintf(i18n("%2d:%02d (mm:ss)"), _length/60, _length % 60));
 	}
-	si.ReadOnlySize->setText( QString(tr("%1 MB (%2 Bytes)"))
+	si.ReadOnlySize->setText( QString(i18n("%1 MB (%2 Bytes)"))
 				.arg( (float)_size/(float)(1024*1024) , 4,'f', 2 )
-				.arg( (float)_size                    ,10,'f', 0 )
-				);
+				.arg( (float)_size                    ,10,'f', 0 ));
 	si.ReadOnlyBitrate->setText(_bitrate);
 	
-	if(_genreNr==-1)
+	if(_genreNr==-1) {
 		si.ComboBoxGenre->setCurrentItem(0);
+	}
 	else {
 		int found=genreList.findIndex(CMP3Info::getGenre(_genreNr));
-		if(found!=-1)
+		if(found!=-1) {
 			si.ComboBoxGenre->setCurrentItem(found);
+		}
 	}
 	
 	// show dialog
@@ -2036,7 +2034,7 @@ void YammiGui::forSelectionSongInfo( ) {
 			model->allSongsChanged(true);
 			s->tagsDirty=true;						// mark song as dirty(tags)
 			s->filenameDirty=(s->checkFilename(m_config.ignoreCaseInFilenames)==false);
-			// manual update: go through list of songs and correct, if necessary
+			// update affected songs in view
 			for(SongListItem* i=(SongListItem*)songListView->firstChild(); i; i=(SongListItem*)i->itemBelow()) {
 				if(i->song()!=s) {
 					continue;
@@ -2355,8 +2353,9 @@ void YammiGui::renameMedia() {
 /// invoke an externally configured program/script on the content of a folder
 void YammiGui::pluginOnFolder() {
     QFile f(KGlobal::dirs()->saveLocation("appdata")+"plugin.temp" );
-    if ( !f.open( IO_WriteOnly  ) )
+    if ( !f.open( IO_WriteOnly  ) ) {
         return;
+	}
     QTextStream str(&f);
     cout << " ...done\n";
 
@@ -2464,14 +2463,7 @@ void YammiGui::autoFillPlaylist() {
 
         if(autoplayMode==AUTOPLAY_RANDOM) {
             // method 1: randomly pick a song, no further intelligence
-            // create random number
-            QDateTime dt = QDateTime::currentDateTime();
-            QDateTime xmas( QDate(2050,12,24), QTime(17,00) );
-            int chosen=(dt.secsTo(xmas) + dt.time().msec()) % total;
-            if(chosen<0) {
-                chosen=-chosen;
-            }
-            songToAdd=toAddFrom->songlist().at(chosen)->song();
+			songToAdd=toAddFrom->songlist().at(randomNum(total))->song();
             if(folderActual->songlist().containsSong(songToAdd)) {
                 // don't add a song that is already in playlist
                 songToAdd=0;
@@ -2504,10 +2496,7 @@ void YammiGui::autoFillPlaylist() {
                 if(candidates==1) {
                     songToAdd=candidateList.firstSong();
                 } else {
-                    QDateTime dt = QDateTime::currentDateTime();
-                    QDateTime xmas( QDate(2050,12,24), QTime(17,00) );
-                    int chosen=(dt.secsTo(xmas) + dt.time().msec()) % candidates;
-                    songToAdd=candidateList.at(chosen)->song();
+					songToAdd=candidateList.at(randomNum(candidates))->song(); 
                 }
             }
             toAddFrom->songlist().setSortOrderAndSort(rememberSortOrder, true);
@@ -3412,11 +3401,30 @@ void YammiGui::createSongPopup() {
  * 0 = beginning, 100 = end?
  */
 void YammiGui::seek( int pos ) {
-    kdDebug()<<"seek song to pos "<<pos<<endl;
+    kdDebug() << "seek song to pos " << pos << endl;
     player->jumpTo(pos);
 }
 
 
 void YammiGui::setSelectionMode(SelectionMode mode) {
     selectionMode = mode;
+}
+
+/// randomNum generates a random number in 0..numbers-1 interval
+/// @param numbers designates how many different numbers can be generated
+/// @returns random number
+int YammiGui::randomNum(int numbers)
+{
+	int chosen = (rand() % numbers); // random number in 0..numbers-1 interval
+	if (numbers / RAND_MAX > 0) {
+		// RAND_MAX might be smaller than numbers (unlikely, platform dependent)
+		int numiter = (rand() % (numbers / RAND_MAX + 1));
+		while ( numiter > 0) {
+			// add some more random numbers to allow reaching of higher values
+			chosen += (rand() % numbers);
+			numiter--;
+		}
+		chosen %= numbers; // make sure the result is < numbers
+	}
+	return chosen;
 }

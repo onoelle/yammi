@@ -48,38 +48,38 @@
    </View0>
   </Doc8>
   <Doc9 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/src/yammigui.cpp" >
-   <View0 line="2127" Type="???" >
+   <View0 line="2049" Type="???" >
     <AdditionalSettings Top="1" Width="1203" Attach="1" Height="795" Left="1" MinMaxMode="0" />
    </View0>
   </Doc9>
   <Doc10 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/TODO" >
-   <View0 line="15" Type="???" >
-    <AdditionalSettings Top="1" Width="1204" Attach="1" Height="795" Left="1" MinMaxMode="0" />
+   <View0 line="19" Type="???" >
+    <AdditionalSettings Top="1" Width="1203" Attach="1" Height="795" Left="1" MinMaxMode="0" />
    </View0>
   </Doc10>
-  <Doc11 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/src/yammigui.h" >
-   <View0 line="387" Type="???" >
+  <Doc11 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/src/songinfo.h" >
+   <View0 line="35" Type="???" >
     <AdditionalSettings Top="1" Width="1203" Attach="1" Height="795" Left="1" MinMaxMode="0" />
    </View0>
   </Doc11>
-  <Doc12 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/src/prefs.cpp" >
-   <View0 line="225" Type="???" >
+  <Doc12 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/src/songinfo.cpp" >
+   <View0 line="206" Type="???" >
     <AdditionalSettings Top="1" Width="1203" Attach="1" Height="795" Left="1" MinMaxMode="0" />
    </View0>
   </Doc12>
-  <Doc13 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/src/yammiui.rc" >
-   <View0 line="83" Type="???" >
+  <Doc13 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/src/song.cpp" >
+   <View0 line="61" Type="???" >
     <AdditionalSettings Top="1" Width="1203" Attach="1" Height="795" Left="1" MinMaxMode="0" />
    </View0>
   </Doc13>
-  <Doc14 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/src/folder.h" >
-   <View0 line="10" Type="???" >
+  <Doc14 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/src/song.h" >
+   <View0 line="155" Type="???" >
     <AdditionalSettings Top="1" Width="1203" Attach="1" Height="795" Left="1" MinMaxMode="0" />
    </View0>
   </Doc14>
-  <Doc15 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/src/folder.cpp" >
-   <View0 line="64" Type="???" >
-    <AdditionalSettings Top="1" Width="1204" Attach="1" Height="795" Left="1" MinMaxMode="0" />
+  <Doc15 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/src/yammigui.h" >
+   <View0 line="218" Type="???" >
+    <AdditionalSettings Top="1" Width="1203" Attach="1" Height="795" Left="1" MinMaxMode="0" />
    </View0>
   </Doc15>
  </DocsAndViews>
