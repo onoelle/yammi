@@ -20,8 +20,8 @@ install-data-local:
 	$(INSTALL_DATA) $(srcdir)/prelisten_end.png $(kde_datadir)/yammi/icons/crystalsvg/22x22/actions/prelisten_end.png
 	$(INSTALL_DATA) $(srcdir)/toggle_playlist.png $(kde_datadir)/yammi/icons/crystalsvg/22x22/actions/toggle_playlist.png
 
-    $(mkinstalldirs) $(kde_icondir)/crystalsvg/{16x16,22x22,32x32,48x48,64x64}/apps/yammi.png
-    
+	$(mkinstalldirs) $(kde_icondir)/crystalsvg/{16x16,22x22,32x32,48x48,64x64}/apps/
+
 	$(INSTALL_DATA) $(srcdir)/yammi16x16.png $(kde_icondir)/crystalsvg/16x16/apps/yammi.png
 	$(INSTALL_DATA) $(srcdir)/yammi22x22.png $(kde_icondir)/crystalsvg/22x22/apps/yammi.png
 	$(INSTALL_DATA) $(srcdir)/yammi32x32.png $(kde_icondir)/crystalsvg/32x32/apps/yammi.png
