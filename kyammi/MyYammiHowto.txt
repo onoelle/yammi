@@ -60,3 +60,5 @@ In kdevelop
 2. Build -> Run automake & friends
 3. Build -> Run configure
 4. Tools -> Project Distribution & Publishing -> make distribution
+
+anschließend CVS taggen!

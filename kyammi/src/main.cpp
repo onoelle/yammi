@@ -59,6 +59,7 @@ int main( int argc, char **argv )
 
 	KCmdLineArgs::init(argc, argv, &about);
 	KCmdLineArgs::addCmdLineOptions( options );
+    KUniqueApplication::addCmdLineOptions();
 	KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
 	srand(time(NULL));
 	KUniqueApplication app;

@@ -486,6 +486,9 @@ YammiGui::~YammiGui() {
     delete player;
     searchThread->stopThread();
     searchFieldChangedIndicator.wakeOne();
+    searchThread->wait();
+    delete searchThread;
+    searchThread = NULL;
 }
 
 
@@ -1799,6 +1802,7 @@ void YammiGui::forSelectionEnqueue( ) {
     player->syncYammi2Player();
     folderContentChanged(folderActual);
     statusBar( )->message(QString(i18n("%1 Songs equeued at end of playlist")).arg(count), 2000);
+    checkPlaylistAvailability();
 }
 
 void YammiGui::forSelectionEnqueueAsNext( ) {
@@ -1825,6 +1829,7 @@ void YammiGui::forSelectionEnqueueAsNext( ) {
     folderActual->correctOrder();
     player->syncYammi2Player();
     folderContentChanged(folderActual);
+    checkPlaylistAvailability();
 }
 
 

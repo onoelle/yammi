@@ -5,9 +5,10 @@ last update 11.10.2004
 
 for version 1.2-beta-2
 ----------------------
-- add: spanish translation
+- fix: conflict on findSignal() (on starting noatun player)
+- fix: crash on adding a single file to database
 - fix: go to folder via keyboard: select proper song (not by right click)
-- fix: noatun stops playing after a song sometimes
+- fix: noatun stops playback sometimes
 - fix: delete songs???
 - fix: handbook major issues (updating and formatting)
 - publish plugin for html-export
@@ -69,17 +70,13 @@ ideas (for which I probably don't have the time to implement)
 #############################################################
 enhancements
 ------------
-- music brainz support for tagging
 - history of visited folders + "go back/go forward" buttons
 - any ripping plugin? have a look at existing ripping programs suitable to be called as plugin
-- xml export plugin?
 - make configurable/auto-detected forbidden characters: http://osdev.berlios.de/osd-fs.html
 - for xmms/noatun media players:
   - use QProcess for XMMS? (noatun?)
-  - skip forward/backward when stopped
 - separate folders into two categories: automatic folders and user-defined folders
 - search for similar: add an option to search for songs played "near" this one
-- replace mediaplayer with "KMediaPlayer" interface for easier supporting other kde media players?
 
 refactorings/fixes
 ------------------
