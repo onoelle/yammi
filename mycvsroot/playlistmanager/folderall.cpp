@@ -14,7 +14,7 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-
+// olitest
 #include "folderall.h"
 
 FolderAll::FolderAll( QListView* parent, QString title)
