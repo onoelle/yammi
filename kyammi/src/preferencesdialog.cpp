@@ -69,6 +69,9 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, const char *name, bool mod
 
     // artsplayer specific
     RadioButtonArtsPlayer->setChecked(config->mediaPlayer==config->MEDIA_PLAYER_ARTSPLAYER);
+    
+    // gstplayer specific
+    RadioButtonGstPlayer->setChecked(config->mediaPlayer==config->MEDIA_PLAYER_GSTPLAYER);
 
     for(int i=0; i<Song::getMaxSongAction(); i++) {
         ComboBoxDoubleClickAction->insertItem(Song::getSongAction(i));
@@ -138,11 +141,11 @@ void PreferencesDialog::addStandardPlugins() {
 	}
 	
 	if(!_pluginMenuEntry.contains("Export to m3u Playlist")) {
-		newPlugin("Export to m3u Playlist", "echo -e \"#EXTM3U\n{customList}\" > {fileDialog}", "group", "#EXTINF:{lengthInSeconds},{artist} - {title}{newline}{absoluteFilename}{newline}", "true");
+		newPlugin("Export to m3u Playlist", "echo -n -e \"#EXTM3U\n{customList}\" > {fileDialog}", "group", "#EXTINF:{lengthInSeconds},{artist} - {title}{newline}{absoluteFilename}{newline}", "true");
 	}
 	
 	if(!_pluginMenuEntry.contains("Burn with K3b(audio)")) {
-		newPlugin("Burn with K3b(audio)", "echo -e \"#EXTM3U\n{customList}\" > /tmp/burnlist.m3u && k3b --audiocd /tmp/burnlist.m3u &", "group", "#EXTINF:{lengthInSeconds},{artist} - {title}{newline}{absoluteFilename}{newline}", "true");
+		newPlugin("Burn with K3b(audio)", "echo -n -e \"#EXTM3U\n{customList}\" > /tmp/burnlist.m3u && k3b --audiocd /tmp/burnlist.m3u &", "group", "#EXTINF:{lengthInSeconds},{artist} - {title}{newline}{absoluteFilename}{newline}", "true");
 	}
 	if(!_pluginMenuEntry.contains("Burn with K3b(data)")) {
 		newPlugin("Burn with K3b(data)", "k3b --datacd {customListViaFile} &", "group", "\"{absoluteFilename}\" ", "true");
@@ -198,6 +201,9 @@ void PreferencesDialog::myAccept() {
     }
     if(RadioButtonArtsPlayer->isChecked()) {
         config->mediaPlayer=config->MEDIA_PLAYER_ARTSPLAYER;
+    }
+    if(RadioButtonGstPlayer->isChecked()) {
+        config->mediaPlayer=config->MEDIA_PLAYER_GSTPLAYER;
     }
 
 

@@ -269,6 +269,13 @@ and glib (-lgtk -lgdk -lgmodule -lglib -ldl -lXi -lXext -lX11 -lm -lxmms)
 </para>
 </listitem>
 
+<listitem>
+<para>
+For Gstreamer support:
+gstreamer, version ?
+</para>
+</listitem>
+
 
 <listitem>
 <para>
@@ -341,6 +348,13 @@ For reading ogg tags and layer information: libvorbis-dev
 For XMMS support: xmms-devel
 </para>
 </listitem>
+
+<listitem>
+<para>
+For Gstreamer support: gstreamer-devel, version ?
+</para>
+</listitem>
+
 </itemizedlist>
 </sect3>
 
@@ -352,16 +366,11 @@ For XMMS support: xmms-devel
 <sect1 id="compileAndInstall">
 <title>Compilation and installation</title>
 <para>
-Before compilation, verify that an environment variable named "KDEDIR" points to your KDE installation
-(to check, type "export" in a shell and verify that KDEDIR is set to the proper directory).
-If this variable is not set, proper installation into the correct directories cannot be guaranteed,
-and your most likely better off to type "export KDEDIR=/opt/kde3" to set this variable (using a bash and assuming that KDE was installed to /opt/kde3).
-
 In order to compile and install Yammi on your system, type the following in
 the base directory of the Yammi distribution:
 </para>
 
-<para>> ./configure</para>
+<para>> ./configure --prefix=`kde-config --prefix`</para>
 <para>> make</para>
 <para>> make install</para>
 

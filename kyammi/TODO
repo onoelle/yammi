@@ -1,15 +1,17 @@
 TODO
 ----
-last update 14.09.2004
+last update 08.10.2004
 
 
 for version 1.2-beta-2
 ----------------------
-- improve application icon?
+- fix: delete songs???
+- fix: ..mp3 in song info
+- fix: cannot play supertramp - you started laughing (paris)
+
 - fix: handbook major issues (updating and formatting)
 - publish a sample plugin (echo...) with all replacements
 - publish plugin for html-export
-- i18n: add italian translation
 
 for version 1.2
 ---------------

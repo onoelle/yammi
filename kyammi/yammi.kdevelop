@@ -51,9 +51,18 @@ which allows convenient and fast access to any songs.
         <cxxcompiler>kdevgppoptions</cxxcompiler>
         <f77compiler>kdevg77options</f77compiler>
         <cxxflags>-O2 -g0</cxxflags>
+        <configargs>--prefix=/opt/kde3</configargs>
+        <topsourcedir/>
+        <cppflags/>
+        <ldflags/>
+        <ccompilerbinary/>
+        <cxxcompilerbinary/>
+        <f77compilerbinary/>
+        <cflags/>
+        <f77flags/>
       </optimized>
       <debug>
-        <configargs>--enable-debug=full</configargs>
+        <configargs>--enable-debug=full --prefix=/opt/kde3</configargs>
         <builddir>debug</builddir>
         <ccompiler>kdevgccoptions</ccompiler>
         <cxxcompiler>kdevgppoptions</cxxcompiler>
@@ -61,16 +70,33 @@ which allows convenient and fast access to any songs.
         <cxxflags>-O0 -g3</cxxflags>
         <topsourcedir/>
         <cppflags/>
-        <ldflags> -lkdeui</ldflags>
+        <ldflags/>
         <ccompilerbinary/>
         <cxxcompilerbinary/>
         <f77compilerbinary/>
         <cflags/>
         <f77flags/>
       </debug>
+      <default>
+        <configargs>--prefix=/opt/kde3</configargs>
+        <builddir/>
+        <topsourcedir/>
+        <cppflags/>
+        <ldflags/>
+        <ccompiler>kdevgccoptions</ccompiler>
+        <cxxcompiler>kdevgppoptions</cxxcompiler>
+        <f77compiler>kdevpgf77options</f77compiler>
+        <ccompilerbinary/>
+        <cxxcompilerbinary/>
+        <f77compilerbinary/>
+        <cflags/>
+        <cxxflags/>
+        <f77flags/>
+      </default>
     </configurations>
     <make>
       <envvars>
+        <envvar value="/opt/kde3" name="KDEDIR" />
         <envvar value="1" name="WANT_AUTOCONF_2_5" />
         <envvar value="1" name="WANT_AUTOMAKE_1_6" />
       </envvars>
@@ -192,7 +218,7 @@ which allows convenient and fast access to any songs.
   <dist>
     <custom>false</custom>
     <bzip>false</bzip>
-    <archname></archname>
+    <archname/>
     <appname>yammi</appname>
     <version>1.2-beta</version>
     <release>1.2-beta</release>
@@ -211,6 +237,6 @@ which allows convenient and fast access to any songs.
     <useRPM>false</useRPM>
     <ftpkde>false</ftpkde>
     <appskde>false</appskde>
-    <url></url>
+    <url/>
   </dist>
 </kdevelop>

@@ -1,3 +1,10 @@
+??.??.2004 version 1.2-beta2
+############################
+- fixed: starting yammi via yammi.desktop file (no more console opened)
+- fixed: application icons in bigger sizes
+- fixed: corrected installation in KDE menu under Multimedia/Audio Player
+- fixed: export to m3u plugin: no more empty line at end of resulting playlist
+
 14.09.2004 version 1.2-beta
 ###########################
 Major:

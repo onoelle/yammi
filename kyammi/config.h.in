@@ -1,5 +1,8 @@
 /* config.h.in.  Generated from configure.in by autoheader.  */
 
+/* Support gstreamer as media player */
+#undef ENABLE_GSTREAMER
+
 /* Support reading and writing MP3 tags */
 #undef ENABLE_ID3LIB
 

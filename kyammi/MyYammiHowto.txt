@@ -13,6 +13,7 @@ checkout: cvs@sourceforge -> bob
 cvs -d:ext:onoelle@cvs.sourceforge.net:/cvsroot/yammi co kyammi
 
 
+
 VI essentials
 -------------
 ESC + :w    save file

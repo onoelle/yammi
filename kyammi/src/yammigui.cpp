@@ -94,6 +94,7 @@
 #include "dummyplayer.h"
 #include "noatunplayer.h"
 #include "artsplayer.h"
+#include "gstplayer.h"
 #ifdef ENABLE_XMMS
 #include "xmmsplayer.h"
 #else
@@ -1452,16 +1453,30 @@ void YammiGui::forSelectionPlugin(int pluginIndex) {
             return;
         cmd.replace(QRegExp("\\{fileDialog\\}"), file);
     }
-    if(cmd.contains("{inputString}")>0) {
-        bool ok;
-        QString inputString=QString(QInputDialog::getText( i18n("Get input parameter"), i18n("Type in argument for plugin:"), QLineEdit::Normal, QString(""), &ok, this ));
-        if(!ok) {
-            return;
-        }
-        cmd.replace(QRegExp("\\{inputString\\}"), inputString);
-    }
-
-
+    
+    while(cmd.contains("{inputString")>0) {
+         int startPos = cmd.find("{inputString");
+         if ( startPos == -1 ) {
+             break;
+         }
+         int endPos = cmd.find("}", startPos);
+         if ( endPos == -1 ) {
+             break;
+         }
+         int midPos = startPos + 13;
+         int argumentLength  = endPos - midPos;
+         QString prompt = QString(i18n("Type in plugin parameter"));
+         if ( argumentLength > 0 ) {
+             prompt += QString(" \"%1\"").arg(cmd.mid(midPos, argumentLength));
+         }
+         bool ok;
+         QString inputString=QString(QInputDialog::getText(prompt, prompt, QLineEdit::Normal, QString(""), &ok, this ));
+         if(!ok) {
+             return;
+         }
+         cmd.replace(startPos, endPos - startPos + 1, inputString);
+     }
+    
     if(mode=="single") {
         if(confirm) {
             QString sampleCmd=selectedSongs.firstSong()->replacePlaceholders(cmd, 1);
@@ -3269,6 +3284,9 @@ void YammiGui::loadMediaPlayer( ) {
     case 2:
         player = new Yammi::ArtsPlayer( model );
         break;
+    case 3:
+        player = new Yammi::GstPlayer( model );
+	break;	
     default:
         player = new DummyPlayer( model );
     }

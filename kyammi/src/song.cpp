@@ -1327,7 +1327,7 @@ void Song::moveTo(QString dir) {
     kdDebug() << "newLocation: " << newLocation.local8Bit() << endl;
     QDir currentDir("/");
     if(!currentDir.rename(location(), newLocation)) {
-        kdDebug() << "renaming failed! song: " << displayName() << ", new location: " << newLocation << "\n";
+        kdDebug() << "renaming failed! song: " << displayName() << ", old location: " << location() << "proposed new location: " << newLocation << "\n";
     } else {
         path=dir;
     }
