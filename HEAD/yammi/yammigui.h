@@ -164,23 +164,54 @@ public slots:
 	void selectAll();
 	void invertSelection();
 	
-	/** Enqueue the selected songs at the end of the Playlist.
+  // selection stuff
+  // *************************
+  
+  /**  perform <action> on songs selected in listview  */
+  void forSelection(Song::action act);
+  /** just needed for menu receivers with ints */
+  void forSelection(int act) {forSelection((Song::action) act);}
+
+	// song action slots
+	void forAllCheckConsistency();
+	void forCurrent(Song::action act);
+	void forAll(Song::action act);
+
+
+	void forSelectionPrelistenStart()     { forSelection(Song::PrelistenStart); }
+	void forSelectionPrelistenMiddle()    { forSelection(Song::PrelistenMiddle); }
+	void forSelectionPrelistenEnd()       { forSelection(Song::PrelistenEnd); }
+  void forSelectionMove()               { forSelection(Song::MoveTo); }
+	void forSelectionPlugin(int pluginIndex);
+	void forSelectionBurnToMedia();
+	void forSelectionCheckConsistency();
+
+  void searchForSimilarEntry()            { searchSimilar(1000); }
+  void searchForSimilarArtist()           { searchSimilar(1001); }
+  void searchForSimilarTitle()            { searchSimilar(1002); }
+  void searchForSimilarAlbum()            { searchSimilar(1003); }
+  void gotoFolderArtist()                 { goToFolder(2001); }
+  void gotoFolderAlbum()                  { goToFolder(2002); }
+  void gotoFolderGenre()                  { goToFolder(2003); }
+  
+  /** Enqueue the selected songs at the end of the Playlist.
 	  * If the Shift key is pressed, the songs are shuffled before being appended */
-	void appendSelected( );
+	void forSelectionAppend( );
 	/** Enqueue the selected songs at the beginning of the Playlist
 	  * If the Shift key is pressed, the songs are shuffled before being prepended */
-	void prependSelected( );
+	void forSelectionPrepend( );
 	/** Put the selected songs at the beginning of the playlist and start the player */
-	void playSelected( );
+	void forSelectionPlay( );
 	/** Remove all selected songs from the Playlist */
-	void dequeueSelected( );
-	/** Remove all songs from the playlist */
-	void clearPlaylist();
+	void forSelectionDequeue( );
 	/** Show information about selected songs.
 	  * If there is only one song selected, this function just calls songInfo(s) for the selected song */
-	void infoSelected( );
+	void forSelectionSongInfo( );
   /** Delete selected songs */
-  void deleteSelected( );
+  void forSelectionDelete( );
+
+	/** Remove all songs from the playlist */
+	void clearPlaylist();
   /** Show Dialog to display/edit the song info */
 	void songInfo( Song *s );
 	
@@ -213,16 +244,14 @@ public:
 	bool columnVisible[MAX_COLUMN_NO];
 	int realColumnMap[MAX_COLUMN_NO];
 	QString lastPrelistened;
-	MyList selectedSongs;
+  /** this list contains a selection of songs to work on */
+  MyList selectedSongs;
 	MyList searchResults;
 	bool isScanning;
   void updateSongPopup();
 	void updateListViewColumns();
 
 protected:
-
-
-
 	void createMenuBar( );
   void createSongPopup( );
 	void createFolders( );
@@ -233,12 +262,9 @@ protected:
 	//***************
 	QListView* folderListView;
 
-	
-//	QPushButton*	currentSongLabel;
 	QComboBox* mediaListCombo;
 	QPushButton* loadFromMediaButton;
-	
-	
+		
 	QPopupMenu* playListPopup;
 	QPopupMenu* songPopup;
 	QPopupMenu* songPlayPopup;
@@ -301,7 +327,6 @@ protected:
   void          handleLastSong(Song* lastSong);
   void          handleNewSong(Song* newSong);
 	void			    getCurrentSong();
-	void			    getCurrentlyPlayedSong();
 	void			    getSelectedSongs();
 	void			    getAllSongs();
 	FolderGroups*	folderArtists;
@@ -325,27 +350,16 @@ protected:
 // protected slots
 //****************
 protected slots:
-  void          toggleColumnVisibility(int column);
-  
-  
-	void forAllSelectedEnqueue();
-	void forAllSelectedEnqueueAsNext();
-	void forAllSelectedPlayNow()            { forAllSelected(Song::PlayNow); }
-	void forAllSelectedPrelistenStart()     { forAllSelected(Song::PrelistenStart); }
-	void forAllSelectedPrelistenMiddle()    { forAllSelected(Song::PrelistenMiddle); }
-	void forAllSelectedPrelistenEnd()       { forAllSelected(Song::PrelistenEnd); }
-	void forAllSelectedDequeue()            { forAllSelected(Song::Dequeue); }
+  void toggleColumnVisibility(int column);
   void preListen(Song* s, int skipTo);  ///< sends the song to headphones
   void stopPrelisten();
   void shufflePlaylist();
   
+    
   void toFromPlaylist();
   void saveColumnSettings();
 	
-	void setPreferences();
-	
-	
-	
+	void setPreferences();	
 	void searchSimilar(int what);
 	void goToFolder(int what);
 	void slotSongChanged();
@@ -368,31 +382,12 @@ protected slots:
 	void updateSongDatabase(QString scanDir, QString filePattern, QString media);
 	void updateView(bool startup=false);
 		
-	// song action slots
-	void forAllCheckConsistency();
-		
-	// these three methods perform an action for...
-	void forCurrent(Song::action act);
-	// ..all selected (in songlist)
-	void forAllSelected(Song::action act);
-	void forAll(Song::action act);
-		
-		
-	// this works on the songs in selection
-	// (can be different than currently selected songs!)
-	void forSelection(Song::action act); // perform <action> on <selectedSongs>
-	void forSelection(int act) {forSelection((Song::action) act);} // just needed for menu receivers with ints
-
-  // special treatment needed for the following cases
-	void forSelectionPlugin(int pluginIndex);
-	void forSelectionBurnToMedia();
-	void forSelectionCheckConsistency();
 	void skipBackward();
 	void skipForward();
 	void addToWishList();
 	void toCategory(int index);
 
-  	void onTimer();
+	void onTimer();
 	// removable media management
 	void checkPlaylistAvailability();
 	void loadSongsFromMedia(QString mediaName);
@@ -408,7 +403,7 @@ protected slots:
 	void removeMedia();
 	void renameMedia();
 	void grabAndEncode();
-	void  addFolderContentSnappy();
+	void addFolderContentSnappy();
 	
 	// UI - actions
 	//need to keep track of this so that we can change the icon/text

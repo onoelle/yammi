@@ -152,15 +152,14 @@ Song* Folder::nextSong()
 void Folder::updateTitle()
 {
 	setText(0, fName+QString(" (%1)").arg(songList->count()));
-// TODO: was this necessary?
-//	if(this==gYammiGui->chosenFolder)
-//		gYammiGui->slotFolderChanged();
 }
 
-// insert content menu...
+/**
+ * insert content menu...
+ */
 void Folder::popup(QPoint point, QPopupMenu* contentMenu)
 {
-	allPopup=new QPopupMenu();
+  allPopup=new QPopupMenu();
   // autoplay
   allPopup->insertItem( "Autoplay", this, SLOT(autoplayFolder()), 0, 13);
   if(gYammiGui->autoplayFoldername==this->folderName()) {
@@ -176,9 +175,11 @@ void Folder::popup(QPoint point, QPopupMenu* contentMenu)
   }
 
   // content menu (if folder contains at least one song)
-	if (contentMenu)
+	if (contentMenu) {
 		allPopup->insertItem("Content...", contentMenu);
+  }
 	allPopup->popup(point);
+  cout << "after folder popup!\n";
 }
 
 void Folder::autoplayFolder()
