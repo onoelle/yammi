@@ -1114,7 +1114,7 @@ void YammiGui::searchSimilar(int what) {
 }
 
 /**
- * Go to a specific folder (album/artist) of selected song.
+ * Go to a specific folder (album/artist/genre) of selected song.
  */
 void YammiGui::goToFolder(int what) {
     getSelectedSongs();
@@ -1138,9 +1138,14 @@ void YammiGui::goToFolder(int what) {
         folderName="";
     }
 
-    Folder* folder=this->getFolderByName(folderName);
+    Folder* folder=getFolderByName(folderName);
+    if(folder == 0 && what == 2) {
+        // compilations with different artists are named just like the album
+        folderName = s->album;
+        folder=getFolderByName(folderName);
+    }
     if(folder==0) {
-        cout << "folder " << folderName << " not existing\n";
+        kdDebug() << "goto artist/album/genre: folder " << folderName << " not existing\n";
     } else {
         changeToFolder(folder);
     }
