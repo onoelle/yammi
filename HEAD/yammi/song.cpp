@@ -3,7 +3,7 @@
                              -------------------
     begin                : Sat Feb 10 2001
     copyright            : (C) 2001 by Brian O.Nölle
-    email                : oli.noelle@web.de
+    email                : yammi-developer@lists.sourceforge.net
  ***************************************************************************/
 
 /***************************************************************************
@@ -1138,7 +1138,7 @@ QString Song::constructFilename()
   if(suffix=="") {
     // this is the case for swapping songs: they don't have a filename!
     if(mediaLocation.count()==0) {
-      cout << "assuming suffix \".mp3\"...\n";
+//      cout << "assuming suffix \".mp3\"...\n";  // TODO
       suffix=".mp3";
     }
     else {

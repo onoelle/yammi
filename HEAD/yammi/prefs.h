@@ -3,7 +3,7 @@
                              -------------------
     begin                : Sun Sep 9 2001
     copyright            : (C) 2001 by Brian O.Nlle
-    email                : oli.noelle@web.de
+    email                :  yammi-developer@lists.sourceforge.net
 
     04/10/2003 Stefan Gmeiner (riddlebox@freesurf.ch)
                Class documented; Moved load and save function from 
@@ -145,26 +145,16 @@ public:
 	/**
 	 * Load configuration. Base directory can be set with \c setBaseDir.
 	 */
-	bool loadConfig(void);
-
-	/** 
-	 * Set the base directory for config files
-	 * \param baseDir Base directory for configuration files.
-	 */
-	void setBaseDir(QString& baseDir) {
-		this->baseDir = baseDir;
-	}
+	bool loadConfig(QString baseDir);
 
 	/**
 	 * return if preferences were found after calling \c loadConfig
 	 */
-	bool getPrefsFound(void) {
-		return PrefsFound;
-	}
+	bool getPrefsFound(void) {		return prefsFound;	}
 
 private:
 	QString baseDir; /**< Base directory for yammi's configuration files */
-	bool PrefsFound; /**< set if preferences were found after \c loadConfig */
+	bool prefsFound; /**< set if preferences were found after \c loadConfig */
 
 	/** 
 	 * Set configuration to default values

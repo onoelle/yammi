@@ -3,7 +3,7 @@
                              -------------------
     begin                : Sat Jan 12 2002
     copyright            : (C) 2002 by Oliver Nölle
-    email                : oli.noelle@web.de
+    email                :  yammi-developer@lists.sourceforge.net
  ***************************************************************************/
 
 /***************************************************************************
@@ -56,16 +56,15 @@ void MyListView::simulateMouseMove()
 }
 
 
-
+/**
+ * Prepares for dragging, but dragging is only allowed if
+ * - folder is sorted
+ * - song list is sorted ascending by first column (which must be the "Pos" column)
+ */
 void MyListView::contentsMousePressEvent ( QMouseEvent * e)
 {
-	int realColumn;
-	if(sortedBy<0)
-		realColumn=-sortedBy-1;
-	else
-		realColumn=sortedBy-1;
-			
-	if(columnText(realColumn)=="Pos" && sortedBy>0 && e->button()==LeftButton) {
+  
+  if(gYammiGui->chosenFolder->isSorted() && sortedBy==1 && e->button()==LeftButton) {
 		dragPoint=e->globalPos();
 		dragItem=itemAt(viewport()->mapFromGlobal(dragPoint));
 		if(dragItem) {

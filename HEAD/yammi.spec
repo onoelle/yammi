@@ -6,10 +6,10 @@ Name:      yammi
 Version:   0.8.2
 Release:   1
 Copyright: GPL
-Vendor:    Oliver Nölle <oli.noelle@web.de>
+Vendor:    Oliver Nölle <yammi-developer@lists.sourceforge.net>
 Url:       http://yammi.sourceforge.net
 Icon:      yammi.xpm
-Packager:  Oliver Nölle <oli.noelle@web.de>
+Packager:  Oliver Nölle <yammi-developer@lists.sourceforge.net>
 Group:     Applications/Multimedia
 Source:    yammi-0.8.2.tar.gz
 BuildRoot: %{_tmppath}/%{name}-buildroot

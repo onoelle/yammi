@@ -3,7 +3,7 @@
                              -------------------
     begin                : Sun Sep 9 2001
     copyright            : (C) 2001 by Brian O.Nlle
-    email                : oli.noelle@web.de
+    email                : yammi-developer@lists.sourceforge.net
  ***************************************************************************/
 
 /***************************************************************************
@@ -44,7 +44,7 @@ void Prefs::setDefaultValues(void) {
 	player = MEDIA_PLAYER_XMMS;
 #endif
 
-	baseDir = "";
+	yammiBaseDir = "";
 	yammiVersion = "0.8.2";
 	trashDir = "/mp3/trash/";
 	scanDir = "/mp3/inbox/";
@@ -81,29 +81,17 @@ void Prefs::setDefaultValues(void) {
 	swapDir = "/tmp/";
 	swapSize = 200;
 	mountMediaDir = true;
+	prefsFound = false;
 
 }
-bool Prefs::loadConfig(void)
+
+
+bool Prefs::loadConfig(QString baseDir)
 {
-	qDebug("Prefs::loadConfig() reading preferences...");
+  qDebug("reading preferences...");
 
-	PrefsFound = false;
-
-	QDir d;
-	if(baseDir == "") {
-		// default case: take directory ".yammi" in user's home dir as base dir
-		d = QDir::home();  // now points to home directory
-	} else {
-		// user specified a base dir
-		d = QDir(baseDir);
-		if(!d.exists()) {
-			qDebug("Prefs::loadConfig() Direcotry %s doesn't exist, taking home direcory.",
-				baseDir.latin1());
-			d = QDir::home();  // now points to home directory
-		}
-	}
-    
-	if(!d.cd(".yammi")) {
+  QDir d(baseDir);
+  if(!d.cd(".yammi")) {
 		if(startFirstTime(baseDir)) { 
 			d.cd(".yammi");
 		} else {
@@ -120,21 +108,13 @@ bool Prefs::loadConfig(void)
 	// open configuration file for parsing
 	QFile f(yammiBaseDir+"/prefs.xml");
 	if (!f.open(IO_ReadOnly)) {
-		int btn = QMessageBox::warning(gYammiGui, QObject::tr("Yammi"),
-			QObject::tr("No configuration file found, or file couldn't be opened.\n"
-			"Should a new file with default values be created?"),
-			QMessageBox::Yes, QMessageBox::No, 0);
-
-		if(btn == QMessageBox::Yes) {
-			// set default value and save this
-			qDebug("Prefs::loadConfig() default values will be saved");
-
-			setDefaultValues();
-			addStandardPlugins();
-			return saveConfig();
-		} else {
-			return false;
-		}
+	  // set default value and save them
+    qDebug("configuration file could not be found, taking default values");
+    // oliver: asking the user whether he wants to save configuratioin does not make sense,
+    // if we save it later anyway...
+		setDefaultValues();
+		addStandardPlugins();
+		return saveConfig();
 	}
 
 	// set file for parsing
@@ -153,7 +133,7 @@ bool Prefs::loadConfig(void)
 	f.close();
 
 	// 1: get prefs from file
-	PrefsFound = true;
+	prefsFound = true;
 
 	// general parameter
 	QString prefsVersion = getProperty(doc, "yammiVersion", yammiVersion);
@@ -233,7 +213,7 @@ bool Prefs::loadConfig(void)
 		saveConfig();
 	}
 
-	qDebug("Prefs::loadConfig() done");
+	qDebug("..done");
 
 	return true;
 }

@@ -3,7 +3,7 @@
                              -------------------
     begin                : Fri Feb 23 2001
     copyright            : (C) 2001 by Brian O.Nölle
-    email                : oli.noelle@web.de
+    email                : yammi-developer@lists.sourceforge.net
  ***************************************************************************/
 
 /***************************************************************************
@@ -67,14 +67,14 @@ public:
 	QPopupMenu*			folderPopup;
 	QPopupMenu*			allPopup;
 	MyList*					songList;
-	bool						sorted;
-
+  bool            isSorted()                  { return sorted; }
 public slots:
   void            autoplayFolder();
 
 
 protected:
 	QString					fName;
+	bool						sorted;
 };
 
 #endif

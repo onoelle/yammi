@@ -3,7 +3,7 @@
                              -------------------
     begin                : Tue Feb 27 2001
     copyright            : (C) 2001 by Brian O.Nölle
-    email                : oli.noelle@web.de
+    email                : yammi-developer@lists.sourceforge.net
  ***************************************************************************/
 
 /***************************************************************************
@@ -993,7 +993,7 @@ void YammiGui::updateListViewColumns()
     }
   }
   saveColumnSettings();
-  
+  mapVisibleColumnsToOriginals();  
 }
 
 void YammiGui::saveColumnSettings()
@@ -2294,20 +2294,36 @@ void YammiGui::forSong(Song* s, action act, QString dir)
 		break;
 	
 	case Dequeue: {
-		// search for selected song and dequeue
-		int i=1;
-    if(player->getStatus()==STOPPED) {
-      i=0;
+    if(chosenFolder==folderActual) {
+      // song chosen from playlist => dequeue only the selected song entry (not all songs with that id)
+      QListViewItem* i=songListView->firstChild();
+      for(; i; i=i->itemBelow()) {						// go through list of songs
+        if(i->isSelected() && ((SongListItem*) i)->song()==s) {
+          SongEntry* entry=((SongListItem*) i)->songEntry;
+          int pos=((SongEntryInt*)entry)->intInfo-1;
+          if(pos!=0 || player->getStatus()==STOPPED) {
+            // only dequeue if not currently played song (or player stopped)
+            model->songsToPlay.remove(pos);
+          }
+          break;
+        }
+      }
     }
-		for(; i<(int)model->songsToPlay.count(); i++) {
-			Song* check=model->songsToPlay.at(i)->song();
-			if(check==s) {
-				model->songsToPlay.remove(i);
-				cout << "song removed\n";
-				mainStatusBar->message(QString(tr("song %1 dequeued")).arg(s->displayName()), 3000);
-				i--;
-			}
-		}
+    else {
+      // song chosen from other folder => dequeue ALL occurrences with that id
+      int i=1;
+      if(player->getStatus()==STOPPED) {
+        i=0;
+      }
+      for(; i<(int)model->songsToPlay.count(); i++) {
+        Song* check=model->songsToPlay.at(i)->song();
+        if(check==s) {
+          model->songsToPlay.remove(i);
+          mainStatusBar->message(QString(tr("song %1 dequeued")).arg(s->displayName()), 3000);
+          i--;
+        }
+      }
+    }
 		folderActual->correctOrder();
 		break;
 	}
@@ -2461,7 +2477,7 @@ void YammiGui::aboutDialog()
   msg+=tr("- id3lib support: no\n");
   #endif
   msg+=tr("\nProject home page: yammi.sourceforge.net\n\n\n");
-  msg+=tr("Contact: oli.noelle@web.de\n\n");
+  msg+=tr("Contact: \nyammi-developer@lists.sourceforge.netn\n");
   msg+=tr("have fun...\n");
   QMessageBox::information( this, tr("Yammi"),msg);
 }
@@ -3560,4 +3576,3 @@ void YammiGui::forAllSelectedEnqueueAsNext()
     forAllSelected(EnqueueAsNext);
   }  
 }
-

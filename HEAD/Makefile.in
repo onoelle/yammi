@@ -1,4 +1,4 @@
-# KDE tags expanded automatically by am_edit - $Revision: 1.49 $ 
+# KDE tags expanded automatically by am_edit - $Revision: 1.50 $ 
 # Makefile.in generated automatically by automake 1.5 from Makefile.am.
 
 # Copyright 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001
@@ -188,6 +188,17 @@ USE_THREADS = @USE_THREADS@
 VERSION = @VERSION@
 WOVERLOADED_VIRTUAL = @WOVERLOADED_VIRTUAL@
 XGETTEXT = @XGETTEXT@
+XMMS_CFLAGS = @XMMS_CFLAGS@
+XMMS_CONFIG = @XMMS_CONFIG@
+XMMS_DATA_DIR = @XMMS_DATA_DIR@
+XMMS_EFFECT_PLUGIN_DIR = @XMMS_EFFECT_PLUGIN_DIR@
+XMMS_GENERAL_PLUGIN_DIR = @XMMS_GENERAL_PLUGIN_DIR@
+XMMS_INPUT_PLUGIN_DIR = @XMMS_INPUT_PLUGIN_DIR@
+XMMS_LIBS = @XMMS_LIBS@
+XMMS_OUTPUT_PLUGIN_DIR = @XMMS_OUTPUT_PLUGIN_DIR@
+XMMS_PLUGIN_DIR = @XMMS_PLUGIN_DIR@
+XMMS_VERSION = @XMMS_VERSION@
+XMMS_VISUALIZATION_PLUGIN_DIR = @XMMS_VISUALIZATION_PLUGIN_DIR@
 XPMINC = @XPMINC@
 XPMLIB = @XPMLIB@
 X_EXTRA_LIBS = @X_EXTRA_LIBS@
@@ -411,7 +422,7 @@ distclean-tags:
 
 #>- DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 #>+ 4
-KDE_DIST=autoscan.log make.log Makefile.dist YammiGui.db MyYammiHowto.txt subdirs yammi.spec configure.scan yammi.doxygen YammiGui.pro yammi.kdevses 
+KDE_DIST=autoscan.log make.log Makefile.dist MyYammiHowto.txt subdirs yammi.spec configure.scan yammi.doxygen yammi_de.qm yammi.kdevses 
 
 DISTFILES= $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST) $(KDE_DIST)
 

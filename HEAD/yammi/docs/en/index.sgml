@@ -1,7 +1,7 @@
 <!doctype linuxdoc system>
 <article>
 <title>The Yammi Handbook
-<author>Brian O.Nölle <tt>oli.noelle _AT_ web.de</tt>
+<author>Oliver Nölle <tt>yammi-developer _AT_ lists.sourceforge.net</tt>
 <date>Version 0.8.2 , Wed May 14, 16:00:00 MET 2003
 <abstract>
 This Handbook describes Yammi Version 0.8.2
@@ -85,23 +85,42 @@ For changes, see the file CHANGELOG included in the distribution.
 <p>
 Give it a try at <htmlurl url="http://yammi.sourceforge.net" name = "The Yammi Homepage">.
 
+
 <sect1>Requirements
 <p>
 <sect2>Mandatory
 <p>
-Yammi needs Qt 3.x.
+Yammi needs <htmlurl url="http://www.trolltech.com/products/qt/" name="QT">, version 3.x
+(including qt-devel for compiling).<p>
 <sect2>Optional
 <p>
-For reading id3 tags, id3lib is required.
+For reading id3 tags,
+<htmlurl url="http://www.id3lib.org" name="id3lib">, version 3.8.2 or higher
+is required (recommended: newest version 3.8.3).<p>
 
-For reading ogg tags and layer information, libvorbis and libvorbisfile are required.
+For reading ogg tags and layer information,
+<htmlurl url="http://www.vorbis.com/download_unix.psp" name="libvorbis, libvorbisfile and libvorbis-dev">
+are required.<p>
+
+For XMMS support,
+<htmlurl url="http://www.xmms.org" name="XMMS">, version 1.2.6 or later is required.<p>
+
+For Noatun support,
+the <htmlurl url="http://www.kde.org" name="KDE libraries">, version 3.x are required.<p>
+
+Note: You should have either XMMS or Noatun support, or functionality will be very limited.
 
 For listening to songs on a second soundcard during playback on your primary soundcard
 you need mpg123 (for mp3 files), ogg123 (for ogg files) or play (for wav files).
 
 If you want to use the ripping and encoding function offered from within yammi,
-you need cdparanoia and (not)lame, for details have a look at the script "yammiGrabAndEncode"
-included in the distribution.
+you need cdparanoia and (not)lame or other ripping/encoding tools, for details have a look
+at the script "yammiGrabAndEncode" included in the distribution.
+
+If you want to use certain plugins you might need other programs
+(such as k3b for the "Burn with K3b" plugins or cdlabelgen for the "Create CD Label" plugin).
+
+
 
 <sect1>Compilation and installation
 <p>
@@ -118,9 +137,16 @@ the base directory of the Yammi distribution:
 If compilation is successful, the executable "yammi" and an additional script
 "yammiGrabAndEncode" will be installed in /usr/local/bin/.
 
+<p>
+
+<sect1> Problems <p>
 If you experience problems with compiling or installing, please consult the README file
 included in the distribution
 which explains various switches for the configure script that might be necessary on your system.
+
+If you still experience problems, try contacting the developers, not only including information
+about the problem, but also about your system configuration. If possible, attach the
+console log of configure and make.
 <p>
 
 <sect1> Deinstallation <p>
@@ -816,9 +842,6 @@ after the time when they were played).
 
 
 <sect>Copyright<p>
-
-Yammi 0.8.2, Copyright 2003 Oliver Nölle, oli.noelle _AT_ web.de
-
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

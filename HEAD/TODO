@@ -12,14 +12,19 @@ user wishes:
 
 for version 1.0
 ---------------
+- playnow enqueueasnext: for multiple songs/empty playlist... sometimes looses the first songs!
+- check for existence of directory categories when saving categories
+
+- dequeue from playlist: insert "forSelectionDequeue" method...
 - disable repeat/shuffle mode in noatun?
-- BUG: sorting with columns hided!!!
+- related to BUG: sorting with columns hided:
   - clean up key() / compare() methods
   - check sorting "Last Played" (put "never" at the other end)
   - keep sorting when changing folders?
 - properly integrate translation capability
 
 - any ripping plugin? have a look at existing ripping programs suitable to be called as plugin
+- xml export plugin?
 - "rescan tags"-button in song info dialog or in consistency check?
 - make configurable/auto-detected forbidden characters: http://osdev.berlios.de/osd-fs.html
 - check: moving songs in playlist not possible (on Mandrake, rpm?)

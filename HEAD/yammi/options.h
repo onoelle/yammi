@@ -3,7 +3,7 @@
                              -------------------
     begin                : Mon Sep 9 2002
     copyright            : (C) 2002 by Oliver Nölle
-    email                : oli.noelle@web.de
+    email                : yammi-developer@lists.sourceforge.net
  ***************************************************************************/
 
 /***************************************************************************

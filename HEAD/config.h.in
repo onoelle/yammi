@@ -69,9 +69,6 @@
 /* Define if you have the `vorbisfile' library (-lvorbisfile). */
 #undef HAVE_LIBVORBISFILE
 
-/* Define if you have the `xmms' library (-lxmms). */
-#undef HAVE_LIBXMMS
-
 /* Define if you have the `z' library (-lz). */
 #undef HAVE_LIBZ
 

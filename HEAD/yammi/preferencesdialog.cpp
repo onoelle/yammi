@@ -3,7 +3,7 @@
                              -------------------
     begin                : Sat Sep 8 2001
     copyright            : (C) 2001 by Brian O.Nlle
-    email                : oli.noelle@web.de
+    email                : yammi-developer@lists.sourceforge.net
  ***************************************************************************/
 
 /***************************************************************************

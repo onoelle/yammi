@@ -3,7 +3,7 @@
                              -------------------
     begin                : Sun Oct 7 2001
     copyright            : (C) 2001 by Brian O.Nlle
-    email                : oli.noelle@web.de
+    email                : yammi-developer@lists.sourceforge.net
  ***************************************************************************/
 
 /***************************************************************************
@@ -38,8 +38,7 @@ YammiModel::~YammiModel()
 /// read preferences from xml-file
 void YammiModel::readPreferences(QString baseDir)
 {
-	config.setBaseDir(baseDir);
-	config.loadConfig();
+	config.loadConfig(baseDir);
 	noPrefsFound = !config.getPrefsFound();
 }
 

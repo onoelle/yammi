@@ -217,24 +217,34 @@ fi
 
 if test "x$configure_enable_id3lib" = "xyes"; then
     AC_MSG_NOTICE( [reading/writing of tags in MP3 files is supported] )
-
     AC_DEFINE( [ENABLE_ID3LIB], [1] )
 else
     AC_MSG_WARN( [*** Warning: id3lib support disabled => no reading/writing of tags in mp3 files! ***] )
 fi
 
-dnl XMMS support
+
+dnl XMMS support (new version)
+dnl AM_PATH_XMMS([MINIMUM-VERSION, [ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]]])
 if test "x$configure_enable_xmms" = "xyes"; then
-    AC_CHECK_LIB( xmms, xmms_remote_get_version, , configure_enable_xmms=no, )
+    AM_PATH_XMMS(1.2.6,,AC_MSG_ERROR([*** XMMS >= 1.2.6 not installed - please install first ***]))
+    LIBS="$XMMS_LIBS $LIBS"
+    CFLAGS="$XMMS_CFLAGS $CFLAGS"
+    AC_DEFINE( [ENABLE_XMMS], [1] )
 fi
 
-if test "x$configure_enable_xmms" = "xyes"; then
-    AC_MSG_NOTICE( [*** xmms support enabled ***] )
 
-    AC_DEFINE( [ENABLE_XMMS], [1] )
-else
-    AC_MSG_WARN( [*** xmms support disabled ***] )
-fi
+dnl XMMS support (old version)
+dnl if test "x$configure_enable_xmms" = "xyes"; then
+dnl     AC_CHECK_LIB( xmms, xmms_remote_get_version, , configure_enable_xmms=no, )
+dnl fi
+dnl
+dnl if test "x$configure_enable_xmms" = "xyes"; then
+dnl    AC_MSG_NOTICE( [*** xmms support enabled ***] )
+dnl    AC_DEFINE( [ENABLE_XMMS], [1] )
+dnl else
+dnl    AC_MSG_WARN( [*** xmms support disabled ***] )
+dnl fi
+
 
 dnl Noatun support (for proper kde app: add "-lkdeui -lkio ")
 dnl check to see if KDE->DCOP is available

@@ -3,7 +3,7 @@
                              -------------------
     begin                : Sun Oct 7 2001
     copyright            : (C) 2001 by Brian O.Nlle
-    email                : oli.noelle@web.de
+    email                : yammi-developer@lists.sourceforge.net
 
     04/10/2003 Stefan Gmeiner (riddlebox@freesurf.ch)
                load and save function for preferences removed (they are now
