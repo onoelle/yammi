@@ -1,8 +1,12 @@
 #######################
-    version 0.6 !!!
+4.8.???    version 0.6 !!!
 
 - ported to Qt3
--
+- dialogs scale reasonably now
+- added a toolbar for shutdown mode
+- window position & size will be saved for next start
+- a few bugfixes
+
 
 #######################
 19.5.   version 0.5.3 !!!

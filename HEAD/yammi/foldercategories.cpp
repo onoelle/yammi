@@ -52,5 +52,6 @@ void FolderCategories::update(QPtrList<MyList> allCategories, QStringList catego
 		f->folderPopup->insertItem( "Rename Category..", this, SLOT(renameCategory()));
 	}
 	setText(0, fName+QString(" (%1)").arg(count));
+  sortChildItems(0, true);
 }
 

@@ -64,5 +64,6 @@ void FolderMedia::update(MyList* allSongs)
 		}
 	}
 	setText(0, fName+QString(" (%1)").arg(noMedia));
+  sortChildItems(0, true);
 }
 

@@ -327,7 +327,7 @@ void YammiModel::readCategories()
 				// search for item in allSongs
 				Song* found=allSongs.getSongByKey(artist, title, album);
 				if(found==0) {
-					cout << "\ncategory item " << artist << " - " << title << " (" << album << ") not found in song database\n";
+//					cout << "\ncategory item " << artist << " - " << title << " (" << album << ") not found in song database\n";
 				}
 				else {
 					SongEntryInt* toAdd=new SongEntryInt(found, index);

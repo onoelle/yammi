@@ -52,7 +52,7 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
 {
 	gYammiGui=this;
 	
-	// check whether xmms is running, if not: start it!
+  // check whether xmms is running, if not: start it!
 	if(!xmms_remote_is_running(0)) {
 		cout << "xmms not running, trying to start it...\n";
 		system("xmms > /dev/null &");
@@ -175,17 +175,16 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
 	mediaListCombo->setFixedWidth(150);
 	loadFromMediaButton=new QPushButton("load", toolBarRemovableMedia);
 	
-	// maybe open a new toolbar for the following:
 	// shutdown mode
+	QToolBar* toolBarShutdownMode = new QToolBar ( this, "Shutdown Mode Toolbar");
 	songsUntilShutdown=-3;
-	shutdownLabel = new QLabel(toolBarRemovableMedia);
+	shutdownLabel = new QLabel(toolBarShutdownMode);
 	shutdownLabel->setText( "Sleep mode:" );
 	shutdownLabel->setFrameStyle( QFrame::NoFrame );
-	shutdownButton=new QPushButton("(disabled)", toolBarRemovableMedia);
+	shutdownButton=new QPushButton("(disabled)", toolBarShutdownMode);
 	connect( shutdownButton, SIGNAL( clicked() ), this, SLOT( changeShutdownMode() ) );
 	QToolTip::add( shutdownButton, "change sleep mode");
-	
-	shutdownSpinBox=new QSpinBox(1, 99, 1, toolBarRemovableMedia);
+	shutdownSpinBox=new QSpinBox(1, 99, 1, toolBarShutdownMode);
 	shutdownSpinBox->setValue(songsUntilShutdown);
 	QToolTip::add( shutdownSpinBox, "number songs until shutdown");
 	shutdownSpinBox->setEnabled(false);
@@ -220,7 +219,7 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
 	cout << "setting up folders...\n";
 	
 	// folder containing all music
-	folderAll=new Folder( folderListView, QString("- All Music -"), &(model->allSongs));
+	folderAll=new Folder( folderListView, QString("All Music"), &(model->allSongs));
 	
 	// folder containing all artists with more than <n> songs	
 	folderArtists = new FolderGroups( folderListView, QString( "Artists" ));
@@ -249,17 +248,17 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
 	folderMedia->update(&(model->allSongs));
 
 	// folder containing currently played song
-	folderActual = new FolderSorted(folderListView, QString("- Playlist"));
+	folderActual = new FolderSorted(folderListView, QString("Playlist"));
 	folderActual->moveItem(folderAll);
 	folderActual->update(&(model->songsToPlay));
 
-	// folder containing history
-	folderHistory = new Folder(folderListView, QString("History"), &(model->songHistory));
-	folderHistory->moveItem(folderActual);
-
 	// folder containing songs played in this session
 	folderSongsPlayed = new Folder(folderListView, QString("Songs Played"), &(model->songsPlayed));
-	folderSongsPlayed->moveItem(folderHistory);
+	folderSongsPlayed->moveItem(folderActual);
+
+	// folder containing history
+	folderHistory = new Folder(folderListView, QString("History"), &(model->songHistory));
+	folderHistory->moveItem(folderSongsPlayed);
 
 	// folder containing unclassified songs
 	for(SongEntry* entry=model->allSongs.first(); entry; entry=model->allSongs.next()) {
@@ -267,13 +266,13 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
 			model->unclassifiedSongs.append(entry);
 	}
 	folderUnclassified = new Folder(folderListView, QString("Unclassified"), &(model->unclassifiedSongs));
-	folderUnclassified->moveItem(folderSongsPlayed);
+	folderUnclassified->moveItem(folderMedia);
 		
 	folderSearchResults = new Folder( folderListView, QString("Search Results"), &searchResults );
-	folderSearchResults->moveItem(folderUnclassified);
+	folderSearchResults->moveItem(folderAll);
 	
 	folderProblematic = new Folder( folderListView, QString("Problematic Songs") );
-	folderProblematic->moveItem(folderSearchResults);
+	folderProblematic->moveItem(folderUnclassified);
 	cout << "..done\n";
 
 	// connect all things...
@@ -351,6 +350,18 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
   regularTimer.start( 1000, FALSE );	// call onTimer once a second
 	connect( &typeTimer, SIGNAL(timeout()), this, SLOT(searchFieldChanged()) );
 
+  // restore session settings
+  QSettings settings;
+  settings.insertSearchPath( QSettings::Unix, model->config.yammiBaseDir );
+  int width = settings.readNumEntry( "/Yammi/geometry/width", 1024 );
+  int height = settings.readNumEntry( "/Yammi/geometry/height", 468 );
+  int posx = settings.readNumEntry( "/Yammi/geometry/posx", 0 );
+  int posy = settings.readNumEntry( "/Yammi/geometry/posy", 0 );
+  this->resize( width, height );        // restore size
+  this->move( posx, posy );             // restore position
+  // anything else we want to restore?
+  // (currently opened folder, ...)
+
 	// finish!
   cout << "initialisation successfully completed!\n";
 	mainStatusBar->message("Welcome to Yammi "+model->config.yammiVersion, 20000);
@@ -381,6 +392,15 @@ void YammiGui::endProgram()
 YammiGui::~YammiGui()
 {
 	cout << "trying to exit gracefully...\n";
+  QSettings settings;
+  settings.insertSearchPath( QSettings::Unix, model->config.yammiBaseDir );
+  QSize s = this->size();   // get size
+  QPoint p = this->pos();   // get position
+  settings.writeEntry( "/Yammi/geometry/width",  s.width());
+  settings.writeEntry( "/Yammi/geometry/height", s.height());
+  settings.writeEntry( "/Yammi/geometry/posx", p.x() );
+  settings.writeEntry( "/Yammi/geometry/posy", p.y() );
+
 	syncYammi2Xmms(true);
 	if(xmmsShuffleWasActivated)
 		xmms_remote_toggle_shuffle(0);
@@ -692,7 +712,7 @@ void YammiGui::searchSimilar(int what)
 {
 	what-=1000;
 	QString searchFor;
-	getCurrentSong();
+//	getCurrentSong();
 	Song* refSong=selectedSongs.firstSong();
 	switch(what)
 	{
@@ -764,7 +784,6 @@ void YammiGui::searchFieldChanged()
  */
 void YammiGui::slotFolderChanged()
 {
-	cout << "slotFolderChanged\n";
 	QApplication::setOverrideCursor( Qt::waitCursor );
 	QListViewItem *i = folderListView->currentItem();
 	if ( !i )
@@ -800,7 +819,6 @@ void YammiGui::addFolderContent(Folder* folder)
 		songListView->setSorting(-1);
 		songListView->setUpdatesEnabled(false);
 		addFolderContentSnappy();
-		cout << "uppaloa\n";
 	}
 	else		// no songList in that folder
 		QApplication::restoreOverrideCursor();
@@ -2288,7 +2306,12 @@ void YammiGui::keyPressEvent(QKeyEvent* e)
 			forAllSelected(EnqueueAsNext);
 			break;
 		case Key_F7:
-			forAllSelected(PlayNow);
+			if(e->state()==ShiftButton) {
+        // play immediately (without crossfading)
+      	if(xmms_remote_is_playing(0))
+    			xmms_remote_pause(0);
+      }
+ 			forAllSelected(PlayNow);
 			break;
 		case Key_F8:
 			if(e->state()==ShiftButton)

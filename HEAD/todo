@@ -1,6 +1,6 @@
 TODO
 ----
-last update 18.5.2002
+last update 28.7.2002
 
 KNOWN BUGS
 ----------
@@ -12,28 +12,27 @@ KNOWN BUGS
 - still problem of freezing xmms => xmms_remote_playlist_delete(0, 0)
 	(seems to be a bug in xmms, posted to bugs@xmms)
 
-
 for release 0.6
 ---------------
-
 - on deleting a song: delete in all lists (history, categories, ...)
+
+for release 0.6.1
+-----------------
+
+- save session settings:
+  - save column width? for each folder?
+- before xmms commands: check whether xmms running and start if necessary
+
 - clean up website...
 - try to improve speed of listview (heaps slower in qt3!)
   - change linked list to vector or dictionary in MyList???
-- bug: search for similar called with "current"!
 - provide a proper, tgz binary release
-- SHIFT-F7: play now (without crossfading)
-- include shutdown modes into toolbar (no of songs to play, shutdown mode...)
 - encapsulate communication with mp3 player in a "Player" class
-- port it to qt3
-  - saving window position
-  - saving column width? for each folder?
 - saveFilename/renaming of file in song.cpp
 - change copyTo / copyAsWavTo to plugins
 - extensive testing with new user!!!
 - clean up folder class
 - clean up a lot...and complete documentation
-- include mp3burn/cdlabelgen into distribution?
 - alternative to mp3burn? own script?
 - dialog for burning files on cd/cdrecord plugin?
 - folder for recent additions to database?

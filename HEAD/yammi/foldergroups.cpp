@@ -100,6 +100,7 @@ void FolderGroups::update(MyList* allSongs, int sortBy)
 		}
 	}
 	setText(0, fName+QString(" (%1)").arg(groupCount));
+  sortChildItems(0, true);
 	allSongs->setSortOrderAndSort(MyList::ByArtist);
 }
 
