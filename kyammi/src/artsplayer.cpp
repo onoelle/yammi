@@ -217,8 +217,11 @@ namespace Yammi {
         m_currentSong = 0;
         
         QString location = model->checkAvailability( playlist->at(0)->song() );
+        kdDebug() << "returned location: " << location << endl;
         m_currentSong = playlist->at(0)->song();
-        m_currentPlay = m_factory->createPlayObject( location, true );
+        KURL url;
+        url.setPath(location);
+        m_currentPlay = m_factory->createPlayObject( url, true );
         // these 2 lines ensure that totalTime() returns meaningful values
         // (otherwise, totalTime() seems to return 0 as long as song has not started playing yet)
         m_currentPlay->play();

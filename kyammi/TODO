@@ -1,16 +1,15 @@
 TODO
 ----
-last update 08.10.2004
+last update 11.10.2004
 
 
 for version 1.2-beta-2
 ----------------------
+- add: spanish translation
+- fix: go to folder via keyboard: select proper song (not by right click)
+- fix: noatun stops playing after a song sometimes
 - fix: delete songs???
-- fix: ..mp3 in song info
-- fix: cannot play supertramp - you started laughing (paris)
-
 - fix: handbook major issues (updating and formatting)
-- publish a sample plugin (echo...) with all replacements
 - publish plugin for html-export
 
 for version 1.2
@@ -19,12 +18,10 @@ for version 1.2
 - review kde conformance:  
   - replace all couts with kdDebug/kdWarn/kdError
   - check lsm file
-  - check icons: fix transparency or use standard ones, new application icon, check that it gets used
 - refactor: meta info reading in a dedicated class
 - clean up: song info for multiple songs
 - saveFilename/renaming of file in song.cpp (there was something I can't remember)
 - implement onPlayed and afterPlayed plugin types
-- make url klick working in preferences
 - on deleting a song: delete in *all* lists (history, categories, ...)
 - make follow symlinks a configurable option?
 - make restore playlist + position a configurable option
@@ -33,8 +30,6 @@ for version 1.2
 - simplify {wish} system: (make every entry with empty filename (no media) a wish?
 - child safe mode?
 - keep tags consistent mode?
-- fix all outstanding known bugs
-- polish user interface
 - speedup startup by starting media players in background (noatun, xmms)
 tag-related: (switch to Scott Wheelers taglib for reading metadata)
 - fix: 0-length ogg file makes yammi crash?

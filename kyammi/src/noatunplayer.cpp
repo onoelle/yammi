@@ -19,6 +19,7 @@
 
 #include "noatunplayer.h"
 #include <iostream>
+#include <kurl.h>
 #include <kdebug.h>
 using namespace std;
 #include <stdlib.h>
@@ -240,7 +241,10 @@ void NoatunPlayer::playlistAdd(QString filename, bool autoStart) {
     QByteArray data;
     QDataStream arg(data, IO_WriteOnly);
 
-    arg << filename;
+    KURL url;
+    url.setPath(filename);
+    QString escapedPath = url.url();
+    arg << escapedPath;
     arg << autoStart;
 
     if (!client->send(str.local8Bit(), "Noatun", "addFile(QString, bool)", data)) {

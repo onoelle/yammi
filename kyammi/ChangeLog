@@ -1,9 +1,16 @@
 ??.??.2004 version 1.2-beta2
 ############################
+- added italian translation (thanks to Alessandro)
+- added spanish translation (thanks to Miguel)
+- added GStreamer support (thanks to Martin)
+
+- fixed: proper escaping of filenames for playing in artsplayer or noatun (eg. files containing '#')
 - fixed: starting yammi via yammi.desktop file (no more console opened)
 - fixed: application icons in bigger sizes
 - fixed: corrected installation in KDE menu under Multimedia/Audio Player
 - fixed: export to m3u plugin: no more empty line at end of resulting playlist
+- fixed: suffix "..mp3" shown in proposed filename in song info dialog
+
 
 14.09.2004 version 1.2-beta
 ###########################

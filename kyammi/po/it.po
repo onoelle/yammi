@@ -1,3 +1,5 @@
+# translation of it.po to 
+# translation of it.po to
 # translation of it_yammi.po to italiano
 # translation of it.po to
 # translation of it.po to
@@ -10,12 +12,12 @@
 # R@>0~86 <radon86@3mw.org>, 2004.
 msgid ""
 msgstr ""
-"Project-Id-Version: it_yammi\n"
+"Project-Id-Version: it\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2004-10-09 00:51+0200\n"
-"PO-Revision-Date: 2004-10-03 14:58+0200\n"
-"Last-Translator: R@>0~86 <radon86@3mw.org>\n"
-"Language-Team: italiano\n"
+"PO-Revision-Date: 2004-10-11 11:22+0200\n"
+"Last-Translator: Oliver Nölle <oliver@linux>\n"
+"Language-Team:  <en@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -597,7 +599,9 @@ msgstr ""
 
 #: PreferencesDialogBase.cpp:681 rc.cpp:103
 msgid "capitalize tags on new songs"
-msgstr "Rendi maiuscole le lettere seguite da spazio nelle nuove canzoni"
+msgstr ""
+"Rendi maiuscole le lettere seguite\n"
+"da spazio nelle nuove canzoni"
 
 #: PreferencesDialogBase.cpp:682 rc.cpp:104
 msgid "Capitalizes artist, title and album of a newly added Song"
@@ -912,8 +916,8 @@ msgstr ""
 "I plugin possono essere eseguiti da una selezione di canzoni dal menu "
 "contestuale.\n"
 "\n"
-"Modalità singola = eseguito una volta per ogni canzone Modalità di gruppo = "
-"eseguito una volta per la selezione"
+"Modalità singola = eseguito una volta per ogni canzone\n"
+"Modalità di gruppo = eseguito una volta per la selezione"
 
 #: PreferencesDialogBase.cpp:764 rc.cpp:179
 msgid "See Yammi's homepage for useful plugin configurations:"

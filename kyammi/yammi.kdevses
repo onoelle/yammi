@@ -1,67 +1,42 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
 <!DOCTYPE KDevPrjSession>
 <KDevPrjSession>
- <DocsAndViews NumberOfDocuments="12" >
+ <DocsAndViews NumberOfDocuments="7" >
   <Doc0 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/TODO" >
-   <View0 line="9" Type="???" >
+   <View0 line="8" Type="???" >
     <AdditionalSettings Top="1" Width="1203" Attach="1" Height="795" Left="1" MinMaxMode="0" />
    </View0>
   </Doc0>
-  <Doc1 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/src/yammi.desktop" >
-   <View0 line="12" Type="???" >
+  <Doc1 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/ChangeLog" >
+   <View0 line="4" Type="???" >
     <AdditionalSettings Top="1" Width="1202" Attach="1" Height="811" Left="1" MinMaxMode="0" />
    </View0>
   </Doc1>
-  <Doc2 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/ChangeLog" >
-   <View0 line="7" Type="???" >
-    <AdditionalSettings Top="1" Width="1204" Attach="1" Height="795" Left="1" MinMaxMode="0" />
-   </View0>
-  </Doc2>
-  <Doc3 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/doc/en/index.docbook" >
+  <Doc2 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/doc/en/index.docbook" >
    <View0 line="363" Type="???" >
     <AdditionalSettings Top="1" Width="1203" Attach="1" Height="795" Left="1" MinMaxMode="0" />
    </View0>
+  </Doc2>
+  <Doc3 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/src/yammigui.cpp" >
+   <View0 line="2056" Type="???" >
+    <AdditionalSettings Top="1" Width="1202" Attach="1" Height="795" Left="1" MinMaxMode="0" />
+   </View0>
   </Doc3>
-  <Doc4 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/src/yammigui.cpp" >
-   <View0 line="1456" Type="???" >
-    <AdditionalSettings Top="1" Width="1203" Attach="1" Height="795" Left="1" MinMaxMode="0" />
+  <Doc4 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/src/songinfo.h" >
+   <View0 line="36" Type="???" >
+    <AdditionalSettings Top="1" Width="1202" Attach="1" Height="795" Left="1" MinMaxMode="0" />
    </View0>
   </Doc4>
-  <Doc5 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/src/PreferencesDialogBase.cpp" >
-   <View0 line="11" Type="???" >
-    <AdditionalSettings Top="1" Width="1204" Attach="1" Height="795" Left="1" MinMaxMode="0" />
+  <Doc5 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/src/songinfo.cpp" >
+   <View0 line="29" Type="???" >
+    <AdditionalSettings Top="1" Width="1203" Attach="1" Height="795" Left="1" MinMaxMode="0" />
    </View0>
   </Doc5>
-  <Doc6 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/src/SongInfoDialog.h" >
-   <View0 line="16" Type="???" >
+  <Doc6 context="ctx_qt" NumberOfViews="1" URL="file:/usr/lib/qt3/doc/html/qdir.html#rename" >
+   <View0 Type="???" >
     <AdditionalSettings Top="1" Width="1203" Attach="1" Height="795" Left="1" MinMaxMode="0" />
    </View0>
   </Doc6>
-  <Doc7 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/src/SongInfoDialog.cpp" >
-   <View0 line="19" Type="???" >
-    <AdditionalSettings Top="1" Width="1204" Attach="1" Height="795" Left="1" MinMaxMode="0" />
-   </View0>
-  </Doc7>
-  <Doc8 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/src/songinfo.h" >
-   <View0 line="36" Type="???" >
-    <AdditionalSettings Top="1" Width="1203" Attach="1" Height="795" Left="1" MinMaxMode="0" />
-   </View0>
-  </Doc8>
-  <Doc9 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/src/songinfo.cpp" >
-   <View0 line="52" Type="???" >
-    <AdditionalSettings Top="1" Width="1204" Attach="1" Height="795" Left="1" MinMaxMode="0" />
-   </View0>
-  </Doc9>
-  <Doc10 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/README" >
-   <View0 line="0" Type="???" >
-    <AdditionalSettings Top="1" Width="1204" Attach="1" Height="795" Left="1" MinMaxMode="0" />
-   </View0>
-  </Doc10>
-  <Doc11 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/INSTALL" >
-   <View0 line="0" Type="???" >
-    <AdditionalSettings Top="1" Width="1204" Attach="1" Height="795" Left="1" MinMaxMode="0" />
-   </View0>
-  </Doc11>
  </DocsAndViews>
  <pluginList>
   <kdevbookmarks>

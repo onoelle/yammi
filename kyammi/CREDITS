@@ -1,6 +1,8 @@
 Thanks to
 
-...Alessandro for contributing the italian translation
+...Miguel Angel Alvarez for contributing the spansih translation
+...Martin Albrecht for contributing the GStreamer support
+...Alessandro Pezzato for contributing the italian translation
 ...Bob Lockie for spending days on completely rewriting my configure.in
 ...Tom Roth for substantial feedback on the whole project, and detailed bug reports
 ...Philip Scott for contributing the reading of ogg tags
@@ -8,9 +10,7 @@ Thanks to
 ...Daniel Pichler, for preparing my sources for being internationalized and providing
    a german translation
 ...Stefan Gmeiner for sending a patch, cleaning up my messy sources...
-...Sandra Taufer for providing beautiful new icons for yammi!
-...Luis De la Parra for providing a big patch:
-   - initiating the process of making yammi a proper kde app!
-   - and cleaning up lots of things!
+...Sandra Taufer for providing beautiful new icons for yammi
+...Luis De la Parra for providing a big patch, making yammi a proper kde application
 
 ...and many other people for bug reports, building rpms, beta testing and other valuable feedback!
