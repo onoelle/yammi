@@ -107,24 +107,3 @@ void FolderSorted::syncWithListView(MyListView* listView)
 	songList->dirty=true;
 }
 
-
-// insert content menu...
-void FolderSorted::popup(QPoint point, QPopupMenu* contentMenu)
-{
-	allPopup=new QPopupMenu();
-	if (folderPopup) {
-		allPopup->insertItem("Folder...", folderPopup);
-    if(gYammiGui->autoplayFoldername==this->folderName()) {
-      this->folderPopup->setItemChecked(13, true);
-    }
-    else {
-      this->folderPopup->setItemChecked(13, false);      
-    }
-
-  }
-	if (contentMenu)
-		allPopup->insertItem("Content...", contentMenu);
-	if(folderPopup || contentMenu)
-		allPopup->popup(point);
-}
-

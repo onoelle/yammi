@@ -31,7 +31,6 @@ public:
 	FolderSorted	(QListViewItem *parent, const QString &name );				// subfolder
 	~FolderSorted();
 	
-  virtual void    popup(QPoint point, QPopupMenu* contentMenu);
 	virtual void		update(MyList* songList);					// common update method
 	virtual void		addSong(Song* s);
 	virtual void		insertSong(Song* s, int index);

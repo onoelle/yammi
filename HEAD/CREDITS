@@ -1,11 +1,11 @@
 Thanks to
 
+...Bob Lockie for completely rewriting my configure.in
+   (which hopefully makes yammi find the QT libs and compile on most systems now...)
 ...Tom Roth for substantial feedback on the whole project, and detailed bug reports
 ...Philip Scott for contributing the reading of ogg tags
 ...Scott Wheeler for bug reports and ideas for future versions of Yammi
-...Bob Lockie for looking over my makefiles and providing an improved configure.in
-   (which hopefully makes yammi find the QT libs and compile on most systems)
 ...Daniel Pichler, who offered preparing my sources for being internationalized and
    translated (into German)
 
-...and many other people for bug reports, beta testing and other feedback!
+...and many other people for bug reports, beta testing and other valuable feedback!

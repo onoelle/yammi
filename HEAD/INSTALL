@@ -1,7 +1,7 @@
 Basic Installation
 ==================
 
-   Please read README for the Yammi-specific configure options!
+   Please see README for the Yammi-specific configure options!
    (for example to disable linking against kde/id3lib/libvorbis/xmmslib...)
 
 

@@ -1,31 +1,25 @@
 TODO
 ----
-last update 16.3.2003
+last update 25.3.2003
 
-
-
-for release 0.8.0
------------------
-- pack for distribution:
-  - update handbook
-  - update homepage: move and update "requirements" and "installation" into handbook?
-
-- category folder: autoplay menu???
-- check: failing to load a media => crash? (tom)
-- signal to YammiGui::null ???
-- warning foldergroups.h:0 no relevant classes found?
 
 
 user feedback via email:
 ------------------------
-- incorrect tracknumbers are shown in some cases where tracknumber is undefined (0).
 - rating of tracks
 - folder for recent additions
-- loading/saving of playlists (saving is already possible via plugin)
+- subfolders
+- loading/saving of playlists to m3u (saving already implemented via plugin)
+- incorrect tracknumbers are shown in some cases where tracknumber is undefined (0).
 
 
 0.8.1
 -----
+- grabAndEncode: check whether file already existing
+- remove all from playlist: dialog box with checkbox
+- remove the creating of symlinks for burning assistance (but check size of existing media!)
+- check: use "lame" or "notlame"?
+- consisteny check: double complaints about wrong filename
 - Yammi running without valid player: create DummyPlayer class instead of all if(player!=0)
 - plugin: publish a sample plugin (echo...) with all replacements
 - document command line option: baseDir in handbook
@@ -91,55 +85,3 @@ KNOWN BUGS
 - problems with filenames containing "ß"? (problem of qt/linux on fat filesystem?)
 - deleting a song that is currently played, then pressing "current" => crash
 
-
------------------
-xmms bug track:
-trying to fill up xmms playlist with song from yammi
-xmms_remote_playlist_add_url /mm/mp3/inbox/Supertramp - School (Paris Live).mp3
-..done
-trying to fill up xmms playlist with song from yammi
-xmms_remote_playlist_add_url /mm/mp3/main/personal_groups/Supertramp - Crime Of The Century.mp3
-..done
-trying to fill up xmms playlist with song from yammi
-xmms_remote_playlist_add_url /mm/mp3/main/personal_groups/Supertramp - Give A Little Bit.mp3
-..done
-trying to fill up xmms playlist with song from yammi
-xmms_remote_playlist_add_url /mm/mp3/main/personal_groups/Supertramp - From Now On.mp3
-..done
-calling onTimer
-xmms_remote_get_playlist_file 1
-..done
-xmms_remote_get_output_time
-..done
-xmms_remote_get_output_time
-..done
-xmms_remote_get_playlist_time 1
-..done
-check: 2
-removing played songs: 0
-xmms_remote_get_playlist_file 0
-..done
-__xmms_remote_playlist_delete 0
-..done
-check: 1
-removing played songs: 1
-xmms_remote_get_playlist_file 0
-..done
-__xmms_remote_playlist_delete 0
-
-
-bug track 2:
-calling onTimer
-xmms_remote_get_playlist_file 2
-..done
-xmms_remote_get_output_time
-..done
-xmms_remote_get_output_time
-..done
-xmms_remote_get_playlist_time 2
-..done
-check: 2
-removing played songs: 0
-xmms_remote_get_playlist_file 0
-..done, returned: /mm/mp3/main/dancefloor/Felix - It Will Make Me Crazy.mp3
-__xmms_remote_playlist_delete 0

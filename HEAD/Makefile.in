@@ -1,4 +1,4 @@
-# KDE tags expanded automatically by am_edit - $Revision: 1.42 $ 
+# KDE tags expanded automatically by am_edit - $Revision: 1.43 $ 
 # Makefile.in generated automatically by automake 1.5 from Makefile.am.
 
 # Copyright 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001
@@ -411,7 +411,7 @@ distclean-tags:
 
 #>- DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 #>+ 4
-KDE_DIST=Makefile.dist MyYammiHowto.txt yammi.spec configure.scan yammi.doxygen oli_configure.in autoscan.log YammiGui.db subdirs YammiGui.pro yammi.kdevses 
+KDE_DIST=Makefile.dist MyYammiHowto.txt yammi.spec configure.scan yammi.doxygen configure.in_bob1 configure.in_bob2 autoscan.log [config.h].in YammiGui.db subdirs YammiGui.pro configure.in_oli yammi.kdevses 
 
 DISTFILES= $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST) $(KDE_DIST)
 

@@ -161,7 +161,7 @@ YammiGui::YammiGui(QString baseDir)
 	autoplayMenu->insertItem( "Longest Not Played",  this, SLOT(autoplayChanged(int)), 0, AUTOPLAY_LNP);
 	autoplayMenu->insertItem( "Random",  this, SLOT(autoplayChanged(int)), 0, AUTOPLAY_RANDOM);
   autoplayMenu->insertSeparator();
-  autoplayMenu->insertItem( "",  this, 0, 0, AUTOPLAY_FOLDER);
+  autoplayMenu->insertItem( "", AUTOPLAY_FOLDER);
   autoplayMode=AUTOPLAY_OFF;
   autoplayMenu->setItemChecked(autoplayMode, true);
 
@@ -2522,14 +2522,18 @@ void YammiGui::checkForGrabbedTrack(){
  		return;
  	}
 	mainStatusBar->message("grabbed song available", 20000);
-	model->addSongToDatabase(grabbedTrackFilename, 0);
+  model->entriesAdded=0;
+	model->corruptSongs=0;
+  model->problematicSongs.clear();
+
+  model->addSongToDatabase(grabbedTrackFilename, 0);
 	updateView();
 	folderProblematic->update(&model->problematicSongs);
 	folderAll->updateTitle();
   QString msg="Yammi tried to add the grabbed song to the database.\n\nSome statistics: \n\n";
   msg+=QString("%1 songs added to database\n").arg(model->entriesAdded);
   msg+=QString("%1 songs corrupt (=not added)\n").arg(model->corruptSongs);
-  msg+=QString("%1 songs problematic (check in folder Problematic Songs)").arg(model->problematicSongs.count());
+  msg+=QString("%1 problematic issues(check in folder Problematic Songs)").arg(model->problematicSongs.count());
 	QMessageBox::information( this, "Yammi", msg, "Fine." );
 }
 

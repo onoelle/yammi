@@ -207,7 +207,7 @@
                         <string>correct inconsistent filenames</string>
                     </property>
                     <property name="toolTip" stdset="0">
-                        <string>If filenames differ from the "artist - title" schema, they will be corrected</string>
+                        <string>If filenames differ from the configured naming scheme, they will be corrected</string>
                     </property>
                 </widget>
                 <widget class="QCheckBox" row="4" column="0" rowspan="1" colspan="2">
@@ -218,7 +218,7 @@
                         <string>check filenames</string>
                     </property>
                     <property name="toolTip" stdset="0">
-                        <string>Checks, whether the filenames correspond to the "artist - title" schema</string>
+                        <string>Checks, whether the filenames correspond to the configured naming scheme</string>
                     </property>
                 </widget>
                 <widget class="QCheckBox" row="6" column="0" rowspan="1" colspan="2">

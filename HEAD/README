@@ -1,54 +1,85 @@
 Yammi - Yet Another Music Manager I...
 
-Please visit http://yammi.sourceforge.net for detailed information about Yammi.
+Please visit   http://yammi.sourceforge.net   for detailed information about Yammi.
 
-PLEASE READ THIS BEFORE COMPILING:
+PLEASE READ THE FOLLOWING, if you have problems with compiling
+via the normal configure/make/make install procedure...
 
-Yammi has some dependencies that can be switched off:
+Yammi has some dependencies/requirements that can be switched off:
+(As of version 0.8.0, the configure script should recognize for most dependencies,
+if the required libs are not available and disable linking against them automatically)
 
-id3lib
-------
-Needed for reading id3 tags. Recommended if you use mp3 files.
-(http://www.id3lib.org)
-To disable:
---disable-id3lib         (=> no id3 tags can be read/written from/to mp3 files
-                             layer information (bitrate, length) is still available)
-
-libvorbis / libvorbisfile / libvorbis-dev
------------------------------------------
-Needed for reading ogg tags. Recommended if you use ogg files.
-To disable:
---disable-ogglibs        (=> no ogg tags can be read/written from/to ogg files,
-                             no ogg layer information (bitrate, length) available)
-
-xmms
-----
-Needed for xmms support. Required if you use Xmms as your media player.
-To disable:
---disable-xmms           (=> disables xmms support)
-
-
-kdecore
--------
+kdecore (http://www.kde.org)
+----------------------------
 Needed for noatun support (for using dcop). Required if you use Noatun as your media player.
 To disable:
 --disable-noatun         (=> disables noatun support)
 
+id3lib (http://www.id3lib.org)
+------------------------------
+Needed for reading id3 tags. Recommended if you use mp3 files.
 
-As you need a media player, you can't switch off both xmms and noatun support (well, you can, but...).
+To disable (should be disabled automatically if not installed):
+--disable-id3lib         (=> no id3 tags can be read/written from/to mp3 files
+                             layer information (bitrate, length) is still available)
+
+libvorbis / libvorbisfile / libvorbis-dev (http://www.xiph.org/ogg/vorbis/)
+---------------------------------------------------------------------------
+Needed for reading ogg tags. Recommended if you use ogg files.
+
+To disable (should be disabled automatically if not installed):
+
+--disable-ogglibs        (=> no ogg tags can be read/written from/to ogg files,
+                             no ogg layer information (bitrate, length) available)
+
+xmms (http://www.xmms.org)
+--------------------------
+Needed for XMMS support. Required if you use XMMS as your media player.
+To disable (should be disabled automatically if not installed):
+--disable-xmms           (=> disables xmms support)
 
 
 For example, use
 ./configure --disable-ogglibs --disable-noatun
 to disable support for ogg files and disable noatun support.
 
+Note:
+If you don't have either XMMS or noatun support compiled in, Yammi only has limited functionality.
+
 
 Install path
 ------------
-The default install path is /usr/local/
+The default install path is /usr/local. If this is not the desired path,
+use the --prefix switch to change the install path.
+For example, use
+./configure --prefix=/opt/kde3
+and the binary should be installed as /opt/kde3/bin/yammi
 
 
-Enjoy using Yammi...
 
-------------
-Oliver Nölle
+Problems???
+-----------
+As I am not an expert in configure scripts and makefiles, the provided ones might not work
+on your system and configuration.
+If you can't compile yammi at all, please drop me a short email with the error message along
+with some information about your configuration (QT+KDE version, distribution, id3lib version, ...),
+hopefully I can fix it for the next version.
+If you know why it fails and can fix it, even better, but please drop me a note, too... THANKS!!!
+
+libs not found, but they are there?
+-----------------------------------
+A user reported problems about kdelibs not found, and resolved it with the following additional
+switch to the configure script:
+--with-extra-libs=/opt/kde3/lib
+or
+--with-extra-libs=/usr/lib/qt3/lib
+So if configure does not find kdelibs or qt, you might get around it by providing the
+needed libs directory with the --with-extra-libs switch...
+(please drop me an email if it is necessary on your system)
+
+
+
+I hope you enjoy using Yammi...
+
+--------------------------------
+Oliver Nölle (oli.noelle@web.de)

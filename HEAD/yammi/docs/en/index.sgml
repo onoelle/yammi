@@ -1,8 +1,8 @@
 <!doctype linuxdoc system>
 <article>
 <title>The Yammi Handbook
-<author>Brian O.Nölle <tt>oli.noelle@web.de</tt>
-<date>Version 0.8.0 , Mon January 6 16:00:00 MET 2003
+<author>Brian O.Nölle <tt>oli.noelle _AT_ web.de</tt>
+<date>Version 0.8.0 , Wed March 26, 16:00:00 MET 2003
 <abstract>
 This Handbook describes Yammi Version 0.8.0
 </abstract>
@@ -10,11 +10,11 @@ This Handbook describes Yammi Version 0.8.0
 <toc>
 
 <sect>Introduction<p>
-Yammi ("Yet Another Music Manager I...") is a tool to manage and search your song collection on your computer
-(eg. mp3, ogg and wav files).
+Yammi ("Yet Another Music Manager I...") is a tool to manage and search your song collection
+on your computer (eg. mp3, ogg and wav files).
 It is centered around an intuitive graphical user interface and a song database,
 which allows convenient and fast access to any songs.
-For playing songs Yammi currently supports XMMS
+For playing songs Yammi currently supports two media players, namely XMMS
 (<htmlurl url="http://www.xmms.org" name = "X MultiMedia System">).
 and
 <htmlurl url="http://www.noatun.kde.org" name = "Noatun">.<p>
@@ -29,13 +29,13 @@ Yammi enables you to
 
 - keep statistics (when/how many times was song x played?)
 
-- assist in burning your song collection to CDs (distributing your songs over multiple media)
+- assist in burning your song collection to CDs (automatically distributing your songs over multiple media)
 
 - act as a jukebox, loading song files on demand from removable media/CDs
 
 - prelisten to songs on headphone while normal playback to DJ your own party (needs a second sound card)
 
-- invoke other programs or custom scripts such as mp3burn, cdlabelgen, ... to burn CDs, generate CD labels or execute
+- invoke other programs or custom scripts such as k3b, cdlabelgen, ... to burn CDs, generate CD labels or execute
 other commands, using the information from Yammi's song database
 
 <p>
@@ -56,7 +56,7 @@ just every available information, eg. title, artist, length, most recently added
 most recently played, bitrate...
 <p>
 
-Yammi does as an excellent job on a party. In connection with Xmms'
+Yammi does as an excellent job on a party. In connection with XMMS'
 <htmlurl url="http://www.netcologne.de/~nc-eisenlpe2/xmms-crossfade/" name="crossfading plugin">
 (<htmlurl url="http://volnorm.sourceforge.net/" name="volume normalization"> might be useful, too)
 and a second sound card (to prelisten to songs on a headphone) it almost replaces the DJ,
@@ -87,15 +87,21 @@ Give it a try at <htmlurl url="http://yammi.sourceforge.net" name = "The Yammi H
 
 <sect1>Requirements
 <p>
-Yammi needs Qt 3.x and Xmms >= 1.2.6 or
-For reading id3 tags, id3lib is required (can be switched off, see below).
-For reading ogg tags and layer information, libvorbis and libvorbisfile are required (can be switched off, see below).
+<sect2>Mandatory
+<p>
+Yammi needs Qt 3.x.
+<sect2>Optional
+<p>
+For reading id3 tags, id3lib is required.
 
-If you want to listen to songs on a second soundcard during playback on your primary soundcard
+For reading ogg tags and layer information, libvorbis and libvorbisfile are required.
+
+For listening to songs on a second soundcard during playback on your primary soundcard
 you need mpg123 (for mp3 files), ogg123 (for ogg files) or play (for wav files).
 
-If you want to use the ripping and encoding function performed by the script "yammiGrabAndEncode"
-you need cdparanoia and (not)lame, for details have a look at the script included in the distribution.
+If you want to use the ripping and encoding function offered from within yammi,
+you need cdparanoia and (not)lame, for details have a look at the script "yammiGrabAndEncode"
+included in the distribution.
 
 <sect1>Compilation and installation
 <p>
@@ -109,23 +115,12 @@ the base directory of the Yammi distribution:
 % make install
 </verb></tscreen>
 
-Pass the switches "--disable-id3lib" or "--disable-ogglibs" to the configure script,
-if you don't have the required libraries.
-As a result, tag reading will not be possible for the corresponding files.
-For example, if you don't use ogg files, and don't have libvorbis and libvorbisfile installed
-on your system, you have to use
-
-% ./configure --disable-ogglibs
-
 If compilation is successful, the executable "yammi" and an additional script
 "yammiGrabAndEncode" will be installed in /usr/local/bin/.
-(If this path does not exist, create this directory before installation, and move the executables to
-any directory which is in your path afterwards.)
 
-<p>
-Should you run into problems while compiling, please report them to the the author at
-<htmlurl url="mailto:oli.noelle@web.de" name = "oli.noelle@web.de"> (please include
-the output of the configure/make command in the email).
+If you experience problems with compiling or installing, please consult the README file
+included in the distribution
+which explains various switches for the configure script that might be necessary on your system.
 <p>
 
 <sect1> Deinstallation <p>
@@ -163,8 +158,8 @@ On the right, the "songlist" lists all songs contained in the selected folder.
 Normally you would use the quick browser to pick a selection of (or all) songs, then the songlist to
 pick one (or more) songs to play, edit, categorise, ...
 
-The most important actions are available in the toolbar, the others are available from
-the menu or context menu (right-click on a song or a folder).
+The most important actions are available in the toolbar, others in the menu or the context menu
+(right-click on a song or a folder).
 <p>
 
 
@@ -306,7 +301,7 @@ Contains a subfolder for every media (eg. CD) that you prepared with Yammi.
 When burning song files to a CD with the assistance of Yammi, the program adds
 information to its database about on which media under which path each song is available.
 This enables you to quickly find on which media you have song files,
-and it enables Yammi to request the required media to load songs into a "cache".
+and it enables Yammi to request the required media to load songs into a swap directory.
 
 <sect2> Folder Problematic Songs <p>
 This Folder contains songs that were found problematic when performing a
@@ -420,10 +415,10 @@ See "Burning files" in "Advanced Topics".
 
 <sect1>Settings<p>
 
-You can set the settings via the menu: Configuration -> Settings.
+You can configure Yammi's settings via the menu: Settings -> Configure Yammi.
 
-Most items should be self-explanatory if you read the tool tips provided
-(stay over an item with the mouse for a while).
+Only some options are explained here, the rest should be self-explanatory if you read the
+provided tool tips (stay over an item with the mouse for a while).
 
 Consistency Mode
 
@@ -438,7 +433,7 @@ but first tries to remove all characters that are possibly not allowed in
 filenames (on linux as well as windows (vfat) file systems),
 however no guarantee can be given that "strange" artist or title entries
 don't cause any problems with naming the files...
-Please let me know about problems concerning the naming of files, so I can fix them.
+Please let me know about problems concerning the naming of files so I can try to fix them.
 
 If you don't want Yammi to touch your song files in any way, you should
 leave these two settings disabled!
@@ -507,11 +502,25 @@ For these cases press the SHIFT key in combination with the requested action.
 
 <sect> Advanced topics <p>
 
+<sect1> Autoplay <p>
+If you are too lazy to manually enqueue the songs to listen to, you can use Yammi's autoplay
+functionality to automatically enqueue songs for you, if the playlist contains less than 5 songs.
+
+To use this, you first choose a folder to use for selecting songs and choose "Autoplay" from
+the context menu. Then you can set the autoplay mode from Yammi's "Autoplay" menu.
+
+Currently, Yammi offers two modes:
+
+"Random" randomly selects songs from the autoplay folder.
+
+"Longest not played" chooses those songs, that haven't been played for the longest time.
+For this to work, you need to enable the "logging of played songs" feature in the settings.
+
 <sect1> Checking consistency <p>
 Note: This functionality changed slightly since version 0.7.
 
 The menu offers the possibility to check your complete database for consistency.
-You can as well apply this consistency check to a selection of songs.
+From the context menu, you can apply this consistency check to a selection of songs.
 
 The consistency check is a tool meant to help you organizing your song collection.
 You can configure the aspects to be checked in a dialog, right now Yammi
@@ -530,10 +539,9 @@ to the values in Yammi's database (only possible for mp3 and ogg files).
 
 Be careful using this function, as it might overwrite all the tags in your files!
 
-- check filename: consistent with the naming scheme "artist - title"?
-(no other naming schemes supported yet, sorry...)
+- check filename: consistent with the configured naming scheme (such as "artist - title")?
 
-If Filenames are not consistent, they can be corrected after the naming scheme.
+If Filenames are not consistent, they can be corrected according to the naming scheme.
 
 Be careful using this function, as it might rename all your files!
 
@@ -559,6 +567,7 @@ found to be problematic. This allows to resolve any inconsistencies.
 Note that this folder will not be saved for the next session, so please resolve any
 inconsistencies immediately after checking consistency.
 
+
 <sect1> Burning files <p>
 For most users, there are two reasons to burn files on CDs:
 
@@ -568,13 +577,14 @@ For most users, there are two reasons to burn files on CDs:
 (possibly to remove the files locally and use the removable media management of Yammi).
 
 <sect2>Burning an audio CD from a selection of songs<p>
-I highly recommend the burning program K3b (running under KDE) to burn an audio CD.
+I highly recommend the fantastic burning program K3b (http://www.k3b.org)
+to burn an audio CD.
 
 If you have k3b installed, you can simply select the songs you want to burn,
-and use the "Burn with K3b(audio)" plugin. It will start k3b, open a new audio project
+and use the "Burn with K3b(audio)" plugin of Yammi. It will start k3b, open a new audio project
 and add all selected songs to it.
 
-In that way, burning the favourite songs of your friend to an audio CD is easy as pie:
+In that way, burning the favorite songs of a friend to an audio CD is easy as pie:
 
 1. Create a new category
 
@@ -590,29 +600,16 @@ In that way, burning the favourite songs of your friend to an audio CD is easy a
 <sect2>Burning files to CDs as backup<p>
 For assistance in burning files to a CD, do the following:
 
-1. select the songs you want to burn
+1. Select the songs you want to burn
 
 2. In the context menu of the songlist choose "Advanced"->"Burn to Media".
 
 3. You will be asked for a name and a start index for that collection of songs.
 
-4. Now Yammi will create directories (in the .yammi subdirectory of your home
-directory) named after the collection name you gave and an index.
-Songs will be inserted in the current order of your songlist. For example
-if you order your songs after artist in the songlist, and invoke this function,
-you might end up with all songs from artists "Abba" to "Guano Apes" on your
-media 1, "Hanson" to "..." on media 2, and so on...
-In each directory, Yammi
-will put symbolic links to the corresponding files on your harddisk. Yammi will
-take care that in one directory there won't be more songs than the maximum
-medium size given in the preferences (burning folder, size of media).
-If you set this value to 700 MB, you can comfortably distribute a big folder
-(or all your music) over multiple 700 MB CDs.
-
-For burning the songs to CD, please use another program (eg. X-CDRoast) and
-simply burn the content of each of the collection's folder to a CD.
-Take care to check the feature "follow symbolic links" in the options of the
-burning program.
+4. Now Yammi will create subfolders in the "Media" folder, taking care that none of these
+subfolders exceeds the maximum media size configured in the preferences.
+For burning the song files to CD, you can now simply invoke the "Burn with K3b(data)" plugin
+from the context menu (assuming you have installed k3b) for each created subfolder.
 
 Yammi also remembers on which media a song is contained.
 This allows to delete song files from harddisk to save space,
@@ -631,9 +628,10 @@ the random play setting of XMMS, as this would confuse Yammi's playlist manageme
 
 When Yammi is terminated, it writes all songs from its playlist back to the
 playlist of the media player (in that way, Yammi does not need to save the current playlist,
-as the media player does it when it is terminated correctly).
+and you can continue listen to the selected songs).
 When Yammi starts the next time, it reads the current playlist
-from the media player and again takes over the playlist management.
+from the media player and again takes over the playlist management
+(unfortunately, in noatun this causes an interruption of playback).
 
 <sect1> Updating song database <p>
 The "Database" menu offers the possibility to update your database in two ways:
@@ -647,11 +645,7 @@ and checks, whether the song is already contained in Yammi's database.
 For all new songs found, Yammi tries to get the song information such as
 artist, title, album... by looking at the id3(v1.x or v2.x) or ogg tags.
 If tags are not present, Yammi tries to extract the information from the
-filename by looking for a seperating "-" and takes everything to the left of
-the seperating dash as the artist, everything to the right as the title
-(corresponding to the "artist - title.mp3" schema). If no seperating dash or
-more than one are found, Yammi puts the newly added file into the ProblematicSongs
-folder with a comment to verify the guessed artist and title entries.
+filename, using the configured guessing scheme.
 If the filename contains an artist or title that is longer than 30 characters,
 and the tags contain only the first 30 characters (as this is the limit for id3v1.1),
 Yammi tries to take the full name from the filename (Yammi's database has basically no
@@ -677,27 +671,24 @@ not create any inconsistencies.
 <sect1> Grabbing and encoding new songs <p>
 
 Especially on a party it might come in handy to directly grab and encode
-some songs from cd. Yammi offers a basic support for that (otherwise I am using
-Krabber, which does a real good job on grabbing and encoding).
-From the file menu, choose "Grab CD Track". You will be asked for track number,
-artist and title. Then Yammi executes in the background the script
-"grabandencode" (which is normally installed in /usr/local/bin/, just have a look),
-which grabs the track from CD using paranoia, and then encodes it using lame.
+some songs from an audio CD. Yammi offers a basic support for that, but for grabbing a large
+number of songs I recommend using one of the many tools out there.
+For grabbing and encoding a single song, choose "Grab CD Track".
+You will be asked for track number, artist and title.
+Then Yammi executes in the background the script
+"yammiGrabAndEncode" (which is included in the distribution and normally installed
+in /usr/local/bin/),
+which grabs the track from CD using paranoia, and then encodes it using (not)lame.
 (You might want to customize the script to fit your needs, eg. setting the
-bitrate for lame, which is defaulting to 256kb/s).
-When the script has finished, a new mp3 file exists in the directory given in the
+bitrate for lame, which is defaulting to 256kb/s. Just have a look at the script, it's easy...).
+When the script has finished, a new song file exists in the directory given in the
 preferences under "base directory for scanning".
-Yammi informs you in the status bar that there is a new song available.
-You manually have to perform a database update then to
-get the song into the database.
-
-If you want to customize this script, please adhere to the schema that the
-output filename is only existing when the grabbing and encoding is completely
-finished, because Yammi checks for availability of a file with the given name.
+Yammi then automatically adds this song to its database and informs you with a dialog box.
 
 <sect1>Child-safe mode<p>
-This mode is thought for parties to protect your mp3 collection, if other people
-use Yammi. The following operations are not permitted, if this mode is switched
+This mode is thought for parties to protect your precious song collection from users
+deleting files or changing tags by accident.
+The following operations are not permitted, if this mode is switched
 on:
 
 - the complete "Advanced" submenu in the context menu is disabled
@@ -711,11 +702,16 @@ on:
 - check consistency
 
 Once enabled, you can only disable this feature with a password, which is: "protect".
-Alternatively, you could hack Yammi's preferences file.
+Alternatively, you could edit Yammi's preferences file.
 
 Okay, this is NOT SAFE IN ANY WAY, it's just meant to protect users who have
-very little knowledge of computers to do any harm to your mp3 collection by
+very little knowledge of computers to do any harm to your song collection by
 accident.
+
+To go one step further, you could create a new user "dj" on your computer,
+and start Yammi as that user, using the command line option to specify the location of the
+.yammi directory. This directory, as well as the directory with all your songs,
+should of course be read-only to the user "dj".
 
 <sect1>Sleep mode <p>
 If you enable Yammi's sleep mode by pressing the button in the toolbar,
@@ -723,11 +719,8 @@ Yammi will shut down in the following two cases:
 
 - the number of songs to play (visible and editable in the toolbar) has reached 0
 
-- the media player stops playback (only if it STOPS, PAUSING playback will have no effect)
+- the media player stops playback because the playlist is empty
 
-The second case can be because of
-
-- last song in playlist was played
 
 A dialog box appears giving you the possibility to cancel the shutdown.
 
@@ -787,18 +780,16 @@ using a least-recently-used (LRU) strategy.
 
 <sect1> External Scripts / Plugins <p>
 Yammi offers support to call external programs with parameters like song titles
-or filenames. This can be extremely useful when calling a script for burning mp3s
-or a cd label generator. Then Yammi can even serve as a front-end for CD-Burning
-or other tasks.
+or filenames. This can be extremely useful for calling a program for burning songs to CD
+or for creating a CD label. 
 
 These plugins can be configured in Yammi's preferences, and are available via the
 context menu in the songlist. There are two types of plugins, the first one
-("Song plugin") is invoked for each song, the second one
-("Songlist plugin") generates a list of items and invokes
-a program on this list.
+("single mode") is invoked for each song, the second one ("group mode")
+generates a list of items and invokes a program on this list.
 
-Please have a look at Yammi's website (yammi.sourceforge.net) for example configurations
-for these plugins.
+Yammi has a set of standard plugins already configured.
+For other plugin examples, have a look at Yammi's website.
 
 
 <sect1> Tips and tricks...<p>
@@ -823,7 +814,7 @@ after the time when they were played).
 
 <sect>Copyright<p>
 
-Yammi 0.8.0, Copyright 2002 Oliver Nölle, oli.noelle@web.de
+Yammi 0.8.0, Copyright 2003 Oliver Nölle, oli.noelle _AT_ web.de
 
 
 This program is free software; you can redistribute it and/or modify
