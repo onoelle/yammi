@@ -3,7 +3,7 @@
 <article>
 <title>The Yammi Handbook
 <author>Brian O.Nölle <tt>oli.noelle@web.de</tt>
-<date>Version 0.6 , Sun August 11 16:00:00 MET 2002
+<date>Version 0.6 , Fri August 9 16:00:00 MET 2002
 <abstract>
 This Handbook describes Yammi Version 0.6
 </abstract>
@@ -466,7 +466,7 @@ F5:	Add song to end of playlist
 
 F6:	Play song as next
 
-F7:	Play song immediately
+F7:	Play song immediately  (SHIFT + F7: play immediately without crossfading)
 
 F8:	Dequeue selected		(SHIFT + F8: Dequeue all)
 
@@ -478,10 +478,10 @@ F11:	Prelisten to end
 
 F12:	Stop prelistening
 
-PAUSE:	shutdown yammi and/or computer, see "Shutdown script" under "Advanced topics"
+PAUSE:	Enable/disable sleep mode, see "Sleep mode" under "Advanced topics"
 
-Page Up and Page Down: increase or decrease the number of songs until Yammi shuts down
-(only takes effect, if Yammi is in shutdown mode)
+Page Up and Page Down: increase or decrease the number of songs for Yammi sleep mode
+(only takes effect, if Yammi is in sleep mode)
 
 Ctrl-S:	Save song database
 
@@ -654,12 +654,21 @@ Okay, this is NOT SAFE IN ANY WAY, it's just meant to protect users who have
 very little knowledge of computers to do any harm to your mp3 collection by
 accident.
 
-<sect1> Shutdown script <p>
-If you enable Yammi's shutdown mode by pressing the button in the toolbar,
+<sect1>Sleep mode <p>
+If you enable Yammi's sleep mode by pressing the button in the toolbar,
 Yammi will shut down in the following two cases:
 
 - the number of songs to play (visible and editable in the toolbar) has reached 0
+
 - XMMS stops playback (only if it STOPS, PAUSING playback will have no effect)
+
+The second case can be because of
+
+- last song in playlist was played
+
+- you pressed stop in XMMS or in Yammi
+
+A dialog box appears giving you the possibility to cancel the shutdown.
 
 If there is a shutdown script specified in the preferences, this script will be invoked on
 shutting down.

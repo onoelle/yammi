@@ -2,7 +2,7 @@
 
 SUBDIRS = yammi 
 
-EXTRA_DIST = yammi.kdevprj admin CHANGELOG todo yammiGrabAndEncode yammiShutdownScript 
+EXTRA_DIST = yammi.kdevprj admin CHANGELOG yammiGrabAndEncode yammiShutdownScript AUTHORS INSTALL README TODO 
 
 install-exec-local:
 	$(mkinstalldirs) /usr/local/bin/

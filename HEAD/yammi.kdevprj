@@ -1,3 +1,9 @@
+[AUTHORS]
+dist=true
+install=false
+install_location=
+type=DATA
+
 [CHANGELOG]
 dist=true
 install=false
@@ -14,7 +20,7 @@ ldadd=-lxmms $(LIB_QT)
 ldflags=\s        \s
 
 [General]
-AMChanged=true
+AMChanged=false
 author=Oliver Nölle
 configure_args=\s--build=i386-linux --host=i386-linux --target=i386-linux\s
 email=oli.noelle@web.de
@@ -31,6 +37,12 @@ sub_dir=yammi/
 version=0.6
 version_control=CVS
 workspace=1
+
+[INSTALL]
+dist=true
+install=false
+install_location=
+type=DATA
 
 [KPP]
 kpp_appgrp=Multimedia::MP3
@@ -50,17 +62,23 @@ User Interface=*.kdevdlg,*.ui,*.rc,*.dlg
 groups=Headers,Sources,User Interface,Translations,Others
 
 [Makefile.am]
-files=yammi.kdevprj,admin,CHANGELOG,todo,yammiGrabAndEncode,yammiShutdownScript,yammi.spec
+files=yammi.kdevprj,admin,CHANGELOG,yammiGrabAndEncode,yammiShutdownScript,yammi.spec,AUTHORS,INSTALL,README,TODO
 sub_dirs=yammi
 type=normal
 
-[admin]
+[README]
 dist=true
 install=false
 install_location=
 type=DATA
 
-[todo]
+[TODO]
+dist=true
+install=false
+install_location=
+type=DATA
+
+[admin]
 dist=true
 install=false
 install_location=
