@@ -398,9 +398,6 @@ void YammiGui::readProperties(KConfig *config) {
 
 bool YammiGui::queryClose() {
     kdDebug() << "queryClose()" << endl;
-    if(model->categoriesChanged()) {
-        kdDebug() << "allSongsChanged\n";
-    }
     if(model->allSongsChanged() || model->categoriesChanged()) {
         QString msg=i18n("The Song Database has been modified.\nDo you want to save the changes?");
         switch( KMessageBox::warningYesNoCancel(this,msg,i18n("Database modified"))) {
@@ -417,6 +414,8 @@ bool YammiGui::queryClose() {
             model->saveHistory();
         }
     }
+    // save playlist
+    model->saveList(&(model->songsToPlay), config()->databaseDir, "playqueue");    
     return true;
 }
 
@@ -486,8 +485,6 @@ void YammiGui::toolbarToggled( const QString& name ) {
 
 //****************************************************************************************************//
 YammiGui::~YammiGui() {
-    // save playlist
-    model->saveList(&(model->songsToPlay), config()->databaseDir, "playqueue");
     delete player;
     searchThread->stopThread();
     searchFieldChangedIndicator.wakeOne();

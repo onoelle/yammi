@@ -1,4 +1,4 @@
-09.03.2005 version 1.2
+10.03.2005 version 1.2
 ######################
 - fixed: problems with umlauts in categories/history (saving to correct UTF-8 encoding now)
 - fixed: crash when scanning unreadable directories (eg. over samba shares)
@@ -7,10 +7,10 @@
 - fixed: icon transparency in prelisten icons (on dark backgrounds)
 - improved: song info dialog nicely shows inconsistent filenames/paths and allows to correct them
 - improved: prelisten functionality now fully configurable (also fixes prelistening to flac files)
-- improved: updated italian translation
 - improved: added confirm dialog when editing more than 20 songs
 - improved: made gstreamer audiosink configurable
-- improved: handbook updated
+- updated: italian translation
+- updated: handbook
 
 
 
