@@ -1,0 +1,87 @@
+yammi - Howto
+-------------
+
+i18n
+----
+call manually in project dir:
+make -f admin/Makefile.common package-messages
+=> generates yammi.pot in the po directory
+
+old: (QT only)
+
+nach autoconf/automake:
+im Verzeichnis yammi/yammi (mit den ganzen sourcen) Makefile.am editieren:
+TRANSLATIONS = yammi_de.ts yammi.hu.ts yammi_xx.ts
+
+
+im Verzeichnis yammi/yammi (mit den ganzen sourcen): lupdate Makefile.am
+=> erzeugt/aktualisiert "yammi_de.ts" (+ yammi_xx.ts)
+(weil im Makefile.am eingetragen ist: TRANSLATIONS = yammi_de.ts)
+
+im gleichen Verzeichnis lrelease Makefile.am
+=> erzeugt yammi_de.qm (+ yammi_xx.qm)
+
+
+CVS-Howto
+---------
+dies kreiert lediglich den account auf cvs.sourceforge
+ssh -l onoelle cvs.yammi.sourceforge.net
+
+import: bob -> cvs@sourceforge
+cvs -d:ext:onoelle@cvs.yammi.sourceforge.net:/cvsroot/yammi import mycvsroot vendor start
+
+checkout: cvs@sourceforge -> bob
+cvs -d:ext:onoelle@cvs.yammi.sourceforge.net:/cvsroot/yammi co mycvsroot
+
+checkin (=commit): bob -> cvs@sourceforge
+cvs commit -m "comments for this commit" uic_command.txt
+
+
+Compile Farm benutzen
+---------------------
+auf compile farm einloggen:
+ssh -lonoelle cf.sourceforge.net
+
+dann erstmal:
+cvs -d:pserver:anonymous@cvs.yammi.sourceforge.net:/cvsroot/yammi login
+(und bei Frage nach Passwort einfach Return)
+
+und schliesslich yammi vom cvs getten:
+cvs -z3 -d:pserver:anonymous@cvs.yammi.sourceforge.net:/cvsroot/yammi co HEAD
+
+
+VI essentials
+-------------
+ESC + :w    save file
+ESC + :q    quit vi
+
+
+Logo einbinden
+--------------
+Group ID: 40376
+
+<A href="http://sourceforge.net"> <IMG src="http://sourceforge.net/sflogo.php?group_id=40376" width="88" height="31" border="0" alt="SourceForge Logo"></A>
+
+
+
+
+prepare Release
+---------------
+check:
+- AUTHORS/CREDITS
+- README
+- TODO/CHANGELOG
+- any couts that should be deleted?
+- update aboutDialog() in yammigui.cpp
+
+In kdevelop
+1. distclean
+2. autoconf and automake
+3. configure
+4. make distribution
+5. die cpp-Dateien der .ui-files aus dem package löschen!!!
+6. evtl. configure patchen für non-KDE user?
+
+Test on compile farm (probably does not work any more due to dependency on kde libs)
+1. package auf den webserver von yammi kopieren
+2. scp onoelle@yammi.sourceforge.net:/home/groups/y/ya/yammi/htdocs/yammi-1.0.tar.gz .
