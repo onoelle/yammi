@@ -24,6 +24,7 @@
 #include "mylist.h"
 
 class QString;
+class YammiGui;
 
 /**
 @author Oliver Nölle
@@ -32,18 +33,19 @@ class QString;
 class SearchThread : public QThread
 {
 public:
-	SearchThread();
+	SearchThread(YammiGui* yammiGui);
 	~SearchThread();
 	virtual void run();
 	void stopThread()			{ stopThreadFlag = true; }
 	void setSearchTerm(QString str)   {searchTerm = str; }
-	
+
 protected:
 	bool stopThreadFlag;
 	QString searchTerm;
 	QString currentSearchTerm;
 	bool searchRunning;
 	MyList searchResults;
+	YammiGui* gYammiGui;
 };
 
 

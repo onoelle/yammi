@@ -38,14 +38,13 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, const char *name, bool mod
 	// general
 	LineEditTrashDir->setText(config->trashDir);
 	LineEditScanDir->setText(config->scanDir);
-	LineEditFilenamePattern->setText(config->filenamePattern);
-	LineEditDirectoryPattern->setText(config->directoryPattern);
-  RadioButtonSimpleGuessmode->setChecked(config->guessingMode==config->GUESSING_MODE_SIMPLE);
-  RadioButtonAdvancedGuessmode->setChecked(config->guessingMode==config->GUESSING_MODE_ADVANCED);
+	RadioButtonSimpleGuessmode->setChecked(config->guessingMode==config->GUESSING_MODE_SIMPLE);
+	RadioButtonAdvancedGuessmode->setChecked(config->guessingMode==config->GUESSING_MODE_ADVANCED);
 	CheckBoxLogging->setChecked(config->logging);
 	CheckBoxChildSafe->setChecked(config->childSafe);
 	CheckBoxTagsConsistent->setChecked(config->tagsConsistent);
 	CheckBoxFilenamesConsistent->setChecked(config->filenamesConsistent);
+// TODO: fix!
 	CheckBoxIgnoreCaseInFilenames->setChecked(config->ignoreCaseInFilenames);
 	CheckBoxCapitalizeTags->setChecked(config->capitalizeTags);
 	LineEditCriticalSize->setText(QString("%1").arg(config->criticalSize));
@@ -109,7 +108,6 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, const char *name, bool mod
 	connect( PushButtonNewPlugin, SIGNAL( clicked() ), this, SLOT( newPlugin() ) );
 	connect( PushButtonDeletePlugin, SIGNAL( clicked() ), this, SLOT( deletePlugin() ) );
 
-	connect( PushButtonPatternReplacements, SIGNAL( clicked() ), this, SLOT( showReplacements() ) );
 	connect( PushButtonAddStandardPlugins, SIGNAL( clicked() ), this, SLOT( addStandardPlugins() ) );
 	connect( PushButtonPluginReplacements, SIGNAL( clicked() ), this, SLOT( showReplacements() ) );
   
@@ -142,8 +140,6 @@ void PreferencesDialog::myAccept()
  	config->trashDir=LineEditTrashDir->text();
  	config->scanDir=LineEditScanDir->text();
  	config->mediaDir=LineEditMediaDir->text();
- 	config->filenamePattern=LineEditFilenamePattern->text();
- 	config->directoryPattern=LineEditDirectoryPattern->text();
   if(RadioButtonSimpleGuessmode->isChecked())
     config->guessingMode=config->GUESSING_MODE_SIMPLE;
   if(RadioButtonAdvancedGuessmode->isChecked())
@@ -370,6 +366,8 @@ void PreferencesDialog::showReplacements()
   QString msg("");
   msg+="Replacements for filename pattern, command (single mode)\n";
   msg+="or custom list (group mode):\n";
+// TODO: dry this out (also appears in consistency check dialog
+//  msg+=Song::singleReplacements;
   msg+="{filename} (without path)\n";
   msg+="{absoluteFilename} (including path)\n";
   msg+="{filenameWithoutSuffix} (without path, without suffix)\n";
@@ -377,13 +375,14 @@ void PreferencesDialog::showReplacements()
   msg+="{path} (without filename)\n";
   msg+="{artist}, {title}, {album} (corresponding to the tags)\n";
   msg+="{bitrate} (in kbps)\n";
-  msg+="{index} (index of a song within a selection)\n";
   msg+="{length} (length in format mm:ss)\n";
   msg+="{lengthInSeconds} (length in seconds)\n";
   msg+="{mediaList (list of media on which song is contained)\n";
-  msg+="{newline} (newline)\n";
   msg+="{trackNr} (Track number)\n";
   msg+="{trackNr2Digit} (as above, but padded with zero if necessary)\n";
+  // end of wet code
+  msg+="{newline} (newline)\n";
+  msg+="{index} (index of a song within a selection)\n";
   msg+="{directoryDialog} (directory dialog, returns chosen directory)\n";
   msg+="{fileDialog} (file dialog, returns chosen file)\n";
   msg+="{inputString} (input string dialog, returns entered string)\n\n";

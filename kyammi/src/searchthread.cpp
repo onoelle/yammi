@@ -19,7 +19,10 @@
  ***************************************************************************/
 #include "searchthread.h"
 
+
 #include <kdebug.h>
+#include <qwaitcondition.h>
+
 #include "fuzzsrch.h"
 #include "song.h"
 #include "mylist.h"
@@ -27,17 +30,19 @@
 #include "yammimodel.h"
 #include "songentryint2.h"
 
-using namespace std;
+//using namespace std;
 
-extern YammiGui* gYammiGui;
+//extern YammiGui* gYammiGui;
 
-SearchThread::SearchThread()
+SearchThread::SearchThread(YammiGui* yammiGui)
 : QThread()
 {
+	gYammiGui=yammiGui;
 	currentSearchTerm="";
 	searchTerm="";	
 	searchRunning=false;
 	stopThreadFlag=false;
+//	connect(this, SIGNAL(searchResultsAvailable(MyList*)), yammiGui, SLOT(updateSearchResults(MyList*)));
 }
 
 
@@ -47,29 +52,30 @@ void SearchThread::run() {
     while(!stopThreadFlag) {
 		if(searchTerm!=currentSearchTerm) {
 			searchRunning=true;
-			kdDebug() << "search starting...\n";
 			currentSearchTerm=searchTerm;
 			searchResults.clear();
-			
+			if(currentSearchTerm=="") {
+				gYammiGui->requestSearchResultsUpdate(&searchResults);
+				searchRunning=false;
+				continue;
+			}
 			// start fuzzy search
 			QString searchStr=" " + currentSearchTerm +" ";
-
 			FuzzySearch fs;
 			fs.initialize(searchStr.lower(), 2, 4);			// STEP 1
 			// search through all songs
 			Song* s=gYammiGui->getModel()->allSongs.firstSong();
 			QString composed;
 			for(; s; s=gYammiGui->getModel()->allSongs.nextSong()) {
+				if(searchTerm!=currentSearchTerm) {
+					break;
+				}
 				composed=" " + s->artist + " - " + s->title + " - " + s->album + " - " + s->comment + " ";
 				if(s->artist=="" || s->title=="") {							
 					// if tags incomplete use filename for search
 					composed=s->filename+"- "+composed;
 				}
 				fs.checkNext(composed.lower(), (void*)s);				// STEP 2
-				if(searchTerm!=currentSearchTerm) {
-					kdDebug() << "search interrupted(1)...\n";
-					break;
-				}
 			}
 			if(searchTerm==currentSearchTerm) {
 				// background search completed without change in search term
@@ -89,18 +95,18 @@ void SearchThread::run() {
 					}
 				}
 				if(searchTerm==currentSearchTerm) {
-					gYammiGui->updateSearchResults(&searchResults);
-					// publish results
+					gYammiGui->requestSearchResultsUpdate(&searchResults);
 					searchRunning=false;
-					kdDebug() << "search completed...\n";
 				}
 			}
 		}
-		if(!searchRunning) {
+		if(!searchRunning && searchTerm==currentSearchTerm) {
 			// TODO: sleep until searchField changed
-			this->msleep(100);
+//			this->msleep(100);
+			gYammiGui->searchFieldChangedIndicator.wait();
 		}
-	}	
+	}
+	kdDebug() << "searchThread stopped\n";
 }
 
 

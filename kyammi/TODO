@@ -1,24 +1,19 @@
 TODO
 ----
-last update 04.06.2004
+last update 06.06.2004
 
 
 for version 1.2-alpha
 ---------------------
 main purpose: clean up, so other people can more easily contribute to the project
-
 - check/resolve bugs on sf
 - check all TODOs / FIXMEs
 - check dialog spacing & co (eg. guessing pattern!)
 - icons for enqueing: add big "plus"
-- consistency check:
-  - better dialog texts (which song is moved?, better explanations what happens/examples?)
-  - move settings to this dialog
-  - save check options
-- finish & test: move fuzzy search to a background thread
 
 for version 1.2-beta
 --------------------
+- update and publish yammi handbook (switch from sgml to docbook format)
 - file a yammi entry on kde-apps successor
 - handle unplayable files (wishes, text files) => 1. dequeue on second position or 2. introduce file types and different behaviour
 check kde conformance:  
@@ -42,7 +37,12 @@ check kde conformance:
 - on deleting a song: delete in *all* lists (history, categories, ...)
 - plugin: publish a sample plugin (echo...) with all replacements
 - replace QListView with KListView
+  - but beware of performance issues, see http://bugs.kde.org/show_bug.cgi?id=64608
   - and other QClasses too?
+- move scan options to that dialog only
+- consistency check:
+  - better dialog texts (which song is moved?, better explanations what happens/examples?)
+- comment in replacements?
 
 for version 1.2
 ---------------
@@ -55,8 +55,9 @@ for version 1.2
 
 for version 1.4
 ---------------
+- amarok support?
 - use Scott Wheelers taglib for reading metadata
-- make yammi properly multithreaded
+- use a player thread for mediaplayer
 - rating of tracks
 - allow subfolders for categories?
 

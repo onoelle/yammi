@@ -67,6 +67,7 @@
 #include <qlistview.h>
 #include <qtooltip.h>
 
+
 #include "yammimodel.h"
 #include "song.h"
 #include "songentry.h"
@@ -146,16 +147,17 @@ YammiGui::YammiGui( ) : KMainWindow( ) {
         player->play();
     }
 
+    // connect all timers
     // TODO: this should be probably done by a thread owned by the media player
     connect( &checkTimer, SIGNAL(timeout()), player, SLOT(check()) );
     checkTimer.start( 100, FALSE );
-	
-	searchThread = new SearchThread();
+	searchResultsUpdateNeeded=false;
+	searchThread = new SearchThread(this);
 	searchThread->start();
-
-    // connect all timers
     connect( &regularTimer, SIGNAL(timeout()), SLOT(onTimer()) );
     regularTimer.start( 500, FALSE );	// call onTimer twice a second
+    connect( &searchResultsTimer, SIGNAL(timeout()), SLOT(updateSearchResults()) );
+    searchResultsTimer.start( 10, FALSE );
 
     //let KDE save and restore the main window settings (geometry, toolbar position, etc)
     //setAutoSaveSettings( );
@@ -411,6 +413,7 @@ YammiGui::~YammiGui() {
     player->syncYammi2Player(true);
     delete player;
 	searchThread->stopThread();
+	searchFieldChangedIndicator.wakeOne();
 }
 
 
@@ -1023,7 +1026,7 @@ void YammiGui::searchSimilar(int what) {
     default:
         searchFor=refSong->displayName();
     }
-    searchSong(searchFor);
+    searchFieldChanged(searchFor);
 }
 
 /**
@@ -1063,85 +1066,40 @@ void YammiGui::goToFolder(int what) {
  * search field changed => update search results
  *
  */
-void YammiGui::searchSong( const QString &fuzzy ) {
-    if( fuzzy.length() < 3 ) {
-        return;
-    }
+void YammiGui::searchFieldChanged( const QString &fuzzy ) {
+	searchResultsUpdateNeeded=false;
 	kdDebug() << "setting new search term...\n";
 	searchThread->setSearchTerm(fuzzy);
-
-/*	if(searchThread != 0) {
-		if(searchThread->running()) {
-			searchThread->terminate();
-			searchThread->wait();
-			delete(searchThread);
-		}
-	}
-*/
-	
-
-    /*
-	QString searchStr=" " + fuzzy +" ";
-
-    FuzzySearch fs;
-    fs.initialize(searchStr.lower(), 2, 4);			// STEP 1
-
-    // search through all songs
-    Song* s=model->allSongs.firstSong();
-    QString composed;
-    for(; s; s=model->allSongs.nextSong()) {
-        composed=" " + s->artist + " - " + s->title + " - " + s->album + " - " + s->comment + " ";
-        if(s->artist=="" || s->title=="") {							// if tags incomplete use filename for search
-            composed=s->filename+"- "+composed;
-        }
-        fs.checkNext(composed.lower(), (void*)s);				// STEP 2
-    }
-
-    fs.newOrder();											// STEP 3
-    BestMatchEntry** bme;
-    bme=fs.getBestMatchesList();				// STEP 4
-
-    // insert n best matches into search result list
-    searchResults.clear();
-    int noResults=0;
-    for(; noResults<200 && bme[noResults] && bme[noResults]->sim>(m_config.searchThreshold*10); noResults++) {
-        searchResults.append( new SongEntryInt2 ((Song*)bme[noResults]->objPtr, bme[noResults]->sim) );
-    }
-    folderSearchResults->updateTitle();
-    folderContentChanged(folderSearchResults);
-    if(chosenFolder!=folderSearchResults) {
-        // we better reset these settings to not confuse the user with his own changes
-        // (sort order and scroll position)
-        folderSearchResults->saveScrollPos(0, 0);
-        folderSearchResults->saveSorting(0);
-        changeToFolder(folderSearchResults);
-    }
-    songListView->setContentsPos( 0, 0);			// set scroll position to top
-    QListViewItem* item=songListView->firstChild();
-    if(item) {
-        item->setSelected(true);											// select first anyway
-    }
-    int threshold=700;
-    for(int j=0; j<noResults && bme[j] && bme[j]->sim>threshold; j++, item=item->nextSibling()) {
-        if(item==0) {
-            kdError() << "item==0, this should not happen!\n";
-            break;
-        }
-        item->setSelected(true);
-    }
-	*/
+	searchFieldChangedIndicator.wakeOne();
+	m_acceptSearchResults=true;
 }
 
 /**
  * Update the search results from the background search thread.
+ * TODO: we should not do this in the background search thread, but in the UI thread
+ * => timer that checks whether search results are available?
  */
-void YammiGui::updateSearchResults(MyList* results)
+void YammiGui::requestSearchResultsUpdate(MyList* results)
 {
 	kdDebug() << "updating search results\n";
 	searchResults.clear();
 	searchResults.appendList(results);
+	searchResultsUpdateNeeded=true;
+}
+
+void YammiGui::updateSearchResults()
+{
+	if(!searchResultsUpdateNeeded) {
+		return;
+	}
+	kdDebug() << "updating folder content\n";
 	folderSearchResults->updateTitle();
 	folderContentChanged(folderSearchResults);
+	if(!m_acceptSearchResults) {
+		kdDebug() << "not interested in showing results any more\n";
+		return;
+	}
+
 	if(chosenFolder!=folderSearchResults) {
 		// we better reset these settings to not confuse the user with his own changes
 		// (sort order and scroll position)
@@ -1149,15 +1107,17 @@ void YammiGui::updateSearchResults(MyList* results)
 		folderSearchResults->saveSorting(0);
 		changeToFolder(folderSearchResults);
 	}
+	kdDebug() << "updating selection\n";
+	
     songListView->setContentsPos( 0, 0);			// set scroll position to top
 	// TODO: mark more than one entry?
 	int noSelected=1;
 	QListViewItem* item=songListView->firstChild();
-    for(int j=0; j==1 || j<noSelected; j++, item=item->nextSibling()) {
-    	if(item) {
-        	item->setSelected(true);											// select first anyway
-    	}
+    for(int j=0; item && j<noSelected; j++, item=item->nextSibling()) {
+       	item->setSelected(true);											// select first anyway
     }
+	kdDebug() << "...done\n";
+	searchResultsUpdateNeeded=false;
 }
 
 /**
@@ -1224,6 +1184,9 @@ void YammiGui::folderContentChanged(Folder* folder) {
         if(folder==folderActual) {
             updateCurrentSongStatus();
         }
+		if(folder!=folderSearchResults) {
+			m_acceptSearchResults=false;
+		}
     }
 }
 
@@ -1718,34 +1681,25 @@ void YammiGui::forAllCheckConsistency() {
 }
 
 void YammiGui::forSelectionCheckConsistency() {
-    CheckConsistencyDialog d(this, i18n("Check consistency - settings"));
+    CheckConsistencyDialog d(this, &(m_config.consistencyPara));
     d.TextLabel1->setText(QString(i18n("checking %1 songs")).arg(selectedSongs.count()));
 
     // show dialog
     int result=d.exec();
-    if(result!=QDialog::Accepted)
+    if(result!=QDialog::Accepted) {
         return;
+	}
+    m_config.saveConfig();
 
-    ConsistencyCheckParameter p;
-    p.checkForExistence=d.CheckBoxCheckForExistence->isChecked();
-    p.updateNonExisting=d.CheckBoxUpdateNonExisting->isChecked();
-    p.checkTags=d.CheckBoxCheckTags->isChecked();
-    p.correctTags=d.CheckBoxCorrectTags->isChecked();
-    p.correctTagsDirection=d.ComboBoxCorrectTagsDirection->currentItem();
-    p.checkFilenames=d.CheckBoxCheckFilenames->isChecked();
-    p.ignoreCaseInFilenames=m_config.ignoreCaseInFilenames;
-    p.correctFilenames=d.CheckBoxCorrectFilenames->isChecked();
-    p.checkDirectories=d.CheckBoxCheckDirectories->isChecked();
-    p.correctDirectories=d.CheckBoxCorrectDirectories->isChecked();
-    p.deleteEmptyDirectories=d.CheckBoxDeleteEmptyDirectories->isChecked();
-    p.checkDoubles=d.CheckBoxCheckDoubles->isChecked();
-
+    ConsistencyCheckParameter* p=&(m_config.consistencyPara);
+	p->resetStatistics();
+	
     KProgressDialog progress( this, 0,i18n("Yammi"), i18n("Checking consistency..."),true);
     progress.setMinimumDuration(0);
     progress.setAutoReset(false);
     progress.progressBar()->setProgress(0);
     kapp->processEvents();
-    model->checkConsistency(&progress, &selectedSongs, &p);
+    model->checkConsistency(&progress, &selectedSongs, p);
 
     folderProblematic->update(model->problematicSongs);
     folderContentChanged(folderProblematic);
@@ -1761,11 +1715,11 @@ void YammiGui::forSelectionCheckConsistency() {
                          %5 songs with inconsistent tags, of these:\n\
                          %6 tags corrected\n\
                          %7 songs with inconsistent filename, of these:\n\
-                         %8 filenames corrected\n")).arg(model->problematicSongs.count()).arg(p.nonExisting).arg(p.nonExistingUpdated)\
-                .arg(p.nonExistingDeleted).arg(p.dirtyTags).arg(p.tagsCorrected).arg(p.dirtyFilenames).arg(p.filenamesCorrected);
+                         %8 filenames corrected\n")).arg(model->problematicSongs.count()).arg(p->nonExisting).arg(p->nonExistingUpdated)\
+                .arg(p->nonExistingDeleted).arg(p->dirtyTags).arg(p->tagsCorrected).arg(p->dirtyFilenames).arg(p->filenamesCorrected);
     msg+=QString(i18n("%1 songs with inconsistent path, of these:\n\
                       %2 paths corrected\n\
-                      %3 double entries found\n")).arg(p.dirtyDirectories).arg(p.directoriesCorrected).arg(p.doublesFound);
+                      %3 double entries found\n")).arg(p->dirtyDirectories).arg(p->directoriesCorrected).arg(p->doublesFound);
     KMessageBox::information( this, msg );
 }
 
@@ -3321,9 +3275,9 @@ void YammiGui::setupActions( ) {
     new KAction(i18n("Switch to/from Playlist"),"toggle_playlist",KShortcut(Key_P),this,SLOT(toFromPlaylist()),actionCollection(),"toggle_playlist");
 
     // selection actions
-    new KAction(i18n("Enqueue as next (prepend)"), "top", KShortcut(Key_F6), this, SLOT(forSelectionEnqueueAsNext()), actionCollection(), "prepend_selected");
-    new KAction(i18n("Enqueue at end (append)"), "bottom", KShortcut(Key_F5), this, SLOT(forSelectionEnqueue()), actionCollection(), "append_selected");
-    new KAction(i18n("Play Now!"), "start", KShortcut(Key_F7), this, SLOT(forSelectionPlay()), actionCollection(), "play_selected");
+    new KAction(i18n("Enqueue as next (prepend)"), "enqueue_asnext", KShortcut(Key_F6), this, SLOT(forSelectionEnqueueAsNext()), actionCollection(), "prepend_selected");
+    new KAction(i18n("Enqueue at end (append)"), "enqueue", KShortcut(Key_F5), this, SLOT(forSelectionEnqueue()), actionCollection(), "append_selected");
+    new KAction(i18n("Play Now!"), "play_now", KShortcut(Key_F7), this, SLOT(forSelectionPlay()), actionCollection(), "play_selected");
     new KAction(i18n("Dequeue Songs"), "stop", KShortcut(Key_F8), this, SLOT(forSelectionDequeue()), actionCollection(), "dequeue_selected");
     new KAction(i18n("Prelisten start"), "prelisten_start", KShortcut(Key_F9), this, SLOT(forSelectionPrelistenStart()), actionCollection(), "prelisten_start");
     new KAction(i18n("Prelisten middle"), "prelisten_middle", KShortcut(Key_F10), this, SLOT(forSelectionPrelistenMiddle()), actionCollection(), "prelisten_middle");
@@ -3373,7 +3327,7 @@ void YammiGui::setupActions( ) {
     m_searchField->setFixedWidth(175);
     QToolTip::add
         ( m_searchField, i18n("Fuzzy search (Ctrl-F)"));
-    connect( m_searchField, SIGNAL(textChanged(const QString&)), SLOT(searchSong(const QString&)));
+    connect( m_searchField, SIGNAL(textChanged(const QString&)), SLOT(searchFieldChanged(const QString&)));
     QPushButton *btn = new QPushButton(i18n("to wishlist"),w);
     connect( btn, SIGNAL( clicked() ), this, SLOT( addToWishList() ) );
     QToolTip::add

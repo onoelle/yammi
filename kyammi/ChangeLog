@@ -1,88 +1,39 @@
-2004-06-05 Oliver Nölle <oli.noelle@web.de>
-	- added: deleting empty directories on consistency check 
-	- added: background search thread (to be finished) 
-
-2004-06-02 Oliver Nölle <oli.noelle@web.de>
-	- added cancel button to consistency check confirm dialog 
-	- applied random number patch 
-	- some minor fixes... 
-
-2004-06-01 Oliver Nölle <oli.noelle@web.de>
-	- re-inserted old mass editing/song info dialog stuff 
-	- fixed doubleclick/middleclick 
-
-2004-05-27 Oliver Nölle <oli.noelle@web.de>
-	fixed some more things: 
-	- artsplayer: skip backward / update notification 
-	- compiler warnings 
-	- ... 
-
-2004-05-27 Oliver Nölle <oli.noelle@web.de>
-	fixed some more things: 
-	- artsplayer: skip backward / update notification 
-	- compiler warnings 
-	- ... 
-
-2004-05-27 Oliver Nölle <oli.noelle@web.de>
-	fixed some more things: 
-	- artsplayer: skip backward / update notification for playlist 
-	- compiler warnings (except vcedit) 
-	- ... 
-
-2004-05-27 Oliver Nölle <oli.noelle@web.de>
-	fixed some more things: 
-	- skip backward in artsplayer / update notification 
-	- compiler warnings 
-	- ... 
-	 
-
-2004-05-18 Oliver Nölle <oli.noelle@web.de>
-	- fixed broken saving of settings 
-
-2004-05-18 Oliver Nölle <oli.noelle@web.de>
-	- fixed some saveOptions settings for autoplay folder, column visibility and size, ... 
-	 
-
-2004-05-18 Oliver Nölle <oli.noelle@web.de>
-	- fixed some "saveOptions" settings like autoplay folder, column ordering and size 
-	- fixed marking of visible columns in menu 
-
-2004-05-16 Oliver Nölle <oli.noelle@web.de>
-	- fixed remembering last opened folder 
-	- replaced custom icons with existing ones 
-	- cleaned up todo/changelog 
-
 ??.??.2004 version 1.2-alpha
 ############################
 MAJOR CHANGES:
-- first version developed and tested on new development environment (Suse 9.0)
-  - kde 3.1.4 (later updated to 3.2.1), gcc 3.3.1, qt 3.2.1, kdevelop 2.1.5
-  - autoconf 2.5.7, automake 1.7.6
-  - noatun 2.2.1, xmms 1.2.8
 - yammi is a proper KDE application now!
   - new translation scheme (i18n kde default scheme)
   => requires kde libs
   => --disable-KDE and --disable-noatun switches removed from configure script, both are enabled by default now
-  - uses KDE's xml GUI framework
-- applied patch from Luis (thanks!!!):
-  - support for arts media player
-  - changes towards making yammi a proper kde application
-- added consistency check which checks location of a file (not correcting yet)
-- added progress dialogs on startup for reading database, categories and history 
+  - making use of KDE's xml GUI framework
+- added: arts media player (thanks to Luis)
+- added: consistency check which checks location of a file (moving it if necessary)
+- added: progress dialogs on startup for reading database, categories and history 
+- improved: fuzzy search now gets done in a background thread
 
 
 MINOR CHANGES:
+- first version developed and tested on new development environment (Suse 9.0)
+  - kde 3.1.4 (later updated to 3.2.1), gcc 3.3.1, qt 3.2.1, kdevelop 2.1.5
+  - autoconf 2.5.7, automake 1.7.6
+  - noatun 2.2.1, xmms 1.2.8
 - fixed: broken noatun communication (apparently due to API changes in a newer version of noatun)
 - fixed: recent folder now works again
 - fixed: symlinks are not followed when scanning directories
 - fixed: interpreting ogg vorbis comments as utf-8
 - fixed: clicking with left mouse button or using wheel on track slider works now as expected
-- added a button to add standard plugins
-- added an automatic folder "by year"
+- added: a button to add standard plugins
+- added: deleting empty directories on consistency check 
+- added: an automatic folder "by year"
 - clarified placeholder usage in plugins ({artist} instead of %a)
 - changed the xpm icons to png icons that get installed properly
 - added (ugly) application icons in 16x16, 32x32, 48x48, 64x64
 - removed configure option for "number of best matches" for fuzzy search
+- added cancel button to consistency check confirm dialog 
+- applied random number patch (thanks to)
+- fixed: artsplayer: skip backward
+- replaced custom icons with existing ones 
+
 
 ######################
 24.10.2003 version 1.0

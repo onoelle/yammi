@@ -44,8 +44,6 @@ void Prefs::setDefaultValues(void) {
 	dbFile = KGlobal::dirs()->findResource("appdata","songdb.xml");
 	trashDir = QDir::homeDirPath() + "/Desktop/Trash";
 	scanDir = "/mp3/inbox/";
-	filenamePattern = "{artist} - {title}.{suffix}";
-	directoryPattern = "{artist}/{album}";
 	guessingMode = GUESSING_MODE_SIMPLE;
   
 	doubleClickAction = Song::None;
@@ -77,6 +75,7 @@ void Prefs::setDefaultValues(void) {
 	swapDir = "/tmp/";
 	swapSize = 200;
 	mountMediaDir = true;
+	consistencyPara.setDefaults();
 }
 
 
@@ -140,6 +139,22 @@ bool Prefs::loadConfig( )
 	swapDir                      = cfg->readEntry("swapDir", swapDir);
 	swapSize                     = cfg->readNumEntry("swapSize", swapSize);
 
+	cfg->setGroup("ConsistencyCheck");
+	consistencyPara.checkDirectories	= cfg->readBoolEntry("checkDirectories", consistencyPara.checkDirectories);
+	consistencyPara.checkDoubles		= cfg->readBoolEntry("checkDoubles", consistencyPara.checkDoubles);
+	consistencyPara.checkFilenames		= cfg->readBoolEntry("checkFilenames", consistencyPara.checkFilenames);
+	consistencyPara.checkForExistence	= cfg->readBoolEntry("checkForExistence", consistencyPara.checkForExistence);
+	consistencyPara.checkTags			= cfg->readBoolEntry("checkTags", consistencyPara.checkTags);
+	consistencyPara.correctDirectories	= cfg->readBoolEntry("correctDirectories", consistencyPara.correctDirectories);
+	consistencyPara.correctFilenames	= cfg->readBoolEntry("correctFilenames", consistencyPara.correctFilenames);
+	consistencyPara.correctTags			= cfg->readBoolEntry("correctTags", consistencyPara.correctTags);
+	consistencyPara.correctTagsDirection= cfg->readBoolEntry("correctTagsDirection", consistencyPara.correctTagsDirection);
+	consistencyPara.deleteEmptyDirectories= cfg->readBoolEntry("deleteEmptyDirectories", consistencyPara.deleteEmptyDirectories);
+	consistencyPara.directoryPattern	= cfg->readEntry("directoryPattern", consistencyPara.directoryPattern);
+	consistencyPara.filenamePattern		= cfg->readEntry("filenamePattern", consistencyPara.filenamePattern);
+	consistencyPara.ignoreCaseInFilenames= cfg->readBoolEntry("ignoreCaseInFilenames", consistencyPara.ignoreCaseInFilenames);
+	consistencyPara.updateNonExisting= cfg->readBoolEntry("updateNonExisting", consistencyPara.updateNonExisting);
+	
 	kdDebug() << "Config loaded" << endl;
 	return true;
 }
@@ -155,18 +170,15 @@ bool Prefs::saveConfig( )
 	
 	cfg->setGroup("General Options");
 	
-	cfg->writeEntry("trashDir", trashDir );
 	cfg->writeEntry("scanDir", scanDir);
-	cfg->writeEntry("filenamePattern", filenamePattern);
-	cfg->writeEntry("directoryPattern", directoryPattern);
 	cfg->writeEntry("guessingMode", mediaPlayer);
+	
+	
+	cfg->writeEntry("trashDir", trashDir );
 	cfg->writeEntry("doubleClickAction", (int)doubleClickAction);
 	cfg->writeEntry("middleClickAction", (int)middleClickAction);
 	cfg->writeEntry("logging", logging);
 	cfg->writeEntry("childSafe", childSafe);
-	cfg->writeEntry("tagsConsistent", tagsConsistent);
-	cfg->writeEntry("filenamesConsistent", filenamesConsistent);
-	cfg->writeEntry("ignoreCaseInFilenames", ignoreCaseInFilenames);
 	cfg->writeEntry("capitalizeTags", capitalizeTags);
 	cfg->writeEntry("criticalSize", criticalSize);
 	cfg->writeEntry("secondSoundDevice", secondSoundDevice);
@@ -201,6 +213,25 @@ bool Prefs::saveConfig( )
 	cfg->writeEntry("swapDir", swapDir);
 	cfg->writeEntry("swriteize", swapSize);
 
+	
+	cfg->setGroup("ConsistencyCheck");
+	cfg->writeEntry("tagsConsistent", tagsConsistent);
+	cfg->writeEntry("filenamesConsistent", filenamesConsistent);
+	
+	cfg->writeEntry("checkDirectories", consistencyPara.checkDirectories);
+	cfg->writeEntry("checkDoubles", consistencyPara.checkDoubles);
+	cfg->writeEntry("checkFilenames", consistencyPara.checkFilenames);
+	cfg->writeEntry("checkForExistence", consistencyPara.checkForExistence);
+	cfg->writeEntry("checkTags", consistencyPara.checkTags);
+	cfg->writeEntry("correctDirectories", consistencyPara.correctDirectories);
+	cfg->writeEntry("correctFilenames", consistencyPara.correctFilenames);
+	cfg->writeEntry("correctTags", consistencyPara.correctTags);
+	cfg->writeEntry("correctTagsDirection", consistencyPara.correctTagsDirection);
+	cfg->writeEntry("deleteEmptyDirectories", consistencyPara.deleteEmptyDirectories);
+	cfg->writeEntry("directoryPattern", consistencyPara.directoryPattern);
+	cfg->writeEntry("filenamePattern", consistencyPara.filenamePattern);
+	cfg->writeEntry("ignoreCaseInFilenames", consistencyPara.ignoreCaseInFilenames);
+	cfg->writeEntry("updateNonExisting", consistencyPara.updateNonExisting);
 	kdDebug() << "Config saved" << endl;
 	return true;
 }

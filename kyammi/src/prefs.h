@@ -24,6 +24,7 @@
 #define PREFS_H
 
 #include "song.h"
+#include "ConsistencyCheckParameter.h"
 #include <qdom.h>
 
 
@@ -157,6 +158,9 @@ public:
 	QString mediaDir;
 	/** Directory for swapping */
 	QString swapDir;
+	
+	/** All consistency check related parameter */
+	ConsistencyCheckParameter consistencyPara;
 	
 private:
 

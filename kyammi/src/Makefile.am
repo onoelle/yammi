@@ -33,3 +33,5 @@ shellrcdir = $(kde_datadir)/yammi
 
 
 noinst_HEADERS = applytoalldialog.h trackpositionslider.h util.h searchthread.h
+
+SUBDIRS =  icons

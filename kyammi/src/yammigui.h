@@ -23,6 +23,7 @@
 #include <kmainwindow.h>
 
 #include <qtimer.h>
+#include <qwaitcondition.h>
 #include "options.h"
 #include "prefs.h"
 #include "mylist.h"
@@ -105,8 +106,8 @@ public slots:
 	void seek( int pos );
 	void seekWithWheel(int rotation);
 	
-	/** Execute a fuzzy search in the song database, and switch to the search-results view */
-	void searchSong( const QString &fuzzy );
+	/** Request a fuzzy search in the song database, and switch to the search-results view */
+	void searchFieldChanged( const QString &fuzzy );
 	
  protected:
 	/** creates the internal MediaPlayer */
@@ -155,6 +156,8 @@ private:
 	Prefs m_config;
 	QSlider *m_seekSlider;
 	LineEditShift *m_searchField;
+	bool searchResultsUpdateNeeded;
+	bool m_acceptSearchResults;
 	bool m_sleepMode;
 	QSpinBox *m_sleepModeSpinBox;
 	QPushButton *m_sleepModeButton;
@@ -166,7 +169,7 @@ public:
 	// checks whether the swapped songs take more space than the given limit
 	void checkSwapSize();
 	void stopDragging();
-	void updateSearchResults(MyList* results);
+	void requestSearchResultsUpdate(MyList* results);
 	YammiModel* getModel() { return model; };
 	
 	bool columnIsVisible(int column);
@@ -234,7 +237,7 @@ public:
 	MediaPlayer*  player;
 	MyListView* songListView;
 	Folder* chosenFolder;
-	
+	QWaitCondition searchFieldChangedIndicator;
 	
 	
 	// song that is currently played or 0 if not in database
@@ -319,6 +322,7 @@ protected:
   SelectionMode selectionMode;
 
 	QTimer regularTimer;
+	QTimer searchResultsTimer;
 	QTimer checkTimer;
 
 	// folders
@@ -377,14 +381,15 @@ protected:
 // protected slots
 //****************
 protected slots:
-  void toggleColumnVisibility(int column);
-  void preListen(Song* s, int skipTo);  ///< sends the song to headphones
-  void stopPrelisten();
-  void shufflePlaylist();
+	void toggleColumnVisibility(int column);
+	void preListen(Song* s, int skipTo);  ///< sends the song to headphones
+	void stopPrelisten();
+	void shufflePlaylist();
+	void updateSearchResults();
   
     
-  void toFromPlaylist();
-  void saveColumnSettings();
+	void toFromPlaylist();
+	void saveColumnSettings();
 	
 	void setPreferences();	
 	void searchSimilar(int what);

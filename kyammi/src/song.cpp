@@ -1255,7 +1255,7 @@ QString Song::capitalize(QString str)
  */
 QString Song::constructFilename()
 {
-  QString pattern=gYammiGui->config().filenamePattern;
+  QString pattern=gYammiGui->config().consistencyPara.filenamePattern;
   QString filename=replacePlaceholders(pattern, 0);
   return makeValidFilename(filename, true);
 }

@@ -22,7 +22,30 @@
  
 ConsistencyCheckParameter::ConsistencyCheckParameter()
 {
-    dirtyTags=0;
+	setDefaults();
+	resetStatistics();
+}
+
+void ConsistencyCheckParameter::setDefaults()
+{
+	checkDirectories=true;
+	checkDoubles=true;
+	checkFilenames=true;
+	checkForExistence=true;
+	checkTags=true;
+	correctDirectories=false;
+	correctFilenames=false;
+	correctTags=false;
+	deleteEmptyDirectories=false;
+	ignoreCaseInFilenames=false;
+	updateNonExisting=false;
+	filenamePattern = "{artist} - {title}.{suffix}";
+	directoryPattern = "{artist}/{album}";
+}	
+	
+void ConsistencyCheckParameter::resetStatistics()
+{
+	dirtyTags=0;
     dirtyFilenames=0;
     dirtyDirectories=0;
     doublesFound=0;
