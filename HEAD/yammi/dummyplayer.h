@@ -32,6 +32,8 @@ public:
 
   QString getName() {return "dummy";}
 
+public:
+  void clearPlaylist() {};
 public slots:
   void check() {};
   PlayerStatus getStatus()           { return STOPPED; }

@@ -75,6 +75,7 @@ public:
 	~YammiModel();
 
 	// data representation
+  QString currentSongFilenameAtStartPlay;
 	MyList allSongs; // all songs in database
 	MyList problematicSongs; // problematic songs (in consistency check)
 	MyList songHistory; // saved history of played songs

@@ -32,6 +32,7 @@ YammiModel::YammiModel()
 
 YammiModel::~YammiModel()
 {
+  this->currentSongFilenameAtStartPlay="";
 }
 
 
@@ -63,7 +64,7 @@ void YammiModel::readCategories()
 
   QDir d(config.yammiBaseDir+"/categories");
   if(!d.exists()) {
-    cout << "\ncould not read categories\n";
+    cout << "\ncould not read categories: directory categories not existing\n";
     return;
   }
 	d.setFilter( QDir::Files);
@@ -398,10 +399,12 @@ void YammiModel::saveSongDatabase()
 		if(s->filenameDirty)
 			sumDirtyFilenames++;
 	}
-	if(config.tagsConsistent)
+	if(config.tagsConsistent) {
 		cout << sumDirtyTags 			<< " dirty tags...\n";
-	if(config.filenamesConsistent)
+  }
+	if(config.filenamesConsistent) {
 		cout << sumDirtyFilenames << " dirty filenames...\n";
+  }
 
 	
 	// create xml-file
@@ -415,14 +418,24 @@ void YammiModel::saveSongDatabase()
 	
 	// iterate through songs and save each song as a xml song element
 	int count=0;
+  bool haveToReloadPlaylist=false;
+  bool currentSongRenamed=false;    // set to true, if currently played song's filename is changed
 	for(Song* s=allSongs.firstSong(); s; s=allSongs.nextSong(), count++) {
 		// lets append a new element to the end of our xml database
 		QDomElement elem = doc.createElement( "song" );
 		// consistencyMode: if song dirty, we make it consistent
-		if(s->tagsDirty && config.tagsConsistent)
+    if(s->tagsDirty && config.tagsConsistent) {
 			s->saveTags();
-		if(s->filenameDirty && config.filenamesConsistent)
+    }
+		if(s->filenameDirty && config.filenamesConsistent) {
 			s->saveFilename();
+      if(songsToPlay.containsSong(s)) {
+        haveToReloadPlaylist=true;
+        if(songsToPlay.firstSong()==s) {
+          currentSongRenamed=true;
+        }
+      }
+    }
 
 		
 		if(s->artist!="unknown")	elem.setAttribute( "artist", s->artist.utf8() );
@@ -462,6 +475,23 @@ void YammiModel::saveSongDatabase()
 	}
 	f2.writeBlock(save, save.length());
 	f2.close();
+  if(haveToReloadPlaylist) {
+    cout << "have to reload playlist to player...\n";
+    gYammiGui->player->clearPlaylist();
+    Song* save=0;
+    if(songsToPlay.count()>0) {
+      currentSongRenamed=(currentSongFilenameAtStartPlay!=songsToPlay.firstSong()->location());
+      cout << "currentSongRenamed: " << currentSongRenamed << "\n";
+    }
+    if(currentSongRenamed) {
+      save=songsToPlay.firstSong();
+      songsToPlay.removeSong(save);
+    }
+    gYammiGui->player->syncYammi2Player(false);
+    if(currentSongRenamed) {
+      songsToPlay.insert(0, new SongEntryInt(save, 0));
+    }
+  }
 	cout << " ...done\n";
 	allSongsChanged(false);
 }
@@ -791,7 +821,6 @@ bool YammiModel::checkConsistency(QProgressDialog* progress, MyList* selection, 
   
 	cout << "checking consistency of database... \n";
 	problematicSongs.clear();
-
 
 	// 1. iterate through all songs in database
   if(p->checkForExistence || p->checkTags || p->checkFilenames) {

@@ -528,16 +528,12 @@ YammiGui::~YammiGui()
  */
 void YammiGui::updatePlaylist()
 {
-  // songstuck-bug
-  cout << "updatePlaylist() called \n";
   if(folderActual->songList->count()>0) {
-    cout << "first in playlist now: " << folderActual->firstSong()->displayName() << "\n";
+    model->currentSongFilenameAtStartPlay=folderActual->firstSong()->location();
   }
 
   // prepare: stop user dragging action if necessary
   if(songListView->dragging) {
-    // songstuck-bug
-    cout << "stopping dragging!\n";
     stopDragging();
   }
 
@@ -554,13 +550,9 @@ void YammiGui::updatePlaylist()
  */
 void YammiGui::updateCurrentSongStatus()
 {
-  // songstuck-bug
-  cout << "updateCurrentSongStatus() called \n";
   Song* firstInPlaylist=model->songsToPlay.count()>0 ? model->songsToPlay.firstSong() : 0;
   if(firstInPlaylist!=currentSong) {
     // a change in the first (=currently played) song!
-    // songstuck-bug
-    cout << "change detected...\n";
 
     // handle last song
     handleLastSong(currentSong);
@@ -574,13 +566,10 @@ void YammiGui::updateCurrentSongStatus()
  */
 void YammiGui::handleLastSong(Song* lastSong)
 {
-  // songstuck-bug
-  cout << "handleLastSong() called \n";
   if(lastSong==0) {
     return;
   }
-  cout << "...on song: " << lastSong->displayName() << "\n";
-  
+
   // we put last song in folder songsPlayed
   // but first check, whether already in there as last entry
   // (due to xmms status change bug, we would sometimes insert a song twice)
@@ -1874,52 +1863,56 @@ void YammiGui::forSelectionSongInfo()
 	
 	// show dialog
 	int result=si.exec();
+	if(result!=QDialog::Accepted) {
+    return;
+  }
 	
-	if(result==QDialog::Accepted) {
-		// get genreNr
-		int sortedGenreNr=si.ComboBoxGenre->currentItem();
-		int tryGenreNr=-1;
-		if(sortedGenreNr!=0)
-      tryGenreNr=CMP3Info::getGenreIndex(genreList[sortedGenreNr]);
-
+	// get genreNr
+	int sortedGenreNr=si.ComboBoxGenre->currentItem();
+	int tryGenreNr=-1;
+	if(sortedGenreNr!=0) {
+    tryGenreNr=CMP3Info::getGenreIndex(genreList[sortedGenreNr]);
+  }
 		
-		// now set the edited info for all selected songs
-		for(Song* s=selectedSongs.firstSong(); s; s=selectedSongs.nextSong()) {
-			bool change=false;
-			if(si.LineEditArtist->text()!="!" && si.LineEditArtist->text()!=s->artist)	{ s->artist=si.LineEditArtist->text(); change=true; }
-			if(si.LineEditTitle->text()!="!" && si.LineEditTitle->text()!=s->title)			{ s->title=si.LineEditTitle->text(); change=true; }
-			if(change) 		// for artist and title: mark categories as dirty on change!
-				model->markPlaylists(s);
-			if(si.LineEditAlbum->text()!="!" && si.LineEditAlbum->text()!=s->album) 		{ s->album=si.LineEditAlbum->text(); change=true; }
-			if(si.LineEditComment->text()!="!" && si.LineEditComment->text()!=s->comment)	{s->comment=si.LineEditComment->text(); change=true; }
-			if(si.LineEditYear->text()!="!") {
-				int tryYear=atoi(si.LineEditYear->text());
-				if(tryYear!=s->year) {s->year=tryYear; change=true; }
+	// now set the edited info for all selected songs
+	for(Song* s=selectedSongs.firstSong(); s; s=selectedSongs.nextSong()) {
+		bool change=false;
+		if(si.LineEditArtist->text()!="!" && si.LineEditArtist->text()!=s->artist)	{ s->artist=si.LineEditArtist->text(); change=true; }
+		if(si.LineEditTitle->text()!="!" && si.LineEditTitle->text()!=s->title)			{ s->title=si.LineEditTitle->text(); change=true; }
+		if(change) { 		// for artist and title: mark categories as dirty on change!
+			model->markPlaylists(s);
+    }
+		if(si.LineEditAlbum->text()!="!" && si.LineEditAlbum->text()!=s->album) 		{ s->album=si.LineEditAlbum->text(); change=true; }
+		if(si.LineEditComment->text()!="!" && si.LineEditComment->text()!=s->comment)	{s->comment=si.LineEditComment->text(); change=true; }
+		if(si.LineEditYear->text()!="!") {
+			int tryYear=atoi(si.LineEditYear->text());
+			if(tryYear!=s->year) {s->year=tryYear; change=true; }
+		}
+		if(si.LineEditTrack->text()!="!") {
+			int tryTrackNr=atoi(si.LineEditTrack->text());
+			if(tryTrackNr!=s->trackNr) {s->trackNr=tryTrackNr; change=true; }
+		}
+		MyDateTime newAddedTo;
+		newAddedTo.readFromString(si.LineEditAddedTo->text());
+		if(newAddedTo.isValid()) {
+			if(newAddedTo!=s->addedTo) { s->addedTo=newAddedTo; change=true; }
+		}
+    
+		if(tryGenreNr!=-1) {
+			if(tryGenreNr!=s->genreNr) { s->genreNr=tryGenreNr; change=true; }
+		}
+    
+		if(change) {
+			model->allSongsChanged(true);
+			s->tagsDirty=true;						// mark song as dirty(tags)
+			s->filenameDirty=(s->checkFilename(getModel()->config.ignoreCaseInFilenames)==false);
+			// manual update: go through list of songs and correct, if necessary
+			for(SongListItem* i=(SongListItem*)songListView->firstChild(); i; i=(SongListItem*)i->itemBelow()) {
+				if(i->song()!=s)
+					continue;
+				i->setColumns(i->songEntry);
 			}
-			if(si.LineEditTrack->text()!="!") {
-				int tryTrackNr=atoi(si.LineEditTrack->text());
-				if(tryTrackNr!=s->trackNr) {s->trackNr=tryTrackNr; change=true; }
-			}
-			MyDateTime newAddedTo;
-			newAddedTo.readFromString(si.LineEditAddedTo->text());
-			if(newAddedTo.isValid())
-				if(newAddedTo!=s->addedTo) { s->addedTo=newAddedTo; change=true; }
-			
-			if(tryGenreNr!=-1)
-				if(tryGenreNr!=s->genreNr) { s->genreNr=tryGenreNr; change=true; }
-			
-			if(change) {
-				model->allSongsChanged(true);
-				s->tagsDirty=true;						// mark song as dirty(tags)
-				s->filenameDirty=(s->checkFilename(getModel()->config.ignoreCaseInFilenames)==false);
-				// manual update: go through list of songs and correct, if necessary
-				for(SongListItem* i=(SongListItem*)songListView->firstChild(); i; i=(SongListItem*)i->itemBelow()) {
-					if(i->song()!=s)
-						continue;
-					i->setColumns(i->songEntry);
-				}
-			}				
-		}	
+		}				
 	}
 }
 

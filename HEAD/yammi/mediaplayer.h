@@ -57,7 +57,9 @@ protected:
   YammiModel*   model;        // TODO: can we remove this to make it cleaner?
   MyList* playlist;
 
-
+public:
+  virtual void clearPlaylist() = 0;
+  
 public slots:
   virtual void check() = 0;
   virtual PlayerStatus getStatus()           { return status; }

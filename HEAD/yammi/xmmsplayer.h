@@ -43,8 +43,10 @@ protected:
 	bool			    xmmsRepeatWasActivated;
 	void			    myWait(int msecs);
 
-public slots:
+public:
   // overriden methods
+  void          clearPlaylist();
+public slots:
   void check();
   PlayerStatus getStatus();
   bool play();

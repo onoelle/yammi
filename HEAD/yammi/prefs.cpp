@@ -89,7 +89,7 @@ void Prefs::setDefaultValues(void) {
 
 bool Prefs::loadConfig(QString baseDir)
 {
-  qDebug("reading preferences...");
+  qDebug("reading preferences from %s/.yammi/prefs.xml...", baseDir.latin1());
 
   QDir d(baseDir);
   if(!d.cd(".yammi")) {
@@ -223,7 +223,7 @@ bool Prefs::loadConfig(QString baseDir)
 /// save preferences (if changed) to disk
 bool Prefs::saveConfig(void)
 {
-	qDebug("Prefs::saveConfig() Saving preferences...");
+	qDebug("saving preferences to %s/prefs.xml...", yammiBaseDir.latin1());
 	
 	// create xml-file
 	QDomDocument doc("prefs");
@@ -293,7 +293,7 @@ bool Prefs::saveConfig(void)
 	f2.writeBlock ( save, save.length() );
 	f2.close();
 
-	qDebug("Prefs::saveConfig() ...done");
+	qDebug("...done");
   return true;
 }
 

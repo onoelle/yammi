@@ -399,6 +399,22 @@ QString XmmsPlayer::getCurrentFile()
 }
 
 
+/**
+ * Clears playlist in xmms except first song.
+ * (necessary, to fix song stuck bug:
+ * when yammi saves its database filenames of enqueuee songs might have changed)
+ */
+void XmmsPlayer::clearPlaylist()
+{
+#ifdef ENABLE_XMMS
+  cout << "clearing xmms playlist...\n";
+  while(xmms_remote_get_playlist_length(session)>1) {
+ 	  xmms_remote_playlist_delete(session, 1);
+  }
+  cout << "...done!\n";
+#endif
+}
+
 
 void XmmsPlayer::check()
 {
@@ -429,10 +445,29 @@ void XmmsPlayer::check()
   timeLeft=getTotalTime()-getCurrentTime();
   bool yammiPlaylistChanged=false;
 
-  // 2. remove already played songs
+  // 2. remove already played song(s)
 //  if(lastStatus!=STOPPED) {
+
+  // standard case: remove first song
+  if(xmms_remote_get_playlist_pos(session)!=0) {
+    QString file(xmms_remote_get_playlist_file(session, 0));
+    if(model->currentSongFilenameAtStartPlay==file) {
+      cout << "standard case\n";
+      // the following call sometimes seems to crash xmms
+      // (and does not return until xmms is killed => freezes yammi)
+      //************************************************************
+      xmms_remote_playlist_delete(session, 0);
+      playlist->removeFirst();
+      yammiPlaylistChanged=true;      
+    }
+  }
+
+  // non-standard case: more than one song already played in xmms playlist
   while(xmms_remote_get_playlist_pos(session)!=0) {
     QString file(xmms_remote_get_playlist_file(session, 0));
+    // songstuck-bug
+    cout << "first file in xmms: " << file << "\n";
+    
 	  Song* firstXmmsSong=model->getSongFromFilename(file);
     
     // songstuck-bug
@@ -445,7 +480,7 @@ void XmmsPlayer::check()
     }
     cout << "playlist->count: " << playlist->count() << "\n";
     if(playlist->count()>0) {
-      cout << "playlist->first: " << playlist->firstSong()->displayName() << "\n";
+      cout << "playlist->first: " << playlist->firstSong()->location() << "\n";
     }
     
     // the following call sometimes seems to crash xmms
@@ -461,7 +496,7 @@ void XmmsPlayer::check()
   }
   if(yammiPlaylistChanged) {
     cout << "calling playlistChanged()\n";
-    playlistChanged();    
+    playlistChanged();
   }
 #endif
 }

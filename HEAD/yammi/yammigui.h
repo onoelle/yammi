@@ -143,6 +143,7 @@ public:
   static const int COLUMN_COMMENT = 11;
   static const int COLUMN_LAST_PLAYED = 12;
 
+  MediaPlayer*  player;
   MyListView*		songListView;
 	Folder*		    chosenFolder;
 	QToolButton*	tbPlayPause;
@@ -245,7 +246,6 @@ protected:
 	QSlider*			songSlider;
 	bool					isSongSliderGrabbed;
 	YammiModel*		model;								// pointer to our model
-  MediaPlayer*  player;
 	QString				currentFile;					// file that is currently played by player
 	QString				grabbedTrackFilename;	// filename of new track being grabbed
 

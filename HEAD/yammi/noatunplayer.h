@@ -52,7 +52,7 @@ protected:
   QString callGetString(QString command, int id=0);
   int getCurrentPlayerId();
   int getOtherPlayerId();
-  void clearPlaylist();
+  void clearActivePlayerPlaylist();
   void startSongChange(bool withoutCrossfading=false);
 
   bool shuffleWasActivated;
@@ -63,8 +63,10 @@ protected:
   int fadeIn;
   int fadeOut;
 
-public slots:
+public:
   // overriden methods
+  void clearPlaylist() {};
+public slots:
   void check();
   PlayerStatus getStatus();
   bool play();

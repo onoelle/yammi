@@ -101,9 +101,9 @@ void MyListView::contentsMouseMoveEvent ( QMouseEvent * e)
 	
 	// dragging: check whether mouse has moved to new item
 	QPoint point=e->globalPos();
-  cout << "e->globalPos(): x: " << point.x() << ", y: " << point.y() << "\n";
+//  cout << "e->globalPos(): x: " << point.x() << ", y: " << point.y() << "\n";
   QPoint mappedPoint=viewport()->mapFromGlobal(point);
-  cout << "mappedPoint: x: " << mappedPoint.x() << ", y: " << mappedPoint.y() << "\n";
+/*  cout << "mappedPoint: x: " << mappedPoint.x() << ", y: " << mappedPoint.y() << "\n";
   QPoint widgetMappedPoint=mapFromGlobal(point);
   cout << "widgetMappedPoint: x: " << widgetMappedPoint.x() << ", y: " << widgetMappedPoint.y() << "\n";
   
@@ -113,9 +113,9 @@ void MyListView::contentsMouseMoveEvent ( QMouseEvent * e)
   cout << "mappedPoint2: x: " << mappedPoint.x() << ", y: " << mappedPoint.y() << "\n";
   QPoint widgetMappedPoint2=mapFromGlobal(point2);
   cout << "widgetMappedPoint2: x: " << widgetMappedPoint2.x() << ", y: " << widgetMappedPoint2.y() << "\n";
-  
+  */
 	QListViewItem* item=itemAt(mappedPoint);
-  if(item!=0) {
+/*  if(item!=0) {
 	  cout << "item: " << ((SongListItem*)item)->song()->displayName() << "\n";
   }
 	QListViewItem* item2=itemAt(widgetMappedPoint);
@@ -130,6 +130,7 @@ void MyListView::contentsMouseMoveEvent ( QMouseEvent * e)
   if(item4!=0) {
 	  cout << "item4: " << ((SongListItem*)item4)->song()->displayName() << "\n";
   }
+*/
 	
 	// no valid item, mouse above or below listview?
 	if(item==0)	{
@@ -163,7 +164,10 @@ void MyListView::contentsMouseMoveEvent ( QMouseEvent * e)
 	if(s==dragSong)	// item has not moved
 		return;
 		
-	bool up=(point.y() < dragPoint.y());
+
+  cout << "drag requested: \ndragSong: " << dragSong->displayName() << "\ns: " << s->displayName() << "\n";
+  cout << "point.y(): " << point.y() << ", dragPoint.y(): " << dragPoint.y() << "\n";
+  bool up=(point.y() < dragPoint.y());
 	if(up) {		// don't allow dragging to top song (is played)
 		if(dontTouchFirst && item==firstChild()) {
 			cout << "dragging to top song not allowed in this folder!\n";
@@ -171,7 +175,8 @@ void MyListView::contentsMouseMoveEvent ( QMouseEvent * e)
 		}
 	}
 	
-	dragItem->moveItem(item);
+  cout << "moving item!\n";
+  dragItem->moveItem(item);
 	if(up) {
 		dragItem->itemAbove()->moveItem(dragItem);
 	}

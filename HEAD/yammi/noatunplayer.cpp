@@ -47,7 +47,7 @@ NoatunPlayer::NoatunPlayer(YammiModel* model)
   // this will be the inactive player
   currentPlayer=(currentPlayer+1) % 2;
   sendDcopCommandInt("setVolume(int)", 0);
-  clearPlaylist();
+  clearActivePlayerPlaylist();
 
   // this will be the active player
   currentPlayer=(currentPlayer+1) % 2;
@@ -70,7 +70,7 @@ NoatunPlayer::~NoatunPlayer()
  * Clear playlist of active player.
  * A bit complicated because the dcop interface for noatun's playlist is very limited.
  */
-void NoatunPlayer::clearPlaylist()
+void NoatunPlayer::clearActivePlayerPlaylist()
 {
   // go back as long as the result of currentFile() changes...
   // TODO: a song queued twice?
@@ -229,7 +229,7 @@ void NoatunPlayer::startSongChange(bool withoutCrossfading)
   PlayerStatus status=getStatus();
   if(model->config.fadeTime==0 || withoutCrossfading || status!=PLAYING) {
     // no crossfading
-    clearPlaylist();
+    clearActivePlayerPlaylist();
     QString location=model->checkAvailability(playlist->at(1)->song());
     if(location!="" && location!="never") {
       playlistAdd(location, status==PLAYING || model->config.fadeTime==0);
@@ -246,7 +246,7 @@ void NoatunPlayer::startSongChange(bool withoutCrossfading)
     fadeIn=getCurrentPlayerId();
     fadeTimer.start( 200, TRUE );       // change volume every 200ms
 
-    clearPlaylist();
+    clearActivePlayerPlaylist();
     QString location=model->checkAvailability(playlist->at(1)->song());
     if(location!="" && location!="never") {
       playlistAdd(location, true);
@@ -445,7 +445,7 @@ void NoatunPlayer::syncYammi2Player(bool syncAll)
   if(noatunCurrent!=yammiCurrent) {
 //    cout << "setting Noatun's current to Yammi's current\n";
 //    cout << "noatun file: |" << noatunCurrent << "|, yammi current: " << yammiCurrent << "\n";
-    clearPlaylist();
+    clearActivePlayerPlaylist();
     playlistAdd(location, false);
     sendDcopCommandInt("setVolume(int)", 100);
   }
