@@ -1,0 +1,763 @@
+# KDE tags expanded automatically by am_edit - $Revision: 1.1 $ 
+# Makefile.in generated automatically by automake 1.5 from Makefile.am.
+
+# Copyright 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001
+# Free Software Foundation, Inc.
+# This Makefile.in is free software; the Free Software Foundation
+# gives unlimited permission to copy and/or distribute it,
+# with or without modifications, as long as this notice is preserved.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY, to the extent permitted by law; without
+# even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+# PARTICULAR PURPOSE.
+
+@SET_MAKE@
+
+####### kdevelop will overwrite this part!!! (begin)##########
+
+SHELL = @SHELL@
+
+srcdir = @srcdir@
+top_srcdir = @top_srcdir@
+VPATH = @srcdir@
+prefix = @prefix@
+exec_prefix = @exec_prefix@
+
+bindir = @bindir@
+sbindir = @sbindir@
+libexecdir = @libexecdir@
+datadir = @datadir@
+sysconfdir = @sysconfdir@
+sharedstatedir = @sharedstatedir@
+localstatedir = @localstatedir@
+libdir = @libdir@
+infodir = @infodir@
+mandir = @mandir@
+includedir = @includedir@
+oldincludedir = /usr/include
+pkgdatadir = $(datadir)/@PACKAGE@
+pkglibdir = $(libdir)/@PACKAGE@
+pkgincludedir = $(includedir)/@PACKAGE@
+top_builddir = ..
+
+ACLOCAL = @ACLOCAL@
+AUTOCONF = @AUTOCONF@
+AUTOMAKE = @AUTOMAKE@
+AUTOHEADER = @AUTOHEADER@
+
+INSTALL = @INSTALL@
+INSTALL_PROGRAM = @INSTALL_PROGRAM@
+INSTALL_DATA = @INSTALL_DATA@
+INSTALL_SCRIPT = @INSTALL_SCRIPT@
+INSTALL_HEADER = $(INSTALL_DATA)
+transform = @program_transform_name@
+NORMAL_INSTALL = :
+PRE_INSTALL = :
+POST_INSTALL = :
+NORMAL_UNINSTALL = :
+PRE_UNINSTALL = :
+POST_UNINSTALL = :
+build_alias = @build_alias@
+build_triplet = @build@
+host_alias = @host_alias@
+host_triplet = @host@
+target_alias = @target_alias@
+target_triplet = @target@
+AMTAR = @AMTAR@
+ARTSCCONFIG = @ARTSCCONFIG@
+AS = @AS@
+AUTODIRS = @AUTODIRS@
+AWK = @AWK@
+CC = @CC@
+CONF_FILES = @CONF_FILES@
+CPP = @CPP@
+CXX = @CXX@
+CXXCPP = @CXXCPP@
+DCOPIDL = @DCOPIDL@
+DCOPIDL2CPP = @DCOPIDL2CPP@
+DCOP_DEPENDENCIES = @DCOP_DEPENDENCIES@
+DEPDIR = @DEPDIR@
+DLLTOOL = @DLLTOOL@
+DPMSINC = @DPMSINC@
+DPMSLIB = @DPMSLIB@
+ECHO = @ECHO@
+EXEEXT = @EXEEXT@
+GCJ = @GCJ@
+GCJFLAGS = @GCJFLAGS@
+GLINC = @GLINC@
+GLLIB = @GLLIB@
+GMSGFMT = @GMSGFMT@
+IDL = @IDL@
+IDL_DEPENDENCIES = @IDL_DEPENDENCIES@
+INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
+JAR = @JAR@
+JAVAC = @JAVAC@
+JAVAH = @JAVAH@
+JVMLIBS = @JVMLIBS@
+KDECONFIG = @KDECONFIG@
+KDE_CXXFLAGS = @KDE_CXXFLAGS@
+KDE_EXTRA_RPATH = @KDE_EXTRA_RPATH@
+KDE_INCLUDES = @KDE_INCLUDES@
+KDE_LDFLAGS = @KDE_LDFLAGS@
+KDE_MT_LDFLAGS = @KDE_MT_LDFLAGS@
+KDE_MT_LIBS = @KDE_MT_LIBS@
+KDE_PLUGIN = @KDE_PLUGIN@
+KDE_RPATH = @KDE_RPATH@
+KDE_USE_CLOSURE_FALSE = @KDE_USE_CLOSURE_FALSE@
+KDE_USE_CLOSURE_TRUE = @KDE_USE_CLOSURE_TRUE@
+KDE_USE_FINAL_FALSE = @KDE_USE_FINAL_FALSE@
+KDE_USE_FINAL_TRUE = @KDE_USE_FINAL_TRUE@
+KDE_XSL_STYLESHEET = @KDE_XSL_STYLESHEET@
+LEX = @LEX@
+LEXLIB = @LEXLIB@
+LIBCOMPAT = @LIBCOMPAT@
+LIBCRYPT = @LIBCRYPT@
+LIBDL = @LIBDL@
+LIBGEN = @LIBGEN@
+LIBJPEG = @LIBJPEG@
+LIBMICO = @LIBMICO@
+LIBOBJS = @LIBOBJS@
+LIBPNG = @LIBPNG@
+LIBPTHREAD = @LIBPTHREAD@
+LIBPYTHON = @LIBPYTHON@
+LIBQIMGIO = @LIBQIMGIO@
+LIBRESOLV = @LIBRESOLV@
+LIBSHADOW = @LIBSHADOW@
+LIBSM = @LIBSM@
+LIBSOCKET = @LIBSOCKET@
+LIBTIFF = @LIBTIFF@
+LIBTOOL = @LIBTOOL@
+LIBUCB = @LIBUCB@
+LIBUTIL = @LIBUTIL@
+LIBXINERAMA = @LIBXINERAMA@
+LIBZ = @LIBZ@
+LIB_KAB = @LIB_KAB@
+LIB_KDECORE = @LIB_KDECORE@
+LIB_KDEPRINT = @LIB_KDEPRINT@
+LIB_KDEUI = @LIB_KDEUI@
+LIB_KFILE = @LIB_KFILE@
+LIB_KFM = @LIB_KFM@
+LIB_KHTML = @LIB_KHTML@
+LIB_KIMGIO = @LIB_KIMGIO@
+LIB_KIO = @LIB_KIO@
+LIB_KPARTS = @LIB_KPARTS@
+LIB_KSPELL = @LIB_KSPELL@
+LIB_KSYCOCA = @LIB_KSYCOCA@
+LIB_QPE = @LIB_QPE@
+LIB_QT = @LIB_QT@
+LIB_QTOPIA = @LIB_QTOPIA@
+LIB_SMB = @LIB_SMB@
+LIB_X11 = @LIB_X11@
+LIB_XEXT = @LIB_XEXT@
+LN_S = @LN_S@
+MCOPIDL = @MCOPIDL@
+MEINPROC = @MEINPROC@
+MICO_INCLUDES = @MICO_INCLUDES@
+MICO_LDFLAGS = @MICO_LDFLAGS@
+MOC = @MOC@
+MSGFMT = @MSGFMT@
+NOOPT_CFLAGS = @NOOPT_CFLAGS@
+NOOPT_CXXFLAGS = @NOOPT_CXXFLAGS@
+NOREPO = @NOREPO@
+OBJDUMP = @OBJDUMP@
+OBJEXT = @OBJEXT@
+PACKAGE = @PACKAGE@
+PAMLIBS = @PAMLIBS@
+PASSWDLIBS = @PASSWDLIBS@
+PYTHONINC = @PYTHONINC@
+PYTHONLIB = @PYTHONLIB@
+PYTHONMODDIR = @PYTHONMODDIR@
+QTE_NORTTI = @QTE_NORTTI@
+QTOPIA_INCLUDES = @QTOPIA_INCLUDES@
+QT_INCLUDES = @QT_INCLUDES@
+QT_LDFLAGS = @QT_LDFLAGS@
+RANLIB = @RANLIB@
+RC = @RC@
+REPO = @REPO@
+SETUIDFLAGS = @SETUIDFLAGS@
+STRIP = @STRIP@
+TOPSUBDIRS = @TOPSUBDIRS@
+UIC = @UIC@
+UIC_TR = @UIC_TR@
+USER_INCLUDES = @USER_INCLUDES@
+USER_LDFLAGS = @USER_LDFLAGS@
+USE_EXCEPTIONS = @USE_EXCEPTIONS@
+USE_RTTI = @USE_RTTI@
+USE_THREADS = @USE_THREADS@
+VERSION = @VERSION@
+WOVERLOADED_VIRTUAL = @WOVERLOADED_VIRTUAL@
+XGETTEXT = @XGETTEXT@
+XPMINC = @XPMINC@
+XPMLIB = @XPMLIB@
+X_EXTRA_LIBS = @X_EXTRA_LIBS@
+X_INCLUDES = @X_INCLUDES@
+X_LDFLAGS = @X_LDFLAGS@
+X_PRE_LIBS = @X_PRE_LIBS@
+all_includes = @all_includes@
+all_libraries = @all_libraries@
+am__include = @am__include@
+am__quote = @am__quote@
+idldir = @idldir@
+install_sh = @install_sh@
+jni_includes = @jni_includes@
+kde_appsdir = @kde_appsdir@
+kde_bindir = @kde_bindir@
+kde_confdir = @kde_confdir@
+kde_datadir = @kde_datadir@
+kde_htmldir = @kde_htmldir@
+kde_icondir = @kde_icondir@
+kde_includes = @kde_includes@
+kde_libraries = @kde_libraries@
+kde_libs_htmldir = @kde_libs_htmldir@
+kde_libs_prefix = @kde_libs_prefix@
+kde_locale = @kde_locale@
+kde_mimedir = @kde_mimedir@
+kde_moduledir = @kde_moduledir@
+kde_qtver = @kde_qtver@
+kde_servicesdir = @kde_servicesdir@
+kde_servicetypesdir = @kde_servicetypesdir@
+kde_sounddir = @kde_sounddir@
+kde_styledir = @kde_styledir@
+kde_templatesdir = @kde_templatesdir@
+kde_wallpaperdir = @kde_wallpaperdir@
+kde_widgetdir = @kde_widgetdir@
+micodir = @micodir@
+qt_includes = @qt_includes@
+qt_libraries = @qt_libraries@
+x_includes = @x_includes@
+x_libraries = @x_libraries@
+
+bin_PROGRAMS = yammi
+
+#>- yammi_SOURCES = yammimodel.cpp YammiGuiBase.ui yammigui.cpp WorkDialogBase.ui songlistitem.cpp SongInfoDialog.ui songinfo.cpp songentrytimestamp.cpp songentrystring.cpp songentryint2.cpp songentryint.cpp songentry.cpp song.cpp prefs.cpp PreferencesDialogBase.ui preferencesdialog.cpp mylistview.cpp mylist.cpp mydatetime.cpp mp3tag.cpp mp3_layer.cpp main.cpp fuzzsrch.cpp foldersorted.cpp foldermedia.cpp foldergroups.cpp foldercategories.cpp folder.cpp DeleteDialog.ui 
+#>+ 1
+yammi_SOURCES=yammimodel.cpp  yammigui.cpp  songlistitem.cpp  songinfo.cpp songentrytimestamp.cpp songentrystring.cpp songentryint2.cpp songentryint.cpp songentry.cpp song.cpp prefs.cpp  preferencesdialog.cpp mylistview.cpp mylist.cpp mydatetime.cpp mp3tag.cpp mp3_layer.cpp main.cpp fuzzsrch.cpp foldersorted.cpp foldermedia.cpp foldergroups.cpp foldercategories.cpp folder.cpp   YammiGuiBase.cpp WorkDialogBase.cpp SongInfoDialog.cpp PreferencesDialogBase.cpp DeleteDialog.cpp
+SOURCES = yammimodel.cpp yammigui.cpp songlistitem.cpp songinfo.cpp songentrytimestamp.cpp songentrystring.cpp songentryint2.cpp songentryint.cpp songentry.cpp song.cpp prefs.cpp preferencesdialog.cpp mylistview.cpp mylist.cpp mydatetime.cpp mp3tag.cpp mp3_layer.cpp main.cpp fuzzsrch.cpp foldersorted.cpp foldermedia.cpp foldergroups.cpp foldercategories.cpp folder.cpp 
+INTERFACES = YammiGuiBase.ui WorkDialogBase.ui SongInfoDialog.ui PreferencesDialogBase.ui DeleteDialog.ui 
+TRANSLATIONS = 
+KDE_OPTIONS = qtonly
+yammi_LDADD = -lxmms $(LIB_QT) $(LIBSOCKET)
+
+EXTRA_DIST = lo32-app-yammi.png lo16-app-yammi.png clearPlaylist.xpm defaultControlClick.xpm defaultDoubleClick.xpm defaultMiddleClick.xpm defaultShiftClick.xpm DeleteDialog.ui dequeueAll.xpm dequeueSong.xpm enqueue.xpm enqueueasnext.xpm filesave.xpm folder.cpp folder.h foldercategories.cpp foldercategories.h foldergroups.cpp foldergroups.h foldermedia.cpp foldermedia.h foldersorted.cpp foldersorted.h fuzzsrch.cpp fuzzsrch.h in.xpm main.cpp mp3_layer.cpp mp3_layer.h mp3tag.cpp mp3tag.h mydatetime.cpp mydatetime.h mylist.cpp mylist.h mylistview.cpp mylistview.h notin.xpm pause.xpm playnow.xpm preferencesdialog.cpp preferencesdialog.h PreferencesDialogBase.ui prefs.cpp prefs.h prelisten.xpm skipbackward.xpm skipbackwardim.xpm skipforward.xpm skipforwardim.xpm song.cpp song.h songentry.cpp songentry.h songentryint.cpp songentryint.h songentryint2.cpp songentryint2.h songentrystring.cpp songentrystring.h songentrytimestamp.cpp songentrytimestamp.h songinfo.cpp songinfo.h songinfo.xpm SongInfoDialog.ui songlistitem.cpp songlistitem.h stop.xpm stopPrelisten.xpm WorkDialogBase.ui yammigui.cpp yammigui.h YammiGuiBase.ui yammimodel.cpp yammimodel.h 
+
+####### kdevelop will overwrite this part!!! (end)############
+
+# set the include path for X, qt and KDE
+INCLUDES = $(all_includes)
+
+#>- yammi_METASOURCES = AUTO
+
+# the library search path. 
+yammi_LDFLAGS = $(all_libraries) 
+
+# them while "make clean", use CLEANFILES
+DISTCLEANFILES = $(yammi_METASOURCES)
+subdir = yammi
+mkinstalldirs = $(SHELL) $(top_srcdir)/admin/mkinstalldirs
+CONFIG_HEADER = $(top_builddir)/config.h
+CONFIG_CLEAN_FILES =
+bin_PROGRAMS = yammi$(EXEEXT)
+PROGRAMS = $(bin_PROGRAMS)
+
+am_yammi_OBJECTS = yammimodel.$(OBJEXT) yammigui.$(OBJEXT) \
+	songlistitem.$(OBJEXT) songinfo.$(OBJEXT) \
+	songentrytimestamp.$(OBJEXT) songentrystring.$(OBJEXT) \
+	songentryint2.$(OBJEXT) songentryint.$(OBJEXT) \
+	songentry.$(OBJEXT) song.$(OBJEXT) prefs.$(OBJEXT) \
+	preferencesdialog.$(OBJEXT) mylistview.$(OBJEXT) \
+	mylist.$(OBJEXT) mydatetime.$(OBJEXT) mp3tag.$(OBJEXT) \
+	mp3_layer.$(OBJEXT) main.$(OBJEXT) fuzzsrch.$(OBJEXT) \
+	foldersorted.$(OBJEXT) foldermedia.$(OBJEXT) \
+	foldergroups.$(OBJEXT) foldercategories.$(OBJEXT) \
+	folder.$(OBJEXT)
+#>- yammi_OBJECTS = $(am_yammi_OBJECTS)
+#>+ 15
+yammi_final_OBJECTS = yammi.all_cpp.o 
+yammi_nofinal_OBJECTS = yammimodel.$(OBJEXT) yammigui.$(OBJEXT) \
+	songlistitem.$(OBJEXT) songinfo.$(OBJEXT) \
+	songentrytimestamp.$(OBJEXT) songentrystring.$(OBJEXT) \
+	songentryint2.$(OBJEXT) songentryint.$(OBJEXT) \
+	songentry.$(OBJEXT) song.$(OBJEXT) prefs.$(OBJEXT) \
+	preferencesdialog.$(OBJEXT) mylistview.$(OBJEXT) \
+	mylist.$(OBJEXT) mydatetime.$(OBJEXT) mp3tag.$(OBJEXT) \
+	mp3_layer.$(OBJEXT) main.$(OBJEXT) fuzzsrch.$(OBJEXT) \
+	foldersorted.$(OBJEXT) foldermedia.$(OBJEXT) \
+	foldergroups.$(OBJEXT) foldercategories.$(OBJEXT) \
+	folder.$(OBJEXT) YammiGuiBase.$(OBJEXT) WorkDialogBase.$(OBJEXT) SongInfoDialog.$(OBJEXT) PreferencesDialogBase.$(OBJEXT) DeleteDialog.$(OBJEXT)\
+	foldergroups.moc.o foldermedia.moc.o folder.moc.o foldercategories.moc.o yammimodel.moc.o songinfo.moc.o yammigui.moc.o preferencesdialog.moc.o mylistview.moc.o 
+@KDE_USE_FINAL_FALSE@yammi_OBJECTS = $(yammi_nofinal_OBJECTS)
+@KDE_USE_FINAL_TRUE@yammi_OBJECTS = $(yammi_final_OBJECTS)
+yammi_DEPENDENCIES =
+
+DEFS = @DEFS@
+DEFAULT_INCLUDES =  -I. -I$(srcdir) -I$(top_builddir)
+CPPFLAGS = @CPPFLAGS@
+LDFLAGS = @LDFLAGS@
+LIBS = @LIBS@
+depcomp = $(SHELL) $(top_srcdir)/admin/depcomp
+@AMDEP_TRUE@DEP_FILES = $(DEPDIR)/folder.Po \
+	@AMDEP_TRUE@	$(DEPDIR)/foldercategories.Po \
+	@AMDEP_TRUE@	$(DEPDIR)/foldergroups.Po $(DEPDIR)/foldermedia.Po \
+	@AMDEP_TRUE@	$(DEPDIR)/foldersorted.Po $(DEPDIR)/fuzzsrch.Po \
+	@AMDEP_TRUE@	$(DEPDIR)/main.Po $(DEPDIR)/mp3_layer.Po \
+	@AMDEP_TRUE@	$(DEPDIR)/mp3tag.Po $(DEPDIR)/mydatetime.Po \
+	@AMDEP_TRUE@	$(DEPDIR)/mylist.Po $(DEPDIR)/mylistview.Po \
+	@AMDEP_TRUE@	$(DEPDIR)/preferencesdialog.Po $(DEPDIR)/prefs.Po \
+	@AMDEP_TRUE@	$(DEPDIR)/song.Po $(DEPDIR)/songentry.Po \
+	@AMDEP_TRUE@	$(DEPDIR)/songentryint.Po \
+	@AMDEP_TRUE@	$(DEPDIR)/songentryint2.Po \
+	@AMDEP_TRUE@	$(DEPDIR)/songentrystring.Po \
+	@AMDEP_TRUE@	$(DEPDIR)/songentrytimestamp.Po \
+	@AMDEP_TRUE@	$(DEPDIR)/songinfo.Po $(DEPDIR)/songlistitem.Po \
+	@AMDEP_TRUE@	$(DEPDIR)/yammigui.Po $(DEPDIR)/yammimodel.Po
+#>- CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
+#>- $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
+#>+ 2
+CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
+	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) $(KDE_CXXFLAGS)
+#>- LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
+#>- $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) \
+#>- $(AM_CXXFLAGS) $(CXXFLAGS)
+#>+ 3
+LTCXXCOMPILE = $(LIBTOOL) --mode=compile --tag=CXX $(CXX) $(DEFS) \
+	$(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) \
+	$(AM_CXXFLAGS) $(CXXFLAGS) $(KDE_CXXFLAGS)
+CXXLD = $(CXX)
+#>- CXXLINK = $(LIBTOOL) --mode=link $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) \
+#>- $(AM_LDFLAGS) $(LDFLAGS) -o $@
+#>+ 2
+CXXLINK = $(LIBTOOL) --mode=link --tag=CXX $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) $(KDE_CXXFLAGS) \
+	$(AM_LDFLAGS) $(LDFLAGS) -o $@
+CXXFLAGS = @CXXFLAGS@
+DIST_SOURCES = $(yammi_SOURCES)
+DIST_COMMON = Makefile.am Makefile.in
+SOURCES = yammimodel.cpp yammigui.cpp songlistitem.cpp songinfo.cpp songentrytimestamp.cpp songentrystring.cpp songentryint2.cpp songentryint.cpp songentry.cpp song.cpp prefs.cpp preferencesdialog.cpp mylistview.cpp mylist.cpp mydatetime.cpp mp3tag.cpp mp3_layer.cpp main.cpp fuzzsrch.cpp foldersorted.cpp foldermedia.cpp foldergroups.cpp foldercategories.cpp folder.cpp 
+
+#>- all: all-am
+#>+ 1
+all: docs-am  all-am
+
+.SUFFIXES:
+.SUFFIXES: .cpp .lo .o .obj
+
+mostlyclean-libtool:
+	-rm -f *.lo
+
+clean-libtool:
+	-rm -rf .libs _libs
+
+distclean-libtool:
+	-rm -f libtool
+$(srcdir)/Makefile.in:  Makefile.am  $(top_srcdir)/configure.in $(ACLOCAL_M4)
+#>- 	cd $(top_srcdir) && \
+#>- $(AUTOMAKE) --gnu  yammi/Makefile
+#>+ 3
+	cd $(top_srcdir) && \
+	$(AUTOMAKE) --gnu  yammi/Makefile
+	cd $(top_srcdir) && perl admin/am_edit yammi/Makefile.in
+Makefile:  $(srcdir)/Makefile.in  $(top_builddir)/config.status
+	cd $(top_builddir) && \
+	CONFIG_HEADERS= CONFIG_LINKS= \
+	CONFIG_FILES=$(subdir)/$@ $(SHELL) ./config.status
+install-binPROGRAMS: $(bin_PROGRAMS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(bindir)
+	@list='$(bin_PROGRAMS)'; for p in $$list; do \
+	p1=`echo $$p|sed 's/$(EXEEXT)$$//'`; \
+	if test -f $$p \
+	|| test -f $$p1 \
+	; then \
+	f=`echo $$p1|sed '$(transform);s/$$/$(EXEEXT)/'`; \
+	echo " $(INSTALL_PROGRAM_ENV) $(LIBTOOL) --mode=install $(INSTALL_PROGRAM) $$p $(DESTDIR)$(bindir)/$$f"; \
+	$(INSTALL_PROGRAM_ENV) $(LIBTOOL) --mode=install $(INSTALL_PROGRAM) $$p $(DESTDIR)$(bindir)/$$f; \
+	else :; fi; \
+	done
+
+uninstall-binPROGRAMS:
+	@$(NORMAL_UNINSTALL)
+	@list='$(bin_PROGRAMS)'; for p in $$list; do \
+	f=`echo $$p|sed 's/$(EXEEXT)$$//;$(transform);s/$$/$(EXEEXT)/'`; \
+	echo " rm -f $(DESTDIR)$(bindir)/$$f"; \
+	rm -f $(DESTDIR)$(bindir)/$$f; \
+	done
+
+clean-binPROGRAMS:
+	-test -z "$(bin_PROGRAMS)" || rm -f $(bin_PROGRAMS)
+yammi$(EXEEXT): $(yammi_OBJECTS) $(yammi_DEPENDENCIES) 
+	@rm -f yammi$(EXEEXT)
+	$(CXXLINK) $(yammi_LDFLAGS) $(yammi_OBJECTS) $(yammi_LDADD) $(LIBS)
+
+mostlyclean-compile:
+	-rm -f *.$(OBJEXT) core *.core
+
+distclean-compile:
+	-rm -f *.tab.c
+
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/folder.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/foldercategories.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/foldergroups.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/foldermedia.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/foldersorted.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/fuzzsrch.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/main.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/mp3_layer.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/mp3tag.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/mydatetime.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/mylist.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/mylistview.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/preferencesdialog.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/prefs.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/song.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/songentry.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/songentryint.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/songentryint2.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/songentrystring.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/songentrytimestamp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/songinfo.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/songlistitem.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/yammigui.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/yammimodel.Po@am__quote@
+
+distclean-depend:
+	-rm -rf $(DEPDIR)
+
+.cpp.o:
+@AMDEP_TRUE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+	$(CXXCOMPILE) -c -o $@ `test -f $< || echo '$(srcdir)/'`$<
+
+.cpp.obj:
+@AMDEP_TRUE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+	$(CXXCOMPILE) -c -o $@ `cygpath -w $<`
+
+.cpp.lo:
+@AMDEP_TRUE@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+	$(LTCXXCOMPILE) -c -o $@ `test -f $< || echo '$(srcdir)/'`$<
+CXXDEPMODE = @CXXDEPMODE@
+uninstall-info-am:
+
+tags: TAGS
+
+ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
+	list='$(SOURCES) $(HEADERS) $(TAGS_FILES)'; \
+	unique=`for i in $$list; do \
+	if test -f "$$i"; then echo $$i; else echo $(srcdir)/$$i; fi; \
+	done | \
+	$(AWK) '    { files[$$0] = 1; } \
+	END { for (i in files) print i; }'`; \
+	mkid -fID $$unique $(LISP)
+
+TAGS:  $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) \
+	$(TAGS_FILES) $(LISP)
+	tags=; \
+	here=`pwd`; \
+	list='$(SOURCES) $(HEADERS) $(TAGS_FILES)'; \
+	unique=`for i in $$list; do \
+	if test -f "$$i"; then echo $$i; else echo $(srcdir)/$$i; fi; \
+	done | \
+	$(AWK) '    { files[$$0] = 1; } \
+	END { for (i in files) print i; }'`; \
+	test -z "$(ETAGS_ARGS)$$unique$(LISP)$$tags" \
+	|| etags $(ETAGS_ARGS) $$tags  $$unique $(LISP)
+
+GTAGS:
+	here=`CDPATH=: && cd $(top_builddir) && pwd` \
+	&& cd $(top_srcdir) \
+	&& gtags -i $(GTAGS_ARGS) $$here
+
+distclean-tags:
+	-rm -f TAGS ID GTAGS GRTAGS GSYMS GPATH
+
+#>- DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
+#>+ 4
+KDE_DIST=glib.h glibconfig.h WorkDialogBase.h DeleteDialog.h xmmsctrl.h PreferencesDialogBase.h fileopen.xpm YammiGuiBase.h filenew.xpm yammi SongInfoDialog.h 
+
+DISTFILES= $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST) $(KDE_DIST)
+
+
+top_distdir = ..
+distdir = $(top_distdir)/$(PACKAGE)-$(VERSION)
+
+distdir: $(DISTFILES)
+	@for file in $(DISTFILES); do \
+	if test -f $$file; then d=.; else d=$(srcdir); fi; \
+	dir=`echo "$$file" | sed -e 's,/[^/]*$$,,'`; \
+	if test "$$dir" != "$$file" && test "$$dir" != "."; then \
+	$(mkinstalldirs) "$(distdir)/$$dir"; \
+	fi; \
+	if test -d $$d/$$file; then \
+	cp -pR $$d/$$file $(distdir) \
+	|| exit 1; \
+	else \
+	test -f $(distdir)/$$file \
+	|| cp -p $$d/$$file $(distdir)/$$file \
+	|| exit 1; \
+	fi; \
+	done
+check-am: all-am
+check: check-am
+all-am: Makefile $(PROGRAMS)
+
+installdirs:
+	$(mkinstalldirs) $(DESTDIR)$(bindir)
+
+install: install-am
+install-exec: install-exec-am
+install-data: install-data-am
+uninstall: uninstall-am
+
+install-am: all-am
+	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am
+
+installcheck: installcheck-am
+install-strip:
+	$(MAKE) $(AM_MAKEFLAGS) INSTALL_PROGRAM="$(INSTALL_STRIP_PROGRAM)" \
+	`test -z '$(STRIP)' || \
+	echo "INSTALL_PROGRAM_ENV=STRIPPROG='$(STRIP)'"` install
+mostlyclean-generic:
+
+clean-generic:
+
+distclean-generic:
+	-rm -f Makefile $(CONFIG_CLEAN_FILES) stamp-h stamp-h[0-9]*
+	-test -z "$(DISTCLEANFILES)" || rm -f $(DISTCLEANFILES)
+
+maintainer-clean-generic:
+	@echo "This command is intended for maintainers to use"
+	@echo "it deletes files that may require special tools to rebuild."
+#>- clean: clean-am
+#>+ 1
+clean: kde-rpo-clean  clean-am
+
+#>- clean-am: clean-binPROGRAMS clean-generic clean-libtool mostlyclean-am
+#>+ 1
+clean-am: clean-metasources clean-ui clean-final  clean-binPROGRAMS clean-generic clean-libtool mostlyclean-am
+
+distclean: distclean-am
+
+distclean-am: clean-am distclean-compile distclean-depend \
+	distclean-generic distclean-libtool distclean-tags
+
+dvi: dvi-am
+
+dvi-am:
+
+info: info-am
+
+info-am:
+
+install-data-am:
+
+install-exec-am: install-binPROGRAMS
+
+install-info: install-info-am
+
+install-man:
+
+installcheck-am:
+
+maintainer-clean: maintainer-clean-am
+
+maintainer-clean-am: distclean-am maintainer-clean-generic
+
+mostlyclean: mostlyclean-am
+
+mostlyclean-am: mostlyclean-compile mostlyclean-generic \
+	mostlyclean-libtool
+
+uninstall-am: uninstall-binPROGRAMS uninstall-info-am
+
+.PHONY: GTAGS all all-am check check-am clean clean-binPROGRAMS \
+	clean-generic clean-libtool distclean distclean-compile \
+	distclean-depend distclean-generic distclean-libtool \
+	distclean-tags distdir dvi dvi-am info info-am install \
+	install-am install-binPROGRAMS install-data install-data-am \
+	install-exec install-exec-am install-info install-info-am \
+	install-man install-strip installcheck installcheck-am \
+	installdirs maintainer-clean maintainer-clean-generic \
+	mostlyclean mostlyclean-compile mostlyclean-generic \
+	mostlyclean-libtool tags uninstall uninstall-am \
+	uninstall-binPROGRAMS uninstall-info-am
+
+# Tell versions [3.59,3.63) of GNU make to not export all variables.
+# Otherwise a system limit (for SysV at least) may be exceeded.
+.NOEXPORT:
+
+#>+ 51
+YammiGuiBase.cpp: $(srcdir)/YammiGuiBase.ui YammiGuiBase.h YammiGuiBase.moc
+	rm -f YammiGuiBase.cpp
+	$(UIC) -i YammiGuiBase.h $(srcdir)/YammiGuiBase.ui > YammiGuiBase.cpp || rm -f YammiGuiBase.cpp
+	echo '#include "YammiGuiBase.moc"' >> YammiGuiBase.cpp
+
+YammiGuiBase.h: $(srcdir)/YammiGuiBase.ui
+	$(UIC) -o YammiGuiBase.h $(srcdir)/YammiGuiBase.ui
+
+YammiGuiBase.moc: YammiGuiBase.h
+	$(MOC) YammiGuiBase.h -o YammiGuiBase.moc
+WorkDialogBase.cpp: $(srcdir)/WorkDialogBase.ui WorkDialogBase.h WorkDialogBase.moc
+	rm -f WorkDialogBase.cpp
+	$(UIC) -i WorkDialogBase.h $(srcdir)/WorkDialogBase.ui > WorkDialogBase.cpp || rm -f WorkDialogBase.cpp
+	echo '#include "WorkDialogBase.moc"' >> WorkDialogBase.cpp
+
+WorkDialogBase.h: $(srcdir)/WorkDialogBase.ui
+	$(UIC) -o WorkDialogBase.h $(srcdir)/WorkDialogBase.ui
+
+WorkDialogBase.moc: WorkDialogBase.h
+	$(MOC) WorkDialogBase.h -o WorkDialogBase.moc
+SongInfoDialog.cpp: $(srcdir)/SongInfoDialog.ui SongInfoDialog.h SongInfoDialog.moc
+	rm -f SongInfoDialog.cpp
+	$(UIC) -i SongInfoDialog.h $(srcdir)/SongInfoDialog.ui > SongInfoDialog.cpp || rm -f SongInfoDialog.cpp
+	echo '#include "SongInfoDialog.moc"' >> SongInfoDialog.cpp
+
+SongInfoDialog.h: $(srcdir)/SongInfoDialog.ui
+	$(UIC) -o SongInfoDialog.h $(srcdir)/SongInfoDialog.ui
+
+SongInfoDialog.moc: SongInfoDialog.h
+	$(MOC) SongInfoDialog.h -o SongInfoDialog.moc
+PreferencesDialogBase.cpp: $(srcdir)/PreferencesDialogBase.ui PreferencesDialogBase.h PreferencesDialogBase.moc
+	rm -f PreferencesDialogBase.cpp
+	$(UIC) -i PreferencesDialogBase.h $(srcdir)/PreferencesDialogBase.ui > PreferencesDialogBase.cpp || rm -f PreferencesDialogBase.cpp
+	echo '#include "PreferencesDialogBase.moc"' >> PreferencesDialogBase.cpp
+
+PreferencesDialogBase.h: $(srcdir)/PreferencesDialogBase.ui
+	$(UIC) -o PreferencesDialogBase.h $(srcdir)/PreferencesDialogBase.ui
+
+PreferencesDialogBase.moc: PreferencesDialogBase.h
+	$(MOC) PreferencesDialogBase.h -o PreferencesDialogBase.moc
+DeleteDialog.cpp: $(srcdir)/DeleteDialog.ui DeleteDialog.h DeleteDialog.moc
+	rm -f DeleteDialog.cpp
+	$(UIC) -i DeleteDialog.h $(srcdir)/DeleteDialog.ui > DeleteDialog.cpp || rm -f DeleteDialog.cpp
+	echo '#include "DeleteDialog.moc"' >> DeleteDialog.cpp
+
+DeleteDialog.h: $(srcdir)/DeleteDialog.ui
+	$(UIC) -o DeleteDialog.h $(srcdir)/DeleteDialog.ui
+
+DeleteDialog.moc: DeleteDialog.h
+	$(MOC) DeleteDialog.h -o DeleteDialog.moc
+
+#>+ 3
+foldergroups.moc.cpp: $(srcdir)/foldergroups.h
+	$(MOC) $(srcdir)/foldergroups.h -o foldergroups.moc.cpp
+
+#>+ 3
+foldermedia.moc.cpp: $(srcdir)/foldermedia.h
+	$(MOC) $(srcdir)/foldermedia.h -o foldermedia.moc.cpp
+
+#>+ 3
+folder.moc.cpp: $(srcdir)/folder.h
+	$(MOC) $(srcdir)/folder.h -o folder.moc.cpp
+
+#>+ 3
+foldercategories.moc.cpp: $(srcdir)/foldercategories.h
+	$(MOC) $(srcdir)/foldercategories.h -o foldercategories.moc.cpp
+
+#>+ 3
+yammimodel.moc.cpp: $(srcdir)/yammimodel.h
+	$(MOC) $(srcdir)/yammimodel.h -o yammimodel.moc.cpp
+
+#>+ 3
+songinfo.moc.cpp: $(srcdir)/songinfo.h
+	$(MOC) $(srcdir)/songinfo.h -o songinfo.moc.cpp
+
+#>+ 3
+yammigui.moc.cpp: $(srcdir)/yammigui.h
+	$(MOC) $(srcdir)/yammigui.h -o yammigui.moc.cpp
+
+#>+ 3
+preferencesdialog.moc.cpp: $(srcdir)/preferencesdialog.h
+	$(MOC) $(srcdir)/preferencesdialog.h -o preferencesdialog.moc.cpp
+
+#>+ 3
+mylistview.moc.cpp: $(srcdir)/mylistview.h
+	$(MOC) $(srcdir)/mylistview.h -o mylistview.moc.cpp
+
+#>+ 3
+clean-metasources:
+	-rm -f  foldergroups.moc.cpp foldermedia.moc.cpp folder.moc.cpp foldercategories.moc.cpp yammimodel.moc.cpp songinfo.moc.cpp yammigui.moc.cpp preferencesdialog.moc.cpp mylistview.moc.cpp
+
+#>+ 8
+clean-ui:
+	-rm -f \
+	YammiGuiBase.cpp YammiGuiBase.h YammiGuiBase.moc \
+	WorkDialogBase.cpp WorkDialogBase.h WorkDialogBase.moc \
+	SongInfoDialog.cpp SongInfoDialog.h SongInfoDialog.moc \
+	PreferencesDialogBase.cpp PreferencesDialogBase.h PreferencesDialogBase.moc \
+	DeleteDialog.cpp DeleteDialog.h DeleteDialog.moc 
+
+#>+ 2
+docs-am:
+
+#>+ 6
+force-reedit:
+		cd $(top_srcdir) && \
+	$(AUTOMAKE) --gnu  yammi/Makefile
+	cd $(top_srcdir) && perl admin/am_edit yammi/Makefile.in
+
+
+#>+ 11
+yammi.all_cpp.cpp: $(srcdir)/Makefile.in $(srcdir)/yammimodel.cpp $(srcdir)/yammigui.cpp $(srcdir)/songlistitem.cpp $(srcdir)/songinfo.cpp $(srcdir)/songentrytimestamp.cpp $(srcdir)/songentrystring.cpp $(srcdir)/songentryint2.cpp $(srcdir)/songentryint.cpp $(srcdir)/songentry.cpp $(srcdir)/song.cpp $(srcdir)/prefs.cpp $(srcdir)/preferencesdialog.cpp $(srcdir)/mylistview.cpp $(srcdir)/mylist.cpp $(srcdir)/mydatetime.cpp $(srcdir)/mp3tag.cpp $(srcdir)/mp3_layer.cpp $(srcdir)/main.cpp $(srcdir)/fuzzsrch.cpp $(srcdir)/foldersorted.cpp $(srcdir)/foldermedia.cpp $(srcdir)/foldergroups.cpp $(srcdir)/foldercategories.cpp $(srcdir)/folder.cpp $(srcdir)/YammiGuiBase.cpp $(srcdir)/WorkDialogBase.cpp $(srcdir)/SongInfoDialog.cpp $(srcdir)/PreferencesDialogBase.cpp $(srcdir)/DeleteDialog.cpp  foldergroups.moc.cpp foldermedia.moc.cpp folder.moc.cpp foldercategories.moc.cpp yammimodel.moc.cpp songinfo.moc.cpp yammigui.moc.cpp preferencesdialog.moc.cpp mylistview.moc.cpp
+	@echo 'creating yammi.all_cpp.cpp ...'; \
+	rm -f yammi.all_cpp.files yammi.all_cpp.final; \
+	echo "#define KDE_USE_FINAL 1" >> yammi.all_cpp.final; \
+	for file in yammimodel.cpp yammigui.cpp songlistitem.cpp songinfo.cpp songentrytimestamp.cpp songentrystring.cpp songentryint2.cpp songentryint.cpp songentry.cpp song.cpp prefs.cpp preferencesdialog.cpp mylistview.cpp mylist.cpp mydatetime.cpp mp3tag.cpp mp3_layer.cpp main.cpp fuzzsrch.cpp foldersorted.cpp foldermedia.cpp foldergroups.cpp foldercategories.cpp folder.cpp YammiGuiBase.cpp WorkDialogBase.cpp SongInfoDialog.cpp PreferencesDialogBase.cpp DeleteDialog.cpp  foldergroups.moc.cpp foldermedia.moc.cpp folder.moc.cpp foldercategories.moc.cpp yammimodel.moc.cpp songinfo.moc.cpp yammigui.moc.cpp preferencesdialog.moc.cpp mylistview.moc.cpp; do \
+	  echo "#include \"$$file\"" >> yammi.all_cpp.files; \
+	  test ! -f $(srcdir)/$$file || egrep '^#pragma +implementation' $(srcdir)/$$file >> yammi.all_cpp.final; \
+	done; \
+	cat yammi.all_cpp.final yammi.all_cpp.files  > yammi.all_cpp.cpp; \
+	rm -f yammi.all_cpp.final yammi.all_cpp.files
+
+#>+ 3
+clean-final:
+	-rm -f yammi.all_cpp.cpp
+
+#>+ 2
+final:
+	$(MAKE) yammi_OBJECTS="$(yammi_final_OBJECTS)" all-am
+#>+ 2
+final-install:
+	$(MAKE) yammi_OBJECTS="$(yammi_final_OBJECTS)" install-am
+#>+ 2
+no-final:
+	$(MAKE) yammi_OBJECTS="$(yammi_nofinal_OBJECTS)" all-am
+#>+ 2
+no-final-install:
+	$(MAKE) yammi_OBJECTS="$(yammi_nofinal_OBJECTS)" install-am
+#>+ 3
+cvs-clean:
+	$(MAKE) -f $(top_srcdir)/admin/Makefile.common cvs-clean
+
+#>+ 3
+kde-rpo-clean:
+	-rm -f *.rpo
+
+#>+ 25
+$(srcdir)/songentryint2.cpp: YammiGuiBase.h WorkDialogBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h 
+$(srcdir)/songentryint.cpp: YammiGuiBase.h WorkDialogBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h 
+$(srcdir)/foldergroups.cpp: YammiGuiBase.h WorkDialogBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h 
+$(srcdir)/foldersorted.cpp: YammiGuiBase.h WorkDialogBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h 
+$(srcdir)/songentry.cpp: YammiGuiBase.h WorkDialogBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h 
+$(srcdir)/preferencesdialog.cpp: YammiGuiBase.h WorkDialogBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h 
+$(srcdir)/songinfo.cpp: YammiGuiBase.h WorkDialogBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h 
+$(srcdir)/fuzzsrch.cpp: YammiGuiBase.h WorkDialogBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h 
+$(srcdir)/mydatetime.cpp: YammiGuiBase.h WorkDialogBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h 
+$(srcdir)/yammimodel.cpp: YammiGuiBase.h WorkDialogBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h 
+$(srcdir)/songentrystring.cpp: YammiGuiBase.h WorkDialogBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h 
+$(srcdir)/main.cpp: YammiGuiBase.h WorkDialogBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h 
+$(srcdir)/yammigui.cpp: YammiGuiBase.h WorkDialogBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h 
+$(srcdir)/foldercategories.cpp: YammiGuiBase.h WorkDialogBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h 
+$(srcdir)/mp3_layer.cpp: YammiGuiBase.h WorkDialogBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h 
+$(srcdir)/folder.cpp: YammiGuiBase.h WorkDialogBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h 
+$(srcdir)/prefs.cpp: YammiGuiBase.h WorkDialogBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h 
+$(srcdir)/mylist.cpp: YammiGuiBase.h WorkDialogBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h 
+$(srcdir)/mylistview.cpp: YammiGuiBase.h WorkDialogBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h 
+$(srcdir)/song.cpp: YammiGuiBase.h WorkDialogBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h 
+$(srcdir)/songentrytimestamp.cpp: YammiGuiBase.h WorkDialogBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h 
+$(srcdir)/foldermedia.cpp: YammiGuiBase.h WorkDialogBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h 
+$(srcdir)/mp3tag.cpp: YammiGuiBase.h WorkDialogBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h 
+$(srcdir)/songlistitem.cpp: YammiGuiBase.h WorkDialogBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h 

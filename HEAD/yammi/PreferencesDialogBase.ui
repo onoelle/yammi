@@ -1,0 +1,1474 @@
+<!DOCTYPE UI><UI version="3.0" stdsetdef="1">
+<class>Preferences</class>
+<widget class="QDialog">
+    <property name="name">
+        <cstring>Preferences</cstring>
+    </property>
+    <property name="geometry">
+        <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>571</width>
+            <height>510</height>
+        </rect>
+    </property>
+    <property name="caption">
+        <string>Edit Preferences</string>
+    </property>
+    <widget class="QPushButton">
+        <property name="name">
+            <cstring>ButtonCancel</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>400</x>
+                <y>470</y>
+                <width>102</width>
+                <height>26</height>
+            </rect>
+        </property>
+        <property name="text">
+            <string>Cancel</string>
+        </property>
+        <property name="toolTip" stdset="0">
+            <string>don't make any changes</string>
+        </property>
+    </widget>
+    <widget class="QPushButton">
+        <property name="name">
+            <cstring>ButtonOK</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>110</x>
+                <y>470</y>
+                <width>102</width>
+                <height>26</height>
+            </rect>
+        </property>
+        <property name="text">
+            <string>OK</string>
+        </property>
+        <property name="toolTip" stdset="0">
+            <string>Accept &amp; Save configuration</string>
+        </property>
+    </widget>
+    <widget class="QTabWidget">
+        <property name="name">
+            <cstring>TabWidget2</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>0</x>
+                <y>0</y>
+                <width>576</width>
+                <height>470</height>
+            </rect>
+        </property>
+        <property name="backgroundOrigin">
+            <enum>WidgetOrigin</enum>
+        </property>
+        <property name="tabShape">
+            <enum>Rounded</enum>
+        </property>
+        <property name="margin">
+            <number>0</number>
+        </property>
+        <widget class="QWidget">
+            <property name="name">
+                <cstring>tab</cstring>
+            </property>
+            <attribute name="title">
+                <string>General</string>
+            </attribute>
+            <widget class="QGroupBox">
+                <property name="name">
+                    <cstring>secondSoundDevice</cstring>
+                </property>
+                <property name="geometry">
+                    <rect>
+                        <x>261</x>
+                        <y>330</y>
+                        <width>300</width>
+                        <height>100</height>
+                    </rect>
+                </property>
+                <property name="title">
+                    <string>second sound device (for headphones)</string>
+                </property>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>LabelSecondSoundDevice</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>10</x>
+                            <y>20</y>
+                            <width>130</width>
+                            <height>20</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>device (eg. /dev/dsp1)</string>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>This device is used (with mpg123) to send songs to your headphone.</string>
+                    </property>
+                </widget>
+                <widget class="QLineEdit">
+                    <property name="name">
+                        <cstring>LineEditSecondSoundDevice</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>150</x>
+                            <y>20</y>
+                            <width>140</width>
+                            <height>22</height>
+                        </rect>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>This device is used (with mpg123) to send songs to your headphone.</string>
+                    </property>
+                </widget>
+            </widget>
+            <widget class="QGroupBox">
+                <property name="name">
+                    <cstring>GroupBox2</cstring>
+                </property>
+                <property name="geometry">
+                    <rect>
+                        <x>11</x>
+                        <y>11</y>
+                        <width>550</width>
+                        <height>110</height>
+                    </rect>
+                </property>
+                <property name="title">
+                    <string>Path to files</string>
+                </property>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>LabelScanDir</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>10</x>
+                            <y>20</y>
+                            <width>160</width>
+                            <height>20</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>base directory for scanning</string>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>yammi will search in this directory (and recursive in all subdirectories) for new song files</string>
+                    </property>
+                </widget>
+                <widget class="QPushButton">
+                    <property name="name">
+                        <cstring>ButtonChooseScanDir</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>500</x>
+                            <y>20</y>
+                            <width>40</width>
+                            <height>26</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>...</string>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>choose directory</string>
+                    </property>
+                </widget>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>LabelTrashDir</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>10</x>
+                            <y>50</y>
+                            <width>200</width>
+                            <height>20</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>trash directory for deleted song files</string>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>songs deleted in yammi will be moved to this directory and this directory will be skipped when scanning</string>
+                    </property>
+                </widget>
+                <widget class="QPushButton">
+                    <property name="name">
+                        <cstring>ButtonChooseTrashDir</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>500</x>
+                            <y>50</y>
+                            <width>40</width>
+                            <height>26</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>...</string>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>choose directory</string>
+                    </property>
+                </widget>
+                <widget class="QLineEdit">
+                    <property name="name">
+                        <cstring>LineEditTrashDir</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>220</x>
+                            <y>50</y>
+                            <width>270</width>
+                            <height>22</height>
+                        </rect>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>base directory for all mp3 files managed by yammi</string>
+                    </property>
+                </widget>
+                <widget class="QLineEdit">
+                    <property name="name">
+                        <cstring>LineEditScanDir</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>220</x>
+                            <y>20</y>
+                            <width>270</width>
+                            <height>22</height>
+                        </rect>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>yammi will search in this directory (and recursive in all subdirectories) for new song files</string>
+                    </property>
+                </widget>
+            </widget>
+            <widget class="QGroupBox">
+                <property name="name">
+                    <cstring>ConsistencyMode</cstring>
+                </property>
+                <property name="geometry">
+                    <rect>
+                        <x>11</x>
+                        <y>224</y>
+                        <width>240</width>
+                        <height>74</height>
+                    </rect>
+                </property>
+                <property name="title">
+                    <string>Consistency Mode</string>
+                </property>
+                <grid>
+                    <property name="name">
+                        <cstring>unnamed</cstring>
+                    </property>
+                    <property name="margin">
+                        <number>11</number>
+                    </property>
+                    <property name="spacing">
+                        <number>6</number>
+                    </property>
+                    <widget class="QCheckBox" row="1" column="0">
+                        <property name="name">
+                            <cstring>CheckBoxFilenamesConsistent</cstring>
+                        </property>
+                        <property name="text">
+                            <string>keep filenames consistent</string>
+                        </property>
+                        <property name="toolTip" stdset="0">
+                            <string>Synchronizes the filenames of the mp3 files according to the information in the yammi database. If activated, yammi renames your mp3 files!</string>
+                        </property>
+                    </widget>
+                    <widget class="QCheckBox" row="0" column="0">
+                        <property name="name">
+                            <cstring>CheckBoxTagsConsistent</cstring>
+                        </property>
+                        <property name="text">
+                            <string>keep tags consistent</string>
+                        </property>
+                        <property name="toolTip" stdset="0">
+                            <string>synchronizes the id3-tags of the mp3 files with the yammi database information. If activated, yammi modifies the tags of your mp3 files!</string>
+                        </property>
+                    </widget>
+                </grid>
+            </widget>
+            <widget class="QGroupBox">
+                <property name="name">
+                    <cstring>GroupBoxSearching</cstring>
+                </property>
+                <property name="geometry">
+                    <rect>
+                        <x>261</x>
+                        <y>224</y>
+                        <width>300</width>
+                        <height>80</height>
+                    </rect>
+                </property>
+                <property name="title">
+                    <string>Searching</string>
+                </property>
+                <grid>
+                    <property name="name">
+                        <cstring>unnamed</cstring>
+                    </property>
+                    <property name="margin">
+                        <number>11</number>
+                    </property>
+                    <property name="spacing">
+                        <number>6</number>
+                    </property>
+                    <widget class="QLabel" row="0" column="0">
+                        <property name="name">
+                            <cstring>LabelSearchThreshold</cstring>
+                        </property>
+                        <property name="text">
+                            <string>threshold</string>
+                        </property>
+                        <property name="toolTip" stdset="0">
+                            <string>determines how many hits will be shown when searching. Must be between 0 and 100, reasonable values are around 25.</string>
+                        </property>
+                    </widget>
+                    <widget class="QLineEdit" row="0" column="1">
+                        <property name="name">
+                            <cstring>LineEditSearchThreshold</cstring>
+                        </property>
+                        <property name="toolTip" stdset="0">
+                            <string>determines how many hits will be shown when searching. Must be between 0 and 100, reasonable values are around 25.</string>
+                        </property>
+                    </widget>
+                    <widget class="QLineEdit" row="1" column="1">
+                        <property name="name">
+                            <cstring>LineEditSearchMaximumNoResults</cstring>
+                        </property>
+                        <property name="toolTip" stdset="0">
+                            <string>Limits the maximum number of entries listed when searching. Must be between 0 and 200, reasonable: 100</string>
+                        </property>
+                    </widget>
+                    <widget class="QLabel" row="1" column="0">
+                        <property name="name">
+                            <cstring>LabelSearchMaximumNoResults</cstring>
+                        </property>
+                        <property name="text">
+                            <string>maximum no. results</string>
+                        </property>
+                        <property name="toolTip" stdset="0">
+                            <string>Limits the maximum number of entries listed when searching. Must be between 0 and 200, reasonable: 100</string>
+                        </property>
+                    </widget>
+                </grid>
+            </widget>
+            <widget class="QGroupBox">
+                <property name="name">
+                    <cstring>GroupBox6</cstring>
+                </property>
+                <property name="geometry">
+                    <rect>
+                        <x>10</x>
+                        <y>300</y>
+                        <width>240</width>
+                        <height>130</height>
+                    </rect>
+                </property>
+                <property name="title">
+                    <string>General</string>
+                </property>
+                <widget class="QCheckBox">
+                    <property name="name">
+                        <cstring>CheckBoxLogging</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>10</x>
+                            <y>20</y>
+                            <width>160</width>
+                            <height>20</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>logging of played songs</string>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>logs all played songs with a timestamp to a file</string>
+                    </property>
+                </widget>
+                <widget class="QCheckBox">
+                    <property name="name">
+                        <cstring>CheckBoxChildSafe</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>10</x>
+                            <y>50</y>
+                            <width>150</width>
+                            <height>20</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>child safe mode</string>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>if activated, some potentially dangerous actions are not allowed (eg. deleting a song). To disable this, you need a password...</string>
+                    </property>
+                </widget>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>LabelKeepInXmms</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>10</x>
+                            <y>100</y>
+                            <width>140</width>
+                            <height>20</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>songs in xmms playlist</string>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>the number of songs to keep in Xmms playlist</string>
+                    </property>
+                </widget>
+                <widget class="QLineEdit">
+                    <property name="name">
+                        <cstring>LineEditKeepInXmms</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>160</x>
+                            <y>100</y>
+                            <width>70</width>
+                            <height>22</height>
+                        </rect>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>the number of songs to keep in Xmms playlist</string>
+                    </property>
+                </widget>
+                <widget class="QLineEdit">
+                    <property name="name">
+                        <cstring>LineEditGroupThreshold</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>160</x>
+                            <y>70</y>
+                            <width>70</width>
+                            <height>22</height>
+                        </rect>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>the minimum number for a subfolder to be created (Folder Albums, Artists and Genres)</string>
+                    </property>
+                </widget>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>LabelGroupThreshold</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>12</x>
+                            <y>70</y>
+                            <width>140</width>
+                            <height>20</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>group threshold</string>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>the minimum number for a subfolder to be created (Folder Albums, Artists and Genres)</string>
+                    </property>
+                </widget>
+            </widget>
+            <widget class="QGroupBox">
+                <property name="name">
+                    <cstring>GroupBox3</cstring>
+                </property>
+                <property name="geometry">
+                    <rect>
+                        <x>11</x>
+                        <y>127</y>
+                        <width>550</width>
+                        <height>90</height>
+                    </rect>
+                </property>
+                <property name="title">
+                    <string>Mouse configuration / Default actions for...</string>
+                </property>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>LabelDoubleClickAction</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>10</x>
+                            <y>20</y>
+                            <width>70</width>
+                            <height>20</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>doubleclick</string>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>the action that is performed when double-clicking on a song in the song list</string>
+                    </property>
+                </widget>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>LabelMiddleClickAction</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>10</x>
+                            <y>50</y>
+                            <width>70</width>
+                            <height>20</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>middle click</string>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>the action that is performed when clicking with middle mouse button on a song in the song list</string>
+                    </property>
+                </widget>
+                <widget class="QComboBox">
+                    <property name="name">
+                        <cstring>ComboBoxDoubleClickAction</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>90</x>
+                            <y>20</y>
+                            <width>150</width>
+                            <height>21</height>
+                        </rect>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>the action that is performed when double-clicking on a song in the song list</string>
+                    </property>
+                </widget>
+                <widget class="QComboBox">
+                    <property name="name">
+                        <cstring>ComboBoxMiddleClickAction</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>90</x>
+                            <y>50</y>
+                            <width>150</width>
+                            <height>21</height>
+                        </rect>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>the action that is performed when clicking with middle mouse button on a song in the song list</string>
+                    </property>
+                </widget>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>LabelControlClickAction</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>260</x>
+                            <y>50</y>
+                            <width>110</width>
+                            <height>20</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>CTRL+middle click</string>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>the action that is performed when double-clicking on a song in the song list</string>
+                    </property>
+                </widget>
+                <widget class="QComboBox">
+                    <property name="name">
+                        <cstring>ComboBoxControlClickAction</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>380</x>
+                            <y>50</y>
+                            <width>150</width>
+                            <height>21</height>
+                        </rect>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>the action that is performed when double-clicking on a song in the song list</string>
+                    </property>
+                </widget>
+                <widget class="QComboBox">
+                    <property name="name">
+                        <cstring>ComboBoxShiftClickAction</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>380</x>
+                            <y>20</y>
+                            <width>150</width>
+                            <height>21</height>
+                        </rect>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>the action that is performed when clicking with middle mouse button on a song in the song list</string>
+                    </property>
+                </widget>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>LabelShiftClickAction</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>260</x>
+                            <y>20</y>
+                            <width>110</width>
+                            <height>20</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>SHIFT+middle click</string>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>the action that is performed when clicking with middle mouse button on a song in the song list</string>
+                    </property>
+                </widget>
+            </widget>
+        </widget>
+        <widget class="QWidget">
+            <property name="name">
+                <cstring>tab</cstring>
+            </property>
+            <attribute name="title">
+                <string>Burning folder</string>
+            </attribute>
+            <widget class="QLabel">
+                <property name="name">
+                    <cstring>LabelCriticalSize</cstring>
+                </property>
+                <property name="geometry">
+                    <rect>
+                        <x>20</x>
+                        <y>30</y>
+                        <width>110</width>
+                        <height>20</height>
+                    </rect>
+                </property>
+                <property name="text">
+                    <string>size of media</string>
+                </property>
+                <property name="toolTip" stdset="0">
+                    <string>indicates maximum size in MB for one media (eg. 700 for a CD-R)</string>
+                </property>
+            </widget>
+            <widget class="QLineEdit">
+                <property name="name">
+                    <cstring>LineEditCriticalSize</cstring>
+                </property>
+                <property name="geometry">
+                    <rect>
+                        <x>160</x>
+                        <y>30</y>
+                        <width>110</width>
+                        <height>22</height>
+                    </rect>
+                </property>
+                <property name="toolTip" stdset="0">
+                    <string>indicates maximum size in MB for one media (eg. 700 for a CD-R)</string>
+                </property>
+            </widget>
+            <widget class="QCheckBox">
+                <property name="name">
+                    <cstring>CheckBoxCreateDirectoryStructure</cstring>
+                </property>
+                <property name="enabled">
+                    <bool>false</bool>
+                </property>
+                <property name="geometry">
+                    <rect>
+                        <x>20</x>
+                        <y>70</y>
+                        <width>200</width>
+                        <height>20</height>
+                    </rect>
+                </property>
+                <property name="text">
+                    <string>create directory structure?</string>
+                </property>
+                <property name="toolTip" stdset="0">
+                    <string>(not implemented yet)</string>
+                </property>
+            </widget>
+        </widget>
+        <widget class="QWidget">
+            <property name="name">
+                <cstring>tab</cstring>
+            </property>
+            <attribute name="title">
+                <string>Plugins / External tools</string>
+            </attribute>
+            <widget class="QLabel">
+                <property name="name">
+                    <cstring>LabelGrabAndEncodeCmd</cstring>
+                </property>
+                <property name="geometry">
+                    <rect>
+                        <x>10</x>
+                        <y>10</y>
+                        <width>130</width>
+                        <height>20</height>
+                    </rect>
+                </property>
+                <property name="text">
+                    <string>grab and encode script</string>
+                </property>
+                <property name="toolTip" stdset="0">
+                    <string>a script to grab a track from cd and encode to mp3</string>
+                </property>
+            </widget>
+            <widget class="QLineEdit">
+                <property name="name">
+                    <cstring>LineEditGrabAndEncodeCmd</cstring>
+                </property>
+                <property name="geometry">
+                    <rect>
+                        <x>160</x>
+                        <y>10</y>
+                        <width>130</width>
+                        <height>22</height>
+                    </rect>
+                </property>
+                <property name="toolTip" stdset="0">
+                    <string>a script to grab a track from cd and encode to mp3</string>
+                </property>
+            </widget>
+            <widget class="QLabel">
+                <property name="name">
+                    <cstring>LabelShutdownScript</cstring>
+                </property>
+                <property name="geometry">
+                    <rect>
+                        <x>10</x>
+                        <y>40</y>
+                        <width>130</width>
+                        <height>20</height>
+                    </rect>
+                </property>
+                <property name="text">
+                    <string>shutdown script</string>
+                </property>
+                <property name="toolTip" stdset="0">
+                    <string>a script that is invoked on shutdown(computer) mode (pressing PAUSE two times)</string>
+                </property>
+            </widget>
+            <widget class="QLineEdit">
+                <property name="name">
+                    <cstring>LineEditShutdownScript</cstring>
+                </property>
+                <property name="geometry">
+                    <rect>
+                        <x>160</x>
+                        <y>40</y>
+                        <width>130</width>
+                        <height>22</height>
+                    </rect>
+                </property>
+                <property name="toolTip" stdset="0">
+                    <string>a script that is invoked on shutdown(computer) mode (pressing PAUSE two times)</string>
+                </property>
+            </widget>
+            <widget class="QGroupBox">
+                <property name="name">
+                    <cstring>GroupBox7</cstring>
+                </property>
+                <property name="geometry">
+                    <rect>
+                        <x>10</x>
+                        <y>70</y>
+                        <width>550</width>
+                        <height>160</height>
+                    </rect>
+                </property>
+                <property name="title">
+                    <string>Plugin on songs</string>
+                </property>
+                <widget class="QComboBox">
+                    <property name="name">
+                        <cstring>ComboBoxSongPlugin</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>10</x>
+                            <y>20</y>
+                            <width>190</width>
+                            <height>22</height>
+                        </rect>
+                    </property>
+                </widget>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>LabelPluginSongMenuEntry</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>10</x>
+                            <y>130</y>
+                            <width>70</width>
+                            <height>20</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>menu entry</string>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>the entry to appear in the context menu</string>
+                    </property>
+                </widget>
+                <widget class="QLineEdit">
+                    <property name="name">
+                        <cstring>LineEditPluginSongMenuEntry</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>90</x>
+                            <y>130</y>
+                            <width>90</width>
+                            <height>22</height>
+                        </rect>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>the entry to appear in the context menu</string>
+                    </property>
+                </widget>
+                <widget class="QPushButton">
+                    <property name="name">
+                        <cstring>PushButtonNewSongPlugin</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>10</x>
+                            <y>50</y>
+                            <width>80</width>
+                            <height>24</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>New Entry</string>
+                    </property>
+                </widget>
+                <widget class="QPushButton">
+                    <property name="name">
+                        <cstring>PushButtonDeleteSongPlugin</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>120</x>
+                            <y>50</y>
+                            <width>80</width>
+                            <height>25</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>Delete Entry</string>
+                    </property>
+                </widget>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>TextLabel1</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>10</x>
+                            <y>80</y>
+                            <width>240</width>
+                            <height>50</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>This command can be invoked from the 
+context menu and will be executed once 
+for each song in the selection.</string>
+                    </property>
+                </widget>
+                <widget class="QLineEdit">
+                    <property name="name">
+                        <cstring>LineEditPluginSongCmd</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>320</x>
+                            <y>130</y>
+                            <width>220</width>
+                            <height>22</height>
+                        </rect>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>a script that is invoked for all selected songs</string>
+                    </property>
+                </widget>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>LabelPluginSongCmd</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>220</x>
+                            <y>130</y>
+                            <width>100</width>
+                            <height>20</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>command / script</string>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>a script that is invoked for all selected songs via context menu (%1 will be replaced by song name)</string>
+                    </property>
+                </widget>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>TextLabel2</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>360</x>
+                            <y>10</y>
+                            <width>170</width>
+                            <height>120</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>Replacements for command:
+%f = absolute filename
+%F = filename (without path)
+%p = path (without filename)
+%a = artist, %t = title
+%i = index
+%l = song time</string>
+                    </property>
+                </widget>
+            </widget>
+            <widget class="QGroupBox">
+                <property name="name">
+                    <cstring>GroupBox8</cstring>
+                </property>
+                <property name="geometry">
+                    <rect>
+                        <x>10</x>
+                        <y>241</y>
+                        <width>550</width>
+                        <height>190</height>
+                    </rect>
+                </property>
+                <property name="title">
+                    <string>Plugin on song list</string>
+                </property>
+                <widget class="QLineEdit">
+                    <property name="name">
+                        <cstring>LineEditPluginPlaylistMenuEntry</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>90</x>
+                            <y>160</y>
+                            <width>90</width>
+                            <height>22</height>
+                        </rect>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>the entry to appear in the context menu</string>
+                    </property>
+                </widget>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>LabelPluginSonglistMenuEntry</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>10</x>
+                            <y>160</y>
+                            <width>70</width>
+                            <height>20</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>menu entry</string>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>the entry to appear in the context menu</string>
+                    </property>
+                </widget>
+                <widget class="QComboBox">
+                    <property name="name">
+                        <cstring>ComboBoxPlaylistPlugin</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>10</x>
+                            <y>20</y>
+                            <width>190</width>
+                            <height>22</height>
+                        </rect>
+                    </property>
+                </widget>
+                <widget class="QPushButton">
+                    <property name="name">
+                        <cstring>PushButtonNewPlaylistPlugin</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>10</x>
+                            <y>50</y>
+                            <width>80</width>
+                            <height>25</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>New Entry</string>
+                    </property>
+                </widget>
+                <widget class="QPushButton">
+                    <property name="name">
+                        <cstring>PushButtonDeletePlaylistPlugin</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>120</x>
+                            <y>50</y>
+                            <width>80</width>
+                            <height>25</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>Delete Entry</string>
+                    </property>
+                </widget>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>TextLabel1_2</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>10</x>
+                            <y>90</y>
+                            <width>170</width>
+                            <height>60</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>This command can be invoked
+from the context menu and will
+build a list  of songs and 
+execute the command on it.</string>
+                    </property>
+                </widget>
+                <widget class="QLineEdit">
+                    <property name="name">
+                        <cstring>LineEditPluginPlaylistCmd</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>320</x>
+                            <y>160</y>
+                            <width>220</width>
+                            <height>22</height>
+                        </rect>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>a script that is invoked for a list of songs</string>
+                    </property>
+                </widget>
+                <widget class="QLineEdit">
+                    <property name="name">
+                        <cstring>LineEditPluginPlaylistCustomList</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>320</x>
+                            <y>130</y>
+                            <width>220</width>
+                            <height>22</height>
+                        </rect>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>a script that is invoked for a list of songs</string>
+                    </property>
+                </widget>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>LabelPluginPlaylistCustomList</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>250</x>
+                            <y>130</y>
+                            <width>60</width>
+                            <height>20</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>custom list</string>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>a script that is invoked for a playlist file generated from all selected songs (%1 will be replaced with the m3u filename)</string>
+                    </property>
+                </widget>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>LabelPluginPlaylistCmd</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>220</x>
+                            <y>160</y>
+                            <width>100</width>
+                            <height>20</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>command / script</string>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>a script that is invoked for a playlist file generated from all selected songs (%1 will be replaced with the m3u filename)</string>
+                    </property>
+                </widget>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>TextLabel3_2</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>387</x>
+                            <y>10</y>
+                            <width>160</width>
+                            <height>110</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>... for custom list:
+%a = artist, %t = title
+%u = album, %b = bitrate
+%i = index in list
+%l = length (mm:ss)
+%n = newline
+%m = media list</string>
+                    </property>
+                </widget>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>TextLabel3</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>214</x>
+                            <y>20</y>
+                            <width>174</width>
+                            <height>80</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>Replacements for command:
+%m = filename of m3u playlist
+%f = list of quoted filenames
+%s = list of "artist - title"
+%l = custom list</string>
+                    </property>
+                </widget>
+            </widget>
+        </widget>
+        <widget class="QWidget">
+            <property name="name">
+                <cstring>tab</cstring>
+            </property>
+            <attribute name="title">
+                <string>Removable Media</string>
+            </attribute>
+            <widget class="QLabel">
+                <property name="name">
+                    <cstring>TextLabel1_3</cstring>
+                </property>
+                <property name="geometry">
+                    <rect>
+                        <x>8</x>
+                        <y>5</y>
+                        <width>550</width>
+                        <height>90</height>
+                    </rect>
+                </property>
+                <property name="frameShape">
+                    <enum>Box</enum>
+                </property>
+                <property name="frameShadow">
+                    <enum>Sunken</enum>
+                </property>
+                <property name="lineWidth">
+                    <number>1</number>
+                </property>
+                <property name="margin">
+                    <number>0</number>
+                </property>
+                <property name="midLineWidth">
+                    <number>0</number>
+                </property>
+                <property name="text">
+                    <string>These settings configure the "Jukebox" capabilities of Yammi, that is loading songs that are 
+not available on the harddisk from removable media.
+
+While running, Yammi will always show a list of needed media for the actual playlist, 
+and songs can be loaded from those media into a swap directory.</string>
+                </property>
+            </widget>
+            <widget class="QGroupBox">
+                <property name="name">
+                    <cstring>GroupBox17</cstring>
+                </property>
+                <property name="geometry">
+                    <rect>
+                        <x>10</x>
+                        <y>130</y>
+                        <width>550</width>
+                        <height>190</height>
+                    </rect>
+                </property>
+                <property name="title">
+                    <string>Removable Media Management</string>
+                </property>
+                <widget class="QLineEdit">
+                    <property name="name">
+                        <cstring>LineEditMediaDir</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>222</x>
+                            <y>25</y>
+                            <width>270</width>
+                            <height>22</height>
+                        </rect>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>directory where removable media will be mounted</string>
+                    </property>
+                </widget>
+                <widget class="QLineEdit">
+                    <property name="name">
+                        <cstring>LineEditSwapDir</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>222</x>
+                            <y>65</y>
+                            <width>270</width>
+                            <height>22</height>
+                        </rect>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>directory where songs from removable media will be swapped</string>
+                    </property>
+                </widget>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>LabelMediaDir</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>12</x>
+                            <y>25</y>
+                            <width>200</width>
+                            <height>20</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>media directory (mount point)</string>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>directory where removable media will be mounted</string>
+                    </property>
+                </widget>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>LabelSwapDir</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>12</x>
+                            <y>65</y>
+                            <width>200</width>
+                            <height>20</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>swap directory</string>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>directory where songs from removable media will be swapped</string>
+                    </property>
+                </widget>
+                <widget class="QPushButton">
+                    <property name="name">
+                        <cstring>ButtonChooseMediaDir</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>500</x>
+                            <y>25</y>
+                            <width>40</width>
+                            <height>26</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>...</string>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>choose directory</string>
+                    </property>
+                </widget>
+                <widget class="QPushButton">
+                    <property name="name">
+                        <cstring>ButtonChooseSwapDir</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>500</x>
+                            <y>65</y>
+                            <width>40</width>
+                            <height>26</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>...</string>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>choose directory</string>
+                    </property>
+                </widget>
+                <widget class="QLineEdit">
+                    <property name="name">
+                        <cstring>LineEditSwapSize</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>222</x>
+                            <y>105</y>
+                            <width>70</width>
+                            <height>22</height>
+                        </rect>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>when the swapped songs use more than this value, the least recently used (LRU) are deleted</string>
+                    </property>
+                </widget>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>LabelSwapSize</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>12</x>
+                            <y>105</y>
+                            <width>200</width>
+                            <height>20</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>maximum swap size (MB)</string>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>when the swapped songs use more than this value, the least recently used (LRU) are deleted</string>
+                    </property>
+                </widget>
+                <widget class="QCheckBox">
+                    <property name="name">
+                        <cstring>CheckBoxMountMediaDir</cstring>
+                    </property>
+                    <property name="enabled">
+                        <bool>true</bool>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>10</x>
+                            <y>150</y>
+                            <width>290</width>
+                            <height>20</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>mount and umount the media directory</string>
+                    </property>
+                    <property name="checked">
+                        <bool>false</bool>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>try to mount and umount the swap directory before and after loading songs from removable media</string>
+                    </property>
+                </widget>
+            </widget>
+        </widget>
+    </widget>
+</widget>
+<connections>
+    <connection>
+        <sender>ButtonCancel</sender>
+        <signal>clicked()</signal>
+        <receiver>Preferences</receiver>
+        <slot>reject()</slot>
+    </connection>
+</connections>
+<tabstops>
+    <tabstop>LineEditScanDir</tabstop>
+    <tabstop>ButtonChooseScanDir</tabstop>
+    <tabstop>LineEditTrashDir</tabstop>
+    <tabstop>ButtonChooseTrashDir</tabstop>
+    <tabstop>ComboBoxDoubleClickAction</tabstop>
+    <tabstop>ComboBoxMiddleClickAction</tabstop>
+    <tabstop>CheckBoxTagsConsistent</tabstop>
+    <tabstop>CheckBoxFilenamesConsistent</tabstop>
+    <tabstop>LineEditSearchThreshold</tabstop>
+    <tabstop>LineEditSearchMaximumNoResults</tabstop>
+    <tabstop>CheckBoxLogging</tabstop>
+    <tabstop>CheckBoxChildSafe</tabstop>
+    <tabstop>LineEditGroupThreshold</tabstop>
+    <tabstop>LineEditKeepInXmms</tabstop>
+    <tabstop>LineEditSecondSoundDevice</tabstop>
+    <tabstop>ButtonOK</tabstop>
+    <tabstop>ButtonCancel</tabstop>
+    <tabstop>CheckBoxCreateDirectoryStructure</tabstop>
+    <tabstop>LineEditCriticalSize</tabstop>
+    <tabstop>LineEditGrabAndEncodeCmd</tabstop>
+    <tabstop>LineEditShutdownScript</tabstop>
+    <tabstop>ComboBoxSongPlugin</tabstop>
+    <tabstop>PushButtonNewSongPlugin</tabstop>
+    <tabstop>PushButtonDeleteSongPlugin</tabstop>
+    <tabstop>LineEditPluginSongMenuEntry</tabstop>
+    <tabstop>LineEditPluginSongCmd</tabstop>
+    <tabstop>ComboBoxPlaylistPlugin</tabstop>
+    <tabstop>PushButtonNewPlaylistPlugin</tabstop>
+    <tabstop>PushButtonDeletePlaylistPlugin</tabstop>
+    <tabstop>LineEditPluginPlaylistMenuEntry</tabstop>
+    <tabstop>LineEditPluginPlaylistCustomList</tabstop>
+    <tabstop>LineEditPluginPlaylistCmd</tabstop>
+    <tabstop>LineEditMediaDir</tabstop>
+    <tabstop>ButtonChooseMediaDir</tabstop>
+    <tabstop>LineEditSwapDir</tabstop>
+    <tabstop>ButtonChooseSwapDir</tabstop>
+    <tabstop>LineEditSwapSize</tabstop>
+    <tabstop>CheckBoxMountMediaDir</tabstop>
+    <tabstop>TabWidget2</tabstop>
+</tabstops>
+<layoutdefaults spacing="6" margin="11"/>
+</UI>
