@@ -15,6 +15,7 @@
  *                                                                         *
  ***************************************************************************/
 
+// test by oli
 #include "folder.h"
 
 // constructs a top-level folder
