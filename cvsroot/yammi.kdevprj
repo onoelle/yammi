@@ -1,3 +1,9 @@
+[AUTHORS]
+dist=true
+install=false
+install_location=
+type=DATA
+
 [CHANGELOG]
 dist=true
 install=false
@@ -7,7 +13,7 @@ type=DATA
 [Config for BinMakefileAm]
 addcxxflags=
 bin_program=yammi
-cxxflags=\s-O3 -g1 -Wall
+cxxflags=\s-O3 -Wall
 ldadd=-lxmms $(LIB_QT)
 ldflags=
 
@@ -24,9 +30,9 @@ modifyMakefiles=true
 project_name=Yammi
 project_type=normal_qt2
 sgml_file=/home/oliver/work/programming/yammi/yammi/docs/en/index.sgml
-short_info=front-end for xmms,mp3 management,fuzzy search
+short_info=Yet Another Music Manager,- serves as a front-end for xmms,- manages your mp3 collection,- convenient fuzzy search,- categorization of songs,- history of played songs,- basic support for grabbing\\, encoding and burning mp3s,- playlist management
 sub_dir=yammi/
-version=0.3
+version=0.3.1
 version_control=CVS
 workspace=1
 
@@ -37,7 +43,7 @@ kpp_icon=0
 kpp_license=5
 kpp_summary=Yammi - Yet Another Music Manager
 kpp_url=yammi.sourceforge.net
-kpp_version=0.2
+kpp_version=0.3.1
 
 [LFV Groups]
 Headers=*.h,*.hh,*.hxx,*.hpp,*.H
@@ -48,7 +54,7 @@ User Interface=*.kdevdlg,*.ui,*.rc
 groups=Headers,Sources,User Interface,Translations,Others
 
 [Makefile.am]
-files=yammi.kdevprj,yammi.spec,grabAndEncode,README,TODO,CHANGELOG
+files=yammi.kdevprj,yammi.spec,grabAndEncode,README,TODO,CHANGELOG,AUTHORS
 sub_dirs=yammi
 type=normal
 
@@ -66,9 +72,9 @@ type=DATA
 
 [grabAndEncode]
 dist=true
-install=false
-install_location=
-type=DATA
+install=true
+install_location=/usr/local/bin/grabAndEncode
+type=SCRIPT
 
 [yammi.kdevprj]
 dist=true
@@ -90,7 +96,7 @@ type=SOURCE
 
 [yammi/Makefile.am]
 files=yammi/main.cpp,yammi/lo32-app-yammi.png,yammi/lo16-app-yammi.png,yammi/filenew.xpm,yammi/filesave.xpm,yammi/fileopen.xpm,yammi/clearPlaylist.xpm,yammi/DeleteDialog.ui,yammi/folder.cpp,yammi/folder.h,yammi/foldercategories.cpp,yammi/foldercategories.h,yammi/foldergroups.cpp,yammi/foldergroups.h,yammi/foldermedia.cpp,yammi/foldermedia.h,yammi/fuzzsrch.cpp,yammi/fuzzsrch.h,yammi/in.xpm,yammi/mp3_layer.cpp,yammi/mp3_layer.h,yammi/mp3tag.cpp,yammi/mp3tag.h,yammi/mydatetime.cpp,yammi/mydatetime.h,yammi/mylist.cpp,yammi/mylist.h,yammi/notin.xpm,yammi/pause.xpm,yammi/PreferencesDialogBase.ui,yammi/prefs.cpp,yammi/prefs.h,yammi/skipbackward.xpm,yammi/skipforward.xpm,yammi/song.cpp,yammi/song.h,yammi/songinfo.cpp,yammi/songinfo.h,yammi/SongInfoDialog.ui,yammi/songlistitem.cpp,yammi/songlistitem.h,yammi/yammigui.cpp,yammi/yammigui.h,yammi/yammimodel.cpp,yammi/yammimodel.h,yammi/preferencesdialog.cpp,yammi/preferencesdialog.h,yammi/defaultMiddleClick.xpm,yammi/defaultDoubleClick.xpm,yammi/mylistview.cpp,yammi/mylistview.h,yammi/YammiGuiBase.ui,yammi/enqueue.xpm,yammi/enqueueasnext.xpm,yammi/playnow.xpm,yammi/dequeueSong.xpm,yammi/prelisten.xpm,yammi/songinfo.xpm,yammi/stopPrelisten.xpm,yammi/songentry.cpp,yammi/songentry.h,yammi/songentrytimestamp.cpp,yammi/songentrytimestamp.h,yammi/songentryint.cpp,yammi/songentryint.h,yammi/songentrystring.cpp,yammi/songentrystring.h
-sub_dirs=
+sub_dirs=docs
 type=prog_main
 
 [yammi/PreferencesDialogBase.ui]
@@ -136,12 +142,19 @@ install_location=
 type=DATA
 
 [yammi/docs/Makefile.am]
-sub_dirs=
+sub_dirs=en
 type=normal
 
 [yammi/docs/en/Makefile.am]
+files=yammi/docs/en/index.sgml
 sub_dirs=
 type=normal
+
+[yammi/docs/en/index.sgml]
+dist=true
+install=false
+install_location=
+type=DATA
 
 [yammi/enqueue.xpm]
 dist=true

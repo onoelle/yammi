@@ -1090,30 +1090,7 @@ void YammiGui::forSelection(action act)
 		if(dir.right(1)=="/")						// strip trailing slash
 			dir=dir.left(dir.length()-1);
 	}
-		
-	// 2. dequeue + putback
-	/*
-  int pos=xmms_remote_get_playlist_pos(0);
-  int length=xmms_remote_get_playlist_length(0);
-	// remove all enqueued songs, but remember file names
-	int toRemember=length-pos-1;
-	QArray<gchar*> rem(toRemember);
-	bool putBack=false;
-	if(act==EnqueueAsNext || act==PlayNow) {
-		// enqueue as next song
-		// (we need to delete all following and reinsert them after inserting desired song)
-		// (xmmsctrl does not provide any commands for a more convenient method)
-		for(int i=0; i<toRemember; i++) {
-			putBack=true;
-			rem[i]=new gchar[200];
-			strcpy(rem[i], xmms_remote_get_playlist_file(0, pos+1));
-		    xmms_remote_playlist_delete(0, pos+1);
-	  }
-	  if(act==EnqueueAsNext)
-	  	act=Enqueue;
-	}
-	*/
-	
+			
 	// 3. determine delete mode
 	bool deleteEntry=false;
 	bool deleteFile=false;

@@ -3,7 +3,7 @@
 # the error to ian geiser <geiseri@msoe.edu>
 Summary:   Yammi - Yet Another Music Manager
 Name:      yammi
-Version:   0.1
+Version:   0.3
 Release:   %%release%%
 Copyright: GPL
 Vendor:    Oliver Nölle <oli.noelle@web.de>
@@ -11,7 +11,7 @@ Url:       yammi.sourceforge.net
 Icon:     yammi.xpm
 Packager:  Oliver Nölle <oli.noelle@web.de>
 Group:     sound
-Source:    yammi-0.1.tar.gz
+Source:    yammi-0.3.1.tar.gz
 BuildRoot: %%buildroot%%
 
 %description

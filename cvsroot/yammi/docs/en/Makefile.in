@@ -1,4 +1,4 @@
-# KDE tags expanded automatically by am_edit - $Revision: 1.2 $ 
+# KDE tags expanded automatically by am_edit - $Revision: 1.4 $ 
 # Makefile.in generated automatically by automake 1.4 from Makefile.am
 
 # Copyright (C) 1994, 1995-8, 1999 Free Software Foundation, Inc.
@@ -12,8 +12,6 @@
 # PARTICULAR PURPOSE.
 
 ####### kdevelop will overwrite this part!!! (begin)##########
-
-####### kdevelop will overwrite this part!!! (end)############
 
 
 SHELL = @SHELL@
@@ -213,6 +211,8 @@ qt_includes = @qt_includes@
 qt_libraries = @qt_libraries@
 x_includes = @x_includes@
 x_libraries = @x_libraries@
+
+EXTRA_DIST = index.sgml 
 mkinstalldirs = $(SHELL) $(top_srcdir)/admin/mkinstalldirs
 CONFIG_HEADER = ../../../config.h
 CONFIG_CLEAN_FILES = 
@@ -221,7 +221,7 @@ DIST_COMMON =  Makefile.am Makefile.in
 
 #>- DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
 #>+ 4
-KDE_DIST=index-2.html index-1.html index.sgml index-5.html index.html index-4.html index-3.html 
+KDE_DIST=index-2.html index-1.html index-5.html index.html index-4.html index-3.html 
 
 DISTFILES= $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST) $(KDE_DIST)
 
@@ -329,6 +329,8 @@ all-redirect all-am all installdirs mostlyclean-generic \
 distclean-generic clean-generic maintainer-clean-generic clean \
 mostlyclean distclean maintainer-clean
 
+
+####### kdevelop will overwrite this part!!! (end)############
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

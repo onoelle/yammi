@@ -34,7 +34,6 @@ MyListView::~MyListView()
 void MyListView::simulateMouseMove()
 {
 	// we simulate a mouse movement to keep list scrolling if we are above or below it
-	cout << "simulate event\n";
 	QMouseEvent e(QEvent::MouseMove, dragPoint, 0, 0);
 	contentsMouseMoveEvent(&e);
 }

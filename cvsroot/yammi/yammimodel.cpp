@@ -172,6 +172,7 @@ bool YammiModel::startFirstTime()
  	}
  	d.cd(".yammi");
  	cout << " ..done\n";
+	config.yammiBaseDir=d.absPath();
  	cout << "creating subdirectory categories to store your categories...";
  	if ( !d.mkdir( "categories" ) ) {
  		cout << "\nERROR: Could not create directory categories...";
