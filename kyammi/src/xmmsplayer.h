@@ -29,46 +29,47 @@
  */
 
 
-class XmmsPlayer : public MediaPlayer
-{
-  Q_OBJECT
-
-public: 
-	XmmsPlayer(int session, YammiModel* model);
-	~XmmsPlayer();
-
-  QString getName() {return "xmms";}
-
-protected:
-  bool          ensurePlayerIsRunning();
-  int           session;      // xmms session id
-  int           timeLeft;
-	bool			    xmmsShuffleWasActivated;
-	bool			    xmmsRepeatWasActivated;
-	void			    myWait(int msecs);
+class XmmsPlayer : public MediaPlayer {
+    Q_OBJECT
 
 public:
-  // overriden methods
-  void          clearPlaylist();
+    XmmsPlayer(int session, YammiModel* model);
+    ~XmmsPlayer();
+
+    QString getName() {
+        return "xmms";
+    }
+
+protected:
+    bool          ensurePlayerIsRunning();
+    int           session;      // xmms session id
+    int           timeLeft;
+    bool			    xmmsShuffleWasActivated;
+    bool			    xmmsRepeatWasActivated;
+    void			    myWait(int msecs);
+
+public:
+    // overriden methods
+    void          clearPlaylist();
 public slots:
-  void check();
-  PlayerStatus getStatus();
-  bool play();
-  bool pause();
-  bool stop();
-  bool playPause();
-  bool skipForward(bool withoutCrossfading);
-  bool skipBackward(bool withoutCrossfading);
-  void syncYammi2Player();
-  bool jumpTo(int value);
-  QString getCurrentFile();
-  int getCurrentTime();
-  int getTotalTime();
-  void quit();
+    void check();
+    PlayerStatus getStatus();
+    bool play();
+    bool pause();
+    bool stop();
+    bool playPause();
+    bool skipForward(bool withoutCrossfading);
+    bool skipBackward(bool withoutCrossfading);
+    void syncYammi2Player();
+    bool jumpTo(int value);
+    QString getCurrentFile();
+    int getCurrentTime();
+    int getTotalTime();
+    void quit();
 
 signals:
-  void playlistChanged();
-  void statusChanged();  
+    void playlistChanged();
+    void statusChanged();
 };
 
 

@@ -25,6 +25,7 @@
 #define YAMMIGSTPLAYER_H
 
 #include "mediaplayer.h"
+#include "options.h"
 
 #ifdef ENABLE_GSTREAMER
 #include <kde/gstplay/play.h>
