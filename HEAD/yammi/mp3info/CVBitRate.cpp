@@ -1,4 +1,5 @@
 #include "CVBitRate.h"
+#include <string.h>
 
 /* ----------------------------------------------------------
    CFrameHeader class is used to retrieve a VBR's Header

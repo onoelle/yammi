@@ -49,7 +49,7 @@ void FolderGroups::update(MyList* allSongs, int sortBy)
 		if(sortBy==MyList::ByAlbum)
 			next=s->album;
 		if(sortBy==MyList::ByGenre)
-			next=QString("%1").arg(s->genreNr);
+			next=CMP3Info::getGenre(s->genreNr);
 		
     if(gYammiGui->getModel()->config.lazyGrouping) {
       // lazy grouping is not guaranteed to work, as the sorting might be different
@@ -65,7 +65,8 @@ void FolderGroups::update(MyList* allSongs, int sortBy)
 
 		if(same) {
 		  count++;
-		} else {
+		}
+    else {
 			if(count>=gYammiGui->getModel()->config.groupThreshold) {
 	   		// go back to first song of that artist/album/genre
 	   		groupCount++;
@@ -106,7 +107,7 @@ void FolderGroups::update(MyList* allSongs, int sortBy)
 			if(sortBy==MyList::ByAlbum)
 				last=s->album;
 			if(sortBy==MyList::ByGenre)
-				last=QString("%1").arg(s->genreNr);
+				last=CMP3Info::getGenre(s->genreNr);
 			if(last=="")
 				last="xxxyyy";
 			count=1;

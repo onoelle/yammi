@@ -1,4 +1,5 @@
 #include "CFrameHeader.h"
+#include <string.h>
 
 /* ----------------------------------------------------------
    CFrameHeader class is used to retrieve a MP3's FrameHeader
@@ -36,6 +37,7 @@ void CFrameHeader::loadHeader(char c[4]) {
     // 11000000       =                         11000000
     //                +_________________________________
     //                  00000011000011000011000011000000
+
 
 
     bithdr = (unsigned long)(

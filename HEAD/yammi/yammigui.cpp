@@ -79,8 +79,9 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
 	cout << "starting Yammi, version " << model->config.yammiVersion << "\n";
 
 #ifdef XMMS_SUPPORT
+  cout << "media player: XMMS\n";
   player = new XmmsPlayer(0, model);         // use xmms as media player (session 0)
-#endif
+#endif XMMS_SUPPORT
   
 	model->readPreferences();						// read preferences
 	model->readSongDatabase();					// read song database
@@ -114,7 +115,7 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
   // database menu
   QPopupMenu* databaseMenu = new QPopupMenu;
   databaseMenu->insertItem( "Save Database...",  model, SLOT(save()));
-	databaseMenu->insertItem( "Update Database...",  this, SLOT(updateSongDatabaseHarddisk()));
+	databaseMenu->insertItem( "Scan Harddisk...",  this, SLOT(updateSongDatabaseHarddisk()));
 	databaseMenu->insertItem( "Scan Removable Media...",  this, SLOT(updateSongDatabaseMedia()));
 	databaseMenu->insertItem( "Check Consistency...",  this, SLOT(forAllCheckConsistency()));
 	databaseMenu->insertItem( "Grab and encode CD-Track...",  this, SLOT(grabAndEncode()));
@@ -364,14 +365,16 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
 	currentSong=0;
 	
 
-	// check whether player is playing, if not: start playing!
-  if(player->getStatus()!=PLAYING) {
-  	cout << "media player is not playing, starting it...\n";
-		player->play();
-	}
-  
 	player->syncPlayer2Yammi(folderActual);
 	checkPlaylistAvailability();
+  if(folderActual->songList->count()>0) {
+    // check whether player is playing, if not: start playing!
+    if(player->getStatus()!=PLAYING) {
+      cout << "media player is not playing, starting it...\n";
+      player->play();
+    }
+  }
+
 
 	// connect all timers
   connect( &regularTimer, SIGNAL(timeout()), SLOT(onTimer()) );
@@ -500,6 +503,7 @@ void YammiGui::updateView()
 		s->classified=false;	
 	folderArtists->update(&(model->allSongs), MyList::ByArtist);
 	folderAlbums->update(&(model->allSongs), MyList::ByAlbum);
+	folderGenres->update(&(model->allSongs), MyList::ByGenre);
 	folderMedia->update(&(model->allSongs));
 	
 	model->unclassifiedSongs.clear();
@@ -1778,11 +1782,22 @@ void YammiGui::openHelp()
 /// display about dialog
 void YammiGui::aboutDialog()
 {
-	QMessageBox::information( this, "Yammi",	QString("Yammi - Yet Another Music Manager I...\n\n\n")+
-																					"Version "+model->config.yammiVersion+", 12-2001 - 9-2002 by Oliver Nölle\n\n"+
-																					"Project home page: yammi.sourceforge.net\n\n\n"+
-																					"Contact: oli.noelle@web.de\n\n"+
-																					"have fun...\n");
+  QString msg=QString("Yammi - Yet Another Music Manager I...\n\n\n");
+  msg+="Version "+model->config.yammiVersion+", 12-2001 - 11-2002 by Oliver Nölle\n";
+  #ifdef ENABLE_OGGLIBS
+  msg+="- ogglibs support: yes\n";
+  #else
+  msg+="- ogglibs support: no\n";
+  #endif
+  #ifdef ENABLE_ID3LIB
+  msg+="- id3lib support: yes\n";
+  #else
+  msg+="- id3lib support: no\n";
+  #endif
+  msg+="\nProject home page: yammi.sourceforge.net\n\n\n";
+  msg+="Contact: oli.noelle@web.de\n\n";
+  msg+="have fun...\n";
+  QMessageBox::information( this, "Yammi",msg);
 }
 
 

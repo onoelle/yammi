@@ -12,7 +12,7 @@ AC_CONFIG_AUX_DIR(admin)
 AC_CANONICAL_SYSTEM 
 
 dnl Automake doc recommends to do this only here. (Janos)
-AM_INIT_AUTOMAKE(yammi,0.7beta)
+AM_INIT_AUTOMAKE(yammi,0.7)
 
 dnl KDE_SET_PREFIX
 
@@ -31,6 +31,59 @@ AC_CHECK_COMPILERS
 dnl CXXFLAGS="$NOOPT_CXXFLAGS" dnl __kdevelop[noopt]__
 dnl CFLAGS="$NOOPT_CFLAGS" dnl __kdevelop[noopt]__
 dnl CXXFLAGS="$CXXFLAGS $USE_EXCEPTIONS" dnl __kdevelop[exc]__
+
+
+dnl -------------------------------
+dnl Configure switches.
+dnl -------------------------------
+AC_ARG_ENABLE(ogglibs,
+[  --disable-ogglibs           disable support of ogg libs for reading ogg tags], enable_ogglibs=no, enable_ogglibs=yes)
+AC_ARG_ENABLE(id3lib,
+[  --disable-id3lib           disable support of id3lib for reading id3 tags], enable_id3lib=no, enable_id3lib=yes)
+
+
+dnl -------------------------------
+dnl Checks for libraries.
+dnl -------------------------------
+
+dnl OGG vorbis libraries
+if test "x$enable_ogglibs" = xyes; then
+    dnl Librairies required for reading ogg tags, if not found 'enable_ogglibs' is disabled
+    AC_CHECK_LIB(ogg, ogg_sync_init, , enable_ogglibs=no)
+    AC_CHECK_LIB(vorbis, vorbis_comment_init, , enable_ogglibs=no)
+    AC_CHECK_LIB(vorbisfile, ov_open, , enable_ogglibs=no)
+fi
+
+AC_MSG_CHECKING(for ogg libs for reading ogg tags)
+if test "x$enable_ogglibs" = xyes; then
+    AC_MSG_RESULT(yes)
+    AC_DEFINE(ENABLE_OGGLIBS)
+else
+    AC_MSG_RESULT(no)
+    echo "***"
+    echo "*** Warning: ogg libs support disabled => no reading/writing of tags in ogg files! ***"
+    echo "***"
+fi
+
+
+dnl Id3lib libraries
+AC_MSG_CHECKING(for id3lib support)
+if test "x$enable_id3lib" = xyes; then
+  LIBS="-lid3lib " $LIBS
+  AC_MSG_RESULT(yes)
+  AC_DEFINE(ENABLE_ID3LIB)
+else
+  AC_MSG_RESULT(no)
+  echo "***"
+  echo "*** Warning: id3lib support disabled => no reading/writing of tags in mp3 files! ***"
+  echo "***"
+fi
+
+
+dnl ---------------------
+dnl end of library checks
+dnl ---------------------
+
 
 AC_ENABLE_SHARED(yes)
 AC_ENABLE_STATIC(no)
@@ -61,3 +114,21 @@ KDE_CREATE_SUBDIRSLIST
 
 dnl add here all your Makefiles. This are created by configure
 AC_OUTPUT(Makefile yammi/Makefile yammi/docs/Makefile yammi/docs/en/Makefile yammi/icons/Makefile yammi/mp3info/Makefile )
+
+
+echo "
+Configuration for $PACKAGE $VERSION :
+--------------------------------
+
+ Source code location .: $srcdir
+ Host System Type .....: $host
+ Preprocessor .........: $CC $CPPFLAGS
+ Compiler .............: $CC $CFLAGS $LIBFLAC_CFLAGS
+ Linker ...............: $CC $LDFLAGS $LIBS $LIBFLAC_LIBS
+ ogg libs support .....: $enable_ogglibs
+ id3lib support .......: $enable_id3lib
+ Install path .........: $prefix
+
+ Now type 'make' to build $PACKAGE $VERSION,
+ and then 'make install' for installation.
+"

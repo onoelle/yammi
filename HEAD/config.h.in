@@ -1,4 +1,18 @@
 /* config.h.in.  Generated automatically from configure.in by autoheader.  */
+#undef PACKAGE
+#undef VERSION
+#undef HAVE_LIBSM
+#undef HAVE_CATGETS
+#undef HAVE_GETTEXT
+#undef HAVE_LC_MESSAGES
+#undef HAVE_STPCPY
+#undef ENABLE_NLS
+
+#undef ENABLE_OGGLIBS
+#undef ENABLE_ID3LIB
+
+#undef HAVE_ICONV_OPEN
+#undef HAVE_LANGINFO_CODESET
 
 /* Defines if your system has the crypt function */
 #undef HAVE_CRYPT
@@ -12,11 +26,20 @@
 /* Define if you have libjpeg */
 #undef HAVE_LIBJPEG
 
+/* Define if you have the `ogg' library (-logg). */
+#undef HAVE_LIBOGG
+
 /* Define if you have libpng */
 #undef HAVE_LIBPNG
 
 /* Define if you have a working libpthread (will enable threaded code) */
 #undef HAVE_LIBPTHREAD
+
+/* Define if you have the `vorbis' library (-lvorbis). */
+#undef HAVE_LIBVORBIS
+
+/* Define if you have the `vorbisfile' library (-lvorbisfile). */
+#undef HAVE_LIBVORBISFILE
 
 /* Define if you have libz */
 #undef HAVE_LIBZ

@@ -16,13 +16,13 @@ bin_program=yammi
 cflags=
 cppflags=
 cxxflags=\s-O3 -Wall
-ldadd=-lxmms -lid3 -lvorbis -lvorbisfile $(LIB_QT)
-ldflags=\s                 \s
+ldadd=-lxmms $(LIB_QT)
+ldflags=\s                     \s
 
 [General]
 AMChanged=false
 author=Oliver Nölle
-configure_args=\s--build=i386-linux --host=i386-linux --target=i386-linux\s
+configure_args=\s--build=i386-linux --host=i386-linux --target=i386-linux --disable-ogglibs --disable-id3lib
 email=oli.noelle@web.de
 kdevprj_version=1.3
 lfv_open_groups=User Interface
@@ -34,7 +34,7 @@ project_type=normal_qt2
 sgml_file=/home/oliver/work/programming/yammi/yammi/docs/en/index.sgml
 short_info=Yet Another Music Manager I...,- serves as a front-end for xmms,- manages your mp3 collection,- convenient fuzzy search,- categorization of songs,- history of played songs,- basic support for grabbing and encoding songs,- support for external plugins such as mp3burn or cdlabelgen,- playlist management,- jukebox functions
 sub_dir=yammi/
-version=0.7beta
+version=0.7
 version_control=CVS
 workspace=1
 
@@ -103,7 +103,7 @@ install_location=
 type=SOURCE
 
 [yammi/Makefile.am]
-files=yammi/lo32-app-yammi.png,yammi/lo16-app-yammi.png,yammi/DeleteDialog.ui,yammi/folder.cpp,yammi/folder.h,yammi/foldercategories.cpp,yammi/foldercategories.h,yammi/foldergroups.cpp,yammi/foldergroups.h,yammi/foldermedia.cpp,yammi/foldermedia.h,yammi/foldersorted.cpp,yammi/foldersorted.h,yammi/fuzzsrch.cpp,yammi/fuzzsrch.h,yammi/main.cpp,yammi/mydatetime.cpp,yammi/mydatetime.h,yammi/mylist.cpp,yammi/mylist.h,yammi/mylistview.cpp,yammi/mylistview.h,yammi/preferencesdialog.cpp,yammi/preferencesdialog.h,yammi/PreferencesDialogBase.ui,yammi/prefs.cpp,yammi/prefs.h,yammi/song.cpp,yammi/song.h,yammi/songentry.cpp,yammi/songentry.h,yammi/songentryint.cpp,yammi/songentryint.h,yammi/songentryint2.cpp,yammi/songentryint2.h,yammi/songentrystring.cpp,yammi/songentrystring.h,yammi/songentrytimestamp.cpp,yammi/songentrytimestamp.h,yammi/songinfo.cpp,yammi/songinfo.h,yammi/SongInfoDialog.ui,yammi/songlistitem.cpp,yammi/songlistitem.h,yammi/WorkDialogBase.ui,yammi/yammigui.cpp,yammi/yammigui.h,yammi/YammiGuiBase.ui,yammi/yammimodel.cpp,yammi/yammimodel.h,yammi/glib.h,yammi/glibconfig.h,yammi/xmmsctrl.h,yammi/updatedatabasedialog.cpp,yammi/updatedatabasedialog.h,yammi/UpdateDatabaseDialogBase.ui,yammi/options.h,yammi/updatedatabasemediadialog.cpp,yammi/updatedatabasemediadialog.h,yammi/UpdateDatabaseMediaDialogBase.ui,yammi/lineeditshift.cpp,yammi/lineeditshift.h,yammi/mediaplayer.cpp,yammi/mediaplayer.h,yammi/xmmsplayer.cpp,yammi/xmmsplayer.h,yammi/yammiapplication.cpp,yammi/yammiapplication.h
+files=yammi/lo32-app-yammi.png,yammi/lo16-app-yammi.png,yammi/DeleteDialog.ui,yammi/folder.cpp,yammi/folder.h,yammi/foldercategories.cpp,yammi/foldercategories.h,yammi/foldergroups.cpp,yammi/foldergroups.h,yammi/foldermedia.cpp,yammi/foldermedia.h,yammi/foldersorted.cpp,yammi/foldersorted.h,yammi/fuzzsrch.cpp,yammi/fuzzsrch.h,yammi/main.cpp,yammi/mydatetime.cpp,yammi/mydatetime.h,yammi/mylist.cpp,yammi/mylist.h,yammi/mylistview.cpp,yammi/mylistview.h,yammi/preferencesdialog.cpp,yammi/preferencesdialog.h,yammi/PreferencesDialogBase.ui,yammi/prefs.cpp,yammi/prefs.h,yammi/song.cpp,yammi/song.h,yammi/songentry.cpp,yammi/songentry.h,yammi/songentryint.cpp,yammi/songentryint.h,yammi/songentryint2.cpp,yammi/songentryint2.h,yammi/songentrystring.cpp,yammi/songentrystring.h,yammi/songentrytimestamp.cpp,yammi/songentrytimestamp.h,yammi/songinfo.cpp,yammi/songinfo.h,yammi/SongInfoDialog.ui,yammi/songlistitem.cpp,yammi/songlistitem.h,yammi/WorkDialogBase.ui,yammi/yammigui.cpp,yammi/yammigui.h,yammi/YammiGuiBase.ui,yammi/yammimodel.cpp,yammi/yammimodel.h,yammi/glib.h,yammi/glibconfig.h,yammi/xmmsctrl.h,yammi/updatedatabasedialog.cpp,yammi/updatedatabasedialog.h,yammi/UpdateDatabaseDialogBase.ui,yammi/options.h,yammi/updatedatabasemediadialog.cpp,yammi/updatedatabasemediadialog.h,yammi/UpdateDatabaseMediaDialogBase.ui,yammi/lineeditshift.cpp,yammi/lineeditshift.h,yammi/mediaplayer.cpp,yammi/mediaplayer.h,yammi/xmmsplayer.cpp,yammi/xmmsplayer.h,yammi/yammiapplication.cpp,yammi/yammiapplication.h,yammi/vcedit.c,yammi/vcedit.h,yammi/acconfig.h
 sub_dirs=docs,icons,mp3info
 type=prog_main
 
@@ -142,6 +142,12 @@ dist=true
 install=false
 install_location=
 type=SOURCE
+
+[yammi/acconfig.h]
+dist=true
+install=false
+install_location=
+type=HEADER
 
 [yammi/docs/Makefile.am]
 sub_dirs=en
@@ -693,6 +699,18 @@ install_location=
 type=SOURCE
 
 [yammi/updatedatabasemediadialog.h]
+dist=true
+install=false
+install_location=
+type=HEADER
+
+[yammi/vcedit.c]
+dist=true
+install=false
+install_location=
+type=SOURCE
+
+[yammi/vcedit.h]
 dist=true
 install=false
 install_location=

@@ -1,4 +1,4 @@
-# KDE tags expanded automatically by am_edit - $Revision: 1.20 $ 
+# KDE tags expanded automatically by am_edit - $Revision: 1.22 $ 
 # Makefile.in generated automatically by automake 1.5 from Makefile.am.
 
 # Copyright 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001
@@ -250,11 +250,11 @@ RECURSIVE_TARGETS = info-recursive dvi-recursive install-info-recursive \
 	install-exec-recursive installdirs-recursive install-recursive \
 	uninstall-recursive check-recursive installcheck-recursive
 DIST_COMMON = README ./stamp-h.in AUTHORS INSTALL Makefile.am \
-	Makefile.in TODO acinclude.m4 aclocal.m4 admin/ChangeLog \
-	admin/config.guess admin/config.sub admin/depcomp \
-	admin/install-sh admin/ltconfig admin/ltmain.sh admin/missing \
-	admin/mkinstalldirs admin/ylwrap config.h.in configure \
-	configure.in
+	Makefile.in TODO acconfig.h acinclude.m4 aclocal.m4 \
+	admin/ChangeLog admin/config.guess admin/config.sub \
+	admin/depcomp admin/install-sh admin/ltconfig admin/ltmain.sh \
+	admin/missing admin/mkinstalldirs admin/ylwrap config.h.in \
+	configure configure.in
 DIST_SUBDIRS = $(SUBDIRS)
 #>- all: config.h
 #>+ 1
@@ -307,7 +307,7 @@ $(srcdir)/config.h.in:  $(srcdir)/./stamp-h.in
 	rm -f $(srcdir)/./stamp-h.in; \
 	$(MAKE) $(srcdir)/./stamp-h.in; \
 	else :; fi
-$(srcdir)/./stamp-h.in: $(top_srcdir)/configure.in $(ACLOCAL_M4) 
+$(srcdir)/./stamp-h.in: $(top_srcdir)/configure.in $(ACLOCAL_M4) $(top_srcdir)/acconfig.h
 	@rm -f $(srcdir)/./stamp-h.in $(srcdir)/./stamp-h.inT
 	@echo timestamp > $(srcdir)/./stamp-h.inT 2> /dev/null
 	cd $(top_srcdir) && $(AUTOHEADER)
@@ -620,7 +620,6 @@ dist-hook:
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:
-
 
 #>+ 2
 docs-am:

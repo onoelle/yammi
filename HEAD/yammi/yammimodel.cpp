@@ -781,7 +781,7 @@ void YammiModel::updateSongDatabase(bool checkExistence, QString scanDir, QStrin
 		if(config.mountMediaDir) {
 			// linux specific
 			QString cmd;
-			cmd=QString("mount %1").arg(config.mediaDir);
+			cmd=QString("mount %1").arg(scanDir);
 			system(cmd);
 		}
 
@@ -794,14 +794,14 @@ void YammiModel::updateSongDatabase(bool checkExistence, QString scanDir, QStrin
       QMessageBox::information( gYammiGui, "Yammi", msg, "Good idea!" );
 		}
 		else {
-			traverse(config.mediaDir, filePattern, progress, mediaName);
+			traverse(scanDir, filePattern, progress, mediaName);
  			cout << "..finished scanning!\n";
 	 	}
 		// umount media dir
 		if(config.mountMediaDir) {
 			// linux specific
 			QString cmd;
-			cmd=QString("umount %1").arg(config.mediaDir);
+			cmd=QString("umount %1").arg(scanDir);
 			system(cmd);
 		}
 	}

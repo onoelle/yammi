@@ -1,6 +1,24 @@
 TODO
 ----
-last update 28.9.2002
+last update 3.11.2002
+
+(new)
+-----
+- media player: don't start playing if playlist empty
+- compile with gcc 3.2
+- sorting in genre columns (tom roth, 22.10.)
+- incorrect track numbers if track number not present (same)
+- scanning media, not the path given in dialog used (same) FIXED?
+- assembly of burning to media: take existing files on a media into account (same)
+- delete a song: also delete in playlist (same)
+- xmms lock file? (same)
+- failing to load a media (same)
+- dequeue not working??? (same)
+- menu entry for inserting a song into a new category (same)
+
+
+
+
 
 KNOWN BUGS
 ----------

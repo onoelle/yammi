@@ -31,13 +31,14 @@
 #include "mydatetime.h"
 #include "options.h"
 
-#ifdef MP3_SUPPORT
+
+#ifdef ENABLE_ID3LIB
 #include <id3/tag.h>                // used to read id3 tags
 #endif
 
-#ifdef OGG_SUPPORT
+#ifdef ENABLE_OGGLIBS
 #include <vorbis/vorbisfile.h>      // for reading ogg infos
-//#include <string>                   // needed by ogg functions
+#include <string>                   // needed by ogg functions?
 #endif
 
 // all possible actions for a single or a selection of songs
@@ -94,45 +95,44 @@ public:
 
   /// default constructor, just assigns default values
   Song();
-  
+
   /// constructs a song object from the given parameters
 	Song(QString artist, QString title, QString album, QString filename, QString path, int length, int bitrate, MyDateTime addedTo, int year, QString comment, int trackNr, int genreNr);
-	
+
 	/// constructs a song object from a given file
 	int create(const QString filename, const QString mediaName = 0);
-	
+
 	/// check consistency
 	QString checkConsistency(bool requireConsistentTags, bool requireConsistentFilename);
-	
+
 
   // specific to mp3 objects
   //************************
 
-#ifdef MP3_SUPPORT
-  // id3 tag reading / guessing
+#ifdef ENABLE_ID3LIB
+  // id3 tag reading
   bool getMp3Tags(QString filename);
   bool setMp3Tags(QString filename);
   bool getId3Tag(ID3_Tag* tag, ID3_FrameID frame, ID3_FieldID field, QString* content);
   bool setId3Tag(ID3_Tag* tag, ID3_FrameID frame, ID3_FieldID field, QString content, ID3_Frame* newFrame);
 
-  // mp3 layer info
-  bool getMp3LayerInfo(QString filename);
 #endif
+  // mp3 layer info (does not need id3lib)
+  bool getMp3LayerInfo(QString filename);
 
 
   // specific to ogg objects
   //************************
-#ifdef OGG_SUPPORT
+#ifdef ENABLE_OGGLIBS
   bool getOggInfo(QString filename);
   QString getOggComment(OggVorbis_File* oggfile, QString name);
+  bool setOggTags(QString filename);  
 #endif
 
 
   // specific to wav objects
   //************************
-#ifdef WAV_SUPPORT
   bool getWavInfo(QString filename);
-#endif
 
 
   // general info (not specific to file format)

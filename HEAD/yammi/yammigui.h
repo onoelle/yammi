@@ -20,6 +20,8 @@
 
 #define MAX_COLUMN_NO 15
 
+#include "options.h"
+
 // general includes
 #include <stdlib.h>
 #include <stdio.h>

@@ -19,8 +19,11 @@
 #include "song.h"
 #include "yammigui.h"
 
-#ifdef MP3_SUPPORT
 #include "mp3info/CMP3Info.h"       // used to retrieve mp3 layer info
+
+#ifdef ENABLE_OGGLIBS
+#include "vcedit.h"
+#include "glib.h"
 #endif
 
 
@@ -87,7 +90,7 @@ int Song::create(const QString location, const QString mediaName)
   // step 1:
   // - check for existence and access
   // - get filename, path and size
-  
+
   QFileInfo* fi=new QFileInfo(location);
 	if(!fi->exists()) {
 		cout << "trying to construct song, but file " << location << " does not exist!\n";
@@ -95,7 +98,7 @@ int Song::create(const QString location, const QString mediaName)
 	}
   if(!fi->isReadable()) {
 		cout << "trying to construct song, but file " << location << " is not accessible!\n";
-		return 1;    
+		return 1;
   }
 	if(mediaName==0) {			// song is on harddisk
 		this->filename=fi->fileName();
@@ -116,19 +119,17 @@ int Song::create(const QString location, const QString mediaName)
 	QString saveFilename(fi->fileName());
 	delete fi;
 
-  
+
 
 
   // step 2:
   // get info about song object (bitrate, length, tags, ...)
-  
+
   // guess artist/title from filename (in case no tags can be read)
 	QString ffArtist, ffTitle;
   guessTagsFromFilename(saveFilename, &ffArtist, &ffTitle);
   bool treated=false;
 
-
-#ifdef MP3_SUPPORT
 
   // mp3 object
   if(location.right(4).upper()==".MP3") {
@@ -137,6 +138,7 @@ int Song::create(const QString location, const QString mediaName)
       cout << "could not read layer information from mp3 file \"" << location << "\"\n";
     }
 
+#ifdef ENABLE_ID3LIB
     // get id3 tags
     if(!getMp3Tags(location)) {
       cout << "could not read tag information from mp3 file \"" << location << "\"\n";
@@ -169,14 +171,19 @@ int Song::create(const QString location, const QString mediaName)
     if(title.right(4).upper()==".MP3")
       title=title.left(title.length()-4);
 
+#else
+    // we have no id3lib support => we have to get info from filename
+    title=ffTitle;
+		artist=ffArtist;
+#endif ENABLE_ID3LIB
+
     treated=true;
   }
 
-#endif MP3_SUPPORT
 
 
 
-#ifdef OGG_SUPPORT
+#ifdef ENABLE_OGGLIBS
 
   // ogg object
   if(location.right(4).upper()==".OGG") {
@@ -184,7 +191,7 @@ int Song::create(const QString location, const QString mediaName)
     if(!getOggInfo(location)) {
       cout << "could not read tag information from ogg file \"" << location << "\"\n";
     }
-    
+
 		// in case the ogg tags are empty => better trust filename info
 		if(title=="" && artist=="") {
       cout << "ogg tags empty, taking guessed info from filename...\n";
@@ -199,10 +206,9 @@ int Song::create(const QString location, const QString mediaName)
     treated=true;
   }
 
-#endif OGG_SUPPORT
+#endif ENABLE_OGGLIBS
 
 
-#ifdef WAV_SUPPORT
   // wav object
 
   if(location.right(4).upper()==".WAV") {
@@ -215,9 +221,6 @@ int Song::create(const QString location, const QString mediaName)
     title=ffTitle;
     treated=true;
   }
-  
-#endif WAV_SUPPORT
-  
 
 
   if(!treated) {
@@ -230,22 +233,22 @@ int Song::create(const QString location, const QString mediaName)
     title=ffTitle;
   }
 
-	
+
 	// simplify whitespaces
 	artist=artist.simplifyWhiteSpace();
 	title=title.simplifyWhiteSpace();
-	
+
 	// capitalize after spaces (any exceptions?)
 	album=capitalize(album);
 	artist=capitalize(artist);
 	title=capitalize(title);
-	
+
 	corrupted=false;
   // TODO: maybe perform this check only if not scanning song from media?
   checkConsistency(gYammiGui->getModel()->config.tagsConsistent, gYammiGui->getModel()->config.filenamesConsistent);
   return 0;
 }
-	
+
 // check filename (if given)
 bool Song::checkFilename()
 {
@@ -291,7 +294,7 @@ void Song::guessTagsFromFilename(QString filename, QString* artist, QString* tit
 ////////////////////////////////////
 // special handling of mp3 files
 
-#ifdef MP3_SUPPORT
+#ifdef ENABLE_ID3LIB
 
 /** get id3 tags from the specified mp3 file (using id3lib)
  */
@@ -453,49 +456,49 @@ bool Song::setMp3Tags(QString filename)
     if(!setId3Tag(&tag, ID3FID_TITLE, ID3FN_TEXT, this->title, &titleFrame))
       cout << "could not set tag (title)\n";
   }
-  
+
   // artist
   if(artist!="") {
     ID3_Frame artistFrame;
     if(!setId3Tag(&tag, ID3FID_LEADARTIST, ID3FN_TEXT, this->artist, &artistFrame))
       cout << "could not set tag (title)\n";
   }
-  
+
   // album
   if(album!="") {
     ID3_Frame albumFrame;
     if(!setId3Tag(&tag, ID3FID_ALBUM, ID3FN_TEXT, this->album, &albumFrame))
       cout << "could not set tag (title)\n";
   }
-  
+
   // comment
   if(comment!="") {
     ID3_Frame commentFrame;
     if(!setId3Tag(&tag, ID3FID_COMMENT, ID3FN_TEXT, this->comment, &commentFrame))
       cout << "could not set tag (title)\n";
   }
-  
+
   // year
   if(year!=0) {
     ID3_Frame yearFrame;
     if(!setId3Tag(&tag, ID3FID_YEAR, ID3FN_TEXT, QString("%1").arg(this->year), &yearFrame))
       cout << "could not set tag (year)\n";
   }
-  
+
   // trackNr
   if(trackNr!=0) {
     ID3_Frame trackNrFrame;
     if(!setId3Tag(&tag, ID3FID_TRACKNUM, ID3FN_TEXT, QString("%1").arg(this->trackNr), &trackNrFrame))
       cout << "could not set tag (year)\n";
   }
-  
+
   // genreNr
   if(genreNr!=-1) {
     ID3_Frame genreNrFrame;
     if(!setId3Tag(&tag, ID3FID_CONTENTTYPE, ID3FN_TEXT, QString("%1").arg(this->genreNr), &genreNrFrame))
       cout << "could not set tag (year)\n";
   }
-  
+
   tag.Update();
   return true;
 }
@@ -535,6 +538,7 @@ bool Song::setId3Tag(ID3_Tag* tag, ID3_FrameID frame, ID3_FieldID field, QString
 }
 
 
+#endif ENABLE_ID3LIB
 
 /** Gets the mp3 layer info (ie. for our purpose: bitrate and length) from the file.
  * For VBR songs: retrieves the average bitrate.
@@ -557,7 +561,6 @@ bool Song::getMp3LayerInfo(QString filename)
 }
 
 
-#endif MP3_SUPPORT
 
 // end of special handling of mp3 files
 ///////////////////////////////////////
@@ -568,12 +571,33 @@ bool Song::getMp3LayerInfo(QString filename)
 ////////////////////////////////
 // special handling of ogg files
 
-#ifdef OGG_SUPPORT
+#ifdef ENABLE_OGGLIBS
 
 
 
 /** Gets bitrate, length and tags from an ogg file (using libvorbis)
  * Thanks to Philip Scott! <scotty@philipscott.freeserve.co.uk>
+ *
+ * The following list is copied from the easytag project (http://easytag.sourceforge.net)
+ *
+ * OGG fields names :
+ *  - TITLE        : Track name
+ *  - VERSION      : The version field may be used to differentiate multiple version of the same track title in a single collection. (e.g. remix info)
+ *  - ALBUM        : The collection name to which this track belongs
+ *  - TRACKNUMBER  : The track number of this piece if part of a specific larger collection or album
+ *  - ARTIST       : Track performer
+ *  - ORGANIZATION : Name of the organization producing the track (i.e. the 'record label')
+ *  - DESCRIPTION  : A short text description of the contents
+ *  - GENRE        : A short text indication of music genre
+ *  - DATE         : Date the track was recorded
+ *  - LOCATION     : Location where track was recorded
+ *  - COPYRIGHT    : Copyright information
+ *  - ISRC         : ISRC number for the track; see the ISRC intro page for more information on ISRC numbers.
+ *
+ * Field names should not be 'internationalized'; this is a concession to simplicity
+ * not an attempt to exclude the majority of the world that doesn't speak English.
+ * Field *contents*, however, are represented in UTF-8 to allow easy representation
+ * of any language.
  */
 bool Song::getOggInfo(QString filename)
 {
@@ -584,20 +608,31 @@ bool Song::getOggInfo(QString filename)
   if(ourfile==0)
     return false;
 	int succ=ov_open(ourfile, &oggfile, NULL, 0);
-  //TODO:
-//  cout << "return value of ov_open: " << succ << "\n";
-  
+  if(succ!=0) {
+    cout << "error in opening ogg file (" << filename << "), return value of ov_open: " << succ << "\n";
+    fclose(ourfile);
+  }
+
   this->title   = getOggComment(&oggfile, "title");
   this->artist  = getOggComment(&oggfile, "artist");
 	this->album   = getOggComment(&oggfile, "album");
 	this->comment = getOggComment(&oggfile, "comment");
   QString trackNrStr=getOggComment(&oggfile, "tracknumber");
   this->trackNr = atoi(trackNrStr);
-  QString yearStr=getOggComment(&oggfile, "year");
+  QString yearStr=getOggComment(&oggfile, "date");
   this->year    = atoi(yearStr);
+  QString genreStr=getOggComment(&oggfile, "genre");
+  if(genreStr!="") {
+    cout << "genre found: " << genreStr << "\n";
+    // convert to id3 genre number?
+  }
 
   this->length  = (int)ov_time_total(&oggfile, -1);
 	this->bitrate = ov_bitrate(&oggfile, -1)/1000;
+
+  succ=ov_clear(&oggfile);
+  if(succ!=0)
+    cout << "error when closing ogg file?\n";
   return true;
 }
 
@@ -608,7 +643,7 @@ QString Song::getOggComment(OggVorbis_File* oggfile, QString commentName)
 {
 	vorbis_comment* ourComment = ov_comment(oggfile, -1);
 //  cout << "looking for: " << commentName << "\n";
-  
+
 	for(int i=0; i < (*ourComment).comments; i++)	{
     cout << "i: " << i << "\n";
 		QString curstr((*ourComment).user_comments[i]);
@@ -622,7 +657,139 @@ QString Song::getOggComment(OggVorbis_File* oggfile, QString commentName)
 }
 
 
-#endif OGG_SUPPORT
+bool Song::setOggTags(QString filename)
+{
+  vcedit_state* state;
+  state = vcedit_new_state();    // Allocate memory for 'state'
+
+  // Test to know if we can write into the file
+  FILE* file_in;
+  if( (file_in=fopen(filename,"rb"))==NULL ) {
+    cout << "ERROR (saving ogg tags) while opening file: " << filename << "\n";
+    return false;
+  }
+
+  if( vcedit_open(state, file_in) < 0 ) {
+    cout << "ERROR (saving ogg tags), failed to open file: " << filename << vcedit_error(state) << "\n";
+    fclose(file_in);
+    return false;
+  }
+
+  vorbis_comment* vc;
+  // Get data from tag
+  vc = vcedit_comments(state);
+  vorbis_comment_clear(vc);
+  vorbis_comment_init(vc);
+
+  gchar *string; //, *string1;
+
+  // Title
+  if( true ) {
+    string  = g_strconcat("title=", "success", NULL);
+//    convert_to_utf8(string);
+     vorbis_comment_add(vc, string);
+     g_free(string);
+//     g_free(string1);
+  }
+
+  // open temp file for writing to
+  FILE* file_out;
+  if ( (file_out=fopen(filename+".new","w"))==NULL ) {
+    cout << "ERROR (saving ogg tags) while opening file " << filename << "\n";
+    return false;
+  }
+  int succ=vcedit_write(state, file_out);
+
+  // delete original file...
+	QString cmd=QString("rm %1").arg(filename);
+	system(cmd);      // linux-specific...
+  // ...and rename temp file to original filename
+	QDir dir;
+	dir.rename(filename+".new", filename);
+
+  cout << "succ (vcedit_write): " << succ << "\n";
+  return true;
+}
+
+/*
+
+
+  OggVorbis_File oggfile;
+	FILE* ourfile;
+
+	ourfile=fopen(filename, "w");
+  if(ourfile==0)
+    return false;
+	int succ=ov_open(ourfile, &oggfile, NULL, 0);
+	vorbis_comment* ourComment = ov_comment(oggfile, -1);
+
+
+
+    File_Tag *FileTag;
+    gchar *filename_in;
+    FILE *file_in;
+    vcedit_state *state;
+    vorbis_comment *vc;
+    gchar *string, *string1;
+
+
+    if (!ETFile || !ETFile->FileTag)
+        return FALSE;
+
+    FileTag     = (File_Tag *)ETFile->FileTag->data;
+    filename_in = ((File_Name *)ETFile->FileNameCur->data)->value;
+    ogg_error_msg = NULL;
+
+    // Test to know if we can write into the file
+    if ( (file_in=fopen(filename_in,"rb"))==NULL )
+    {
+        g_print(_("ERROR while opening file: '%s' (%s).\n\a"),filename_in,g_strerror(errno));
+        return FALSE;
+    }
+
+    state = vcedit_new_state();    // Allocate memory for 'state'
+    if ( vcedit_open(state,file_in) < 0 )
+    {
+        g_print(_("ERROR: Failed to open file: '%s' as vorbis (%s).\n"),filename_in,vcedit_error(state));
+        ogg_error_msg = vcedit_error(state);
+        fclose(file_in);
+        return FALSE;
+    }
+
+    // Get data from tag
+    vc = vcedit_comments(state);
+    vorbis_comment_clear(vc);
+    vorbis_comment_init(vc);
+
+
+    if ( FileTag->title )
+    {
+        string  = g_strconcat("title=",FileTag->title,NULL);
+        string1 = convert_to_utf8(string);
+        vorbis_comment_add(vc,string1);
+        g_free(string);
+        g_free(string1);
+    }
+
+
+    // Write tag
+    if ( Ogg_Tag_Write_File(file_in,filename_in,state) == FALSE )
+    {
+        g_print(_("ERROR: Failed to write comments to file '%s' (%s).\n"),filename_in,vcedit_error(state));
+        ogg_error_msg = vcedit_error(state);
+        return FALSE;
+    }else
+    {
+        g_print(_("Written tag of '%s'\n"),g_basename(filename_in));
+    }
+
+    vcedit_clear(state);
+
+    return TRUE;
+}
+*/
+
+#endif ENABLE_OGGLIBS
 
 // end of special handling of ogg files
 //////////////////////////////////
@@ -632,8 +799,6 @@ QString Song::getOggComment(OggVorbis_File* oggfile, QString commentName)
 
 ////////////////////////////////
 // special handling of wav files
-
-#ifdef WAV_SUPPORT
 
 
 bool Song::getWavInfo(const char *filename)
@@ -657,8 +822,6 @@ bool Song::getWavInfo(const char *filename)
     return false;
   }
 }
-
-#endif WAV_SUPPORT
 
 // end of special handling of wav files
 //////////////////////////////////
@@ -686,7 +849,7 @@ bool Song::checkTags()
 
   bool treated=false;
 
-#ifdef MP3_SUPPORT  
+#ifdef ENABLE_ID3LIB
   if(filename.right(4).upper()==".MP3") {
     if(!this->getMp3Tags(location()))
       return false;
@@ -694,7 +857,7 @@ bool Song::checkTags()
   }
 #endif
 
-#ifdef OGG_SUPPORT
+#ifdef ENABLE_OGGLIBS
   if(filename.right(4).upper()==".OGG") {
     if(!this->getOggInfo(location()))
       return false;
@@ -746,19 +909,20 @@ bool Song::saveTags()
 	}
 
   bool treated=false;
-  
-#ifdef MP3_SUPPORT
+
+#ifdef ENABLE_ID3LIB
   if(filename.right(4).upper()==".MP3") {
     setMp3Tags(location());
     treated=true;
   }
 #endif
 
-#ifdef OGG_SUPPORT
+#ifdef ENABLE_OGGLIBS
   if(filename.right(4).upper()==".OGG") {
-    cout << "saving ogg tags not supported yet\n";
+//    cout << "saving ogg tags not supported yet\n";
+    setOggTags(location());    
     treated=true;
-    return true;
+//    return true;
   }
 #endif
 

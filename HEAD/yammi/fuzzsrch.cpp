@@ -10,7 +10,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/timeb.h>
+//#include <sys/timeb.h>
 #include <math.h>
 
 #include "fuzzsrch.h"
