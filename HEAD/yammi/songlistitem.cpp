@@ -92,8 +92,10 @@ void SongListItem::paintCell( QPainter *p, const QColorGroup &cg,
 			_cg.setColor( QColorGroup::Text, Qt::lightGray );
 	  else if (path=="never" )					// never available in yellow
 			_cg.setColor( QColorGroup::Text, Qt::yellow );
-		else															// swapped in dark grey
-			_cg.setColor( QColorGroup::Text, Qt::darkGray );
+		else
+      if(song()->filename=="")															// swapped in dark grey
+        _cg.setColor( QColorGroup::Text, Qt::darkGray );
+      
 	}
  	else {	
 	 	if (song()->filename=="") {

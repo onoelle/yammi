@@ -131,12 +131,14 @@ int Song::create(const QString location, const QString mediaName)
 #ifdef MP3_SUPPORT
 
   // mp3 object
-  if(filename.right(4).upper()==".MP3") {
+  if(location.right(4).upper()==".MP3") {
     // get mp3 layer info
-    getMp3LayerInfo(location);
+    if(!getMp3LayerInfo(location))
+      cout << "could not read layer information from mp3 file \"" << location << "\"\n";
 
     // get id3 tags
-    getMp3Tags(location);
+    if(!getMp3Tags(location))
+      cout << "could not read tag information from mp3 file \"" << location << "\"\n";
 
     // now perform some consistency checks on the read tags...
 
@@ -175,9 +177,10 @@ int Song::create(const QString location, const QString mediaName)
 #ifdef OGG_SUPPORT
 
   // ogg object
-  if(filename.right(4).upper()==".OGG") {
+  if(location.right(4).upper()==".OGG") {
     // get ogg info
-    getOggInfo(location);
+    if(!getOggInfo(location))
+      cout << "could not read tag information from ogg file \"" << location << "\"\n";
 
 		// in case the ogg tags are empty => better trust filename info
 		if(title=="" && artist=="") {
@@ -198,10 +201,11 @@ int Song::create(const QString location, const QString mediaName)
 #ifdef WAV_SUPPORT
   // wav object
 
-  if(filename.right(4).upper()==".WAV") {
+  if(location.right(4).upper()==".WAV") {
     char loc[200];
     strcpy(loc, location);
-    getWavInfo(loc);
+    if(!getWavInfo(loc))
+      cout << "could not read wav header information from wav file \"" << location << "\"\n";
     artist=ffArtist;
     title=ffTitle;
     treated=true;
@@ -212,7 +216,7 @@ int Song::create(const QString location, const QString mediaName)
 
 
   if(!treated) {
-    cout << filename << "no special handling (such as for mp3 or ogg files) available (or disabled)...\n";
+    cout << location << ": no special handling (such as for mp3 or ogg files) available (or disabled)...\n";
     cout << "  => cannot read information such as bitrate, length and tags\n";
     cout << "  => Yammi tries to guess artist and title from filename (using the \"artist - title\" pattern\n";
     bitrate=0;
@@ -232,7 +236,8 @@ int Song::create(const QString location, const QString mediaName)
 	title=capitalize(title);
 	
 	corrupted=false;
-	checkConsistency(gYammiGui->getModel()->config.tagsConsistent, gYammiGui->getModel()->config.filenamesConsistent);
+  // TODO: maybe perform this check only if not scanning song from media?
+  checkConsistency(gYammiGui->getModel()->config.tagsConsistent, gYammiGui->getModel()->config.filenamesConsistent);
   return 0;
 }
 	
@@ -543,6 +548,7 @@ bool Song::getMp3LayerInfo(QString filename)
   this->length=mp3Info->getLengthInSeconds();
 //  cout << "frequency: " << mp3Info->getFrequency() << " Hz\n";
   delete mp3Info;
+  return true;
 }
 
 

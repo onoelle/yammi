@@ -14,8 +14,11 @@ KNOWN BUGS
 
 for release 0.7beta
 -------------------
+- finish: dialog+options for updating database: scanning media
+- forbid empty media name on scanning
+- test jukebox functionality
+
 - key events (shift/control/ skip im)
-- dialog+options for updating database: scanning media
 - on deleting a song: delete in all lists (history, categories, ...)
 - update database: more information+statistics at the end
 - support for prelistening to wav?

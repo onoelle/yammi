@@ -54,6 +54,7 @@
 #include "DeleteDialog.h"
 #include "WorkDialogBase.h"
 #include "updatedatabasedialog.h"
+#include "updatedatabasemediadialog.h"
 
 #include "mp3info/CMP3Info.h"
 
@@ -147,7 +148,6 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
 	songSlider->setTickmarks(QSlider::Below);
 	songSlider->setFixedWidth(180);
   songSlider->setPaletteBackgroundColor(QColor(179, 218, 226));
-  songSlider->
 	isSongSliderGrabbed=false;
 	connect( songSlider, SIGNAL(sliderReleased()), SLOT(songSliderMoved()) );
 	connect( songSlider, SIGNAL(sliderPressed()), SLOT(songSliderGrabbed()) );
@@ -2692,10 +2692,10 @@ void YammiGui::preListen(Song* s, int skipTo)
 
 void YammiGui::updateSongDatabaseHarddisk()
 {
-	UpdateDatabaseDialog d(this, "Update Database Dialog");
+	UpdateDatabaseDialog d(this, "Update Database (harddisk) Dialog");
 
   d.LineEditScanDir->setText(model->config.scanDir);
-  d.LineEditFilePattern->setText("*.mp3");
+  d.LineEditFilePattern->setText("*.mp3 *.ogg *.wav");
 	// show dialog
 	int result=d.exec();
 	if(result!=QDialog::Accepted)
@@ -2703,18 +2703,28 @@ void YammiGui::updateSongDatabaseHarddisk()
 
   QString scanDir=d.LineEditScanDir->text();
   QString filePattern=d.LineEditFilePattern->text();
-  bool checkExistence=d.CheckBoxExistenceCheck->isChecked();    
+  bool checkExistence=d.CheckBoxExistenceCheck->isChecked();
   updateSongDatabase(checkExistence, scanDir, filePattern, 0);
 }
 
 
 void YammiGui::updateSongDatabaseMedia()
 {
-	bool ok;
-	QString mediaName(QInputDialog::getText( "caption", "enter name of media", QLineEdit::Normal, QString(""), &ok, this ));
-	if(!ok)
-		return;
-	updateSongDatabase(false, model->config.scanDir, "*.mp3", mediaName);
+	UpdateDatabaseMediaDialog d(this, "Update Database (media) Dialog");
+
+  d.LineEditMediaDir->setText(model->config.mediaDir);
+  d.LineEditFilePattern->setText("*.mp3 *.ogg *.wav");
+  d.CheckBoxMountMediaDir->setChecked(model->config.mountMediaDir);
+	// show dialog
+	int result=d.exec();
+	if(result!=QDialog::Accepted)
+    return;
+
+  model->config.mountMediaDir=d.CheckBoxMountMediaDir->isChecked();
+  QString mediaName=d.LineEditMediaName->text();
+  QString mediaDir=d.LineEditMediaDir->text();
+  QString filePattern=d.LineEditFilePattern->text();
+  updateSongDatabase(false, mediaDir, filePattern, mediaName);
 }
 
 
