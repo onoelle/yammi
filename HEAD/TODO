@@ -14,10 +14,11 @@ KNOWN BUGS
 
 for noatun support
 ------------------
-on stop: update play/pause icon
-
 swap management: in song: method getFilename() vs. getRealFilename() (fast)???
 
+email to noatun:
+- no access to any other but first song
+- addFile(foo, false): no access any more to programmatically start playing!
 
 for release 0.7.1
 -----------------

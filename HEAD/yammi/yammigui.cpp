@@ -54,8 +54,6 @@ using namespace std;
 // dialog includes
 #include "preferencesdialog.h"
 #include "DeleteDialog.h"
-// TODO: delete?
-//#include "WorkDialogBase.h"
 #include "updatedatabasedialog.h"
 #include "updatedatabasemediadialog.h"
 #include "ConsistencyCheckDialog.h"
@@ -86,7 +84,7 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
   // set up media player
   //********************
   player=0;
-#ifdef XMMS_SUPPORT
+#ifdef ENABLE_XMMS
   if(model->config.player==0) {
     cout << "media player: XMMS\n";
     cout << "     (if nothing happens after this line, you probably have to remove the xmms lock file (/tmp/xmms_<user>.0) and try again.\n";
@@ -94,14 +92,15 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
   }
 #endif
 
-#ifdef NOATUN_SUPPORT
+#ifdef ENABLE_NOATUN
   if(model->config.player==1) {
     cout << "media player: Noatun\n";
     player = new NoatunPlayer(model);         // use noatun as media player    
   }
 #endif
   if(player==0) {
-    cout << "ERROR: no media player configured, shutting down...\n";
+    // TODO: remove deadlock
+    cout << "ERROR: no valid media player configured, shutting down...\n";
     exit(2);
   }
   // connect player and yammi via signals
@@ -1829,7 +1828,6 @@ void YammiGui::forSong(Song* s, action act, QString dir)
 
     if(player->getStatus()==STOPPED) {
       // case 1: player stopped (this is a bit dirty...)
-// TODO: ?      xmms_remote_set_playlist_pos(0, 0);
       player->play();
     }
     else if(player->getStatus()==PAUSED) {
@@ -2247,6 +2245,7 @@ void YammiGui::onTimer()
  * lastSong is 0 if not in database or no last song
  * newFile is empty if no new song (=player stopped)
  */
+/*
 void YammiGui::songChange(Song* lastSong, QString newFile)
 {
   if(songListView->dragging)
@@ -2316,7 +2315,7 @@ void YammiGui::songChange(Song* lastSong, QString newFile)
 	else
 		songListView->triggerUpdate();
 }
-
+*/
 
 /**
  * Called on a playlist change initiated by player (last song finished).

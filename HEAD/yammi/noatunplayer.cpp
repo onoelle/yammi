@@ -15,6 +15,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "options.h"
+
 #include "noatunplayer.h"
 #include <iostream>
 using namespace std;
@@ -28,11 +30,13 @@ NoatunPlayer::NoatunPlayer(YammiModel* model)
   playlist=&(model->songsToPlay);
   lastStatus=STOPPED;
 
+#ifdef ENABLE_NOATUN
   // register ourselve
   client = new DCOPClient();
   client->attach();
   QCString realAppId = client->registerAs("yammi");
   cout << "dcop registered as: " << realAppId << "\n";
+#endif
 
   int count=0;
   QString replyStr;
@@ -76,7 +80,8 @@ NoatunPlayer::NoatunPlayer(YammiModel* model)
     return;
   }
 
-  // TODO: clear both playlists?
+
+  // TODO: find out whether one of the players is playing and don't change that one...
   cout << "stopping player 1...\n";
   currentPlayer=1;
   clearPlaylist();
@@ -235,9 +240,11 @@ void NoatunPlayer::playlistAdd(QString filename, bool autoStart, int id)
   arg << filename;
   arg << true;
   
+#ifdef ENABLE_NOATUN
   if (!client->send(str.latin1(), "Noatun", "addFile(QString, bool)", data)) {
     cout << "nop\n";
   }
+#endif
   if(!autoStart) {
     pause();
   }
@@ -352,7 +359,9 @@ void NoatunPlayer::syncPlayer2Yammi(MyList* playlist)
     prev=getCurrentFile();
     sendDcopCommand(QString("back()"));
   }
-  // now delete entries as long as currentFile()!=""
+  
+  // now delete all other entries (as long as currentFile()!="")
+  bool first=true;
   for(QString file=getCurrentFile(); file!=""; file=getCurrentFile()) {
     cout << "file found: |" << file << "|, calling removeCurrent()\n";
     Song* toAdd=model->getSongFromFilename(file);
@@ -363,22 +372,27 @@ void NoatunPlayer::syncPlayer2Yammi(MyList* playlist)
     else {
       cout << "song not in database: " << file << "\n";
     }
-    sendDcopCommand(QString("removeCurrent()"));
+    if(!first) {
+      sendDcopCommand(QString("removeCurrent()"));
+    }
+    else {
+      sendDcopCommand(QString("forward()"));
+      first=false;
+    }
   }
+  sendDcopCommand(QString("back()"));
   playlistChanged();
   lastStatus=getStatus();
   statusChanged();
-  syncYammi2Player(false);
+//  syncYammi2Player(false);
 }
 
 
 void NoatunPlayer::syncYammi2Player(bool syncAll)
 {
-  cout << "syncing Yammi2player(0)...\n";
   if(playlist->count()<=0)
     return;
 
-  cout << "syncing Yammi2player(1)...\n";
   // 1. sync current song
   QString noatunCurrent=getCurrentFile();
   // the following is necessary for swapped songs...
@@ -400,6 +414,21 @@ void NoatunPlayer::syncYammi2Player(bool syncAll)
     playlistAdd(location, false);
     sendDcopCommandInt("setVolume(int)", 100);
   }
+
+  // if desired: write complete playlist of Yammi to current noatun instance
+  if(syncAll) {
+    for(unsigned int i=1; i<playlist->count(); i++) {
+      QString location=model->checkAvailability(playlist->at(i)->song());
+      if(location=="" || location=="never") {
+        continue;
+      }
+      // TODO: HERE we would need a passive addFile(foo, false)...
+      playlistAdd(location, false);
+    }
+  }
+  for(unsigned int i=0; i<playlist->count(); i++) {
+    sendDcopCommand(QString("back()"));    
+  }
 }
 
 
@@ -419,9 +448,11 @@ void NoatunPlayer::sendDcopCommandInt(QString command, int param, int id)
   QDataStream arg(data, IO_WriteOnly);
   arg << param;
 
+#ifdef ENABLE_NOATUN
   if (!client->send(str.latin1(), "Noatun", command.latin1(), data)) {
     cout << "some error using DCOP.\n";
   }
+#endif
 }
 
 
@@ -435,12 +466,14 @@ void NoatunPlayer::sendDcopCommand(QString command, int id)
   QByteArray data;
   QDataStream arg(data, IO_WriteOnly);
 
+#ifdef ENABLE_NOATUN
   if (!client->send(str.latin1(), "Noatun", command.latin1(), data)) {
     cout << "xmms-kde: there was some error using DCOP.\n";
   }
   else {
 //    cout << "xmms-kde: success\n";
   }
+#endif
 }
 
 
@@ -453,8 +486,9 @@ int NoatunPlayer::callGetInt(QString command, int id)
   QCString replyType;
   QDataStream arg(data, IO_WriteOnly);
 
-  int result;
+  int result=0;
 
+#ifdef ENABLE_NOATUN
   QString str=QString("noatun-%1").arg(id);
   if (!client->call(str.latin1(), QString("Noatun").latin1(), command.latin1(), data, replyType, replyData))
     cout << "call() failed\n";
@@ -465,6 +499,7 @@ int NoatunPlayer::callGetInt(QString command, int id)
     } else
       cout << "unexpected type of dcop reply (int expected): " << replyType << "\n";
   }
+#endif
   return result;
 }
 
@@ -478,8 +513,9 @@ QString NoatunPlayer::callGetString(QString command, int id)
   QCString replyType;
   QDataStream arg(data, IO_WriteOnly);
 
-  QString result;
+  QString result="";
 
+#ifdef ENABLE_NOATUN
   QString str=QString("noatun-%1").arg(id);
   if (!client->call(str.latin1(), QString("Noatun").latin1(), command.latin1(), data, replyType, replyData))
     cout << "call() failed\n";
@@ -490,5 +526,6 @@ QString NoatunPlayer::callGetString(QString command, int id)
     } else
       cout << "unexpected type of dcop reply (QString expected): " << replyType << "\n";
   }
+#endif
   return result;
 }

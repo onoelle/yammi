@@ -15,6 +15,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "options.h"
 #include "preferencesdialog.h"
 
 #include <qfiledialog.h>
@@ -46,9 +47,20 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, const char *name, bool mod
 	LineEditSearchThreshold->setText(QString("%1").arg(config->searchThreshold));
 	LineEditSearchMaximumNoResults->setText(QString("%1").arg(config->searchMaximumNoResults));
 	LineEditKeepInXmms->setText(QString("%1").arg(config->keepInXmms));
+#ifdef ENABLE_XMMS
   RadioButtonXmms->setChecked(config->player==0);
+  RadioButtonXmms->setEnabled(true);
+#else
+  RadioButtonXmms->setEnabled(false);
+#endif
+#ifdef ENABLE_NOATUN
+  RadioButtonNoatun->setEnabled(true);
   RadioButtonNoatun->setChecked(config->player==1);
+#else
+  RadioButtonNoatun->setEnabled(false);
+#endif
 
+  
 	for(int i=0; i<Song::getMaxSongAction(); i++)
 		ComboBoxDoubleClickAction->insertItem(Song::getSongAction(i));
 	ComboBoxDoubleClickAction->setCurrentItem(config->doubleClickAction);

@@ -12,7 +12,7 @@ AC_CONFIG_AUX_DIR(admin)
 AC_CANONICAL_SYSTEM 
 
 dnl Automake doc recommends to do this only here. (Janos)
-AM_INIT_AUTOMAKE(yammi,0.7)
+AM_INIT_AUTOMAKE(yammi,0.7.1)
 
 KDE_SET_PREFIX
 
@@ -37,9 +37,13 @@ dnl -------------------------------
 dnl Configure switches.
 dnl -------------------------------
 AC_ARG_ENABLE(ogglibs,
-[  --disable-ogglibs           disable support of ogg libs for reading ogg tags], enable_ogglibs=no, enable_ogglibs=yes)
+[  --disable-ogglibs          disable support of ogg libs for reading ogg tags], enable_ogglibs=no, enable_ogglibs=yes)
 AC_ARG_ENABLE(id3lib,
 [  --disable-id3lib           disable support of id3lib for reading id3 tags], enable_id3lib=no, enable_id3lib=yes)
+AC_ARG_ENABLE(noatun,
+[  --disable-noatun           disable support for noatun (don't use kdelibs)], enable_noatun=no, enable_noatun=yes)
+AC_ARG_ENABLE(xmms,
+[  --disable-xmms             disable support for xmms (don't need xmmsctrl)], enable_xmms=no, enable_xmms=yes)
 
 
 dnl -------------------------------
@@ -81,6 +85,28 @@ else
 fi
 
 
+AC_MSG_CHECKING(for noatun support)
+if test "x$enable_noatun" = xyes; then
+    LIBS="-lkdecore $LIBS"
+    AC_DEFINE(ENABLE_NOATUN)
+    AC_MSG_RESULT(yes)
+else
+    echo "*** noatun support disabled ***"
+    AC_MSG_RESULT(no)
+fi
+
+
+AC_MSG_CHECKING(for xmms support)
+if test "x$enable_xmms" = xyes; then
+    LIBS="-lxmms $LIBS"
+    AC_DEFINE(ENABLE_XMMS)
+    AC_MSG_RESULT(yes)
+else
+    echo "*** xmms support disabled ***"
+    AC_MSG_RESULT(no)
+fi
+
+
 dnl ---------------------
 dnl end of library checks
 dnl ---------------------
@@ -114,7 +140,7 @@ dnl PACKAGE set before
 KDE_CREATE_SUBDIRSLIST
 
 dnl add here all your Makefiles. This are created by configure
-AC_OUTPUT(Makefile yammi/Makefile yammi/docs/Makefile yammi/docs/en/Makefile yammi/mp3info/Makefile )
+AC_OUTPUT(Makefile yammi/Makefile yammi/docs/Makefile yammi/docs/en/Makefile yammi/icons/Makefile yammi/mp3info/Makefile )
 
 
 echo "
@@ -128,6 +154,8 @@ Configuration for $PACKAGE $VERSION :
  Linker ...............: $CC $LDFLAGS $LIBS $LIBFLAC_LIBS
  ogg libs support .....: $enable_ogglibs
  id3lib support .......: $enable_id3lib
+ noatun support .......: $enable_noatun
+ xmms support .........: $enable_xmms
  Install path .........: $prefix
 
  Now type 'make' to build $PACKAGE $VERSION,

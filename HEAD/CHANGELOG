@@ -1,7 +1,9 @@
 ######################
 end of january? version 0.7.1
+- support for noatun!!! (controlling two noatun instances via dcop)
+- using genre table provided with id3lib
 - little changes to configure.in (no more checking for id3lib, you have to disable it manually if needed)
-- added replacements: %X, %Y, %W
+- added replacements: %X, %Y, %W, %L
 - added "insert into->new category" (finally, Tom!)
 - minor bugfixes
 

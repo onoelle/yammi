@@ -91,12 +91,12 @@ using namespace std;
 #include "foldersorted.h"
 #include "mylistview.h"
 #include "mediaplayer.h"
-#ifdef XMMS_SUPPORT
+#ifdef ENABLE_XMMS
 #include "xmmsplayer.h"
 #endif
-#ifdef NOATUN_SUPPORT
+#ifdef ENABLE_NOATUN
 #include "noatunplayer.h"
-#endif NOATUN_SUPPORT
+#endif
 #include "lineeditshift.h"
 // -----------------------------------------------------------------
 
@@ -164,7 +164,7 @@ protected:
 	MyList		    selectedSongs;
 	MyList		    searchResults;
   bool          isScanning;
-  void          songChange(Song* lastSong, QString newFile);
+//  void          songChange(Song* lastSong, QString newFile);
   void          readSettings();
   void          writeSettings();
   void          moveEvent(QMoveEvent* e)         { updateGeometrySettings(); }

@@ -1,4 +1,4 @@
-# KDE tags expanded automatically by am_edit - $Revision: 1.33 $ 
+# KDE tags expanded automatically by am_edit - $Revision: 1.34 $ 
 # Makefile.in generated automatically by automake 1.5 from Makefile.am.
 
 # Copyright 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001
@@ -237,9 +237,9 @@ SOURCES = mp3info/CVBitRate.cpp mp3info/CMP3Info.cpp mp3info/CFrameHeader.cpp no
 INTERFACES = UpdateDatabaseMediaDialogBase.ui UpdateDatabaseDialogBase.ui SongInfoDialog.ui PreferencesDialogBase.ui DeleteDialog.ui ConsistencyCheckDialogBase.ui 
 TRANSLATIONS = 
 KDE_OPTIONS = qtonly
-yammi_LDADD = ./mp3info/libmp3info.a -lxmms -lkdecore $(LIB_QT) $(LIBSOCKET)
+yammi_LDADD = ./mp3info/libmp3info.a  $(LIB_QT) $(LIBSOCKET)
 
-SUBDIRS = docs mp3info 
+SUBDIRS = docs icons mp3info 
 
 EXTRA_DIST = lo32-app-yammi.png lo16-app-yammi.png folder.cpp folder.h foldercategories.cpp foldercategories.h foldergroups.cpp foldergroups.h foldermedia.cpp foldermedia.h foldersorted.cpp foldersorted.h fuzzsrch.cpp fuzzsrch.h main.cpp mydatetime.cpp mydatetime.h mylist.cpp mylist.h mylistview.cpp mylistview.h preferencesdialog.cpp preferencesdialog.h prefs.cpp prefs.h song.cpp song.h songentry.cpp songentry.h songentryint.cpp songentryint.h songentryint2.cpp songentryint2.h songentrystring.cpp songentrystring.h songentrytimestamp.cpp songentrytimestamp.h songinfo.cpp songinfo.h songlistitem.cpp songlistitem.h yammigui.cpp yammigui.h yammimodel.cpp yammimodel.h glib.h glibconfig.h xmmsctrl.h updatedatabasedialog.cpp updatedatabasedialog.h options.h updatedatabasemediadialog.cpp updatedatabasemediadialog.h lineeditshift.cpp lineeditshift.h mediaplayer.cpp mediaplayer.h xmmsplayer.cpp xmmsplayer.h yammiapplication.cpp yammiapplication.h vcedit.c vcedit.h acconfig.h ConsistencyCheckDialog.cpp ConsistencyCheckDialog.h ConsistencyCheckParameter.h ConsistencyCheckDialogBase.ui DeleteDialog.ui PreferencesDialogBase.ui SongInfoDialog.ui UpdateDatabaseDialogBase.ui UpdateDatabaseMediaDialogBase.ui i18n.h noatunplayer.cpp noatunplayer.h 
 
@@ -589,7 +589,12 @@ GTAGS:
 distclean-tags:
 	-rm -f TAGS ID GTAGS GRTAGS GSYMS GPATH
 
-DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
+#>- DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
+#>+ 4
+KDE_DIST=DeleteDialog.h ConsistencyCheckDialogBase.h PreferencesDialogBase.h UpdateDatabaseMediaDialogBase.h UpdateDatabaseDialogBase.h yammi SongInfoDialog.h 
+
+DISTFILES= $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST) $(KDE_DIST)
+
 
 top_distdir = ..
 distdir = $(top_distdir)/$(PACKAGE)-$(VERSION)
@@ -870,7 +875,7 @@ force-reedit:
 
 
 #>+ 11
-yammi.all_cpp.cpp: $(srcdir)/Makefile.in $(srcdir)/noatunplayer.cpp $(srcdir)/ConsistencyCheckDialog.cpp $(srcdir)/yammiapplication.cpp $(srcdir)/xmmsplayer.cpp $(srcdir)/mediaplayer.cpp $(srcdir)/lineeditshift.cpp $(srcdir)/updatedatabasemediadialog.cpp $(srcdir)/updatedatabasedialog.cpp $(srcdir)/yammimodel.cpp $(srcdir)/yammigui.cpp $(srcdir)/songlistitem.cpp $(srcdir)/songinfo.cpp $(srcdir)/songentrytimestamp.cpp $(srcdir)/songentrystring.cpp $(srcdir)/songentryint2.cpp $(srcdir)/songentryint.cpp $(srcdir)/songentry.cpp $(srcdir)/song.cpp $(srcdir)/prefs.cpp $(srcdir)/preferencesdialog.cpp $(srcdir)/mylistview.cpp $(srcdir)/mylist.cpp $(srcdir)/mydatetime.cpp $(srcdir)/main.cpp $(srcdir)/fuzzsrch.cpp $(srcdir)/foldersorted.cpp $(srcdir)/foldermedia.cpp $(srcdir)/foldergroups.cpp $(srcdir)/foldercategories.cpp $(srcdir)/folder.cpp UpdateDatabaseMediaDialogBase.cpp UpdateDatabaseDialogBase.cpp SongInfoDialog.cpp PreferencesDialogBase.cpp DeleteDialog.cpp ConsistencyCheckDialogBase.cpp  ConsistencyCheckDialog.moc.cpp updatedatabasedialog.moc.cpp noatunplayer.moc.cpp yammigui.moc.cpp foldergroups.moc.cpp foldermedia.moc.cpp mylistview.moc.cpp foldercategories.moc.cpp folder.moc.cpp xmmsplayer.moc.cpp yammimodel.moc.cpp songinfo.moc.cpp preferencesdialog.moc.cpp lineeditshift.moc.cpp updatedatabasemediadialog.moc.cpp mediaplayer.moc.cpp
+yammi.all_cpp.cpp: $(srcdir)/Makefile.in $(srcdir)/noatunplayer.cpp $(srcdir)/ConsistencyCheckDialog.cpp $(srcdir)/yammiapplication.cpp $(srcdir)/xmmsplayer.cpp $(srcdir)/mediaplayer.cpp $(srcdir)/lineeditshift.cpp $(srcdir)/updatedatabasemediadialog.cpp $(srcdir)/updatedatabasedialog.cpp $(srcdir)/yammimodel.cpp $(srcdir)/yammigui.cpp $(srcdir)/songlistitem.cpp $(srcdir)/songinfo.cpp $(srcdir)/songentrytimestamp.cpp $(srcdir)/songentrystring.cpp $(srcdir)/songentryint2.cpp $(srcdir)/songentryint.cpp $(srcdir)/songentry.cpp $(srcdir)/song.cpp $(srcdir)/prefs.cpp $(srcdir)/preferencesdialog.cpp $(srcdir)/mylistview.cpp $(srcdir)/mylist.cpp $(srcdir)/mydatetime.cpp $(srcdir)/main.cpp $(srcdir)/fuzzsrch.cpp $(srcdir)/foldersorted.cpp $(srcdir)/foldermedia.cpp $(srcdir)/foldergroups.cpp $(srcdir)/foldercategories.cpp $(srcdir)/folder.cpp $(srcdir)/UpdateDatabaseMediaDialogBase.cpp $(srcdir)/UpdateDatabaseDialogBase.cpp $(srcdir)/SongInfoDialog.cpp $(srcdir)/PreferencesDialogBase.cpp $(srcdir)/DeleteDialog.cpp $(srcdir)/ConsistencyCheckDialogBase.cpp  ConsistencyCheckDialog.moc.cpp updatedatabasedialog.moc.cpp noatunplayer.moc.cpp yammigui.moc.cpp foldergroups.moc.cpp foldermedia.moc.cpp mylistview.moc.cpp foldercategories.moc.cpp folder.moc.cpp xmmsplayer.moc.cpp yammimodel.moc.cpp songinfo.moc.cpp preferencesdialog.moc.cpp lineeditshift.moc.cpp updatedatabasemediadialog.moc.cpp mediaplayer.moc.cpp
 	@echo 'creating yammi.all_cpp.cpp ...'; \
 	rm -f yammi.all_cpp.files yammi.all_cpp.final; \
 	echo "#define KDE_USE_FINAL 1" >> yammi.all_cpp.final; \

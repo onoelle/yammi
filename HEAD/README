@@ -4,30 +4,47 @@ Please visit http://yammi.sourceforge.net for detailed information about Yammi.
 
 Note:
 
-Yammi now depends on
-- id3lib (for reading id3 tags)
-- libvorbis / libvorbisfile (and libvorbis-dev) (for reading ogg tags)
+Yammi has some dependencies that can be switched off:
 
-...but since yammi-0.7 these dependencies can be switched off!
+id3lib
+------
+Needed for reading id3 tags. Recommended if you use mp3 files.
+(http://www.id3lib.org)
+To disable:
+--disable-id3lib         (=> no id3 tags can be read/written from/to mp3 files
+                             layer information (bitrate, length) is still available)
 
-If you don't have these libraries (and end up with configure or linking errors when compiling),
-use the following switches to the configure script to disable the use of these libraries:
+libvorbis / libvorbisfile / libvorbis-dev
+-----------------------------------------
+Needed for reading ogg tags. Recommended if you use ogg files.
+To disable:
+--disable-ogglibs        (=> no ogg tags can be read/written from/to ogg files,
+                             no ogg layer information (bitrate, length) available)
 
---disable-id3lib  (disables the use of id3lib
-  => no id3 tags can be read/written from/to mp3 files)
---disable-ogglibs (disables the use of libvorbis/libvorbisfile
-  => no ogg tags can be read/written from/to ogg files, no ogg layer information (bitrate, length) available)
+xmms
+----
+Needed for xmms support. Required if you use Xmms as your media player.
+To disable:
+--disable-xmms           (=> disables xmms support)
+
+
+kdecore
+-------
+Needed for noatun support (for using dcop). Required if you use Noatun as your media player.
+To disable:
+--disable-noatun         (=> disables noatun support)
+
+
+As you need a media player, you can't switch off both xmms and noatun support (well, you can, but...).
 
 
 For example, use
-./configure --disable-id3lib --disable-ogglibs
-to disable both options.
-
-Note that in this case, you have to fill in tag information manually
-(although Yammi tries to extract artist and title from the filename).
+./configure --disable-ogglibs --disable-noatun
+to disable support for ogg files and disable noatun support.
 
 
 
 Enjoy using Yammi...
 
+------------
 Oliver Nölle

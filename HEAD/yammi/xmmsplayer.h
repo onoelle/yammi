@@ -18,10 +18,11 @@
 #ifndef XMMSPLAYER_H
 #define XMMSPLAYER_H
 
+
 #include "mediaplayer.h"
 
-/** The MediaPlayer class tailored to XMMS.
- * Work in progress!!!
+/**
+ * The MediaPlayer class tailored to XMMS.
  */
 
 class XmmsPlayer : public MediaPlayer

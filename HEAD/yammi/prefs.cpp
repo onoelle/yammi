@@ -14,13 +14,13 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-
+#include "options.h"
 #include "prefs.h"
 
 /// sets preferences to the default values
 Prefs::Prefs(){
 // general	
-	yammiVersion="0.7";
+	yammiVersion="0.7.1";
 	trashDir="/mp3/trash/";
 	scanDir="/mp3/inbox/";
 	doubleClickAction=None;
@@ -82,7 +82,13 @@ Prefs::Prefs(){
 	swapSize=200;
 	mountMediaDir=true;
 
-  player=0;       // 0=XMMS, 1=Noatun
+  // media player: 0=XMMS, 1=Noatun
+#ifdef ENABLE_NOATUN
+  player=1;
+#endif
+#ifdef ENABLE_XMMS
+  player=0;
+#endif
 }
 
 Prefs::~Prefs(){

@@ -15,14 +15,16 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "options.h"
+#ifdef ENABLE_XMMS
+ 
 #include "xmmsplayer.h"
 #include <iostream>
 using namespace std;
 #include <stdlib.h>
-// xmms control
-#include <xmmsctrl.h>
+#include <xmmsctrl.h>        // xmms control
 
-// TODO: remove?
+// TODO: remove! use signals!
 #include "yammigui.h"
 extern YammiGui* gYammiGui;
 
@@ -448,4 +450,6 @@ void XmmsPlayer::myWait(int msecs)
 		<< pTime << ", rate: " << rate << ", freq: " << freq << ", nch " << nch << "\n";
 */
 
+
+#endif
 

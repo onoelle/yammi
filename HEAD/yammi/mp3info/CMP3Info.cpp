@@ -31,109 +31,93 @@ using namespace std;
 
 int CMP3Info::loadInfo( QString srcMP3 ) {
     
-    // open input-file stream to the specified file, name
-
-//**    ifstream* ifile = new ifstream(srcMP3, ios::in | ios::binary | ios::nocreate);
-//**    if (ifile) { // if the file was opened correctly
-
-
-    QFile file(srcMP3);
-    if( file.open( IO_ReadOnly ) ) {
-        QDataStream stream( &file );
+  // open input-file stream to the specified file, name
+  QFile file(srcMP3);
+  if( file.open( IO_ReadOnly ) ) {
+    QDataStream stream( &file );
         
     
-        // get file size, by setting the pointer in the end and tell the position
-//**        ifile->seekg(0,ios::end);
-//**        fileSize = ifile->tellg();
-        fileSize=file.size();
+    // get file size, by setting the pointer in the end and tell the position
+    fileSize=file.size();
 
-        // get srcMP3 into fileName variable
-//        strcpy(fileName,srcMP3);
-
-        int pos = 0; // current position in file...
+    // get srcMP3 into fileName variable
+    int pos = 0; // current position in file...
 
 
-        /******************************************************/
-        /* search and load the first frame-header in the file */
-        /******************************************************/
+    /******************************************************/
+    /* search and load the first frame-header in the file */
+    /******************************************************/
         
-        char headerchars[4]; // char variable used for header-loading
+    char headerchars[4]; // char variable used for header-loading
 
-        stream.readRawBytes(headerchars, 4);
-        pos+=4;
-        bool headerFound=false;
-        for(; !headerFound && pos<(1024*200) && !stream.atEnd(); pos++) {
+    stream.readRawBytes(headerchars, 4);
+    pos+=4;
+    bool headerFound=false;
+    for(; !headerFound && pos<(1024*200) && !stream.atEnd(); pos++) {
 
-          // convert four chars to CFrameHeader structure
-          header.loadHeader(headerchars);
-          if(header.isValidHeader()) {
-            headerFound=true;
-          }
-          else {
-            // read one more byte and try again
-            headerchars[0]=headerchars[1];
-            headerchars[1]=headerchars[2];
-            headerchars[2]=headerchars[3];
-            stream.readRawBytes(&headerchars[3], 1);
-          }
-        }
-
-        if(!headerFound) {
-          // if no header has been found after 200kB
-          // or the end of the file has been reached
-          // then there's probably no mp3-file
-          return ERR_NOMP3FILE;
-        }
-
-
-        
-
-        /******************************************************/
-        /* check for a vbr-header, to ensure the info from a  */
-        /* vbr-mp3 is correct                                 */
-        /******************************************************/
-
-        char vbrchars[12];
-        
-        // determine offset from first frame-header
-        // it depends on two things, the mpeg-version
-        // and the mode(stereo/mono)
-
-        int skip=0;
-        if( header.getVersionIndex()==3 ) {  // mpeg version 1
-
-            if( header.getModeIndex()==3 ) skip = 17; // Single Channel
-            else                           skip = 32;
-
-        } else {                             // mpeg version 2 or 2.5
-
-            if( header.getModeIndex()==3 ) skip =  9; // Single Channel
-            else                           skip = 17;
-        }
-
-        char skipChars[64];
-        stream.readRawBytes(skipChars, skip);
-        pos+=skip;
-
-        // read next twelve bits in
-//**        ifile->seekg(pos);
-//**        ifile->read (vbrchars, 12);
-        stream.readRawBytes(vbrchars, 12);
-
-        // turn 12 chars into a CVBitRate class structure
-        VBitRate = vbr.loadHeader(vbrchars);        
-    }
-    else {
-//**        ifile->close();
-//**        delete ifile;
-//        file.close();
-        return ERR_NOSUCHFILE;
+      // convert four chars to CFrameHeader structure
+      header.loadHeader(headerchars);
+      if(header.isValidHeader()) {
+        headerFound=true;
+      }
+      else {
+        // read one more byte and try again
+        headerchars[0]=headerchars[1];
+        headerchars[1]=headerchars[2];
+        headerchars[2]=headerchars[3];
+        stream.readRawBytes(&headerchars[3], 1);
+      }
     }
 
-//**    ifile->close();
-    file.close();
-//    delete ifile;
-    return 0;
+    if(!headerFound) {
+      // if no header has been found after 200kB
+      // or the end of the file has been reached
+      // then there's probably no mp3-file
+      return ERR_NOMP3FILE;
+    }
+
+
+        
+
+    /******************************************************/
+    /* check for a vbr-header, to ensure the info from a  */
+    /* vbr-mp3 is correct                                 */
+    /******************************************************/
+
+    char vbrchars[12];
+        
+    // determine offset from first frame-header
+    // it depends on two things, the mpeg-version
+    // and the mode(stereo/mono)
+
+    int skip=0;
+    if( header.getVersionIndex()==3 ) {  // mpeg version 1
+
+      if( header.getModeIndex()==3 ) skip = 17; // Single Channel
+      else                           skip = 32;
+
+    } else {                             // mpeg version 2 or 2.5
+
+      if( header.getModeIndex()==3 ) skip =  9; // Single Channel
+      else                           skip = 17;
+    }
+
+    char skipChars[64];
+    stream.readRawBytes(skipChars, skip);
+    pos+=skip;
+
+    // read next twelve bits in
+    stream.readRawBytes(vbrchars, 12);
+
+    // turn 12 chars into a CVBitRate class structure
+    VBitRate = vbr.loadHeader(vbrchars);        
+  }
+  else {
+    return ERR_NOSUCHFILE;
+  }
+
+  file.close();
+  return 0;
 }
 
 
@@ -182,35 +166,6 @@ int CMP3Info::getLengthInSeconds() {
 
 }
 
-/*
-void CMP3Info::getFormattedLength(char* input) {
-
-    //  s  = complete number of seconds
-    int s  = getLengthInSeconds();
-
-    //  ss = seconds to display
-    int ss = s%60;
-
-    //  m  = complete number of minutes
-    int m  = (s-ss)/60;
-
-    //  mm = minutes to display
-    int mm = m%60;
-
-    //  h  = complete number of hours
-    int h = (m-mm)/60;
-
-    char szTime[16]; // temporary string
-
-    // make a "hh:mm:ss" if there is any hours, otherwise
-    // make it   "mm:ss"
-    if (h>0) sprintf(szTime,"%02d:%02d:%02d", h,mm,ss);
-    else     sprintf(szTime,     "%02d:%02d",   mm,ss);
-
-    // copy to the inputstring
-    strcpy(input, szTime);
-}
-*/
 
 int CMP3Info::getNumberOfFrames() {
 
@@ -230,6 +185,7 @@ int CMP3Info::getNumberOfFrames() {
 
            For our purpose, just getting the average frame size, will make the
            padding obsolete, so our formula looks like:
+
 
 
            FrameSize = (layer1?12:144) * 1000 * BitRate / SampleRate;
@@ -279,70 +235,23 @@ QString CMP3Info::getMode() {
     return header.getMode();
 }
 
-/*
-void CMP3Info::getFileName(char* input) {
-
-    strcpy(input, fileName);
-
-}
-*/
 
 /** returns the genre of a given index as a string, or "not supported" if index too high
  */
 QString CMP3Info::getGenre(int index)
 {
-  const char* table[MAX_GENRE_NR+1] = {
-                              "Blues","Classic Rock","Country","Dance","Disco","Funk","Grunge","Hip-Hop","Jazz",
-                              "Metal","New Age","Oldies","Other","Pop","R&B","Rap","Reggae","Rock","Techno",
-                              "Industrial","Alternative","Ska","Death Metal","Pranks","Soundtrack","Euro-Techno",
-                              "Ambient","Trip-Hop","Vocal","Jazz+Funk","Fusion","Trance","Classical","Instrumental",
-                              "Acid","House","Game","Sound Clip","Gospel","Noise","AlternRock","Bass","Soul","Punk",
-                              "Space","Meditative","Instrumental Pop","Instrumental Rock","Ethnic","Gothic",
-                              "Darkwave","Techno-Industrial","Electronic","Pop-Folk","Eurodance","Dream",
-                              "Southern Rock","Comedy","Cult","Gangsta","Top 40","Christian Rap","Pop/Funk","Jungle",
-                              "Native American","Cabaret","New Wave","Psychadelic","Rave","Showtunes","Trailer",
-                              "Lo-Fi","Tribal","Acid Punk","Acid Jazz","Polka","Retro","Musical","Rock & Roll",
-                              "Hard Rock","Folk","Folk-Rock","National Folk","Swing","Fast Fusion","Bebob","Latin",
-                              "Revival","Celtic","Bluegrass","Avantgarde","Gothic Rock","Progressive Rock",
-                              "Psychedelic Rock","Symphonic Rock","Slow Rock","Big Band","Chorus","Easy Listening",
-                              "Acoustic","Humour","Speech","Chanson","Opera","Chamber Music","Sonata","Symphony",
-                              "Booty Bass","Primus","Porn Groove","Satire","Slow Jam","Club","Tango","Samba",
-                              "Folklore","Ballad","Power Ballad","Rhythmic Soul","Freestyle","Duet","Punk Rock",
-                              "Drum Solo","Acapella","Euro-House","Dance Hall"
-                             };
-
-  if(index>MAX_GENRE_NR || index<0)
+  if(index>=ID3_NR_OF_V1_GENRES || index<0)
     return QString("not supported");
-  return QString(table[index]);
+  return QString(ID3_v1_genre_description[index]);
 }
 
 // returns the index of a given genre string, or -1 if not found
 int CMP3Info::getGenreIndex(QString genre)
 {
-  const char* table[MAX_GENRE_NR+1] = {
-                              "Blues","Classic Rock","Country","Dance","Disco","Funk","Grunge","Hip-Hop","Jazz",
-                              "Metal","New Age","Oldies","Other","Pop","R&B","Rap","Reggae","Rock","Techno",
-                              "Industrial","Alternative","Ska","Death Metal","Pranks","Soundtrack","Euro-Techno",
-                              "Ambient","Trip-Hop","Vocal","Jazz+Funk","Fusion","Trance","Classical","Instrumental",
-                              "Acid","House","Game","Sound Clip","Gospel","Noise","AlternRock","Bass","Soul","Punk",
-                              "Space","Meditative","Instrumental Pop","Instrumental Rock","Ethnic","Gothic",
-                              "Darkwave","Techno-Industrial","Electronic","Pop-Folk","Eurodance","Dream",
-                              "Southern Rock","Comedy","Cult","Gangsta","Top 40","Christian Rap","Pop/Funk","Jungle",
-                              "Native American","Cabaret","New Wave","Psychadelic","Rave","Showtunes","Trailer",
-                              "Lo-Fi","Tribal","Acid Punk","Acid Jazz","Polka","Retro","Musical","Rock & Roll",
-                              "Hard Rock","Folk","Folk-Rock","National Folk","Swing","Fast Fusion","Bebob","Latin",
-                              "Revival","Celtic","Bluegrass","Avantgarde","Gothic Rock","Progressive Rock",
-                              "Psychedelic Rock","Symphonic Rock","Slow Rock","Big Band","Chorus","Easy Listening",
-                              "Acoustic","Humour","Speech","Chanson","Opera","Chamber Music","Sonata","Symphony",
-                              "Booty Bass","Primus","Porn Groove","Satire","Slow Jam","Club","Tango","Samba",
-                              "Folklore","Ballad","Power Ballad","Rhythmic Soul","Freestyle","Duet","Punk Rock",
-                              "Drum Solo","Acapella","Euro-House","Dance Hall"
-                             };
-
-  for(int i=0; i<=MAX_GENRE_NR; i++) {
-    if(QString(table[i])==genre)
+  for(int i=0; i<ID3_NR_OF_V1_GENRES; i++) {
+    if(QString(ID3_v1_genre_description[i])==genre)
       return i;
   }
-  cout << "genre not found\n";
+  cout << "genre not found: " << genre << "\n";
   return -1;
 }

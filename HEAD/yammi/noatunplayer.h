@@ -14,14 +14,16 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-
+ 
 #ifndef NOATUNPLAYER_H
 #define NOATUNPLAYER_H
 
 #include "mediaplayer.h"
 #include <qprocess.h>
-#include <dcopclient.h>
 
+#ifdef ENABLE_NOATUN
+#include <dcopclient.h>
+#endif
 /**
  * The mediaplayer class tailored for controlling two noatun instances.
  */
@@ -33,7 +35,9 @@ public:
 	~NoatunPlayer();
 
 protected:
+#ifdef ENABLE_NOATUN
   DCOPClient* client;
+#endif
 	QTimer fadeTimer;
   bool ensurePlayerIsRunning();
   void playlistAdd(QString filename, bool autoStart, int id=0);
