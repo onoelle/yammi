@@ -145,8 +145,9 @@ Song* Folder::nextSong()
 void Folder::updateTitle()
 {
 	setText(0, fName+QString(" (%1)").arg(songList->count()));
-	if(this==gYammiGui->chosenFolder)
-		gYammiGui->slotFolderChanged();
+// TODO: was this necessary?
+//	if(this==gYammiGui->chosenFolder)
+//		gYammiGui->slotFolderChanged();
 }
 
 // insert content menu...

@@ -45,7 +45,7 @@ void Prefs::setDefaultValues(void) {
 #endif
 
 	baseDir = "";
-	yammiVersion = "0.8.0";
+	yammiVersion = "0.8.2";
 	trashDir = "/mp3/trash/";
 	scanDir = "/mp3/inbox/";
 	filenamePattern = "%a - %t";
@@ -310,6 +310,7 @@ bool Prefs::saveConfig(void)
 	f2.close();
 
 	qDebug("Prefs::saveConfig() ...done");
+  return true;
 }
 
 

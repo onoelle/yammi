@@ -1,4 +1,15 @@
 ########################
+01.05.2003 version 0.8.2
+- "longest not played" now chooses randomly from the candidate songs (if more than one song with same timestamp)
+- switch to/from playlist with toolbutton or keyboard (CTRL-P)
+- patch from Stefan applied (cleaning up and probably fixing some memory leaks)
+- new configure.in from Bob
+
+########################
+ version 0.8.1
+- just a fix in the config.h file due to compiling problems
+
+########################
 25.03.2003 version 0.8.0
 - changed and hopefully improved configure script and makefiles
 - added an advanced guessing mode (identifying "/artist/album/01 - trackname")

@@ -152,7 +152,7 @@ public:
 	 * \param baseDir Base directory for configuration files.
 	 */
 	void setBaseDir(QString& baseDir) {
-		baseDir = baseDir;
+		this->baseDir = baseDir;
 	}
 
 	/**

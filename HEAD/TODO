@@ -1,6 +1,6 @@
 TODO
 ----
-last update 25.3.2003
+last update 22.4.2003
 
 
 
@@ -11,10 +11,16 @@ user feedback via email:
 - subfolders
 - loading/saving of playlists to m3u (saving already implemented via plugin)
 - incorrect tracknumbers are shown in some cases where tracknumber is undefined (0).
+- toobar button + keyboard shortcut for "goto playlist"
+- save playlists
+- longest not played: randomly!
+- filename not consistent shows up twice
+- ogg tags: case sensitive??? check!
+- "partly checked" for tick mark if one song (of a selection) is in a group
+- "rescan tags" in song info dialog
 
 
-
-0.8.1
+0.8.2
 -----
 - remove cout assuming suffix ".mp3".../ have to look up suffix...
 - autoplay: don't refresh view for choosing song to enqueue

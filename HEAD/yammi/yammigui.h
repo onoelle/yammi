@@ -235,6 +235,9 @@ protected:
 // protected methods
 //******************
 protected:
+  void          changeToFolder(Folder* newFolder, bool changeAnyway=false);
+  void          folderContentChanged();
+  void          folderContentChanged(Folder* folder);
   void          autoFillPlaylist();
   Folder*       getFolderByName(QString foldername);
 	void 			    decide(Song* s1, Song* s2);
@@ -257,6 +260,7 @@ protected:
 	Folder*				folderHistory;				// songs played sometime
 
   Folder*				folderToAdd;					// for snappy folder adding in background
+  Folder*       toFromRememberFolder;
 	int						alreadyAdded;
 	void					addFolderContent(Folder* folder);
   int           autoplayMode;
@@ -280,6 +284,7 @@ protected slots:
   void				  preListen(Song* s, int skipTo);  ///< sends the song to headphones
   void				  stopPrelisten();
   void          clearPlaylist();
+  void          toFromPlaylist();
   void          saveColumnSettings();
 	void				  endProgram();
 	void				  shutDown();

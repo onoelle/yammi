@@ -49,6 +49,7 @@ using namespace std;
 #include "icons/dequeueAll.xpm"
 #include "icons/songinfo.xpm"
 #include "icons/stopPrelisten.xpm"
+#include "icons/toFromPlaylist.xpm"
 
 
 // dialog includes
@@ -89,6 +90,7 @@ YammiGui::YammiGui(QString baseDir)
   //********************
   player=0;
   currentSong=0;
+  chosenFolder=0;
 #ifdef ENABLE_XMMS
   if(model->config.player==0) {
     cout << "media player: XMMS\n";
@@ -244,6 +246,8 @@ YammiGui::YammiGui(QString baseDir)
                            this, SLOT(stopPrelisten()), toolBar2);
 	new QToolButton (QPixmap(songinfo_xpm), "Info...", QString::null,
                            this, SLOT(forAllSelectedSongInfo()), toolBar2);
+	new QToolButton (QPixmap(toFromPlaylist_xpm), "Switch to/from Playlist (CTRL-P)", QString::null,
+                           this, SLOT(toFromPlaylist()), toolBar2);
 
 	// removable media management
 	QToolBar* toolBarRemovableMedia = new QToolBar ( this, "Removable Media Toolbar");
@@ -392,18 +396,13 @@ YammiGui::YammiGui(QString baseDir)
 
 	// some preparations for startup
 	//******************************
-	folderListView->firstChild()->setOpen( TRUE );
-//	folderListView->setCurrentItem( folderListView->firstChild()->firstChild() );
-//	folderListView->setSelected( folderListView->firstChild(), TRUE );
-// todo?
-
-	songListView->setSelected( songListView->firstChild(), TRUE );
-	songListView->setCurrentItem( songListView->firstChild() );
-	updateSongPopup();
+// TODO: remove?
+//	folderListView->firstChild()->setOpen( TRUE );
 	
 	shuttingDown=0;
 	controlPressed=false;
 	shiftPressed=false;
+  toFromRememberFolder=folderAll;
 	
   // finish initialization of player (if available)
   if(player!=0) {
@@ -439,13 +438,14 @@ YammiGui::YammiGui(QString baseDir)
 
 void YammiGui::finishInitialization()
 {
-  // finish initialization (move to single-shot timer for faster startup?)
   // restore session settings
   mainStatusBar->message("Welcome to Yammi "+model->config.yammiVersion, 10000);
-  folderListView->ensureItemVisible((QListViewItem*)chosenFolder);
-	slotFolderChanged();
-  updateListViewColumns();
-
+  cout << "chosenFolder: " << chosenFolder->folderName() << "\n";
+  changeToFolder(chosenFolder, true);
+	songListView->setSelected( songListView->firstChild(), TRUE );
+	songListView->setCurrentItem( songListView->firstChild() );
+	updateSongPopup();
+  
 	if(model->noPrefsFound && model->noDatabaseFound) {
 		QMessageBox::information( this, "Yammi",	QString("Yammi - Yet Another Music Manager I...\n\n\n")+
 																					"It looks like you are starting Yammi the first time...\n\n"+
@@ -525,10 +525,7 @@ void YammiGui::updatePlaylist()
   folderActual->correctOrder();
   player->syncYammi2Player(false);
 	// update view, if folderActual is currently shown folder
-	if(chosenFolder==folderActual)
-		slotFolderChanged();
-	else
-		songListView->triggerUpdate();
+  folderContentChanged(folderActual);
 }
 
 
@@ -657,8 +654,9 @@ void YammiGui::readSettings()
 
   // column order
   columnOrder=settings.readListEntry("/Yammi/songlistview/columnOrder");
-  if(columnOrder.count()==0)
+  if(columnOrder.count()==0) {
     cout << "no column order found\n";
+  }
   for(int i=0; i<MAX_COLUMN_NO; i++) {
     columnWidth[i]=settings.readNumEntry("/Yammi/songlistview/column"+QString("%1").arg(i)+"Width");
   }
@@ -668,9 +666,6 @@ void YammiGui::readSettings()
   if(chosenFolder==0) {
     chosenFolder=folderAll;
   }  
-  folderListView->setCurrentItem( (QListViewItem*)chosenFolder );
-  folderListView->setSelected( (QListViewItem*)chosenFolder , TRUE );
-  folderListView->ensureItemVisible((QListViewItem*)chosenFolder);
 
   // autoplay folder
   autoplayFoldername=settings.readEntry("/Yammi/folder/autoplay", "All Music");
@@ -680,6 +675,7 @@ void YammiGui::readSettings()
 
 Folder* YammiGui::getFolderByName(QString folderName)
 {
+  cout << "folderByName called with string: " << folderName << "\n";
   for(QListViewItem* i=folderListView->firstChild(); i; i=i->itemBelow()) {
     Folder* f=(Folder*)i;
     if(f->folderName()==folderName) {
@@ -731,7 +727,7 @@ void YammiGui::updateView()
 			model->unclassifiedSongs.appendSong(s);
 	}
 	folderUnclassified->update(&(model->unclassifiedSongs));
-	slotFolderChanged();
+  folderContentChanged();
 }
 
 
@@ -740,6 +736,7 @@ void YammiGui::updateView()
  */
 void YammiGui::updateListViewColumns()
 {
+  cout << "updateListViewColumns called\n";
   int noOldColumns=songListView->columns();
   for(int i=0; i<noOldColumns; i++) {
 		songListView->removeColumn(0);
@@ -927,8 +924,8 @@ void YammiGui::addToWishList()
   forSong(newSong, SongInfo, NULL);
 	model->allSongsChanged(true);
 	searchField->setText("{wish}");
-	slotFolderChanged();
-	searchField->setText("");	
+  folderContentChanged(folderAll);
+  searchField->setText("");	
 }
 
 /**
@@ -983,6 +980,7 @@ void YammiGui::toCategory(int index)
 	}
 	
 	model->categoriesChanged(true);
+  folderContentChanged(categoryFolder);
 	
 //hh
 /*		
@@ -1110,10 +1108,12 @@ void YammiGui::searchFieldChanged()
 		searchResults.append( new SongEntryInt2 ((Song*)bme[noResults]->objPtr, bme[noResults]->sim) );
 	}
 	folderSearchResults->update(&searchResults);
-	
-	folderListView->setCurrentItem( folderSearchResults );
-	folderListView->setSelected( folderSearchResults, TRUE );
-	slotFolderChanged();
+  if(chosenFolder==folderSearchResults) {
+    folderContentChanged(folderSearchResults);
+  }
+  else {
+    changeToFolder(folderSearchResults);
+  }
 	songListView->setContentsPos( 0, 0);			// set scroll position to top
 	QListViewItem* item=songListView->firstChild();
 	if(item)
@@ -1126,29 +1126,62 @@ void YammiGui::searchFieldChanged()
 
 
 /**
- * eg. user clicked on a folder, or folder content changed
+ * user clicked on a folder
  */
 void YammiGui::slotFolderChanged()
 {
-  QApplication::setOverrideCursor( Qt::waitCursor );
-	Folder* oldFolder=chosenFolder;
 	QListViewItem *i = folderListView->currentItem();
 	if ( !i )
 		return;
-	Folder* newFolder=(Folder*)i;
-	
-	if(newFolder==folderActual)
+	changeToFolder((Folder*)i);
+}
+
+/**
+ * Change to the specified folder and do necessary view updates.
+ */
+void YammiGui::changeToFolder(Folder* newFolder, bool changeAnyway)
+{
+  if(!changeAnyway && newFolder==chosenFolder) {
+    // don't do anything if current folder is already the specified one
+    return;
+  }
+  cout << "changeToFolder (unsame) \n";
+  
+  QApplication::setOverrideCursor( Qt::waitCursor );
+  // TODO: history of visited folders, something like:
+  //visitedFoldersHistory->add(chosenFolder);
+  // TODO: remember sort order when changing folders?
+  //int oldSortOrder=chosenFolder->songList->getSortOrder();
+
+  chosenFolder = newFolder;
+  
+  if(chosenFolder==folderActual)
 		songListView->dontTouchFirst=true;				// don't allow moving the first
 	else
 		songListView->dontTouchFirst=false;
 	
-	chosenFolder = newFolder;
+  updateListViewColumns();
+  songListView->sortedBy=1;
+
+  folderListView->setCurrentItem( (QListViewItem*)chosenFolder );
+  folderListView->setSelected( (QListViewItem*)chosenFolder , TRUE );
+  folderListView->ensureItemVisible((QListViewItem*)chosenFolder);
+
+  folderContentChanged();
+}
+
+void YammiGui::folderContentChanged()
+{
 	songListView->clear();
-	songListView->sortedBy=1;
-	if(oldFolder!=newFolder) {
-    updateListViewColumns();
-  }
 	addFolderContent(chosenFolder);
+}
+
+void YammiGui::folderContentChanged(Folder* folder)
+{
+	if(folder==chosenFolder)
+		folderContentChanged();
+	else
+		songListView->triggerUpdate();
 }
 
 
@@ -1433,6 +1466,7 @@ QString YammiGui::makeReplacements(QString input, Song* s, int index)
   input.replace(QRegExp("%n"), "\n");
 	input.replace(QRegExp("%m"), mediaList);
   input.replace(QRegExp("%r"), trackNrStr);
+  input.replace(QRegExp("%0r"), trackNrStr.rightJustify(2,'0'));
   return input;  
 }
 
@@ -1872,7 +1906,7 @@ void YammiGui::forSelectionCheckConsistency()
 	model->checkConsistency(&progress, &selectedSongs, &p);
 
   folderProblematic->update(&model->problematicSongs);
-	slotFolderChanged();
+	folderContentChanged(folderProblematic);
 
 	QString msg=QString(
   "Result of consistency check:\n\n\
@@ -1985,20 +2019,17 @@ void YammiGui::forSelection(action act)
 		updateView();
 		model->allSongsChanged(true);
     model->categoriesChanged(true);
-		slotFolderChanged();
+		folderContentChanged(folderAll);
 	}
 	if(deleteFile) {
 		model->allSongsChanged(true);
-		slotFolderChanged();
+		folderContentChanged(folderAll);
 	}
 	if(act==Enqueue || act==EnqueueAsNext || act==Dequeue) {
     if(player!=0) {
       player->syncYammi2Player(false);
     }
-		if(chosenFolder==folderActual)
-			slotFolderChanged();
-		else
-			songListView->triggerUpdate();
+    folderContentChanged(folderActual);
 		checkPlaylistAvailability();
 	}
 }
@@ -2366,10 +2397,7 @@ void YammiGui::clearPlaylist()
   if(player!=0) {
     player->syncYammi2Player(false);
   }
-	if(chosenFolder==folderActual)
-		slotFolderChanged();
-	else
-		songListView->triggerUpdate();
+  folderContentChanged(folderActual);
 }
 
 /// called whenever user grabs the songSlider
@@ -2429,9 +2457,9 @@ void YammiGui::autoFillPlaylist()
   Folder* toAddFrom=getFolderByName(autoplayFoldername);
   if(toAddFrom!=0 && toAddFrom->songList->count()>0) {
     // fill up from chosen autoplay folder
-    unsigned int noSongsBefore=folderActual->songList->count();
     int total=toAddFrom->songList->count();
-
+    Song* songToAdd=0;
+    
     if(autoplayMode==AUTOPLAY_RANDOM) {
       // method 1: randomly pick a song, no further intelligence
       // create random number
@@ -2441,28 +2469,60 @@ void YammiGui::autoFillPlaylist()
       if(chosen<0) {
         chosen=-chosen;
       }
-      folderActual->addSong(toAddFrom->songList->at(chosen)->song());
+      songToAdd=toAddFrom->songList->at(chosen)->song();
+      if(folderActual->songList->containsSong(songToAdd)) {
+        // don't add a song that is already in playlist
+        songToAdd=0;
+      }
     }
 
     if(autoplayMode==AUTOPLAY_LNP) {
       // method 2: try to pick the song we didn't play for longest time
+      int rememberSortOrder=toAddFrom->songList->getSortOrder();
       toAddFrom->songList->setSortOrderAndSort(MyList::ByLastPlayed, true);
-      for(unsigned int i=0; i<toAddFrom->songList->count() && folderActual->songList->count()<5; i++) {
-        Song* toAdd=toAddFrom->songList->at(i)->song();
-        if(!(folderActual->songList->containsSong(toAdd))) {
-          folderActual->addSong(toAdd);
+
+      // if more than one song have the same timestamp: choose randomly
+      QDateTime lnpTimestamp;
+      MyList candidateList;
+      for(unsigned int i=0; i<toAddFrom->songList->count(); i++) {
+        Song* check=toAddFrom->songList->at(i)->song();
+        if(folderActual->songList->containsSong(check)) {
+          continue;
+        }
+        if(lnpTimestamp.isNull()) {
+          lnpTimestamp=check->lastPlayed;
+        }
+        else if(check->lastPlayed!=lnpTimestamp) {
+          break;
+        }
+        candidateList.appendSong(check);
+      }
+
+      int candidates=candidateList.count();
+      if(candidates>0) {
+        if(candidates==1) {
+          songToAdd=candidateList.firstSong();
+        }
+        else {
+          cout << "candidate songs: " << candidates << "\n";
+          QDateTime dt = QDateTime::currentDateTime();
+          QDateTime xmas( QDate(2050,12,24), QTime(17,00) );
+          int chosen=(dt.secsTo(xmas) + dt.time().msec()) % candidates;
+          songToAdd=candidateList.at(chosen)->song();        
         }
       }
+      toAddFrom->songList->setSortOrderAndSort(rememberSortOrder, true);
     }
 
-    // update view only if we really added songs
-    if(folderActual->songList->count()>noSongsBefore) {
+    if(songToAdd!=0) {
+      folderActual->addSong(songToAdd);
       player->syncYammi2Player(false);
       // update view, if folderActual is currently shown folder
-      if(chosenFolder==folderActual || chosenFolder->folderName()==autoplayFoldername)
-        slotFolderChanged();
-      else
-        songListView->triggerUpdate();
+      folderContentChanged(folderActual);
+        // TODO: do we have to update the autoplayfolder???
+//      if(chosenFolder->folderName()==autoplayFoldername) {
+//        folderContentChanged();
+//      }
     }
   }
 }
@@ -2689,6 +2749,9 @@ void YammiGui::keyPressEvent(QKeyEvent* e)
 		case Key_F:		// Ctrl-F
 			if(e->state()!=ControlButton)
 				break;
+			searchField->setText("");
+			searchField->setFocus();
+			break;
 			
 		case Key_Escape:
 			searchField->setText("");
@@ -2696,12 +2759,18 @@ void YammiGui::keyPressEvent(QKeyEvent* e)
 			break;
 		
 		case Key_S:		// Ctrl-S
-			if(controlPressed) //e->state()!=ControlButton)
+			if(e->state()!=ControlButton)
 				break;
 			model->save();
 			break;
 		
-		default:
+		case Key_P:		// Ctrl-P
+			if(e->state()!=ControlButton)
+				break;
+			toFromPlaylist();
+			break;
+
+    default:
 			e->ignore();
 	}
 }
@@ -2725,6 +2794,19 @@ void YammiGui::keyReleaseEvent(QKeyEvent* e)
 }
 
 		
+void YammiGui::toFromPlaylist()
+{
+  if(chosenFolder!=folderActual) {
+    // switch to playlist
+    toFromRememberFolder=chosenFolder;
+    changeToFolder(folderActual);
+  }
+  else {
+    // switch back to last open folder
+    changeToFolder(toFromRememberFolder);
+  }
+}
+
 void YammiGui::changeSleepMode()
 {
  	if(shuttingDown==0 && !model->config.childSafe) {							// shutdown computer !!!
@@ -2912,7 +2994,7 @@ TODO: show most recently added songs in songlist
 void YammiGui::stopDragging()
 {
 	((FolderSorted*)chosenFolder)->syncWithListView(songListView);
-	slotFolderChanged();
+	folderContentChanged();
 
 	if(chosenFolder==folderActual && player!=0) {
 		player->syncYammi2Player(false);
@@ -3011,9 +3093,7 @@ void YammiGui::loadSongsFromMedia(QString mediaName)
     player->syncYammi2Player(false);
   }
 	checkPlaylistAvailability();
-	if(chosenFolder==folderActual) {
-		slotFolderChanged();
-	}	
+	folderContentChanged(folderActual);
 }
 
 // manages loading songfiles from removable media
@@ -3124,10 +3204,8 @@ void YammiGui::skipBackward()
 	model->songsPlayed.remove(model->songsPlayed.count()-1);
   folderSongsPlayed->updateTitle();
 	// update necessary?
-	if(chosenFolder==folderActual || chosenFolder==folderSongsPlayed)
-		slotFolderChanged();
-	else
-		songListView->triggerUpdate();
+  folderContentChanged(folderActual);
+  folderContentChanged(folderSongsPlayed);
 }
 
 

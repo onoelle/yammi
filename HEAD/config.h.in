@@ -3,6 +3,9 @@
 /* Support reading and writing MP3 tags */
 #undef ENABLE_ID3LIB
 
+/* nls */
+#undef ENABLE_NLS
+
 /* Support noatun as a multimedia player */
 #undef ENABLE_NOATUN
 
@@ -12,14 +15,32 @@
 /* Support xmms as a multimedia player */
 #undef ENABLE_XMMS
 
+/* catgets */
+#undef HAVE_CATGETS
+
 /* Defines if your system has the crypt function */
 #undef HAVE_CRYPT
 
 /* Define if you have the <dlfcn.h> header file. */
 #undef HAVE_DLFCN_H
 
+/* gettext */
+#undef HAVE_GETTEXT
+
+/* iconv_open */
+#undef HAVE_ICONV_OPEN
+
 /* Define if you have the <inttypes.h> header file. */
 #undef HAVE_INTTYPES_H
+
+/* langinfo_codeset */
+#undef HAVE_LANGINFO_CODESET
+
+/* lc_messages */
+#undef HAVE_LC_MESSAGES
+
+/* Define if you have the `gdk' library (-lgdk). */
+#undef HAVE_LIBGDK
 
 /* Define if you have the `id3' library (-lid3). */
 #undef HAVE_LIBID3
@@ -38,6 +59,9 @@
 
 /* Define if you have a working libpthread (will enable threaded code) */
 #undef HAVE_LIBPTHREAD
+
+/* libsm */
+#undef HAVE_LIBSM
 
 /* Define if you have the `stdc++' library (-lstdc++). */
 #undef HAVE_LIBSTDC__
@@ -69,6 +93,9 @@
 /* Define if you have the <stdlib.h> header file. */
 #undef HAVE_STDLIB_H
 
+/* strcpy */
+#undef HAVE_STPCPY
+
 /* Define if you have the <strings.h> header file. */
 #undef HAVE_STRINGS_H
 
@@ -90,7 +117,7 @@
 /* Define if you want Xinerama support */
 #undef HAVE_XINERAMA
 
-/* Name of package */
+/* yammi package */
 #undef PACKAGE
 
 /* The size of a `char', as computed by sizeof. */
@@ -108,7 +135,7 @@
 /* Define if you have the ANSI C header files. */
 #undef STDC_HEADERS
 
-/* Version number of package */
+/* yammi version */
 #undef VERSION
 
 /* Compatibility define */

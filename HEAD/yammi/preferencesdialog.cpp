@@ -366,7 +366,7 @@ void PreferencesDialog::showReplacements()
   msg+="%u = albUm, %b = Bitrate\n";
   msg+="%i = Index, %s = Length (seconds), %l = Length(mm:ss)\n";
   msg+="%m = Media list, %n = Newline\n";
-  msg+="%r = Track number\n";
+  msg+="%r = Track number, %0r = Track number, two-digit length (padded with 0)\n";
   msg+="%X directory dialog, %Y file dialog\n";
   msg+="%Z input string dialog\n\n";
 
