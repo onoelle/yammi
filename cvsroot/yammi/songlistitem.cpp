@@ -110,10 +110,12 @@ QString SongListItem::key(int column, bool ascending) const
 	if(column==base+5)
 		return QString("%1").arg(s->trackNr, 10);
 	if(column==base+6)
-		return QString("%1").arg(999999999+ QDateTime( QDate(2222, 1, 1), QTime(0,0,0) ).secsTo(s->addedTo), 10);
+		return QString("%1").arg(ID3v1_Genre[s->genreNr]);
 	if(column==base+7)
-		return QString("%1").arg(s->bitrate, 10);
-	if(column==base+11)
+		return QString("%1").arg(999999999+ QDateTime( QDate(2222, 1, 1), QTime(0,0,0) ).secsTo(s->addedTo), 10);
+	if(column==base+8)
+		return QString("%1").arg(s->bitrate, 9);
+	if(column==base+10)
 		return QString("%1").arg(999999999+ QDateTime( QDate(2222, 1, 1), QTime(0,0,0) ).secsTo(s->lastPlayed), 10);
 	return text(column);
 }

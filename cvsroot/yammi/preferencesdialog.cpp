@@ -17,7 +17,36 @@
 
 #include "preferencesdialog.h"
 
-PreferencesDialog::PreferencesDialog(QWidget *parent, const char *name, bool modal ) : Preferences(parent,name,modal) {
+#include <qfiledialog.h>
+#include <qpushbutton.h>
+
+
+PreferencesDialog::PreferencesDialog(QWidget *parent, const char *name, bool modal ) : Preferences(parent,name,modal)
+{
+	// additional initialization
+	connect( ButtonChooseScanDir, SIGNAL( clicked() ), this, SLOT( chooseScanDir() ) );
 }
+
 PreferencesDialog::~PreferencesDialog(){
 }
+
+
+// file dialog for scan dir
+void PreferencesDialog::chooseScanDir()
+{
+	QString dir=QFileDialog::getExistingDirectory(LineEditScanDir->text(), this, QString("yammi"), QString("choose scan directory"), true);
+	if(!dir.isNull()) {
+		LineEditScanDir->setText(dir);
+	}
+}
+				
+// file dialog for scan dir
+void PreferencesDialog::chooseTrashDir()
+{
+	QString dir=QFileDialog::getExistingDirectory(LineEditTrashDir->text(), this, QString("yammi"), QString("choose trash directory"), true);
+	if(!dir.isNull()) {
+		LineEditTrashDir->setText(dir);
+	}
+}
+				
+

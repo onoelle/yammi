@@ -1,5 +1,7 @@
 /*  XMMS - Cross-platform multimedia player
- *  Copyright (C) 1998-2000  Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson and 4Front Technologies
+ *  Copyright (C) 1998-2002  Peter Alm, Mikael Alm, Olle Hallnas,
+ *                           Thomas Nilsson and 4Front Technologies
+ *  Copyright (C) 1999-2002  Haavard Kvaalen
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -75,7 +77,11 @@ gfloat xmms_remote_get_eq_band(gint session, gint band);
 void xmms_remote_set_eq(gint session, gfloat preamp, gfloat *bands);
 void xmms_remote_set_eq_preamp(gint session, gfloat preamp);
 void xmms_remote_set_eq_band(gint session, gint band, gfloat value);
+/* Added in XMMS 1.2.1 */
 void xmms_remote_quit(gint session);
+/* Added in XMMS 1.2.6 */
+void xmms_remote_play_pause(gint session);
+void xmms_remote_playlist_ins_url_string(gint session, gchar * string, gint pos);
 
 #ifdef __cplusplus
 };

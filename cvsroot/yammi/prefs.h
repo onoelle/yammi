@@ -49,7 +49,7 @@ public:
 	int searchThreshold;
 	int searchMaximumNoResults;
 	QString grabAndEncodeCmd;
-	
+	QString shutdownScript;
 };
 
 #endif

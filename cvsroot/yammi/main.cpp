@@ -18,9 +18,8 @@ int main( int argc, char **argv )
 	QApplication application( argc, argv );
 
 	YammiGui gui;						// starts gui
-//	gYammiGui=&gui;
 	gui.resize( 1024, 468 );
-	gui.setCaption( "Yammi 0.1 - 1-2002 by Oliver Nölle" );
+	gui.setCaption( "Yammi 0.4 - 3-2002 by Oliver Nölle" );
 	application.setMainWidget( &gui );
 	gui.show();
 	return application.exec();

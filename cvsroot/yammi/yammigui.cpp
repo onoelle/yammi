@@ -406,6 +406,7 @@ void YammiGui::setPreferences()
 	d.LineEditSearchThreshold->setText(QString("%1").arg(model->config.searchThreshold));
 	d.LineEditSearchMaximumNoResults->setText(QString("%1").arg(model->config.searchMaximumNoResults));
 	d.LineEditGrabAndEncodeCmd->setText(QString("%1").arg(model->config.grabAndEncodeCmd));
+	d.LineEditShutdownScript->setText(QString("%1").arg(model->config.shutdownScript));
 	
 	
 	
@@ -449,7 +450,7 @@ void YammiGui::setPreferences()
 		if(model->config.childSafe && !d.CheckBoxChildSafe->isChecked()) {
 			bool ok;
 			QString passwd=QString(QInputDialog::getText( "password", "enter password", QLineEdit::Password, QString(""), &ok, this ));
-			if(passwd=="funny")
+			if(passwd=="protect")
 			model->config.childSafe=false;
 		}
 		else {
@@ -460,6 +461,7 @@ void YammiGui::setPreferences()
 		model->config.searchThreshold=atoi(d.LineEditSearchThreshold->text());
 		model->config.searchMaximumNoResults=atoi(d.LineEditSearchMaximumNoResults->text());
 		model->config.grabAndEncodeCmd=d.LineEditGrabAndEncodeCmd->text();
+		model->config.shutdownScript=d.LineEditShutdownScript->text();
 		updateSongPopup();
 		model->savePreferences();
 	}
@@ -498,8 +500,6 @@ void YammiGui::updateSongPopup()
 	}
 	songPopup->insertItem(getPopupIcon(SongInfo), "Info...", this, SLOT(forSelection(int)), 0, SongInfo);
 	songPopup->insertItem( "Insert Into...", playListPopup);
-	if(model->config.childSafe)
-		return;
 
 	songSearchPopup = new QPopupMenu(songPopup);
 	songSearchPopup->insertItem( "Entry", this, SLOT(searchSimilar(int)), 0, 0);
@@ -507,6 +507,9 @@ void YammiGui::updateSongPopup()
 	songSearchPopup->insertItem( "Title", this, SLOT(searchSimilar(int)), 0, 2);
 	songSearchPopup->insertItem( "Album", this, SLOT(searchSimilar(int)), 0, 3);
 	songPopup->insertItem( "Search for similar...", songSearchPopup);
+	
+	if(model->config.childSafe)
+		return;
 	
 	songAdvancedPopup = new QPopupMenu(songPopup);
 	songAdvancedPopup->insertItem( "Delete", this, SLOT(forSelection(int)), 0, Delete);
@@ -944,12 +947,19 @@ void YammiGui::forSelectionSongInfo()
 	int selected=0;
 	SongInfoDialog si(this, "test", true);
 	
-	// fill combobox with genres
-	si.ComboBoxGenre->insertItem("");
+	// fill combobox with genres, but sort them first
+	QStringList genreList;
+	genreList.append("");
 	for(int genreNr=0; genreNr<=ID3v1_MaxGenreNr; genreNr++) {
-		si.ComboBoxGenre->insertItem(QString("%1 (%2)").arg(ID3v1_Genre[genreNr]).arg(genreNr));
+		genreList.append( QString("%1").arg(ID3v1_Genre[genreNr]) );
 	}
+	genreList.sort();
 	
+	for ( QStringList::Iterator it = genreList.begin(); it != genreList.end(); ++it ) {
+		si.ComboBoxGenre->insertItem((*it).latin1());
+	}
+
+
 	for(Song* s=selectedSongs.firstSong(); s; s=selectedSongs.nextSong()) {
 		selected++;
 		if(selected==10)			// set wait cursor (summing size of 2000 files may take a while...)
@@ -1034,12 +1044,36 @@ void YammiGui::forSelectionSongInfo()
 				.arg( (float)_size                    ,10,'f', 0 )
 				);
 	si.ReadOnlyBitrate->setText(_bitrate);
-	si.ComboBoxGenre->setCurrentItem(_genreNr+1);
+	
+	if(_genreNr==-1)
+		si.ComboBoxGenre->setCurrentItem(0);
+	else {
+		QString songGenre;
+		songGenre=QString("%1").arg(ID3v1_Genre[_genreNr]);
+		int found=genreList.findIndex(songGenre);
+//		cout << "songGenre: " << songGenre << ", genreNr: " << _genreNr << ", foundNr: " << found << "\n";
+		if(found!=-1)
+			si.ComboBoxGenre->setCurrentItem(found);
+	}
 	
 	// show dialog
 	int result=si.exec();
 	
 	if(result==QDialog::Accepted) {
+		// get genreNr
+		int sortedGenreNr=si.ComboBoxGenre->currentItem();
+		int tryGenreNr=-1;
+		if(sortedGenreNr!=0) {
+			QString chosenGenre=genreList[sortedGenreNr];
+			for(int genreNr=0; genreNr<=ID3v1_MaxGenreNr; genreNr++) {
+				if( chosenGenre==QString("%1").arg(ID3v1_Genre[genreNr]) ) {
+					tryGenreNr=genreNr;
+					break;
+				}
+			}
+		}
+
+		
 		// now set the edited info for all selected songs
 		for(Song* s=selectedSongs.firstSong(); s; s=selectedSongs.nextSong()) {
 			bool change=false;
@@ -1059,10 +1093,9 @@ void YammiGui::forSelectionSongInfo()
 			newAddedTo.readFromString(si.LineEditAddedTo->text());
 			if(newAddedTo.isValid())
 				if(newAddedTo!=s->addedTo) { s->addedTo=newAddedTo; change=true; }
-			int tryGenreNr=si.ComboBoxGenre->currentItem()-1;
-			if(tryGenreNr!=-1) {
-				if(tryGenreNr!=s->genreNr) {s->genreNr=tryGenreNr; change=true; }
-			}
+			
+			if(tryGenreNr!=-1)
+				if(tryGenreNr!=s->genreNr) { s->genreNr=tryGenreNr; change=true; }
 			
 			if(change) {
 				model->allSongsChanged(true);
@@ -1070,7 +1103,7 @@ void YammiGui::forSelectionSongInfo()
 				s->filenameDirty=(s->checkFilename()==false);
 			}				
 		}	
-		slotFolderChanged();
+//		slotFolderChanged();
 	}
 }
 
@@ -1286,6 +1319,19 @@ void YammiGui::syncYammi2Xmms(bool syncAll)
 					continue;		// okay, both are the same
 				// ups, different!
 //				cout << "song entry " << i << " different => deleting and replacing all following!\n";
+				
+				// new version, only working with xmms 1.2.6 or later
+				/*
+				// 1. delete the different entry (only delete if check!=0 ?)
+				xmms_remote_playlist_delete(0, i);
+				// 2. insert the correct song
+				gchar url[300];
+				strcpy(url, s->location());
+				xmms_remote_playlist_ins_url_string(0, url, i);
+				// end of new version
+				*/
+				
+				// old version
 				for(int toDel=xmms_remote_get_playlist_length(0)-1; toDel>=i; toDel--) {
 					// delete all following
 					xmms_remote_playlist_delete(0, toDel);
@@ -1299,6 +1345,8 @@ void YammiGui::syncYammi2Xmms(bool syncAll)
 					xmms_remote_playlist_add_url_string(0, url);
 					myWait(100);
 				}
+				// end of old version
+				
 				return;
 			}
 			else {
@@ -1474,7 +1522,7 @@ void YammiGui::openHelp()
 void YammiGui::aboutDialog()
 {
 	QMessageBox::information( this, "Yammi",	QString("Yammi - Yet Another Music Manager\n\n\n")+
-																					"Version 0.1, 12-2001 by Oliver Nölle\n\n"+
+																					"Version 0.4, 12-2001 - 3-2002 by Oliver Nölle\n\n"+
 																					"Contact: oli.noelle@web.de\n\n"+
 																					"Project home page: yammi.sourceforge.net\n\n\n"+
 																					"have fun...\n");
@@ -1680,7 +1728,7 @@ void YammiGui::onTimer()
 		if(currentFile!=file) {
 		// *** song change detected ***
 		// ****************************
-			cout << "song change detected\n";
+//			cout << "song change detected\n";
 			if(songListView->dragging)
 				stopDragging();
 			
@@ -1835,6 +1883,7 @@ void YammiGui::checkForGrabbedTrack(){
  		return;
  	}
 	mainStatusBar->message("new song available in inbox!!! (perform \"update database\" to make it available)", 5000); 	
+	// here we could automatically include it in our database...
 }
 
 void YammiGui::shutDown()
@@ -1842,8 +1891,8 @@ void YammiGui::shutDown()
 	if(shuttingDown==0)				// canceled
 		return;
 	if(shuttingDown==2) {
-		xmms_remote_quit(0);						// properly close xmms => xmms will remember last played song + playlist
-		system("shutdownscript &");			// shutdown computer
+		xmms_remote_quit(0);						// properly close xmms => xmms will remember playlist
+		system(model->config.shutdownScript+" &");			// invoke shutdown script
 	}
 	endProgram();
 }
@@ -1909,7 +1958,7 @@ void YammiGui::keyPressEvent(QKeyEvent* e)
 			else if(shuttingDown==1 && !model->config.childSafe) {							// shutdown computer !!!
 				qApp->beep();
 				shuttingDown=2;
-				cout << "shutting down (computer!), press F12 again to cancel...\n";
+				cout << "shutting down (computer!), press Pause again to cancel...\n";
 			}
 			else {
 				qApp->beep();
@@ -1959,7 +2008,7 @@ void YammiGui::keyPressEvent(QKeyEvent* e)
 			}
 			} break;
 		
-		case Key_F:		// F (how about Ctrl?)
+		case Key_F:		// Ctrl-F
 			if(e->state()!=ControlButton)
 				break;
 			
@@ -1968,7 +2017,7 @@ void YammiGui::keyPressEvent(QKeyEvent* e)
 			searchField->setFocus();
 			break;
 		
-		case Key_S:		// F (how about Ctrl?)
+		case Key_S:		// Ctrl-S
 			if(e->state()!=ControlButton)
 				break;
 			model->save();

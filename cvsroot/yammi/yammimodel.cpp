@@ -69,6 +69,7 @@ void YammiModel::readPreferences()
 	config.searchThreshold	=	getProperty(&doc, "searchThreshold", config.searchThreshold);
 	config.searchMaximumNoResults	=	getProperty(&doc, "searchMaximumNoResults", config.searchMaximumNoResults);
 	config.grabAndEncodeCmd	=	getProperty(&doc, "grabAndEncodeCmd", config.grabAndEncodeCmd);
+	config.shutdownScript		=	getProperty(&doc, "shutdownScript", config.shutdownScript);
 	cout << "..done\n";
 }
 
@@ -101,6 +102,7 @@ void YammiModel::savePreferences()
 	setProperty(&doc, "searchThreshold", 			config.searchThreshold);
 	setProperty(&doc, "searchMaximumNoResults",	config.searchMaximumNoResults);
 	setProperty(&doc, "grabAndEncodeCmd",	config.grabAndEncodeCmd);
+	setProperty(&doc, "shutdownScript",	config.shutdownScript);
 	
 	// save to file...
 	QString save=doc.toString();

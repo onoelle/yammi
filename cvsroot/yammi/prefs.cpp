@@ -33,7 +33,8 @@ Prefs::Prefs(){
 	keepInXmms=3;
 	searchThreshold=20;
 	searchMaximumNoResults=200;
-	grabAndEncodeCmd="grabAndEncode";
+	grabAndEncodeCmd="yammiGrabAndEncode";
+	shutdownScript="yammiShutdownScript";
 }
 
 Prefs::~Prefs(){

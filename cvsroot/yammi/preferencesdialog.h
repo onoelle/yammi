@@ -27,9 +27,15 @@
 
 class PreferencesDialog : public Preferences  {
    Q_OBJECT
+
 public: 
 	PreferencesDialog(QWidget *parent=0, const char *name=0, bool modal=true);
 	~PreferencesDialog();
+	
+public slots:
+	void chooseScanDir();
+	void chooseTrashDir();
+
 };
 
 #endif

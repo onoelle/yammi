@@ -2,6 +2,7 @@ done
 ----
 
 ??? version 0.4
+- 16. 3. updated documentation, should be a good basis now
 - 15. 3. new checkConsistency diagnosis
 					tags/filename will only be checked if enabled in prefs
 - 14. 3. added basic support for id3 genres (sorted list would be nice)

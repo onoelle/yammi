@@ -1,17 +1,23 @@
 TODO
 ----
-last update 17.2.2002
+last update 16.3.2002
 
 KNOWN BUGS
 ----------
-sometimes xmms seems to crash when inserting/deleting songs in xmms' playlist,
-then yammi blocks until xmms is killed
+- sometimes xmms (1.2.5) seems to crash when inserting/deleting songs
+in xmms' playlist, then yammi freezes until xmms is killed
+
+- doesn't show meaningful value for bitrate and length when variable bitrate
+
+- some mp3s appear as corrupted, although xmms can play them
+  (layer information not readable?)
+
 
 for release 0.4
 ------------------------
 - touch history file on first startup => yes, check whether funciona
-- update documentation (esp. on grabbing/encoding songs)
 - song slider for prelisten?
+- choose directory dialog within preferences
 
 for release 0.4.1
 -----------------
@@ -27,9 +33,6 @@ for near future
   - playing songs that haven't been played for quite a while
 
 - fix: two albums having the same name appear as one album
-- fix: doesn't show meaningful value for bitrate and length when variable bitrate
-- fix: some mp3s xmms can play appear as corrupted
-  (layer information not readable?)
 	
 
 for far future
