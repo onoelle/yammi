@@ -22,39 +22,37 @@
 #include <klocale.h>
 
 #include <qlineedit.h>
+#include <qcheckbox.h>
 #include <qpushbutton.h>
 #include "prefs.h"
 
 
 
 UpdateDatabaseDialog::UpdateDatabaseDialog(QWidget *parent, Prefs* config )
-  : UpdateDatabaseDialogBase(parent, i18n("Update Database (harddisk)"), true)
-{
-    this->config=config;
-	LineEditScanDir->setText(config->scanDir);
-	LineEditFilePattern->setText(config->scanPattern);
- 	connect( ButtonChooseScanDir, SIGNAL( clicked() ), this, SLOT( chooseScanDir() ) );
+: UpdateDatabaseDialogBase(parent, i18n("Update Database (harddisk)"), true) {
+    this->config = config;
+    CheckBoxFollowSymlinks->setChecked(config->followSymLinks);
+    LineEditScanDir->setText(config->scanDir);
+    LineEditFilePattern->setText(config->scanPattern);
+    connect( ButtonChooseScanDir, SIGNAL( clicked() ), this, SLOT( chooseScanDir() ) );
     connect( PushButtonOk, SIGNAL( clicked() ), this, SLOT( myAccept() ) );
 }
 
 
-UpdateDatabaseDialog::~UpdateDatabaseDialog()
-{
-}
+UpdateDatabaseDialog::~UpdateDatabaseDialog() {}
 
-void UpdateDatabaseDialog::myAccept()
-{
-    config->scanDir=LineEditScanDir->text();
-    config->scanPattern=LineEditFilePattern->text();
+void UpdateDatabaseDialog::myAccept() {
+    config->scanDir = LineEditScanDir->text();
+    config->scanPattern = LineEditFilePattern->text();
+    config->followSymLinks = CheckBoxFollowSymlinks->isChecked();
     accept();
 }
 
 
 // file dialog for scan dir
-void UpdateDatabaseDialog::chooseScanDir()
-{
-	QString dir = KFileDialog::getExistingDirectory(LineEditScanDir->text(), this, i18n("choose scan directory"));
-  if(!dir.isNull()) {
-		LineEditScanDir->setText(dir);
-	}
+void UpdateDatabaseDialog::chooseScanDir() {
+    QString dir = KFileDialog::getExistingDirectory(LineEditScanDir->text(), this, i18n("choose scan directory"));
+    if(!dir.isNull()) {
+        LineEditScanDir->setText(dir);
+    }
 }

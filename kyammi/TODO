@@ -2,6 +2,13 @@ TODO
 ----
 last update 01.12.2004
 
+user-reported bugs:
+-------------------
+- Clicking on the playlist area when there is no database (ie after deleting .kde/share/apps/yammi) makes yammi crash.
+- I confirm too the crash when exiting yammi, it happens before yammi writes
+ the config file, no matter what the player backend is.
+- If you "Play now" a song that is already playing, Yammi crashes. 
+
 
 for version 1.2-beta-2
 ----------------------

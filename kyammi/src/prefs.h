@@ -72,6 +72,8 @@ public:
     QString yammiVersion;
     /** Base directory for scanning */
     QString scanDir;
+    /** flag whether to follow symlinks */
+    bool followSymLinks;
     /** Trash directory for deleted song files
      *  Trashcan for songs. Files will be moved to this dir on deleting
      */

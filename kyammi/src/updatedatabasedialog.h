@@ -25,19 +25,18 @@
 /**
   *@author Oliver Nölle
   */
-class UpdateDatabaseDialog : public UpdateDatabaseDialogBase
-{
-  Q_OBJECT
-public: 
-	UpdateDatabaseDialog(QWidget *parent, Prefs* config);
-	~UpdateDatabaseDialog();
+class UpdateDatabaseDialog : public UpdateDatabaseDialogBase {
+    Q_OBJECT
+public:
+    UpdateDatabaseDialog(QWidget *parent, Prefs* config);
+    ~UpdateDatabaseDialog();
 
 public slots:
-  void chooseScanDir();  
-  void myAccept();
-  
+    void chooseScanDir();
+    void myAccept();
+
 protected:
-	Prefs* config;
+    Prefs* config;
 };
 
 #endif

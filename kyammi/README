@@ -79,6 +79,12 @@ If you know why it fails and can fix it, even better, patches are more than welc
 Known workarounds if compilation fails
 **************************************
 
+compiling on 64 bit systems
+---------------------------
+Maybe others need x86_64bit compile opts:
+/configure --enable-libsuffix=64 --with-qt-dir=/usr/lib64/qt3 --with-qt-libraries=/usr/lib64/qt3/lib64 --prefix=/opt/kde3
+
+
 "Import selected files" crashes while in KFileDialog
 ----------------------------------------------------
 => disable Preview funktionality (bug in KDE 3.2.1?)

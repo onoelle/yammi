@@ -18,6 +18,7 @@
 #include "updatedatabasemediadialog.h"
 
 #include <qlineedit.h>
+#include <qcheckbox.h>
 #include <qobject.h>
 #include <qpushbutton.h>
 #include <kfiledialog.h>
@@ -25,22 +26,33 @@
 
 
 
-UpdateDatabaseMediaDialog::UpdateDatabaseMediaDialog(QWidget *parent, const char *name)
-  : UpdateDatabaseMediaDialogBase(parent, name, true)
-{
- 	connect( ButtonChooseMediaDir, SIGNAL( clicked() ), this, SLOT( chooseMediaDir() ) );
+UpdateDatabaseMediaDialog::UpdateDatabaseMediaDialog(QWidget* parent, Prefs* config)
+: UpdateDatabaseMediaDialogBase(parent, i18n("Update Database (media) Dialog"), true) {
+    this->config = config;
+    LineEditMediaDir->setText(config->mediaDir);
+    LineEditFilePattern->setText(config->scanPattern);
+    CheckBoxMountMediaDir->setChecked(config->mountMediaDir);
+    CheckBoxFollowSymLinks->setChecked(config->followSymLinks);
+    connect( ButtonChooseMediaDir, SIGNAL( clicked() ), this, SLOT( chooseMediaDir() ) );
+    connect( PushButtonOk, SIGNAL( clicked() ), this, SLOT( myAccept() ) );
 }
 
 
-UpdateDatabaseMediaDialog::~UpdateDatabaseMediaDialog(){
-}
+UpdateDatabaseMediaDialog::~UpdateDatabaseMediaDialog() {}
 
 
 // file dialog for media dir
-void UpdateDatabaseMediaDialog::chooseMediaDir()
-{
-	QString dir=KFileDialog::getExistingDirectory(LineEditMediaDir->text(), this, i18n("choose media directory"));
-	if(!dir.isNull()) {
-		LineEditMediaDir->setText(dir);
-	}
+void UpdateDatabaseMediaDialog::chooseMediaDir() {
+    QString dir=KFileDialog::getExistingDirectory(LineEditMediaDir->text(), this, i18n("choose media directory"));
+    if(!dir.isNull()) {
+        LineEditMediaDir->setText(dir);
+    }
+}
+
+void UpdateDatabaseMediaDialog::myAccept() {
+    config->mediaDir = LineEditMediaDir->text();
+    config->scanPattern = LineEditFilePattern->text();
+    config->mountMediaDir = CheckBoxMountMediaDir->isChecked();
+    config->followSymLinks = CheckBoxFollowSymLinks->isChecked();
+    accept();
 }

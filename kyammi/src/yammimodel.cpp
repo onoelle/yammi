@@ -553,7 +553,7 @@ bool YammiModel::categoriesChanged() {
 
 
 //   Updates the xml-database by scanning harddisk
-void YammiModel::updateSongDatabase(QString scanDir, QString filePattern, QString mediaName, KProgressDialog* progress) {
+void YammiModel::updateSongDatabase(QString scanDir, bool followSymLinks, QString filePattern, QString mediaName, KProgressDialog* progress) {
     entriesAdded=0;
     corruptSongs=0;
     if(m_yammi->config()->childSafe) {
@@ -568,10 +568,10 @@ void YammiModel::updateSongDatabase(QString scanDir, QString filePattern, QStrin
         if(!d.exists()) {
             QString msg( i18n("The base directory for scanning does not exist!\n\
                               Set value \"scanDir\" to an existing directory!"));
-            KMessageBox::error( m_yammi, msg, i18n("Yammi"));
+            KMessageBox::error( m_yammi, msg);
             return;
         } else {
-            traverse(scanDir, filePattern, progress);
+            traverse(scanDir, followSymLinks, filePattern, progress);
             kdDebug() << "finished scanning!" << endl;
         }
     } else {
@@ -592,9 +592,9 @@ void YammiModel::updateSongDatabase(QString scanDir, QString filePattern, QStrin
                              does not exist or is not redable!\n Set value \"mediaDir\" in the preferences to an existing directory!\n\
                              (if necessary, enable the \"mount media\" option in the preferences)"));
             msg.arg(scanDir);
-            KMessageBox::error( m_yammi, i18n("Yammi"), msg );
+            KMessageBox::error( m_yammi, msg);
         } else {
-            traverse(scanDir, filePattern, progress, mediaName);
+            traverse(scanDir, followSymLinks, filePattern, progress, mediaName);
             kdDebug() << "finished scanning!" << endl;
         }
         // umount media dir
@@ -634,7 +634,7 @@ void YammiModel::updateSongDatabase(QStringList list) {
 
 /// traverses a directory recursively and processes all mp3 files
 /// returns false, if scanning was cancelled
-bool YammiModel::traverse(QString path, QString filePattern, KProgressDialog* progress, QString mediaName) {
+bool YammiModel::traverse(QString path, bool followSymLinks, QString filePattern, KProgressDialog* progress, QString mediaName) {
     // leave out the following directories
     if(path+"/"==m_yammi->config()->trashDir || path+"/"==m_yammi->config()->swapDir) {
         kdWarning() << "skipping trash or swap directory: " << path << endl;
@@ -677,11 +677,13 @@ bool YammiModel::traverse(QString path, QString filePattern, KProgressDialog* pr
         if(fi2->fileName()=="." || fi2->fileName()=="..") {
             continue;
         }
-        if(fi2->isSymLink()) {
-            kdDebug() << "skipping symlink " << fi2->filePath() << endl;
-            continue;
+        if(followSymLinks == false) {
+            if(fi2->isSymLink()) {
+                kdDebug() << "skipping symlink " << fi2->filePath() << endl;
+                continue;
+            }
         }
-        if(traverse(fi2->filePath(), filePattern, progress, mediaName) == false) {
+        if(traverse(fi2->filePath(), followSymLinks, filePattern, progress, mediaName) == false) {
             return false;
         }
     }
@@ -691,7 +693,7 @@ bool YammiModel::traverse(QString path, QString filePattern, KProgressDialog* pr
 
 // adds a single songfile to the database
 void YammiModel::addSongToDatabase(QString filename, QString mediaName=0) {
-    kdDebug() << "adding file to db" << filename << endl;
+    kdDebug() << "adding file '" << filename << "' to database..." << endl;
     bool found=false;
     for(Song* s=allSongs.firstSong(); s; s=allSongs.nextSong()) {
         // this check might fail when filename has strange characters?

@@ -2988,25 +2988,19 @@ void YammiGui::updateSongDatabaseSingleFile() {
 
 
 void YammiGui::updateSongDatabaseMedia() {
-    UpdateDatabaseMediaDialog d(this, i18n("Update Database (media) Dialog"));
-
-    d.LineEditMediaDir->setText(config()->mediaDir);
-    d.LineEditFilePattern->setText("*.mp3 *.ogg *.wav");
-    d.CheckBoxMountMediaDir->setChecked(config()->mountMediaDir);
+    UpdateDatabaseMediaDialog d(this, config());
     // show dialog
     int result=d.exec();
-    if(result!=QDialog::Accepted)
+    if(result!=QDialog::Accepted) {
         return;
+    }
+    config()->saveConfig();
     if(d.LineEditMediaDir->text()=="") {
         KMessageBox::information( this,i18n("You have to enter a name for the media!") );
         return;
     }
-
-    config()->mountMediaDir=d.CheckBoxMountMediaDir->isChecked();
-    QString mediaName=d.LineEditMediaName->text();
-    QString mediaDir=d.LineEditMediaDir->text();
-    QString filePattern=d.LineEditFilePattern->text();
-    updateSongDatabase(mediaDir, filePattern, mediaName);
+    QString mediaName = d.LineEditMediaName->text();
+    updateSongDatabase(config()->mediaDir, config()->scanPattern, mediaName);
 }
 
 
@@ -3024,7 +3018,7 @@ void YammiGui::updateSongDatabase(QString scanDir, QString filePattern, QString 
     kapp->processEvents();
 
     isScanning=true;
-    model->updateSongDatabase(scanDir, filePattern, media, &progress);
+    model->updateSongDatabase(scanDir, config()->followSymLinks, filePattern, media, &progress);
 
     progress.close();
     updateView();

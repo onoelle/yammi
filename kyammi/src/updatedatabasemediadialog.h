@@ -20,19 +20,24 @@
 
 #include <qwidget.h>
 #include <UpdateDatabaseMediaDialogBase.h>
+#include "prefs.h"
 
 /**
   *@author Oliver Nölle
   */
 
 class UpdateDatabaseMediaDialog : public UpdateDatabaseMediaDialogBase  {
-  Q_OBJECT
-public: 
-	UpdateDatabaseMediaDialog(QWidget *parent=0, const char *name=0);
-	~UpdateDatabaseMediaDialog();
+    Q_OBJECT
+public:
+    UpdateDatabaseMediaDialog(QWidget* parent, Prefs* config);
+    ~UpdateDatabaseMediaDialog();
 
 public slots:
-  void chooseMediaDir();
+    void chooseMediaDir();
+    void myAccept();
+
+protected:
+    Prefs* config;
 };
 
 #endif
