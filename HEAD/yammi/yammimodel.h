@@ -125,7 +125,7 @@ public slots:
 	bool			checkConsistency(QProgressDialog* progress);
 
 protected:
-	QString		getProperty(const QDomDocument* doc, const QString propName, const QString propDefault="");	// remove default???
+	QString		getProperty(const QDomDocument* doc, const QString propName, const QString propDefault);
 	int				getProperty(const QDomDocument* doc, const QString propName, const int propDefault);
 	bool			getProperty(const QDomDocument* doc, const QString propName, const bool propDefault);
 	QStringList* getProperty(const QDomDocument* doc, const QString propName, QStringList* propDefault);
