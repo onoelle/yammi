@@ -27,6 +27,7 @@
     <general>
       <activetarget>src/yammi</activetarget>
       <useconfiguration>default</useconfiguration>
+      <useactivetarget>true</useactivetarget>
     </general>
     <run>
       <mainprogram>src/yammi</mainprogram>

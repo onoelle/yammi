@@ -103,6 +103,7 @@ public:
 public slots:
 	/** Seeks in the current song (if any) to position pos */
 	void seek( int pos );
+	void seekWithWheel(int rotation);
 	
 	/** Execute a fuzzy search in the song database, and switch to the search-results view */
 	void searchSong( const QString &fuzzy );

@@ -85,6 +85,7 @@
 #include "foldersorted.h"
 #include "mylistview.h"
 #include "lineeditshift.h"
+#include "trackpositionslider.h"
 
 #include "mediaplayer.h"
 #include "dummyplayer.h"
@@ -95,7 +96,6 @@
 #else
 #define XmmsPlayer DummyPlayer
 #endif
-
 
 
 static QString columnName[] = { i18n("Artist"), i18n("Title"), i18n("Album"), i18n("Length"),
@@ -478,8 +478,10 @@ void YammiGui::handleNewSong(Song* newSong) {
     if(newSong==0) {
         setCaption(i18n("Yammi - not playing"));
         currentFile="";
-        m_seekSlider->setValue(0);
         m_seekSlider->setRange(0, 0);
+		m_seekSlider->setTickmarks(QSlider::NoMarks);
+        m_seekSlider->setValue(0);
+		m_seekSlider->setEnabled(false);
         return;
     }
     // TODO: take swapped file?
@@ -488,18 +490,28 @@ void YammiGui::handleNewSong(Song* newSong) {
 
     if(m_sleepMode) {
         int left = m_sleepModeSpinBox->value() - 1;
-        if(left > 0 )
+        if(left > 0 ) {
             m_sleepModeSpinBox->setValue(left);
-        else
+		}
+        else {
             shutdownSequence();
+		}
     }
 
     setCaption("Yammi: "+currentSong->displayName());
 
     // setup songSlider
     kdDebug() << "calling setRange, length: " << currentSong->length*1000 <<endl;
-    m_seekSlider->setValue(0);
     m_seekSlider->setRange(0, currentSong->length*1000);
+	// TODO: only set some of these values once?
+	// TODO: move some of these calls into the slider class!
+	m_seekSlider->setLineStep(1*1000);
+	m_seekSlider->setPageStep(10*1000);
+	m_seekSlider->setTickInterval(1000*60);
+	m_seekSlider->setTickmarks(QSlider::Below);
+    m_seekSlider->setValue(0);
+	m_seekSlider->updateGeometry();
+	m_seekSlider->setEnabled(true);
 }
 
 /**
@@ -3247,10 +3259,15 @@ void YammiGui::setupActions( ) {
     new KAction(i18n("Stop"),"player_stop",KShortcut(Key_F4),player,SLOT(stop()),actionCollection(),"stop");
     new KAction(i18n("Skip Backward"),"player_rew",KShortcut(Key_F2),this,SLOT(skipBackward()), actionCollection(),"skip_backward");
     new KAction(i18n("Skip Forward"),"player_fwd",KShortcut(Key_F3),this,SLOT(skipForward()), actionCollection(),"skip_forward");
-    m_seekSlider = new QSlider( QSlider::Horizontal, 0L, "seek_slider");
-    //m_seekSlider->setTickmarks( QSlider::Below );
-    m_seekSlider->setTracking( false );
+    m_seekSlider = new TrackPositionSlider( QSlider::Horizontal, 0L, "seek_slider");
+	QToolTip::add(m_seekSlider, i18n("Track position"));
+    m_seekSlider->setValue(0);
+    m_seekSlider->setRange(0, 0);	
+	m_seekSlider->setTickmarks( QSlider::NoMarks );
+	m_seekSlider->setEnabled(false);	
+    m_seekSlider->setTracking( true );
     connect(m_seekSlider,SIGNAL(sliderMoved(int)),this,SLOT(seek(int)));
+    connect(m_seekSlider,SIGNAL(myWheelEvent(int)),this,SLOT(seekWithWheel(int)));
     new KWidgetAction( m_seekSlider ,"text",0, 0, 0,actionCollection(),"seek");
 
     //Database actions
@@ -3403,6 +3420,18 @@ void YammiGui::createSongPopup() {
 void YammiGui::seek( int pos ) {
     kdDebug() << "seek song to pos " << pos << endl;
     player->jumpTo(pos);
+}
+
+
+// TODO: do we need this???
+void YammiGui::seekWithWheel(int rotation) {
+	if(rotation<0) {
+		m_seekSlider->addPage();
+	}
+	else {
+		m_seekSlider->subtractPage();
+	}
+	player->jumpTo(m_seekSlider->value());
 }
 
 

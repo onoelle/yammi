@@ -66,11 +66,13 @@ MAJOR CHANGES:
 - added consistency check which checks location of a file (not correcting yet)
 - added progress dialogs on startup for reading database, categories and history 
 
+
 MINOR CHANGES:
 - fixed: broken noatun communication (apparently due to API changes in a newer version of noatun)
 - fixed: recent folder now works again
 - fixed: symlinks are not followed when scanning directories
 - fixed: interpreting ogg vorbis comments as utf-8
+- fixed: clicking with left mouse button or using wheel on track slider works now as expected
 - added a button to add standard plugins
 - added an automatic folder "by year"
 - clarified placeholder usage in plugins ({artist} instead of %a)
