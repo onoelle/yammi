@@ -1,16 +1,22 @@
 TODO
 ----
-last update 10.2.2002
+last update 17.2.2002
 
+KNOWN BUGS
+----------
+sometimes xmms seems to crash when inserting/deleting songs in xmms' playlist,
+then yammi blocks until xmms is killed
 
-for release 0.3.1 or 0.4
+for release 0.4
 ------------------------
 - touch history file on first startup => yes, check whether funciona
+- update documentation (esp. on grabbing/encoding songs)
+
+for release 0.4.1
+-----------------
 - new framework for view updates
 - more tool tips
-- update documentation (esp. on grabbing/encoding songs)
 - statistic folder / more info in history folder
-
 
 for near future
 ---------------

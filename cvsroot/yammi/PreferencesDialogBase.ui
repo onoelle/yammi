@@ -11,7 +11,7 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>572</width>
+            <width>560</width>
             <height>480</height>
         </rect>
     </property>
@@ -104,114 +104,6 @@
                 <name>title</name>
                 <string>General Configuration</string>
             </attribute>
-            <widget>
-                <class>QGroupBox</class>
-                <property stdset="1">
-                    <name>name</name>
-                    <cstring>GroupBox2</cstring>
-                </property>
-                <property stdset="1">
-                    <name>geometry</name>
-                    <rect>
-                        <x>10</x>
-                        <y>20</y>
-                        <width>551</width>
-                        <height>81</height>
-                    </rect>
-                </property>
-                <property stdset="1">
-                    <name>title</name>
-                    <string>Path to files</string>
-                </property>
-                <widget>
-                    <class>QLineEdit</class>
-                    <property stdset="1">
-                        <name>name</name>
-                        <cstring>LineEditBaseDir</cstring>
-                    </property>
-                    <property stdset="1">
-                        <name>geometry</name>
-                        <rect>
-                            <x>182</x>
-                            <y>15</y>
-                            <width>350</width>
-                            <height>22</height>
-                        </rect>
-                    </property>
-                    <property>
-                        <name>toolTip</name>
-                        <string>base directory for all mp3 files managed by yammi</string>
-                    </property>
-                </widget>
-                <widget>
-                    <class>QLabel</class>
-                    <property stdset="1">
-                        <name>name</name>
-                        <cstring>LabelBaseDir</cstring>
-                    </property>
-                    <property stdset="1">
-                        <name>geometry</name>
-                        <rect>
-                            <x>12</x>
-                            <y>15</y>
-                            <width>160</width>
-                            <height>20</height>
-                        </rect>
-                    </property>
-                    <property stdset="1">
-                        <name>text</name>
-                        <string>base directory for mp3 files</string>
-                    </property>
-                    <property>
-                        <name>toolTip</name>
-                        <string>base directory for all mp3 files managed by yammi</string>
-                    </property>
-                </widget>
-                <widget>
-                    <class>QLabel</class>
-                    <property stdset="1">
-                        <name>name</name>
-                        <cstring>LabelScanDir</cstring>
-                    </property>
-                    <property stdset="1">
-                        <name>geometry</name>
-                        <rect>
-                            <x>12</x>
-                            <y>45</y>
-                            <width>160</width>
-                            <height>20</height>
-                        </rect>
-                    </property>
-                    <property stdset="1">
-                        <name>text</name>
-                        <string>base directory for scanning</string>
-                    </property>
-                    <property>
-                        <name>toolTip</name>
-                        <string>yammi will search in this directory (and recursive in all subdirectories) for new song files</string>
-                    </property>
-                </widget>
-                <widget>
-                    <class>QLineEdit</class>
-                    <property stdset="1">
-                        <name>name</name>
-                        <cstring>LineEditScanDir</cstring>
-                    </property>
-                    <property stdset="1">
-                        <name>geometry</name>
-                        <rect>
-                            <x>182</x>
-                            <y>45</y>
-                            <width>350</width>
-                            <height>22</height>
-                        </rect>
-                    </property>
-                    <property>
-                        <name>toolTip</name>
-                        <string>yammi will search in this directory (and recursive in all subdirectories) for new song files</string>
-                    </property>
-                </widget>
-            </widget>
             <widget>
                 <class>QGroupBox</class>
                 <property stdset="1">
@@ -402,30 +294,6 @@
                 <property>
                     <name>toolTip</name>
                     <string>cuts the playlist in xmms to no more than 4 unplayed songs</string>
-                </property>
-            </widget>
-            <widget>
-                <class>QCheckBox</class>
-                <property stdset="1">
-                    <name>name</name>
-                    <cstring>CheckBoxLogging</cstring>
-                </property>
-                <property stdset="1">
-                    <name>geometry</name>
-                    <rect>
-                        <x>20</x>
-                        <y>310</y>
-                        <width>150</width>
-                        <height>20</height>
-                    </rect>
-                </property>
-                <property stdset="1">
-                    <name>text</name>
-                    <string>logging of played files</string>
-                </property>
-                <property>
-                    <name>toolTip</name>
-                    <string>logs all played songs with a timestamp to a file</string>
                 </property>
             </widget>
             <widget>
@@ -636,6 +504,138 @@
                 <property>
                     <name>toolTip</name>
                     <string>a script to grab a track from cd and encode to mp3</string>
+                </property>
+            </widget>
+            <widget>
+                <class>QGroupBox</class>
+                <property stdset="1">
+                    <name>name</name>
+                    <cstring>GroupBox2</cstring>
+                </property>
+                <property stdset="1">
+                    <name>geometry</name>
+                    <rect>
+                        <x>10</x>
+                        <y>20</y>
+                        <width>551</width>
+                        <height>81</height>
+                    </rect>
+                </property>
+                <property stdset="1">
+                    <name>title</name>
+                    <string>Path to files</string>
+                </property>
+                <widget>
+                    <class>QLabel</class>
+                    <property stdset="1">
+                        <name>name</name>
+                        <cstring>LabelScanDir</cstring>
+                    </property>
+                    <property stdset="1">
+                        <name>geometry</name>
+                        <rect>
+                            <x>10</x>
+                            <y>20</y>
+                            <width>160</width>
+                            <height>20</height>
+                        </rect>
+                    </property>
+                    <property stdset="1">
+                        <name>text</name>
+                        <string>base directory for scanning</string>
+                    </property>
+                    <property>
+                        <name>toolTip</name>
+                        <string>yammi will search in this directory (and recursive in all subdirectories) for new song files</string>
+                    </property>
+                </widget>
+                <widget>
+                    <class>QLabel</class>
+                    <property stdset="1">
+                        <name>name</name>
+                        <cstring>LabelTrashDir</cstring>
+                    </property>
+                    <property stdset="1">
+                        <name>geometry</name>
+                        <rect>
+                            <x>10</x>
+                            <y>50</y>
+                            <width>200</width>
+                            <height>20</height>
+                        </rect>
+                    </property>
+                    <property stdset="1">
+                        <name>text</name>
+                        <string>trash directory for deleted song files</string>
+                    </property>
+                    <property>
+                        <name>toolTip</name>
+                        <string>songs deleted in yammi will be moved to this directory and this directory will be skipped when scanning</string>
+                    </property>
+                </widget>
+                <widget>
+                    <class>QLineEdit</class>
+                    <property stdset="1">
+                        <name>name</name>
+                        <cstring>LineEditTrashDir</cstring>
+                    </property>
+                    <property stdset="1">
+                        <name>geometry</name>
+                        <rect>
+                            <x>220</x>
+                            <y>50</y>
+                            <width>320</width>
+                            <height>22</height>
+                        </rect>
+                    </property>
+                    <property>
+                        <name>toolTip</name>
+                        <string>base directory for all mp3 files managed by yammi</string>
+                    </property>
+                </widget>
+                <widget>
+                    <class>QLineEdit</class>
+                    <property stdset="1">
+                        <name>name</name>
+                        <cstring>LineEditScanDir</cstring>
+                    </property>
+                    <property stdset="1">
+                        <name>geometry</name>
+                        <rect>
+                            <x>220</x>
+                            <y>20</y>
+                            <width>320</width>
+                            <height>22</height>
+                        </rect>
+                    </property>
+                    <property>
+                        <name>toolTip</name>
+                        <string>yammi will search in this directory (and recursive in all subdirectories) for new song files</string>
+                    </property>
+                </widget>
+            </widget>
+            <widget>
+                <class>QCheckBox</class>
+                <property stdset="1">
+                    <name>name</name>
+                    <cstring>CheckBoxLogging</cstring>
+                </property>
+                <property stdset="1">
+                    <name>geometry</name>
+                    <rect>
+                        <x>20</x>
+                        <y>310</y>
+                        <width>150</width>
+                        <height>20</height>
+                    </rect>
+                </property>
+                <property stdset="1">
+                    <name>text</name>
+                    <string>logging of played songs</string>
+                </property>
+                <property>
+                    <name>toolTip</name>
+                    <string>logs all played songs with a timestamp to a file</string>
                 </property>
             </widget>
         </widget>

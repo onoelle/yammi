@@ -38,13 +38,20 @@ SongListItem::SongListItem( QListView *parent, SongEntry *entry, SongListItem* a
 	  	lengthStr="0"+lengthStr;
 		setText( base+3, QString("%1:%2").arg((s->length) / 60).arg(lengthStr));
 	}
-	if(s->year!=0)					setText( base+4, QString("%1").arg(s->year));
+	if(s->year!=0)				setText( base+4, QString("%1").arg(s->year));
   if(s->trackNr!=0)			setText( base+5, QString("%1").arg(s->trackNr));
 	setText( base+6, s->addedTo.writeToString());
   if(s->bitrate!=0)			setText( base+7, QString("%1").arg(s->bitrate));
   if(s->filename!="")		setText( base+8, s->filename );
   if(s->path!="")				setText( base+9, s->path );
-  if(s->comment!="")			setText(base+10, s->comment );
+  if(s->comment!="")		setText( base+10, s->comment );
+	MyDateTime never;
+	never.setDate(QDate(1900,1,1));
+	never.setTime(QTime(0,0,0));
+  if(s->lastPlayed!=never)
+												setText( base+11, s->lastPlayed.writeToString() );
+	else
+												setText( base+11, "never" );
 }
 
 void SongListItem::paintCell( QPainter *p, const QColorGroup &cg,
@@ -101,5 +108,7 @@ QString SongListItem::key(int column, bool ascending) const
 		return QString("%1").arg(999999999+ QDateTime( QDate(2222, 1, 1), QTime(0,0,0) ).secsTo(s->addedTo), 10);
 	if(column==base+7)
 		return QString("%1").arg(s->bitrate, 10);
+	if(column==base+11)
+		return QString("%1").arg(999999999+ QDateTime( QDate(2222, 1, 1), QTime(0,0,0) ).secsTo(s->lastPlayed), 10);
 	return text(column);
 }

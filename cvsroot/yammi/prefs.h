@@ -32,8 +32,8 @@ public:
 	Prefs();
 	~Prefs();
 	
-	QString baseDir;
 	QString scanDir;
+	QString trashDir;					// our trashcan for songs (files will be moved to this dir on deleting)
 	QString yammiBaseDir;
 	
 	action doubleClickAction;

@@ -94,16 +94,16 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
 	// toolbar
 	toolBar = new QToolBar ( this, "toolbar label");
   toolBar->setLabel( "Operations" );
-	tbSaveDatabase = new QToolButton( QPixmap(filesave_xpm), "Save database", QString::null,
-														model, SLOT(save()), toolBar, "save2" );
-	tbBackward = new QToolButton( QPixmap(skipbackward_xpm), "Skip backward", QString::null,
+	tbSaveDatabase = new QToolButton( QPixmap(filesave_xpm), "Save database (Ctrl-S)", QString::null,
+														model, SLOT(save()), toolBar);
+	tbPause = new QToolButton( QPixmap(pause_xpm), "Play/Pause (F1)", QString::null,
+                           this, SLOT(xmms_playPause()), toolBar);
+	tbBackward = new QToolButton( QPixmap(skipbackward_xpm), "Skip backward (F2)", QString::null,
  														this, SLOT(xmms_skipBackward()), toolBar);
-	tbForward = new QToolButton( QPixmap(skipforward_xpm), "Skip forward", QString::null,
-                           this, SLOT(xmms_skipForward()), toolBar, "skip forward2" );
-	tbPause = new QToolButton( QPixmap(pause_xpm), "Play/Pause", QString::null,
-                           this, SLOT(xmms_playPause()), toolBar, "pause2" );
-	tbClearPlaylist = new QToolButton (QPixmap(clearPlaylist_xpm), "Clear playlist", QString::null,
-                           this, SLOT(xmms_clearPlaylist()), toolBar, "clear2" );
+	tbForward = new QToolButton( QPixmap(skipforward_xpm), "Skip forward (F3)", QString::null,
+                           this, SLOT(xmms_skipForward()), toolBar);
+	tbClearPlaylist = new QToolButton (QPixmap(clearPlaylist_xpm), "Clear playlist (F4)", QString::null,
+                           this, SLOT(xmms_clearPlaylist()), toolBar);
 		
 	QLabel *searchLabel = new QLabel(toolBar);
 	searchLabel->setFrameStyle( QFrame::Panel | QFrame::Sunken );
@@ -113,30 +113,35 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
 	connect( searchField, SIGNAL(textChanged(const QString&)), SLOT(userTyped(const QString&)) );
 	searchField->setFocus();
 	searchField->setFixedWidth(210);
+	QToolTip::add( searchField, "fuzzy search (Ctrl-F)");
+	
 	// button "add to wishlist"	
 	QPushButton* addToWishListButton=new QPushButton("add to wishlist", toolBar);
 	// current song label
 	QPushButton* currentSongLabel=new QPushButton("current song...", toolBar);	
 	
+	QToolBar* toolBar2 = new QToolBar ( this, "toolbar2");
+  toolBar2->setLabel( "Operations2" );
+
 	// now all the buttons that correspond to context menu entries
-	tbEnqueue = new QToolButton (QPixmap(enqueue_xpm), "Enqueue at end", QString::null,
-                           this, SLOT(forAllSelectedEnqueue()), toolBar, "songEnqueue2" );
-	tbEnqueueAsNext = new QToolButton (QPixmap(enqueueasnext_xpm), "Enqueue as next", QString::null,
-                           this, SLOT(forAllSelectedEnqueueAsNext()), toolBar, "songEnqueue2" );
-	tbPlayNow = new QToolButton (QPixmap(playnow_xpm), "Play now", QString::null,
-                           this, SLOT(forAllSelectedPlayNow()), toolBar, "songEnqueue2" );
-	tbDequeueSong = new QToolButton (QPixmap(dequeueSong_xpm), "Dequeue Song", QString::null,
-                           this, SLOT(forAllSelectedDequeue()), toolBar, "dequeueSong2" );
-	tbPrelistenStart = new QToolButton (QPixmap(prelisten_xpm), "Prelisten (start)", QString::null,
-                           this, SLOT(forAllSelectedPrelistenStart()), toolBar, "songEnqueue2" );
-	tbPrelistenMiddle = new QToolButton (QPixmap(prelisten_xpm), "Prelisten (middle)", QString::null,
-                           this, SLOT(forAllSelectedPrelistenMiddle()), toolBar, "songEnqueue2" );
-	tbPrelistenEnd = new QToolButton (QPixmap(prelisten_xpm), "Prelisten (end)", QString::null,
-                           this, SLOT(forAllSelectedPrelistenEnd()), toolBar, "songEnqueue2" );
-	tbStopPrelisten = new QToolButton (QPixmap(stopPrelisten_xpm), "Stop prelisten", QString::null,
-                           this, SLOT(stopPrelisten()), toolBar, "stopPrelisten2" );
+	tbEnqueue = new QToolButton (QPixmap(enqueue_xpm), "Enqueue at end (F5)", QString::null,
+                           this, SLOT(forAllSelectedEnqueue()), toolBar2);
+	tbEnqueueAsNext = new QToolButton (QPixmap(enqueueasnext_xpm), "Enqueue as next (F6)", QString::null,
+                           this, SLOT(forAllSelectedEnqueueAsNext()), toolBar2);
+	tbPlayNow = new QToolButton (QPixmap(playnow_xpm), "Play now (F7)", QString::null,
+                           this, SLOT(forAllSelectedPlayNow()), toolBar2);
+	tbDequeueSong = new QToolButton (QPixmap(dequeueSong_xpm), "Dequeue Song (F8)", QString::null,
+                           this, SLOT(forAllSelectedDequeue()), toolBar2);
+	tbPrelistenStart = new QToolButton (QPixmap(prelisten_xpm), "Prelisten (start) (F9)", QString::null,
+                           this, SLOT(forAllSelectedPrelistenStart()), toolBar2);
+	tbPrelistenMiddle = new QToolButton (QPixmap(prelisten_xpm), "Prelisten (middle) (F10)", QString::null,
+                           this, SLOT(forAllSelectedPrelistenMiddle()), toolBar2);
+	tbPrelistenEnd = new QToolButton (QPixmap(prelisten_xpm), "Prelisten (end) (F11)", QString::null,
+                           this, SLOT(forAllSelectedPrelistenEnd()), toolBar2);
+	tbStopPrelisten = new QToolButton (QPixmap(stopPrelisten_xpm), "Stop prelisten (F12)", QString::null,
+                           this, SLOT(stopPrelisten()), toolBar2);
 	tbSongInfo = new QToolButton (QPixmap(songinfo_xpm), "Info...", QString::null,
-                           this, SLOT(forAllSelectedSongInfo()), toolBar, "songInfo2" );
+                           this, SLOT(forAllSelectedSongInfo()), toolBar2);
 
 	
 	
@@ -266,9 +271,19 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
   model->categoriesChanged(false);
 	shuttingDown=0;
 	
+	
+	// check whether xmms is in shuffle mode: if yes, set it to normal
+	// (confuses Yammi's playlistmanagement)
+	if(xmms_remote_is_shuffle(0)) {
+		xmms_remote_toggle_shuffle(0);
+		cout << "switching off xmms shuffle mode (does confuse my playlist management otherwise)\n";
+	}
+
 	// check whether xmms is playing, if not: start playing!
-	if(!xmms_remote_is_playing(0))
+	if(!xmms_remote_is_playing(0)) {
 		xmms_remote_play(0);
+		cout << "yammi is not playing, starting it...\n";
+	}
 	syncXmms2Yammi();
 
 	// connect all timers
@@ -303,8 +318,6 @@ YammiGui::~YammiGui()
 		else
 			cout << "not saving any changes (data may be lost)\n";
 	}
-	if(model->config.logging)
-		model->saveHistory();
 	cout << "goodbye!\n";
 }
 
@@ -362,6 +375,7 @@ void YammiGui::updateListViewColumns()
 	songListView->addColumn( "Filename", 80);
 	songListView->addColumn( "Path", 80);
 	songListView->addColumn( "Comment", 100);
+	songListView->addColumn( "Last played", 100);
 	songListView->setAllColumnsShowFocus( TRUE );
 	songListView->setShowSortIndicator( TRUE );
 	songListView->setSelectionMode( QListView::Extended );
@@ -372,7 +386,7 @@ void YammiGui::updateListViewColumns()
 void YammiGui::setPreferences()
 {
 	PreferencesDialog d(this, "preferencesDialog", true);
-	d.LineEditBaseDir->setText(model->config.baseDir);
+	d.LineEditTrashDir->setText(model->config.trashDir);
 	d.LineEditScanDir->setText(model->config.scanDir);
 	d.CheckBoxCutPlaylist->setChecked(model->config.cutShort);
 	d.CheckBoxLogging->setChecked(model->config.logging);
@@ -412,10 +426,10 @@ void YammiGui::setPreferences()
 	int result=d.exec();
 
 	if(result==QDialog::Accepted) {
-		model->config.baseDir=d.LineEditBaseDir->text();
+		model->config.trashDir=d.LineEditTrashDir->text();
 		model->config.scanDir=d.LineEditScanDir->text();
-		if(model->config.baseDir.right(1)!="/")
-			model->config.baseDir+="/";
+		if(model->config.trashDir.right(1)!="/")
+			model->config.trashDir+="/";
 		if(model->config.scanDir.right(1)!="/")
 			model->config.scanDir+="/";
 		model->config.doubleClickAction=(action)d.ComboBoxDoubleClickAction->currentItem();
@@ -461,10 +475,11 @@ void YammiGui::updateSongPopup()
 	
 	songPlayPopup = new QPopupMenu(songPopup);
 	
-	songPlayPopup->insertItem(getPopupIcon(Enqueue), "...Enqueue", this, SLOT(forSelection(int)), CTRL+Key_E, Enqueue);		
-	songPlayPopup->insertItem(getPopupIcon(EnqueueAsNext), "...Play as next", this, SLOT(forSelection(int)), CTRL+Key_N, EnqueueAsNext);
-	songPlayPopup->insertItem(getPopupIcon(PlayNow), "...Play now!", this, SLOT(forSelection(int)), CTRL+Key_I, PlayNow);
-	songPopup->insertItem( "Play/Enqueue...", songPlayPopup);
+	songPlayPopup->insertItem(getPopupIcon(Enqueue), "...Enqueue", this, SLOT(forSelection(int)), 0, Enqueue);		
+	songPlayPopup->insertItem(getPopupIcon(EnqueueAsNext), "...Play as next", this, SLOT(forSelection(int)), 0, EnqueueAsNext);
+	songPlayPopup->insertItem(getPopupIcon(PlayNow), "...Play now!", this, SLOT(forSelection(int)), 0, PlayNow);
+	songPlayPopup->insertItem(getPopupIcon(Dequeue), "...Dequeue", this, SLOT(forSelection(int)), 0, Dequeue);
+	songPopup->insertItem( "Play...", songPlayPopup);
 	
 	if(model->config.secondSoundDevice!="") {
 		songPrelistenPopup = new QPopupMenu(songPopup);
@@ -475,7 +490,6 @@ void YammiGui::updateSongPopup()
 	}
 	songPopup->insertItem(getPopupIcon(SongInfo), "Info...", this, SLOT(forSelection(int)), 0, SongInfo);
 	songPopup->insertItem( "Insert Into...", playListPopup);
-	songPopup->insertItem( "Dequeue from playlist", this, SLOT(forSelection(int)), 0, Dequeue);
 	if(model->config.childSafe)
 		return;
 	
@@ -625,9 +639,9 @@ void YammiGui::searchFieldChanged()
 	Song* s=model->allSongs.firstSong();
 	QString composed;
 	for(; s; s=model->allSongs.nextSong()) {
-		composed=" " + s->artist + " - " + s->title + " - " + s->album + " ";
+		composed=" " + s->artist + " - " + s->title + " - " + s->album + " - " + s->comment + " ";
 		if(s->artist=="" || s->title=="") {							// if tags incomplete use filename for search
-			composed+=s->filename;
+			composed=s->filename+"- "+composed;
 		}
 		fs.checkNext(composed.lower(), (void*)s);				// STEP 2
 	}
@@ -1083,8 +1097,8 @@ void YammiGui::forSelection(action act)
 	// 1. destination directory
 	QString dir;
 	if(act==MoveTo || act==CopyTo || act==CopyAsWavTo) {
-		// let user choose directory
-		dir=QFileDialog::getExistingDirectory(QString(model->config.baseDir), this, QString("hallo"), QString("caption"), true);
+		// let user choose directory (we should provide a starting directory???)
+		dir=QFileDialog::getExistingDirectory(QString(""), this, QString("yammi"), QString("choose directory"), true);
 		if(dir.isNull())
 			return;
 		if(dir.right(1)=="/")						// strip trailing slash
@@ -1092,10 +1106,11 @@ void YammiGui::forSelection(action act)
 	}
 			
 	// 3. determine delete mode
-	bool deleteEntry=false;
 	bool deleteFile=false;
+	bool deleteEntry=false;
 	if(act==Delete) {
-		DeleteDialog dd( this,  "testiii", true);
+		DeleteDialog dd( this,  "deleteDialog", true);
+		cout << "asking in forSelection\n";
 		int result=dd.exec();
 		if(result==QDialog::Accepted) {
 			deleteFile=dd.CheckBoxDeleteFile->isChecked();
@@ -1109,10 +1124,15 @@ void YammiGui::forSelection(action act)
 	
 	// OKAY: go through list of songs
 	for(Song* s=selectedSongs.firstSong(); s; s=selectedSongs.nextSong()) {
-
+		cout << "for loop: " << s->displayName() << "\n";
+		
 		if(act==Delete) {
 			if(deleteFile)	forSong(s, DeleteFile);
 			if(deleteEntry)	forSong(s, DeleteEntry);
+			if(s==0)
+				cout << "seems to be zero\n";
+			else
+				cout << s->displayName() << "\n";
 		}
 		else
 			forSong(s, act, dir);
@@ -1124,17 +1144,6 @@ void YammiGui::forSelection(action act)
 	}
 	
 	
-	// afterwork...
-	/*
-	if(putBack) {
-		// enqueue all remembered songs
-		for(int i=0; i<toRemember; i++) {
-			xmms_remote_playlist_add_url_string(0, rem[i]);
-			delete(rem[i]);
-	  }
-	}
-	*/
-
 	// some OPs need view update
 	if(deleteEntry) {
 		updateView();
@@ -1361,7 +1370,7 @@ void YammiGui::forSong(Song* s, action act, QString dir=0)
 		break;
 	
 	case DeleteFile:						// move songfile to trash
-		s->deleteFile(model->config.baseDir+"trash");
+		s->deleteFile(model->config.trashDir);
 		break;
 		
 	case CopyTo:						// copy songfile to other location
@@ -1376,8 +1385,6 @@ void YammiGui::forSong(Song* s, action act, QString dir=0)
 	
 	case MoveTo: 										// move file to another directory
 		s->moveTo(dir);
-//		QMessageBox::information( this, "Yammi", "renaming from "+s->location()+" to "+newname+" failed!", "Fine." );
-//			model->allSongsChanged(true);
 		break;
 	
 	default:
@@ -1608,6 +1615,8 @@ void YammiGui::onTimer()
 				SongEntryTimestamp* entry=new SongEntryTimestamp(currentSong);
 				model->songsPlayed.append(entry);		// append to songsPlayed
 				folderSongsPlayed->update(&(model->songsPlayed));
+				if(model->config.logging)
+					model->logSong(currentSong);
 				if(chosenFolder==folderSongsPlayed)
 					slotFolderChanged();
 		  	
@@ -1747,33 +1756,52 @@ void YammiGui::shutDown()
 
 void YammiGui::keyPressEvent(QKeyEvent* e)
 {
-//	cout << "key(): " << e->key() << "text(): " << e->text() << "ascii(): " << e->ascii() << "\n";
+	cout << "key(): " << e->key() << "text(): " << e->text() << "ascii(): " << e->ascii() << "\n";
 	int key=e->key();
 	switch(key) {
 		case Key_F1:
-			xmms_skipBackward();
+			xmms_playPause();
 			break;
 		case Key_F2:
-			xmms_skipForward();
+			xmms_skipBackward();
 			break;
 		case Key_F3:
-			xmms_playPause();
+			xmms_skipForward();
+			break;
+		case Key_F4:
+			xmms_clearPlaylist();
 			break;
 		
 		case Key_F5:
-			forAllSelected(PlayNow);
+			forAllSelected(Enqueue);
 			break;
 		case Key_F6:
 			forAllSelected(EnqueueAsNext);
 			break;
 		case Key_F7:
-			forAllSelected(Enqueue);
+			forAllSelected(PlayNow);
 			break;
 		case Key_F8:
-			forAllSelected(SongInfo);
+			forAllSelected(Dequeue);
 			break;
 			
-		case Key_F12:	{									// exit program (press twice for shutting down computer)
+		case Key_F9:
+			forAllSelected(PrelistenStart);
+			break;
+			
+		case Key_F10:
+			forAllSelected(PrelistenMiddle);
+			break;
+			
+		case Key_F11:
+			forAllSelected(PrelistenEnd);
+			break;
+			
+		case Key_F12:
+			stopPrelisten();
+			break;
+			
+		case Key_Pause:	{									// exit program (press twice for shutting down computer)
 		 if(shuttingDown==0) {
 				qApp->beep();
 				shuttingDown=1;
@@ -1795,20 +1823,7 @@ void YammiGui::keyPressEvent(QKeyEvent* e)
 				cout << "shutting down cancelled!\n";
 			}
 		}	break;
-		
-/*
-		case Key_1:	{					// determine how many songs to play before shutting down
-		case Key_2:
-		case Key_0:
-		case Key_Plus:
-			cout << "number pressed\n";
-		 if(shuttingDown==0) {
-		 	cout << "playing n songs before shutting down...\n";
-		 }
-		
-		} break;
-*/
-		
+				
 		case Key_PageUp:
 			if(songsUntilShutdown!=-1) {
 				songsUntilShutdown++;
@@ -1848,11 +1863,21 @@ void YammiGui::keyPressEvent(QKeyEvent* e)
 				}
 			}
 			} break;
+		
+		case Key_F:		// F (how about Ctrl?)
+			if(e->state()!=ControlButton)
+				break;
+			
 		case Key_Escape:
 			searchField->setText("");
 			searchField->setFocus();
 			break;
 		
+		case Key_S:		// F (how about Ctrl?)
+			if(e->state()!=ControlButton)
+				break;
+			model->save();
+			break;
 		
 		default:
 			e->ignore();

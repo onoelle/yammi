@@ -102,8 +102,7 @@ public:
 	void 			readSongDatabase();
 	void 			saveSongDatabase();
 	void			readHistory();
-	void			saveHistory();
-
+	void			logSong(Song* s);
 
 public slots:
 	void			save();

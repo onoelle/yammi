@@ -32,7 +32,7 @@ project_type=normal_qt2
 sgml_file=/home/oliver/work/programming/yammi/yammi/docs/en/index.sgml
 short_info=Yet Another Music Manager,- serves as a front-end for xmms,- manages your mp3 collection,- convenient fuzzy search,- categorization of songs,- history of played songs,- basic support for grabbing\\, encoding and burning mp3s,- playlist management
 sub_dir=yammi/
-version=0.3.1
+version=0.4
 version_control=CVS
 workspace=1
 

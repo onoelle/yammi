@@ -1,4 +1,4 @@
-# KDE tags expanded automatically by am_edit - $Revision: 1.5 $ 
+# KDE tags expanded automatically by am_edit - $Revision: 1.6 $ 
 # Makefile.in generated automatically by automake 1.4 from Makefile.am
 
 # Copyright (C) 1994, 1995-8, 1999 Free Software Foundation, Inc.
@@ -269,7 +269,7 @@ prefs.$(OBJEXT) mylist.$(OBJEXT) mydatetime.$(OBJEXT) mp3tag.$(OBJEXT) \
 mp3_layer.$(OBJEXT) fuzzsrch.$(OBJEXT) foldermedia.$(OBJEXT) \
 foldergroups.$(OBJEXT) foldercategories.$(OBJEXT) folder.$(OBJEXT) \
 main.$(OBJEXT)\
-foldergroups.moc.o foldermedia.moc.o folder.moc.o foldercategories.moc.o yammimodel.moc.o songinfo.moc.o yammigui.moc.o preferencesdialog.moc.o mylistview.moc.o  YammiGuiBase.$(OBJEXT) SongInfoDialog.$(OBJEXT) PreferencesDialogBase.$(OBJEXT) DeleteDialog.$(OBJEXT)
+foldercategories.moc.o yammigui.moc.o foldergroups.moc.o folder.moc.o foldermedia.moc.o yammimodel.moc.o songinfo.moc.o preferencesdialog.moc.o mylistview.moc.o  YammiGuiBase.$(OBJEXT) SongInfoDialog.$(OBJEXT) PreferencesDialogBase.$(OBJEXT) DeleteDialog.$(OBJEXT)
 @KDE_USE_FINAL_FALSE@yammi_OBJECTS = $(yammi_nofinal_OBJECTS)
 @KDE_USE_FINAL_TRUE@yammi_OBJECTS = $(yammi_final_OBJECTS)
 yammi_DEPENDENCIES = 
@@ -287,7 +287,12 @@ CXXLINK = $(LIBTOOL) --mode=link --tag=CXX $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) $
 DIST_COMMON =  Makefile.am Makefile.in
 
 
-DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
+#>- DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
+#>+ 4
+KDE_DIST=DeleteDialog.h PreferencesDialogBase.h YammiGuiBase.h SongInfoDialog.h 
+
+DISTFILES= $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST) $(KDE_DIST)
+
 
 TAR = tar
 GZIP_ENV = --best
@@ -299,7 +304,7 @@ GZIP_ENV = --best
 #>- .deps/songentrytimestamp.P .deps/songinfo.P .deps/songlistitem.P \
 #>- .deps/yammigui.P .deps/yammimodel.P
 #>+ 16
-@KDE_USE_FINAL_TRUE@DEP_FILES =  $(DEPDIR)/foldergroups.moc.P $(DEPDIR)/foldermedia.moc.P $(DEPDIR)/folder.moc.P $(DEPDIR)/foldercategories.moc.P $(DEPDIR)/yammimodel.moc.P $(DEPDIR)/songinfo.moc.P $(DEPDIR)/yammigui.moc.P $(DEPDIR)/preferencesdialog.moc.P $(DEPDIR)/mylistview.moc.P $(DEPDIR)/YammiGuiBase.P $(DEPDIR)/SongInfoDialog.P $(DEPDIR)/PreferencesDialogBase.P $(DEPDIR)/DeleteDialog.P  $(DEPDIR)/yammi.all_cpp.P \
+@KDE_USE_FINAL_TRUE@DEP_FILES =  $(DEPDIR)/foldercategories.moc.P $(DEPDIR)/yammigui.moc.P $(DEPDIR)/foldergroups.moc.P $(DEPDIR)/folder.moc.P $(DEPDIR)/foldermedia.moc.P $(DEPDIR)/yammimodel.moc.P $(DEPDIR)/songinfo.moc.P $(DEPDIR)/preferencesdialog.moc.P $(DEPDIR)/mylistview.moc.P $(DEPDIR)/YammiGuiBase.P $(DEPDIR)/SongInfoDialog.P $(DEPDIR)/PreferencesDialogBase.P $(DEPDIR)/DeleteDialog.P  $(DEPDIR)/yammi.all_cpp.P \
 	  .deps/folder.P .deps/foldercategories.P \
 .deps/foldergroups.P .deps/foldermedia.P .deps/fuzzsrch.P .deps/main.P \
 .deps/mp3_layer.P .deps/mp3tag.P .deps/mydatetime.P .deps/mylist.P \
@@ -307,7 +312,7 @@ GZIP_ENV = --best
 .deps/songentry.P .deps/songentryint.P .deps/songentrystring.P \
 .deps/songentrytimestamp.P .deps/songinfo.P .deps/songlistitem.P \
 .deps/yammigui.P .deps/yammimodel.P
-@KDE_USE_FINAL_FALSE@DEP_FILES =  $(DEPDIR)/foldergroups.moc.P $(DEPDIR)/foldermedia.moc.P $(DEPDIR)/folder.moc.P $(DEPDIR)/foldercategories.moc.P $(DEPDIR)/yammimodel.moc.P $(DEPDIR)/songinfo.moc.P $(DEPDIR)/yammigui.moc.P $(DEPDIR)/preferencesdialog.moc.P $(DEPDIR)/mylistview.moc.P $(DEPDIR)/YammiGuiBase.P $(DEPDIR)/SongInfoDialog.P $(DEPDIR)/PreferencesDialogBase.P $(DEPDIR)/DeleteDialog.P   .deps/folder.P .deps/foldercategories.P \
+@KDE_USE_FINAL_FALSE@DEP_FILES =  $(DEPDIR)/foldercategories.moc.P $(DEPDIR)/yammigui.moc.P $(DEPDIR)/foldergroups.moc.P $(DEPDIR)/folder.moc.P $(DEPDIR)/foldermedia.moc.P $(DEPDIR)/yammimodel.moc.P $(DEPDIR)/songinfo.moc.P $(DEPDIR)/preferencesdialog.moc.P $(DEPDIR)/mylistview.moc.P $(DEPDIR)/YammiGuiBase.P $(DEPDIR)/SongInfoDialog.P $(DEPDIR)/PreferencesDialogBase.P $(DEPDIR)/DeleteDialog.P   .deps/folder.P .deps/foldercategories.P \
 .deps/foldergroups.P .deps/foldermedia.P .deps/fuzzsrch.P .deps/main.P \
 .deps/mp3_layer.P .deps/mp3tag.P .deps/mydatetime.P .deps/mylist.P \
 .deps/mylistview.P .deps/preferencesdialog.P .deps/prefs.P .deps/song.P \
@@ -672,20 +677,36 @@ mostlyclean distclean maintainer-clean
 .NOEXPORT:
 
 #>+ 3
-foldergroups.moc.cpp: $(srcdir)/foldergroups.h
-	$(MOC) $(srcdir)/foldergroups.h -o foldergroups.moc.cpp
+SongInfoDialog.moc: $(srcdir)/SongInfoDialog.h
+	$(MOC) $(srcdir)/SongInfoDialog.h -o SongInfoDialog.moc
 
 #>+ 3
-foldermedia.moc.cpp: $(srcdir)/foldermedia.h
-	$(MOC) $(srcdir)/foldermedia.h -o foldermedia.moc.cpp
+foldercategories.moc.cpp: $(srcdir)/foldercategories.h
+	$(MOC) $(srcdir)/foldercategories.h -o foldercategories.moc.cpp
+
+#>+ 3
+PreferencesDialogBase.moc: $(srcdir)/PreferencesDialogBase.h
+	$(MOC) $(srcdir)/PreferencesDialogBase.h -o PreferencesDialogBase.moc
+
+#>+ 3
+yammigui.moc.cpp: $(srcdir)/yammigui.h
+	$(MOC) $(srcdir)/yammigui.h -o yammigui.moc.cpp
+
+#>+ 3
+DeleteDialog.moc: $(srcdir)/DeleteDialog.h
+	$(MOC) $(srcdir)/DeleteDialog.h -o DeleteDialog.moc
+
+#>+ 3
+foldergroups.moc.cpp: $(srcdir)/foldergroups.h
+	$(MOC) $(srcdir)/foldergroups.h -o foldergroups.moc.cpp
 
 #>+ 3
 folder.moc.cpp: $(srcdir)/folder.h
 	$(MOC) $(srcdir)/folder.h -o folder.moc.cpp
 
 #>+ 3
-foldercategories.moc.cpp: $(srcdir)/foldercategories.h
-	$(MOC) $(srcdir)/foldercategories.h -o foldercategories.moc.cpp
+foldermedia.moc.cpp: $(srcdir)/foldermedia.h
+	$(MOC) $(srcdir)/foldermedia.h -o foldermedia.moc.cpp
 
 #>+ 3
 yammimodel.moc.cpp: $(srcdir)/yammimodel.h
@@ -696,8 +717,8 @@ songinfo.moc.cpp: $(srcdir)/songinfo.h
 	$(MOC) $(srcdir)/songinfo.h -o songinfo.moc.cpp
 
 #>+ 3
-yammigui.moc.cpp: $(srcdir)/yammigui.h
-	$(MOC) $(srcdir)/yammigui.h -o yammigui.moc.cpp
+YammiGuiBase.moc: $(srcdir)/YammiGuiBase.h
+	$(MOC) $(srcdir)/YammiGuiBase.h -o YammiGuiBase.moc
 
 #>+ 3
 preferencesdialog.moc.cpp: $(srcdir)/preferencesdialog.h
@@ -751,7 +772,7 @@ DeleteDialog.moc: DeleteDialog.h
 
 #>+ 3
 clean-metasources:
-	-rm -f  foldergroups.moc.cpp foldermedia.moc.cpp folder.moc.cpp foldercategories.moc.cpp yammimodel.moc.cpp songinfo.moc.cpp yammigui.moc.cpp preferencesdialog.moc.cpp mylistview.moc.cpp
+	-rm -f  SongInfoDialog.moc foldercategories.moc.cpp PreferencesDialogBase.moc yammigui.moc.cpp DeleteDialog.moc foldergroups.moc.cpp folder.moc.cpp foldermedia.moc.cpp yammimodel.moc.cpp songinfo.moc.cpp YammiGuiBase.moc preferencesdialog.moc.cpp mylistview.moc.cpp
 
 #>+ 7
 clean-ui:
@@ -771,11 +792,11 @@ force-reedit:
 
 
 #>+ 11
-yammi.all_cpp.cpp: $(srcdir)/Makefile.in $(srcdir)/songentrystring.cpp $(srcdir)/songentryint.cpp $(srcdir)/songentrytimestamp.cpp $(srcdir)/songentry.cpp $(srcdir)/mylistview.cpp $(srcdir)/preferencesdialog.cpp $(srcdir)/yammimodel.cpp $(srcdir)/yammigui.cpp $(srcdir)/songlistitem.cpp $(srcdir)/songinfo.cpp $(srcdir)/song.cpp $(srcdir)/prefs.cpp $(srcdir)/mylist.cpp $(srcdir)/mydatetime.cpp $(srcdir)/mp3tag.cpp $(srcdir)/mp3_layer.cpp $(srcdir)/fuzzsrch.cpp $(srcdir)/foldermedia.cpp $(srcdir)/foldergroups.cpp $(srcdir)/foldercategories.cpp $(srcdir)/folder.cpp $(srcdir)/main.cpp YammiGuiBase.cpp SongInfoDialog.cpp PreferencesDialogBase.cpp DeleteDialog.cpp  foldergroups.moc.cpp foldermedia.moc.cpp folder.moc.cpp foldercategories.moc.cpp yammimodel.moc.cpp songinfo.moc.cpp yammigui.moc.cpp preferencesdialog.moc.cpp mylistview.moc.cpp YammiGuiBase.moc SongInfoDialog.moc PreferencesDialogBase.moc DeleteDialog.moc
+yammi.all_cpp.cpp: $(srcdir)/Makefile.in $(srcdir)/songentrystring.cpp $(srcdir)/songentryint.cpp $(srcdir)/songentrytimestamp.cpp $(srcdir)/songentry.cpp $(srcdir)/mylistview.cpp $(srcdir)/preferencesdialog.cpp $(srcdir)/yammimodel.cpp $(srcdir)/yammigui.cpp $(srcdir)/songlistitem.cpp $(srcdir)/songinfo.cpp $(srcdir)/song.cpp $(srcdir)/prefs.cpp $(srcdir)/mylist.cpp $(srcdir)/mydatetime.cpp $(srcdir)/mp3tag.cpp $(srcdir)/mp3_layer.cpp $(srcdir)/fuzzsrch.cpp $(srcdir)/foldermedia.cpp $(srcdir)/foldergroups.cpp $(srcdir)/foldercategories.cpp $(srcdir)/folder.cpp $(srcdir)/main.cpp $(srcdir)/YammiGuiBase.cpp $(srcdir)/SongInfoDialog.cpp $(srcdir)/PreferencesDialogBase.cpp $(srcdir)/DeleteDialog.cpp  foldercategories.moc.cpp yammigui.moc.cpp foldergroups.moc.cpp folder.moc.cpp foldermedia.moc.cpp yammimodel.moc.cpp songinfo.moc.cpp preferencesdialog.moc.cpp mylistview.moc.cpp SongInfoDialog.moc PreferencesDialogBase.moc DeleteDialog.moc YammiGuiBase.moc  YammiGuiBase.moc SongInfoDialog.moc PreferencesDialogBase.moc DeleteDialog.moc
 	@echo 'creating yammi.all_cpp.cpp ...'; \
 	rm -f yammi.all_cpp.files yammi.all_cpp.final; \
 	echo "#define KDE_USE_FINAL 1" >> yammi.all_cpp.final; \
-	for file in songentrystring.cpp songentryint.cpp songentrytimestamp.cpp songentry.cpp mylistview.cpp preferencesdialog.cpp yammimodel.cpp yammigui.cpp songlistitem.cpp songinfo.cpp song.cpp prefs.cpp mylist.cpp mydatetime.cpp mp3tag.cpp mp3_layer.cpp fuzzsrch.cpp foldermedia.cpp foldergroups.cpp foldercategories.cpp folder.cpp main.cpp YammiGuiBase.cpp SongInfoDialog.cpp PreferencesDialogBase.cpp DeleteDialog.cpp  foldergroups.moc.cpp foldermedia.moc.cpp folder.moc.cpp foldercategories.moc.cpp yammimodel.moc.cpp songinfo.moc.cpp yammigui.moc.cpp preferencesdialog.moc.cpp mylistview.moc.cpp; do \
+	for file in songentrystring.cpp songentryint.cpp songentrytimestamp.cpp songentry.cpp mylistview.cpp preferencesdialog.cpp yammimodel.cpp yammigui.cpp songlistitem.cpp songinfo.cpp song.cpp prefs.cpp mylist.cpp mydatetime.cpp mp3tag.cpp mp3_layer.cpp fuzzsrch.cpp foldermedia.cpp foldergroups.cpp foldercategories.cpp folder.cpp main.cpp YammiGuiBase.cpp SongInfoDialog.cpp PreferencesDialogBase.cpp DeleteDialog.cpp  foldercategories.moc.cpp yammigui.moc.cpp foldergroups.moc.cpp folder.moc.cpp foldermedia.moc.cpp yammimodel.moc.cpp songinfo.moc.cpp preferencesdialog.moc.cpp mylistview.moc.cpp; do \
 	  echo "#include \"$$file\"" >> yammi.all_cpp.files; \
 	  test ! -f $(srcdir)/$$file || egrep '^#pragma +implementation' $(srcdir)/$$file >> yammi.all_cpp.final; \
 	done; \
@@ -800,10 +821,11 @@ cvs-clean:
 kde-rpo-clean:
 	-rm -f *.rpo
 
-#>+ 23
+#>+ 27
 $(srcdir)/songentryint.cpp: YammiGuiBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h 
 $(srcdir)/foldergroups.cpp: YammiGuiBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h 
 $(srcdir)/songentry.cpp: YammiGuiBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h 
+$(srcdir)/PreferencesDialogBase.cpp: PreferencesDialogBase.moc 
 $(srcdir)/preferencesdialog.cpp: YammiGuiBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h 
 $(srcdir)/songinfo.cpp: YammiGuiBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h 
 $(srcdir)/mydatetime.cpp: YammiGuiBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h 
@@ -812,14 +834,17 @@ $(srcdir)/yammimodel.cpp: YammiGuiBase.h SongInfoDialog.h PreferencesDialogBase.
 $(srcdir)/songentrystring.cpp: YammiGuiBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h 
 $(srcdir)/main.cpp: YammiGuiBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h 
 $(srcdir)/yammigui.cpp: YammiGuiBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h 
-$(srcdir)/mp3_layer.cpp: YammiGuiBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h 
+$(srcdir)/YammiGuiBase.cpp: YammiGuiBase.moc 
 $(srcdir)/foldercategories.cpp: YammiGuiBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h 
+$(srcdir)/mp3_layer.cpp: YammiGuiBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h 
 $(srcdir)/folder.cpp: YammiGuiBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h 
 $(srcdir)/prefs.cpp: YammiGuiBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h 
 $(srcdir)/mylist.cpp: YammiGuiBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h 
 $(srcdir)/mylistview.cpp: YammiGuiBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h 
 $(srcdir)/song.cpp: YammiGuiBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h 
 $(srcdir)/songentrytimestamp.cpp: YammiGuiBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h 
-$(srcdir)/mp3tag.cpp: YammiGuiBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h 
 $(srcdir)/foldermedia.cpp: YammiGuiBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h 
+$(srcdir)/mp3tag.cpp: YammiGuiBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h 
 $(srcdir)/songlistitem.cpp: YammiGuiBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h 
+$(srcdir)/DeleteDialog.cpp: DeleteDialog.moc 
+$(srcdir)/SongInfoDialog.cpp: SongInfoDialog.moc 

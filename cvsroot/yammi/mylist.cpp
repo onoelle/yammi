@@ -60,15 +60,18 @@ void MyList::appendSong(Song* s)
 	append(new SongEntry(s));
 }
 
+// removes all appearances of song <toDelete> fromo the list
 void MyList::removeSong(Song* toDelete)
 {
-	for(SongEntry* entry=first(); entry; entry=next()) {
+	for(SongEntry* entry=first(); entry; ) {
 		if(entry->song()==toDelete) {
-			remove(entry);
-			entry=prev();
-			if(entry==0)
-				entry=first();
-			
+			cout << "calling remove for entry " << entry->song()->displayName() << "\n";
+			remove();
+			if(entry)
+				entry=next();					// shouldn't this be done by remove() ?
+		}
+		else {
+			entry=next();
 		}
 	}
 }

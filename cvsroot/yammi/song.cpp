@@ -39,6 +39,9 @@ Song::Song(QString artist, QString title, QString album, QString filename, QStri
 	this->comment=comment;
 	this->trackNr=trackNr;
 	this->year=year;
+	this->lastPlayed.setDate(QDate(1900,1,1));
+	this->lastPlayed.setTime(QTime(0,0,0));
+
 	
 	this->artistSure=true;
 	this->titleSure=true;
@@ -68,6 +71,8 @@ Song::Song(const QString location)
 	this->comment="";
 	this->year=0;
 	this->trackNr=0;
+	this->lastPlayed.setDate(QDate(1900,1,1));
+	this->lastPlayed.setTime(QTime(0,0,0));
 
 	QFileInfo* fi=new QFileInfo(location);
 	if (!fi->exists()) {
@@ -501,7 +506,6 @@ void Song::moveTo(QString dir)										// move file to another directory
 	QString newname=QString("%3/%4").arg(dir).arg(filename);
 	QDir currentDir("/");
 	if(!currentDir.rename(location(), newname)) {
-//mmm		QMessageBox::information( this, "Yammi", "renaming from "+s->location()+" to "+newname+" failed!", "Fine." );
 		cout << "renaming failed! song: " << displayName() << "\n";
 	}
 	else {

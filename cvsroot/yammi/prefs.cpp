@@ -19,8 +19,8 @@
 
 /// sets prefernces to the default values
 Prefs::Prefs(){
-	baseDir="/mp3";
-	scanDir="/mp3/inbox";
+	trashDir="/mp3/trash/";
+	scanDir="/mp3/inbox/";
 	doubleClickAction=None;
 	middleClickAction=None;
 	cutShort=false;

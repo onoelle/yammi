@@ -57,6 +57,7 @@
 #include <qlist.h>
 #include <qtimer.h>
 #include <qevent.h>
+#include <qtooltip.h>
 
 // xmms control
 #include <xmms/xmmsctrl.h>
@@ -137,7 +138,9 @@ protected:
 	QPopupMenu* 	helpMenu;
 	QStatusBar* 	mainStatusBar;					// status bar
 	QToolBar*			toolBar;								// tool bar
+public:	
 	QToolButton*	tbSaveDatabase;
+protected:
 	QToolButton*	tbForward;
 	QToolButton*	tbBackward;
 	QToolButton*	tbPause;

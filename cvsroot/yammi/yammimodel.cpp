@@ -16,10 +16,17 @@
  ***************************************************************************/
 
 #include "yammimodel.h"
+#include "yammigui.h"
 
-YammiModel::YammiModel(){
+extern YammiGui* gYammiGui;
+
+
+YammiModel::YammiModel()
+{
 }
-YammiModel::~YammiModel(){
+
+YammiModel::~YammiModel()
+{
 }
 
 
@@ -48,7 +55,7 @@ void YammiModel::readPreferences()
 	f.close();
 
 	// 1: get prefs from file
-	config.baseDir					=	getProperty(&doc, "baseDir", config.baseDir);
+	config.trashDir					=	getProperty(&doc, "trashDir", config.trashDir);
 	config.scanDir					=	getProperty(&doc, "scanDir", config.scanDir);
 	config.doubleClickAction=	(action) getProperty(&doc, "doubleClickAction", config.doubleClickAction);
 	config.middleClickAction=	(action) getProperty(&doc, "middleClickAction", config.middleClickAction);
@@ -80,7 +87,7 @@ void YammiModel::savePreferences()
 	}
 	
 	// iterate through properties and save each property as an element
-	setProperty(&doc, "baseDir", 						config.baseDir);
+	setProperty(&doc, "trashDir", 					config.trashDir);
 	setProperty(&doc, "scanDir", 						config.scanDir);
 	setProperty(&doc, "doubleClickAction",	config.doubleClickAction);
 	setProperty(&doc, "middleClickAction",	config.middleClickAction);
@@ -292,7 +299,7 @@ void YammiModel::readHistory()
 	// read in line per line
 	while( f.readLine(buf, 200)>0 ) {
 		QString entry(buf);
-		// not very nice, I know... (change logfile also to xml format?)
+		// not very nice, I know... (change logfile also to correct xml format?)
 		int pos1=entry.find('>', 0);
 		int pos2=entry.find('>', pos1+1);
 		int pos3=entry.find('>', pos2+1);
@@ -308,14 +315,11 @@ void YammiModel::readHistory()
 				found=true;
 				MyDateTime played;
 				played.readFromString(timestamp);
+				entry->song()->lastPlayed=played;
 				SongEntryTimestamp* p=new SongEntryTimestamp(entry->song(), &played);
 				songHistory.append(p);
-				
 				break;
 			}
-		}
-		if(!found) {
-//			cout << "history item " << artist << " - " << title << " not found in song database\n";
 		}
   }
 	f.close();	
@@ -323,27 +327,22 @@ void YammiModel::readHistory()
 }
 
 
-/// save song history (= append to logfile)
-void YammiModel::saveHistory()
+/// log given song to song history logfile
+void YammiModel::logSong(Song* s)
 {
-	// save songsPlayed in this session to history.log
-	if(!config.logging)
+	QString logfilename(config.yammiBaseDir+"/history.log");
+	QFile logfile(logfilename);
+	if ( !logfile.open( IO_ReadWrite  ) ) {
+		cout << "could open file " << logfilename << " for logging\n";
 		return;
-		
-	cout << "saving song history...\n";
-	QFile logfile( config.yammiBaseDir+"/history.log" );
-	if ( !logfile.open( IO_ReadWrite  ) )
-		return;
-	logfile.at(logfile.size());
-	for(unsigned int i=0; i<songsPlayed.count(); i++) {
-		SongEntryTimestamp* entry=(SongEntryTimestamp*)songsPlayed.at(i);
-		QString logentry=QString("<%1><%2><%3>\n").arg(entry->song()->artist).arg(entry->song()->title).arg(entry->timestamp.writeToString());
-		if(logfile.writeBlock(logentry, logentry.length()) < 1) {
-			cout << "error writing to logfile history.log\n";
-  	}
 	}
+	logfile.at(logfile.size());
+	MyDateTime timestamp;
+	QString logentry=QString("<%1><%2><%3>\n").arg(s->artist).arg(s->title).arg(timestamp.writeToString());
+	if(logfile.writeBlock(logentry, logentry.length()) < 1) {
+		cout << "error logging to file " << logfilename << "\n";
+  }
 	logfile.close();
-  cout << " ..done\n";
 }
 
 /// save categories (if changed) to xml-files
@@ -537,7 +536,7 @@ void YammiModel::saveSongDatabase()
 void YammiModel::allSongsChanged(bool changed)
 {
 	_allSongsChanged=changed;
-//mmm	tbSaveDatabase->setEnabled(_allSongsChanged || _categoriesChanged);
+	gYammiGui->tbSaveDatabase->setEnabled(_allSongsChanged || _categoriesChanged);
 }
 
 bool YammiModel::allSongsChanged()
@@ -548,7 +547,7 @@ bool YammiModel::allSongsChanged()
 void YammiModel::categoriesChanged(bool changed)
 {
 	_categoriesChanged=changed;
-//mmm	tbSaveDatabase->setEnabled(_allSongsChanged || _categoriesChanged);
+	gYammiGui->tbSaveDatabase->setEnabled(_allSongsChanged || _categoriesChanged);
 }
 
 bool YammiModel::categoriesChanged()
@@ -557,18 +556,49 @@ bool YammiModel::categoriesChanged()
 }
 
 
+/**
+ * Updates the xml-database by scanning harddisk
+ * - scans recursively, starting from config.scanDir
+ * - constructs song objects from all mp3 files found
+ * - checks whether already existing, whether modified
+ * - if not => inserts new song object into database
+ */
+void YammiModel::updateSongDatabase()
+{
+	if(config.childSafe)
+		return;
+	cout << "scanning harddisk for new songs... \n";
+	problematicSongs.clear();
+	songsAdded=0;
+	corruptSongs=0;
+	// check that scanDir is an existing directory
+	QDir d(config.scanDir);
+	if(!d.exists()) {
+		cout << "base directory for scanning does not exist!\n";
+		cout << "set value \"scanDir\" in preferences to correct value!\n";
+	}
+	else {
+		traverse(config.scanDir);
+ 		cout << "..finished scanning!\n";
+ 	}
+}
+
+
+
+
 /// traverses a directory recursively and processes all mp3 files
 /// puts songs where heuristic is not sure into the problematicSongs list
 void YammiModel::traverse(QString path)
 {
 	// leave out the following directories
-	if(path==config.baseDir+"/trash" || path==config.baseDir+"/corrupted") {
-		cout << "skipping directory " << path << "\n";
+	if(path+"/"==config.trashDir) {
+		cout << "skipping trash directory " << path << "\n";
 		return;
 	}
  	
  	cout << "scanning directory " << path << "\n";
 	QDir d(path);
+	
 	d.setFilter(QDir::Files | QDir::Dirs);
 //	d.setNameFilter("*.mp3 *.MP3 *.wav");
 	d.setSorting( QDir::DirsFirst );
@@ -609,10 +639,8 @@ void YammiModel::traverse(QString path)
 		// okay, new song (at least new filename/path) => construct song object
 		Song* newSong=new Song(fi->filePath());
 		if (newSong->corrupted) {
-			cout << "new song file " << fi->filePath() << " is corrupt, skipping and moving to " << config.baseDir << "corrupt/ \n";
+			cout << "new song file " << fi->filePath() << " is corrupt (not readable for yammi), skipping\n";
 			corruptSongs++;
-//			if(config.moveCorruptFiles)
-//				newSong->moveTo(config.baseDir+"/corrupted");
 			continue;
 		}
 		
@@ -658,24 +686,6 @@ void YammiModel::traverse(QString path)
 }
 			
 
-
-/**
- * Updates the xml-database by scanning harddisk.
- * - constructs song objects from all mp3 files found under baseDir
- * - checks whether already existing, whether modified
- * - if not => inserts new song object into database
- */
-void YammiModel::updateSongDatabase()
-{
-	if(config.childSafe)
-		return;
-	cout << "scanning harddisk for new songs... \n";
-	problematicSongs.clear();
-	songsAdded=0;
-	corruptSongs=0;
-	traverse(config.scanDir);
- 	cout << "..finished scanning!\n";
-}
 
 
 /**
@@ -795,10 +805,12 @@ void YammiModel::newCategory(QString categoryName)
  */
 void YammiModel::save()
 {
+	QApplication::setOverrideCursor( Qt::waitCursor );
 	if(categoriesChanged() || allSongsChanged())
 		saveCategories();
 	if(allSongsChanged())
 		saveSongDatabase();
+	QApplication::restoreOverrideCursor();
 }
 
 
