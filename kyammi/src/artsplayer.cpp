@@ -32,7 +32,8 @@ namespace Yammi {
 
     ArtsPlayer::ArtsPlayer(YammiModel *yammi) : MediaPlayer(yammi) {
         kdDebug() << "ArtsPlayer::ArtsPlayer(YammiModel *yammi)" << endl;
-        m_dispatcher = new KArtsDispatcher( );
+//        m_dispatcher = new KArtsDispatcher( );
+        KArtsDispatcher dispatcher;
         m_server = new KArtsServer( );
         m_factory = new KDE::PlayObjectFactory( m_server->server() );
         m_currentPlay = 0;
@@ -45,7 +46,7 @@ namespace Yammi {
         quit( );
         delete m_factory;
         delete m_server;
-        delete m_dispatcher;
+//        delete m_dispatcher;
     }
 
     

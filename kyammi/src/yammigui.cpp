@@ -2187,10 +2187,12 @@ void YammiGui::forSelectionDelete( ) {
 
     // determine delete mode
     DeleteDialog dd( this,  "deleteDialog", true);
-    if(selectedSongs.count()==1)
+    if(selectedSongs.count()==1) {
         dd.LabelSongname->setText(selectedSongs.firstSong()->displayName());
-    else
+    }
+    else {
         dd.LabelSongname->setText(QString(i18n("Delete %1 songs")).arg(selectedSongs.count()));
+    }
     // fill dialog with onMedia info...(for all toDelete songs)
     for(Song* s=selectedSongs.firstSong(); s; s=selectedSongs.nextSong()) {
         for(unsigned int i=0; i<s->mediaName.count(); i++) {
@@ -2224,10 +2226,12 @@ void YammiGui::forSelectionDelete( ) {
 
     // update view
     model->allSongsChanged(true);
-    folderContentChanged(folderAll);
     if(deleteEntryFlag) {
-        updateView();
         model->categoriesChanged(true);
+        folderContentChanged(folderAll);
+        if(chosenFolder != folderAll) {
+            updateView();
+        }
     }
 }
 

@@ -5,6 +5,7 @@
 - added GStreamer support (experimental, thanks to Martin)
 
 - added: option to follow symlinks on scanning
+- added: trying to read ogg vorbis tags in flac files
 
 - fixed: proper escaping of filenames for playing in artsplayer or noatun (eg. files containing '#')
 - fixed: starting yammi via yammi.desktop file (no more console opened by default)
@@ -18,6 +19,7 @@
 - fixed: scanning id3 tags with umlaute in certain environments (=> calling Link() on id3lib with local8Bit() conversion)
 - fixed: conflict on findSignal() for XmmsPlayer / NoatunPlayer
 - fixed: correct default value + saving of filename pattern (for scanning)
+- fixed: crash after deleting songs (when in folder "All Songs")
   ...and some more minor issues
 
 14.09.2004 version 1.2-beta

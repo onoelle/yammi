@@ -150,6 +150,7 @@ int Song::create(const QString location, const QString mediaName, bool capitaliz
     QString saveFilename(fi->fileName());
     QString savePath(fi->dirPath(TRUE));
     delete fi;
+    fi = 0;
 
 
 
@@ -164,6 +165,7 @@ int Song::create(const QString location, const QString mediaName, bool capitaliz
 
 
     // mp3 object
+    //***************************************
     if(location.right(4).upper()==".MP3") {
         // get mp3 layer info
         if(!getMp3LayerInfo(location)) {
@@ -172,88 +174,51 @@ int Song::create(const QString location, const QString mediaName, bool capitaliz
 
         #ifdef ENABLE_ID3LIB
         // get id3 tags
-        if(getMp3Tags(location)) {
-
-            // now perform some consistency checks on the read tags...
-
-            // check whether artist/title exceeding 30 characters of id3 tags
-            // (due to the fact that upto id3 v1.1, the length was restricted to 30 characters)
-            // if so, we might be able to retrieve the complete artist/title from the filename
-            if(ffArtist.upper()!=this->artist.upper()) {
-                if(ffArtist.length()>30 && ffArtist.left(29)==this->artist.left(29) && artist.length()<=30) {
-                    kdDebug() << "artist exceeding 30 characters, taking full artist from filename\n";
-                    artist=ffArtist;
-                }
-            }
-            if(ffTitle.upper()!=this->title.upper()) {
-                if(ffTitle.length()>30 && ffTitle.left(29)==this->title.left(29) && title.length()<=30) {
-                    kdDebug() << "title exceeding 30 characters, taking full title from filename\n";
-                    title=ffTitle;
-                }
-            }
-            // in case the id3 tags are empty => better trust filename info
-            if(title=="" && artist=="") {
-                title=ffTitle;
-                artist=ffArtist;
-            }
-        } else {
+        if(!getMp3Tags(location, ffArtist, ffTitle, ffAlbum)) {
             kdDebug() << "could not read tag information from mp3 file \"" << location << "\", guessing values from filename\n";
             title=ffTitle;
             artist=ffArtist;
             album=ffAlbum;
         }
 
-        // just in case: remove trailing mp3 in title
-        if(title.right(4).upper()==".MP3") {
-            title=title.left(title.length()-4);
-        }
-
-
         #else
-        // we have no id3lib support => we have to get info from filename
+        kdDebug() << "no id3lib support compiled in, guessing tags from filename...\n";
         title=ffTitle;
         artist=ffArtist;
         album=ffAlbum;
         #endif // ENABLE_ID3LIB
-
         treated=true;
     }
 
 
     // ogg object
+    //*******************************************
     if(location.right(4).upper()==".OGG") {
         // get ogg info
-
         #ifdef ENABLE_OGGLIBS
-
-        if(!getOggInfo(location)) {
-            kdDebug() << "could not read tag information from ogg file \"" << location << "\"\n";
+        
+        if(!getOggLayerInfo(location)) {
+            kdDebug() << "could not read layer information from ogg file \"" << location << "\"\n";
         }
-
-        // in case the ogg tags are empty => better trust filename info
-        if(title=="" && artist=="") {
-            kdDebug() << "ogg tags empty, taking guessed info from filename...\n";
-            title=ffTitle;
+        if(!getOggTags(location, ffArtist, ffTitle, ffAlbum)) {
+            kdDebug() << "could not read tag information from ogg file \"" << location << "\"\n";
             artist=ffArtist;
+            title=ffTitle;
             album=ffAlbum;
         }
-        // just in case: remove trailing ogg in title
-        if(title.right(4).upper()==".OGG") {
-            title=title.left(title.length()-4);
-        }
         #else
+        kdDebug() << "no ogglib support compiled in, guessing tags from filename...\n";
         artist=ffArtist;
         title=ffTitle;
         album=ffAlbum;
         #endif // ENABLE_OGGLIBS
-
         treated=true;
     }
 
 
 
     // wav object
-
+    //**********************************************
     if(location.right(4).upper()==".WAV") {
         if(!getWavInfo(location)) {
             kdDebug() << "could not read wav header information from wav file \"" << location << "\"\n";
@@ -264,15 +229,60 @@ int Song::create(const QString location, const QString mediaName, bool capitaliz
         treated=true;
     }
 
+    
+    // flac object
+    //**********************************************
+    if(location.right(5).upper()==".FLAC") {
+        bool tagsRead = false;
+        #ifdef ENABLE_OGGLIBS
+        // we first try to read ogg vorbis tags
+        kdDebug() << "trying to read ogg vorbis tags in flac file...\n";
+        if(getOggTags(location, ffArtist, ffTitle, ffAlbum)) {
+            // just in case: remove trailing flac in title
+            if(title.right(5).upper()==".FLAC") {
+                title=title.left(title.length()-5);
+            }
+            tagsRead = true;
+        }
+        else {
+            kdDebug() << "could not read ogg vorbis tags in flac file \"" << location << "\"\n";
+        }
+        #endif // ENABLE_OGGLIBS
 
+        #ifdef ENABLE_ID3LIB
+        if(!tagsRead) {
+            // if not successful yet => try to read id3 tags
+            kdDebug() << "trying to read id3 tags in flac file...\n";
+            if(getMp3Tags(location, ffArtist, ffTitle, ffAlbum)) {
+                // just in case: remove trailing flac in title
+                if(title.right(5).upper()==".FLAC") {
+                    title=title.left(title.length()-5);
+                }
+                tagsRead = true;
+            }
+            else {
+                kdDebug() << "could not read id3 tags in flac file \"" << location << "\"\n";
+            }
+        }
+        #endif
+        if(!tagsRead) {
+            kdDebug() << "could not read tags in flac file, guessing info from filename...\n";
+            artist=ffArtist;
+            title=ffTitle;
+            album=ffAlbum;
+        }
+        treated=true;
+    }
+
+    
     if(!treated) {
-        kdDebug() << location << ": unknown suffix, no special handling available...\n";
-        kdDebug() << "  => cannot read information such as bitrate, length and tags\n";
+        kdDebug() << location << ": unknown suffix, no tag reading possible, guessing tags from filename...\n";
+        kdDebug() << "  => cannot read layer information (bitrate, length)\n";
+        artist=ffArtist;
+        title=ffTitle;
+        album=ffAlbum;        
         bitrate=0;
         length=0;
-        artist="";
-        album="";
-        title=saveFilename;
     }
 
 
@@ -280,7 +290,7 @@ int Song::create(const QString location, const QString mediaName, bool capitaliz
     artist=artist.simplifyWhiteSpace();
     title=title.simplifyWhiteSpace();
 
-    if(treated && capitalizeTags) {
+    if(capitalizeTags) {
         // capitalize after spaces (any exceptions?)
         album=capitalize(album);
         artist=capitalize(artist);
@@ -299,9 +309,12 @@ int Song::create(const QString location, const QString mediaName, bool capitaliz
  * Returns true, if tags have been read.
  */
 bool Song::rereadTags() {
+    QString ffArtist, ffTitle, ffAlbum;
+    guessTagsFromFilename(filename, path, &ffArtist, &ffTitle, &ffAlbum);
+    
     if(location().right(4).upper()==".MP3") {
         #ifdef ENABLE_ID3LIB
-        if(!getMp3Tags(location())) {
+        if(!getMp3Tags(location(), ffArtist, ffTitle, ffAlbum)) {
             kdDebug() << "could not read any id3 tags from mp3 file " << location() << endl;
             return false;
         } else {
@@ -309,12 +322,11 @@ bool Song::rereadTags() {
             return true;
         }
         #endif // ENABLE_ID3LIB
-
     }
 
     if(location().right(4).upper()==".OGG") {
         #ifdef ENABLE_OGGLIBS
-        if(!getOggInfo(location())) {
+        if(!getOggTags(location(), ffArtist, ffTitle, ffAlbum)) {
             kdDebug() << "could not read tag information from ogg file " << location() << endl;
             return false;
         } else {
@@ -324,6 +336,35 @@ bool Song::rereadTags() {
         #endif // ENABLE_OGGLIBS
 
     }
+    if(location().right(4).upper()==".WAV") {
+        kdDebug() << "encountering wav file when re-reading tags: ignoring...\n";
+        return true;
+    }
+    
+    if(location().right(5).upper()==".FLAC") {
+        #ifdef ENABLE_OGGLIBS
+        kdDebug() << "trying to read ogg vorbis tags from flac file...\n";
+        if(!getOggTags(location(), ffArtist, ffTitle, ffAlbum)) {
+            kdDebug() << "could not read tag information from ogg file " << location() << endl;
+        } else {
+            tagsDirty=true;
+            return true;
+        }
+        #endif // ENABLE_OGGLIBS
+
+        #ifdef ENABLE_ID3LIB
+        kdDebug() << "trying to read id3 tags from flac file...\n";
+        if(!getMp3Tags(location(), ffArtist, ffTitle, ffAlbum)) {
+            kdDebug() << "could not read any id3 tags from mp3 file " << location() << endl;
+            return false;
+        } else {
+            tagsDirty=true;
+            return true;
+        }
+        #endif // ENABLE_ID3LIB
+        return false;
+    }
+    
     kdDebug() << "unsupported type for reading tags in file " << location() << endl;
     return false;
 }
@@ -430,7 +471,7 @@ void Song::guessTagsFromFilename(QString filename, QString path, QString* artist
  * Only updates those entries that can be found.
  * @return true, if at least one tag was found, false otherwise.
  */
-bool Song::getMp3Tags(QString filename) {
+bool Song::getMp3Tags(QString filename, QString guessedArtist, QString guessedTitle, QString guessedAlbum) {
     ID3_Tag tag;
     tag.Link(filename.local8Bit(), ID3TT_ALL);
     bool foundSomething=false;
@@ -500,13 +541,46 @@ bool Song::getMp3Tags(QString filename) {
         foundSomething=true;
     }
 
-    if(foundSomething) {
-        kdDebug() << "found at least one id3 tag\n";
-        return true;
-    } else {
-        kdDebug() << "found NO id3 tag\n";
+    if(!foundSomething) {
+        kdDebug() << "found NO id3 tags in file " << filename << endl;
         return false;
     }
+    kdDebug() << "found at least one id3 tag in file " << filename << endl;
+    
+    // now perform some consistency checks on the read tags...
+    
+    // check whether artist/title exceeding 30 characters of id3 tags
+    // (due to the fact that upto id3 v1.1, the length was restricted to 30 characters)
+    // if so, we might be able to retrieve the complete artist/title from the filename
+    if(guessedArtist.upper() != artist.upper()) {
+        if(guessedArtist.length()>30 && guessedArtist.left(29)==artist.left(29) && artist.length()<=30) {
+            kdDebug() << "artist exceeding 30 characters, taking full artist name guessed from filename\n";
+            artist=guessedArtist;
+        }
+    }
+    if(guessedTitle.upper() != title.upper()) {
+        if(guessedTitle.length()>30 && guessedTitle.left(29)==title.left(29) && title.length()<=30) {
+            kdDebug() << "title exceeding 30 characters, taking full title guessed from filename\n";
+            title=guessedTitle;
+        }
+    }
+    if(guessedAlbum.upper() != album.upper()) {
+        if(guessedAlbum.length()>30 && guessedAlbum.left(29)==album.left(29) && album.length()<=30) {
+            kdDebug() << "album exceeding 30 characters, taking full album guessed from filename\n";
+            album=guessedAlbum;
+        }
+    }
+    // in case the id3 tags are empty => better trust info guessed from filename
+    if(title=="" && artist=="") {
+        title = guessedTitle;
+        artist = guessedArtist;
+        album = guessedAlbum;
+    }
+    // just in case: remove trailing mp3 in title
+    if(title.right(4).upper()==".MP3") {
+        title=title.left(title.length()-4);
+    }    
+    return true;
 }
 
 
@@ -657,7 +731,33 @@ bool Song::getMp3LayerInfo(QString filename) {
 
 
 
-/** Gets bitrate, length and tags from an ogg file (using libvorbis)
+/**
+ * Read layer info (bitrate, length) from an ogg file.
+ */
+bool Song::getOggLayerInfo(QString filename) {
+    OggVorbis_File oggfile;
+    FILE* ourfile;
+    ourfile=fopen(filename, "r");
+    if(ourfile==0) {
+        return false;
+    }
+    int succ=ov_open(ourfile, &oggfile, NULL, 0);
+    if(succ!=0) {
+        kdDebug() << "error in opening ogg file (" << filename << "), return value of ov_open: " << succ << "\n";
+        fclose(ourfile);
+        return false;
+    }
+    length  = (int)ov_time_total(&oggfile, -1);
+    bitrate = ov_bitrate(&oggfile, -1)/1000;
+    succ=ov_clear(&oggfile);
+    if(succ!=0) {
+        kdDebug() << "error on closing ogg file, ignoring...\n";
+    }
+    return true;
+}
+
+
+/** Read tags from an ogg file (using libvorbis)
  * Thanks to Philip Scott! <scotty@philipscott.freeserve.co.uk>
  *
  * The following list is copied from the easytag project (http://easytag.sourceforge.net)
@@ -681,10 +781,9 @@ bool Song::getMp3LayerInfo(QString filename) {
  * Field *contents*, however, are represented in UTF-8 to allow easy representation
  * of any language.
  */
-bool Song::getOggInfo(QString filename) {
+bool Song::getOggTags(QString filename, QString guessedArtist, QString guessedTitle, QString guessedAlbum) {
     OggVorbis_File oggfile;
     FILE* ourfile;
-
     ourfile=fopen(filename, "r");
     if(ourfile==0) {
         return false;
@@ -693,6 +792,7 @@ bool Song::getOggInfo(QString filename) {
     if(succ!=0) {
         kdDebug() << "error in opening ogg file (" << filename << "), return value of ov_open: " << succ << "\n";
         fclose(ourfile);
+        return false;
     }
 
     title   = getOggComment(&oggfile, "title");
@@ -709,14 +809,30 @@ bool Song::getOggInfo(QString filename) {
         kdDebug() << "genre found, str: " << genreStr << ", index: " << genreNr << "\n";
     }
 
+    // in case the ogg tags are empty => better trust filename info
+    if(title=="" && artist=="" && album=="") {
+        kdDebug() << "ogg tags empty, guessing tags from filename...\n";
+        title=guessedTitle;
+        artist=guessedArtist;
+        album=guessedAlbum;
+    }
+    // just in case: remove trailing ogg in title
+    if(title.right(4).upper()==".OGG") {
+        title=title.left(title.length()-4);
+    }
+    
+    
     length  = (int)ov_time_total(&oggfile, -1);
     bitrate = ov_bitrate(&oggfile, -1)/1000;
 
     succ=ov_clear(&oggfile);
-    if(succ!=0)
-        kdDebug() << "error when closing ogg file?\n";
+    if(succ!=0) {
+        kdDebug() << "error on closing ogg file, ignoring...\n";
+    }
     return true;
 }
+
+
 
 
 /** Gets a specific ogg comment.
@@ -883,6 +999,9 @@ bool Song::checkTags() {
     }
     kdDebug() << "checking tags of " << displayName() << ", title: " << title << endl;
 
+    QString ffArtist, ffTitle, ffAlbum;
+    guessTagsFromFilename(filename, path, &ffArtist, &ffTitle, &ffAlbum);
+    
     bool same=false;
 
     QString _album=this->album;
@@ -898,7 +1017,7 @@ bool Song::checkTags() {
     #ifdef ENABLE_ID3LIB
 
     if(filename.right(4).upper()==".MP3") {
-        if(!this->getMp3Tags(location())) {
+        if(!this->getMp3Tags(location(), ffArtist, ffTitle, ffAlbum)) {
             kdDebug() << "could not read id3 tags from file " << filename << endl;
             return false;
         }
@@ -908,7 +1027,7 @@ bool Song::checkTags() {
 
     #ifdef ENABLE_OGGLIBS
     if(filename.right(4).upper()==".OGG") {
-        if(!this->getOggInfo(location())) {
+        if(!this->getOggTags(location(), ffArtist, ffTitle, ffAlbum)) {
             kdDebug() << "could not read ogg tags from file " << filename << endl;
             return false;
         }
@@ -916,6 +1035,10 @@ bool Song::checkTags() {
     }
     #endif
 
+    if(filename.right(5).upper()==".FLAC") {
+        kdDebug() << "not implemented yet: checking tags in flac files... => send money to the author ;-)\n";
+    }
+    
     if(!treated) {
         // we can't read any tags, so we can't check them... => return true
         return true;

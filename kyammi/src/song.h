@@ -108,7 +108,7 @@ public:
 
     #ifdef ENABLE_ID3LIB
     // id3 tag reading
-    bool getMp3Tags(QString filename);
+    bool getMp3Tags(QString filename, QString guessedArtist, QString guessedTitle, QString guessedAlbum);
     bool setMp3Tags(QString filename);
     bool getId3Tag(ID3_Tag* tag, ID3_FrameID frame, ID3_FieldID field, QString* content);
     bool setId3Tag(ID3_Tag* tag, ID3_FrameID frame, ID3_FieldID field, QString content, ID3_Frame* newFrame);
@@ -123,7 +123,8 @@ public:
     //************************
     #ifdef ENABLE_OGGLIBS
 
-    bool getOggInfo(QString filename);
+    bool getOggLayerInfo(QString filename);
+    bool getOggTags(QString filename, QString guessedArtist, QString guessedTitle, QString guessedAlbum);
     void setOggComment(vorbis_comment* vc, QString key, QString value);
     QString getOggComment(OggVorbis_File* oggfile, QString name);
     bool setOggTags(QString filename);
