@@ -28,68 +28,85 @@
 #include "mylist.h"
 
 // represents a folder on the left
-class Folder : public QObject, public QListViewItem
-{
-	Q_OBJECT
-	
+class Folder : public QObject, public QListViewItem {
+    Q_OBJECT
+
 public:
-	Folder					(QListView* parent, const QString &name );						// top-level folder
-	Folder					(QListView* parent, const QString &name, MyList* songList);
-	Folder					(QListViewItem* parent, const QString &name );				// subfolder
-	Folder					(QListViewItem* parent, const QString &name, MyList* songList);
-	~Folder();
-	
-  void						init(QString name);
-	virtual void		update( MyList& songList);
-	void 						clearSongs();
-	void						updateTitle();
+    Folder			(QListView* parent, const QString &name );						// top-level folder
+    Folder			(QListView* parent, const QString &name, MyList* songList);
+    Folder			(QListViewItem* parent, const QString &name );				// subfolder
+    Folder			(QListViewItem* parent, const QString &name, MyList* songList);
+    ~Folder();
 
-	Song*						firstSong();
-	Song*						nextSong();
+    void			init(QString name);
+    virtual void	update( MyList& songList);
+    void 			clearSongs();
+    void			updateTitle();
 
-	// these methods add songs..
-	virtual void		addSong(Song* s);
-	virtual void		removeSong(Song* s);
-	
-	// ..and these song entries
-	virtual void		addEntry(SongEntry* entry);
-	virtual void		removeEntry(SongEntry* entry);
-	
+    Song*			firstSong();
+    Song*			nextSong();
 
-	QString					folderName()								{ return fName; }
-  void					  setFolderName(QString folderName)	{ fName=folderName; }
-	SongEntry*			firstEntry()								{ return songList->first(); }
-	SongEntry*			nextEntry()									{ return songList->next(); }
+    // these methods add songs..
+    virtual void	addSong(Song* s);
+    virtual void	removeSong(Song* s);
 
-	virtual void 		popup(QPoint point, QPopupMenu* contentMenu);
-	
-	MyList& songlist() { return *songList; }
-	
-	QPopupMenu*			folderPopup;
-	QPopupMenu*			allPopup;	
-  bool            isSorted()                  { return sorted; }
-  void            saveSorting(int sortedBy);
-  void            saveScrollPos(int scrollPosX, int scrollPosY);
-  int             getScrollPosX()             { return scrollPosX; }
-  int             getScrollPosY()             { return scrollPosY; }
-  int             getSavedSorting()           { return sortedBy; }
+    // ..and these song entries
+    virtual void	addEntry(SongEntry* entry);
+    virtual void	removeEntry(SongEntry* entry);
+
+
+    QString			folderName()								{
+        return fName;
+    }
+    void			setFolderName(QString folderName)	{
+        fName=folderName;
+    }
+    SongEntry*		firstEntry()								{
+        return songList->first();
+    }
+    SongEntry*		nextEntry()									{
+        return songList->next();
+    }
+
+    virtual void 	popup(QPoint point, QPopupMenu* contentMenu);
+
+    MyList& songlist() {
+        return *songList;
+    }
+
+    QPopupMenu*		folderPopup;
+    QPopupMenu*		allPopup;
+    bool            isSorted()                  {
+        return sorted;
+    }
+    void            saveSorting(int sortedBy);
+    void            saveScrollPos(int scrollPosX, int scrollPosY);
+    int             getScrollPosX()             {
+        return scrollPosX;
+    }
+    int             getScrollPosY()             {
+        return scrollPosY;
+    }
+    int             getSavedSorting()           {
+        return sortedBy;
+    }
 public slots:
-  void            autoplayFolder();
+    void            autoplayFolder();
 
 
 protected:
-	QString					fName;
-	bool						sorted;
-  int             sortedBy;
-  int             scrollPosX;
-  int             scrollPosY;
-	bool            owner;
+    QString			fName;
+    bool			sorted;
+    int             sortedBy;
+    int             scrollPosX;
+    int             scrollPosY;
+    bool            owner;
 
-	MyList*					songList;
+    MyList*			songList;
 
-	Folder(const Folder&);
-	Folder& operator=(const Folder&);
-	
+    Folder(const Folder&);
+    Folder& operator=(const Folder&);
+
 };
 
 #endif

@@ -60,7 +60,7 @@
                 <cstring>LineEditFilePattern</cstring>
             </property>
             <property name="toolTip" stdset="0">
-                <string>yammi will search in this directory (and recursive in all subdirectories) for new song files</string>
+                <string>filename pattern (eg. "*.mp3 *.ogg")</string>
             </property>
         </widget>
         <widget class="QLineEdit" row="1" column="1">
@@ -112,7 +112,7 @@
                 <string>pattern of files to import</string>
             </property>
             <property name="toolTip" stdset="0">
-                <string>yammi will search in this directory (and recursive in all subdirectories) for new song files</string>
+                <string>filename pattern (eg. "*.mp3 *.ogg")</string>
             </property>
         </widget>
         <widget class="QPushButton" row="4" column="1" rowspan="1" colspan="2">

@@ -1,30 +1,26 @@
 TODO
 ----
-last update 06.12.2004
+last update 12.12.2004
 
 user-reported bugs:
 -------------------
-- Clicking on the playlist area when there is no database (ie after deleting .kde/share/apps/yammi) makes yammi crash.
-
-
-- I confirm too the crash when exiting yammi, it happens before yammi writes
- the config file, no matter what the player backend is.
-  => cannot reproduce, maybe fixed with correctly terminating searchthread?
-  
-- If you "Play now" a song that is already playing, Yammi crashes. 
-  => cannot reproduce with xmms or noatun => only with artsplayer???
-
-for version 1.2-beta-2
-----------------------
-- fix: noatun stops playback sometimes
-- fix: handbook major issues (updating and formatting)
-- publish plugin for html-export
 
 
 for version 1.2
 ---------------
+MUST-HAVE
+- fix: noatun stops playback sometimes
+- fix: page up and down keys don't work after searching
+- add: publish plugin for html-export
+- add: info message on first startup/on importing old database (or menu entry for importing?)
+- add: make mpg123 and ogg123 configurable
+- simplify {wish} system: (make every entry with empty filename (no media) a wish?
+- child safe mode?
+- keep tags consistent mode?
+
+
+NICE-TO-HAVE
 - reading layer info in flac files? (or switch to taglib?)
-- add: info message on first startup/on importing old database
 - review kde conformance:  
   - replace all couts with kdDebug/kdWarn/kdError
   - check lsm file
@@ -33,16 +29,9 @@ for version 1.2
 - saveFilename/renaming of file in song.cpp (there was something I can't remember)
 - implement onPlayed and afterPlayed plugin types
 - on deleting a song: delete in *all* lists (history, categories, ...)
-- make follow symlinks a configurable option?
-- make mpg123 and ogg123 configurable
-- reformat all files with kdevelop?
-- simplify {wish} system: (make every entry with empty filename (no media) a wish?
-- child safe mode?
-- keep tags consistent mode?
 - speedup startup by starting media players in background (noatun, xmms)
 tag-related: (switch to Scott Wheelers taglib for reading metadata)
 - fix: 0-length ogg file makes yammi crash?
-- CHECK: umlaute in tags?
 media-player-related:
 - fix: skipForward in noatun while still crossfading: take current volume as start of crossfading
 - fix: xmms stopped, enqueue as next: does not work
@@ -56,7 +45,6 @@ for version 1.4
   - and other QClasses too?
 - use a player thread for mediaplayer
 - rating of songs
-- allow subfolders for categories?
 
 
 usual steps before release
@@ -69,8 +57,13 @@ usual steps before release
 non-reproducable bugs
 #####################
 (given the date, when I could not reproduce the bug anymore)
-- (15.08.) crash on clearing playlist including currently played song (which media player?)
-- (14.09.) cannot sort files according to path
+- (15.08.2004) crash on clearing playlist including currently played song (which media player?)
+- (14.09.2004) cannot sort files according to path
+- (12.12.2004) I confirm too the crash when exiting yammi, it happens before yammi writes
+ the config file, no matter what the player backend is.
+  => cannot reproduce, maybe fixed with correctly terminating searchthread?
+- If you "Play now" a song that is already playing, Yammi crashes. 
+  => cannot reproduce with xmms or noatun => only with artsplayer???
 
 
 
@@ -91,7 +84,6 @@ refactorings/fixes
 - speed up loading of categories and history? (eg. binary search)
 - remove symlinking for "burn to media": provide "physical categories"?
 - fix: two albums having the same name appear as one album (heuristic: same album if in same dir?)
-- page up and down keys don't work after searching
 - use QProcess/KProcess? instead of system() calls? (prelisten, xmms, noatun, shutdownscript, ...)
 - swap management: in song: method getFilename() vs. getRealFilename() (fast)???
 
@@ -101,4 +93,3 @@ KNOWN BUGS
 - floating point exception when scanning wav file???
 - still problem of freezing xmms => xmms_remote_playlist_delete(0, 0)
 	(seems to be a bug in xmms, posted to bugs@xmms, #855)
-- incorrect tracknumbers are shown in some cases where tracknumber is undefined (0) ?

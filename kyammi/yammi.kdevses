@@ -1,19 +1,19 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
 <!DOCTYPE KDevPrjSession>
 <KDevPrjSession>
- <DocsAndViews NumberOfDocuments="20" >
+ <DocsAndViews NumberOfDocuments="10" >
   <Doc0 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/TODO" >
-   <View0 line="9" Type="???" >
-    <AdditionalSettings Top="1" Width="1204" Attach="1" Height="795" Left="1" MinMaxMode="0" />
+   <View0 line="99" Type="???" >
+    <AdditionalSettings Top="1" Width="1203" Attach="1" Height="795" Left="1" MinMaxMode="0" />
    </View0>
   </Doc0>
   <Doc1 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/ChangeLog" >
-   <View0 line="6" Type="???" >
-    <AdditionalSettings Top="1" Width="1203" Attach="1" Height="795" Left="1" MinMaxMode="0" />
+   <View0 line="7" Type="???" >
+    <AdditionalSettings Top="1" Width="1202" Attach="1" Height="811" Left="1" MinMaxMode="0" />
    </View0>
   </Doc1>
   <Doc2 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/src/yammigui.cpp" >
-   <View0 line="945" Type="???" >
+   <View0 line="1430" Type="???" >
     <AdditionalSettings Top="1" Width="1203" Attach="1" Height="795" Left="1" MinMaxMode="0" />
    </View0>
   </Doc2>
@@ -28,80 +28,30 @@
    </View0>
   </Doc4>
   <Doc5 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/src/prefs.cpp" >
-   <View0 line="44" Type="???" >
+   <View0 line="57" Type="???" >
     <AdditionalSettings Top="1" Width="1203" Attach="1" Height="795" Left="1" MinMaxMode="0" />
    </View0>
   </Doc5>
-  <Doc6 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/src/prefs.h" >
-   <View0 line="32" Type="???" >
-    <AdditionalSettings Top="1" Width="1203" Attach="1" Height="795" Left="1" MinMaxMode="0" />
-   </View0>
-  </Doc6>
-  <Doc7 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/src/yammimodel.h" >
+  <Doc6 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/src/yammimodel.h" >
    <View0 line="69" Type="???" >
     <AdditionalSettings Top="1" Width="1203" Attach="1" Height="795" Left="1" MinMaxMode="0" />
    </View0>
-  </Doc7>
-  <Doc8 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/src/updatedatabasedialog.cpp" >
-   <View0 line="38" Type="???" >
-    <AdditionalSettings Top="1" Width="1203" Attach="1" Height="795" Left="1" MinMaxMode="0" />
-   </View0>
-  </Doc8>
-  <Doc9 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/src/updatedatabasemediadialog.h" >
-   <View0 line="25" Type="???" >
-    <AdditionalSettings Top="1" Width="1203" Attach="1" Height="795" Left="1" MinMaxMode="0" />
-   </View0>
-  </Doc9>
-  <Doc10 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/src/updatedatabasemediadialog.cpp" >
-   <View0 line="31" Type="???" >
-    <AdditionalSettings Top="1" Width="1203" Attach="1" Height="795" Left="1" MinMaxMode="0" />
-   </View0>
-  </Doc10>
-  <Doc11 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/src/updatedatabasedialog.h" >
-   <View0 line="36" Type="???" >
-    <AdditionalSettings Top="1" Width="1203" Attach="1" Height="795" Left="1" MinMaxMode="0" />
-   </View0>
-  </Doc11>
-  <Doc12 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/src/UpdateDatabaseDialogBase.h" >
+  </Doc6>
+  <Doc7 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/src/UpdateDatabaseDialogBase.h" >
    <View0 line="17" Type="???" >
     <AdditionalSettings Top="1" Width="1203" Attach="1" Height="795" Left="1" MinMaxMode="0" />
    </View0>
-  </Doc12>
-  <Doc13 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/src/yammigui.moc.cpp" >
-   <View0 line="404" Type="???" >
+  </Doc7>
+  <Doc8 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/src/yammigui.h" >
+   <View0 line="251" Type="???" >
     <AdditionalSettings Top="1" Width="1203" Attach="1" Height="795" Left="1" MinMaxMode="0" />
    </View0>
-  </Doc13>
-  <Doc14 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/src/folder.h" >
-   <View0 line="60" Type="???" >
+  </Doc8>
+  <Doc9 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/doc/en/index.docbook" >
+   <View0 line="1386" Type="???" >
     <AdditionalSettings Top="1" Width="1203" Attach="1" Height="795" Left="1" MinMaxMode="0" />
    </View0>
-  </Doc14>
-  <Doc15 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/src/artsplayer.cpp" >
-   <View0 line="222" Type="???" >
-    <AdditionalSettings Top="1" Width="1203" Attach="1" Height="795" Left="1" MinMaxMode="0" />
-   </View0>
-  </Doc15>
-  <Doc16 context="ctx_doxygen" NumberOfViews="1" URL="file:/opt/kde3/share/doc/HTML/en/kdelibs-apidocs/arts/html/classKArtsDispatcher.html" >
-   <View0 Type="???" >
-    <AdditionalSettings Top="1" Width="1202" Attach="1" Height="795" Left="1" MinMaxMode="0" />
-   </View0>
-  </Doc16>
-  <Doc17 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/src/song.h" >
-   <View0 line="110" Type="???" >
-    <AdditionalSettings Top="1" Width="1202" Attach="1" Height="795" Left="1" MinMaxMode="0" />
-   </View0>
-  </Doc17>
-  <Doc18 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/src/util.cpp" >
-   <View0 line="54" Type="???" >
-    <AdditionalSettings Top="1" Width="1203" Attach="1" Height="795" Left="1" MinMaxMode="0" />
-   </View0>
-  </Doc18>
-  <Doc19 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/src/artsplayer.h" >
-   <View0 line="43" Type="???" >
-    <AdditionalSettings Top="1" Width="1203" Attach="1" Height="795" Left="1" MinMaxMode="0" />
-   </View0>
-  </Doc19>
+  </Doc9>
  </DocsAndViews>
  <pluginList>
   <kdevbookmarks>

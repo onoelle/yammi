@@ -1,5 +1,5 @@
-??.??.2004 version 1.2-beta2
-############################
+13.12.2004 version 1.2-rc
+#########################
 - added: italian translation (thanks to Alessandro)
 - added: spanish translation (thanks to Miguel)
 - added: GStreamer support (experimental, thanks to Martin)
@@ -23,6 +23,9 @@
 - fixed: crash after deleting songs (when in folder "All Songs")
 - fixed: crash on checking consistency (correcting directory, but no leading slash in pattern)
 - fixed: goto Artist/Album/... via keyboard shortcut: correct selection of songs
+- fixed: all songs (invisibly) selected after right-clicking on empty folder
+- fixed: crash when using "Switch To/From Playlist" without a folder  remembered
+- fixed: crash on first start when clicking on songlist when no folder was chosen
   ...and some more minor issues
 
 14.09.2004 version 1.2-beta

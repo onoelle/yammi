@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: es\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-10-09 00:51+0200\n"
+"POT-Creation-Date: 2004-12-12 18:11+0100\n"
 "PO-Revision-Date: 2004-10-12 21:11+0200\n"
 "Last-Translator: Miguel Angel Alvarez <maacruz@navegalia.com>\n"
 "Language-Team:  <es@li.org>\n"
@@ -203,8 +203,8 @@ msgstr "Comprobar consistencia - configuración"
 msgid "Checking %1 songs"
 msgstr "comprobando %1 temas"
 
-#: ConsistencyCheckDialog.cpp:85 main.cpp:57 yammigui.cpp:1493
-#: yammigui.cpp:3012 yammigui.cpp:3092 yammimodel.cpp:571 yammimodel.cpp:595
+#: ConsistencyCheckDialog.cpp:85 main.cpp:57 yammigui.cpp:1498
+#: yammigui.cpp:3018 yammigui.cpp:3098
 msgid "Yammi"
 msgstr "Yammi"
 
@@ -654,14 +654,14 @@ msgstr "Ruta a los archivos"
 #: PreferencesDialogBase.cpp:691 PreferencesDialogBase.cpp:785
 #: PreferencesDialogBase.cpp:793 rc.cpp:113 rc.cpp:194 rc.cpp:202 rc.cpp:238
 #: rc.cpp:251 UpdateDatabaseDialogBase.cpp:114
-#: UpdateDatabaseMediaDialogBase.cpp:122
+#: UpdateDatabaseMediaDialogBase.cpp:127
 msgid "..."
 msgstr "..."
 
 #: PreferencesDialogBase.cpp:692 PreferencesDialogBase.cpp:786
 #: PreferencesDialogBase.cpp:794 rc.cpp:114 rc.cpp:195 rc.cpp:203 rc.cpp:239
 #: rc.cpp:252 UpdateDatabaseDialogBase.cpp:115
-#: UpdateDatabaseMediaDialogBase.cpp:123
+#: UpdateDatabaseMediaDialogBase.cpp:128
 msgid "choose directory"
 msgstr "elija directorio"
 
@@ -850,11 +850,9 @@ msgstr "script de desconexión"
 
 #: PreferencesDialogBase.cpp:743 PreferencesDialogBase.cpp:745 rc.cpp:161
 #: rc.cpp:163
-msgid ""
-"a script that is invoked on shutdown(computer) mode (pressing PAUSE two "
-"times)"
-msgstr ""
-"script que es invocado en el modo desconexión (pulsando Pausa dos veces)"
+#, fuzzy
+msgid "a script that is invoked on sleep mode"
+msgstr "script que es invocado para todos los temas seleccionados"
 
 #: PreferencesDialogBase.cpp:746 PreferencesDialogBase.cpp:771 rc.cpp:157
 #: rc.cpp:164
@@ -894,21 +892,15 @@ msgstr "la entrada que aparecerá en el menú contextual"
 msgid "command"
 msgstr "comando"
 
-#: PreferencesDialogBase.cpp:755 rc.cpp:173
-msgid ""
-"a script that is invoked for all selected songs via context menu (%1 will be "
-"replaced by song name)"
-msgstr ""
-"script que es invocado para todos los temas seleccionados vía menú "
-"contextual (%1 será reemplazado por el nombre del tema)"
+#: PreferencesDialogBase.cpp:755 PreferencesDialogBase.cpp:758 rc.cpp:173
+#: rc.cpp:176
+#, fuzzy
+msgid "the script that is invoked when this plugin is chosen"
+msgstr "script que es invocado para todos los temas seleccionados"
 
 #: PreferencesDialogBase.cpp:756 rc.cpp:174
 msgid "Placeholders..."
 msgstr "Emplazamientos..."
-
-#: PreferencesDialogBase.cpp:758 rc.cpp:176
-msgid "a script that is invoked for all selected songs"
-msgstr "script que es invocado para todos los temas seleccionados"
 
 #: PreferencesDialogBase.cpp:759 PreferencesDialogBase.cpp:768 rc.cpp:177
 #: rc.cpp:183
@@ -1037,7 +1029,7 @@ msgstr "\"Medio\" removible"
 msgid "choose trash directory"
 msgstr "elija directorio para la papelera"
 
-#: preferencesdialog.cpp:249 updatedatabasemediadialog.cpp:42
+#: preferencesdialog.cpp:249 updatedatabasemediadialog.cpp:46
 msgid "choose media directory"
 msgstr "elija directorio para \"medios\""
 
@@ -1100,7 +1092,7 @@ msgstr "Editar Preferencias"
 msgid "Player"
 msgstr "Reproductor"
 
-#: rc.cpp:2 yammigui.cpp:3359
+#: rc.cpp:2 yammigui.cpp:3365
 msgid "Playlist"
 msgstr "Lista de reproducción"
 
@@ -1160,7 +1152,7 @@ msgstr "Álbum"
 msgid "Comment"
 msgstr "Comentario"
 
-#: rc.cpp:211 SongInfoDialog.cpp:280 yammigui.cpp:106 yammigui.cpp:3347
+#: rc.cpp:211 SongInfoDialog.cpp:280 yammigui.cpp:106 yammigui.cpp:3353
 msgid "Year"
 msgstr "Año"
 
@@ -1172,7 +1164,7 @@ msgstr "Título"
 msgid "Track"
 msgstr "Pista"
 
-#: rc.cpp:214 SongInfoDialog.cpp:283 yammigui.cpp:106 yammigui.cpp:3343
+#: rc.cpp:214 SongInfoDialog.cpp:283 yammigui.cpp:106 yammigui.cpp:3349
 msgid "Genre"
 msgstr "Género"
 
@@ -1238,7 +1230,7 @@ msgstr "Duración"
 msgid "lists all media containing this song"
 msgstr "lista todos los \"medios\" conteniendo este tema"
 
-#: rc.cpp:230 SongInfoDialog.cpp:299 yammigui.cpp:3355
+#: rc.cpp:230 SongInfoDialog.cpp:299 yammigui.cpp:3361
 msgid "Media"
 msgstr "\"Medio\""
 
@@ -1255,17 +1247,19 @@ msgid "Update Database - Scan Harddisk"
 msgstr "Actualizar base de datos - Escanear disco duro"
 
 #: rc.cpp:237 rc.cpp:255 UpdateDatabaseDialogBase.cpp:113
-#: UpdateDatabaseMediaDialogBase.cpp:126
+#: UpdateDatabaseMediaDialogBase.cpp:131
 msgid "Start Scan..."
 msgstr "Comenzar escaneado..."
 
-#: rc.cpp:240 rc.cpp:241 rc.cpp:243 rc.cpp:246 rc.cpp:254 rc.cpp:256
-#: rc.cpp:260 rc.cpp:261 rc.cpp:263 rc.cpp:264
-#: UpdateDatabaseDialogBase.cpp:116 UpdateDatabaseDialogBase.cpp:117
-#: UpdateDatabaseDialogBase.cpp:119 UpdateDatabaseDialogBase.cpp:122
-#: UpdateDatabaseMediaDialogBase.cpp:125 UpdateDatabaseMediaDialogBase.cpp:127
-#: UpdateDatabaseMediaDialogBase.cpp:131 UpdateDatabaseMediaDialogBase.cpp:132
-#: UpdateDatabaseMediaDialogBase.cpp:134 UpdateDatabaseMediaDialogBase.cpp:135
+#: rc.cpp:240 rc.cpp:246 rc.cpp:263 rc.cpp:264
+#: UpdateDatabaseDialogBase.cpp:116 UpdateDatabaseDialogBase.cpp:122
+#: UpdateDatabaseMediaDialogBase.cpp:139 UpdateDatabaseMediaDialogBase.cpp:140
+msgid "filename pattern (eg. \"*.mp3 *.ogg\")"
+msgstr ""
+
+#: rc.cpp:241 rc.cpp:243 rc.cpp:254 rc.cpp:256
+#: UpdateDatabaseDialogBase.cpp:117 UpdateDatabaseDialogBase.cpp:119
+#: UpdateDatabaseMediaDialogBase.cpp:130 UpdateDatabaseMediaDialogBase.cpp:132
 msgid ""
 "yammi will search in this directory (and recursive in all subdirectories) "
 "for new song files"
@@ -1282,15 +1276,17 @@ msgid "Options for scanning your harddisk"
 msgstr "Opciones de escaneado del disco duro"
 
 #: rc.cpp:245 rc.cpp:262 UpdateDatabaseDialogBase.cpp:121
-#: UpdateDatabaseMediaDialogBase.cpp:133
+#: UpdateDatabaseMediaDialogBase.cpp:138
 msgid "pattern of files to import"
 msgstr "patrón de archivos a importar"
 
-#: rc.cpp:248 UpdateDatabaseDialogBase.cpp:124
+#: rc.cpp:248 rc.cpp:266 UpdateDatabaseDialogBase.cpp:124
+#: UpdateDatabaseMediaDialogBase.cpp:142
 msgid "follow symbolic links"
 msgstr "seguir enlaces simbólicos"
 
-#: rc.cpp:249 UpdateDatabaseDialogBase.cpp:125
+#: rc.cpp:249 rc.cpp:267 UpdateDatabaseDialogBase.cpp:125
+#: UpdateDatabaseMediaDialogBase.cpp:143
 msgid ""
 "Choose whether yammi should follow symbolic links when traversing the "
 "directory structure"
@@ -1298,75 +1294,80 @@ msgstr ""
 "Elige si yammi debe seguir enlaces simbólicos al recorrer la estructura de "
 "directorios"
 
-#: rc.cpp:250 UpdateDatabaseMediaDialogBase.cpp:121
+#: rc.cpp:250 UpdateDatabaseMediaDialogBase.cpp:126
 msgid "Update Database - Scan Media"
 msgstr "Actualizar base de datos - Escanear \"medio\""
 
-#: rc.cpp:253 UpdateDatabaseMediaDialogBase.cpp:124
+#: rc.cpp:253 UpdateDatabaseMediaDialogBase.cpp:129
 msgid "media directory"
 msgstr "directorio de \"medios\""
 
-#: rc.cpp:257 UpdateDatabaseMediaDialogBase.cpp:128
+#: rc.cpp:257 UpdateDatabaseMediaDialogBase.cpp:133
 msgid "Options for scanning a media (e.g. CD)"
 msgstr "Opciones de escaneado de \"medios\" (ej. CD)"
 
-#: rc.cpp:259 UpdateDatabaseMediaDialogBase.cpp:130
+#: rc.cpp:259 UpdateDatabaseMediaDialogBase.cpp:135
 msgid "name of medium"
 msgstr "nombre del \"medio\""
 
-#: rc.cpp:265 UpdateDatabaseMediaDialogBase.cpp:136
+#: rc.cpp:260 rc.cpp:261 UpdateDatabaseMediaDialogBase.cpp:136
+#: UpdateDatabaseMediaDialogBase.cpp:137
+msgid "identifies the medium by name"
+msgstr ""
+
+#: rc.cpp:265 UpdateDatabaseMediaDialogBase.cpp:141
 msgid "mount directory"
 msgstr "directorio de montaje"
 
-#: song.cpp:1356
+#: song.cpp:1479
 msgid ""
 "{filename} (without path)\n"
 ")"
 msgstr ""
 
-#: song.cpp:1357
+#: song.cpp:1480
 msgid "{absoluteFilename} (including path)\n"
 msgstr ""
 
-#: song.cpp:1358
+#: song.cpp:1481
 msgid "{filenameWithoutSuffix} (without path, without suffix)\n"
 msgstr ""
 
-#: song.cpp:1359
+#: song.cpp:1482
 msgid "{suffix} (without leading dot)\n"
 msgstr ""
 
-#: song.cpp:1360
+#: song.cpp:1483
 msgid "{path} (without filename)\n"
 msgstr ""
 
-#: song.cpp:1361
+#: song.cpp:1484
 msgid "{artist}, {title}, {album}, {comment} (corresponding to the tags)\n"
 msgstr ""
 
-#: song.cpp:1362
+#: song.cpp:1485
 msgid "{bitrate} (in kbps)\n"
 msgstr ""
 
-#: song.cpp:1363
+#: song.cpp:1486
 msgid "{length} (length in format mm:ss)\n"
 msgstr ""
 
-#: song.cpp:1364
+#: song.cpp:1487
 msgid "{lengthInSeconds} (length in seconds)\n"
 msgstr ""
 
-#: song.cpp:1365
+#: song.cpp:1488
 #, fuzzy
 msgid "{mediaList (list of media on which song is contained)\n"
 msgstr "muestra una lista de \"medios\" en los que se halla el tema a eliminar"
 
-#: song.cpp:1366
+#: song.cpp:1489
 #, fuzzy
 msgid "{trackNr} (Track number)\n"
 msgstr "Introduzca el número de pista"
 
-#: song.cpp:1367
+#: song.cpp:1490
 msgid "{trackNr2Digit} (as above, but padded with zero if necessary)\n"
 msgstr ""
 
@@ -1392,17 +1393,21 @@ msgid ""
 "Your emails"
 msgstr "maacruz@navegalia.com"
 
-#: updatedatabasedialog.cpp:31
+#: updatedatabasedialog.cpp:32
 msgid "Update Database (harddisk)"
 msgstr "Actualizar la base de datos (disco duro)"
 
-#: updatedatabasedialog.cpp:56
+#: updatedatabasedialog.cpp:54
 msgid "choose scan directory"
 msgstr "elija directorio a escanear"
 
 #: updatedatabasedialog.moc.cpp:34 updatedatabasedialog.moc.cpp:42
 #, fuzzy
 msgid "UpdateDatabaseDialog"
+msgstr "Diálogo de actualización de la base de datos (\"medios\")"
+
+#: updatedatabasemediadialog.cpp:30
+msgid "Update Database (media) Dialog"
 msgstr "Diálogo de actualización de la base de datos (\"medios\")"
 
 #: updatedatabasemediadialog.moc.cpp:34 updatedatabasemediadialog.moc.cpp:42
@@ -1427,11 +1432,11 @@ msgstr "Añadido a"
 msgid "Last Played"
 msgstr "Última vez"
 
-#: yammigui.cpp:361 yammigui.cpp:3332
+#: yammigui.cpp:361 yammigui.cpp:3338
 msgid "All Music"
 msgstr "Todo"
 
-#: yammigui.cpp:362 yammigui.cpp:2410
+#: yammigui.cpp:362 yammigui.cpp:2421
 msgid "Folder: "
 msgstr "Carpeta:"
 
@@ -1455,39 +1460,39 @@ msgstr "Desconectando en %1 segundos"
 msgid "Shutting down..."
 msgstr "Desconectando..."
 
-#: yammigui.cpp:558
+#: yammigui.cpp:561
 msgid "Yammi - not playing"
 msgstr "Yammi - parado"
 
-#: yammigui.cpp:590
+#: yammigui.cpp:593
 msgid "Pause"
 msgstr "Pausa"
 
-#: yammigui.cpp:593 yammigui.cpp:3400
+#: yammigui.cpp:596 yammigui.cpp:3406
 msgid "Play"
 msgstr "Reproducir"
 
-#: yammigui.cpp:778 yammigui.cpp:794
+#: yammigui.cpp:781 yammigui.cpp:797
 msgid "Pos"
 msgstr "Posición"
 
-#: yammigui.cpp:782
+#: yammigui.cpp:785
 msgid "Played on"
 msgstr "Reproducido en"
 
-#: yammigui.cpp:786
+#: yammigui.cpp:789
 msgid "Match"
 msgstr ""
 
-#: yammigui.cpp:790
+#: yammigui.cpp:793
 msgid "Reason"
 msgstr "Razón"
 
-#: yammigui.cpp:958
+#: yammigui.cpp:961
 msgid "New Category..."
 msgstr "Nueva Categoría..."
 
-#: yammigui.cpp:1072
+#: yammigui.cpp:1075
 msgid ""
 "Two identical songs: \n"
 "s1: %1\n"
@@ -1499,36 +1504,36 @@ msgstr ""
 "s2: %2\n"
 "¿Desea eliminar uno de ellos?"
 
-#: yammigui.cpp:1073
+#: yammigui.cpp:1076
 msgid "Delete s1"
 msgstr "Eliminar s1"
 
-#: yammigui.cpp:1073
+#: yammigui.cpp:1076
 msgid "Delete s2"
 msgstr "Eliminar s2"
 
-#: yammigui.cpp:1365
+#: yammigui.cpp:1369
 msgid "%1 songs selected"
 msgstr "%1 temas seleccionados"
 
-#: yammigui.cpp:1445
+#: yammigui.cpp:1450
 msgid "choose directory for plugin"
 msgstr "elija directorio para el plugin"
 
-#: yammigui.cpp:1451
+#: yammigui.cpp:1456
 msgid "choose file for plugin"
 msgstr "elija archivo para el plugin"
 
-#: yammigui.cpp:1468
+#: yammigui.cpp:1473
 #, fuzzy
 msgid "Type in plugin parameter"
 msgstr "Obtener parametro de entrada"
 
-#: yammigui.cpp:1483
+#: yammigui.cpp:1488
 msgid "Execute the following command on each selected song?\n"
 msgstr "¿Ejecutar el siguiente comando en cada tema seleccionado?\n"
 
-#: yammigui.cpp:1484
+#: yammigui.cpp:1489
 msgid ""
 "(here shown: values for first song)\n"
 "\n"
@@ -1536,15 +1541,15 @@ msgstr ""
 "(se muestran: valores del primer tema)\n"
 "\n"
 
-#: yammigui.cpp:1493
+#: yammigui.cpp:1498
 msgid "Executing song plugin cmd..."
 msgstr "Ejecutando plugin cmd..."
 
-#: yammigui.cpp:1525
+#: yammigui.cpp:1530
 msgid "Execute the following command:\n"
 msgstr "Ejecutar el siguiente comando:\n"
 
-#: yammigui.cpp:1529
+#: yammigui.cpp:1534
 msgid ""
 "\n"
 "...\n"
@@ -1554,39 +1559,39 @@ msgstr ""
 "...\n"
 "(comando truncado)"
 
-#: yammigui.cpp:1553
+#: yammigui.cpp:1558
 msgid "Select destination directory"
 msgstr "Elija el directorio destino"
 
-#: yammigui.cpp:1576 yammigui.cpp:2358
+#: yammigui.cpp:1581 yammigui.cpp:2369
 msgid "collection name"
 msgstr "nombre de la colección"
 
-#: yammigui.cpp:1576
+#: yammigui.cpp:1581
 msgid "Please enter collection name:"
 msgstr "Por favor, introduzca el nombre de la colección:"
 
-#: yammigui.cpp:1576
+#: yammigui.cpp:1581
 msgid "my mp3 collection"
 msgstr "mi colección mp3"
 
-#: yammigui.cpp:1580
+#: yammigui.cpp:1585
 msgid "collection start number"
 msgstr "número inicial de la colección"
 
-#: yammigui.cpp:1580
+#: yammigui.cpp:1585
 msgid "Please enter start index:"
 msgstr "Por favor, introduzca el índice inicial:"
 
-#: yammigui.cpp:1584
+#: yammigui.cpp:1589
 msgid "Preparing media..."
 msgstr "Preparando \"medio\"..."
 
-#: yammigui.cpp:1608
+#: yammigui.cpp:1613
 msgid "Preparing media "
 msgstr "Preparando \"medio\""
 
-#: yammigui.cpp:1650
+#: yammigui.cpp:1655
 msgid ""
 "Result of \"Burn to media\" process:\n"
 "\n"
@@ -1636,53 +1641,53 @@ msgstr ""
 "                             marcar la opción \"seguir enlaces simbólicos\" "
 "o similar)."
 
-#: yammigui.cpp:1801
+#: yammigui.cpp:1806
 msgid "%1 Songs equeued at end of playlist"
 msgstr "%1 temas encoladas al final de la lista de reproducción"
 
-#: yammigui.cpp:2044
+#: yammigui.cpp:2051
 msgid "Mass editing: %1 songs"
 msgstr "Edición masiva: %1 temas"
 
-#: yammigui.cpp:2045
+#: yammigui.cpp:2052
 msgid "Size (total)"
 msgstr "Tamaño (total)"
 
-#: yammigui.cpp:2046
+#: yammigui.cpp:2053
 msgid "Length (total)"
 msgstr "Duración (total)"
 
-#: yammigui.cpp:2048
+#: yammigui.cpp:2055
 #, c-format
 msgid "%d:%02d:%02d (hh:mm:ss)"
 msgstr "%d:%02d:%02d (hh:mm:ss)"
 
-#: yammigui.cpp:2052
+#: yammigui.cpp:2059
 #, c-format
 msgid "%2d:%02d (mm:ss)"
 msgstr "%2d:%02d (mm:ss)"
 
-#: yammigui.cpp:2054
+#: yammigui.cpp:2061
 msgid "%1 MB"
 msgstr ""
 
-#: yammigui.cpp:2188
+#: yammigui.cpp:2196
 msgid "Delete %1 songs"
 msgstr "Eliminar %1 temas"
 
-#: yammigui.cpp:2324
+#: yammigui.cpp:2335
 msgid "Enter name for category"
 msgstr "Introduzca nombre para la categoría"
 
-#: yammigui.cpp:2325
+#: yammigui.cpp:2336
 msgid "Please enter name of category"
 msgstr "Por favor, introduzca nombre de la categoría"
 
-#: yammigui.cpp:2326
+#: yammigui.cpp:2337
 msgid "new category"
 msgstr "nueva categoría"
 
-#: yammigui.cpp:2343
+#: yammigui.cpp:2354
 msgid ""
 "Delete category %1 ?\n"
 " (will be deleted immediately!)"
@@ -1690,15 +1695,15 @@ msgstr ""
 "¿Eliminar categoría %1?\n"
 " (será eliminada inmediatamente)"
 
-#: yammigui.cpp:2358 yammigui.cpp:2443
+#: yammigui.cpp:2369 yammigui.cpp:2454
 msgid "Please enter new name:"
 msgstr "Por favor, introduzca nuevo nombre:"
 
-#: yammigui.cpp:2376
+#: yammigui.cpp:2387
 msgid "Choose a Playlist to insert"
 msgstr "Elija una lista de reproducción para insertar"
 
-#: yammigui.cpp:2430
+#: yammigui.cpp:2441
 msgid ""
 "Remove media %1 and the corresponding directory?\n"
 "                               (which contains the symbolic links to the "
@@ -1708,11 +1713,11 @@ msgstr ""
 "                               (que contiene los enlaces simbólicos a los "
 "temas)"
 
-#: yammigui.cpp:2443
+#: yammigui.cpp:2454
 msgid "Rename Media"
 msgstr "Renombrar \"medio\""
 
-#: yammigui.cpp:2498
+#: yammigui.cpp:2509
 msgid ""
 "Clear complete playlist?\n"
 "(%1 entries)"
@@ -1720,48 +1725,48 @@ msgstr ""
 "¿Borrar la lista de reproducción?\n"
 "(%1 entradas)"
 
-#: yammigui.cpp:2500
+#: yammigui.cpp:2511
 msgid "including current song"
 msgstr "incluyendo tema actual"
 
-#: yammigui.cpp:2621
+#: yammigui.cpp:2632
 msgid "Enter track number"
 msgstr "Introduzca el número de pista"
 
-#: yammigui.cpp:2622
+#: yammigui.cpp:2633
 msgid "Please enter track number"
 msgstr "Por favor, introduzca el número de pista"
 
-#: yammigui.cpp:2630
+#: yammigui.cpp:2641
 msgid "Enter artist"
 msgstr "Introduzca el artista"
 
-#: yammigui.cpp:2631
+#: yammigui.cpp:2642
 msgid "Please enter artist"
 msgstr "Por favor, introduzca el artista"
 
-#: yammigui.cpp:2632
+#: yammigui.cpp:2643
 msgid "MyArtist"
 msgstr "Mi artista"
 
-#: yammigui.cpp:2636
+#: yammigui.cpp:2647
 msgid "Enter title"
 msgstr "Introduzca el título"
 
-#: yammigui.cpp:2637
+#: yammigui.cpp:2648
 msgid "Please enter title"
 msgstr "Por favor, introduzca el título"
 
-#: yammigui.cpp:2638
+#: yammigui.cpp:2649
 msgid "Fantastic Song"
 msgstr "Tema fantástico"
 
-#: yammigui.cpp:2642
+#: yammigui.cpp:2653
 #, c-format
 msgid "%1%2 - %3.mp3"
 msgstr "%1%2 - %3.mp3"
 
-#: yammigui.cpp:2645
+#: yammigui.cpp:2656
 msgid ""
 "The file\n"
 "%1\n"
@@ -1775,15 +1780,15 @@ msgstr ""
 "\n"
 "Por favor, elija una combinación artista/título diferente."
 
-#: yammigui.cpp:2653
+#: yammigui.cpp:2664
 msgid "grabbing track, will be available shortly..."
 msgstr "grabando pista, estará disponible en breve..."
 
-#: yammigui.cpp:2674
+#: yammigui.cpp:2685
 msgid "grabbed song available"
 msgstr "Tema grabado disponible"
 
-#: yammigui.cpp:2683
+#: yammigui.cpp:2694
 msgid ""
 "Yammi tried to add the grabbed song to the database.\n"
 "\n"
@@ -1795,19 +1800,19 @@ msgstr ""
 "Estadísticas:\n"
 "\n"
 
-#: yammigui.cpp:2684 yammigui.cpp:2977 yammigui.cpp:3029
+#: yammigui.cpp:2695 yammigui.cpp:2989 yammigui.cpp:3035
 msgid "%1 songs added to database\n"
 msgstr "%1 temas añadidos a la base de datos\n"
 
-#: yammigui.cpp:2685 yammigui.cpp:2978 yammigui.cpp:3030
+#: yammigui.cpp:2696 yammigui.cpp:2990 yammigui.cpp:3036
 msgid "%1 songs corrupt (=not added)\n"
 msgstr "%1 temas corruptos y no añadidos\n"
 
-#: yammigui.cpp:2686
+#: yammigui.cpp:2697
 msgid "%1 problematic issues(check in folder Problematic Songs)"
 msgstr "%1 con problemas (compruebe la carpeta \"Temas problemáticos\")"
 
-#: yammigui.cpp:2868
+#: yammigui.cpp:2879
 msgid ""
 "The Database has been modified. Save changes?\n"
 "(answering no will cancel sleep mode)"
@@ -1815,19 +1820,19 @@ msgstr ""
 "La base de datos ha sido modificada. ¿Guardar cambios?\n"
 "(responder \"no\" cancelará el modo suspender)"
 
-#: yammigui.cpp:2879
+#: yammigui.cpp:2890
 msgid "shutdown"
 msgstr "desconectar"
 
-#: yammigui.cpp:2879 yammigui.cpp:3502
+#: yammigui.cpp:2890 yammigui.cpp:3508
 msgid "(disabled)"
 msgstr "(deshabilitado)"
 
-#: yammigui.cpp:2966
+#: yammigui.cpp:2977
 msgid "Open file(s) to import"
 msgstr "Abrir archivo(s) para importar"
 
-#: yammigui.cpp:2976 yammigui.cpp:3028
+#: yammigui.cpp:2988 yammigui.cpp:3034
 msgid ""
 "Updated your database.\n"
 "\n"
@@ -1839,260 +1844,256 @@ msgstr ""
 "Estadísticas:\n"
 "\n"
 
-#: yammigui.cpp:2979 yammigui.cpp:3031
+#: yammigui.cpp:2991 yammigui.cpp:3037
 msgid "%1 songs problematic (check in folder Problematic Songs)\n"
 msgstr ""
 "%1 temas con problemas (compruebe la carpeta \"Temas problemáticos\")\n"
 
-#: yammigui.cpp:2985
-msgid "Update Database (media) Dialog"
-msgstr "Diálogo de actualización de la base de datos (\"medios\")"
-
-#: yammigui.cpp:2995
+#: yammigui.cpp:3005
 msgid "You have to enter a name for the media!"
 msgstr "Debe introducir un nombre para el \"medio\""
 
-#: yammigui.cpp:3012
+#: yammigui.cpp:3018
 msgid "Scanning..."
 msgstr "Escaneando...."
 
-#: yammigui.cpp:3092
+#: yammigui.cpp:3098
 msgid "Loading song files..."
 msgstr "Cargando archivos..."
 
-#: yammigui.cpp:3118
+#: yammigui.cpp:3124
 msgid "loading song: "
 msgstr "cargando tema. "
 
-#: yammigui.cpp:3118
+#: yammigui.cpp:3124
 msgid ". in playlist)"
 msgstr ". en lista de reproducción)"
 
-#: yammigui.cpp:3180
+#: yammigui.cpp:3186
 msgid "<none>"
 msgstr "<ninguno>"
 
-#: yammigui.cpp:3302
+#: yammigui.cpp:3308
 msgid "Quick Browser"
 msgstr "Navegador"
 
-#: yammigui.cpp:3335
+#: yammigui.cpp:3341
 msgid "Artists"
 msgstr "Artistas"
 
-#: yammigui.cpp:3339
+#: yammigui.cpp:3345
 msgid "Albums"
 msgstr "Álbunes"
 
-#: yammigui.cpp:3351
+#: yammigui.cpp:3357
 msgid "Categories"
 msgstr "Categorías"
 
-#: yammigui.cpp:3362
+#: yammigui.cpp:3368
 msgid "Songs Played"
 msgstr "Temas reproducidos"
 
-#: yammigui.cpp:3366
+#: yammigui.cpp:3372
 msgid "History"
 msgstr "Historial"
 
-#: yammigui.cpp:3370
+#: yammigui.cpp:3376
 msgid "Unclassified"
 msgstr "No clasificados"
 
-#: yammigui.cpp:3373
+#: yammigui.cpp:3379
 msgid "Search Results"
 msgstr "Resultados de búsqueda"
 
-#: yammigui.cpp:3376
+#: yammigui.cpp:3382
 msgid "Problematic Songs"
 msgstr "Temas problemáticos"
 
-#: yammigui.cpp:3379
+#: yammigui.cpp:3385
 msgid "Recent Additions"
 msgstr " Adiciones recientes"
 
-#: yammigui.cpp:3397
+#: yammigui.cpp:3403
 msgid "Invert selection"
 msgstr "Invertir selección"
 
-#: yammigui.cpp:3402
+#: yammigui.cpp:3408
 msgid "Skip Backward"
 msgstr "Anterior"
 
-#: yammigui.cpp:3403
+#: yammigui.cpp:3409
 msgid "Skip Forward"
 msgstr "Siguiente"
 
-#: yammigui.cpp:3406
+#: yammigui.cpp:3412
 msgid "Track position"
 msgstr "Pista"
 
-#: yammigui.cpp:3412
+#: yammigui.cpp:3418
 msgid "Save Database"
 msgstr "Guardar la base de datos"
 
-#: yammigui.cpp:3413
+#: yammigui.cpp:3419
 msgid "Scan Harddisk..."
 msgstr "Escanear el disco duro..."
 
-#: yammigui.cpp:3414
+#: yammigui.cpp:3420
 msgid "Scan Removable Media..."
 msgstr "Escanear \"medio\" removible..."
 
-#: yammigui.cpp:3415
+#: yammigui.cpp:3421
 msgid "Import Selected File(s)..."
 msgstr "Importar los archivo(s) seleccionados..."
 
-#: yammigui.cpp:3416 yammigui.cpp:3435
+#: yammigui.cpp:3422 yammigui.cpp:3441
 msgid "Check Consistency..."
 msgstr "Comprobar consistencia..."
 
-#: yammigui.cpp:3417
+#: yammigui.cpp:3423
 msgid "Grab And Encode CD-Track..."
 msgstr "Obtener y codificar pista de CD"
 
-#: yammigui.cpp:3420
+#: yammigui.cpp:3426
 msgid "Shuffle Playlist..."
 msgstr "Aleatorizar la lista de reproducción..."
 
-#: yammigui.cpp:3421
+#: yammigui.cpp:3427
 msgid "Clear Playlist"
 msgstr "Borrar la lista de reproducción"
 
-#: yammigui.cpp:3422
+#: yammigui.cpp:3428
 msgid "Switch to/from Playlist"
 msgstr "Cambiar a lista de reproducción"
 
-#: yammigui.cpp:3425
+#: yammigui.cpp:3431
 msgid "Enqueue as next (prepend)"
 msgstr "Encolar como siguiente"
 
-#: yammigui.cpp:3426
+#: yammigui.cpp:3432
 msgid "Enqueue at end (append)"
 msgstr "Encolar al final"
 
-#: yammigui.cpp:3427
+#: yammigui.cpp:3433
 msgid "Play Now!"
 msgstr "Reproducir ahora"
 
-#: yammigui.cpp:3428
+#: yammigui.cpp:3434
 msgid "Dequeue Songs"
 msgstr "Desencolar temas"
 
-#: yammigui.cpp:3429
+#: yammigui.cpp:3435
 msgid "Prelisten start"
 msgstr "Pre-escuchar comienzo"
 
-#: yammigui.cpp:3430
+#: yammigui.cpp:3436
 msgid "Prelisten middle"
 msgstr "Pre-escuchar hacia la mitad"
 
-#: yammigui.cpp:3431
+#: yammigui.cpp:3437
 msgid "Prelisten end"
 msgstr "Pre-escuchar final"
 
-#: yammigui.cpp:3432
+#: yammigui.cpp:3438
 msgid "Song Info..."
 msgstr "Información del tema..."
 
-#: yammigui.cpp:3433
+#: yammigui.cpp:3439
 msgid "Delete Song..."
 msgstr "Eliminar tema..."
 
-#: yammigui.cpp:3434
+#: yammigui.cpp:3440
 msgid "Burn To Media"
 msgstr "Grabar al \"medio\""
 
-#: yammigui.cpp:3436
+#: yammigui.cpp:3442
 msgid "Move Files"
 msgstr "Mover archivos"
 
-#: yammigui.cpp:3437
+#: yammigui.cpp:3443
 msgid "Search for similar entry"
 msgstr "Buscar entrada similar"
 
-#: yammigui.cpp:3438
+#: yammigui.cpp:3444
 msgid "Search for similar artist"
 msgstr "Buscar artista similar"
 
-#: yammigui.cpp:3439
+#: yammigui.cpp:3445
 msgid "Search for similar title"
 msgstr "Buscar título similar"
 
-#: yammigui.cpp:3440
+#: yammigui.cpp:3446
 msgid "Search for similar album"
 msgstr "Buscar álbum similar"
 
-#: yammigui.cpp:3441
+#: yammigui.cpp:3447
 msgid "Goto artist"
 msgstr "Ir a artista"
 
-#: yammigui.cpp:3442
+#: yammigui.cpp:3448
 msgid "Goto album"
 msgstr "Ir a álbum"
 
-#: yammigui.cpp:3443
+#: yammigui.cpp:3449
 msgid "Goto genre"
 msgstr "Ir a genero"
 
-#: yammigui.cpp:3445
+#: yammigui.cpp:3451
 msgid "Stop prelisten"
 msgstr "Detener pre-escucha"
 
-#: yammigui.cpp:3451
+#: yammigui.cpp:3457
 msgid "Longest not played"
 msgstr "Mas antiguo no reproducido"
 
-#: yammigui.cpp:3453
+#: yammigui.cpp:3459
 msgid "Random"
 msgstr "Aleatorio"
 
-#: yammigui.cpp:3455
+#: yammigui.cpp:3461
 msgid "Unknown"
 msgstr "Desconocido"
 
-#: yammigui.cpp:3466
+#: yammigui.cpp:3472
 msgid "Update Automatic Folder Structure"
 msgstr "Actualizar estructura automática de carpetas"
 
-#: yammigui.cpp:3475
+#: yammigui.cpp:3481
 msgid "Search:"
 msgstr "Buscar:"
 
-#: yammigui.cpp:3479
+#: yammigui.cpp:3485
 msgid "Fuzzy search (Ctrl-F)"
 msgstr "Busqueda \"borrosa\" (Ctrl F)"
 
-#: yammigui.cpp:3492
+#: yammigui.cpp:3498
 msgid "Needed media:"
 msgstr "\"Medio\" necesario:"
 
-#: yammigui.cpp:3495
+#: yammigui.cpp:3501
 msgid "load"
 msgstr "cargar"
 
-#: yammigui.cpp:3501
+#: yammigui.cpp:3507
 msgid "Sleep mode:"
 msgstr "Modo suspender:"
 
-#: yammigui.cpp:3504
+#: yammigui.cpp:3510
 msgid "toggle sleep mode"
 msgstr "cambiar modo suspender"
 
-#: yammigui.cpp:3508
+#: yammigui.cpp:3514
 msgid "number songs until shutdown"
 msgstr "número de temas hasta la desconexión"
 
-#: yammigui.cpp:3535
+#: yammigui.cpp:3541
 msgid "Columns"
 msgstr "Columnas"
 
-#: yammigui.cpp:3561
+#: yammigui.cpp:3567
 msgid "Insert Into/Remove From..."
 msgstr "Insertar en/Eliminar de"
 
-#: yammigui.cpp:3563
+#: yammigui.cpp:3569
 msgid "Plugins..."
 msgstr "Plugins..."
 
@@ -2197,6 +2198,19 @@ msgstr "escaneando el directorio %1 ..."
 #, fuzzy
 msgid "YammiModel"
 msgstr "Yammi"
+
+#~ msgid ""
+#~ "a script that is invoked on shutdown(computer) mode (pressing PAUSE two "
+#~ "times)"
+#~ msgstr ""
+#~ "script que es invocado en el modo desconexión (pulsando Pausa dos veces)"
+
+#~ msgid ""
+#~ "a script that is invoked for all selected songs via context menu (%1 will "
+#~ "be replaced by song name)"
+#~ msgstr ""
+#~ "script que es invocado para todos los temas seleccionados vía menú "
+#~ "contextual (%1 será reemplazado por el nombre del tema)"
 
 #~ msgid ""
 #~ "filename pattern\n"

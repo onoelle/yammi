@@ -123,7 +123,7 @@ YammiGui::YammiGui() : DCOPObject("YammiPlayer"), KMainWindow( ) {
     isScanning = false;
     controlPressed = false;
     shiftPressed = false;
-    toFromRememberFolder=folderAll;
+    toFromRememberFolder = 0;
     
     
     model = new YammiModel( this );
@@ -250,6 +250,9 @@ void YammiGui::loadDatabase(QString databaseDir) {
     Folder* f=getFolderByName(cfg->readEntry("CurrentFolder"));
     if(f != 0) {
         changeToFolder(f, true);
+    }
+    else {
+        changeToFolder(folderAll);
     }
 
     checkTimer.start( 100, FALSE );
@@ -2824,11 +2827,13 @@ void YammiGui::keyReleaseEvent(QKeyEvent* e) {
 void YammiGui::toFromPlaylist() {
     if(chosenFolder!=folderActual) {
         // switch to playlist
-        toFromRememberFolder=chosenFolder;
+        toFromRememberFolder = chosenFolder;
         changeToFolder(folderActual);
     } else {
         // switch back to last open folder
-        changeToFolder(toFromRememberFolder);
+        if(toFromRememberFolder != 0) {
+            changeToFolder(toFromRememberFolder);
+        }
     }
 }
 
