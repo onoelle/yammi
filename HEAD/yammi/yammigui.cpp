@@ -78,7 +78,9 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
 	model=new YammiModel();
 	cout << "starting Yammi, version " << model->config.yammiVersion << "\n";
 
-  ensureXmmsIsRunning();
+#ifdef XMMS_SUPPORT
+  player = new XmmsPlayer(0, model);         // use xmms as media player (session 0)
+#endif
   
 	model->readPreferences();						// read preferences
 	model->readSongDatabase();					// read song database
@@ -138,13 +140,13 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
   QToolBar* mediaPlayerToolBar = new QToolBar (this, "mediaPlayerToolbar");
   mediaPlayerToolBar->setLabel( "Media Player Controls" );
   tbPlayPause = new QToolButton( QPixmap((const char**)pause_xpm), "Play/Pause (F1)", QString::null,
-                           this, SLOT(xmms_playPause()), mediaPlayerToolBar);
+                           player, SLOT(playPause()), mediaPlayerToolBar);
 	new QToolButton( QPixmap((const char**)stop_xpm), "Stop", QString::null,
-                           this, SLOT(xmms_stop()), mediaPlayerToolBar);
+                           player, SLOT(stop()), mediaPlayerToolBar);
 	new QToolButton( QPixmap((const char**)skipbackward_xpm), "Skip backward (F2 / SHIFT-F2)", QString::null,
- 														this, SLOT(xmms_skipBackward()), mediaPlayerToolBar);
+ 														this, SLOT(skipBackward()), mediaPlayerToolBar);
 	new QToolButton( QPixmap((const char**)skipforward_xpm), "Skip forward (F3 / SHIFT-F3)", QString::null,
-                           this, SLOT(xmms_skipForward()), mediaPlayerToolBar);
+                           this, SLOT(skipForward()), mediaPlayerToolBar);
 	songSlider = new QSlider( QSlider::Horizontal, mediaPlayerToolBar, "songLength" );
 	songSlider->setTickmarks(QSlider::Below);
 	songSlider->setFixedWidth(180);
@@ -189,7 +191,7 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
 	new QToolButton (QPixmap(dequeueSong_xpm), "Dequeue Song (F8)", QString::null,
                            this, SLOT(forAllSelectedDequeue()), toolBar2);
 	new QToolButton (QPixmap(dequeueAll_xpm), "Clear playlist (CTRL-F8)", QString::null,
-                           this, SLOT(xmms_clearPlaylist()), toolBar2);
+                           this, SLOT(clearPlaylist()), toolBar2);
 	new QToolButton (QPixmap(prelisten_xpm), "Prelisten (start) (F9)", QString::null,
                            this, SLOT(forAllSelectedPrelistenStart()), toolBar2);
 	new QToolButton (QPixmap(prelisten_xpm), "Prelisten (middle) (F10)", QString::null,
@@ -364,24 +366,14 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
 	shiftPressed=false;
 	currentSong=0;
 	
-	// check whether xmms is in shuffle mode: if yes, set it to normal
-	// (confuses Yammi's playlistmanagement)
-	if(xmms_remote_is_shuffle(0)) {
-		xmms_remote_toggle_shuffle(0);
-		xmmsShuffleWasActivated=true;
-		cout << "switching off xmms shuffle mode (does confuse my playlist management otherwise)\n";
-	}
-	else
-		xmmsShuffleWasActivated=false;
 
-	// check whether xmms is playing, if not: start playing!
-	if(!xmms_remote_is_playing(0)) {
-		if(xmms_remote_get_playlist_length(0)>0) {
-			xmms_remote_play(0);
-			cout << "xmms is not playing, starting it...\n";
-		}
+	// check whether player is playing, if not: start playing!
+  if(player->getStatus()!=PLAYING) {
+  	cout << "media player is not playing, starting it...\n";
+		player->play();
 	}
-	syncXmms2Yammi();
+  
+	player->syncPlayer2Yammi(folderActual);
 	checkPlaylistAvailability();
 
 	// connect all timers
@@ -422,9 +414,8 @@ YammiGui::~YammiGui()
 	cout << "trying to exit gracefully...\n";
   updateGeometrySettings();
   writeSettings();
-	syncYammi2Xmms(true);
-	if(xmmsShuffleWasActivated)
-		xmms_remote_toggle_shuffle(0);
+	player->syncYammi2Player(true);
+  delete(player);
 	if(model->allSongsChanged() || model->categoriesChanged()) {
 		QString msg="Save changes?\n\n";
 		msg+="If you don't save, all changes will be lost\n";
@@ -1586,7 +1577,7 @@ void YammiGui::forSelection(action act)
 		slotFolderChanged();
 	}
 	if(act==Enqueue || act==EnqueueAsNext || act==Dequeue) {
-		syncYammi2Xmms();
+		player->syncYammi2Player(false);
 		if(chosenFolder==folderActual)
 			slotFolderChanged();
 		else
@@ -1604,171 +1595,6 @@ void YammiGui::forSelection(action act)
 }
 
 /**
- * writes all songs found in xmms playlist to yammi's playlist
- * also, clears xmms playlist except for the first config.keepInXmms
- */
-void YammiGui::syncXmms2Yammi()
-{
-	// 1. delete all songs already played
-	for(int i=xmms_remote_get_playlist_pos(0)-1; i>=0; i--) {
-//		cout << QString("xmms_remote_playlist_delete %1").arg(i) << "\n";
-		xmms_remote_playlist_delete(0, i);
-//		cout << "..done\n";
-	}
-	// 2. insert all (including currently played) songs into yammi playlist
-	folderActual->clearSongs();
-	for(int i=0; i<xmms_remote_get_playlist_length(0); i++) {
- 		char buf[200];
-//		cout << QString("xmms_remote_get_playlist_file %1").arg(i) << "\n";
-		strcpy(buf, xmms_remote_get_playlist_file(0, i));
-//		cout << "..done\n";
-		Song* check=getSongFromFilename(QString(buf));
-		if(!check)	// song not found in database
-			continue;
-		folderActual->addSong(check);
-	}
-	// 3. delete all but the keepInXmms first songs
-	for(int i=xmms_remote_get_playlist_length(0)-1; i>=model->config.keepInXmms; i--) {
-//		cout << QString("xmms_remote_playlist_delete %1").arg(i) << "\n";
-		xmms_remote_playlist_delete(0, i);
-//		cout << "..done\n";
-	}
-}
-
-/**
- * tries to sync the xmms playlist with the yammi playlist
- * ie. writes all entries from yammi playlist into xmms playlist
- */
-void YammiGui::syncYammi2Xmms(bool syncAll)
-{
-	// check whether xmms playlist is empty
-	if(xmms_remote_get_playlist_length(0)==0) {
-		for(int i=0; i<(int)model->songsToPlay.count() && (i<model->config.keepInXmms || syncAll); i++) {
-			gchar url[300];
-			strcpy(url, model->songsToPlay.at(i)->song()->location());
-//			cout << QString("xmms_remote_playlist_add_url_string %1").arg(url) << "\n";
-			xmms_remote_playlist_add_url_string(0, url);
-//			cout << "..done\n";
-		}
-		return;
-	}
-	
-	// okay, one or more songs in xmms playlist
-		
-	// iterate through first <keepInXmms> or all (syncAll) songs in xmms playlist
-	// if playlist too short => insert yammi entries
-	int iXmms=0;
-	int iYammi=0;
-	for(; iXmms<model->config.keepInXmms || ( syncAll && iYammi<(int)model->songsToPlay.count() ); iXmms++, iYammi++) {
-		
-		// check whether xmms playlist entry existing
-		if(iXmms<(int)xmms_remote_get_playlist_length(0)) {
-			// yes, existing => compare yammi and xmms entry
-	 		char buf[300];
-//			cout << QString("xmms_remote_get_playlist_file %1").arg(iXmms) << "\n";
-			strcpy(buf, xmms_remote_get_playlist_file(0, iXmms));
-//			cout << "..done\n";
-			Song* check=getSongFromFilename(QString(buf));
-			
-			// corresponding yammi entry existing?
-			if(iYammi<(int)model->songsToPlay.count()) {
-				Song* s=model->songsToPlay.at(iYammi)->song();
-				if(check==s)
-					continue;		// okay, both are the same
-				
-				// song mismatch between yammi and xmms
-				
-				// case 1: xmms song not in yammi database
-				// => leave unknown song
-				if(check==0) {
-					iYammi--;
-					continue;
-				}
-				
-				// case 2: xmms song is yammi+1 (some song moved in front of it)
-				// => insert the song that was inserted
-				if(iYammi+1<(int)model->songsToPlay.count() && check==model->songsToPlay.at(iYammi+1)->song()) {
-					// check if songfile is available...
-					QString loc=checkAvailability(s);
-					if(loc=="" || loc=="never") {
-						iXmms--;
-						continue;
-					}
-					gchar url[300];
-					strcpy(url, loc);
-//					cout << QString("xmms_remote_playlist_ins_url_string %1 %2").arg(url).arg(iXmms) << "\n";
-					xmms_remote_playlist_ins_url_string(0, url, iXmms);
-//					cout << "..done\n";
-					continue;
-				}
-				
-				// case 3: xmms+1 song is yammi (song removed from there) => delete
-//				cout << QString("xmms_remote_playlist_delete %1").arg(iXmms) << "\n";
-				xmms_remote_playlist_delete(0, iXmms);
-//				cout << "..done\n";
-				iXmms--;
-				iYammi--;
-				
-			}
-			else {		// yammi playlist too short
-				if(check==0)
-					cout << "xmms playlist longer than yammi playlist, but unknown song\n";
-				else {
-					cout << "xmms playlist longer than yammi playlist, deleting\n";
-					xmms_remote_playlist_delete(0, iXmms);
-					myWait(50);
-					iXmms--;
-					continue;
-				}
-			}
-		}
-		else {			// xmms playlist too short => check whether songs in songsToPlay
-			if(iYammi<(int)model->songsToPlay.count()) {
-//				cout << "trying to fill up xmms playlist with song from yammi\n";
-				Song* s=model->songsToPlay.at(iYammi)->song();
-				// check if songfile is available...
-				QString loc=checkAvailability(s);
-				if(loc=="" || loc=="never") {
-					iXmms--;
-					continue;
-				}
-				gchar url[300];
-				strcpy(url, loc);
-//				cout << QString("xmms_remote_playlist_add_url %1").arg(url) << "\n";
-				xmms_remote_playlist_add_url_string(0, url);
-//				cout << "..done\n";
-				myWait(50);
-			}
-		}
-	} // end of for
-	
-	// now process leftover songs in xmms playlist
-	for(; iXmms<(int)xmms_remote_get_playlist_length(0); ) {
- 		char buf[300];
-//		cout << QString("xmms_remote_get_playlist_file %1").arg(iXmms) << "\n";
-		strcpy(buf, xmms_remote_get_playlist_file(0, iXmms));
-//		cout << "..done\n";
-		Song* check=getSongFromFilename(QString(buf));
-		if(check==0)
-			continue;
-//		cout << QString("xmms_remote_playlist_delete %1").arg(iXmms) << "\n";
-		xmms_remote_playlist_delete(0, iXmms);
-//		cout << "..done\n";
-		myWait(50);
-	}
-	
-	// if xmms is not playing, we might have inserted songs before the active one
-	// => set active song to first
-	// caution! xmms reports as not playing sometimes (immediately after skip forward?)
-/*	
-	if(!xmms_remote_is_playing(0)) {
-		xmms_remote_set_playlist_pos(0, 0);
-	}
-*/
-	
-}
-
-/**
  * performs some action for a song
  */
 void YammiGui::forSong(Song* s, action act, QString dir)
@@ -1777,7 +1603,6 @@ void YammiGui::forSong(Song* s, action act, QString dir)
 	case None:									// no action
 		return;
 	case PlayNow:								// enqueue at front and immediately skip to it
-    ensureXmmsIsRunning();
 		if(s->filename=="" || !s->checkReadability()) {
 			cout << "song not available (try to first enqueue and load from a media)\n";
 			return;
@@ -1785,42 +1610,37 @@ void YammiGui::forSong(Song* s, action act, QString dir)
 
 		forSong(s, EnqueueAsNext);
 
-    if(xmms_remote_is_playing(0)) {
-      // xmms playing or playing but paused
-      if(!xmms_remote_is_paused(0)) {
-        // case 1: xmms is playing
-        xmms_skipForward();
-      }
-      else {
-        // case 2: xmms is paused => start playing
-        xmms_skipForward();
-        xmms_remote_play(0);
-      }
+    if(player->getStatus()==STOPPED) {
+      // case 1: player stopped (this is a bit dirty...)
+// TODO: ?      xmms_remote_set_playlist_pos(0, 0);
+      player->play();
     }
-    else {
-      // case 3: xmms is stopped (this is a bit dirty...)
-      xmms_remote_set_playlist_pos(0, 0);
-      xmms_remote_play(0);
+    else if(player->getStatus()==PAUSED) {
+      // case 2: player paused => start playing
+      player->skipForward(shiftPressed);
+      player->play();      
+    }
+    else if(player->getStatus()==PLAYING) {
+      // case 3: player is playing
+      player->skipForward(shiftPressed);
     }
 			
 		mainStatusBar->message(QString("playing %1").arg(s->displayName()), 2000);
 		break;
 		
 	case Enqueue:								// enqueue at end
-    ensureXmmsIsRunning();
 		folderActual->addSong(s);
 		mainStatusBar->message(QString("%1 enqueued at end").arg(s->displayName()), 3000);
 		break;
 				
 	case EnqueueAsNext: {				// enqueue as next
-    ensureXmmsIsRunning();
 		// songsToPlay is empty, or first song is still to play
 		if(model->songsToPlay.count()==0 || currentSong!=model->songsToPlay.at(0)->song())
 			model->songsToPlay.insert(0, new SongEntryInt(s, 13));
 		else
 			model->songsToPlay.insert(1, new SongEntryInt(s, 13));
 		folderActual->correctOrder();
-		syncYammi2Xmms();
+		player->syncYammi2Player(false);
 		mainStatusBar->message(QString("%1 enqueued as next").arg(s->displayName()), 2000);
 	}
 		break;
@@ -1828,7 +1648,7 @@ void YammiGui::forSong(Song* s, action act, QString dir)
 	case Dequeue: {
 		// search for selected song and dequeue
 		int i=1;
-		if(!xmms_remote_is_playing(0))
+		if(player->getStatus()==STOPPED)
 			i=0;
 		for(; i<(int)model->songsToPlay.count(); i++) {
 			Song* check=model->songsToPlay.at(i)->song();
@@ -2051,91 +1871,15 @@ void YammiGui::pluginOnFolder()
 
 
 
-// check whether xmms is running, if not: start it!
-void YammiGui::ensureXmmsIsRunning()
-{
-	if(!xmms_remote_is_running(0)) {
-		cout << "xmms not running, trying to start it...\n";
-		system("xmms > /dev/null &");
-	}
-}
 
-
-
-/// toggle between play and pause
-void YammiGui::xmms_playPause()
-{
-  ensureXmmsIsRunning();
-	xmms_remote_play_pause(0);
-}
-
-
-/// skip forward in playlist (if controlPressed without crossfading)
-void YammiGui::xmms_skipForward()
-{
-  ensureXmmsIsRunning();
-  if(shiftPressed) {
-    xmms_remote_pause(0);
-  }
-  int x= xmms_remote_get_playlist_pos(0);
-	xmms_remote_set_playlist_pos(0, x+1);
-  if(shiftPressed) {
-    xmms_remote_play(0);
-  }
-}
-
-
-/// skip backward in playlist (if controlPressed without crossfading)
-void YammiGui::xmms_skipBackward()
-{
-  ensureXmmsIsRunning();
-  if(shiftPressed) {
-    xmms_remote_pause(0);
-  }
-  int count=model->songsPlayed.count();
-	if(count==0)			// empty folder songsPlayed => can's skip backwards
-		return;
-	
-	// 1. get and remove last song from songsPlayed
-	Song* last=model->songsPlayed.at(count-1)->song();
-	model->songsPlayed.remove(count-1);
-	folderSongsPlayed->updateTitle();
-//	cout << "last: " << last->displayName() << "\n";
-	
-	int pos=xmms_remote_get_playlist_pos(0);
-	gchar url[500];
-	strcpy(url, last->location());
-	xmms_remote_playlist_ins_url_string(0, url, pos);
-	xmms_remote_set_playlist_pos(0, pos);
-	currentSong=0;
-	folderActual->insertSong(last, 0);
-	
-	// update necessary?
-	if(chosenFolder==folderActual || chosenFolder==folderSongsPlayed)
-		slotFolderChanged();
-	else
-		songListView->triggerUpdate();
-
-  if(shiftPressed) {
-    xmms_remote_play(0);
-  }
-}
-
-/// stop playback
-void YammiGui::xmms_stop()
-{
-  ensureXmmsIsRunning();
-	xmms_remote_stop(0);
-}
 
 /// clear all playlist items except currently played song
-void YammiGui::xmms_clearPlaylist()
+void YammiGui::clearPlaylist()
 {
-  ensureXmmsIsRunning();
 	if(model->config.childSafe)
 		return;
 	Song* save=0;
-	if(currentSong!=0 && xmms_remote_is_playing(0) && model->songsToPlay.count()>1) {
+	if(currentSong!=0 && player->getStatus()!=STOPPED && model->songsToPlay.count()>1) {
     if( QMessageBox::warning( this, "Yammi", "Clear complete playlist?\n(except currently played song)", "Yes", "No")!=0)
       return;
     save=model->songsToPlay.firstSong();
@@ -2149,7 +1893,7 @@ void YammiGui::xmms_clearPlaylist()
 		folderActual->addSong(save);
 	else
 		folderActual->updateTitle();
-	syncYammi2Xmms();
+	player->syncYammi2Player(false);
 	if(chosenFolder==folderActual)
 		slotFolderChanged();
 	else
@@ -2157,18 +1901,17 @@ void YammiGui::xmms_clearPlaylist()
 }
 
 /// called whenever user grabs the songSlider
-/// causes xmms to jump to the given song position
 void YammiGui::songSliderGrabbed()
 {
 	isSongSliderGrabbed=true;
 }
 
-/// called whenever user released the songSlider
-/// causes xmms to jump to the given song position
+/// called when user releases the songSlider
+/// causes the player to jump to the given song position
 void YammiGui::songSliderMoved()
 {
 	isSongSliderGrabbed=false;
-	xmms_remote_jump_to_time(0, songSlider->value());
+	player->jumpTo(songSlider->value());
 }
 
 /**
@@ -2179,36 +1922,23 @@ void YammiGui::songSliderMoved()
 void YammiGui::onTimer()
 {	
 //	cout << "calling onTimer\n";
-	// perform these actions only if xmms is playing
-	if(xmms_remote_is_playing(0)) {
+	// perform these actions only if player is playing or paused
+	if(player->getStatus()!=STOPPED) {
   	
 		// check whether currently played song has changed
- 		char file[300];
-  	int pos=xmms_remote_get_playlist_pos(0);
-		strcpy(file, xmms_remote_get_playlist_file(0, pos));
-				
+    QString file=player->getCurrentFile();
+        		
     // adjust songSlider (if user is not currently dragging it around)
-		gint outputTime=outputTime=xmms_remote_get_output_time(0);
-		if(!isSongSliderGrabbed && !xmms_remote_is_paused(0))
+		int outputTime=player->getCurrentTime();
+		if(!isSongSliderGrabbed && player->getStatus() != PAUSED)
 			songSlider->setValue(outputTime);
 
-    if(xmms_remote_is_paused(0))
+    if(player->getStatus()==PAUSED)
       tbPlayPause->setIconSet(QIconSet(QPixmap((const char**)play_xpm)));
     else
       tbPlayPause->setIconSet(QIconSet(QPixmap((const char**)pause_xpm)));
     
-		
-		/*	some xmms statistics...
-		gint len=xmms_remote_get_playlist_length(0);
-		gint pTime=xmms_remote_get_playlist_time(0, 0);
-		gint rate, freq, nch;
-		xmms_remote_get_info(0, &rate, &freq, &nch);
-		cout << "outputTime: " << outputTime << ", length: " << len << ", pTime: "
-		<< pTime << ", rate: " << rate << ", freq: " << freq << ", nch " << nch << "\n";
-		*/
-		
-
-		
+				
 		if(currentFile!=file) {
 		// *** song change detected ***
 		// ****************************
@@ -2240,17 +1970,12 @@ void YammiGui::onTimer()
 					folderSongsPlayed->addEntry(entry);		// append to songsPlayed
 				}
 			}
-			currentSong=getSongFromFilename(QString(file));
+			currentSong=model->getSongFromFilename(file);
 			currentSongStarted=currentSongStarted.currentDateTime();
-			// setup songSlider
-//			cout << QString("xmms_remote_get_output_time\n");
-			gint outputTime=outputTime=xmms_remote_get_output_time(0);
-//			cout << "..done\n";
-			
-//			cout << QString("xmms_remote_get_playlist_time %1\n").arg(pos);
-			gint pTime=xmms_remote_get_playlist_time(0, pos);
-//			cout << "..done\n";
-			songSlider->setRange(0, pTime);
+
+      // setup songSlider
+			int totalTime=player->getTotalTime();
+			songSlider->setRange(0, totalTime);
 			songSlider->setTickInterval(1000*60);
 
 			// song entry found
@@ -2262,32 +1987,12 @@ void YammiGui::onTimer()
 				setCaption("Yammi - song not in database");
 			}	
 			
-			// remove played song(s) from xmms and yammi playlist
-		  for(int i=0; true ; i++) {
-				int check=xmms_remote_get_playlist_pos(0);
-//				cout << "check: " << check << "\n";
-				if(!check>0)
-				 	break;
-//				cout << "removing played songs: " << i << "\n";
-//				cout << QString("xmms_remote_get_playlist_file 0\n");
-				strcpy(file, xmms_remote_get_playlist_file(0, 0));
-//				cout << "..done, returned: " << file << "\n";
-				Song* x=getSongFromFilename(QString(file));
-//				cout << QString("__xmms_remote_playlist_delete 0\n");
-		  	
-		  	// the following call sometimes seems to crash xmms
-		  	// (and does not return until xmms is killed => freezes yammi)
-		  	//************************************************************
-		  	xmms_remote_playlist_delete(0, 0);
-				myWait(100);
-//				cout << "..done\n";
-		  	if(x==model->songsToPlay.at(0)->song())
-			 		model->songsToPlay.removeFirst();
-		  }
+			// remove played song(s) from player's and yammi's playlist
+      player->removePlayed();
 		  folderActual->correctOrder();
 		  	
 		  // should just check and fill up, not change anything:
-		  syncYammi2Xmms();
+		  player->syncYammi2Player(false);
 
 			// update view, if folderActual is currently shown folder
 			if(chosenFolder==folderActual)
@@ -2300,9 +2005,9 @@ void YammiGui::onTimer()
 		// **************************
   	
 	}
-	else {				// xmms not playing (after stop, NOT after pause)
+	else {				// player stopped
     tbPlayPause->setIconSet(QIconSet(QPixmap((const char**)play_xpm)));
-		setCaption("Yammi - XMMS not playing");
+		setCaption("Yammi - not playing");
 		currentFile="";
 		currentSong=0;
 		if(songsUntilShutdown>0) {
@@ -2319,31 +2024,6 @@ void YammiGui::onTimer()
 
 
 
-
-// finds out the corresponding song entry given a filename
-// (now also takes care of songs in swap dir)
-// returns 0 if no song entry found
-Song* YammiGui::getSongFromFilename(QString filename)
-{
-	// strip filename to relative name
-	int pos=filename.findRev('/', -1);
-	QString path=filename.left(pos+1);
-	QString lookFor=filename.right(filename.length()-pos-1);
-	
-	if(path==model->config.swapDir) {
-		for(SongEntry* entry=model->allSongs.first(); entry; entry=model->allSongs.next()) {
-			if(entry->song()->filename=="" && entry->song()->constructFilename()==lookFor)
-				return entry->song();
-		}
-	}
-	else {
-		for(SongEntry* entry=model->allSongs.first(); entry; entry=model->allSongs.next()) {
-			if(entry->song()->filename==lookFor)
-				return entry->song();
-		}
-	}
-	return 0;
-}				
 
 
 // grab a track from audio-cd, encode, and add to database
@@ -2437,7 +2117,7 @@ void YammiGui::shutDown()
       }
     }
     
-		xmms_remote_quit(0);						// properly close xmms => xmms will remember playlist
+		player->quit();                                 	// properly close player (for xmms: will save playlist)
     if(model->config.shutdownScript!="")
       system(model->config.shutdownScript+" &");			// invoke shutdown script
     endProgram();
@@ -2461,16 +2141,16 @@ void YammiGui::keyPressEvent(QKeyEvent* e)
 //      cout << "shift pressed\n";
 			break;
 		case Key_F1:
-			xmms_playPause();
+			player->pause();
 			break;
 		case Key_F2:
-      xmms_skipBackward();
+      player->skipBackward(shiftPressed);
 			break;
 		case Key_F3:
- 			xmms_skipForward();
+ 			player->skipForward(shiftPressed);
 			break;
 		case Key_F4:
-			xmms_stop();
+			player->stop();
 			break;
 		case Key_F5:
 			forAllSelected(Enqueue);
@@ -2479,14 +2159,11 @@ void YammiGui::keyPressEvent(QKeyEvent* e)
 			forAllSelected(EnqueueAsNext);
 			break;
 		case Key_F7:
-//			if(shiftPressed && xmms_remote_is_playing(0)) {
-//   			xmms_remote_pause(0);
-//      }
  			forAllSelected(PlayNow);
 			break;
 		case Key_F8:
 			if(shiftPressed)
-				xmms_clearPlaylist();
+				clearPlaylist();
 			else
 				forAllSelected(Dequeue);
 			break;			
@@ -2759,7 +2436,7 @@ void YammiGui::stopDragging()
 	slotFolderChanged();
 
 	if(chosenFolder==folderActual) {
-		syncYammi2Xmms();
+		player->syncYammi2Player(false);
 	}
 	
 	if(((QListViewItem*)chosenFolder)->parent()==folderCategories) {
@@ -2793,52 +2470,6 @@ void YammiGui::invertSelection(){
 	songListView->triggerUpdate();
 }
 
-/** checks whether a song is available on the local harddisk
- * or needs to be retrieved from a removable media
- * if song available, returns the complete path+filename to the songfile
- * (if in swap dir, the file will be touched to implement the LRU strategy)
- * if not yet available, returns ""
- * if never available, returns "never"
- */
-QString YammiGui::checkAvailability(Song* s, bool touch)
-{
-	if(s->location()!="/") {
-		QFileInfo fi(s->location());
-		if(fi.exists() && fi.isReadable()) {
-			return s->location();
-		}
-//		cout << "song " << s->displayName() << "has location given, but file does not exist or is not readable!\n";
-	}
-	// no location given, check whether already existing in swap dir
-	QString dir=model->config.swapDir;
-	QString filename=s->constructFilename();
-	QFileInfo fi(dir+filename);
-	if(fi.exists() && fi.isReadable()) {
-		if(touch) {
-			// linux specific
-			QString cmd;
-			cmd=QString("touch \"%1\"").arg(dir+filename);
-			system(cmd);
-/*		does not work: touching a file
-			QFile touchFile(dir+filename);
-			if(!touchFile.open(IO_ReadWrite))
-				cout << "could not touch songfile (for LRU method)\n";
-			else {
-				touchFile.flush();
-				touchFile.close();
-			}
-*/
-		}
-		return dir+filename;
-	}
-	
-	// not available, need to load it from media
-	if(s->mediaLocation.count()!=0)
-		return "";
-	else
-		return "never";
-}
-
 
 // if known media inserted, loads all songs occurring in playlist into swap dir
 void YammiGui::loadSongsFromMedia(QString mediaName)
@@ -2846,7 +2477,7 @@ void YammiGui::loadSongsFromMedia(QString mediaName)
 	int songsToLoad=0;
 	for(unsigned int i=1; i<model->songsToPlay.count(); i++) {
 		Song* s=model->songsToPlay.at(i)->song();
-		if(checkAvailability(s)=="")
+		if(model->checkAvailability(s)=="")
 			songsToLoad++;
 	}
 	
@@ -2871,7 +2502,7 @@ void YammiGui::loadSongsFromMedia(QString mediaName)
 		if(progress.wasCancelled())
 			break;
 		Song* s=model->songsToPlay.at(i)->song();
-		if(checkAvailability(s)=="") {
+		if(model->checkAvailability(s)=="") {
 			for(unsigned int j=0; j<s->mediaLocation.count(); j++) {
 				if(s->mediaName[j]==mediaName) {				
 					cout << "loading song " << s->displayName() << "from " << mediaDir << s->mediaLocation[j] << "\n";
@@ -2906,7 +2537,7 @@ void YammiGui::loadSongsFromMedia(QString mediaName)
 		system(cmd);
 	}
 	
-	syncYammi2Xmms();
+	player->syncYammi2Player(false);
 	checkPlaylistAvailability();
 	if(chosenFolder==folderActual) {
 		slotFolderChanged();
@@ -2925,7 +2556,7 @@ void YammiGui::checkPlaylistAvailability()
 	for(unsigned int i=1; i<model->songsToPlay.count(); i++) {
 		Song* s=model->songsToPlay.at(i)->song();
 		if(s->filename=="") {				// for performance, we first test this (fast)
-			if(checkAvailability(s, true)=="") {				// this needs harddisk (slow)
+			if(model->checkAvailability(s, true)=="") {				// this needs harddisk (slow)
 				for(unsigned int j=0; j<s->mediaLocation.count(); j++) {
 					bool exists=false;
 					for(int k=0; k<mediaListCombo->count(); k++) {
@@ -2987,4 +2618,15 @@ void YammiGui::checkSwapSize()
 		else
 			size+=fi->size();
 	}
+}
+
+
+void YammiGui::skipForward()
+{
+  player->skipForward(shiftPressed);
+}
+
+void YammiGui::skipBackward()
+{
+  player->skipBackward(shiftPressed);
 }

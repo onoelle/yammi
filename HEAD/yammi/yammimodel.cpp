@@ -1223,3 +1223,76 @@ void YammiModel::markPlaylists(Song* s)
 	}
 }
 
+
+// finds out the corresponding song entry given a filename
+// (now also takes care of songs in swap dir)
+// returns 0 if no song entry found
+Song* YammiModel::getSongFromFilename(QString filename)
+{
+	// strip filename to relative name
+	int pos=filename.findRev('/', -1);
+	QString path=filename.left(pos+1);
+	QString lookFor=filename.right(filename.length()-pos-1);
+
+	if(path==config.swapDir) {
+		for(SongEntry* entry=allSongs.first(); entry; entry=allSongs.next()) {
+			if(entry->song()->filename=="" && entry->song()->constructFilename()==lookFor)
+				return entry->song();
+		}
+	}
+	else {
+		for(SongEntry* entry=allSongs.first(); entry; entry=allSongs.next()) {
+			if(entry->song()->filename==lookFor)
+				return entry->song();
+		}
+	}
+	return 0;
+}
+
+
+/** checks whether a song is available on the local harddisk
+ * or needs to be retrieved from a removable media
+ * if song available, returns the complete path+filename to the songfile
+ * (if in swap dir, the file will be touched to implement the LRU strategy)
+ * if not yet available, returns ""
+ * if never available, returns "never"
+ */
+QString YammiModel::checkAvailability(Song* s, bool touch)
+{
+	if(s->location()!="/") {
+		QFileInfo fi(s->location());
+		if(fi.exists() && fi.isReadable()) {
+			return s->location();
+		}
+//		cout << "song " << s->displayName() << "has location given, but file does not exist or is not readable!\n";
+	}
+	// no location given, check whether already existing in swap dir
+	QString dir=config.swapDir;
+	QString filename=s->constructFilename();
+	QFileInfo fi(dir+filename);
+	if(fi.exists() && fi.isReadable()) {
+		if(touch) {
+			// linux specific
+			QString cmd;
+			cmd=QString("touch \"%1\"").arg(dir+filename);
+			system(cmd);
+/*		does not work: touching a file
+			QFile touchFile(dir+filename);
+			if(!touchFile.open(IO_ReadWrite))
+				cout << "could not touch songfile (for LRU method)\n";
+			else {
+				touchFile.flush();
+				touchFile.close();
+			}
+*/
+		}
+		return dir+filename;
+	}
+
+	// not available, need to load it from media
+	if(s->mediaLocation.count()!=0)
+		return "";
+	else
+		return "never";
+}
+

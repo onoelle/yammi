@@ -69,8 +69,6 @@
 #include <qsettings.h>
 //#include <qprocess.h>
 
-// xmms control
-#include <xmmsctrl.h>
 
 // project includes
 #include "yammimodel.h"
@@ -89,7 +87,10 @@
 #include "foldermedia.h"
 #include "foldersorted.h"
 #include "mylistview.h"
-
+#include "mediaplayer.h"
+#ifdef XMMS_SUPPORT
+#include "xmmsplayer.h"
+#endif
 #include "lineeditshift.h"
 // -----------------------------------------------------------------
 
@@ -119,7 +120,6 @@ protected:
 	void			myWait(int msecs);
 	int				shuttingDown;
   QString   lastPrelistened;
-	bool			xmmsShuffleWasActivated;
 	void 			decide(Song* s1, Song* s2);
 	void			keyPressEvent(QKeyEvent* e);
 	void			keyReleaseEvent(QKeyEvent* e);
@@ -130,24 +130,21 @@ protected:
 	void			getAllSongs();
 	MyList		selectedSongs;
 	MyList		searchResults;
+  
 public:
 	Folder*		chosenFolder;
 protected:
 	void			updateSongPopup();
 	void			updateListViewColumns(Folder* oldFolder, Folder* newFolder);
 
-	void			syncYammi2Xmms(bool syncAll=false);	// yammi -> xmms
-	void			syncXmms2Yammi();		// xmms -> yammi
 public:
-	QString		checkAvailability(Song* s, bool touch=false);
-  /** checks whether the swapped songs take more space than the given limit
- */
+  /// checks whether the swapped songs take more space than the given limit
   void checkSwapSize();
+	MyListView*		songListView;
 protected:
 		
 	// gui
 	//***************
-	MyListView*		songListView;
 	QListView*		folderListView;
 	LineEditShift*	searchField;
 	QPushButton*	currentSongLabel;
@@ -173,6 +170,7 @@ public:
 	QToolButton*	tbPlayPause;
 
 protected slots:
+  void        clearPlaylist();
   void        saveColumnSettings();
 	void				endProgram();
 	void				shutDown();
@@ -223,15 +221,14 @@ protected slots:
 		
 	void				forSong(Song* s, action act, QString dir=0);
 	
-	void				forAllSelectedEnqueue() {forAllSelected(Enqueue); }
-	void				forAllSelectedEnqueueAsNext() {forAllSelected(EnqueueAsNext); }
-	void				forAllSelectedPlayNow() {forAllSelected(PlayNow); }
-//	void				forAllSelectedPlayNowIm() { xmms_remote_pause(0);	forAllSelected(PlayNow); }
-	void				forAllSelectedPrelistenStart() {forAllSelected(PrelistenStart); }
-	void				forAllSelectedPrelistenMiddle() {forAllSelected(PrelistenMiddle); }
-	void				forAllSelectedPrelistenEnd() {forAllSelected(PrelistenEnd); }
-	void				forAllSelectedDequeue() {forAllSelected(Dequeue); }
-	void				forAllSelectedSongInfo() {forAllSelected(SongInfo); }
+	void				forAllSelectedEnqueue()            { forAllSelected(Enqueue); }
+	void				forAllSelectedEnqueueAsNext()      { forAllSelected(EnqueueAsNext); }
+	void				forAllSelectedPlayNow()            { forAllSelected(PlayNow); }
+	void				forAllSelectedPrelistenStart()     { forAllSelected(PrelistenStart); }
+	void				forAllSelectedPrelistenMiddle()    { forAllSelected(PrelistenMiddle); }
+	void				forAllSelectedPrelistenEnd()       { forAllSelected(PrelistenEnd); }
+	void				forAllSelectedDequeue()            { forAllSelected(Dequeue); }
+	void				forAllSelectedSongInfo()           { forAllSelected(SongInfo); }
   void				preListen(Song* s, int skipTo);  ///< sends the song to headphones
   void				stopPrelisten();
 
@@ -243,7 +240,8 @@ public:
 	
 protected:
 	YammiModel*		model;								// pointer to our model
-	QString				currentFile;					// file that is currently played by xmms
+  XmmsPlayer*   player;               // TODO: change to MediaPlayer* soon!
+	QString				currentFile;					// file that is currently played by player
 	QString				grabbedTrackFilename;	// filename of new track being grabbed
 
 
@@ -275,12 +273,12 @@ protected:
 	FolderGroups* folderGenres;
 public:	
 	FolderCategories* folderCategories;
+	Folder*				folderSongsPlayed;		// songs played in this session
 protected:
 	FolderMedia*	folderMedia;
 	Folder* 			folderUnclassified;
 	Folder*				folderProblematic;
 	Folder*				folderHistory;				// songs played sometime
-	Folder*				folderSongsPlayed;		// songs played in this session
 	
 	Folder*				folderToAdd;					// for snappy folder adding in background
 	int						alreadyAdded;
@@ -294,23 +292,17 @@ public slots:
   void invertSelection();							/** inverts selection in songListView */
 
 protected slots:		
+  void          skipBackward();
+  void          skipForward();
 	void 					addToWishList();
 	void					toPlayList(int index);
-  void          ensureXmmsIsRunning();
-	void					xmms_playPause();
-	void					xmms_stop();
-	void					xmms_skipForward();
-	void					xmms_skipBackward();
-	void					xmms_clearPlaylist();
-		
-	void 					onTimer();
+
+  void 					onTimer();
 	// removable media management
 	void					checkPlaylistAvailability();
 	void					loadSongsFromMedia(QString mediaName);
 	void					loadMedia();
-	
-	Song*					getSongFromFilename(QString filename);
-	
+		
   void 					newCategory();	  					/** create new category */
 	void 					removeCategory();
 	void					renameCategory();

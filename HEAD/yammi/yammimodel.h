@@ -43,9 +43,6 @@
 #include <qtimer.h>
 #include <qevent.h>
 
-// xmms control
-#include <xmmsctrl.h>
-
 // my includes
 #include "song.h"
 #include "songentry.h"
@@ -89,6 +86,8 @@ public:
 	bool			noDatabaseFound;
 	
 	void 			traverse(QString path, QString filePattern, QProgressDialog* progress, QString mediaName=0);
+	Song*			getSongFromFilename(QString filename);
+	QString		checkAvailability(Song* s, bool touch=false);
 
 	bool			allSongsChanged();
 	void			allSongsChanged(bool changed);

@@ -38,3 +38,8 @@
 // - estimating length from filesize (assuming 44.1KHz, 16 bit Stereo)
 // - setting bitrate to some value
 #define WAV_SUPPORT
+
+
+// defines XMMS as the media player to be used
+// (sorry, no alternatives yet)
+#define XMMS_SUPPORT

@@ -87,7 +87,7 @@ void SongListItem::paintCell( QPainter *p, const QColorGroup &cg,
 	// availability: in playlist we really check whether available (maybe in swap dir)
 	// otherwise we just check filename (for performance)
 	if(gYammiGui->chosenFolder==gYammiGui->folderActual) {
-	  QString path=gYammiGui->checkAvailability(song());
+	  QString path=gYammiGui->getModel()->checkAvailability(song());
   	if (path=="" )										// not yet available in light grey
 			_cg.setColor( QColorGroup::Text, Qt::lightGray );
 	  else if (path=="never" )					// never available in yellow
