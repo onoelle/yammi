@@ -1,10 +1,12 @@
 Basic Installation
 ==================
 
+   Please read README for the Yammi-specific configure options!
+   (for example to disable linking against kde/id3lib/libvorbis/xmmslib...)
+
+
    These are generic installation instructions.
 
-   Please read README for the Yammi-specific configure options!
-   For example to disable linking against kde/id3lib/libvorbis/xmmslib...
 
    The `configure' shell script attempts to guess correct values for
 various system-dependent variables used during compilation.  It uses

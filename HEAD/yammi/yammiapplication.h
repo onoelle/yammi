@@ -18,11 +18,22 @@
 #ifndef YAMMIAPPLICATION_H
 #define YAMMIAPPLICATION_H
 
+//#include "options.h"
+
+//#ifdef ENABLE_NOATUN
+//#include <kapp.h>
+//#else
 #include <qapplication.h>
+//#endif
+
 
 /** This class has only the purpose of propagating the commitDate() call to the YammiGui so far...
  */
+//#ifdef ENABLE_NOATUN
+//class YammiApplication : public KApplication  {
+//#else
 class YammiApplication : public QApplication  {
+//#endif
 public: 
 	YammiApplication(int argc, char **argv);
 	~YammiApplication();

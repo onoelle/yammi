@@ -21,8 +21,13 @@
 
 extern YammiGui* gYammiGui;
 
+//#ifdef ENABLE_NOATUN
+//YammiApplication::YammiApplication(int argc, char **argv)
+// : KApplication(argc, argv)
+//#else
 YammiApplication::YammiApplication(int argc, char **argv)
  : QApplication(argc, argv)
+//#endif
 {
   
 }

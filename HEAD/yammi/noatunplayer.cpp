@@ -167,17 +167,20 @@ int NoatunPlayer::getOtherPlayerId()
   return playerId[(currentPlayer+1) % 2];
 }
 
+
+
+// fade: 0 = beginning of fading, 100 = fading complete
 void NoatunPlayer::onFade()
 {
+  int fadeTime=getCurrentTime();
+  fade=fadeTime*100/model->config.fadeTime;
   if(fade<100) {
     sendDcopCommandInt("setVolume(int)", 100-(fade*(100-model->config.fadeOutEnd)/100), fadeOut);
     sendDcopCommandInt("setVolume(int)", model->config.fadeInStart+(fade*(100-model->config.fadeInStart)/100), fadeIn);
-//    sendDcopCommandInt("setVolume(int)", 100-(fade/2), fadeOut);
-//    sendDcopCommandInt("setVolume(int)", 50+(fade/2), fadeIn);
-    fade+=3;
     fadeTimer.start( 200, TRUE );
   }
   else {
+    fade=100;
     // set volume to 100 of fadeIn player, remove song of fadeOut player
     sendDcopCommandInt("setVolume(int)", 100, fadeIn);
     sendDcopCommandInt("setVolume(int)", 0, fadeOut);
@@ -196,37 +199,73 @@ void NoatunPlayer::check()
   PlayerStatus newStatus=getStatus();
   if(newStatus!=lastStatus) {
     lastStatus=newStatus;
+    if(newStatus==STOPPED) {
+      // if player stopped and only one song left in playlist, we should remove it?
+      if(playlist->count()==1) {
+        sendDcopCommand(QString("removeCurrent()"));
+        playlist->removeFirst();
+        playlistChanged();
+      }
+      if(playlist->count()>1 && model->config.fadeTime==0) {
+        // no crossfading configured
+        // if we were at end of song, we should probably start next one...(not optimal)
+        if(timeLeft<2000) {
+          startSongChange();
+        }
+      }
+    }
     statusChanged();
   }
 
+  timeLeft=getTotalTime()-getCurrentTime();
+
   // 2. check, whether we should initiate a song change (start crossfading)
-  if(fade<100) {  // don't start fading if we are still fading last song? really? TODO?
-    return;
-  }
-  int timeLeft=getTotalTime()-getCurrentTime();
-  if(getStatus()==PLAYING && timeLeft<model->config.fadeTime && timeLeft>0) {
-    startSongChange();
+  if(model->config.fadeTime>0) {
+    if(fade<100) {  // don't start fading if we are still fading last song? really? TODO?
+      return;
+    }
+    if(getStatus()==PLAYING && timeLeft<model->config.fadeTime && timeLeft>0) {
+      startSongChange();
+    }
   }
 }
 
 
-void NoatunPlayer::startSongChange()
+/**
+ * Starts a song change, if possible (if >=2 songs in playlist)
+ */
+void NoatunPlayer::startSongChange(bool withoutCrossfading)
 {
-  fade=0;     // 0 = 100 % last song, 100 = 100 % next song
-  fadeOut=getCurrentPlayerId();
-  currentPlayer=(currentPlayer+1) % 2;
-  fadeIn=getCurrentPlayerId();
-  fadeTimer.start( 200, TRUE );
-
-  clearPlaylist();
-  if(playlist->count()>=2) {
+  if(playlist->count()<2) {
+    // we can't make a song change if there is no next song
+    return;
+  }
+  if(model->config.fadeTime==0 || withoutCrossfading) {
+    // no crossfading
+    clearPlaylist();
     QString location=model->checkAvailability(playlist->at(1)->song());
     if(location!="" && location!="never") {
       playlistAdd(location, true);
       playlist->removeFirst();
     }
+    playlistChanged();
   }
-  playlistChanged();
+  else {
+    // crossfading
+    fade=0;
+    fadeOut=getCurrentPlayerId();
+    currentPlayer=(currentPlayer+1) % 2;
+    fadeIn=getCurrentPlayerId();
+    fadeTimer.start( 200, TRUE );       // change volume every 200ms
+
+    clearPlaylist();
+    QString location=model->checkAvailability(playlist->at(1)->song());
+    if(location!="" && location!="never") {
+      playlistAdd(location, true);
+      playlist->removeFirst();
+    }
+    playlistChanged();
+  }
 }
 
 
@@ -266,6 +305,10 @@ bool NoatunPlayer::pause()
     return true;
   }
 	sendDcopCommand("playpause()");
+  if(fade<100) {
+    // if we are currently crossfading, we should pause both players
+    sendDcopCommand("playpause()", getOtherPlayerId());
+  }
   return true;
 }
 
@@ -274,6 +317,10 @@ bool NoatunPlayer::pause()
 bool NoatunPlayer::playPause()
 {
 	sendDcopCommand("playpause()");
+  if(fade<100) {
+    // if we are currently crossfading, we should playPause both players
+    sendDcopCommand("playpause()", getOtherPlayerId());
+  }
   return true;
 }
 
@@ -281,14 +328,8 @@ bool NoatunPlayer::playPause()
 /// skip forward in playlist
 bool NoatunPlayer::skipForward(bool withoutCrossfading)
 {
-  startSongChange();
+  startSongChange(withoutCrossfading);
   return true;
-/*
-  if(withoutCrossfading) {
-  }
-  sendDcopCommand("forward()");
-  return true;
-*/
 }
 
 
@@ -296,8 +337,8 @@ bool NoatunPlayer::skipForward(bool withoutCrossfading)
 bool NoatunPlayer::skipBackward(bool withoutCrossfading)
 {
   // TODO:
-  cout << "not implemented yet...\n";
-  sendDcopCommand("back()");
+  cout << "sorry, not implemented yet...\n";
+//  sendDcopCommand("back()");
   return true;
 }
 
@@ -305,6 +346,10 @@ bool NoatunPlayer::skipBackward(bool withoutCrossfading)
 bool NoatunPlayer::stop()
 {
 	sendDcopCommand("stop()");
+  if(fade<100) {
+    // if we are currently crossfading, we should stop both players
+    sendDcopCommand("stop()", getOtherPlayerId());
+  }
   return true;
 }
 

@@ -41,6 +41,7 @@ protected:
   DCOPClient* client;
 #endif
 	QTimer fadeTimer;
+  int timeLeft;
   bool ensurePlayerIsRunning();
   void playlistAdd(QString filename, bool autoStart, bool fakePassiveAdd=true);
   void sendDcopCommand(QString command, int id=0);
@@ -50,7 +51,7 @@ protected:
   int getCurrentPlayerId();
   int getOtherPlayerId();
   void clearPlaylist();
-  void startSongChange();
+  void startSongChange(bool withoutCrossfading=false);
 
   bool shuffleWasActivated;
   int playerId[10];        // the process ids of the noatun players (upto 10)

@@ -87,7 +87,7 @@ fi
 
 AC_MSG_CHECKING(for noatun support)
 if test "x$enable_noatun" = xyes; then
-    LIBS="-lkdecore $LIBS"
+    LIBS="-lkdecore -lkdeui -lkio $LIBS"
     AC_DEFINE(ENABLE_NOATUN)
     AC_MSG_RESULT(yes)
 else

@@ -385,21 +385,18 @@ void XmmsPlayer::check()
   PlayerStatus newStatus=getStatus();
   if(newStatus!=lastStatus) {
     lastStatus=newStatus;
-    statusChanged();
-  }
-
-  if(!xmms_remote_is_playing(session)) {
-    // if player stopped and only one song left in playlist, we should probably(?) remove it
-    // not too nice and clean, I know...
-    if(xmms_remote_get_playlist_length(session)==1) {
-      if(playlist->count()==0) {
+    if(newStatus==STOPPED) {
+      // if player stopped and only one song left in playlist, we should remove it?
+      if(playlist->count()==1) {
         xmms_remote_playlist_delete(session, 0);
         playlist->removeFirst();
         playlistChanged();
       }
     }
+    statusChanged();
   }
-  else {
+
+  if(lastStatus!=STOPPED) {
     for(int i=0; true ; i++) {
 	    int check=xmms_remote_get_playlist_pos(session);
       if(check==0)

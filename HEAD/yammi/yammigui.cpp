@@ -61,6 +61,10 @@ using namespace std;
 #include "mp3info/CMP3Info.h"
 #include "ConsistencyCheckParameter.h"
 
+// kde includes
+//#ifdef ENABLE_NOATUN
+//#include "kfiledialog.h"
+//#endif
 
 extern YammiGui* gYammiGui;
 
@@ -412,12 +416,12 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
 
 	// connect all timers
   connect( &regularTimer, SIGNAL(timeout()), SLOT(onTimer()) );
-  regularTimer.start( 1000, FALSE );	// call onTimer once a second
+  regularTimer.start( 500, FALSE );	// call onTimer twice a second
 	connect( &typeTimer, SIGNAL(timeout()), SLOT(searchFieldChanged()) );
 
   // TODO: this should be probably done by a thread owned by the media player
   connect( &checkTimer, SIGNAL(timeout()), player, SLOT(check()) );
-  checkTimer.start( 500, FALSE );
+  checkTimer.start( 200, FALSE );
 
   // finish!
   cout << "initialisation successfully completed!\n";
@@ -545,7 +549,14 @@ void YammiGui::updatePlayerStatus()
   if(player->getStatus()==PLAYING)
     tbPlayPause->setIconSet(QIconSet(QPixmap((const char**)pause_xpm)));
   else
-    tbPlayPause->setIconSet(QIconSet(QPixmap((const char**)play_xpm)));  
+    tbPlayPause->setIconSet(QIconSet(QPixmap((const char**)play_xpm)));
+  // check for sleep mode
+  if(songsUntilShutdown>0) {
+    if(player->getStatus()==STOPPED) {
+      cout << "shutting down now...\n";
+      shutDown();
+    }    
+  }
 }
 
 
@@ -1301,6 +1312,12 @@ QString YammiGui::makeReplacements(QString input, Song* s, int index)
   // filename without suffix
   int suffixPos = s->filename.findRev('.');
   QString filenameWithoutSuffix=s->filename.left(suffixPos);
+  // trackNr
+  QString trackNrStr;
+  if(s->trackNr==-1)
+    trackNrStr="";
+  else
+    trackNrStr=QString("%1").arg(s->trackNr);
 
   // replace
   input.replace(QRegExp("%f"), s->location());
@@ -1315,6 +1332,7 @@ QString YammiGui::makeReplacements(QString input, Song* s, int index)
 	input.replace(QRegExp("%l"), QString("%1:%2").arg((s->length) / 60).arg(lengthStr));
   input.replace(QRegExp("%n"), "\n");
 	input.replace(QRegExp("%m"), mediaList);
+  input.replace(QRegExp("%r"), trackNrStr);
   return input;  
 }
 
@@ -1331,7 +1349,6 @@ void YammiGui::forSelectionSongInfo()
 	long double _size=0;
 	int _genreNr=0;
 		
-	int selected=0;
 	SongInfoDialog si(this, "test", true);
 	
 	// fill combobox with genres, but sort them first
@@ -1345,6 +1362,7 @@ void YammiGui::forSelectionSongInfo()
 		si.ComboBoxGenre->insertItem((*it).latin1());
 	}
 
+	int selected=0;
   QDateTime invalid;
 	for(Song* s=selectedSongs.firstSong(); s; s=selectedSongs.nextSong()) {
 		selected++;
@@ -1798,7 +1816,15 @@ void YammiGui::forSelection(action act)
 	QString dir;
 	if(act==MoveTo) {
 		// let user choose directory (we should provide a starting directory???)
+//#ifdef ENABLE_NOATUN
+//    cout << "trying...\n";
+//    dir=KFileDialog::getOpenFileName(QString("/mm"), QString("*.mp3"), this, QString("yammi"));
+//    if(dir!=0)
+//      cout << "dir: " << dir << "\n";
+//    return;
+//#else
 		dir=QFileDialog::getExistingDirectory(QString(""), this, QString("yammi"), QString("choose directory"), true);
+//#endif    
 		if(dir.isNull())
 			return;
 		if(dir.right(1)=="/")						// strip trailing slash

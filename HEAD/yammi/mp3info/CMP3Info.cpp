@@ -165,7 +165,7 @@ static char* ID3_v1_genre_description[ID3_NR_OF_V1_GENRES] =
   "Trash Metal",           //144
   "Anime",                 //145
   "JPop",                  //146
-  "Synthpop"               //147
+  "AAASynthpop"               //147
 };
 #endif
 
@@ -390,6 +390,7 @@ void CMP3Info::getVersion(char* input) {
     int i;
     for( i=0; i<header.getLayer(); i++ ) tempchar2[i] = 'I';
     tempchar2[i] = '\0';
+
 
     // combine strings
     sprintf(versionchar,"MPEG %g Layer %s", (double)ver, tempchar2);

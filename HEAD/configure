@@ -5136,7 +5136,7 @@ fi
 echo "$as_me:5136: checking for noatun support" >&5
 echo $ECHO_N "checking for noatun support... $ECHO_C" >&6
 if test "x$enable_noatun" = xyes; then
-    LIBS="-lkdecore $LIBS"
+    LIBS="-lkdecore -lkdeui -lkio $LIBS"
     cat >>confdefs.h <<\EOF
 #define ENABLE_NOATUN 1
 EOF

@@ -90,14 +90,16 @@ using namespace std;
 #include "foldermedia.h"
 #include "foldersorted.h"
 #include "mylistview.h"
+#include "lineeditshift.h"
 #include "mediaplayer.h"
+
 #ifdef ENABLE_XMMS
 #include "xmmsplayer.h"
 #endif
+
 #ifdef ENABLE_NOATUN
 #include "noatunplayer.h"
 #endif
-#include "lineeditshift.h"
 // -----------------------------------------------------------------
 
 

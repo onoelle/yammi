@@ -14,55 +14,49 @@ KNOWN BUGS
 
 for noatun support
 ------------------
-- swap management: in song: method getFilename() vs. getRealFilename() (fast)???
+- skip backward
 - recognize active player on startup
-- check sleep mode
-- xmms: remove last file after played?
+- logging of songs: first song does not get logged (currentSong==0)
 
-email to noatun:
-- no access to any other but first song
-- addFile(foo, false): no access any more to programmatically start playing!
 
-for release 0.7.1
------------------
-- load m3u files into a category
+for release 0.8beta
+-------------------
 - plugin: publish a sample plugin (echo...) with all replacements
-
-- F1 does not work, if stopped?
-
+- make Yammi working without player
 - on deleting a song: delete in *all* lists (history, categories, ...)
-- check consistency check (and consistencyModes!), add warning window when renaming/overwriting tags
-- alternative to mp3burn? => test Tom's script
 
+- check consistency check (and consistencyModes!), add warning window when renaming/overwriting tags
 - add to consistency check: update option for re-reading layer/tag info from existing songs
 - updating genre tag from outside of Yammi => update info in Yammi
 
+- alternative to mp3burn? => document and recommend Tom's script
+
 - extend the autoplay functionality
 
-- test jukebox functionality
 - check: failing to load a media => crash? (tom)
 
 - folder for recent additions to database?
-- cleanup
-  - update documentation
-  - clean up yammigui.h (protected/public) !!! (oh oh...)
-  - clean up other classes (eg. folder)...
 - adding to media: don't add entries already existing
-- speed up loading of categories? (binary search)
 - wrongly calculated song length for some songs, VBR? (tom, 8.12., )
 - evaluate TCON TTIT1 frame (tom, 8.12.)
 - remove/replace "current" button?
 - removing a song from playlist: only remove this one (idea: function "removeDuplicates" for playlist?)
-- => reach stable status!!!
 
-0.7.2
+0.8.1
 -----
+- cleanup
+  - clean up yammigui.h (protected/public) !!! (oh oh...)
+  - clean up other classes (eg. folder)...
+- load m3u files into a category
+- swap management: in song: method getFilename() vs. getRealFilename() (fast)???
+- speed up loading of categories? (binary search)
 - xmms lock file?  => not easy to determine whether xmms is running or just lock file present
 - dequeue not working??? when I tested, it worked for me...? (tom)
 - incorrect track numbers if track number not present (tom) => maybe problem of old id3lib?
 - update database: more information+statistics at the end
 - update database: select a single file
 - simplify {wish} system: (make every entry with empty filename (no media) a wish?
+- => reach stable status!!!
 
 for future releases
 -------------------
