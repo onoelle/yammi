@@ -1,0 +1,281 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+ <META NAME="GENERATOR" CONTENT="SGML-Tools 1.0.9">
+ <TITLE>The Yammi Handbook: Advanced topics </TITLE>
+ <LINK HREF="index-5.html" REL=next>
+ <LINK HREF="index-3.html" REL=previous>
+ <LINK HREF="index.html#toc4" REL=contents>
+</HEAD>
+<BODY>
+<A HREF="index-5.html">Next</A>
+<A HREF="index-3.html">Previous</A>
+<A HREF="index.html#toc4">Contents</A>
+<HR>
+<H2><A NAME="s4">4. Advanced topics </A></H2>
+
+<P>
+<P>
+<H2><A NAME="ss4.1">4.1 Checking consistency </A>
+</H2>
+
+<P>Note: This functionality changed slightly since version 0.7.
+<P>The menu offers the possibility to check your complete database for consistency.
+You can as well apply this consistency check to a selection of songs.
+<P>The consistency check is a tool meant to help you organizing your song collection.
+You can configure the aspects to be checked in a dialog, right now Yammi
+supports the following checks:
+<P>- check media files: existing and readable?
+<P>If files do not exist on the location given in Yammi's database, the entry can be
+updated with a blank filename and path (if the file is existing on a media)
+or deleted (if the file is not existing on any media).
+<P>- check tags: consistent with Yammi's database?
+<P>If tags are not consistent, they can be corrected in the corresponding files
+to the values in Yammi's database (only possible for mp3 and ogg files).
+<P>Be careful using this function, as it might overwrite all the tags in your files!
+<P>- check filename: consistent with the naming scheme "artist - title"?
+(no other naming schemes supported yet, sorry...)
+<P>If Filenames are not consistent, they can be corrected after the naming scheme.
+<P>Be careful using this function, as it might rename all your files!
+<P>
+<P>- no song contained twice in the database?
+<P>Songs are considered the same if they have the same artist, title and album.
+These three fields serve as the "primary key" for Yammi's database.
+As Yammi uses this primary key for identification (eg. for logging and categories),
+you should never have more than one song with the same primary key.
+On addings songs to your database, Yammi will add a "(2)" to the song title if the
+added song's primary key is already existing.
+<P>- no two entries pointing to the same file?
+<P>One of these entries will be deleted.
+<P>
+<P>
+<P>After checking consistency, the folder ProblematicSongs contains all the
+problematic songs that were found. A column "reason" explains why a song was
+found to be problematic. This allows to resolve any inconsistencies.
+Note that this folder will not be saved for the next session, so please resolve any
+inconsistencies immediately after checking consistency.
+<P>
+<H2><A NAME="ss4.2">4.2 Burning files </A>
+</H2>
+
+<P>
+<P>For assistance in burning files to a CD, do the following:
+<P>1. select the songs you want to burn
+<P>2. In the context menu of the songlist choose "Advanced"->"Burn to Media".
+<P>3. You will be asked for a name and a start index for that collection of songs.
+<P>4. Now Yammi will create directories (in the .yammi subdirectory of your home
+directory) named after the collection name you gave and an index.
+Songs will be inserted in the current order of your songlist. For example
+if you order your songs after artist in the songlist, and invoke this function,
+you might end up with all songs from artists "Abba" to "Guano Apes" on your
+media 1, "Hanson" to "..." on media 2, and so on...
+In each directory, Yammi
+will put symbolic links to the corresponding files on your harddisk. Yammi will
+take care that in one directory there won't be more songs than the maximum
+medium size given in the preferences (burning folder, size of media).
+If you set this value to 700 MB, you can comfortably distribute a big folder
+(or all your music) over multiple 700 MB CDs.
+<P>For burning the songs to CD, please use another program (eg. X-CDRoast) and
+simply burn the content of each of the collection's folder to a CD.
+Take care to check the feature "follow symbolic links" in the options of the
+burning program.
+<P>Yammi also remembers on which media a song is contained.
+This allows to delete song files from harddisk to save space,
+and let Yammi request the corresponding media the next time the song is in the playlist,
+so that the song can be loaded from the media on demand.
+<P>
+<P>
+<H2><A NAME="ss4.3">4.3 Playlist management of yammi </A>
+</H2>
+
+<P>
+<P>Yammi takes over the playlist management of xmms and has its own folder
+named "Playlist" where you can move songs up and down, remove them from the
+playlist, or directly retrieve information about them.
+Yammi always tries to keep 5 (or the number that is configured in Yammi's preferences)
+songs in the Xmms playlist. When a song finished
+playling, Yammi will remove it from the playlist, and fill up the playlist
+again.
+You should not directly modify the playlist of Xmms any longer, as Yammi might overwrite
+your song ordering or songs added from within Xmms. Yammi also disables
+the random play setting of Xmms, as this would confuse Yammi's playlist management.
+<P>When Yammi is terminated, it writes all songs from its playlist back to the
+Xmms playlist (in that way, Yammi does not need to save the current playlist,
+as Xmms does it when it is terminated correctly).
+When Yammi starts the next time, it reads the current playlist
+of Xmms and again takes over the playlist management.
+<P>
+<H2><A NAME="ss4.4">4.4 Updating song database </A>
+</H2>
+
+<P>The "Database" menu offers the possibility to update your database in two ways:
+By scanning your harddisk or by scanning a removable media (eg. a CD).
+After choosing the corresponding entry in the "Database" menu a dialog will show up
+which allows to set the directory to scan and the file pattern for scanning.
+<P>Yammi starts in the chosen directory and recursively
+scans your harddisk for new songs. It scans all files matching the given pattern
+and checks, whether the song is already contained in Yammi's database.
+For all new songs found, Yammi tries to get the song information such as
+artist, title, album... by looking at the id3(v1.x or v2.x) or ogg tags.
+If tags are not present, Yammi tries to extract the information from the
+filename by looking for a seperating "-" and takes everything to the left of
+the seperating dash as the artist, everything to the right as the title
+(corresponding to the "artist - title.mp3" schema). If no seperating dash or
+more than one are found, Yammi puts the newly added file into the ProblematicSongs
+folder with a comment to verify the guessed artist and title entries.
+If the filename contains an artist or title that is longer than 30 characters,
+and the tags contain only the first 30 characters (as this is the limit for id3v1.1),
+Yammi tries to take the full name from the filename (Yammi's database has basically no
+restriction for the length of the entries).
+<P>Updating your song database does not touch your song files.
+Exception: If a new song is already existing at another location, either the new or old
+version will be moved to your configured trash directory.
+<P>
+<H2><A NAME="ss4.5">4.5 Scanning removable media </A>
+</H2>
+
+<P>This is quite similar to scanning your harddisk.
+The difference is that the songs added to Yammi's
+database will not contain a path and filename, but instead will contain the
+scanned media's name in their "contained on" media list.
+This means that you can't directly play these songs, but have to enqueue them,
+and load them from this media into the swap directory before playing.
+You can load songs from a media into the swap directory by using the button in the toolbar.
+If a song is already existing in the database, Yammi will just add the media
+to its media list (if not contained already), so scanning a media twice should
+not create any inconsistencies.
+<P>
+<P>
+<H2><A NAME="ss4.6">4.6 Grabbing and encoding new songs </A>
+</H2>
+
+<P>
+<P>Especially on a party it might come in handy to directly grab and encode
+some songs from cd. Yammi offers a basic support for that (otherwise I am using
+Krabber, which does a real good job on grabbing and encoding).
+From the file menu, choose "Grab CD Track". You will be asked for track number,
+artist and title. Then Yammi executes in the background the script
+"grabandencode" (which is normally installed in /usr/local/bin/, just have a look),
+which grabs the track from CD using paranoia, and then encodes it using lame.
+(You might want to customize the script to fit your needs, eg. setting the
+bitrate for lame, which is defaulting to 256kb/s).
+When the script has finished, a new mp3 file exists in the directory given in the
+preferences under "base directory for scanning".
+Yammi informs you in the status bar that there is a new song available.
+You manually have to perform a database update then to
+get the song into the database.
+<P>If you want to customize this script, please adhere to the schema that the
+output filename is only existing when the grabbing and encoding is completely
+finished, because Yammi checks for availability of a file with the given name.
+<P>
+<H2><A NAME="ss4.7">4.7 Child-safe mode</A>
+</H2>
+
+<P>This mode is thought for parties to protect your mp3 collection, if other people
+use Yammi. The following operations are not permitted, if this mode is switched
+on:
+<P>- the complete "Advanced" submenu in the context menu is disabled
+<P>- delete files
+<P>- clear the complete playlist
+<P>- update song database
+<P>- check consistency
+<P>Once enabled, you can only disable this feature with a password, which is: "protect".
+Alternatively, you could hack Yammi's preferences file.
+<P>Okay, this is NOT SAFE IN ANY WAY, it's just meant to protect users who have
+very little knowledge of computers to do any harm to your mp3 collection by
+accident.
+<P>
+<H2><A NAME="ss4.8">4.8 Sleep mode </A>
+</H2>
+
+<P>If you enable Yammi's sleep mode by pressing the button in the toolbar,
+Yammi will shut down in the following two cases:
+<P>- the number of songs to play (visible and editable in the toolbar) has reached 0
+<P>- XMMS stops playback (only if it STOPS, PAUSING playback will have no effect)
+<P>The second case can be because of
+<P>- last song in playlist was played
+<P>- you pressed stop in XMMS or in Yammi
+<P>A dialog box appears giving you the possibility to cancel the shutdown.
+<P>If there is a shutdown script specified in the preferences, this script will be invoked on
+shutting down.
+This can be used to shutdown the computer, simulating the functionality of a timer on a stereo.
+To shutdown your computer as a normal user, you might need to modify permissions to the
+shutdown command (eg., as root do a "chmod 6755 /sbin/shutdown").
+Be careful with changing permissions, as it may make your computer more vulnerable.
+<P>Be also careful with shutting down your computer in that way, as any open documents will not be saved
+and running programs might not be terminated in a very soft way...
+(Anyone knows how to shutdown KDE in a regular way from a script? Please let me know!)
+<P>
+<P>
+<H2><A NAME="ss4.9">4.9 Removable Media Management </A>
+</H2>
+
+<P>Yammi has support to function as a "Jukebox". That is, you don't need all your
+songfiles on your local harddisk, but can load them on demand from removable
+media (such as CDs) into a swap directory. Yammi still keeps all songs in its
+database to enable you to search and enqueue conveniently. However, before
+enqueuing the songs to Xmms, Yammi will check for availability and enqueue only
+those songs that are on the harddisk.
+<P>To use this jukebox functionality, you should first create a swap directory
+on your harddisk and set the path and the size limit in the preferences.
+(I recommend to create a special swap directory and not to use "/tmp/" as your
+swap dir.)
+<P>To remove song files from your harddisk to gain disk space, but keep the song entries
+in Yammi's database,
+choose "Delete..." (from the context menu, "Advanced..."), and enable the checkbox
+"delete file" (and leave the "delete database entry" checkbox disabled).
+Take care only to remove song files that have a media location stored in their database
+entry (you can check this when you select "Info..." in the song context menu),
+or otherwise the deleted song will not be accessible anymore.
+<P>To scan a removable media and add all the contained songs to the database,
+use "Scan removable media" from the file menu.
+<P>For the removable media management, Yammi has an extra toolbar consisting of
+a media list and a "Load" button.
+In the media list, Yammi collects all the media that are needed to load the songs
+in Yammi's current playlist, the most urgent ones listed first.
+(For songs that are available on more than one media, Yammi lists all possible media
+in this list.)
+From this media list, you simply select the media that you inserted into your
+computer (eg. into your CD-Rom), and click "Load". Yammi will then load all
+songs that it needs in its current playlist from this media into the swap directory
+(given in the preferences). After loading, Yammi will update its playlist
+(and the playlist of Xmms) and update the list of needed media to reflect the changes.
+<P>For the swap directory, you can give a size limit (also in the preferences).
+If the size that all the swapped song files use in this directory increases
+beyond the given limit, then Yammi will remove song files from that directory,
+using a least-recently-used (LRU) strategy.
+<P>
+<P>
+<H2><A NAME="ss4.10">4.10 External Scripts / Plugins </A>
+</H2>
+
+<P>Yammi offers support to call external programs with parameters like song titles
+or filenames. This can be extremely useful when calling a script for burning mp3s
+or a cd label generator. Then Yammi can even serve as a front-end for CD-Burning
+or other tasks.
+<P>These plugins can be configured in Yammi's preferences, and are available via the
+context menu in the songlist. There are two types of plugins, the first one
+("Song plugin") is invoked for each song, the second one
+("Songlist plugin") generates a list of items and invokes
+a program on this list.
+<P>Please have a look at Yammi's website (yammi.sourceforge.net) for example configurations
+for these plugins.
+<P>
+<P>
+<H2><A NAME="ss4.11">4.11 Tips and tricks...</A>
+</H2>
+
+<P>Avoid having two songs with the same artist, title and album!
+Yammi will get really confused...
+<P>Yammi communicates with Xmms session 0. If you have problems with the communication,
+you might need to disable "Allow multiple instances" in Xmms (Preferences->Options).
+<P>
+<P>
+<P>
+<P>
+<HR>
+<A HREF="index-5.html">Next</A>
+<A HREF="index-3.html">Previous</A>
+<A HREF="index.html#toc4">Contents</A>
+</BODY>
+</HTML>
