@@ -57,7 +57,7 @@ int main( int argc, char **argv )
 
 
  	KAboutData about("yammi", I18N_NOOP("Yammi"), version, description,
-                     KAboutData::License_GPL, "(C) 2001-2003 by Oliver Nölle", build_opts + "\n\n\nhave fun...", "http://yammi.sf.net", "yammi-developer@lists.sourceforge.net");
+                     KAboutData::License_GPL, "(C) 2001-2003 by Oliver Nölle", build_opts + "\n\n\nhave fun...", "http://yammi.sourceforge.net", "yammi-developer@lists.sourceforge.net");
 
 	KCmdLineArgs::init(argc, argv, &about);
 	KCmdLineArgs::addCmdLineOptions( options );

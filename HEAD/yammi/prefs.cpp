@@ -370,14 +370,14 @@ void Prefs::addStandardPlugins()
 	
 	if(!pluginMenuEntry.contains("Burn with K3b(audio)")) {
 		pluginMenuEntry.append("Burn with K3b(audio)");
-		pluginCommand.append("echo -e \"#EXTM3U\n%l\" > /tmp/burnlist.m3u && k3b --audio /tmp/burnlist.m3u &");
+		pluginCommand.append("echo -e \"#EXTM3U\n%l\" > /tmp/burnlist.m3u && k3b --audiocd /tmp/burnlist.m3u &");
 		pluginCustomList.append("#EXTINF:%s,%a - %t%n%f%n");
 		pluginConfirm.append("true");
 		pluginMode.append("group");
 	}
 	if(!pluginMenuEntry.contains("Burn with K3b(data)")) {
 		pluginMenuEntry.append("Burn with K3b(data)");
-		pluginCommand.append("k3b --data %L &");
+		pluginCommand.append("k3b --datacd %L &");
 		pluginCustomList.append("\"%f\" ");
 		pluginConfirm.append("true");
 		pluginMode.append("group");

@@ -108,13 +108,9 @@ YammiGui::YammiGui(QString baseDir) : KMainWindow( )
 	//FIXME finish to convert user actions to be KActions
 	
 	setupActions( );
-	
 	createMenuBar( );	
 	setupToolBars( );
-	
-
 	createMainWidget( );
-	
 	createFolders( );
 	
 	//update dynamic folders based on database contents
@@ -144,8 +140,6 @@ YammiGui::YammiGui(QString baseDir) : KMainWindow( )
 	connect( &regularTimer, SIGNAL(timeout()), SLOT(onTimer()) );
 	regularTimer.start( 500, FALSE );	// call onTimer twice a second
 	connect( &typeTimer, SIGNAL(timeout()), SLOT(searchFieldChanged()) );
-
-
 	readSettings();
 
 	QTimer* timer=new QTimer(this);
@@ -1825,13 +1819,13 @@ void YammiGui::playSelected( )
 	kdDebug()<<"playSelected( )"<<endl;
 	getSelectedSongs();
 	int count = selectedSongs.count();
-	if(count < 1)
+	if(count < 1) {
 		return;
+  }
 	player->stop( );
 	prependSelected( );
 	//this is not really clean, but...
-	player->skipForward(shiftPressed);
-	
+	player->skipForward(shiftPressed);	
 	player->play( );
 }
 
@@ -2064,19 +2058,18 @@ void YammiGui::forSelection(Song::action act)
 	if(act==Song::MoveTo) {
 		// let user choose directory
     QString startPath=selectedSongs.firstSong()->path;
-//#ifdef ENABLE_NOATUN
-//    cout << "trying...\n";
-//    dir=KFileDialog::getOpenFileName(QString("/mm"), QString("*.mp3"), this, QString("yammi"));
-//    if(dir!=0)
-//      cout << "dir: " << dir << "\n";
+    dir=KFileDialog::getOpenFileName(QString("/mm"), QString("*.mp3"), this, QString("yammi"));
+// TODO: remove following lines
 //    return;
 //#else
-		dir=QFileDialog::getExistingDirectory(startPath, this, QString(tr("yammi")), QString(tr("choose directory")), true);
+//		dir=QFileDialog::getExistingDirectory(startPath, this, QString(tr("yammi")), QString(tr("choose directory")), true);
 //#endif    
-		if(dir.isNull())
+		if(dir.isNull()) {
 			return;
-		if(dir.right(1)=="/")						// strip trailing slash
+    }
+		if(dir.right(1)=="/") { 						// strip trailing slash
 			dir=dir.left(dir.length()-1);
+    }
 	}
 			
 	// 2. determine delete mode
@@ -2161,9 +2154,57 @@ void YammiGui::forSong(Song* s, Song::action act, QString dir)
 	case Song::None:
 		return;
 	//Make sure noone is still using this....
-	case Song::PlayNow: kdError()<<"forSong( ) - PlayNow moved to play selected"<<endl; break;
-	case Song::Enqueue: kdError()<<"Song::Enqueue: moved to appendSelected() - "<<endl; break;
-	case Song::EnqueueAsNext: kdError()<<"Song::EnqueueAsNext:  moved to prependSelected()"<<endl; break;
+//	case Song::PlayNow: kdError()<<"forSong( ) - PlayNow moved to play selected"<<endl; break;
+//	case Song::Enqueue: kdError()<<"Song::Enqueue: moved to appendSelected() - "<<endl; break;
+//	case Song::EnqueueAsNext: kdError()<<"Song::EnqueueAsNext:  moved to prependSelected()"<<endl; break;
+	case Song::PlayNow:								// enqueue at front and immediately skip to it
+		if(s->filename=="" || !s->checkReadability()) {
+			cout << "song not available (try to first enqueue and load from a media)\n";
+			return;
+		}
+
+		forSong(s, Song::EnqueueAsNext);
+    player->syncYammi2Player(false);
+
+    if(player->getStatus()==STOPPED) {
+      // case 1: player stopped (this is a bit dirty...)
+      player->play();
+    }
+    else if(player->getStatus()==PAUSED) {
+      // case 2: player paused => start playing
+      player->skipForward(shiftPressed);
+      player->play();
+    }
+    else if(player->getStatus()==PLAYING) {
+      // case 3: player is playing
+      player->skipForward(shiftPressed);
+    }
+    // call check() manually so that subsequent enqueue actions are performed
+    // on current playlist and status
+    player->check();
+
+    statusBar()->message(QString(tr("playing %1")).arg(s->displayName()), 2000);
+		break;
+
+	case Song::Enqueue:								// enqueue at end
+		folderActual->addSong(s);
+		statusBar()->message(QString(tr("%1 enqueued at end")).arg(s->displayName()), 3000);
+		break;
+
+	case Song::EnqueueAsNext: {				// enqueue as next
+		// songsToPlay is empty, or first song is still to play
+		if(model->songsToPlay.count()==0 || currentSong!=model->songsToPlay.at(0)->song()) {
+			model->songsToPlay.insert(0, new SongEntryInt(s, 13));
+//      cout << "EnqueueAsNext: case a\n";
+    }
+		else {
+			model->songsToPlay.insert(1, new SongEntryInt(s, 13));
+//      cout << "EnqueueAsNext: case b\n";
+    }
+		folderActual->correctOrder();
+		statusBar()->message(QString(tr("%1 enqueued as next")).arg(s->displayName()), 2000);
+	}
+		break;
 
 	case Song::Dequeue: {
     if(chosenFolder==folderActual) {
@@ -2259,23 +2300,16 @@ void YammiGui::forSong(Song* s, Song::action act, QString dir)
 		s->deleteFile(model->config.trashDir);
 		break;
 		
-/*
-  // removed! both can be implemented as plugin!
-	case CopyTo:						// copy songfile to other location
-		statusBar( )->message(QString("copying song %1").arg(s->displayName()), 2000);
-		s->copyTo(dir);
-		statusBar( )->message(QString("song %1 copied").arg(s->displayName()), 2000);
-		break;
-
-	case CopyAsWavTo:
-		s->copyAsWavTo(dir);
-		break;
-
-*/	
 	case Song::MoveTo: 										// move file to another directory
 		s->moveTo(dir);
 		break;
-			
+
+	case Song::SongInfo:
+		selectedSongs.clear();
+		selectedSongs.appendSong(s);
+		forSelectionSongInfo();
+	  break;
+    
 	default:
 		cout << "undefined song action: " << act << "\n";
 	}
@@ -3605,7 +3639,7 @@ void YammiGui::setupActions( )
 	KStdAction::preferences(this,SLOT(setPreferences()),actionCollection());
 
 	//FIXME - why is yammi not finding the file by itself?!?!
-	createGUI( "/home/luis/.kde/share/apps/yammi/yammiui.rc");
+	createGUI( ); //"/home/oliver/.kde/share/apps/yammi/yammiui.rc");
 /*	
 	
 	//FIXME
