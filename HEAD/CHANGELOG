@@ -1,20 +1,22 @@
 ######################
-29.11.2002 version 0.7
+14.12.2002 version 0.7
 - fixed a lot of bugs that prevented compiling on many systems:
   - replaced stdlib io functions with the corresponding QT file access methods
   - added "using namespace std" declarations (needed by gcc3.x compiler)
-  -
-- successfully compiled on sourceforge's compile farm on
-  - Linux 2.4 (RedHat 7.3)
+  - conformance to stricter rules of gcc3.2
+  => successfully reported to compile with gcc3.2, QT3.1/KDE3.1rc3
+  => successfully compiled on sourceforge's compile farm on Linux 2.4/RedHat 7.3
 - added --disable-ogglibs and --disable-id3lib configure switches to disable linking aginst these libs
 - added a (experimental and primitive) autoplay function for categories
-- added experimental writing of ogg tags
+- added writing of ogg tags (beta-status)
   (only the tags corresponding to id3v1 tags will be written, other tags will get lost)
 - improved system for checking consistency of database or a selection of songs
 - added a dialog box for configuring the consistency check
+- improved "Burn to media" function: takes size of existing files into account
 - Yammi now waits for Xmms to have started when it is not running yet
-- some minor improvements and bugfixes
-
+- many minor improvements and bugfixes
+- for mp3 tag scanning, use of newest id3lib (3.8.2) is recommended!
+  (problems of not recognized tags with older versions (probably, if both id3v1 and id3v2 tags present)
 
 ##########################
 28.9. 2002 version 0.7beta

@@ -1441,7 +1441,6 @@ void YammiGui::forSelectionBurnToMedia()
     s=selectedSongs.nextSong();
     count++;
 	}
-	totalSize+=size;				// add last (half full) media
 	
 	cout << "no of media: " << mediaNo+1-startIndex << " (size limit: " << model->config.criticalSize << " MB, ";
   cout << "index " << startIndex << " to " << mediaNo << ")\n";
@@ -1450,6 +1449,25 @@ void YammiGui::forSelectionBurnToMedia()
 	cout << "size in total: " << (int)(totalSize/1024.0/1024.0) << " MB\n";
 	folderMedia->update(&(model->allSongs));
 	model->allSongsChanged(true);
+	QString msg=QString("Result of \"Burn to media\" process:\n\n\
+  no of media: %1, (size limit: %2 MB)\n\
+  first media index: %3\n\
+  last media index: %4\n\
+  no of files: %5\n\
+  size of last media: %6 MB\n\
+  size in total: %7 MB\n\n\n\
+  You have now for each medium a directory in\n\
+  %8,\n\
+  containing symbolic links to all contained songs.\n\n\
+  For burning these files to a CD, you can use a\n\
+  burning program of your choice and burn\n\
+  each directory to a seperate CD.\n\
+  (Depending on your burning program, you might have\n\
+  to check an option \"follow symlinks\" or similar).")
+  .arg(mediaNo+1-startIndex).arg(model->config.criticalSize).arg(startIndex).arg(mediaNo)
+  .arg(count).arg((int)(size/1024.0/1024.0)).arg((int)(totalSize/1024.0/1024.0))
+  .arg(model->config.yammiBaseDir+"/media/");
+	QMessageBox::information( this, "Yammi", msg, "Fine." );
 }
 
 

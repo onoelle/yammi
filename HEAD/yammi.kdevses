@@ -3,40 +3,18 @@
 <KDevPrjSession>
 <LastCompileConfig>(Default)</LastCompileConfig>
  <Mainframe MaximizeMode="1" />
- <DocsAndViews NumberOfDocuments="18" >
-<Doc0 CursorPosLine="45" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="19" FileName="/home/oliver/work/programming/yammi/yammi/ConsistencyCheckDialog.cpp" >
-<View0 Top="23" Width="400" Attach="1" Height="300" Left="3" Focus="0" Type="KWriteView" MinMaxMode="0" />  </Doc0>
-  <Doc1 CursorPosLine="46" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="0" FileName="/home/oliver/work/programming/yammi/yammi/ConsistencyCheckDialogBase.h" >
-<View0 Top="44" Width="677" Attach="1" Height="437" Left="24" Focus="0" Type="KWriteView" MinMaxMode="0" />  </Doc1>
-  <Doc2 CursorPosLine="6" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="0" FileName="/home/oliver/work/programming/yammi/yammi/ConsistencyCheckDialog.h" >
-<View0 Top="65" Width="677" Attach="1" Height="437" Left="45" Focus="0" Type="KWriteView" MinMaxMode="0" />  </Doc2>
-  <Doc3 CursorPosLine="87" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="2" FileName="/home/oliver/work/programming/yammi/yammi/yammigui.cpp" >
-<View0 Top="86" Width="677" Attach="1" Height="422" Left="66" Focus="0" Type="KWriteView" MinMaxMode="0" />  </Doc3>
-  <Doc4 CursorPosLine="996" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="35" FileName="/home/oliver/work/programming/yammi/yammi/yammimodel.cpp" >
-<View0 Top="107" Width="677" Attach="1" Height="422" Left="87" Focus="0" Type="KWriteView" MinMaxMode="0" />  </Doc4>
-  <Doc5 CursorPosLine="60" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="0" FileName="/home/oliver/work/programming/yammi/yammi/yammimodel.h" >
-<View0 Top="128" Width="677" Attach="1" Height="437" Left="108" Focus="0" Type="KWriteView" MinMaxMode="0" />  </Doc5>
-  <Doc6 CursorPosLine="606" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="0" FileName="/usr/lib/qt-3.0.5/include/qstring.h" >
-<View0 Top="149" Width="677" Attach="1" Height="422" Left="129" Focus="0" Type="KWriteView" MinMaxMode="0" />  </Doc6>
-  <Doc7 CursorPosLine="1036" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="21" FileName="/home/oliver/work/programming/yammi/yammi/song.cpp" >
-<View0 Top="170" Width="677" Attach="1" Height="422" Left="150" Focus="0" Type="KWriteView" MinMaxMode="0" />  </Doc7>
-  <Doc8 CursorPosLine="257" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="0" FileName="/home/oliver/work/programming/yammi/yammi/yammigui.h" >
-<View0 Top="191" Width="677" Attach="1" Height="422" Left="171" Focus="0" Type="KWriteView" MinMaxMode="0" />  </Doc8>
-  <Doc9 CursorPosLine="22" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="7" FileName="/home/oliver/work/programming/yammi/yammi/ConsistencyCheckParameter.h" >
-<View0 Top="212" Width="677" Attach="1" Height="422" Left="192" Focus="0" Type="KWriteView" MinMaxMode="0" />  </Doc9>
-  <Doc10 CursorPosLine="4" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="0" FileName="/home/oliver/work/programming/yammi/CHANGELOG" >
-<View0 Top="233" Width="677" Attach="1" Height="422" Left="213" Focus="0" Type="KWriteView" MinMaxMode="0" />  </Doc10>
-  <Doc11 CursorPosLine="20" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="0" FileName="/home/oliver/work/programming/yammi/TODO" >
-<View0 Top="231" Width="683" Attach="1" Height="448" Left="231" Focus="1" Type="KWriteView" MinMaxMode="2" />  </Doc11>
-  <Doc12 CursorPosLine="230" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="0" FileName="/home/oliver/work/programming/yammi/yammi/xmmsplayer.cpp" >
-<View0 Top="275" Width="677" Attach="1" Height="422" Left="255" Focus="0" Type="KWriteView" MinMaxMode="0" />  </Doc12>
-  <Doc13 CursorPosLine="132" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="11" FileName="/home/oliver/work/programming/yammi/yammi/song.h" >
-<View0 Top="296" Width="677" Attach="1" Height="422" Left="276" Focus="0" Type="KWriteView" MinMaxMode="0" />  </Doc13>
-  <Doc14 CursorPosLine="12" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="10" FileName="/home/oliver/work/programming/yammi/yammi/Makefile.am" >
-<View0 Top="317" Width="677" Attach="1" Height="422" Left="297" Focus="0" Type="KWriteView" MinMaxMode="0" />  </Doc14>
-  <Doc15 CursorPosLine="540" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="0" FileName="/home/oliver/work/programming/yammi/yammi/docs/en/index.sgml" >
-<View0 Top="338" Width="677" Attach="1" Height="422" Left="318" Focus="0" Type="KWriteView" MinMaxMode="0" />  </Doc15>
-  <Doc16 CursorPosLine="78" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="2" FileName="/home/oliver/work/programming/yammi/MyYammiHowto.txt" >
-<View0 Top="359" Width="677" Attach="1" Height="422" Left="339" Focus="0" Type="KWriteView" MinMaxMode="0" />  </Doc16>
-  <Doc17 CursorPosLine="6" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="0" FileName="/home/oliver/work/programming/yammi/CREDITS" >
-<View0 Top="380" Width="677" Attach="1" Height="437" Left="360" Focus="0" Type="KWriteView" MinMaxMode="0" />  </Doc17> </DocsAndViews></KDevPrjSession>
+ <DocsAndViews NumberOfDocuments="7" >
+<Doc0 CursorPosLine="1466" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="0" FileName="/home/oliver/work/programming/yammi/yammi/yammigui.cpp" >
+<View0 Top="0" Width="406" Attach="1" Height="326" Left="0" Focus="1" Type="KWriteView" MinMaxMode="2" />  </Doc0>
+  <Doc1 CursorPosLine="832" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="0" FileName="/home/oliver/work/programming/yammi/yammi/yammimodel.cpp" >
+<View0 Top="44" Width="789" Attach="1" Height="437" Left="24" Focus="0" Type="KWriteView" MinMaxMode="0" />  </Doc1>
+  <Doc2 CursorPosLine="134" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="0" FileName="/home/oliver/work/programming/yammi/yammi/yammigui.h" >
+<View0 Top="65" Width="789" Attach="1" Height="422" Left="45" Focus="0" Type="KWriteView" MinMaxMode="0" />  </Doc2>
+  <Doc3 CursorPosLine="17" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="18" FileName="/home/oliver/work/programming/yammi/TODO" >
+<View0 Top="107" Width="789" Attach="1" Height="422" Left="87" Focus="0" Type="KWriteView" MinMaxMode="0" />  </Doc3>
+  <Doc4 CursorPosLine="89" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="5" FileName="/home/oliver/work/programming/yammi/yammi/yammimodel.h" >
+<View0 Top="107" Width="789" Attach="1" Height="437" Left="87" Focus="0" Type="KWriteView" MinMaxMode="0" />  </Doc4>
+  <Doc5 CursorPosLine="20" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="1" FileName="/home/oliver/work/programming/yammi/yammiMp3Edit" >
+<View0 Top="128" Width="789" Attach="1" Height="422" Left="108" Focus="0" Type="KWriteView" MinMaxMode="0" />  </Doc5>
+  <Doc6 CursorPosLine="592" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="40" FileName="/home/oliver/work/programming/yammi/yammiDmburn" >
+<View0 Top="149" Width="789" Attach="1" Height="422" Left="129" Focus="0" Type="KWriteView" MinMaxMode="0" />  </Doc6> </DocsAndViews></KDevPrjSession>

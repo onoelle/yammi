@@ -124,7 +124,8 @@ int SongListItem::compare( QListViewItem *i, int column, bool ascending ) const
 	}
 	const Song* s=song();
 	const Song* s2=other->song();
-	
+
+  // 0:artist, 1:title, 2:album
 	if(column==base+3)				// length
 		return s->length - s2->length;
 	if(column==base+4)				// year
@@ -167,7 +168,7 @@ QString SongListItem::key(int column, bool ascending) const
 		if(s->album=="")
 			return " "+s->title;
 		else
-			return s->album+s->title;
+			return s->album+QString("%1").arg(s->trackNr, 2);       //			return s->album+s->title;
 	if(column==base+6)				// genre
 		return QString("%1").arg(CMP3Info::getGenre(s->genreNr));
 	return text(column);

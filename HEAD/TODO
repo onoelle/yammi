@@ -1,6 +1,6 @@
 TODO
 ----
-last update 9.12.2002
+last update 10.12.2002
 
 
 KNOWN BUGS
@@ -15,19 +15,19 @@ KNOWN BUGS
 for 0.7
 - check consistency check (and consistencyModes!)
 - alternative to mp3burn? => test and document Tom's script
-- add comment for scanning: to clear xmms playlist and stop xmms?
-  or: disable update actions while scanning...
 
 for release 0.7.1
 -----------------
 - on deleting a song: delete in *all* lists (history, categories, ...)
+
 - test jukebox functionality
-- update documentation
 - check: failing to load a media => crash? (tom)
 - menu entry for inserting a song into a new category (tom)
 - folder for recent additions to database?
-- clean up yammigui.h (protected/public) !!! (oh oh...)
-- clean up other classes (eg. folder)...
+- cleanup
+  - update documentation
+  - clean up yammigui.h (protected/public) !!! (oh oh...)
+  - clean up other classes (eg. folder)...
 - replacement: %D / %F popup directory dialog and let user choose directory/file: document
 - replacement: filename without suffix
 - adding to media: don't add entries already existing

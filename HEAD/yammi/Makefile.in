@@ -1,4 +1,4 @@
-# KDE tags expanded automatically by am_edit - $Revision: 1.28 $ 
+# KDE tags expanded automatically by am_edit - $Revision: 1.29 $ 
 # Makefile.in generated automatically by automake 1.5 from Makefile.am.
 
 # Copyright 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001
@@ -230,16 +230,18 @@ x_libraries = @x_libraries@
 
 bin_PROGRAMS = yammi
 
-yammi_SOURCES = SongInfoDialog.cpp DeleteDialog.cpp UpdateDatabaseMediaDialogBase.cpp UpdateDatabaseDialogBase.cpp PreferencesDialogBase.cpp ConsistencyCheckDialogBase.cpp ConsistencyCheckDialog.cpp vcedit.c yammiapplication.cpp xmmsplayer.cpp mediaplayer.cpp lineeditshift.cpp updatedatabasemediadialog.cpp updatedatabasedialog.cpp yammimodel.cpp yammigui.cpp songlistitem.cpp songinfo.cpp songentrytimestamp.cpp songentrystring.cpp songentryint2.cpp songentryint.cpp songentry.cpp song.cpp prefs.cpp preferencesdialog.cpp mylistview.cpp mylist.cpp mydatetime.cpp main.cpp fuzzsrch.cpp foldersorted.cpp foldermedia.cpp foldergroups.cpp foldercategories.cpp folder.cpp 
-SOURCES = mp3info/CVBitRate.cpp mp3info/CMP3Info.cpp mp3info/CFrameHeader.cpp SongInfoDialog.cpp DeleteDialog.cpp UpdateDatabaseMediaDialogBase.cpp UpdateDatabaseDialogBase.cpp PreferencesDialogBase.cpp ConsistencyCheckDialogBase.cpp ConsistencyCheckDialog.cpp vcedit.c yammiapplication.cpp xmmsplayer.cpp mediaplayer.cpp lineeditshift.cpp updatedatabasemediadialog.cpp updatedatabasedialog.cpp yammimodel.cpp yammigui.cpp songlistitem.cpp songinfo.cpp songentrytimestamp.cpp songentrystring.cpp songentryint2.cpp songentryint.cpp songentry.cpp song.cpp prefs.cpp preferencesdialog.cpp mylistview.cpp mylist.cpp mydatetime.cpp main.cpp fuzzsrch.cpp foldersorted.cpp foldermedia.cpp foldergroups.cpp foldercategories.cpp folder.cpp 
-INTERFACES = 
+#>- yammi_SOURCES = UpdateDatabaseMediaDialogBase.ui UpdateDatabaseDialogBase.ui SongInfoDialog.ui PreferencesDialogBase.ui DeleteDialog.ui ConsistencyCheckDialogBase.ui ConsistencyCheckDialog.cpp vcedit.c yammiapplication.cpp xmmsplayer.cpp mediaplayer.cpp lineeditshift.cpp updatedatabasemediadialog.cpp updatedatabasedialog.cpp yammimodel.cpp yammigui.cpp songlistitem.cpp songinfo.cpp songentrytimestamp.cpp songentrystring.cpp songentryint2.cpp songentryint.cpp songentry.cpp song.cpp prefs.cpp preferencesdialog.cpp mylistview.cpp mylist.cpp mydatetime.cpp main.cpp fuzzsrch.cpp foldersorted.cpp foldermedia.cpp foldergroups.cpp foldercategories.cpp folder.cpp 
+#>+ 1
+yammi_SOURCES=      ConsistencyCheckDialog.cpp vcedit.c yammiapplication.cpp xmmsplayer.cpp mediaplayer.cpp lineeditshift.cpp updatedatabasemediadialog.cpp updatedatabasedialog.cpp yammimodel.cpp yammigui.cpp songlistitem.cpp songinfo.cpp songentrytimestamp.cpp songentrystring.cpp songentryint2.cpp songentryint.cpp songentry.cpp song.cpp prefs.cpp preferencesdialog.cpp mylistview.cpp mylist.cpp mydatetime.cpp main.cpp fuzzsrch.cpp foldersorted.cpp foldermedia.cpp foldergroups.cpp foldercategories.cpp folder.cpp  UpdateDatabaseMediaDialogBase.cpp UpdateDatabaseDialogBase.cpp SongInfoDialog.cpp PreferencesDialogBase.cpp DeleteDialog.cpp ConsistencyCheckDialogBase.cpp
+SOURCES = mp3info/CVBitRate.cpp mp3info/CMP3Info.cpp mp3info/CFrameHeader.cpp ConsistencyCheckDialog.cpp vcedit.c yammiapplication.cpp xmmsplayer.cpp mediaplayer.cpp lineeditshift.cpp updatedatabasemediadialog.cpp updatedatabasedialog.cpp yammimodel.cpp yammigui.cpp songlistitem.cpp songinfo.cpp songentrytimestamp.cpp songentrystring.cpp songentryint2.cpp songentryint.cpp songentry.cpp song.cpp prefs.cpp preferencesdialog.cpp mylistview.cpp mylist.cpp mydatetime.cpp main.cpp fuzzsrch.cpp foldersorted.cpp foldermedia.cpp foldergroups.cpp foldercategories.cpp folder.cpp 
+INTERFACES = UpdateDatabaseMediaDialogBase.ui UpdateDatabaseDialogBase.ui SongInfoDialog.ui PreferencesDialogBase.ui DeleteDialog.ui ConsistencyCheckDialogBase.ui 
 TRANSLATIONS = 
 KDE_OPTIONS = qtonly
 yammi_LDADD = ./mp3info/libmp3info.a -lxmms $(LIB_QT) $(LIBSOCKET)
 
 SUBDIRS = mp3info 
 
-EXTRA_DIST = lo32-app-yammi.png lo16-app-yammi.png folder.cpp folder.h foldercategories.cpp foldercategories.h foldergroups.cpp foldergroups.h foldermedia.cpp foldermedia.h foldersorted.cpp foldersorted.h fuzzsrch.cpp fuzzsrch.h main.cpp mydatetime.cpp mydatetime.h mylist.cpp mylist.h mylistview.cpp mylistview.h preferencesdialog.cpp preferencesdialog.h prefs.cpp prefs.h song.cpp song.h songentry.cpp songentry.h songentryint.cpp songentryint.h songentryint2.cpp songentryint2.h songentrystring.cpp songentrystring.h songentrytimestamp.cpp songentrytimestamp.h songinfo.cpp songinfo.h songlistitem.cpp songlistitem.h yammigui.cpp yammigui.h yammimodel.cpp yammimodel.h glib.h glibconfig.h xmmsctrl.h updatedatabasedialog.cpp updatedatabasedialog.h options.h updatedatabasemediadialog.cpp updatedatabasemediadialog.h lineeditshift.cpp lineeditshift.h mediaplayer.cpp mediaplayer.h xmmsplayer.cpp xmmsplayer.h yammiapplication.cpp yammiapplication.h vcedit.c vcedit.h acconfig.h ConsistencyCheckDialog.cpp ConsistencyCheckDialog.h ConsistencyCheckParameter.h ConsistencyCheckDialogBase.cpp ConsistencyCheckDialogBase.h PreferencesDialogBase.cpp PreferencesDialogBase.h UpdateDatabaseDialogBase.cpp UpdateDatabaseDialogBase.h UpdateDatabaseMediaDialogBase.cpp UpdateDatabaseMediaDialogBase.h DeleteDialog.cpp DeleteDialog.h SongInfoDialog.h SongInfoDialog.cpp 
+EXTRA_DIST = lo32-app-yammi.png lo16-app-yammi.png folder.cpp folder.h foldercategories.cpp foldercategories.h foldergroups.cpp foldergroups.h foldermedia.cpp foldermedia.h foldersorted.cpp foldersorted.h fuzzsrch.cpp fuzzsrch.h main.cpp mydatetime.cpp mydatetime.h mylist.cpp mylist.h mylistview.cpp mylistview.h preferencesdialog.cpp preferencesdialog.h prefs.cpp prefs.h song.cpp song.h songentry.cpp songentry.h songentryint.cpp songentryint.h songentryint2.cpp songentryint2.h songentrystring.cpp songentrystring.h songentrytimestamp.cpp songentrytimestamp.h songinfo.cpp songinfo.h songlistitem.cpp songlistitem.h yammigui.cpp yammigui.h yammimodel.cpp yammimodel.h glib.h glibconfig.h xmmsctrl.h updatedatabasedialog.cpp updatedatabasedialog.h options.h updatedatabasemediadialog.cpp updatedatabasemediadialog.h lineeditshift.cpp lineeditshift.h mediaplayer.cpp mediaplayer.h xmmsplayer.cpp xmmsplayer.h yammiapplication.cpp yammiapplication.h vcedit.c vcedit.h acconfig.h ConsistencyCheckDialog.cpp ConsistencyCheckDialog.h ConsistencyCheckParameter.h ConsistencyCheckDialogBase.ui DeleteDialog.ui PreferencesDialogBase.ui SongInfoDialog.ui UpdateDatabaseDialogBase.ui UpdateDatabaseMediaDialogBase.ui 
 
 ####### kdevelop will overwrite this part!!! (end)############
 
@@ -260,12 +262,7 @@ CONFIG_CLEAN_FILES =
 bin_PROGRAMS = yammi$(EXEEXT)
 PROGRAMS = $(bin_PROGRAMS)
 
-am_yammi_OBJECTS = SongInfoDialog.$(OBJEXT) DeleteDialog.$(OBJEXT) \
-	UpdateDatabaseMediaDialogBase.$(OBJEXT) \
-	UpdateDatabaseDialogBase.$(OBJEXT) \
-	PreferencesDialogBase.$(OBJEXT) \
-	ConsistencyCheckDialogBase.$(OBJEXT) \
-	ConsistencyCheckDialog.$(OBJEXT) vcedit.$(OBJEXT) \
+am_yammi_OBJECTS = ConsistencyCheckDialog.$(OBJEXT) vcedit.$(OBJEXT) \
 	yammiapplication.$(OBJEXT) xmmsplayer.$(OBJEXT) \
 	mediaplayer.$(OBJEXT) lineeditshift.$(OBJEXT) \
 	updatedatabasemediadialog.$(OBJEXT) \
@@ -280,14 +277,9 @@ am_yammi_OBJECTS = SongInfoDialog.$(OBJEXT) DeleteDialog.$(OBJEXT) \
 	foldergroups.$(OBJEXT) foldercategories.$(OBJEXT) \
 	folder.$(OBJEXT)
 #>- yammi_OBJECTS = $(am_yammi_OBJECTS)
-#>+ 23
+#>+ 18
 yammi_final_OBJECTS = yammi.all_cpp.o vcedit.o 
-yammi_nofinal_OBJECTS = SongInfoDialog.$(OBJEXT) DeleteDialog.$(OBJEXT) \
-	UpdateDatabaseMediaDialogBase.$(OBJEXT) \
-	UpdateDatabaseDialogBase.$(OBJEXT) \
-	PreferencesDialogBase.$(OBJEXT) \
-	ConsistencyCheckDialogBase.$(OBJEXT) \
-	ConsistencyCheckDialog.$(OBJEXT) vcedit.$(OBJEXT) \
+yammi_nofinal_OBJECTS = ConsistencyCheckDialog.$(OBJEXT) vcedit.$(OBJEXT) \
 	yammiapplication.$(OBJEXT) xmmsplayer.$(OBJEXT) \
 	mediaplayer.$(OBJEXT) lineeditshift.$(OBJEXT) \
 	updatedatabasemediadialog.$(OBJEXT) \
@@ -300,8 +292,8 @@ yammi_nofinal_OBJECTS = SongInfoDialog.$(OBJEXT) DeleteDialog.$(OBJEXT) \
 	mylist.$(OBJEXT) mydatetime.$(OBJEXT) main.$(OBJEXT) \
 	fuzzsrch.$(OBJEXT) foldersorted.$(OBJEXT) foldermedia.$(OBJEXT) \
 	foldergroups.$(OBJEXT) foldercategories.$(OBJEXT) \
-	folder.$(OBJEXT)\
-	ConsistencyCheckDialog.moc.o updatedatabasedialog.moc.o yammigui.moc.o foldergroups.moc.o foldermedia.moc.o mylistview.moc.o foldercategories.moc.o folder.moc.o xmmsplayer.moc.o songinfo.moc.o yammimodel.moc.o lineeditshift.moc.o preferencesdialog.moc.o mediaplayer.moc.o updatedatabasemediadialog.moc.o 
+	folder.$(OBJEXT) UpdateDatabaseMediaDialogBase.$(OBJEXT) UpdateDatabaseDialogBase.$(OBJEXT) SongInfoDialog.$(OBJEXT) PreferencesDialogBase.$(OBJEXT) DeleteDialog.$(OBJEXT) ConsistencyCheckDialogBase.$(OBJEXT)\
+	ConsistencyCheckDialog.moc.o updatedatabasedialog.moc.o foldercategories.moc.o yammigui.moc.o foldergroups.moc.o folder.moc.o foldermedia.moc.o xmmsplayer.moc.o songinfo.moc.o yammimodel.moc.o lineeditshift.moc.o preferencesdialog.moc.o mylistview.moc.o mediaplayer.moc.o updatedatabasemediadialog.moc.o 
 @KDE_USE_FINAL_FALSE@yammi_OBJECTS = $(yammi_nofinal_OBJECTS)
 @KDE_USE_FINAL_TRUE@yammi_OBJECTS = $(yammi_final_OBJECTS)
 yammi_DEPENDENCIES = ./mp3info/libmp3info.a
@@ -313,12 +305,6 @@ LDFLAGS = @LDFLAGS@
 LIBS = @LIBS@
 depcomp = $(SHELL) $(top_srcdir)/admin/depcomp
 @AMDEP_TRUE@DEP_FILES = $(DEPDIR)/ConsistencyCheckDialog.Po \
-	@AMDEP_TRUE@	$(DEPDIR)/ConsistencyCheckDialogBase.Po \
-	@AMDEP_TRUE@	$(DEPDIR)/DeleteDialog.Po \
-	@AMDEP_TRUE@	$(DEPDIR)/PreferencesDialogBase.Po \
-	@AMDEP_TRUE@	$(DEPDIR)/SongInfoDialog.Po \
-	@AMDEP_TRUE@	$(DEPDIR)/UpdateDatabaseDialogBase.Po \
-	@AMDEP_TRUE@	$(DEPDIR)/UpdateDatabaseMediaDialogBase.Po \
 	@AMDEP_TRUE@	$(DEPDIR)/folder.Po $(DEPDIR)/foldercategories.Po \
 	@AMDEP_TRUE@	$(DEPDIR)/foldergroups.Po $(DEPDIR)/foldermedia.Po \
 	@AMDEP_TRUE@	$(DEPDIR)/foldersorted.Po $(DEPDIR)/fuzzsrch.Po \
@@ -372,7 +358,7 @@ RECURSIVE_TARGETS = info-recursive dvi-recursive install-info-recursive \
 	uninstall-recursive check-recursive installcheck-recursive
 DIST_COMMON = Makefile.am Makefile.in
 DIST_SUBDIRS = $(SUBDIRS)
-SOURCES = mp3info/CVBitRate.cpp mp3info/CMP3Info.cpp mp3info/CFrameHeader.cpp SongInfoDialog.cpp DeleteDialog.cpp UpdateDatabaseMediaDialogBase.cpp UpdateDatabaseDialogBase.cpp PreferencesDialogBase.cpp ConsistencyCheckDialogBase.cpp ConsistencyCheckDialog.cpp vcedit.c yammiapplication.cpp xmmsplayer.cpp mediaplayer.cpp lineeditshift.cpp updatedatabasemediadialog.cpp updatedatabasedialog.cpp yammimodel.cpp yammigui.cpp songlistitem.cpp songinfo.cpp songentrytimestamp.cpp songentrystring.cpp songentryint2.cpp songentryint.cpp songentry.cpp song.cpp prefs.cpp preferencesdialog.cpp mylistview.cpp mylist.cpp mydatetime.cpp main.cpp fuzzsrch.cpp foldersorted.cpp foldermedia.cpp foldergroups.cpp foldercategories.cpp folder.cpp 
+SOURCES = mp3info/CVBitRate.cpp mp3info/CMP3Info.cpp mp3info/CFrameHeader.cpp ConsistencyCheckDialog.cpp vcedit.c yammiapplication.cpp xmmsplayer.cpp mediaplayer.cpp lineeditshift.cpp updatedatabasemediadialog.cpp updatedatabasedialog.cpp yammimodel.cpp yammigui.cpp songlistitem.cpp songinfo.cpp songentrytimestamp.cpp songentrystring.cpp songentryint2.cpp songentryint.cpp songentry.cpp song.cpp prefs.cpp preferencesdialog.cpp mylistview.cpp mylist.cpp mydatetime.cpp main.cpp fuzzsrch.cpp foldersorted.cpp foldermedia.cpp foldergroups.cpp foldercategories.cpp folder.cpp 
 
 #>- all: all-recursive
 #>+ 1
@@ -435,12 +421,6 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/ConsistencyCheckDialog.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/ConsistencyCheckDialogBase.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/DeleteDialog.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/PreferencesDialogBase.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SongInfoDialog.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/UpdateDatabaseDialogBase.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/UpdateDatabaseMediaDialogBase.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/folder.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/foldercategories.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/foldergroups.Po@am__quote@
@@ -607,7 +587,7 @@ distclean-tags:
 
 #>- DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 #>+ 4
-KDE_DIST=PreferencesDialogBase.ui i18n.h UpdateDatabaseMediaDialogBase.ui SongInfoDialog.ui DeleteDialog.ui ConsistencyCheckDialogBase.ui UpdateDatabaseDialogBase.ui yammi 
+KDE_DIST=i18n.h DeleteDialog.h ConsistencyCheckDialogBase.h PreferencesDialogBase.h UpdateDatabaseMediaDialogBase.h UpdateDatabaseDialogBase.h SongInfoDialog.h 
 
 DISTFILES= $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST) $(KDE_DIST)
 
@@ -681,7 +661,7 @@ clean: kde-rpo-clean  clean-recursive
 
 #>- clean-am: clean-binPROGRAMS clean-generic clean-libtool mostlyclean-am
 #>+ 1
-clean-am: clean-metasources clean-final  clean-binPROGRAMS clean-generic clean-libtool mostlyclean-am
+clean-am: clean-metasources clean-ui clean-final  clean-binPROGRAMS clean-generic clean-libtool mostlyclean-am
 
 distclean: distclean-recursive
 
@@ -740,57 +720,96 @@ uninstall-info: uninstall-info-recursive
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:
 
+
+#>+ 61
+UpdateDatabaseMediaDialogBase.cpp: $(srcdir)/UpdateDatabaseMediaDialogBase.ui UpdateDatabaseMediaDialogBase.h UpdateDatabaseMediaDialogBase.moc
+	rm -f UpdateDatabaseMediaDialogBase.cpp
+	$(UIC) -i UpdateDatabaseMediaDialogBase.h $(srcdir)/UpdateDatabaseMediaDialogBase.ui > UpdateDatabaseMediaDialogBase.cpp || rm -f UpdateDatabaseMediaDialogBase.cpp
+	echo '#include "UpdateDatabaseMediaDialogBase.moc"' >> UpdateDatabaseMediaDialogBase.cpp
+
+UpdateDatabaseMediaDialogBase.h: $(srcdir)/UpdateDatabaseMediaDialogBase.ui
+	$(UIC) -o UpdateDatabaseMediaDialogBase.h $(srcdir)/UpdateDatabaseMediaDialogBase.ui
+
+UpdateDatabaseMediaDialogBase.moc: UpdateDatabaseMediaDialogBase.h
+	$(MOC) UpdateDatabaseMediaDialogBase.h -o UpdateDatabaseMediaDialogBase.moc
+UpdateDatabaseDialogBase.cpp: $(srcdir)/UpdateDatabaseDialogBase.ui UpdateDatabaseDialogBase.h UpdateDatabaseDialogBase.moc
+	rm -f UpdateDatabaseDialogBase.cpp
+	$(UIC) -i UpdateDatabaseDialogBase.h $(srcdir)/UpdateDatabaseDialogBase.ui > UpdateDatabaseDialogBase.cpp || rm -f UpdateDatabaseDialogBase.cpp
+	echo '#include "UpdateDatabaseDialogBase.moc"' >> UpdateDatabaseDialogBase.cpp
+
+UpdateDatabaseDialogBase.h: $(srcdir)/UpdateDatabaseDialogBase.ui
+	$(UIC) -o UpdateDatabaseDialogBase.h $(srcdir)/UpdateDatabaseDialogBase.ui
+
+UpdateDatabaseDialogBase.moc: UpdateDatabaseDialogBase.h
+	$(MOC) UpdateDatabaseDialogBase.h -o UpdateDatabaseDialogBase.moc
+SongInfoDialog.cpp: $(srcdir)/SongInfoDialog.ui SongInfoDialog.h SongInfoDialog.moc
+	rm -f SongInfoDialog.cpp
+	$(UIC) -i SongInfoDialog.h $(srcdir)/SongInfoDialog.ui > SongInfoDialog.cpp || rm -f SongInfoDialog.cpp
+	echo '#include "SongInfoDialog.moc"' >> SongInfoDialog.cpp
+
+SongInfoDialog.h: $(srcdir)/SongInfoDialog.ui
+	$(UIC) -o SongInfoDialog.h $(srcdir)/SongInfoDialog.ui
+
+SongInfoDialog.moc: SongInfoDialog.h
+	$(MOC) SongInfoDialog.h -o SongInfoDialog.moc
+PreferencesDialogBase.cpp: $(srcdir)/PreferencesDialogBase.ui PreferencesDialogBase.h PreferencesDialogBase.moc
+	rm -f PreferencesDialogBase.cpp
+	$(UIC) -i PreferencesDialogBase.h $(srcdir)/PreferencesDialogBase.ui > PreferencesDialogBase.cpp || rm -f PreferencesDialogBase.cpp
+	echo '#include "PreferencesDialogBase.moc"' >> PreferencesDialogBase.cpp
+
+PreferencesDialogBase.h: $(srcdir)/PreferencesDialogBase.ui
+	$(UIC) -o PreferencesDialogBase.h $(srcdir)/PreferencesDialogBase.ui
+
+PreferencesDialogBase.moc: PreferencesDialogBase.h
+	$(MOC) PreferencesDialogBase.h -o PreferencesDialogBase.moc
+DeleteDialog.cpp: $(srcdir)/DeleteDialog.ui DeleteDialog.h DeleteDialog.moc
+	rm -f DeleteDialog.cpp
+	$(UIC) -i DeleteDialog.h $(srcdir)/DeleteDialog.ui > DeleteDialog.cpp || rm -f DeleteDialog.cpp
+	echo '#include "DeleteDialog.moc"' >> DeleteDialog.cpp
+
+DeleteDialog.h: $(srcdir)/DeleteDialog.ui
+	$(UIC) -o DeleteDialog.h $(srcdir)/DeleteDialog.ui
+
+DeleteDialog.moc: DeleteDialog.h
+	$(MOC) DeleteDialog.h -o DeleteDialog.moc
+ConsistencyCheckDialogBase.cpp: $(srcdir)/ConsistencyCheckDialogBase.ui ConsistencyCheckDialogBase.h ConsistencyCheckDialogBase.moc
+	rm -f ConsistencyCheckDialogBase.cpp
+	$(UIC) -i ConsistencyCheckDialogBase.h $(srcdir)/ConsistencyCheckDialogBase.ui > ConsistencyCheckDialogBase.cpp || rm -f ConsistencyCheckDialogBase.cpp
+	echo '#include "ConsistencyCheckDialogBase.moc"' >> ConsistencyCheckDialogBase.cpp
+
+ConsistencyCheckDialogBase.h: $(srcdir)/ConsistencyCheckDialogBase.ui
+	$(UIC) -o ConsistencyCheckDialogBase.h $(srcdir)/ConsistencyCheckDialogBase.ui
+
+ConsistencyCheckDialogBase.moc: ConsistencyCheckDialogBase.h
+	$(MOC) ConsistencyCheckDialogBase.h -o ConsistencyCheckDialogBase.moc
+
 #>+ 3
 ConsistencyCheckDialog.moc.cpp: $(srcdir)/ConsistencyCheckDialog.h
 	$(MOC) $(srcdir)/ConsistencyCheckDialog.h -o ConsistencyCheckDialog.moc.cpp
-
-#>+ 3
-ConsistencyCheckDialogBase.moc: $(srcdir)/ConsistencyCheckDialogBase.h
-	$(MOC) $(srcdir)/ConsistencyCheckDialogBase.h -o ConsistencyCheckDialogBase.moc
-
-#>+ 3
-UpdateDatabaseDialogBase.moc: $(srcdir)/UpdateDatabaseDialogBase.h
-	$(MOC) $(srcdir)/UpdateDatabaseDialogBase.h -o UpdateDatabaseDialogBase.moc
 
 #>+ 3
 updatedatabasedialog.moc.cpp: $(srcdir)/updatedatabasedialog.h
 	$(MOC) $(srcdir)/updatedatabasedialog.h -o updatedatabasedialog.moc.cpp
 
 #>+ 3
-PreferencesDialogBase.moc: $(srcdir)/PreferencesDialogBase.h
-	$(MOC) $(srcdir)/PreferencesDialogBase.h -o PreferencesDialogBase.moc
+foldercategories.moc.cpp: $(srcdir)/foldercategories.h
+	$(MOC) $(srcdir)/foldercategories.h -o foldercategories.moc.cpp
 
 #>+ 3
 yammigui.moc.cpp: $(srcdir)/yammigui.h
 	$(MOC) $(srcdir)/yammigui.h -o yammigui.moc.cpp
 
 #>+ 3
-DeleteDialog.moc: $(srcdir)/DeleteDialog.h
-	$(MOC) $(srcdir)/DeleteDialog.h -o DeleteDialog.moc
-
-#>+ 3
 foldergroups.moc.cpp: $(srcdir)/foldergroups.h
 	$(MOC) $(srcdir)/foldergroups.h -o foldergroups.moc.cpp
 
 #>+ 3
-foldermedia.moc.cpp: $(srcdir)/foldermedia.h
-	$(MOC) $(srcdir)/foldermedia.h -o foldermedia.moc.cpp
-
-#>+ 3
-mylistview.moc.cpp: $(srcdir)/mylistview.h
-	$(MOC) $(srcdir)/mylistview.h -o mylistview.moc.cpp
-
-#>+ 3
-SongInfoDialog.moc: $(srcdir)/SongInfoDialog.h
-	$(MOC) $(srcdir)/SongInfoDialog.h -o SongInfoDialog.moc
-
-#>+ 3
-foldercategories.moc.cpp: $(srcdir)/foldercategories.h
-	$(MOC) $(srcdir)/foldercategories.h -o foldercategories.moc.cpp
-
-#>+ 3
 folder.moc.cpp: $(srcdir)/folder.h
 	$(MOC) $(srcdir)/folder.h -o folder.moc.cpp
+
+#>+ 3
+foldermedia.moc.cpp: $(srcdir)/foldermedia.h
+	$(MOC) $(srcdir)/foldermedia.h -o foldermedia.moc.cpp
 
 #>+ 3
 xmmsplayer.moc.cpp: $(srcdir)/xmmsplayer.h
@@ -809,12 +828,12 @@ lineeditshift.moc.cpp: $(srcdir)/lineeditshift.h
 	$(MOC) $(srcdir)/lineeditshift.h -o lineeditshift.moc.cpp
 
 #>+ 3
-UpdateDatabaseMediaDialogBase.moc: $(srcdir)/UpdateDatabaseMediaDialogBase.h
-	$(MOC) $(srcdir)/UpdateDatabaseMediaDialogBase.h -o UpdateDatabaseMediaDialogBase.moc
-
-#>+ 3
 preferencesdialog.moc.cpp: $(srcdir)/preferencesdialog.h
 	$(MOC) $(srcdir)/preferencesdialog.h -o preferencesdialog.moc.cpp
+
+#>+ 3
+mylistview.moc.cpp: $(srcdir)/mylistview.h
+	$(MOC) $(srcdir)/mylistview.h -o mylistview.moc.cpp
 
 #>+ 3
 mediaplayer.moc.cpp: $(srcdir)/mediaplayer.h
@@ -826,7 +845,17 @@ updatedatabasemediadialog.moc.cpp: $(srcdir)/updatedatabasemediadialog.h
 
 #>+ 3
 clean-metasources:
-	-rm -f  ConsistencyCheckDialog.moc.cpp ConsistencyCheckDialogBase.moc UpdateDatabaseDialogBase.moc updatedatabasedialog.moc.cpp PreferencesDialogBase.moc yammigui.moc.cpp DeleteDialog.moc foldergroups.moc.cpp foldermedia.moc.cpp mylistview.moc.cpp SongInfoDialog.moc foldercategories.moc.cpp folder.moc.cpp xmmsplayer.moc.cpp songinfo.moc.cpp yammimodel.moc.cpp lineeditshift.moc.cpp UpdateDatabaseMediaDialogBase.moc preferencesdialog.moc.cpp mediaplayer.moc.cpp updatedatabasemediadialog.moc.cpp
+	-rm -f  ConsistencyCheckDialog.moc.cpp updatedatabasedialog.moc.cpp foldercategories.moc.cpp yammigui.moc.cpp foldergroups.moc.cpp folder.moc.cpp foldermedia.moc.cpp xmmsplayer.moc.cpp songinfo.moc.cpp yammimodel.moc.cpp lineeditshift.moc.cpp preferencesdialog.moc.cpp mylistview.moc.cpp mediaplayer.moc.cpp updatedatabasemediadialog.moc.cpp
+
+#>+ 9
+clean-ui:
+	-rm -f \
+	UpdateDatabaseMediaDialogBase.cpp UpdateDatabaseMediaDialogBase.h UpdateDatabaseMediaDialogBase.moc \
+	UpdateDatabaseDialogBase.cpp UpdateDatabaseDialogBase.h UpdateDatabaseDialogBase.moc \
+	SongInfoDialog.cpp SongInfoDialog.h SongInfoDialog.moc \
+	PreferencesDialogBase.cpp PreferencesDialogBase.h PreferencesDialogBase.moc \
+	DeleteDialog.cpp DeleteDialog.h DeleteDialog.moc \
+	ConsistencyCheckDialogBase.cpp ConsistencyCheckDialogBase.h ConsistencyCheckDialogBase.moc 
 
 #>+ 2
 docs-am:
@@ -839,11 +868,11 @@ force-reedit:
 
 
 #>+ 11
-yammi.all_cpp.cpp: $(srcdir)/Makefile.in $(srcdir)/SongInfoDialog.cpp $(srcdir)/DeleteDialog.cpp $(srcdir)/UpdateDatabaseMediaDialogBase.cpp $(srcdir)/UpdateDatabaseDialogBase.cpp $(srcdir)/PreferencesDialogBase.cpp $(srcdir)/ConsistencyCheckDialogBase.cpp $(srcdir)/ConsistencyCheckDialog.cpp $(srcdir)/yammiapplication.cpp $(srcdir)/xmmsplayer.cpp $(srcdir)/mediaplayer.cpp $(srcdir)/lineeditshift.cpp $(srcdir)/updatedatabasemediadialog.cpp $(srcdir)/updatedatabasedialog.cpp $(srcdir)/yammimodel.cpp $(srcdir)/yammigui.cpp $(srcdir)/songlistitem.cpp $(srcdir)/songinfo.cpp $(srcdir)/songentrytimestamp.cpp $(srcdir)/songentrystring.cpp $(srcdir)/songentryint2.cpp $(srcdir)/songentryint.cpp $(srcdir)/songentry.cpp $(srcdir)/song.cpp $(srcdir)/prefs.cpp $(srcdir)/preferencesdialog.cpp $(srcdir)/mylistview.cpp $(srcdir)/mylist.cpp $(srcdir)/mydatetime.cpp $(srcdir)/main.cpp $(srcdir)/fuzzsrch.cpp $(srcdir)/foldersorted.cpp $(srcdir)/foldermedia.cpp $(srcdir)/foldergroups.cpp $(srcdir)/foldercategories.cpp $(srcdir)/folder.cpp  ConsistencyCheckDialog.moc.cpp updatedatabasedialog.moc.cpp yammigui.moc.cpp foldergroups.moc.cpp foldermedia.moc.cpp mylistview.moc.cpp foldercategories.moc.cpp folder.moc.cpp xmmsplayer.moc.cpp songinfo.moc.cpp yammimodel.moc.cpp lineeditshift.moc.cpp preferencesdialog.moc.cpp mediaplayer.moc.cpp updatedatabasemediadialog.moc.cpp ConsistencyCheckDialogBase.moc UpdateDatabaseDialogBase.moc PreferencesDialogBase.moc DeleteDialog.moc SongInfoDialog.moc UpdateDatabaseMediaDialogBase.moc 
+yammi.all_cpp.cpp: $(srcdir)/Makefile.in $(srcdir)/ConsistencyCheckDialog.cpp $(srcdir)/yammiapplication.cpp $(srcdir)/xmmsplayer.cpp $(srcdir)/mediaplayer.cpp $(srcdir)/lineeditshift.cpp $(srcdir)/updatedatabasemediadialog.cpp $(srcdir)/updatedatabasedialog.cpp $(srcdir)/yammimodel.cpp $(srcdir)/yammigui.cpp $(srcdir)/songlistitem.cpp $(srcdir)/songinfo.cpp $(srcdir)/songentrytimestamp.cpp $(srcdir)/songentrystring.cpp $(srcdir)/songentryint2.cpp $(srcdir)/songentryint.cpp $(srcdir)/songentry.cpp $(srcdir)/song.cpp $(srcdir)/prefs.cpp $(srcdir)/preferencesdialog.cpp $(srcdir)/mylistview.cpp $(srcdir)/mylist.cpp $(srcdir)/mydatetime.cpp $(srcdir)/main.cpp $(srcdir)/fuzzsrch.cpp $(srcdir)/foldersorted.cpp $(srcdir)/foldermedia.cpp $(srcdir)/foldergroups.cpp $(srcdir)/foldercategories.cpp $(srcdir)/folder.cpp $(srcdir)/UpdateDatabaseMediaDialogBase.cpp $(srcdir)/UpdateDatabaseDialogBase.cpp $(srcdir)/SongInfoDialog.cpp $(srcdir)/PreferencesDialogBase.cpp $(srcdir)/DeleteDialog.cpp $(srcdir)/ConsistencyCheckDialogBase.cpp  ConsistencyCheckDialog.moc.cpp updatedatabasedialog.moc.cpp foldercategories.moc.cpp yammigui.moc.cpp foldergroups.moc.cpp folder.moc.cpp foldermedia.moc.cpp xmmsplayer.moc.cpp songinfo.moc.cpp yammimodel.moc.cpp lineeditshift.moc.cpp preferencesdialog.moc.cpp mylistview.moc.cpp mediaplayer.moc.cpp updatedatabasemediadialog.moc.cpp
 	@echo 'creating yammi.all_cpp.cpp ...'; \
 	rm -f yammi.all_cpp.files yammi.all_cpp.final; \
 	echo "#define KDE_USE_FINAL 1" >> yammi.all_cpp.final; \
-	for file in SongInfoDialog.cpp DeleteDialog.cpp UpdateDatabaseMediaDialogBase.cpp UpdateDatabaseDialogBase.cpp PreferencesDialogBase.cpp ConsistencyCheckDialogBase.cpp ConsistencyCheckDialog.cpp yammiapplication.cpp xmmsplayer.cpp mediaplayer.cpp lineeditshift.cpp updatedatabasemediadialog.cpp updatedatabasedialog.cpp yammimodel.cpp yammigui.cpp songlistitem.cpp songinfo.cpp songentrytimestamp.cpp songentrystring.cpp songentryint2.cpp songentryint.cpp songentry.cpp song.cpp prefs.cpp preferencesdialog.cpp mylistview.cpp mylist.cpp mydatetime.cpp main.cpp fuzzsrch.cpp foldersorted.cpp foldermedia.cpp foldergroups.cpp foldercategories.cpp folder.cpp  ConsistencyCheckDialog.moc.cpp updatedatabasedialog.moc.cpp yammigui.moc.cpp foldergroups.moc.cpp foldermedia.moc.cpp mylistview.moc.cpp foldercategories.moc.cpp folder.moc.cpp xmmsplayer.moc.cpp songinfo.moc.cpp yammimodel.moc.cpp lineeditshift.moc.cpp preferencesdialog.moc.cpp mediaplayer.moc.cpp updatedatabasemediadialog.moc.cpp; do \
+	for file in ConsistencyCheckDialog.cpp yammiapplication.cpp xmmsplayer.cpp mediaplayer.cpp lineeditshift.cpp updatedatabasemediadialog.cpp updatedatabasedialog.cpp yammimodel.cpp yammigui.cpp songlistitem.cpp songinfo.cpp songentrytimestamp.cpp songentrystring.cpp songentryint2.cpp songentryint.cpp songentry.cpp song.cpp prefs.cpp preferencesdialog.cpp mylistview.cpp mylist.cpp mydatetime.cpp main.cpp fuzzsrch.cpp foldersorted.cpp foldermedia.cpp foldergroups.cpp foldercategories.cpp folder.cpp UpdateDatabaseMediaDialogBase.cpp UpdateDatabaseDialogBase.cpp SongInfoDialog.cpp PreferencesDialogBase.cpp DeleteDialog.cpp ConsistencyCheckDialogBase.cpp  ConsistencyCheckDialog.moc.cpp updatedatabasedialog.moc.cpp foldercategories.moc.cpp yammigui.moc.cpp foldergroups.moc.cpp folder.moc.cpp foldermedia.moc.cpp xmmsplayer.moc.cpp songinfo.moc.cpp yammimodel.moc.cpp lineeditshift.moc.cpp preferencesdialog.moc.cpp mylistview.moc.cpp mediaplayer.moc.cpp updatedatabasemediadialog.moc.cpp; do \
 	  echo "#include \"$$file\"" >> yammi.all_cpp.files; \
 	  test ! -f $(srcdir)/$$file || egrep '^#pragma +implementation' $(srcdir)/$$file >> yammi.all_cpp.final; \
 	done; \
@@ -874,10 +903,34 @@ cvs-clean:
 kde-rpo-clean:
 	-rm -f *.rpo
 
-#>+ 7
-$(srcdir)/UpdateDatabaseMediaDialogBase.cpp: UpdateDatabaseMediaDialogBase.moc 
-$(srcdir)/PreferencesDialogBase.cpp: PreferencesDialogBase.moc 
-$(srcdir)/ConsistencyCheckDialogBase.cpp: ConsistencyCheckDialogBase.moc 
-$(srcdir)/DeleteDialog.cpp: DeleteDialog.moc 
-$(srcdir)/UpdateDatabaseDialogBase.cpp: UpdateDatabaseDialogBase.moc 
-$(srcdir)/SongInfoDialog.cpp: SongInfoDialog.moc 
+#>+ 31
+$(srcdir)/songentryint.cpp: UpdateDatabaseMediaDialogBase.h UpdateDatabaseDialogBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h ConsistencyCheckDialogBase.h 
+$(srcdir)/foldergroups.cpp: UpdateDatabaseMediaDialogBase.h UpdateDatabaseDialogBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h ConsistencyCheckDialogBase.h 
+$(srcdir)/vcedit.c: UpdateDatabaseMediaDialogBase.h UpdateDatabaseDialogBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h ConsistencyCheckDialogBase.h 
+$(srcdir)/updatedatabasedialog.cpp: UpdateDatabaseMediaDialogBase.h UpdateDatabaseDialogBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h ConsistencyCheckDialogBase.h 
+$(srcdir)/songentry.cpp: UpdateDatabaseMediaDialogBase.h UpdateDatabaseDialogBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h ConsistencyCheckDialogBase.h 
+$(srcdir)/preferencesdialog.cpp: UpdateDatabaseMediaDialogBase.h UpdateDatabaseDialogBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h ConsistencyCheckDialogBase.h 
+$(srcdir)/fuzzsrch.cpp: UpdateDatabaseMediaDialogBase.h UpdateDatabaseDialogBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h ConsistencyCheckDialogBase.h 
+$(srcdir)/yammimodel.cpp: UpdateDatabaseMediaDialogBase.h UpdateDatabaseDialogBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h ConsistencyCheckDialogBase.h 
+$(srcdir)/main.cpp: UpdateDatabaseMediaDialogBase.h UpdateDatabaseDialogBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h ConsistencyCheckDialogBase.h 
+$(srcdir)/foldercategories.cpp: UpdateDatabaseMediaDialogBase.h UpdateDatabaseDialogBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h ConsistencyCheckDialogBase.h 
+$(srcdir)/folder.cpp: UpdateDatabaseMediaDialogBase.h UpdateDatabaseDialogBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h ConsistencyCheckDialogBase.h 
+$(srcdir)/updatedatabasemediadialog.cpp: UpdateDatabaseMediaDialogBase.h UpdateDatabaseDialogBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h ConsistencyCheckDialogBase.h 
+$(srcdir)/foldermedia.cpp: UpdateDatabaseMediaDialogBase.h UpdateDatabaseDialogBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h ConsistencyCheckDialogBase.h 
+$(srcdir)/songlistitem.cpp: UpdateDatabaseMediaDialogBase.h UpdateDatabaseDialogBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h ConsistencyCheckDialogBase.h 
+$(srcdir)/songentryint2.cpp: UpdateDatabaseMediaDialogBase.h UpdateDatabaseDialogBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h ConsistencyCheckDialogBase.h 
+$(srcdir)/yammiapplication.cpp: UpdateDatabaseMediaDialogBase.h UpdateDatabaseDialogBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h ConsistencyCheckDialogBase.h 
+$(srcdir)/lineeditshift.cpp: UpdateDatabaseMediaDialogBase.h UpdateDatabaseDialogBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h ConsistencyCheckDialogBase.h 
+$(srcdir)/foldersorted.cpp: UpdateDatabaseMediaDialogBase.h UpdateDatabaseDialogBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h ConsistencyCheckDialogBase.h 
+$(srcdir)/songinfo.cpp: UpdateDatabaseMediaDialogBase.h UpdateDatabaseDialogBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h ConsistencyCheckDialogBase.h 
+$(srcdir)/mydatetime.cpp: UpdateDatabaseMediaDialogBase.h UpdateDatabaseDialogBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h ConsistencyCheckDialogBase.h 
+$(srcdir)/songentrystring.cpp: UpdateDatabaseMediaDialogBase.h UpdateDatabaseDialogBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h ConsistencyCheckDialogBase.h 
+$(srcdir)/yammigui.cpp: UpdateDatabaseMediaDialogBase.h UpdateDatabaseDialogBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h ConsistencyCheckDialogBase.h 
+$(srcdir)/mediaplayer.cpp: UpdateDatabaseMediaDialogBase.h UpdateDatabaseDialogBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h ConsistencyCheckDialogBase.h 
+$(srcdir)/prefs.cpp: UpdateDatabaseMediaDialogBase.h UpdateDatabaseDialogBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h ConsistencyCheckDialogBase.h 
+$(srcdir)/mylist.cpp: UpdateDatabaseMediaDialogBase.h UpdateDatabaseDialogBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h ConsistencyCheckDialogBase.h 
+$(srcdir)/mylistview.cpp: UpdateDatabaseMediaDialogBase.h UpdateDatabaseDialogBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h ConsistencyCheckDialogBase.h 
+$(srcdir)/song.cpp: UpdateDatabaseMediaDialogBase.h UpdateDatabaseDialogBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h ConsistencyCheckDialogBase.h 
+$(srcdir)/ConsistencyCheckDialog.cpp: UpdateDatabaseMediaDialogBase.h UpdateDatabaseDialogBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h ConsistencyCheckDialogBase.h 
+$(srcdir)/xmmsplayer.cpp: UpdateDatabaseMediaDialogBase.h UpdateDatabaseDialogBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h ConsistencyCheckDialogBase.h 
+$(srcdir)/songentrytimestamp.cpp: UpdateDatabaseMediaDialogBase.h UpdateDatabaseDialogBase.h SongInfoDialog.h PreferencesDialogBase.h DeleteDialog.h ConsistencyCheckDialogBase.h 

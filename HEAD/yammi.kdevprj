@@ -26,7 +26,7 @@ ldadd=-lxmms $(LIB_QT)
 ldflags=\s                       \s
 
 [General]
-AMChanged=true
+AMChanged=false
 author=Oliver Nölle
 configure_args=\s--build=i386-linux --host=i386-linux --target=i386-linux  --build=i386-linux --host=i386-linux --target=i386-linux
 email=oli.noelle@web.de
@@ -114,17 +114,11 @@ install=false
 install_location=
 type=HEADER
 
-[yammi/ConsistencyCheckDialogBase.cpp]
+[yammi/ConsistencyCheckDialogBase.ui]
 dist=true
 install=false
 install_location=
 type=SOURCE
-
-[yammi/ConsistencyCheckDialogBase.h]
-dist=true
-install=false
-install_location=
-type=HEADER
 
 [yammi/ConsistencyCheckParameter.h]
 dist=true
@@ -132,70 +126,40 @@ install=false
 install_location=
 type=HEADER
 
-[yammi/DeleteDialog.cpp]
+[yammi/DeleteDialog.ui]
 dist=true
 install=false
 install_location=
 type=SOURCE
 
-[yammi/DeleteDialog.h]
-dist=true
-install=false
-install_location=
-type=HEADER
-
 [yammi/Makefile.am]
-files=yammi/lo32-app-yammi.png,yammi/lo16-app-yammi.png,yammi/folder.cpp,yammi/folder.h,yammi/foldercategories.cpp,yammi/foldercategories.h,yammi/foldergroups.cpp,yammi/foldergroups.h,yammi/foldermedia.cpp,yammi/foldermedia.h,yammi/foldersorted.cpp,yammi/foldersorted.h,yammi/fuzzsrch.cpp,yammi/fuzzsrch.h,yammi/main.cpp,yammi/mydatetime.cpp,yammi/mydatetime.h,yammi/mylist.cpp,yammi/mylist.h,yammi/mylistview.cpp,yammi/mylistview.h,yammi/preferencesdialog.cpp,yammi/preferencesdialog.h,yammi/prefs.cpp,yammi/prefs.h,yammi/song.cpp,yammi/song.h,yammi/songentry.cpp,yammi/songentry.h,yammi/songentryint.cpp,yammi/songentryint.h,yammi/songentryint2.cpp,yammi/songentryint2.h,yammi/songentrystring.cpp,yammi/songentrystring.h,yammi/songentrytimestamp.cpp,yammi/songentrytimestamp.h,yammi/songinfo.cpp,yammi/songinfo.h,yammi/songlistitem.cpp,yammi/songlistitem.h,yammi/yammigui.cpp,yammi/yammigui.h,yammi/yammimodel.cpp,yammi/yammimodel.h,yammi/glib.h,yammi/glibconfig.h,yammi/xmmsctrl.h,yammi/updatedatabasedialog.cpp,yammi/updatedatabasedialog.h,yammi/options.h,yammi/updatedatabasemediadialog.cpp,yammi/updatedatabasemediadialog.h,yammi/lineeditshift.cpp,yammi/lineeditshift.h,yammi/mediaplayer.cpp,yammi/mediaplayer.h,yammi/xmmsplayer.cpp,yammi/xmmsplayer.h,yammi/yammiapplication.cpp,yammi/yammiapplication.h,yammi/vcedit.c,yammi/vcedit.h,yammi/acconfig.h,yammi/ConsistencyCheckDialog.cpp,yammi/ConsistencyCheckDialog.h,yammi/ConsistencyCheckParameter.h,yammi/ConsistencyCheckDialogBase.cpp,yammi/ConsistencyCheckDialogBase.h,yammi/PreferencesDialogBase.cpp,yammi/PreferencesDialogBase.h,yammi/UpdateDatabaseDialogBase.cpp,yammi/UpdateDatabaseDialogBase.h,yammi/UpdateDatabaseMediaDialogBase.cpp,yammi/UpdateDatabaseMediaDialogBase.h,yammi/DeleteDialog.cpp,yammi/DeleteDialog.h,yammi/SongInfoDialog.h,yammi/SongInfoDialog.cpp
+files=yammi/lo32-app-yammi.png,yammi/lo16-app-yammi.png,yammi/folder.cpp,yammi/folder.h,yammi/foldercategories.cpp,yammi/foldercategories.h,yammi/foldergroups.cpp,yammi/foldergroups.h,yammi/foldermedia.cpp,yammi/foldermedia.h,yammi/foldersorted.cpp,yammi/foldersorted.h,yammi/fuzzsrch.cpp,yammi/fuzzsrch.h,yammi/main.cpp,yammi/mydatetime.cpp,yammi/mydatetime.h,yammi/mylist.cpp,yammi/mylist.h,yammi/mylistview.cpp,yammi/mylistview.h,yammi/preferencesdialog.cpp,yammi/preferencesdialog.h,yammi/prefs.cpp,yammi/prefs.h,yammi/song.cpp,yammi/song.h,yammi/songentry.cpp,yammi/songentry.h,yammi/songentryint.cpp,yammi/songentryint.h,yammi/songentryint2.cpp,yammi/songentryint2.h,yammi/songentrystring.cpp,yammi/songentrystring.h,yammi/songentrytimestamp.cpp,yammi/songentrytimestamp.h,yammi/songinfo.cpp,yammi/songinfo.h,yammi/songlistitem.cpp,yammi/songlistitem.h,yammi/yammigui.cpp,yammi/yammigui.h,yammi/yammimodel.cpp,yammi/yammimodel.h,yammi/glib.h,yammi/glibconfig.h,yammi/xmmsctrl.h,yammi/updatedatabasedialog.cpp,yammi/updatedatabasedialog.h,yammi/options.h,yammi/updatedatabasemediadialog.cpp,yammi/updatedatabasemediadialog.h,yammi/lineeditshift.cpp,yammi/lineeditshift.h,yammi/mediaplayer.cpp,yammi/mediaplayer.h,yammi/xmmsplayer.cpp,yammi/xmmsplayer.h,yammi/yammiapplication.cpp,yammi/yammiapplication.h,yammi/vcedit.c,yammi/vcedit.h,yammi/acconfig.h,yammi/ConsistencyCheckDialog.cpp,yammi/ConsistencyCheckDialog.h,yammi/ConsistencyCheckParameter.h,yammi/ConsistencyCheckDialogBase.ui,yammi/DeleteDialog.ui,yammi/PreferencesDialogBase.ui,yammi/SongInfoDialog.ui,yammi/UpdateDatabaseDialogBase.ui,yammi/UpdateDatabaseMediaDialogBase.ui
 sub_dirs=docs,icons,mp3info
 type=prog_main
 
-[yammi/PreferencesDialogBase.cpp]
+[yammi/PreferencesDialogBase.ui]
 dist=true
 install=false
 install_location=
 type=SOURCE
 
-[yammi/PreferencesDialogBase.h]
-dist=true
-install=false
-install_location=
-type=HEADER
-
-[yammi/SongInfoDialog.cpp]
+[yammi/SongInfoDialog.ui]
 dist=true
 install=false
 install_location=
 type=SOURCE
 
-[yammi/SongInfoDialog.h]
-dist=true
-install=false
-install_location=
-type=HEADER
-
-[yammi/UpdateDatabaseDialogBase.cpp]
+[yammi/UpdateDatabaseDialogBase.ui]
 dist=true
 install=false
 install_location=
 type=SOURCE
 
-[yammi/UpdateDatabaseDialogBase.h]
-dist=true
-install=false
-install_location=
-type=HEADER
-
-[yammi/UpdateDatabaseMediaDialogBase.cpp]
+[yammi/UpdateDatabaseMediaDialogBase.ui]
 dist=true
 install=false
 install_location=
 type=SOURCE
-
-[yammi/UpdateDatabaseMediaDialogBase.h]
-dist=true
-install=false
-install_location=
-type=HEADER
 
 [yammi/acconfig.h]
 dist=true
