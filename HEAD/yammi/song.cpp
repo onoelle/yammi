@@ -31,7 +31,8 @@ using namespace std;
 
 extern YammiGui* gYammiGui;
 
-/** creates a song object with default values
+/**
+ * creates a song object with default values
  */
 Song::Song()
 {
