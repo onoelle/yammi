@@ -84,7 +84,7 @@ void FolderGroups::update(MyList* allSongs, int sortBy)
 				last=s->album;
 			if(sortBy==MyList::ByGenre)
 				last=CMP3Info::getGenre(s->genreNr);
-			if(last=="")
+			if(last=="")          // we don't group empty values together, do we?
 				last="xxxyyyzzz";
       currentGroup.clear();
       currentGroup.appendSong(s);

@@ -139,7 +139,7 @@
             </property>
             <property name="text">
                 <string>Note: 
-For long scans, please stop xmms playback
+For long scans, please stop the media player
 and clear its playlist before starting the scan.
 (Yammi might get confused otherwise...)</string>
             </property>

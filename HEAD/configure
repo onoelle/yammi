@@ -844,10 +844,10 @@ Optional Features:
   --enable-pch            enables precompiled header support (currently only KCC) default=no
   --enable-final          build size optimized apps (experimental - needs lots of memory)
   --disable-closure       don't delay template instantiation
+  --disable-xmms             disable support for xmms (don't need xmmsctrl)
+  --disable-noatun           disable support for noatun (don't use kdelibs)
   --disable-ogglibs          disable support of ogg libs for reading ogg tags
   --disable-id3lib           disable support of id3lib for reading id3 tags
-  --disable-noatun           disable support for noatun (don't use kdelibs)
-  --disable-xmms             disable support for xmms (don't need xmmsctrl)
   --enable-shared[=PKGS]
                           build shared libraries [default=yes]
   --enable-static[=PKGS]
@@ -4789,6 +4789,20 @@ fi;
 
   KDE_CXXFLAGS=
 
+# Check whether --enable-xmms or --disable-xmms was given.
+if test "${enable_xmms+set}" = set; then
+  enableval="$enable_xmms"
+  enable_xmms=no
+else
+  enable_xmms=yes
+fi;
+# Check whether --enable-noatun or --disable-noatun was given.
+if test "${enable_noatun+set}" = set; then
+  enableval="$enable_noatun"
+  enable_noatun=no
+else
+  enable_noatun=yes
+fi;
 # Check whether --enable-ogglibs or --disable-ogglibs was given.
 if test "${enable_ogglibs+set}" = set; then
   enableval="$enable_ogglibs"
@@ -4803,24 +4817,42 @@ if test "${enable_id3lib+set}" = set; then
 else
   enable_id3lib=yes
 fi;
-# Check whether --enable-noatun or --disable-noatun was given.
-if test "${enable_noatun+set}" = set; then
-  enableval="$enable_noatun"
-  enable_noatun=no
+
+echo "$as_me:4821: checking for xmms support" >&5
+echo $ECHO_N "checking for xmms support... $ECHO_C" >&6
+if test "x$enable_xmms" = xyes; then
+    LIBS="-lxmms $LIBS"
+    cat >>confdefs.h <<\EOF
+#define ENABLE_XMMS 1
+EOF
+
+    echo "$as_me:4829: result: yes" >&5
+echo "${ECHO_T}yes" >&6
 else
-  enable_noatun=yes
-fi;
-# Check whether --enable-xmms or --disable-xmms was given.
-if test "${enable_xmms+set}" = set; then
-  enableval="$enable_xmms"
-  enable_xmms=no
+    echo "*** xmms support disabled ***"
+    echo "$as_me:4833: result: no" >&5
+echo "${ECHO_T}no" >&6
+fi
+
+echo "$as_me:4837: checking for noatun support" >&5
+echo $ECHO_N "checking for noatun support... $ECHO_C" >&6
+if test "x$enable_noatun" = xyes; then
+    LIBS="-lkdecore $LIBS"
+    cat >>confdefs.h <<\EOF
+#define ENABLE_NOATUN 1
+EOF
+
+    echo "$as_me:4845: result: yes" >&5
+echo "${ECHO_T}yes" >&6
 else
-  enable_xmms=yes
-fi;
+    echo "*** noatun support disabled ***"
+    echo "$as_me:4849: result: no" >&5
+echo "${ECHO_T}no" >&6
+fi
 
 if test "x$enable_ogglibs" = xyes; then
 
-echo "$as_me:4823: checking for ogg_sync_init in -logg" >&5
+echo "$as_me:4855: checking for ogg_sync_init in -logg" >&5
 echo $ECHO_N "checking for ogg_sync_init in -logg... $ECHO_C" >&6
 if test "${ac_cv_lib_ogg_ogg_sync_init+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
@@ -4828,7 +4860,7 @@ else
   ac_check_lib_save_LIBS=$LIBS
 LIBS="-logg  $LIBS"
 cat >conftest.$ac_ext <<_ACEOF
-#line 4831 "configure"
+#line 4863 "configure"
 #include "confdefs.h"
 
 /* Override any gcc2 internal prototype to avoid an error.  */
@@ -4847,16 +4879,16 @@ ogg_sync_init ();
 }
 _ACEOF
 rm -f conftest.$ac_objext conftest$ac_exeext
-if { (eval echo "$as_me:4850: \"$ac_link\"") >&5
+if { (eval echo "$as_me:4882: \"$ac_link\"") >&5
   (eval $ac_link) 2>&5
   ac_status=$?
-  echo "$as_me:4853: \$? = $ac_status" >&5
+  echo "$as_me:4885: \$? = $ac_status" >&5
   (exit $ac_status); } &&
          { ac_try='test -s conftest$ac_exeext'
-  { (eval echo "$as_me:4856: \"$ac_try\"") >&5
+  { (eval echo "$as_me:4888: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
-  echo "$as_me:4859: \$? = $ac_status" >&5
+  echo "$as_me:4891: \$? = $ac_status" >&5
   (exit $ac_status); }; }; then
   ac_cv_lib_ogg_ogg_sync_init=yes
 else
@@ -4867,7 +4899,7 @@ fi
 rm -f conftest.$ac_objext conftest$ac_exeext conftest.$ac_ext
 LIBS=$ac_check_lib_save_LIBS
 fi
-echo "$as_me:4870: result: $ac_cv_lib_ogg_ogg_sync_init" >&5
+echo "$as_me:4902: result: $ac_cv_lib_ogg_ogg_sync_init" >&5
 echo "${ECHO_T}$ac_cv_lib_ogg_ogg_sync_init" >&6
 if test $ac_cv_lib_ogg_ogg_sync_init = yes; then
   cat >>confdefs.h <<EOF
@@ -4880,7 +4912,7 @@ else
   enable_ogglibs=no
 fi
 
-echo "$as_me:4883: checking for vorbis_comment_init in -lvorbis" >&5
+echo "$as_me:4915: checking for vorbis_comment_init in -lvorbis" >&5
 echo $ECHO_N "checking for vorbis_comment_init in -lvorbis... $ECHO_C" >&6
 if test "${ac_cv_lib_vorbis_vorbis_comment_init+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
@@ -4888,7 +4920,7 @@ else
   ac_check_lib_save_LIBS=$LIBS
 LIBS="-lvorbis  $LIBS"
 cat >conftest.$ac_ext <<_ACEOF
-#line 4891 "configure"
+#line 4923 "configure"
 #include "confdefs.h"
 
 /* Override any gcc2 internal prototype to avoid an error.  */
@@ -4907,16 +4939,16 @@ vorbis_comment_init ();
 }
 _ACEOF
 rm -f conftest.$ac_objext conftest$ac_exeext
-if { (eval echo "$as_me:4910: \"$ac_link\"") >&5
+if { (eval echo "$as_me:4942: \"$ac_link\"") >&5
   (eval $ac_link) 2>&5
   ac_status=$?
-  echo "$as_me:4913: \$? = $ac_status" >&5
+  echo "$as_me:4945: \$? = $ac_status" >&5
   (exit $ac_status); } &&
          { ac_try='test -s conftest$ac_exeext'
-  { (eval echo "$as_me:4916: \"$ac_try\"") >&5
+  { (eval echo "$as_me:4948: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
-  echo "$as_me:4919: \$? = $ac_status" >&5
+  echo "$as_me:4951: \$? = $ac_status" >&5
   (exit $ac_status); }; }; then
   ac_cv_lib_vorbis_vorbis_comment_init=yes
 else
@@ -4927,7 +4959,7 @@ fi
 rm -f conftest.$ac_objext conftest$ac_exeext conftest.$ac_ext
 LIBS=$ac_check_lib_save_LIBS
 fi
-echo "$as_me:4930: result: $ac_cv_lib_vorbis_vorbis_comment_init" >&5
+echo "$as_me:4962: result: $ac_cv_lib_vorbis_vorbis_comment_init" >&5
 echo "${ECHO_T}$ac_cv_lib_vorbis_vorbis_comment_init" >&6
 if test $ac_cv_lib_vorbis_vorbis_comment_init = yes; then
   cat >>confdefs.h <<EOF
@@ -4940,7 +4972,7 @@ else
   enable_ogglibs=no
 fi
 
-echo "$as_me:4943: checking for ov_open in -lvorbisfile" >&5
+echo "$as_me:4975: checking for ov_open in -lvorbisfile" >&5
 echo $ECHO_N "checking for ov_open in -lvorbisfile... $ECHO_C" >&6
 if test "${ac_cv_lib_vorbisfile_ov_open+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
@@ -4948,7 +4980,7 @@ else
   ac_check_lib_save_LIBS=$LIBS
 LIBS="-lvorbisfile  $LIBS"
 cat >conftest.$ac_ext <<_ACEOF
-#line 4951 "configure"
+#line 4983 "configure"
 #include "confdefs.h"
 
 /* Override any gcc2 internal prototype to avoid an error.  */
@@ -4967,16 +4999,16 @@ ov_open ();
 }
 _ACEOF
 rm -f conftest.$ac_objext conftest$ac_exeext
-if { (eval echo "$as_me:4970: \"$ac_link\"") >&5
+if { (eval echo "$as_me:5002: \"$ac_link\"") >&5
   (eval $ac_link) 2>&5
   ac_status=$?
-  echo "$as_me:4973: \$? = $ac_status" >&5
+  echo "$as_me:5005: \$? = $ac_status" >&5
   (exit $ac_status); } &&
          { ac_try='test -s conftest$ac_exeext'
-  { (eval echo "$as_me:4976: \"$ac_try\"") >&5
+  { (eval echo "$as_me:5008: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
-  echo "$as_me:4979: \$? = $ac_status" >&5
+  echo "$as_me:5011: \$? = $ac_status" >&5
   (exit $ac_status); }; }; then
   ac_cv_lib_vorbisfile_ov_open=yes
 else
@@ -4987,7 +5019,7 @@ fi
 rm -f conftest.$ac_objext conftest$ac_exeext conftest.$ac_ext
 LIBS=$ac_check_lib_save_LIBS
 fi
-echo "$as_me:4990: result: $ac_cv_lib_vorbisfile_ov_open" >&5
+echo "$as_me:5022: result: $ac_cv_lib_vorbisfile_ov_open" >&5
 echo "${ECHO_T}$ac_cv_lib_vorbisfile_ov_open" >&6
 if test $ac_cv_lib_vorbisfile_ov_open = yes; then
   cat >>confdefs.h <<EOF
@@ -5002,7 +5034,7 @@ fi
 
 fi
 
-echo "$as_me:5005: checking for ogg libs for reading ogg tags" >&5
+echo "$as_me:5037: checking for ogg libs for reading ogg tags" >&5
 echo $ECHO_N "checking for ogg libs for reading ogg tags... $ECHO_C" >&6
 if test "x$enable_ogglibs" = xyes; then
     LIBS="-lglib $LIBS"
@@ -5010,18 +5042,18 @@ if test "x$enable_ogglibs" = xyes; then
 #define ENABLE_OGGLIBS 1
 EOF
 
-    echo "$as_me:5013: result: yes" >&5
+    echo "$as_me:5045: result: yes" >&5
 echo "${ECHO_T}yes" >&6
 else
     echo "*** Warning: ogg libs support disabled => no reading/writing of tags in ogg files! ***"
-    echo "$as_me:5017: result: no" >&5
+    echo "$as_me:5049: result: no" >&5
 echo "${ECHO_T}no" >&6
 fi
 
-echo "$as_me:5021: checking for id3lib support" >&5
+echo "$as_me:5053: checking for id3lib support" >&5
 echo $ECHO_N "checking for id3lib support... $ECHO_C" >&6
 if test "x$enable_id3lib" = xyes; then
-    echo "$as_me:5024: checking for library containing ID3Tag_Link" >&5
+    echo "$as_me:5056: checking for library containing ID3Tag_Link" >&5
 echo $ECHO_N "checking for library containing ID3Tag_Link... $ECHO_C" >&6
 if test "${ac_cv_search_ID3Tag_Link+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
@@ -5029,7 +5061,7 @@ else
   ac_func_search_save_LIBS=$LIBS
 ac_cv_search_ID3Tag_Link=no
 cat >conftest.$ac_ext <<_ACEOF
-#line 5032 "configure"
+#line 5064 "configure"
 #include "confdefs.h"
 
 /* Override any gcc2 internal prototype to avoid an error.  */
@@ -5048,16 +5080,16 @@ ID3Tag_Link ();
 }
 _ACEOF
 rm -f conftest.$ac_objext conftest$ac_exeext
-if { (eval echo "$as_me:5051: \"$ac_link\"") >&5
+if { (eval echo "$as_me:5083: \"$ac_link\"") >&5
   (eval $ac_link) 2>&5
   ac_status=$?
-  echo "$as_me:5054: \$? = $ac_status" >&5
+  echo "$as_me:5086: \$? = $ac_status" >&5
   (exit $ac_status); } &&
          { ac_try='test -s conftest$ac_exeext'
-  { (eval echo "$as_me:5057: \"$ac_try\"") >&5
+  { (eval echo "$as_me:5089: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
-  echo "$as_me:5060: \$? = $ac_status" >&5
+  echo "$as_me:5092: \$? = $ac_status" >&5
   (exit $ac_status); }; }; then
   ac_cv_search_ID3Tag_Link="none required"
 else
@@ -5069,7 +5101,7 @@ if test "$ac_cv_search_ID3Tag_Link" = no; then
   for ac_lib in "id3" "id3 -lstdc++" "id3 -lz" "id3 -lz -lstdc++"; do
     LIBS="-l$ac_lib  $ac_func_search_save_LIBS"
     cat >conftest.$ac_ext <<_ACEOF
-#line 5072 "configure"
+#line 5104 "configure"
 #include "confdefs.h"
 
 /* Override any gcc2 internal prototype to avoid an error.  */
@@ -5088,16 +5120,16 @@ ID3Tag_Link ();
 }
 _ACEOF
 rm -f conftest.$ac_objext conftest$ac_exeext
-if { (eval echo "$as_me:5091: \"$ac_link\"") >&5
+if { (eval echo "$as_me:5123: \"$ac_link\"") >&5
   (eval $ac_link) 2>&5
   ac_status=$?
-  echo "$as_me:5094: \$? = $ac_status" >&5
+  echo "$as_me:5126: \$? = $ac_status" >&5
   (exit $ac_status); } &&
          { ac_try='test -s conftest$ac_exeext'
-  { (eval echo "$as_me:5097: \"$ac_try\"") >&5
+  { (eval echo "$as_me:5129: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
-  echo "$as_me:5100: \$? = $ac_status" >&5
+  echo "$as_me:5132: \$? = $ac_status" >&5
   (exit $ac_status); }; }; then
   ac_cv_search_ID3Tag_Link="-l$ac_lib"
 break
@@ -5110,13 +5142,13 @@ rm -f conftest.$ac_objext conftest$ac_exeext conftest.$ac_ext
 fi
 LIBS=$ac_func_search_save_LIBS
 fi
-echo "$as_me:5113: result: $ac_cv_search_ID3Tag_Link" >&5
+echo "$as_me:5145: result: $ac_cv_search_ID3Tag_Link" >&5
 echo "${ECHO_T}$ac_cv_search_ID3Tag_Link" >&6
 if test "$ac_cv_search_ID3Tag_Link" != no; then
   test "$ac_cv_search_ID3Tag_Link" = "none required" || LIBS="$ac_cv_search_ID3Tag_Link $LIBS"
 
 else
-  { { echo "$as_me:5119: error: id3lib not found" >&5
+  { { echo "$as_me:5151: error: id3lib not found" >&5
 echo "$as_me: error: id3lib not found" >&2;}
    { (exit 1); exit 1; }; }
 fi
@@ -5126,42 +5158,10 @@ fi
 #define ENABLE_ID3LIB 1
 EOF
 
-    echo "$as_me:5129: result: yes" >&5
-echo "${ECHO_T}yes" >&6
-else
-    echo "*** Warning: id3lib support disabled => no reading/writing of tags in mp3 files! ***"
-    echo "$as_me:5133: result: no" >&5
-echo "${ECHO_T}no" >&6
-fi
-
-echo "$as_me:5137: checking for noatun support" >&5
-echo $ECHO_N "checking for noatun support... $ECHO_C" >&6
-if test "x$enable_noatun" = xyes; then
-    LIBS="-lkdecore $LIBS"
-    cat >>confdefs.h <<\EOF
-#define ENABLE_NOATUN 1
-EOF
-
-    echo "$as_me:5145: result: yes" >&5
-echo "${ECHO_T}yes" >&6
-else
-    echo "*** noatun support disabled ***"
-    echo "$as_me:5149: result: no" >&5
-echo "${ECHO_T}no" >&6
-fi
-
-echo "$as_me:5153: checking for xmms support" >&5
-echo $ECHO_N "checking for xmms support... $ECHO_C" >&6
-if test "x$enable_xmms" = xyes; then
-    LIBS="-lxmms $LIBS"
-    cat >>confdefs.h <<\EOF
-#define ENABLE_XMMS 1
-EOF
-
     echo "$as_me:5161: result: yes" >&5
 echo "${ECHO_T}yes" >&6
 else
-    echo "*** xmms support disabled ***"
+    echo "*** Warning: id3lib support disabled => no reading/writing of tags in mp3 files! ***"
     echo "$as_me:5165: result: no" >&5
 echo "${ECHO_T}no" >&6
 fi
@@ -22595,11 +22595,12 @@ Configuration for $PACKAGE $VERSION :
  Preprocessor .........: $CC $CPPFLAGS
  Compiler .............: $CC $CFLAGS $LIBFLAC_CFLAGS
  Linker ...............: $CC $LDFLAGS $LIBS $LIBFLAC_LIBS
- ogg libs support .....: $enable_ogglibs
+ XMMS support .........: $enable_xmms
+ Noatun support .......: $enable_noatun
+ ogglibs support ......: $enable_ogglibs
  id3lib support .......: $enable_id3lib
- noatun support .......: $enable_noatun
- xmms support .........: $enable_xmms
  Install path .........: $prefix
+ (if this path does not exist, you might have to create this directory temporarily, sorry...)
 
  Now type 'make' to build $PACKAGE $VERSION,
  and then 'make install' for installation.

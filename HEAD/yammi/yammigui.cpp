@@ -351,8 +351,6 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
 	connect( loadFromMediaButton, SIGNAL( clicked() ), this, SLOT( loadMedia() ) );
 
 	// signals of folderListView
-//  connect( folderListView, SIGNAL( selectionChanged( QListViewItem* ) ),
-//	     this, SLOT( slotFolderChanged() ) );
   connect( folderListView, SIGNAL( currentChanged( QListViewItem* ) ),
 	     this, SLOT( slotFolderChanged() ) );
 	connect(folderListView, SIGNAL( rightButtonPressed( QListViewItem *, const QPoint& , int ) ),
@@ -389,8 +387,6 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
 	songListView->setCurrentItem( songListView->firstChild() );
 	updateSongPopup();
 	
-//	updateListViewColumns();
-
 	shuttingDown=0;
 	controlPressed=false;
 	shiftPressed=false;
@@ -420,11 +416,23 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
 	connect( &typeTimer, SIGNAL(timeout()), SLOT(searchFieldChanged()) );
 
 
-  // finish!
-  cout << "initialisation successfully completed!\n";
+  readSettings();
 
-  mainStatusBar->message("Welcome to Yammi "+model->config.yammiVersion, 20000);
+  QTimer* timer=new QTimer(this);
+	connect(timer, SIGNAL(timeout()), this, SLOT(finishInitialization()) );
+	timer->start(0, TRUE);
+}
+
+
+void YammiGui::finishInitialization()
+{
+  // finish initialization (move to single-shot timer for faster startup?)
+  // restore session settings
+  mainStatusBar->message("Welcome to Yammi "+model->config.yammiVersion, 10000);
+  chosenFolder=folderAll;
+  updateListViewColumns();
 	slotFolderChanged();
+
 	if(model->noPrefsFound && model->noDatabaseFound) {
 		QMessageBox::information( this, "Yammi",	QString("Yammi - Yet Another Music Manager I...\n\n\n")+
 																					"It looks like you are starting Yammi the first time...\n\n"+
@@ -436,12 +444,11 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
 																					"to scan your harddisk for media files.\n\n"+
 																					"I hope you have fun using Yammi...\n\n"+
 																					"Please check out Yammi's website for new versions and other info:\n"+
-																					"http://yammi.sourceforge.net");																					
+																					"http://yammi.sourceforge.net");
 	}
-  // restore session settings
-  readSettings();  
+  // finish!
+  cout << "initialisation successfully completed!\n";
 }
-
 
 /// exit program
 void YammiGui::endProgram()
@@ -646,14 +653,11 @@ void YammiGui::updateView()
 }
 
 
-/** Updates listview columns if necessary.
+/** Updates listview columns.
  * Tries to maintain the size and position of columns (as good as possible, as columns are changing)
  */
-void YammiGui::updateListViewColumns(Folder* oldFolder, Folder* newFolder)
+void YammiGui::updateListViewColumns()
 {
-  if(oldFolder==newFolder)
-    return;
-
   int noOldColumns=songListView->columns();
   for(int i=0; i<noOldColumns; i++) {
 		songListView->removeColumn(0);
@@ -702,15 +706,15 @@ void YammiGui::updateListViewColumns(Folder* oldFolder, Folder* newFolder)
 
   // iterate through old columns, and if found in new, move to the target position
   bool exists[MAX_COLUMN_NO];
-  for(int x=0; x<MAX_COLUMN_NO; x++)
+  for(int x=0; x<MAX_COLUMN_NO; x++) {
     exists[x]=false;
+  }
   
   int target=0;
   for(int i=0; i<(int)columnOrder.count(); i++) {
     QString search=columnOrder[i];
     for(int j=0; j<noNewColumns; j++) {
       if(header->label(j)==search) {
-//        cout << "found: i: " << i << ", j: " << j << "label: " << header->label(j) << "\n";
         header->moveSection(j, target);
         header->resizeSection(j, columnWidth[i]);
         target++;
@@ -722,7 +726,6 @@ void YammiGui::updateListViewColumns(Folder* oldFolder, Folder* newFolder)
   for(int j=0; j<noNewColumns; j++) {
     if(!exists[j]) {
       header->moveSection(j, target);
-//      cout << "not existing: " << header->label(j) << "\n";
       target++;
     }
   }
@@ -738,7 +741,6 @@ void YammiGui::saveColumnSettings()
     int section=header->mapToSection(j);
     columnOrder.append(header->label(section));
     columnWidth[j]=header->sectionSize(section);
-//    cout << "j: " << j << ", columnWidth: " << columnWidth[j] << ", label: " << header->label(section) << "\n";
   }
 }
 
@@ -1061,7 +1063,9 @@ void YammiGui::slotFolderChanged()
 	chosenFolder = newFolder;
 	songListView->clear();
 	songListView->sortedBy=1;
-	updateListViewColumns(oldFolder, newFolder);
+	if(oldFolder!=newFolder) {
+    updateListViewColumns();
+  }
 	addFolderContent(chosenFolder);
 }
 
@@ -1070,7 +1074,7 @@ void YammiGui::slotFolderChanged()
 /// for now: folder contains songs OR subfolders, but not both!
 void YammiGui::addFolderContent(Folder* folder)
 {	
-	folderToAdd=folder;
+  folderToAdd=folder;
 	alreadyAdded=0;
 	
 	// filling the listview is much slower than with qt2.3...
@@ -1108,7 +1112,12 @@ void YammiGui::addFolderContentSnappy()
 	else {		// no, we are finished
 		QApplication::restoreOverrideCursor();
 		songListView->setUpdatesEnabled(true);
-		songListView->setSorting(0);
+    if(((QListViewItem*)chosenFolder)->parent()==folderAlbums) {
+      songListView->setSorting(5);
+    }
+    else {
+      songListView->setSorting(0);      
+    }
 	}
 }
 
@@ -2111,7 +2120,17 @@ void YammiGui::openHelp()
 void YammiGui::aboutDialog()
 {
   QString msg=QString("Yammi - Yet Another Music Manager I...\n\n\n");
-  msg+="Version "+model->config.yammiVersion+", 12-2001 - 12-2002 by Oliver Nölle\n";
+  msg+="Version "+model->config.yammiVersion+", 12-2001 - 2-2003 by Oliver Nölle\n";
+  #ifdef ENABLE_XMMS
+  msg+="- XMMS support: yes\n";
+  #else
+  msg+="- XMMS support: no\n";
+  #endif
+  #ifdef ENABLE_NOATUN
+  msg+="- Noatun support: yes\n";
+  #else
+  msg+="- Noatun support: no\n";
+  #endif
   #ifdef ENABLE_OGGLIBS
   msg+="- ogglibs support: yes\n";
   #else
@@ -2851,8 +2870,6 @@ void YammiGui::loadSongsFromMedia(QString mediaName)
 					QString cmd;
 					cmd=QString("cp \"%1%2\" \"%3%4.part\"").arg(mediaDir).arg(s->mediaLocation[j]).arg(swapDir).arg(filename);
 					system(cmd);
-//					cmd=QString("mv \"%1%2.part\" \"%3%4\"").arg(swapDir).arg(filename).arg(swapDir).arg(filename);
-//					system(cmd);
 					QDir dir;
 					dir.rename(swapDir+filename+".part", swapDir+filename);
 					// check swap size (if necessary, delete LRU songs)

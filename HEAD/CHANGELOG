@@ -1,3 +1,11 @@
+########################
+??.??.2003 version 0.8.0
+- set default sort order for albums: trackNr
+- fixed: genre grouping bug
+- fixed: table headers not restoring to saved value on first appearance
+- a lot of minor cleanups
+
+
 ############################
 12.02.2003 version 0.8.0beta
 - support for noatun!!! (controlling two noatun instances via dcop, enabling crossfading!)

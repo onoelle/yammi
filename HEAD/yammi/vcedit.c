@@ -6,7 +6,7 @@
  *
  * Comment editing backend, suitable for use by nice frontend interfaces.
  *
- * last modified: $Id: vcedit.c,v 1.2 2003/02/06 00:03:42 onoelle Exp $
+ * last modified: $Id: vcedit.c,v 1.3 2003/02/26 21:27:35 onoelle Exp $
  */
 
 #include <options.h> // For definition of ENABLE_OGGLIBS
@@ -352,8 +352,8 @@ int vcedit_write(vcedit_state *state, void *out)
 	_commentheader_out(state->vc, state->vendor, &header_comments);
 
     /* 2002/10/22 - new code here for padded headers */
-    //header_comments.packet = realloc(header_comments.packet, header_comments.bytes + 1000);
-    //header_comments.bytes += 1000;
+    /* header_comments.packet = realloc(header_comments.packet, header_comments.bytes + 1000); */
+    /* header_comments.bytes += 1000; */
     /* end of new code */
 
 	ogg_stream_packetin(&streamout, &header_main);

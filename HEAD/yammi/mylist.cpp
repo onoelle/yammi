@@ -57,16 +57,6 @@ Song* MyList::prevSong()
 		return 0;
 }
 
-/*
-Song* MyList::currentSong()
-{
-	SongEntry* entry=current();
-	if(entry)
-		return entry->song();
-	else
-		return 0;
-}
-*/
 
 void MyList::appendSong(Song* s)
 {
@@ -117,7 +107,7 @@ void MyList::setSortOrderAndSort(int newSortOrder, bool sortAnyway)
 {
 	if(sortOrder!=newSortOrder || sortAnyway) {
 		sortOrder=newSortOrder;
-		sort();
+    sort();
 	}
 }
 
@@ -139,20 +129,26 @@ int MyList::compareItems( QCollection::Item item1, QCollection::Item item2)
 // compares on one attribute
 int MyList::myCompare(Song* song1, Song* song2, int sortBy)
 {
-	if(sortBy==ByTitle)
+	if(sortBy==ByTitle) {
 		return(QString::compare(song1->title, song2->title));
-	if(sortBy==ByArtist)
+  }
+	if(sortBy==ByArtist) {
     return(QString::compare(song1->artist, song2->artist));
-	if(sortBy==ByAlbum)
+  }
+	if(sortBy==ByAlbum) {
     return(QString::compare(song1->album, song2->album));
-	if(sortBy==ByFilename)
+  }
+	if(sortBy==ByFilename) {
 		return(QString::compare(song1->filename, song2->filename));
-	if(sortBy==ByPath)
+  }
+	if(sortBy==ByPath) {
 		return(QString::compare(song1->path, song2->path));
-  if(sortBy==ByLastPlayed)
+  }
+  if(sortBy==ByLastPlayed) {
     if(song1->lastPlayed>song2->lastPlayed) return 1;
 		if(song1->lastPlayed<song2->lastPlayed) return -1;
 		return 0;
+  }
 	if(sortBy==ByTrack) {
 		if(song1->trackNr>song2->trackNr) return 1;
 		if(song1->trackNr<song2->trackNr) return -1;
@@ -169,7 +165,7 @@ int MyList::myCompare(Song* song1, Song* song2, int sortBy)
 		return 0;
 	}
 	if(sortBy==ByGenre) {
-		return QString::compare(CMP3Info::getGenre(song1->genreNr), CMP3Info::getGenre(song2->genreNr) );
+    return QString::compare(CMP3Info::getGenre(song1->genreNr), CMP3Info::getGenre(song2->genreNr) );
 	}
 	return 0;
 }

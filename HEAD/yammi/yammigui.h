@@ -172,7 +172,7 @@ protected:
   void          resizeEvent(QResizeEvent* e)     { updateGeometrySettings(); }
   void          updateGeometrySettings();
 	void			    updateSongPopup();
-	void			    updateListViewColumns(Folder* oldFolder, Folder* newFolder);
+	void			    updateListViewColumns();
 
 	// gui
 	//***************
@@ -252,6 +252,7 @@ protected:
 // protected slots
 //****************
 protected slots:
+  void          finishInitialization();
 
 	void				  forAllSelectedEnqueue()            { forAllSelected(Enqueue); }
 	void				  forAllSelectedEnqueueAsNext()      { forAllSelected(EnqueueAsNext); }

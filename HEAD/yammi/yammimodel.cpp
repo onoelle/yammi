@@ -864,7 +864,7 @@ bool YammiModel::traverse(QString path, QString filePattern, QProgressDialog* pr
 
   // step 2: recursively scan subdirectories
 	QDir d2(path);
-  d2.setFilter(QDir::Dirs);
+  d2.setFilter(QDir::Dirs | QDir::Readable);
 	d2.setSorting( QDir::Name );
 	const QFileInfoList* list2 = d2.entryInfoList();
 	QFileInfoListIterator it2( *list2 );								      // create list iterator
@@ -1331,7 +1331,7 @@ void YammiModel::removeMedia(QString mediaToDelete)
 	}
 	// now delete the directory (if existing)
 	// linux specific
-	QString cmd=QString("rm -r \"%1/media/%2\"").arg(config.yammiBaseDir).arg(mediaToDelete);
+  QString cmd=QString("rm -r \"%1/media/%2\"").arg(config.yammiBaseDir).arg(mediaToDelete);
 	system(cmd);
 	allSongsChanged(true);
 }

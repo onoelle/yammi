@@ -739,16 +739,20 @@ bool Song::setOggTags(QString filename)
     cout << "ERROR (saving ogg tags) while opening file " << filename << "\n";
     return false;
   }
+
   int succ=vcedit_write(state, file_out);
-
-  // delete original file...
-	QString cmd=QString("rm %1").arg(filename);
-	system(cmd);      // linux-specific...
-  // ...and rename temp file to original filename
-	QDir dir;
-	dir.rename(filename+".new", filename);
-
-  cout << "succ (vcedit_write): " << succ << "\n";
+  fclose(file_out);
+  if(succ != 0) {
+    cout << "ERROR writing new ogg-file " << filename << "\n";
+  }
+  else {
+  	QDir dir;
+    // delete original file...
+    dir.remove(filename);
+    // ...and rename temp file to original filename
+  	dir.rename(filename+".new", filename);
+  }
+                                               
   return true;
 }
 

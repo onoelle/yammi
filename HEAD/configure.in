@@ -36,19 +36,41 @@ dnl CXXFLAGS="$CXXFLAGS $USE_EXCEPTIONS" dnl __kdevelop[exc]__
 dnl -------------------------------
 dnl Configure switches.
 dnl -------------------------------
+AC_ARG_ENABLE(xmms,
+[  --disable-xmms             disable support for xmms (don't need xmmsctrl)], enable_xmms=no, enable_xmms=yes)
+AC_ARG_ENABLE(noatun,
+[  --disable-noatun           disable support for noatun (don't use kdelibs)], enable_noatun=no, enable_noatun=yes)
 AC_ARG_ENABLE(ogglibs,
 [  --disable-ogglibs          disable support of ogg libs for reading ogg tags], enable_ogglibs=no, enable_ogglibs=yes)
 AC_ARG_ENABLE(id3lib,
 [  --disable-id3lib           disable support of id3lib for reading id3 tags], enable_id3lib=no, enable_id3lib=yes)
-AC_ARG_ENABLE(noatun,
-[  --disable-noatun           disable support for noatun (don't use kdelibs)], enable_noatun=no, enable_noatun=yes)
-AC_ARG_ENABLE(xmms,
-[  --disable-xmms             disable support for xmms (don't need xmmsctrl)], enable_xmms=no, enable_xmms=yes)
 
 
 dnl -------------------------------
 dnl Checks for libraries.
 dnl -------------------------------
+
+dnl XMMS support
+AC_MSG_CHECKING(for xmms support)
+if test "x$enable_xmms" = xyes; then
+    LIBS="-lxmms $LIBS"
+    AC_DEFINE(ENABLE_XMMS)
+    AC_MSG_RESULT(yes)
+else
+    echo "*** xmms support disabled ***"
+    AC_MSG_RESULT(no)
+fi
+
+dnl Noatun/KDE support (for proper kde app: add "-lkdeui -lkio ")
+AC_MSG_CHECKING(for noatun support)
+if test "x$enable_noatun" = xyes; then
+    LIBS="-lkdecore $LIBS"
+    AC_DEFINE(ENABLE_NOATUN)
+    AC_MSG_RESULT(yes)
+else
+    echo "*** noatun support disabled ***"
+    AC_MSG_RESULT(no)
+fi
 
 dnl OGG vorbis libraries
 if test "x$enable_ogglibs" = xyes; then
@@ -86,27 +108,7 @@ else
 fi
 
 
-dnl if proper kde app: add "-lkdeui -lkio "
-AC_MSG_CHECKING(for noatun support)
-if test "x$enable_noatun" = xyes; then
-    LIBS="-lkdecore $LIBS"
-    AC_DEFINE(ENABLE_NOATUN)
-    AC_MSG_RESULT(yes)
-else
-    echo "*** noatun support disabled ***"
-    AC_MSG_RESULT(no)
-fi
 
-
-AC_MSG_CHECKING(for xmms support)
-if test "x$enable_xmms" = xyes; then
-    LIBS="-lxmms $LIBS"
-    AC_DEFINE(ENABLE_XMMS)
-    AC_MSG_RESULT(yes)
-else
-    echo "*** xmms support disabled ***"
-    AC_MSG_RESULT(no)
-fi
 
 
 dnl ---------------------
@@ -154,11 +156,12 @@ Configuration for $PACKAGE $VERSION :
  Preprocessor .........: $CC $CPPFLAGS
  Compiler .............: $CC $CFLAGS $LIBFLAC_CFLAGS
  Linker ...............: $CC $LDFLAGS $LIBS $LIBFLAC_LIBS
- ogg libs support .....: $enable_ogglibs
+ XMMS support .........: $enable_xmms
+ Noatun support .......: $enable_noatun
+ ogglibs support ......: $enable_ogglibs
  id3lib support .......: $enable_id3lib
- noatun support .......: $enable_noatun
- xmms support .........: $enable_xmms
  Install path .........: $prefix
+ (if this path does not exist, you might have to create this directory temporarily, sorry...)
 
  Now type 'make' to build $PACKAGE $VERSION,
  and then 'make install' for installation.
