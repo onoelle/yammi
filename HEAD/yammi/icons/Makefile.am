@@ -1,7 +1,7 @@
 ####### kdevelop will overwrite this part!!! (begin)##########
 
 
-EXTRA_DIST = clearPlaylist.xpm defaultControlClick.xpm defaultDoubleClick.xpm defaultMiddleClick.xpm defaultShiftClick.xpm dequeueAll.xpm dequeueSong.xpm enqueue.xpm enqueueasnext.xpm filesave.xpm in.xpm notin.xpm songinfo.xpm stopPrelisten.xpm yammiicon.xpm pause.xpm play.xpm skipbackward.xpm skipforward.xpm stop.xpm playnow.xpm newCategory.xpm toFromPlaylist.xpm some_in.xpm prelistenEnd.xpm prelistenMiddle.xpm prelistenStart.xpm toggle_playlist.png yammi16x16.png yammi32x32.png yammi48x48.png yammi64x64.png stop_prelisten.png prelisten_start.png prelisten_middle.png prelisten_end.png play_now.png play.png enqueue.png enqueue_asnext.png dequeue_all.png dequeue_song.png 
+EXTRA_DIST = clearPlaylist.xpm defaultControlClick.xpm defaultDoubleClick.xpm defaultMiddleClick.xpm defaultShiftClick.xpm enqueue.xpm in.xpm notin.xpm songinfo.xpm pause.xpm skipbackward.xpm skipforward.xpm stop.xpm newCategory.xpm some_in.xpm toggle_playlist.png yammi16x16.png yammi32x32.png yammi48x48.png yammi64x64.png stop_prelisten.png prelisten_start.png prelisten_middle.png prelisten_end.png play_now.png play.png enqueue_asnext.png dequeue_all.png dequeue_song.png enqueue.png 
 
 install-data-local:
 	$(mkinstalldirs) $(kde_datadir)/yammi/
@@ -27,8 +27,6 @@ install-data-local:
 	$(mkinstalldirs) $(kde_datadir)/yammi/icons/hicolor/16x16/actions/
 	$(INSTALL_DATA) $(srcdir)/play.png $(kde_datadir)/yammi/icons/hicolor/16x16/actions/play.png
 	$(mkinstalldirs) $(kde_datadir)/yammi/icons/hicolor/16x16/actions/
-	$(INSTALL_DATA) $(srcdir)/enqueue.png $(kde_datadir)/yammi/icons/hicolor/16x16/actions/enqueue.png
-	$(mkinstalldirs) $(kde_datadir)/yammi/icons/hicolor/16x16/actions/
 	$(INSTALL_DATA) $(srcdir)/enqueue_asnext.png $(kde_datadir)/yammi/icons/hicolor/16x16/actions/enqueue_asnext.png
 	$(mkinstalldirs) $(kde_datadir)/yammi/icons/hicolor/16x16/actions/
 	$(INSTALL_DATA) $(srcdir)/dequeue_all.png $(kde_datadir)/yammi/icons/hicolor/16x16/actions/dequeue_all.png
@@ -47,7 +45,6 @@ uninstall-local:
 	-rm -f $(kde_datadir)/yammi/icons/hicolor/16x16/actions/prelisten_end.png
 	-rm -f $(kde_datadir)/yammi/icons/hicolor/16x16/actions/play_now.png
 	-rm -f $(kde_datadir)/yammi/icons/hicolor/16x16/actions/play.png
-	-rm -f $(kde_datadir)/yammi/icons/hicolor/16x16/actions/enqueue.png
 	-rm -f $(kde_datadir)/yammi/icons/hicolor/16x16/actions/enqueue_asnext.png
 	-rm -f $(kde_datadir)/yammi/icons/hicolor/16x16/actions/dequeue_all.png
 	-rm -f $(kde_datadir)/yammi/icons/hicolor/16x16/actions/dequeue_song.png
