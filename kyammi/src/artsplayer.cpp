@@ -32,10 +32,21 @@ namespace Yammi {
 
     ArtsPlayer::ArtsPlayer(YammiModel *yammi) : MediaPlayer(yammi) {
         kdDebug() << "ArtsPlayer::ArtsPlayer(YammiModel *yammi)" << endl;
-//        m_dispatcher = new KArtsDispatcher( );
-        KArtsDispatcher dispatcher;
+        m_dispatcher = new KArtsDispatcher( );
+        kdDebug() << "creating KArtsServer...\n";
         m_server = new KArtsServer( );
-        m_factory = new KDE::PlayObjectFactory( m_server->server() );
+        if(m_server == 0) {
+            kdError() << "ERROR: could not create KArtsServer\n";
+            return;
+        }
+        Arts::SoundServerV2 server = m_server->server();
+        if(server.isNull()) {
+            kdError() << "ERROR: could not get server from KArtsServer\n";
+            return;
+        }
+        kdDebug() << "creating PlayObjectFactory...\n";
+        m_factory = new KDE::PlayObjectFactory( server );
+        kdDebug() << "...done\n";
         m_currentPlay = 0;
         m_currentSong = 0;
     }
@@ -46,7 +57,7 @@ namespace Yammi {
         quit( );
         delete m_factory;
         delete m_server;
-//        delete m_dispatcher;
+        delete m_dispatcher;
     }
 
     
@@ -222,6 +233,10 @@ namespace Yammi {
         m_currentSong = playlist->at(0)->song();
         KURL url;
         url.setPath(location);
+        if(!url.isValid()) {
+            kdDebug() << "ERROR: url not valid: " << url << endl;
+            return;
+        }
         m_currentPlay = m_factory->createPlayObject( url, true );
         // these 2 lines ensure that totalTime() returns meaningful values
         // (otherwise, totalTime() seems to return 0 as long as song has not started playing yet)

@@ -25,34 +25,61 @@
   */
 
 class DummyPlayer : public MediaPlayer  {
-  Q_OBJECT
-public: 
-	DummyPlayer( YammiModel *y) : MediaPlayer(y) {};
-	virtual ~DummyPlayer() {};
+    Q_OBJECT
+public:
+DummyPlayer( YammiModel *y) : MediaPlayer(y) {}
+    ;
+    virtual ~DummyPlayer() {}
+    ;
 
-	QString getName() {return "dummy";}
+    QString getName() {
+        return "DummyPlayer";
+    }
 
 public:
-  void clearPlaylist() {};
+    void clearPlaylist() {}
+    ;
 public slots:
-  void check() {};
-  PlayerStatus getStatus()           { return STOPPED; }
-  bool play() {return true;}
-  bool pause() {return true;}
-  bool stop()  {return true;}
-  bool playPause()  {return true;}
-  bool skipForward(bool)   {return true;}
-  bool skipBackward(bool)  {return true;}
-  void syncYammi2Player() {};
-  bool jumpTo(int) {return true;}
-  QString getCurrentFile() {return "";}
-  int getCurrentTime() {return 0;}
-  int getTotalTime() {return 0;}
-  void quit() {};
+    void check() {}
+    ;
+    PlayerStatus getStatus()           {
+        return STOPPED;
+    }
+    bool play() {
+        return true;
+    }
+    bool pause() {
+        return true;
+    }
+    bool stop()  {
+        return true;
+    }
+    bool playPause()  {
+        return true;
+    }
+    bool skipForward(bool)   {
+        return true;
+    }
+    bool skipBackward(bool)  {
+        return true;
+    }
+    void syncYammi2Player() {}
+    ;
+    bool jumpTo(int) {
+        return true;
+    }
+    QString getCurrentFile() {
+        return "";
+    }
+    int getCurrentTime() {
+        return 0;
+    }
+    int getTotalTime() {
+        return 0;
+    }
+    void quit() {}
+    ;
 
-signals:
-  void playlistChanged();
-  void statusChanged();
 };
 
 #endif

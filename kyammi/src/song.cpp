@@ -24,6 +24,7 @@
 
 #include <kdebug.h>
 #include <klocale.h>
+#include <kio/job.h>
 
 #ifdef ENABLE_OGGLIBS
 #include "vcedit.h"
@@ -604,7 +605,8 @@ bool Song::getId3Tag(ID3_Tag* tag, ID3_FrameID frame, ID3_FieldID field, QString
     // convert to ascii string
     char theContent[1024];
     theField->Get(theContent, 1024); // copies up to 1024 bytes of the field data into char array
-    *content=theContent;
+    *content=QString::fromLocal8Bit(theContent);    
+//    *content=theContent;
     return true;
 }
 
@@ -1448,12 +1450,15 @@ void Song::moveTo(QString dir) {
 
     QString newLocation=QString("%3/%4").arg(dir).arg(filename);
 //    kdDebug() << "newLocation: (local8Bit) " << newLocation.local8Bit() << endl;
+    KIO::move(KURL(location()), KURL(newLocation));    
+    /*
     QDir currentDir;
     if((currentDir.rename(location(), newLocation, TRUE)) == FALSE) {
         kdDebug() << "renaming failed! song: " << displayName() << ", old location: " << location() << "proposed new location: " << newLocation << "\n";
-    } else {
+    */
+/*    } else {
         path=dir;
-    }
+    }*/
 }
 
 

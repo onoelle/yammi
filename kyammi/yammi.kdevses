@@ -1,52 +1,32 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
 <!DOCTYPE KDevPrjSession>
 <KDevPrjSession>
- <DocsAndViews NumberOfDocuments="9" >
+ <DocsAndViews NumberOfDocuments="5" >
   <Doc0 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/TODO" >
-   <View0 line="9" Type="???" >
+   <View0 line="2" Type="???" >
     <AdditionalSettings Top="1" Width="1203" Attach="1" Height="795" Left="1" MinMaxMode="0" />
    </View0>
   </Doc0>
   <Doc1 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/ChangeLog" >
-   <View0 line="27" Type="???" >
+   <View0 line="11" Type="???" >
     <AdditionalSettings Top="1" Width="1202" Attach="1" Height="811" Left="1" MinMaxMode="0" />
    </View0>
   </Doc1>
-  <Doc2 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/src/yammigui.cpp" >
-   <View0 line="3040" Type="???" >
-    <AdditionalSettings Top="1" Width="1203" Attach="1" Height="795" Left="1" MinMaxMode="0" />
+  <Doc2 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/MyYammiHowto.txt" >
+   <View0 line="41" Type="???" >
+    <AdditionalSettings Top="1" Width="1212" Attach="1" Height="795" Left="1" MinMaxMode="0" />
    </View0>
   </Doc2>
-  <Doc3 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/src/prefs.cpp" >
-   <View0 line="39" Type="???" >
+  <Doc3 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/src/artsplayer.cpp" >
+   <View0 line="229" Type="???" >
     <AdditionalSettings Top="1" Width="1203" Attach="1" Height="795" Left="1" MinMaxMode="0" />
    </View0>
   </Doc3>
-  <Doc4 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/src/yammigui.h" >
-   <View0 line="244" Type="???" >
-    <AdditionalSettings Top="1" Width="1203" Attach="1" Height="795" Left="1" MinMaxMode="0" />
+  <Doc4 context="ctx_doxygen" NumberOfViews="1" URL="file:/opt/kde3/share/doc/HTML/en/kdelibs-apidocs/arts/html/classKArtsServer.html" >
+   <View0 Type="???" >
+    <AdditionalSettings/>
    </View0>
   </Doc4>
-  <Doc5 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/doc/en/index.docbook" >
-   <View0 line="468" Type="???" >
-    <AdditionalSettings Top="1" Width="1203" Attach="1" Height="795" Left="1" MinMaxMode="0" />
-   </View0>
-  </Doc5>
-  <Doc6 context="ctx_qt" NumberOfViews="1" URL="file:/usr/lib/qt3/doc/html/qlistviewitem.html#itemBelow" >
-   <View0 Type="???" >
-    <AdditionalSettings Top="1" Width="1203" Attach="1" Height="795" Left="1" MinMaxMode="0" />
-   </View0>
-  </Doc6>
-  <Doc7 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/src/yammimodel.cpp" >
-   <View0 line="555" Type="???" >
-    <AdditionalSettings Top="1" Width="1203" Attach="1" Height="795" Left="1" MinMaxMode="0" />
-   </View0>
-  </Doc7>
-  <Doc8 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/README" >
-   <View0 line="80" Type="???" >
-    <AdditionalSettings Top="1" Width="1203" Attach="1" Height="795" Left="1" MinMaxMode="0" />
-   </View0>
-  </Doc8>
  </DocsAndViews>
  <pluginList>
   <kdevbookmarks>

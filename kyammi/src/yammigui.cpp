@@ -112,8 +112,8 @@ extern YammiGui* gYammiGui;
 /////////////////////////////////////////////////////////////////////////////////////////////
 YammiGui::YammiGui() : DCOPObject("YammiPlayer"), KMainWindow( ) {
     gYammiGui = this;
-    this->setGeometry(0, 0, 800, 600);
-    
+    setGeometry(0, 0, 800, 600);
+
     // initialize some fields
     validState = false;
     currentSong = 0;
@@ -124,8 +124,8 @@ YammiGui::YammiGui() : DCOPObject("YammiPlayer"), KMainWindow( ) {
     controlPressed = false;
     shiftPressed = false;
     toFromRememberFolder = 0;
-    
-    
+
+
     model = new YammiModel( this );
     config()->loadConfig();
 
@@ -250,9 +250,8 @@ void YammiGui::loadDatabase(QString databaseDir) {
     Folder* f=getFolderByName(cfg->readEntry("CurrentFolder"));
     if(f != 0) {
         changeToFolder(f, true);
-    }
-    else {
-        changeToFolder(folderAll);
+    } else {
+        changeToFolder(folderAll, true);
     }
 
     checkTimer.start( 100, FALSE );
@@ -950,8 +949,7 @@ void YammiGui::setPreferences() {
 /**
  * Configures the key bindings.
  */
-void YammiGui::configureKeys()
-{    
+void YammiGui::configureKeys() {
     KKeyDialog::configure(actionCollection());
 }
 
@@ -1119,7 +1117,7 @@ void YammiGui::searchSimilar(int what) {
  * Go to a specific folder (album/artist) of selected song.
  */
 void YammiGui::goToFolder(int what) {
-    getSelectedSongs();    
+    getSelectedSongs();
     Song* s=selectedSongs.firstSong();
     QString folderName;
 
@@ -1461,30 +1459,30 @@ void YammiGui::forSelectionPlugin(int pluginIndex) {
             return;
         cmd.replace(QRegExp("\\{fileDialog\\}"), file);
     }
-    
+
     while(cmd.contains("{inputString")>0) {
-         int startPos = cmd.find("{inputString");
-         if ( startPos == -1 ) {
-             break;
-         }
-         int endPos = cmd.find("}", startPos);
-         if ( endPos == -1 ) {
-             break;
-         }
-         int midPos = startPos + 13;
-         int argumentLength  = endPos - midPos;
-         QString prompt = QString(i18n("Type in plugin parameter"));
-         if ( argumentLength > 0 ) {
-             prompt += QString(" \"%1\"").arg(cmd.mid(midPos, argumentLength));
-         }
-         bool ok;
-         QString inputString=QString(QInputDialog::getText(prompt, prompt, QLineEdit::Normal, QString(""), &ok, this ));
-         if(!ok) {
-             return;
-         }
-         cmd.replace(startPos, endPos - startPos + 1, inputString);
-     }
-    
+        int startPos = cmd.find("{inputString");
+        if ( startPos == -1 ) {
+            break;
+        }
+        int endPos = cmd.find("}", startPos);
+        if ( endPos == -1 ) {
+            break;
+        }
+        int midPos = startPos + 13;
+        int argumentLength  = endPos - midPos;
+        QString prompt = QString(i18n("Type in plugin parameter"));
+        if ( argumentLength > 0 ) {
+            prompt += QString(" \"%1\"").arg(cmd.mid(midPos, argumentLength));
+        }
+        bool ok;
+        QString inputString=QString(QInputDialog::getText(prompt, prompt, QLineEdit::Normal, QString(""), &ok, this ));
+        if(!ok) {
+            return;
+        }
+        cmd.replace(startPos, endPos - startPos + 1, inputString);
+    }
+
     if(mode=="single") {
         if(confirm) {
             QString sampleCmd=selectedSongs.firstSong()->replacePlaceholders(cmd, 1);
@@ -1825,12 +1823,11 @@ void YammiGui::forSelectionEnqueueAsNext( ) {
     for(Song* s = selectedSongs.firstSong(); s; s=selectedSongs.nextSong()) {
         if(model->songsToPlay.count()==0 || currentSong!=model->songsToPlay.at(0)->song() || player->getStatus() != PLAYING) {
             model->songsToPlay.insert(0, new SongEntryInt(s, 13));
-        }
-        else {
+        } else {
             model->songsToPlay.insert(1, new SongEntryInt(s, 13));
         }
     }
-    
+
     folderActual->correctOrder();
     player->syncYammi2Player();
     folderContentChanged(folderActual);
@@ -1883,8 +1880,7 @@ void YammiGui::forSelectionDequeue( ) {
                 model->songsToPlay.remove(pos);
             }
         }
-    }
-    else {
+    } else {
         // song chosen from other folder => dequeue ALL occurrences of each selected song
         for(Song* s=selectedSongs.firstSong(); s; s=selectedSongs.nextSong()) {
             int i=1;
@@ -2194,8 +2190,7 @@ void YammiGui::forSelectionDelete( ) {
     DeleteDialog dd( this,  "deleteDialog", true);
     if(selectedSongs.count()==1) {
         dd.LabelSongname->setText(selectedSongs.firstSong()->displayName());
-    }
-    else {
+    } else {
         dd.LabelSongname->setText(QString(i18n("Delete %1 songs")).arg(selectedSongs.count()));
     }
     // fill dialog with onMedia info...(for all toDelete songs)
@@ -2732,21 +2727,21 @@ void YammiGui::keyPressEvent(QKeyEvent* e) {
             if(left > 0 )
                 m_sleepModeSpinBox->setValue(left);
         }
-/* TODO: implement page-up/down behaviour???
-        else {
-            QListViewItem* current=songListView->currentItem();
-            if(current != 0) {
-                QListViewItem* possiblyLast = current;
-                for(int skip = 0; skip < 20 && current; current=current->itemBelow(), skip++) {
-                    possiblyLast = current;
+        /* TODO: implement page-up/down behaviour???
+                else {
+                    QListViewItem* current=songListView->currentItem();
+                    if(current != 0) {
+                        QListViewItem* possiblyLast = current;
+                        for(int skip = 0; skip < 20 && current; current=current->itemBelow(), skip++) {
+                            possiblyLast = current;
+                        }
+                        songListView->clearSelection();
+                        songListView->setSelected(possiblyLast, true);
+                        songListView->setCurrentItem(possiblyLast);
+                        songListView->ensureItemVisible(current);
+                    }
                 }
-                songListView->clearSelection();
-                songListView->setSelected(possiblyLast, true);
-                songListView->setCurrentItem(possiblyLast);
-                songListView->ensureItemVisible(current);
-            }
-        }
-        */
+                */
         break;
 
         // key up/down: we manually implement some behaviour in the songlistview here,
@@ -2814,7 +2809,7 @@ void YammiGui::keyPressEvent(QKeyEvent* e) {
         }
         gotoFuzzyFolder(false);
         break;
-    
+
 
     default:
         e->ignore();
@@ -2899,8 +2894,7 @@ void YammiGui::changeSleepMode() {
             QString msg = i18n("The Database has been modified. Save changes?\n(answering no will cancel sleep mode)");
             if( KMessageBox::warningYesNo(this,msg) == KMessageBox::Yes ) {
                 saveDatabase();
-            }
-            else {
+            } else {
                 m_sleepMode = false; //leave sleep mode off
             }
         }
@@ -2995,7 +2989,7 @@ void YammiGui::updateSongDatabaseHarddisk() {
 
 void YammiGui::updateSongDatabaseSingleFile() {
     QStringList files = KFileDialog::getOpenFileNames( ":singleFile", QString::null, this, i18n("Open file(s) to import"));
-//    QStringList files = KFileDialog::getOpenFileNames( config()->scanDir, QString::null, this, i18n("Open file(s) to import"));
+    //    QStringList files = KFileDialog::getOpenFileNames( config()->scanDir, QString::null, this, i18n("Open file(s) to import"));
     if(files.count()==0) {
         return;
     }
@@ -3295,6 +3289,7 @@ void YammiGui::toggleColumnVisibility(int column) {
 
 
 void YammiGui::loadMediaPlayer( ) {
+    player = 0;
     switch( config()->mediaPlayer ) {
         #ifdef ENABLE_XMMS
     case 0:
@@ -3303,16 +3298,30 @@ void YammiGui::loadMediaPlayer( ) {
         #endif
 
     case 1:
-        player = new NoatunPlayer( model );
+        int retval;
+        retval = system("which noatun");
+        retval = WEXITSTATUS(retval);
+        if (retval == 0) {
+            player = new NoatunPlayer( model );
+        } else {
+            kdDebug() << "WARNING: looks like you want to use noatun, but noatun cannot be found\n";
+        }
         break;
     case 2:
         player = new Yammi::ArtsPlayer( model );
         break;
     case 3:
         player = new Yammi::GstPlayer( model );
-	break;	
-    default:
+        break;
+        //    default:
+        //        player = new DummyPlayer( model );
+    }
+    if (!player) {
         player = new DummyPlayer( model );
+/*        KMessageBox::error(this, i18n("Can't create the player object.\n"
+                                      "Please select a suitable backend player\n"
+                                      "from the Preferences Dialog"), i18n("Error"));*/
+        kdDebug() << "Can't create player backend, select a suitable backend in the Preferences Dialog\n";
     }
     kdDebug() << "Media Player : " << player->getName( ) << endl;
 }
@@ -3427,7 +3436,8 @@ bool YammiGui::setupActions( ) {
     new KAction(i18n("Skip Forward"),"player_fwd",KShortcut(Key_F3),this,SLOT(skipForward()), actionCollection(),"skip_forward");
     m_seekSlider = new TrackPositionSlider( QSlider::Horizontal, 0L, "seek_slider");
     m_seekSlider->setFixedWidth(200);
-    QToolTip::add(m_seekSlider, i18n("Track position"));
+    QToolTip::add
+        (m_seekSlider, i18n("Track position"));
     connect(m_seekSlider,SIGNAL(sliderMoved(int)),this,SLOT(seek(int)));
     connect(m_seekSlider,SIGNAL(myWheelEvent(int)),this,SLOT(seekWithWheel(int)));
     new KWidgetAction( m_seekSlider ,"text",0, 0, 0,actionCollection(),"seek");
@@ -3502,12 +3512,12 @@ bool YammiGui::setupActions( ) {
     QToolTip::add
         ( m_searchField, i18n("Fuzzy search (Ctrl-F)"));
     connect( m_searchField, SIGNAL(textChanged(const QString&)), SLOT(searchFieldChanged(const QString&)));
-/*
-    TODO: temporarily disabled before we have a better concept and have it documented properly...
-    QPushButton *btn = new QPushButton(i18n("to wishlist"),w);
-    connect( btn, SIGNAL( clicked() ), this, SLOT( addToWishList() ) );
-    QToolTip::add( btn, i18n("Add this entry to the database as a \"wish\""));
-*/
+    /*
+        TODO: temporarily disabled before we have a better concept and have it documented properly...
+        QPushButton *btn = new QPushButton(i18n("to wishlist"),w);
+        connect( btn, SIGNAL( clicked() ), this, SLOT( addToWishList() ) );
+        QToolTip::add( btn, i18n("Add this entry to the database as a \"wish\""));
+    */
     new KWidgetAction(w, "Search", 0, 0, 0, actionCollection(), "search");
 
 
@@ -3634,8 +3644,7 @@ int YammiGui::randomNum(int numbers) {
 }
 
 
-Prefs* YammiGui::config()
-{
+Prefs* YammiGui::config() {
     return model->config();
 }
 
