@@ -21,6 +21,8 @@
 #include <kdebug.h>
 #include <klineedit.h>
 #include <qlabel.h>
+#include <qcombobox.h>
+#include <qpushbutton.h>
 
 
 SongInfo::SongInfo(QWidget *parent, Song* editSong) : SongInfoDialog(parent, "song info", true)
@@ -39,6 +41,7 @@ SongInfo::SongInfo(QWidget *parent, Song* editSong) : SongInfoDialog(parent, "so
     connect(LineEditComment, SIGNAL(textChanged(const QString&)), this, SLOT(updateProposedFilename()));
     connect(LineEditTrack, SIGNAL(textChanged(const QString&)), this, SLOT(updateProposedFilename()));
     connect(LineEditYear, SIGNAL(textChanged(const QString&)), this, SLOT(updateProposedFilename()));
+    connect(ComboBoxGenre, SIGNAL(textChanged(const QString&)), this, SLOT(updateProposedFilename()));
 }
 
 void SongInfo::updateProposedFilename()

@@ -778,12 +778,12 @@ QString Song::makeValidFilename(QString filename, bool file) {
     filename.replace(QRegExp("[?]"), "");                                               // ?
     filename.replace(QRegExp(":"), "");                                                 // :
 
-    filename.replace(QRegExp("Ã¼"), "ue");                                                   // umlaute
-    filename.replace(QRegExp("Ãœ"), "Ue");                                                   //
-    filename.replace(QRegExp("Ã¶"), "oe");                                                   //
-    filename.replace(QRegExp("Ã–"), "Oe");                                                   //
-    filename.replace(QRegExp("Ã¤"), "ae");                                                   //
-    filename.replace(QRegExp("Ã„"), "Ae");                                                   //
+    filename.replace(QRegExp("ü"), "ue");                                                   // umlaute
+    filename.replace(QRegExp("Ü"), "Ue");                                                   //
+    filename.replace(QRegExp("ö"), "oe");                                                   //
+    filename.replace(QRegExp("Ö"), "Oe");                                                   //
+    filename.replace(QRegExp("ä"), "ae");                                                   //
+    filename.replace(QRegExp("Ä"), "Ae");                                                   //
     return filename;
 }
 

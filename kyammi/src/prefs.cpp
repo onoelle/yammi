@@ -37,8 +37,7 @@ Prefs::~Prefs() {}
 
 void Prefs::setDefaultValues(void) {
     // general
-//    mediaPlayer = MEDIA_PLAYER_ARTSPLAYER;
-    mediaPlayer = MEDIA_PLAYER_NOATUN;
+    mediaPlayer = MEDIA_PLAYER_ARTSPLAYER;
     yammiVersion = VERSION;
     databaseDir = KGlobal::dirs()->findResourceDir("appdata","songdb.xml");
     trashDir = QDir::homeDirPath() + "/Desktop/Trash";
@@ -60,7 +59,7 @@ void Prefs::setDefaultValues(void) {
     prelistenMp3Command = "mpg123|-a /dev/dsp1|--skip {skipFrames}|'{absoluteFilename}'";
     prelistenOggCommand = "ogg123|-d oss|-odsp:/dev/dsp1|--skip {skipSeconds}|'{absoluteFilename}'";
     prelistenWavCommand = "play|-d /dev/dsp1|'{absoluteFilename}'|trim {skipSamples}";
-    prelistenFlacCommand = "";
+    prelistenFlacCommand = "mplayer|-ss {skipSeconds}|-ao oss:/dev/dsp1|'{absoluteFilename}'";
     prelistenOtherCommand ="";
     
     groupThreshold = 5;
@@ -73,6 +72,9 @@ void Prefs::setDefaultValues(void) {
     fadeOutEnd = 50;
     fadeInStart = 70;
 
+    // gstreamer specific
+    audioSink = "osssink";
+    
     // plugins
     grabAndEncodeCmd = "yammiGrabAndEncode";
     shutdownScript = "dcop ksmserver ksmserver \"logout\" 0 2 0";
@@ -122,6 +124,9 @@ bool Prefs::loadConfig( ) {
     cfg->setGroup("Xmms");
     keepInXmms                   = cfg->readNumEntry("keepInXmms", keepInXmms);
 
+    cfg->setGroup("GStreamer");
+    audioSink                    = cfg->readEntry("audioSink", audioSink);
+    
     cfg->setGroup("Noatun");
     fadeTime                     = cfg->readNumEntry("fadeTime", fadeTime);
     fadeOutEnd                   = cfg->readNumEntry("fadeOutEnd", fadeOutEnd);
@@ -202,6 +207,9 @@ bool Prefs::saveConfig( ) {
     cfg->setGroup("Xmms");
     cfg->writeEntry("keepInXmms", keepInXmms);
 
+    cfg->setGroup("GStreamer");
+    cfg->writeEntry("audioSink",audioSink);
+    
     cfg->setGroup("Noatun");
     cfg->writeEntry("fadeTime", fadeTime);
     cfg->writeEntry("fadeOutEnd", fadeOutEnd);

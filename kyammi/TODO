@@ -1,24 +1,23 @@
 TODO
 ----
-last update 24.01.2004
+last update 24.02.2005
 
 for version 1.2-final
 ---------------------
 IN PROGRESS
 - finish: translations (italian, spanish) (add portuguese?)
+- finish: noatun stops playback sometimes
 
 MUST-HAVE
 - properly document tags consistent, filenames consistent and directories consistent mode
-- confirm dialog when mass tagging
-- fix: noatun stops playback sometimes
 - add: publish plugin for html-export
 - add: info message on first startup/on importing old database (or menu entry for importing?)
-- add: warning if mass-tagging
 - simplify {wish} system: (make every entry with empty filename (no media) a wish?
 - child safe mode?
 - proper screenshots for website / freshmeat
-- song info dialog: disable ok button before any changes took place (filename check?)
 
+
+NICE-TO-HAVE
 Idea: Database -> Statistics... dialog:
 - no songs
 - total time (days)
@@ -31,8 +30,7 @@ Idea: Database -> Statistics... dialog:
 - no of albums
 - ...history file: songs listened to?
 
-
-NICE-TO-HAVE
+- song info dialog: disable ok button before any changes took place (filename check?)
 - review kde conformance:  
   - replace all couts with kdDebug/kdWarn/kdError
   - check lsm file
@@ -47,7 +45,7 @@ media-player-related:
 
 for version 1.4
 ---------------
-- use a player thread for mediaplayer
+- use a separate player thread for mediaplayer
 - rating of songs
 
 
@@ -74,8 +72,8 @@ enhancements
 - history of visited folders + "go back/go forward" buttons
 - any ripping plugin? have a look at existing ripping programs suitable to be called as plugin
 - make configurable/auto-detected forbidden characters: http://osdev.berlios.de/osd-fs.html
-- for xmms/noatun media players:
-  - use QProcess for XMMS? (noatun?)
+- for media players
+  - use KProcess for starting xmms/noatun
 - separate folders into two categories: automatic folders and user-defined folders
 - search for similar: add an option to search for songs played "near" this one
 
@@ -84,7 +82,6 @@ refactorings/fixes
 - speed up loading of categories and history? (eg. binary search)
 - remove symlinking for "burn to media": provide "physical categories"?
 - fix: two albums having the same name appear as one album (heuristic: same album if in same dir?)
-- use QProcess/KProcess? instead of system() calls? (prelisten, xmms, noatun, shutdownscript, ...)
 - swap management: in song: method getFilename() vs. getRealFilename() (fast)???
 
 

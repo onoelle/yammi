@@ -294,7 +294,7 @@ public:
     int fuzzyFolderNo;
     bool columnVisible[MAX_COLUMN_NO];
     int realColumnMap[MAX_COLUMN_NO];
-    QString lastPrelistened;
+    
     /** this list contains a selection of songs to work on */
     MyList selectedSongs;
     MyList searchResults;

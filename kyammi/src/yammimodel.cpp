@@ -1041,7 +1041,7 @@ bool YammiModel::skipUnplayableSongs(bool firstTwo) {
         while( songsToPlay.at(1) ) {
             location = checkAvailability( songsToPlay.at(1)->song() );
             if( location == "" || location == "never" ) {
-                kdDebug() << "Song " << songsToPlay.at(0)->song()->displayName() << "not available, skipping\n";
+                kdDebug() << "Song " << songsToPlay.at(1)->song()->displayName() << "not available, skipping\n";
                 songsToPlay.remove(1);
                 songsRemoved = true;
             } else {

@@ -121,6 +121,9 @@ public:
     /** Songs in playlist of xmms */
     int keepInXmms;
 
+    // gstreamer specific
+    QString audioSink;
+    
     // noatun specific
     /** Fading time for Noatun (0=disabled) */
     int fadeTime;

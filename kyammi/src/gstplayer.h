@@ -31,6 +31,8 @@
 #include <kde/gstplay/play.h>
 #include <kde/gst/element.h>
 #include <kde/gst/elementfactory.h>
+#include <kde/gst/gstreamer.h>
+
 #endif
 
 class SongEntry;

@@ -164,7 +164,7 @@
                             <property name="spacing">
                                 <number>6</number>
                             </property>
-                            <widget class="QLayoutWidget" row="0" column="0" rowspan="2" colspan="1">
+                            <widget class="QLayoutWidget" row="1" column="0" rowspan="2" colspan="1">
                                 <property name="name">
                                     <cstring>Layout7</cstring>
                                 </property>
@@ -246,7 +246,7 @@
                                     </widget>
                                 </grid>
                             </widget>
-                            <spacer row="0" column="1">
+                            <spacer row="1" column="1">
                                 <property name="name">
                                     <cstring>spacer4</cstring>
                                 </property>
@@ -263,7 +263,7 @@
                                     </size>
                                 </property>
                             </spacer>
-                            <spacer row="1" column="1">
+                            <spacer row="2" column="1">
                                 <property name="name">
                                     <cstring>spacer4_2</cstring>
                                 </property>
@@ -280,6 +280,17 @@
                                     </size>
                                 </property>
                             </spacer>
+                            <widget class="QLabel" row="0" column="0" rowspan="1" colspan="2">
+                                <property name="name">
+                                    <cstring>textLabel1_4</cstring>
+                                </property>
+                                <property name="text">
+                                    <string>You can assign default actions for a double-click or click with middle mouse buttion on a song in the songlist.</string>
+                                </property>
+                                <property name="alignment">
+                                    <set>WordBreak|AlignVCenter</set>
+                                </property>
+                            </widget>
                         </grid>
                     </widget>
                     <widget class="QGroupBox" row="1" column="0">
@@ -1020,6 +1031,55 @@ in Noatun's configuration!</string>
                             </widget>
                         </grid>
                     </widget>
+                    <widget class="QGroupBox" row="3" column="0">
+                        <property name="name">
+                            <cstring>GroupBoxGstPlayer</cstring>
+                        </property>
+                        <property name="title">
+                            <string>GstreamerPlayer settings</string>
+                        </property>
+                        <grid>
+                            <property name="name">
+                                <cstring>unnamed</cstring>
+                            </property>
+                            <widget class="QLineEdit" row="0" column="1">
+                                <property name="name">
+                                    <cstring>LineEditAudioSink</cstring>
+                                </property>
+                                <property name="enabled">
+                                    <bool>true</bool>
+                                </property>
+                                <property name="text">
+                                    <string></string>
+                                </property>
+                                <property name="toolTip" stdset="0">
+                                    <string>e.g. osssink, artsdsink, alsasink</string>
+                                </property>
+                            </widget>
+                            <widget class="QLabel" row="0" column="0">
+                                <property name="name">
+                                    <cstring>textLabel1_3</cstring>
+                                </property>
+                                <property name="text">
+                                    <string>AudioSink</string>
+                                </property>
+                                <property name="toolTip" stdset="0">
+                                    <string>e.g. osssink, artsdsink, alsasink</string>
+                                </property>
+                            </widget>
+                            <widget class="QLabel" row="1" column="0" rowspan="1" colspan="2">
+                                <property name="name">
+                                    <cstring>textLabel1_5</cstring>
+                                </property>
+                                <property name="text">
+                                    <string>(osssink works well for both ALSA and OSS, see docs for other audio backends)</string>
+                                </property>
+                                <property name="alignment">
+                                    <set>WordBreak|AlignVCenter</set>
+                                </property>
+                            </widget>
+                        </grid>
+                    </widget>
                     <widget class="QGroupBox" row="2" column="0">
                         <property name="name">
                             <cstring>GroupBoxArtsPlayer</cstring>
@@ -1037,44 +1097,6 @@ in Noatun's configuration!</string>
                                 </property>
                                 <property name="text">
                                     <string>- no settings yet -</string>
-                                </property>
-                            </widget>
-                        </grid>
-                    </widget>
-                    <widget class="QGroupBox" row="3" column="0">
-                        <property name="name">
-                            <cstring>GroupBoxGstPlayer</cstring>
-                        </property>
-                        <property name="title">
-                            <string>GstreamerPlayer settings</string>
-                        </property>
-                        <grid>
-                            <property name="name">
-                                <cstring>unnamed</cstring>
-                            </property>
-                            <widget class="QLabel" row="0" column="0">
-                                <property name="name">
-                                    <cstring>textLabel1_3</cstring>
-                                </property>
-                                <property name="text">
-                                    <string>AudioSink</string>
-                                </property>
-                                <property name="toolTip" stdset="0">
-                                    <string>e.g. osssink, artsdsink, alsasink</string>
-                                </property>
-                            </widget>
-                            <widget class="QLineEdit" row="0" column="1">
-                                <property name="name">
-                                    <cstring>audiosink</cstring>
-                                </property>
-                                <property name="enabled">
-                                    <bool>true</bool>
-                                </property>
-                                <property name="text">
-                                    <string></string>
-                                </property>
-                                <property name="toolTip" stdset="0">
-                                    <string>e.g. osssink, artsdsink, alsasink</string>
                                 </property>
                             </widget>
                         </grid>
@@ -1235,10 +1257,9 @@ in Noatun's configuration!</string>
                         </property>
                         <property name="text">
                             <string>The prelisten functionality of Yammi allows to listen to songs on a headphone (requires a second sound device) while the normal playback of your playlist continues (very handy on a party...).
-
-For each file type, Yammi can use a different command-line tool.
-
-Configure each tool here, separating parameters with "|".</string>
+For each file type listed below, Yammi can use a different command.
+Configure each tool here, separating parameters with "|".
+Additionally to the usual placeholders (see the plugins tab) you can use {skipSeconds}, {skipMilliSeconds} and {skipFrames}.</string>
                         </property>
                         <property name="alignment">
                             <set>WordBreak|AlignVCenter</set>

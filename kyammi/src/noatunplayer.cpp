@@ -32,9 +32,9 @@ NoatunPlayer::NoatunPlayer(YammiModel* model) : MediaPlayer( model ) {
     client->attach();
     QCString realAppId = client->registerAs("yammi");
 
+    currentPlayer=1;
     ensurePlayerIsRunning();
     // find out which one of the players is playing and take that one as current player
-    currentPlayer=1;
     if(getStatus()==STOPPED) {
         currentPlayer=0;
     }
@@ -63,6 +63,7 @@ NoatunPlayer::~NoatunPlayer() {}
  * Clear playlist of active player.
  */
 void NoatunPlayer::clearActivePlayerPlaylist() {
+    kdDebug() << getCurrentPlayerId() << "clearActivePlayerPlaylist()" << endl;
     sendDcopCommand(QString("clear()"));
     return;
 }
@@ -72,6 +73,7 @@ void NoatunPlayer::clearActivePlayerPlaylist() {
 // check whether two instances of Noatun are running, if not: tries to start them
 // returns true on success
 bool NoatunPlayer::ensurePlayerIsRunning() {
+    kdDebug() << getCurrentPlayerId() << "ensurePlayerIsRunning()" << endl;
     int count=0;
     QString replyStr;
     for(int tries=0; count<2 && tries<10; tries++) {
@@ -128,8 +130,31 @@ int NoatunPlayer::getOtherPlayerId() {
 
 // fade: 0 = beginning of fading, 100 = fading complete
 void NoatunPlayer::onFade() {
-    int fadeTime=getCurrentTime();
-    fade=fadeTime*100/model->config()->fadeTime;
+    kdDebug() << getCurrentPlayerId() << "onFade()" << endl;
+    int currentTime=getCurrentTime();
+    int totalTime=getTotalTime();
+    kdDebug() << "currentTime: " << currentTime << "totalTime: " << totalTime << endl;
+    if(totalTime == -1) {
+        // this is a workaround for noatun sometimes not starting a song
+        sendDcopCommand("play()");
+    }
+    if(currentTime <= 0) {
+        fade++;
+        if(fade>10) {
+            if(totalTime <= 0) {
+                // song length == 0
+                kdDebug() << "total time of current song <= 0, skipping song" << endl;
+                kdDebug() << "location: " << playlist->at(1)->song()->location() << endl;
+                // TODO: proper song change/skip
+                startSongChange(false);
+                return;
+            }
+        }
+    }
+    else {
+        fade = currentTime * 100 / model->config()->fadeTime;
+    }
+    kdDebug() << "fade:" << fade << endl;
     if(fade<100) {
         sendDcopCommandInt("setVolume(int)", 100-(fade*(100-model->config()->fadeOutEnd)/100), fadeOut);
         sendDcopCommandInt("setVolume(int)", model->config()->fadeInStart+(fade*(100-model->config()->fadeInStart)/100), fadeIn);
@@ -149,6 +174,7 @@ void NoatunPlayer::onFade() {
  * Checks, whether a song change should take place.
  */
 void NoatunPlayer::check() {
+//    kdDebug() << getCurrentPlayerId() << "check()" << endl;
     // 1. check, whether status has changed
     PlayerStatus newStatus=getStatus();
     if(newStatus!=lastStatus) {
@@ -196,6 +222,7 @@ void NoatunPlayer::check() {
  * Starts a song change, if possible (if >=2 songs in playlist)
  */
 void NoatunPlayer::startSongChange(bool withoutCrossfading) {
+    kdDebug() << getCurrentPlayerId() << "startSongChange()" << endl;
     model->skipUnplayableSongs(true);
     if(playlist->count()<2) {
         // we can't make a song change if there is no next song
@@ -222,9 +249,12 @@ void NoatunPlayer::startSongChange(bool withoutCrossfading) {
         QString location=model->checkAvailability(playlist->at(1)->song());
         if(location!="" && location!="never") {
             playlistAdd(location, true);
-            // sometimes player does not start to play???
-            sendDcopCommand("play()");
+            // problem with noatun communication:
+            // sometimes player does not start to play
             playlist->removeFirst();
+        }
+        else {
+            kdDebug() << "no valid location for next song" << endl;
         }
         playlistChanged();
         fadeTimer.start( 200, TRUE );       // change volume every 200ms
@@ -236,6 +266,7 @@ void NoatunPlayer::startSongChange(bool withoutCrossfading) {
  * Adds a file to the current noatun player.
 */
 void NoatunPlayer::playlistAdd(QString filename, bool autoStart) {
+    kdDebug() << getCurrentPlayerId() << "playlistAdd()" << endl;
     int id=getCurrentPlayerId();
     QString str=QString("noatun-%1").arg(id);
     QByteArray data;
@@ -287,6 +318,7 @@ bool NoatunPlayer::playPause() {
 
 /// skip forward in playlist
 bool NoatunPlayer::skipForward(bool withoutCrossfading) {
+    kdDebug() << getCurrentPlayerId() << "skipForward()" << endl;
     if( playlist->count() < 2 ) {
         // there is no "next song"
         return false;
@@ -307,6 +339,7 @@ bool NoatunPlayer::skipForward(bool withoutCrossfading) {
 
 /// skip backward in playlist
 bool NoatunPlayer::skipBackward(bool withoutCrossfading) {
+    kdDebug() << getCurrentPlayerId() << "skipBackward()" << endl;
     Song* last=playlist->at(0)->song();
     // insert pseudo-song to be removed
     playlist->insert(0, new SongEntryInt(last, 0));
@@ -330,6 +363,7 @@ bool NoatunPlayer::stop() {
 
 PlayerStatus NoatunPlayer::getStatus() {
     int state=callGetInt("state()");
+//    kdDebug() << getCurrentPlayerId() << "getStatus(), state()=" << state << endl;
     // case 1: noatun is playing
     if(state==2)
         return PLAYING;
@@ -373,6 +407,7 @@ int NoatunPlayer::getTotalTime() {
 
 
 void NoatunPlayer::syncYammi2Player() {
+    kdDebug() << getCurrentPlayerId() << "syncYammi2Player()" << endl;
     bool haveToUpdate = model->skipUnplayableSongs();
     
     if(playlist->count()==0) {

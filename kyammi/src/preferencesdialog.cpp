@@ -61,7 +61,6 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, const char *name, bool mod
     // xmms specific
     LineEditKeepInXmms->setText(QString("%1").arg(config->keepInXmms));
     #ifdef ENABLE_XMMS
-
     RadioButtonXmms->setChecked(config->mediaPlayer==config->MEDIA_PLAYER_XMMS);
     #else
 
@@ -80,7 +79,8 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, const char *name, bool mod
     
     // gstplayer specific
     RadioButtonGstPlayer->setChecked(config->mediaPlayer==config->MEDIA_PLAYER_GSTPLAYER);
-
+    LineEditAudioSink->setText(QString("%1").arg(config->audioSink));
+    
     for(int i=0; i<Song::getMaxSongAction(); i++) {
         ComboBoxDoubleClickAction->insertItem(Song::getSongAction(i));
     }
@@ -222,6 +222,8 @@ void PreferencesDialog::myAccept() {
         config->mediaPlayer=config->MEDIA_PLAYER_GSTPLAYER;
     }
 
+    // GStreamer specific
+    config->audioSink=LineEditAudioSink->text();
 
     // noatun specific
     config->fadeTime=atoi(LineEditFadeTime->text());

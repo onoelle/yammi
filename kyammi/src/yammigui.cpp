@@ -2110,7 +2110,12 @@ void YammiGui::forSelectionSongInfo( ) {
         QString x;
         si.ReadOnlyLength->setText(x.sprintf(i18n("%2d:%02d (mm:ss)"), _length/60, _length % 60));
     }
-    si.ReadOnlySize->setText( QString(i18n("%1 MB")).arg( (float)_size/(float)(1024*1024) , 4,'f', 2 ));
+    if(_size < (1024 * 1024)) {
+        si.ReadOnlySize->setText( QString(i18n("%1 KB")).arg( (float)_size/(float)(1024) , 4,'f', 2));
+    }
+    else {
+        si.ReadOnlySize->setText( QString(i18n("%1 MB")).arg( (float)_size/(float)(1024*1024) , 4,'f', 2));
+    }
     si.ReadOnlyBitrate->setText(_bitrate);
     si.ComboBoxGenre->setCurrentText(_genre);
     
@@ -2118,6 +2123,15 @@ void YammiGui::forSelectionSongInfo( ) {
     int result=si.exec();
     if(result!=QDialog::Accepted) {
         return;
+    }
+    
+    if(selected > 20) {
+        QString msg("");
+        msg += QString("Your changes will affect %1 song entries").arg(selected);
+        msg += "\n\nDo you want to continue?";
+        if( KMessageBox::warningYesNo( this, msg) != KMessageBox::Yes ) {
+            return;
+        }
     }
 
     // now set the edited info for all selected songs
@@ -2884,12 +2898,12 @@ QString YammiGui::replacePrelistenSkip(QString input, int lengthInSeconds, int s
     int skipSeconds = lengthInSeconds * skipTo / 100;
     int skipMilliSeconds = skipSeconds * 1000;
     int skipFrames = skipSeconds * 38;
-    int skipSamples = skipSeconds * 441;
+//    int skipSamples = skipSeconds * 441;
 
     input.replace(QRegExp("\\{skipSeconds\\}"), QString("%1").arg(skipSeconds));
     input.replace(QRegExp("\\{skipMilliSeconds\\}"), QString("%1").arg(skipMilliSeconds));
     input.replace(QRegExp("\\{skipFrames\\}"), QString("%1").arg(skipFrames));
-    input.replace(QRegExp("\\{skipSamples\\}"), QString("%1").arg(skipSamples));
+//    input.replace(QRegExp("\\{skipSamples\\}"), QString("%1").arg(skipSamples));
     return input;
 }
     
@@ -2905,15 +2919,12 @@ void YammiGui::preListen(Song* s, int skipTo) {
     QString prelistenCmd;
     if(s->filename.right(3).upper()=="MP3") {
         prelistenCmd = config()->prelistenMp3Command;
-        lastPrelistened="MP3";
     }
     else if(s->filename.right(3).upper()=="OGG") {
         prelistenCmd = config()->prelistenOggCommand;
-        lastPrelistened="OGG";
     }
     else if(s->filename.right(3).upper()=="WAV") {
         prelistenCmd = config()->prelistenWavCommand;
-        lastPrelistened="WAV";
     }
     else if(s->filename.right(4).upper()=="FLAC") {
         prelistenCmd = config()->prelistenFlacCommand;
@@ -3587,7 +3598,7 @@ void YammiGui::createSongPopup() {
  * @param pos time in milliseconds
  */
 void YammiGui::seek( int pos ) {
-    kdDebug() << "seek song to pos " << pos << endl;
+//    kdDebug() << "seek song to pos " << pos << endl;
     player->jumpTo(pos);
 }
 
