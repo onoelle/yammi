@@ -6,8 +6,6 @@ PLEASE READ THE FOLLOWING, if you have problems with compiling
 via the normal configure/make/make install procedure...
 
 Yammi has some dependencies/requirements that can be switched off:
-(As of version 0.8.0, the configure script should recognize for most dependencies,
-if the required libs are not available and disable linking against them automatically)
 
 kdecore (http://www.kde.org)
 ----------------------------
@@ -19,7 +17,7 @@ id3lib (http://www.id3lib.org)
 ------------------------------
 Needed for reading id3 tags. Recommended if you use mp3 files.
 
-To disable (should be disabled automatically if not installed):
+To disable:
 --disable-id3lib         (=> no id3 tags can be read/written from/to mp3 files
                              layer information (bitrate, length) is still available)
 
@@ -27,7 +25,7 @@ libvorbis / libvorbisfile / libvorbis-dev (http://www.xiph.org/ogg/vorbis/)
 ---------------------------------------------------------------------------
 Needed for reading ogg tags. Recommended if you use ogg files.
 
-To disable (should be disabled automatically if not installed):
+To disable:
 
 --disable-ogglibs        (=> no ogg tags can be read/written from/to ogg files,
                              no ogg layer information (bitrate, length) available)
@@ -35,7 +33,7 @@ To disable (should be disabled automatically if not installed):
 xmms (http://www.xmms.org)
 --------------------------
 Needed for XMMS support. Required if you use XMMS as your media player.
-To disable (should be disabled automatically if not installed):
+To disable:
 --disable-xmms           (=> disables xmms support)
 
 
@@ -44,7 +42,7 @@ For example, use
 to disable support for ogg files and disable noatun support.
 
 Note:
-If you don't have either XMMS or noatun support compiled in, Yammi only has limited functionality.
+If you don't have either XMMS or Noatun support compiled in, Yammi only has limited functionality.
 
 
 Install path
