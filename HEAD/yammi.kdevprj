@@ -23,7 +23,7 @@ cflags=
 cppflags=
 cxxflags=\s-O3 -Wall
 ldadd=\s$(LIB_QT)
-ldflags=\s                                  \s
+ldflags=\s                                    \s
 
 [General]
 AMChanged=false
