@@ -56,6 +56,7 @@
 #include <kmessagebox.h>
 #include <kprogress.h>
 #include <kdebug.h>
+#include <dcopobject.h>
 
 
 #include <qheader.h>
@@ -107,7 +108,7 @@ static QString columnName[] = { i18n("Artist"), i18n("Title"), i18n("Album"), i1
 extern YammiGui* gYammiGui;
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-YammiGui::YammiGui() : KMainWindow( ) {
+YammiGui::YammiGui() : /* DCOP: DCOPObject("YammiPlayer"),*/ KMainWindow( ) {
 
     //FIXME Warning!!!! gYammiGui is (should) be set in main, but there are calls in *this* constructor
     // that rely on the variable pointing to the yammi instance.. since the variable in main gets assigned
@@ -117,6 +118,7 @@ YammiGui::YammiGui() : KMainWindow( ) {
     m_config.loadConfig( );
     currentSong = 0;
     chosenFolder = 0;
+    folderToAdd = 0;
     selectionMode = SELECTION_MODE_USER_SELECTED;
 
     // set up model
@@ -1289,7 +1291,7 @@ void YammiGui::addFolderContentSnappy() {
         int x=chosenFolder->getScrollPosX();
         int y=chosenFolder->getScrollPosY();
         songListView->setContentsPos(x, y);
-
+		folderToAdd = 0;
     }
 }
 
@@ -1682,9 +1684,18 @@ void YammiGui::getSelectedSongs() {
     }
     if(selectionMode == SELECTION_MODE_FOLDER) {
         // get songs from currently selected folder: complete folder content
-        // take the order as shown in the songlist
-        for(QListViewItem* i=songListView->firstChild(); i; i=i->itemBelow()) {
-            selectedSongs.appendSong(((SongListItem*) i)->song());
+        // if the folder is already completely added to GUI, we take the order as shown in the songlist
+		if(folderToAdd == 0) {
+		  for(QListViewItem* i=songListView->firstChild(); i; i=i->itemBelow()) {
+	        selectedSongs.appendSong(((SongListItem*) i)->song());
+		  }
+		}
+		else {
+			// here we are in the middle of adding all songs... (lazy adding) => take folder content directly
+			kdDebug() << "taking songs directly from list...\n";
+        	for(Song* s=chosenFolder->firstSong(); s; s=chosenFolder->nextSong()) {
+		    	selectedSongs.appendSong(s);
+			}
         }
     }
 
@@ -3150,9 +3161,11 @@ void YammiGui::toggleColumnVisibility(int column) {
 
 void YammiGui::loadMediaPlayer( ) {
     switch( m_config.mediaPlayer ) {
+#ifdef ENABLE_XMMS
     case 0:
         player = new XmmsPlayer(0, model);
         break;
+#endif
     case 1:
         player = new NoatunPlayer( model );
         break;
@@ -3293,7 +3306,6 @@ bool YammiGui::setupActions( ) {
     new KAction(i18n("Grab And Encode CD-Track..."),"cd",0,this,SLOT(grabAndEncode()), actionCollection(),"grab");
 
     // playlist actions
-    new KAction(i18n("Switch to/from Playlist"),0,0,this,SLOT(toFromPlaylist()),actionCollection(),"to_from_playlist");
     new KAction(i18n("Clear Playlist..."),0,0,this,SLOT(clearPlaylist()),actionCollection(),"clear_playlist");
     new KAction(i18n("Shuffle Playlist..."),0,0,this,SLOT(shufflePlaylist()),actionCollection(),"shuffle_playlists");
     new KAction(i18n("Clear Playlist"),"edittrash",KShortcut(QKeySequence(Key_Shift,Key_F8)),this,SLOT(clearPlaylist()),actionCollection(),"clear_playlist");
@@ -3481,4 +3493,110 @@ int YammiGui::randomNum(int numbers)
 		chosen %= numbers; // make sure the result is < numbers
 	}
 	return chosen;
+}
+
+/*     DCOP-functions     */
+void YammiGui::play() {
+
+	player->play();
+}
+
+void YammiGui::playPause() {
+
+	player->playPause();
+}
+
+void YammiGui::stop() {
+
+	player->stop();
+}
+
+void YammiGui::pause() {
+
+	player->pause();
+}
+
+int YammiGui::totalTime() {
+
+	return player->getTotalTime();
+}
+
+int YammiGui::currentTime() {
+
+	return player->getCurrentTime();
+}
+
+void YammiGui::aplayOff() {
+
+	autoplayOff();
+	m_autoplayActionOff->setChecked(true);
+}
+
+void YammiGui::aplayLNP() {
+
+	autoplayLNP();
+	m_autoplayActionLnp->setChecked(true);
+}
+
+void YammiGui::aplayRandom() {
+
+	autoplayRandom();
+	m_autoplayActionRandom->setChecked(true);
+}
+
+QString YammiGui::songInfo() {
+
+	QString info;
+	
+	info = "Artist :  " + songArtist() + "\n";
+	info += "Title :\t  " + songTitle() + "\n";
+	info += "Album :\t  " + songAlbum() + "\n";
+	info += "Track :\t  " + songTrack2D() + "\n";
+	info += "Year :\t  " + QString::number(songYear()) + "\n";
+	info += "Genre :\t  " + songGenre() + "\n" ;
+	info += "Comment : " + songComment() + "\n";
+	
+	return info;
+
+}
+
+QString YammiGui::songArtist() {
+
+	return currentSong->artist;
+}
+	
+QString YammiGui::songTitle() {
+
+	return currentSong->title;
+}
+
+
+int YammiGui::songTrack() {
+
+	return currentSong->trackNr;
+}
+
+QString YammiGui::songTrack2D() {
+	
+	return QString().sprintf("%02d", currentSong->trackNr);
+}
+	
+QString YammiGui::songAlbum() {
+
+	return currentSong->album;
+}
+
+QString YammiGui::songGenre() {
+
+	return CMP3Info::getGenre(currentSong->genreNr);
+}
+
+QString YammiGui::songComment() {
+
+	return currentSong->comment;
+}
+
+int YammiGui::songYear() {
+
+	return currentSong->year;
 }

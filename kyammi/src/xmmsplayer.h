@@ -19,11 +19,15 @@
 #ifndef XMMSPLAYER_H
 #define XMMSPLAYER_H
 
+#include "options.h"
+
+
 #include "mediaplayer.h"
 
 /**
  * The MediaPlayer class tailored to XMMS.
  */
+
 
 class XmmsPlayer : public MediaPlayer
 {
@@ -67,5 +71,6 @@ signals:
   void playlistChanged();
   void statusChanged();  
 };
+
 
 #endif

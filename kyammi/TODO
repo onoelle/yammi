@@ -1,18 +1,19 @@
 TODO
 ----
-last update 02.07.2004
+last update 19.07.2004
 
 
 for version 1.2-beta
 --------------------
-- BUG: cannot sort files according to path => I cannot reproduce this bug on my system
+- BUG: cannot sort files according to path => cannot reproduce this bug on my system
+- improve: wishlist items
 - define and execute smoke tests
 - check/resolve bugs on sf
 - check all TODOs / FIXMEs
 - child safe mode?
 - keep tags consistent mode?
 - update and publish yammi handbook (switch from sgml to docbook format)
-- create a yammi entry on http://kde-apps.org
+- create a yammi entry on www.kde-apps.org
 - handle unplayable files (wishes, text files) => 1. dequeue on second position or 2. introduce file types and different behaviour
 check kde conformance:  
   - standard kde i18n schema: add a translation and test it

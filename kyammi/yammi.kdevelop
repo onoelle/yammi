@@ -36,7 +36,7 @@ which allows convenient and fast access to any songs.</description>
       <mainprogram>src/yammi</mainprogram>
       <directoryradio>executable</directoryradio>
       <customdirectory>/</customdirectory>
-      <programargs></programargs>
+      <programargs/>
       <terminal>false</terminal>
       <autocompile>true</autocompile>
       <envvars/>
@@ -77,7 +77,7 @@ which allows convenient and fast access to any songs.</description>
       <abortonerror>false</abortonerror>
       <numberofjobs>1</numberofjobs>
       <dontact>false</dontact>
-      <makebin></makebin>
+      <makebin/>
     </make>
   </kdevautoproject>
   <kdevfileview>
@@ -87,9 +87,11 @@ which allows convenient and fast access to any songs.</description>
       <group pattern="*.png" name="Icons" />
       <group pattern="*.po;*.ts" name="Translations" />
       <group pattern="*" name="Others" />
+      <hidenonprojectfiles>false</hidenonprojectfiles>
+      <hidenonlocation>false</hidenonlocation>
     </groups>
     <tree>
-      <hidepatterns/>
+      <hidepatterns></hidepatterns>
       <hidenonprojectfiles>false</hidenonprojectfiles>
     </tree>
   </kdevfileview>
@@ -141,11 +143,11 @@ which allows convenient and fast access to any songs.</description>
   <kdevdebugger>
     <general>
       <dbgshell>libtool</dbgshell>
-      <programargs></programargs>
-      <gdbpath></gdbpath>
-      <configGdbScript></configGdbScript>
-      <runShellScript></runShellScript>
-      <runGdbScript></runGdbScript>
+      <programargs/>
+      <gdbpath/>
+      <configGdbScript/>
+      <runShellScript/>
+      <runGdbScript/>
       <breakonloadinglibs>true</breakonloadinglibs>
       <separatetty>false</separatetty>
       <floatingtoolbar>false</floatingtoolbar>
@@ -192,8 +194,8 @@ which allows convenient and fast access to any songs.</description>
     <bzip>false</bzip>
     <archname/>
     <appname>yammi</appname>
-    <version>1.2-alpha-2</version>
-    <release>1.2-alpha-2</release>
+    <version>1.2-alpha-3</version>
+    <release>1.2-alpha-3</release>
     <vendor>oliver.noelle</vendor>
     <licence>GPL</licence>
     <summary>Yet Another Music Manager I...</summary>

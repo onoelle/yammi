@@ -27,7 +27,8 @@
 #include "options.h"
 #include "prefs.h"
 #include "mylist.h"
- 
+//#include "yammidcopiface.h"
+
 
 
 class QSlider;
@@ -59,7 +60,7 @@ class SearchThread;
  *
  * ...still way to big and unordered...cleaning in progress (luis and oliver)
  */
-class YammiGui : public KMainWindow
+class YammiGui : public KMainWindow // DCOP, virtual public YammiDcopIface
 {
 	Q_OBJECT
 public:
@@ -270,6 +271,29 @@ public:
 	void updateListViewColumns();
   void setSelectionMode(SelectionMode mode);
 
+  	/* DCOP functions, skipForward and skipBackward are used as is */
+  	void playPause();
+	void play();
+	void stop();
+	void pause();
+	
+	void aplayOff();
+	void aplayLNP();
+	void aplayRandom();
+	
+	int currentTime();
+	int totalTime();
+	
+	QString songInfo();
+	QString songArtist();
+	QString songTitle();
+	int songTrack();
+	QString songTrack2D();
+	QString songAlbum();
+	QString songGenre();
+	QString songComment();
+	int songYear();  
+  
 protected:
 	void createMenuBar( );
 	void createSongPopup( );

@@ -15,18 +15,19 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "xmmsplayer.h"
 #include "options.h"
 
-#ifdef ENABLE_XMMS
+#include "xmmsplayer.h"
+
+
 #include <xmmsctrl.h>        // xmms control
-#endif
 
 #include "songentryint.h"
 #include <kdebug.h>
 
 
 XmmsPlayer::XmmsPlayer(int session, YammiModel* model) : MediaPlayer( model ) {
+#ifdef ENABLE_XMMS
 	this->session=session;
     bool alreadyRunning=ensurePlayerIsRunning();
     if(alreadyRunning) {
@@ -47,10 +48,12 @@ XmmsPlayer::XmmsPlayer(int session, YammiModel* model) : MediaPlayer( model ) {
     } else {
         xmmsRepeatWasActivated=false;
     }
+#endif
 }
 
 
 XmmsPlayer::~XmmsPlayer() {
+#ifdef ENABLE_XMMS
     if(xmmsShuffleWasActivated) {
         kdDebug() << "switching xmms shuffle mode back on...\n";
         xmms_remote_toggle_shuffle(session);
@@ -59,6 +62,7 @@ XmmsPlayer::~XmmsPlayer() {
         kdDebug() << "switching xmms repeat mode back on...\n";
         xmms_remote_toggle_repeat(session);
     }
+#endif
 }
 
 
@@ -67,6 +71,7 @@ XmmsPlayer::~XmmsPlayer() {
  * Returns, whether xmms was already running.
  */
 bool XmmsPlayer::ensurePlayerIsRunning() {
+#ifdef ENABLE_XMMS
     if(xmms_remote_is_running(session)) {
 		kdDebug() << "running instance of xmms found\n";
         return true;
@@ -87,6 +92,7 @@ bool XmmsPlayer::ensurePlayerIsRunning() {
     // to be sure, we wait another 100ms before starting any interaction with xmms
     kdDebug() << "...xmms is up!\n";
     myWait(100);
+#endif
     return false;
 }
 
@@ -97,6 +103,7 @@ bool XmmsPlayer::ensurePlayerIsRunning() {
  * Only called on Yammi startup.
  */
 void XmmsPlayer::syncPlayer2Yammi(MyList* playlist) {
+#ifdef ENABLE_XMMS
     // 1. delete all songs already played
     for(int i=xmms_remote_get_playlist_pos(session)-1; i>=0; i--) {
         xmms_remote_playlist_delete(session, i);
@@ -120,6 +127,7 @@ void XmmsPlayer::syncPlayer2Yammi(MyList* playlist) {
     playlistChanged();
     lastStatus=getStatus();
     statusChanged();
+#endif
 }
 
 
@@ -128,6 +136,7 @@ void XmmsPlayer::syncPlayer2Yammi(MyList* playlist) {
  * ie. writes all entries from Yammi's playlist into xmms' playlist.
  */
 void XmmsPlayer::syncYammi2Player(bool syncAll) {
+#ifdef ENABLE_XMMS
     // check whether xmms playlist is empty
     if(xmms_remote_get_playlist_length(session)==0) {
         for(int i=0; i<(int)playlist->count() && (i<model->config().keepInXmms || syncAll); i++) {
@@ -228,33 +237,41 @@ void XmmsPlayer::syncYammi2Player(bool syncAll) {
     		xmms_remote_set_playlist_pos(0, 0);
     	}
     */
+#endif
 }
 
 
 /// start playing
 bool XmmsPlayer::play() {
+#ifdef ENABLE_XMMS
     xmms_remote_play(session);
+#endif
     return true;
 }
 
 
 /// pause
 bool XmmsPlayer::pause() {
+#ifdef ENABLE_XMMS
     xmms_remote_pause(session);
+#endif
     return true;
 }
 
 
 /// toggle between play and pause
 bool XmmsPlayer::playPause() {
+#ifdef ENABLE_XMMS
     ensurePlayerIsRunning();
     xmms_remote_play_pause(session);
+#endif
     return true;
 }
 
 
 /// skip forward in playlist (if desired without crossfading)
 bool XmmsPlayer::skipForward(bool withoutCrossfading) {
+#ifdef ENABLE_XMMS
     ensurePlayerIsRunning();
     if(withoutCrossfading) {
         xmms_remote_pause(session);
@@ -264,6 +281,7 @@ bool XmmsPlayer::skipForward(bool withoutCrossfading) {
     if(withoutCrossfading) {
         xmms_remote_play(session);
     }
+#endif
     return true;
 }
 
@@ -271,6 +289,7 @@ bool XmmsPlayer::skipForward(bool withoutCrossfading) {
 /// skip backward in playlist (if desired without crossfading)
 /// TODO: clean up, make independent of Yammi?
 bool XmmsPlayer::skipBackward(bool withoutCrossfading) {
+#ifdef ENABLE_XMMS
     ensurePlayerIsRunning();
     if(withoutCrossfading) {
         xmms_remote_pause(session);
@@ -287,18 +306,22 @@ bool XmmsPlayer::skipBackward(bool withoutCrossfading) {
     if(withoutCrossfading) {
         xmms_remote_play(session);
     }
+#endif
     return true;
 }
 
 /// stop playback
 bool XmmsPlayer::stop() {
+#ifdef ENABLE_XMMS
     ensurePlayerIsRunning();
     xmms_remote_stop(session);
+#endif
     return true;
 }
 
 
 PlayerStatus XmmsPlayer::getStatus() {
+#ifdef ENABLE_XMMS
     if(xmms_remote_is_playing(session)) {
         // xmms playing or paused
         if(!xmms_remote_is_paused(session))
@@ -306,30 +329,45 @@ PlayerStatus XmmsPlayer::getStatus() {
         else
             return PAUSED;
     } else
+#endif
         return STOPPED;
 }
 
 /// get current position in song
 int XmmsPlayer::getCurrentTime() {
+#ifdef ENABLE_XMMS
     return xmms_remote_get_output_time(session);
+#else
+	return 0;
+#endif
 }
 
 /// get total time of current song
 int XmmsPlayer::getTotalTime() {
+#ifdef ENABLE_XMMS
     int pos=xmms_remote_get_playlist_pos(session);
     return xmms_remote_get_playlist_time(session, pos);
+#else
+	return 0;
+#endif
 }
 
 /// jump to position in song
 bool XmmsPlayer::jumpTo(int value) {
+#ifdef ENABLE_XMMS
     xmms_remote_jump_to_time(session, value);
+#endif
     return true;
 }
 
 /// return current filename
 QString XmmsPlayer::getCurrentFile() {
+#ifdef ENABLE_XMMS
     int pos=xmms_remote_get_playlist_pos(session);
     return QString(xmms_remote_get_playlist_file(session, pos));
+#else
+	return "";
+#endif
 }
 
 
@@ -339,15 +377,18 @@ QString XmmsPlayer::getCurrentFile() {
  * when yammi saves its database filenames of enqueuee songs might have changed)
  */
 void XmmsPlayer::clearPlaylist() {
+#ifdef ENABLE_XMMS
     kdDebug() << "clearing xmms playlist...\n";
     while(xmms_remote_get_playlist_length(session)>1) {
         xmms_remote_playlist_delete(session, 1);
     }
     kdDebug() << "...done!\n";
+#endif
 }
 
 
 void XmmsPlayer::check() {
+#ifdef ENABLE_XMMS
     // 1. check, whether status has changed
     // bug in XMMS?: sometimes reports a wrong status on song change (not playing)!!!
     PlayerStatus newStatus=getStatus();
@@ -404,19 +445,21 @@ void XmmsPlayer::check() {
     if(yammiPlaylistChanged) {
         playlistChanged();
     }
+#endif
 }
 
 
 /// quit player
 void XmmsPlayer::quit() {
+#ifdef ENABLE_XMMS
     xmms_remote_quit(session);
+#endif
 }
 
 void XmmsPlayer::myWait(int msecs) {
     QTime t;
     t.start();
-    while(t.elapsed()<msecs)
-        ;
+    while(t.elapsed()<msecs);
 }
 
 

@@ -4,7 +4,7 @@
 **
 *****************************************************************************/
 
-#include <kapplication.h>
+#include <kuniqueapplication.h>
 #include <kconfig.h>
 #include <kaboutdata.h>
 #include <kcmdlineargs.h>
@@ -61,7 +61,7 @@ int main( int argc, char **argv )
 	KCmdLineArgs::addCmdLineOptions( options );
 	KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
 	srand(time(NULL));
-	KApplication app;
+	KUniqueApplication app;
 	YammiGui* yammi = new YammiGui();
 	if(!yammi->isValidState()) {
 		kdDebug() << "shutting down now...\n";

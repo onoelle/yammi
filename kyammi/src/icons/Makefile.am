@@ -6,7 +6,7 @@
 # - and where do I find good docs (and not "to be written..." all over)
 
 
-EXTRA_DIST = in.xpm notin.xpm newCategory.xpm some_in.xpm yammi16x16.png yammi32x32.png yammi48x48.png yammi64x64.png stop_prelisten.png prelisten_start.png prelisten_middle.png prelisten_end.png play_now.png enqueue_asnext.png enqueue.png
+EXTRA_DIST = in.xpm notin.xpm newCategory.xpm some_in.xpm yammi16x16.png yammi32x32.png yammi48x48.png yammi64x64.png stop_prelisten.png prelisten_start.png prelisten_middle.png prelisten_end.png play_now.png enqueue_asnext.png enqueue.png toggle_playlist.png
 
 install-data-local:
 	$(mkinstalldirs) $(kde_datadir)/yammi/icons/crystalsvg/22x22/actions/
@@ -18,6 +18,7 @@ install-data-local:
 	$(INSTALL_DATA) $(srcdir)/prelisten_start.png $(kde_datadir)/yammi/icons/crystalsvg/22x22/actions/prelisten_start.png
 	$(INSTALL_DATA) $(srcdir)/prelisten_middle.png $(kde_datadir)/yammi/icons/crystalsvg/22x22/actions/prelisten_middle.png
 	$(INSTALL_DATA) $(srcdir)/prelisten_end.png $(kde_datadir)/yammi/icons/crystalsvg/22x22/actions/prelisten_end.png
+	$(INSTALL_DATA) $(srcdir)/toggle_playlist.png $(kde_datadir)/yammi/icons/crystalsvg/22x22/actions/toggle_playlist.png
 	
 uninstall-local:
 	-rm -f $(kde_datadir)/yammi/icons/crystalsvg/22x22/actions/enqueue_asnext.png
@@ -27,5 +28,6 @@ uninstall-local:
 	-rm -f $(kde_datadir)/yammi/icons/crystalsvg/22x22/actions/prelisten_middle.png
 	-rm -f $(kde_datadir)/yammi/icons/crystalsvg/22x22/actions/prelisten_end.png
 	-rm -f $(kde_datadir)/yammi/icons/crystalsvg/22x22/actions/stop_prelisten.png
+	-rm -f $(kde_datadir)/yammi/icons/crystalsvg/22x22/actions/toggle_playlist.png
 
 ####### kdevelop will overwrite this part!!! (end)############

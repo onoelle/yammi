@@ -70,10 +70,10 @@
    <Action name="prepend_selected"/>
    <Action name="append_selected"/>
    <Action name="play_selected"/>
+   <Action name="toggle_playlist"/>
    <Action name="dequeue_selected"/>
    <Action name="clear_playlist"/>
    <Action name="info_selected"/>
-   <Action name="tofrom_playlist"/>
 </ToolBar>
 <ToolBar name="RemovableMediaToolbar">
  <text>Removable Media</text>
