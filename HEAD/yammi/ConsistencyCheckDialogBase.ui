@@ -1,0 +1,177 @@
+<!DOCTYPE UI><UI version="3.0" stdsetdef="1">
+<class>CheckConsistencyDialogBase</class>
+<widget class="QDialog">
+    <property name="name">
+        <cstring>CheckConsistencyDialogBase</cstring>
+    </property>
+    <property name="geometry">
+        <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>349</width>
+            <height>267</height>
+        </rect>
+    </property>
+    <property name="caption">
+        <string>Check consistency of song database</string>
+    </property>
+    <property name="sizeGripEnabled">
+        <bool>true</bool>
+    </property>
+    <grid>
+        <property name="name">
+            <cstring>unnamed</cstring>
+        </property>
+        <property name="margin">
+            <number>11</number>
+        </property>
+        <property name="spacing">
+            <number>6</number>
+        </property>
+        <widget class="QLayoutWidget" row="0" column="0">
+            <property name="name">
+                <cstring>Layout1</cstring>
+            </property>
+            <grid>
+                <property name="name">
+                    <cstring>unnamed</cstring>
+                </property>
+                <property name="margin">
+                    <number>0</number>
+                </property>
+                <property name="spacing">
+                    <number>6</number>
+                </property>
+                <widget class="QLabel" row="0" column="0" rowspan="1" colspan="2">
+                    <property name="name">
+                        <cstring>TextLabel1</cstring>
+                    </property>
+                    <property name="sizePolicy">
+                        <sizepolicy>
+                            <hsizetype>5</hsizetype>
+                            <vsizetype>4</vsizetype>
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                        </sizepolicy>
+                    </property>
+                    <property name="font">
+                        <font>
+                            <family>Nimbus Sans l [Urw]</family>
+                            <pointsize>12</pointsize>
+                            <bold>1</bold>
+                            <italic>1</italic>
+                        </font>
+                    </property>
+                    <property name="text">
+                        <string>Options for consistency check</string>
+                    </property>
+                </widget>
+                <widget class="QCheckBox" row="5" column="0" rowspan="1" colspan="2">
+                    <property name="name">
+                        <cstring>CheckBoxCheckFilenames</cstring>
+                    </property>
+                    <property name="text">
+                        <string>check filenames</string>
+                    </property>
+                </widget>
+                <widget class="QCheckBox" row="7" column="0" rowspan="1" colspan="2">
+                    <property name="name">
+                        <cstring>CheckBoxCheckDoubles</cstring>
+                    </property>
+                    <property name="text">
+                        <string>check for doubles</string>
+                    </property>
+                </widget>
+                <widget class="QPushButton" row="8" column="1">
+                    <property name="name">
+                        <cstring>PushButtonCancel</cstring>
+                    </property>
+                    <property name="sizePolicy">
+                        <sizepolicy>
+                            <hsizetype>7</hsizetype>
+                            <vsizetype>0</vsizetype>
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                        </sizepolicy>
+                    </property>
+                    <property name="text">
+                        <string>Cancel</string>
+                    </property>
+                </widget>
+                <widget class="QCheckBox" row="4" column="0" rowspan="1" colspan="2">
+                    <property name="name">
+                        <cstring>CheckBoxRepairTags</cstring>
+                    </property>
+                    <property name="text">
+                        <string>repair tags</string>
+                    </property>
+                </widget>
+                <widget class="QCheckBox" row="6" column="0" rowspan="1" colspan="2">
+                    <property name="name">
+                        <cstring>CheckBoxRepairFilenames</cstring>
+                    </property>
+                    <property name="text">
+                        <string>repair filenames</string>
+                    </property>
+                </widget>
+                <widget class="QCheckBox" row="1" column="0" rowspan="1" colspan="2">
+                    <property name="name">
+                        <cstring>CheckBoxCheckForExistence</cstring>
+                    </property>
+                    <property name="text">
+                        <string>check for existence of files</string>
+                    </property>
+                </widget>
+                <widget class="QCheckBox" row="2" column="0" rowspan="1" colspan="2">
+                    <property name="name">
+                        <cstring>CheckBoxUpdateNonExisting</cstring>
+                    </property>
+                    <property name="text">
+                        <string>update non existing entries (delete/update)</string>
+                    </property>
+                </widget>
+                <widget class="QCheckBox" row="3" column="0" rowspan="1" colspan="2">
+                    <property name="name">
+                        <cstring>CheckBoxCheckTags</cstring>
+                    </property>
+                    <property name="text">
+                        <string>check tags</string>
+                    </property>
+                </widget>
+                <widget class="QPushButton" row="8" column="0">
+                    <property name="name">
+                        <cstring>PushButtonOk</cstring>
+                    </property>
+                    <property name="sizePolicy">
+                        <sizepolicy>
+                            <hsizetype>7</hsizetype>
+                            <vsizetype>0</vsizetype>
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                        </sizepolicy>
+                    </property>
+                    <property name="text">
+                        <string>Start Check...</string>
+                    </property>
+                </widget>
+            </grid>
+        </widget>
+    </grid>
+</widget>
+<connections>
+    <connection>
+        <sender>PushButtonOk</sender>
+        <signal>clicked()</signal>
+        <receiver>CheckConsistencyDialogBase</receiver>
+        <slot>accept()</slot>
+    </connection>
+    <connection>
+        <sender>PushButtonCancel</sender>
+        <signal>clicked()</signal>
+        <receiver>CheckConsistencyDialogBase</receiver>
+        <slot>reject()</slot>
+    </connection>
+</connections>
+<pixmapinproject/>
+<layoutdefaults spacing="6" margin="11"/>
+</UI>
