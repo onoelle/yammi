@@ -66,7 +66,7 @@
 #include <qcombobox.h>
 #include <qprogressdialog.h>
 #include <qsettings.h>
-#include <qprocess.h>
+//#include <qprocess.h>
 
 // xmms control
 #include <xmmsctrl.h>
@@ -88,11 +88,6 @@
 #include "foldermedia.h"
 #include "foldersorted.h"
 #include "mylistview.h"
-
-// dialog includes
-#include "preferencesdialog.h"
-#include "DeleteDialog.h"
-#include "WorkDialogBase.h"
 
 
 // -----------------------------------------------------------------
@@ -149,9 +144,9 @@ protected:
 	QPushButton*	currentSongLabel;
 	QComboBox*		mediaListCombo;
 	QPushButton*	loadFromMediaButton;
-	QSpinBox*			shutdownSpinBox;
-	QLabel*				shutdownLabel;
-	QPushButton* 	shutdownButton;
+	QSpinBox*			sleepModeSpinBox;
+	QLabel*				sleepModeLabel;
+	QPushButton* 	sleepModeButton;
 	QPopupMenu*		playListPopup;
 	QPopupMenu* 	songPopup;
 	QPopupMenu* 	songPlayPopup;
@@ -161,22 +156,17 @@ protected:
 	QPopupMenu* 	songPluginPopup;
 	QPopupMenu* 	playlistPluginPopup;
 	QPopupMenu* 	folderPopup;
-	QMenuBar*			mainMenu;
-	QPopupMenu* 	fileMenu;
-	QPopupMenu* 	viewMenu;
-	QPopupMenu* 	xmmsMenu;
-	QPopupMenu* 	helpMenu;
-	QPopupMenu*		currentSongMenu;
-	QStatusBar* 	mainStatusBar;					// status bar
-	QToolBar*			toolBar;								// tool bar
+	QStatusBar* 	mainStatusBar;
+	QToolBar*			toolBar;
 	QSlider*			songSlider;
 	bool					isSongSliderGrabbed;
 public:	
 	QToolButton*	tbSaveDatabase;
+
 protected slots:
 	void				endProgram();
 	void				shutDown();
-	void				changeShutdownMode();
+	void				changeSleepMode();
   void        changeShutdownValue(int value);
 	void				setPreferences();
 	void				openHelp();
@@ -199,7 +189,7 @@ protected slots:
 
 	void				updateSongDatabaseHarddisk();
 	void				updateSongDatabaseMedia();
-	void				updateSongDatabase(QString media);
+	void				updateSongDatabase(bool checkExistence, QString scanDir, QString filePattern, QString media);
 	void				updateView();
 		
 	// song action slots

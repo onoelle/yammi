@@ -111,6 +111,11 @@ Song::Song(const QString location, const QString mediaName)
 		return;
 	}
 	
+  if(location.right(4).upper()!=".MP3") {
+    cout << "no mp3 file?\n";
+    return;
+  }
+  
 	// get mp3layer info
 	MP3Layer layer;
 	if(!layer.scan(&f, location)) {
@@ -241,9 +246,9 @@ bool Song::checkTags()
 	}
 	bool same=false;
 
-  // id3lib (experimental => disabled)
+  // id3lib (experimental)
   //**********************
-/*  ID3_Tag myTag;
+  ID3_Tag myTag;
   myTag.Link(this->location());
 
   ID3_Frame* myFrame = myTag.Find(ID3FID_TITLE);
@@ -265,20 +270,24 @@ bool Song::checkTags()
   else {
     cout << "could not find frame\n";
   }
-*/
+
 
 
 	MP3Tag tag;
 	if(tag.scan(&f)) {										// tags exist => compare to our fields
 		same=true;
 		// beware that artist/title can exceed 30 characters (by extra info in filename)
+    cout << "before artist\n";
 		if(strcmp(this->artist.left(30).stripWhiteSpace().latin1(),  tag.artist) !=0) {same=false; cout << "(artist)"; }
+    cout << "before title\n";
 		if(strcmp(this->title.left(30).stripWhiteSpace().latin1(),   tag.title)  !=0) {same=false; cout << "(title)"; }
-    cout << "old title tag: " << tag.title << "|\n";
-		if(strcmp(this->album.latin1(),   tag.album)  !=0)
+    cout << "before album\n";
+    if(strcmp(this->album.latin1(),   tag.album)  !=0)
 		  {same=false; cout << "(album)"; }
+    cout << "before comment\n";
 		// häh??? why does application of left (on an empty string) change the string???
 		if(strcmp(this->comment.latin1(), tag.comment)!=0) {same=false;cout << "(comment)"; }
+    cout << "before trackNr\n";
 		if(this->trackNr!=0 && this->trackNr!=tag.trackNr) {same=false; cout << "(trackNr)"; }
 		if(this->genreNr!=tag.gennum)  {same=false; cout << "(genreNr)"; }
 		QString strYear;

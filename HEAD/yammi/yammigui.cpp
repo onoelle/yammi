@@ -42,6 +42,14 @@
 #include "songinfo.xpm"
 #include "stopPrelisten.xpm"
 
+
+// dialog includes
+#include "preferencesdialog.h"
+#include "DeleteDialog.h"
+#include "WorkDialogBase.h"
+#include "updatedatabasedialog.h"
+
+
 extern YammiGui* gYammiGui;
 
 
@@ -70,31 +78,42 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
 	cout << "setting up gui...\n";
 	
 	// set up menu
-	mainMenu = new QMenuBar(this);
+	QMenuBar* mainMenu = new QMenuBar(this);
 	
 	// file menu
-	fileMenu = new QPopupMenu;
-	fileMenu->insertItem( "Save Database..",  model, SLOT(save()));
-//	fileMenu->insertItem( "Save All..",  model, SLOT(saveAll()));
-	fileMenu->insertItem( "Update Database..",  this, SLOT(updateSongDatabaseHarddisk()));
-	fileMenu->insertItem( "Scan Removable Media..",  this, SLOT(updateSongDatabaseMedia()));
-	fileMenu->insertItem( "Update Automatic Folder Structure",  this, SLOT(updateView()));
-	fileMenu->insertItem( "Check Consistency..",  this, SLOT(forAllCheckConsistency()));
-	fileMenu->insertItem( "Preferences..",  this, SLOT(setPreferences()));
-	fileMenu->insertItem( "Grab and encode CD-Track..",  this, SLOT(grabAndEncode()));
+	QPopupMenu* fileMenu = new QPopupMenu;
 	fileMenu->insertItem( "Quit", this, SLOT(endProgram()), CTRL+Key_Q );
-	mainMenu->insertItem( "File", fileMenu );
-		
+	mainMenu->insertItem( "&File", fileMenu );
+  
 	// edit menu
 	QPopupMenu* editMenu = new QPopupMenu;
 	editMenu->insertItem( "Select all",  this, SLOT(selectAll()));
 	editMenu->insertItem( "Invert selection",  this, SLOT(invertSelection()));
 	mainMenu->insertItem( "&Edit", editMenu );
-	
-	// help menu	
-	helpMenu = new QPopupMenu;
-	helpMenu->insertItem( "&Handbook..",  this, SLOT(openHelp()));
-	helpMenu->insertItem( "&About..", this, SLOT(aboutDialog()));
+
+  // view menu
+	QPopupMenu* viewMenu = new QPopupMenu;
+	viewMenu->insertItem( "Update Automatic Folder Structure",  this, SLOT(updateView()));
+	mainMenu->insertItem( "&View", viewMenu );
+
+  // database menu
+  QPopupMenu* databaseMenu = new QPopupMenu;
+  databaseMenu->insertItem( "Save Database...",  model, SLOT(save()));
+	databaseMenu->insertItem( "Update Database...",  this, SLOT(updateSongDatabaseHarddisk()));
+	databaseMenu->insertItem( "Scan Removable Media...",  this, SLOT(updateSongDatabaseMedia()));
+	databaseMenu->insertItem( "Check Consistency...",  this, SLOT(forAllCheckConsistency()));
+	databaseMenu->insertItem( "Grab and encode CD-Track...",  this, SLOT(grabAndEncode()));
+	mainMenu->insertItem( "&Database", databaseMenu );
+		
+  // settings menu
+  QPopupMenu* settingsMenu = new QPopupMenu;
+  settingsMenu->insertItem( "Configure Yammi...",  this, SLOT(setPreferences()));
+	mainMenu->insertItem( "&Settings", settingsMenu );
+
+  // help menu	
+	QPopupMenu* helpMenu = new QPopupMenu;
+	helpMenu->insertItem( "&Handbook...",  this, SLOT(openHelp()));
+	helpMenu->insertItem( "&About...", this, SLOT(aboutDialog()));
 	mainMenu->insertItem( "&Help", helpMenu );
 	
 	
@@ -176,20 +195,21 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
 	mediaListCombo->setFixedWidth(150);
 	loadFromMediaButton=new QPushButton("load", toolBarRemovableMedia);
 	
-	// shutdown mode
-	QToolBar* toolBarShutdownMode = new QToolBar ( this, "Shutdown Mode Toolbar");
+	// Sleep mode
+	QToolBar* toolBarSleepMode = new QToolBar ( this, "Sleep Mode Toolbar");
+  toolBarSleepMode->setLabel( "Jukebox Functions" );
 	songsUntilShutdown=-3;
-	shutdownLabel = new QLabel(toolBarShutdownMode);
-	shutdownLabel->setText( "Sleep mode:" );
-	shutdownLabel->setFrameStyle( QFrame::NoFrame );
-	shutdownButton=new QPushButton("(disabled)", toolBarShutdownMode);
-	connect( shutdownButton, SIGNAL( clicked() ), this, SLOT( changeShutdownMode() ) );
-	QToolTip::add( shutdownButton, "change sleep mode");
-	shutdownSpinBox=new QSpinBox(1, 99, 1, toolBarShutdownMode);
-	shutdownSpinBox->setValue(songsUntilShutdown);
-	QToolTip::add( shutdownSpinBox, "number songs until shutdown");
-	shutdownSpinBox->setEnabled(false);
-  connect( shutdownSpinBox, SIGNAL( valueChanged(int) ), this, SLOT( changeShutdownValue(int) ) );
+	sleepModeLabel = new QLabel(toolBarSleepMode);
+	sleepModeLabel->setText( "Sleep mode:" );
+	sleepModeLabel->setFrameStyle( QFrame::NoFrame );
+	sleepModeButton=new QPushButton("(disabled)", toolBarSleepMode);
+	connect( sleepModeButton, SIGNAL( clicked() ), this, SLOT( changeSleepMode() ) );
+	QToolTip::add( sleepModeButton, "change sleep mode");
+	sleepModeSpinBox=new QSpinBox(1, 99, 1, toolBarSleepMode);
+	sleepModeSpinBox->setValue(songsUntilShutdown);
+	sleepModeSpinBox->setEnabled(false);
+	QToolTip::add( sleepModeSpinBox, "number songs until shutdown");
+  connect( sleepModeSpinBox, SIGNAL( valueChanged(int) ), this, SLOT( changeShutdownValue(int) ) );
 
 	// now setup main area
 	QSplitter* centralWidget=new QSplitter(Qt::Horizontal, this);
@@ -1654,19 +1674,16 @@ void YammiGui::forSong(Song* s, action act, QString dir=0)
       // xmms playing or playing but paused
       if(!xmms_remote_is_paused(0)) {
         // case 1: xmms is playing
-        cout << "case1\n";
         xmms_skipForward();
       }
       else {
         // case 2: xmms is paused => start playing
-        cout << "case2\n";
         xmms_skipForward();
         xmms_remote_play(0);
       }
     }
     else {
       // case 3: xmms is stopped (this is a bit dirty...)
-      cout << "case3\n";
       xmms_remote_set_playlist_pos(0, 0);
       xmms_remote_play(0);
     }
@@ -2003,11 +2020,16 @@ void YammiGui::xmms_clearPlaylist()
   ensureXmmsIsRunning();
 	if(model->config.childSafe)
 		return;
-	if( QMessageBox::warning( this, "Yammi", "Clear complete playlist?\n(except currently played song)", "Yes", "No")!=0)
-		return;
 	Song* save=0;
-	if(currentSong!=0 && xmms_remote_is_playing(0) && model->songsToPlay.count()>1)
-		save=model->songsToPlay.firstSong();
+	if(currentSong!=0 && xmms_remote_is_playing(0) && model->songsToPlay.count()>1) {
+    if( QMessageBox::warning( this, "Yammi", "Clear complete playlist?\n(except currently played song)", "Yes", "No")!=0)
+      return;
+    save=model->songsToPlay.firstSong();
+  }
+  else {
+    if( QMessageBox::warning( this, "Yammi", "Clear complete playlist?\n(including currently played song)", "Yes", "No")!=0)
+      return;
+  }
 	model->songsToPlay.clear();
 	if(save!=0)
 		folderActual->addSong(save);
@@ -2080,10 +2102,9 @@ void YammiGui::onTimer()
 			currentFile=file;
 			if(songsUntilShutdown>0) {
 				songsUntilShutdown--;
-				shutdownSpinBox->setValue(songsUntilShutdown);
+				sleepModeSpinBox->setValue(songsUntilShutdown);
 				if(songsUntilShutdown==0) {
 					cout << "shutting down now...\n";
-          // here we could open a self-destroying dialog box that enables to cancel the shutdown...
 					shutDown();
 				}
 			}
@@ -2292,7 +2313,7 @@ void YammiGui::shutDown()
       }
       delete(ttimer);
       if(progress.wasCancelled()) {
-        changeShutdownMode();
+        changeSleepMode();
         return;
       }
     }
@@ -2373,19 +2394,19 @@ void YammiGui::keyPressEvent(QKeyEvent* e)
 			break;
 			
 		case Key_Pause:									// exit program (press twice for shutting down computer)
-			changeShutdownMode();
+			changeSleepMode();
 			break;
 				
 		case Key_PageUp:
 			if(songsUntilShutdown>0) {
 				songsUntilShutdown++;
-				shutdownSpinBox->setValue(songsUntilShutdown);
+				sleepModeSpinBox->setValue(songsUntilShutdown);
 			}
 			break;
 		case Key_PageDown:
 			if(songsUntilShutdown>1) {
 				songsUntilShutdown--;
-				shutdownSpinBox->setValue(songsUntilShutdown);
+				sleepModeSpinBox->setValue(songsUntilShutdown);
 			}
 			break;
 		case Key_Up: {
@@ -2436,25 +2457,25 @@ void YammiGui::keyPressEvent(QKeyEvent* e)
 }
 
 		
-void YammiGui::changeShutdownMode()
+void YammiGui::changeSleepMode()
 {
  	if(shuttingDown==0 && !model->config.childSafe) {							// shutdown computer !!!
  		// disabled -> shutdown
  		qApp->beep();
  		shuttingDown=1;
 		songsUntilShutdown=3;
-    shutdownSpinBox->setValue(3);
-		shutdownButton->setText("shutdown");
- 		shutdownSpinBox->setEnabled(true);
+		sleepModeButton->setText("shutdown");
+    sleepModeSpinBox->setValue(3);
+ 		sleepModeSpinBox->setEnabled(true);
 		cout << "shutting down, press Pause again to cancel...\n";
  		if(model->allSongsChanged() || model->categoriesChanged()) {
- 			if( QMessageBox::warning( this, "Yammi", "Save changes?\n(answering no will abort shutdown mode)", "Yes", "No")==0)
+ 			if( QMessageBox::warning( this, "Yammi", "Save changes?\n(answering no will cancel sleep mode)", "Yes", "No")==0)
  				model->save();
  			else {
  				shuttingDown=0;
  				songsUntilShutdown=-3;
-				shutdownButton->setText("(disabled)");
-        shutdownSpinBox->setEnabled(false);
+				sleepModeButton->setText("(disabled)");
+        sleepModeSpinBox->setEnabled(false);
  				cout << "shutting down aborted!\n";
  			}
  		}
@@ -2463,8 +2484,8 @@ void YammiGui::changeShutdownMode()
  		// shutdown -> disabled
  		qApp->beep();
  		songsUntilShutdown=-3;
-		shutdownButton->setText("(disabled)");
-		shutdownSpinBox->setEnabled(false);
+		sleepModeButton->setText("(disabled)");
+		sleepModeSpinBox->setEnabled(false);
  		shuttingDown=0;
  		cout << "shutting down cancelled!\n";
  	}
@@ -2530,8 +2551,21 @@ void YammiGui::preListen(Song* s, int skipTo)
 
 void YammiGui::updateSongDatabaseHarddisk()
 {
-	updateSongDatabase(0);
+	UpdateDatabaseDialog d(this, "Update Database Dialog");
+
+  d.LineEditScanDir->setText(model->config.scanDir);
+  d.LineEditFilePattern->setText("*.mp3");
+	// show dialog
+	int result=d.exec();
+	if(result!=QDialog::Accepted)
+    return;
+
+  QString scanDir=d.LineEditScanDir->text();
+  QString filePattern=d.LineEditFilePattern->text();
+  bool checkExistence=d.CheckBoxExistenceCheck->isChecked();    
+  updateSongDatabase(checkExistence, scanDir, filePattern, 0);
 }
+
 
 void YammiGui::updateSongDatabaseMedia()
 {
@@ -2539,10 +2573,12 @@ void YammiGui::updateSongDatabaseMedia()
 	QString mediaName(QInputDialog::getText( "caption", "enter name of media", QLineEdit::Normal, QString(""), &ok, this ));
 	if(!ok)
 		return;
-	updateSongDatabase(mediaName);
+	updateSongDatabase(false, model->config.scanDir, "*.mp3", mediaName);
 }
 
-void YammiGui::updateSongDatabase(QString media)	
+
+
+void YammiGui::updateSongDatabase(bool checkExistence, QString scanDir, QString filePattern, QString media)	
 {
 	QProgressDialog progress( "Scanning...", "Cancel", 100, this, "progress", TRUE );
 	progress.setMinimumDuration(0);
@@ -2550,7 +2586,7 @@ void YammiGui::updateSongDatabase(QString media)
   progress.setProgress(0);
 	qApp->processEvents();
 	
-	model->updateSongDatabase(media, &progress);
+	model->updateSongDatabase(checkExistence, scanDir, filePattern, media, &progress);
 	updateView();
 	folderProblematic->update(&model->problematicSongs);
 	folderAll->updateTitle();

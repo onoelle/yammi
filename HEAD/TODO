@@ -16,6 +16,7 @@ KNOWN BUGS
 for release 0.6.1
 -----------------
 
+- dialog+options for updating database (together with scan media)
 - on deleting a song: delete in all lists (history, categories, ...)
 - save more session settings?
   - column width? order? for each folder?

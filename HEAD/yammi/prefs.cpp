@@ -20,7 +20,7 @@
 /// sets preferences to the default values
 Prefs::Prefs(){
 // general	
-	yammiVersion="0.6";
+	yammiVersion="0.7";
 	trashDir="/mp3/trash/";
 	scanDir="/mp3/inbox/";
 	doubleClickAction=None;

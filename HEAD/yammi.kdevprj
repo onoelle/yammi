@@ -16,8 +16,8 @@ bin_program=yammi
 cflags=
 cppflags=
 cxxflags=\s-O3 -Wall
-ldadd=-lxmms $(LIB_QT)
-ldflags=\s        \s
+ldadd=-lxmms -lid3 $(LIB_QT)
+ldflags=\s          \s
 
 [General]
 AMChanged=false
@@ -34,7 +34,7 @@ project_type=normal_qt2
 sgml_file=/home/oliver/work/programming/yammi/yammi/docs/en/index.sgml
 short_info=Yet Another Music Manager I...,- serves as a front-end for xmms,- manages your mp3 collection,- convenient fuzzy search,- categorization of songs,- history of played songs,- basic support for grabbing and encoding songs,- support for external plugins such as mp3burn or cdlabelgen,- playlist management,- jukebox functions
 sub_dir=yammi/
-version=0.6
+version=0.7
 version_control=CVS
 workspace=1
 
@@ -103,7 +103,7 @@ install_location=
 type=SOURCE
 
 [yammi/Makefile.am]
-files=yammi/lo32-app-yammi.png,yammi/lo16-app-yammi.png,yammi/clearPlaylist.xpm,yammi/defaultControlClick.xpm,yammi/defaultDoubleClick.xpm,yammi/defaultMiddleClick.xpm,yammi/defaultShiftClick.xpm,yammi/DeleteDialog.ui,yammi/dequeueAll.xpm,yammi/dequeueSong.xpm,yammi/enqueue.xpm,yammi/enqueueasnext.xpm,yammi/filesave.xpm,yammi/folder.cpp,yammi/folder.h,yammi/foldercategories.cpp,yammi/foldercategories.h,yammi/foldergroups.cpp,yammi/foldergroups.h,yammi/foldermedia.cpp,yammi/foldermedia.h,yammi/foldersorted.cpp,yammi/foldersorted.h,yammi/fuzzsrch.cpp,yammi/fuzzsrch.h,yammi/in.xpm,yammi/main.cpp,yammi/mp3_layer.cpp,yammi/mp3_layer.h,yammi/mp3tag.cpp,yammi/mp3tag.h,yammi/mydatetime.cpp,yammi/mydatetime.h,yammi/mylist.cpp,yammi/mylist.h,yammi/mylistview.cpp,yammi/mylistview.h,yammi/notin.xpm,yammi/pause.xpm,yammi/playnow.xpm,yammi/preferencesdialog.cpp,yammi/preferencesdialog.h,yammi/PreferencesDialogBase.ui,yammi/prefs.cpp,yammi/prefs.h,yammi/prelisten.xpm,yammi/skipbackward.xpm,yammi/skipbackwardim.xpm,yammi/skipforward.xpm,yammi/skipforwardim.xpm,yammi/song.cpp,yammi/song.h,yammi/songentry.cpp,yammi/songentry.h,yammi/songentryint.cpp,yammi/songentryint.h,yammi/songentryint2.cpp,yammi/songentryint2.h,yammi/songentrystring.cpp,yammi/songentrystring.h,yammi/songentrytimestamp.cpp,yammi/songentrytimestamp.h,yammi/songinfo.cpp,yammi/songinfo.h,yammi/songinfo.xpm,yammi/SongInfoDialog.ui,yammi/songlistitem.cpp,yammi/songlistitem.h,yammi/stop.xpm,yammi/stopPrelisten.xpm,yammi/WorkDialogBase.ui,yammi/yammigui.cpp,yammi/yammigui.h,yammi/YammiGuiBase.ui,yammi/yammimodel.cpp,yammi/yammimodel.h,yammi/playnowim.xpm,yammi/yammiicon.xpm,yammi/glib.h,yammi/glibconfig.h,yammi/xmmsctrl.h
+files=yammi/lo32-app-yammi.png,yammi/lo16-app-yammi.png,yammi/clearPlaylist.xpm,yammi/defaultControlClick.xpm,yammi/defaultDoubleClick.xpm,yammi/defaultMiddleClick.xpm,yammi/defaultShiftClick.xpm,yammi/DeleteDialog.ui,yammi/dequeueAll.xpm,yammi/dequeueSong.xpm,yammi/enqueue.xpm,yammi/enqueueasnext.xpm,yammi/filesave.xpm,yammi/folder.cpp,yammi/folder.h,yammi/foldercategories.cpp,yammi/foldercategories.h,yammi/foldergroups.cpp,yammi/foldergroups.h,yammi/foldermedia.cpp,yammi/foldermedia.h,yammi/foldersorted.cpp,yammi/foldersorted.h,yammi/fuzzsrch.cpp,yammi/fuzzsrch.h,yammi/in.xpm,yammi/main.cpp,yammi/mp3_layer.cpp,yammi/mp3_layer.h,yammi/mp3tag.cpp,yammi/mp3tag.h,yammi/mydatetime.cpp,yammi/mydatetime.h,yammi/mylist.cpp,yammi/mylist.h,yammi/mylistview.cpp,yammi/mylistview.h,yammi/notin.xpm,yammi/pause.xpm,yammi/playnow.xpm,yammi/preferencesdialog.cpp,yammi/preferencesdialog.h,yammi/PreferencesDialogBase.ui,yammi/prefs.cpp,yammi/prefs.h,yammi/prelisten.xpm,yammi/skipbackward.xpm,yammi/skipbackwardim.xpm,yammi/skipforward.xpm,yammi/skipforwardim.xpm,yammi/song.cpp,yammi/song.h,yammi/songentry.cpp,yammi/songentry.h,yammi/songentryint.cpp,yammi/songentryint.h,yammi/songentryint2.cpp,yammi/songentryint2.h,yammi/songentrystring.cpp,yammi/songentrystring.h,yammi/songentrytimestamp.cpp,yammi/songentrytimestamp.h,yammi/songinfo.cpp,yammi/songinfo.h,yammi/songinfo.xpm,yammi/SongInfoDialog.ui,yammi/songlistitem.cpp,yammi/songlistitem.h,yammi/stop.xpm,yammi/stopPrelisten.xpm,yammi/WorkDialogBase.ui,yammi/yammigui.cpp,yammi/yammigui.h,yammi/YammiGuiBase.ui,yammi/yammimodel.cpp,yammi/yammimodel.h,yammi/playnowim.xpm,yammi/yammiicon.xpm,yammi/glib.h,yammi/glibconfig.h,yammi/xmmsctrl.h,yammi/updatedatabasedialog.cpp,yammi/updatedatabasedialog.h,yammi/UpdateDatabaseDialogBase.ui
 sub_dirs=docs
 type=prog_main
 
@@ -114,6 +114,12 @@ install_location=
 type=SOURCE
 
 [yammi/SongInfoDialog.ui]
+dist=true
+install=false
+install_location=
+type=SOURCE
+
+[yammi/UpdateDatabaseDialogBase.ui]
 dist=true
 install=false
 install_location=
@@ -613,6 +619,18 @@ dist=true
 install=false
 install_location=
 type=DATA
+
+[yammi/updatedatabasedialog.cpp]
+dist=true
+install=false
+install_location=
+type=SOURCE
+
+[yammi/updatedatabasedialog.h]
+dist=true
+install=false
+install_location=
+type=HEADER
 
 [yammi/xmmsctrl.h]
 dist=true

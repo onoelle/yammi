@@ -697,7 +697,7 @@ bool YammiModel::categoriesChanged()
  * - checks whether already existing, whether modified
  * - if not => inserts new song object into database
  */
-void YammiModel::updateSongDatabase(QString mediaName, QProgressDialog* progress)
+void YammiModel::updateSongDatabase(bool checkExistence, QString scanDir, QString filePattern, QString mediaName, QProgressDialog* progress)
 {
 	if(config.childSafe)
 		return;
@@ -708,13 +708,13 @@ void YammiModel::updateSongDatabase(QString mediaName, QProgressDialog* progress
 	if(mediaName==0) {
 		cout << "scanning harddisk for new songs... \n";
 		// check that scanDir is an existing directory
-		QDir d(config.scanDir);
+		QDir d(scanDir);
 		if(!d.exists()) {
 			cout << "base directory for scanning does not exist!\n";
 			cout << "set value \"scanDir\" in preferences to correct value!\n";
 		}
 		else {
-			traverse(config.scanDir, progress);
+			traverse(scanDir, filePattern, progress);
 			progress->reset();
  			cout << "..finished scanning!\n";
 	 	}
@@ -737,7 +737,7 @@ void YammiModel::updateSongDatabase(QString mediaName, QProgressDialog* progress
 			cout << "set value \"mediaDir\" in preferences to correct value!\n";
 		}
 		else {
-			traverse(config.mediaDir, progress, mediaName);
+			traverse(config.mediaDir, filePattern, progress, mediaName);
  			cout << "..finished scanning!\n";
 	 	}
 		// umount media dir
@@ -755,7 +755,7 @@ void YammiModel::updateSongDatabase(QString mediaName, QProgressDialog* progress
 
 /// traverses a directory recursively and processes all mp3 files
 /// puts songs where heuristic is not sure into the problematicSongs list
-void YammiModel::traverse(QString path, QProgressDialog* progress, QString mediaName)
+void YammiModel::traverse(QString path, QString filePattern, QProgressDialog* progress, QString mediaName)
 {
 	// leave out the following directories
 	if(path+"/"==config.trashDir || path+"/"==config.swapDir) {
@@ -769,36 +769,43 @@ void YammiModel::traverse(QString path, QProgressDialog* progress, QString media
   qApp->processEvents();
 	
 	QDir d(path);
+
+  // step 1: scan files
 	
-	d.setFilter(QDir::Files | QDir::Dirs);
-	d.setSorting( QDir::DirsFirst | QDir::Reversed );
+  d.setFilter(QDir::Files);
+  d.setNameFilter(filePattern);
+	d.setSorting( QDir::Name );
 	const QFileInfoList* list = d.entryInfoList();
 	int filesToScan=list->count();
 	progress->setTotalSteps(filesToScan);
-	
 	QFileInfoListIterator it( *list );								      // create list iterator
 
 	int filesScanned=0;
 	for(QFileInfo *fi; (fi=it.current()); ++it ) {						// for each file/dir
 		filesScanned++;
-		if(progress->wasCancelled())
-			return;
-		// if directory...		=> scan recursive
-		if (fi->isDir()) {
-			if(fi->fileName()!="." && fi->fileName()!="..")
-				traverse(fi->filePath(), progress, mediaName);
-			continue;
-		}
 	  progress->setProgress(filesScanned);
 	  qApp->processEvents();
-		// if file...					=> check whether we have a valid mp3 file
-		if ((fi->extension(FALSE)).upper()!="MP3")
-			continue;
+		if(progress->wasCancelled())
+			return;
 			
-		// okay, we have an mp3 file, try to add to database
+		// okay, we have a file to scan, try to add to database
 		addSongToDatabase(fi->filePath(), mediaName);
+  }
+
+  // step 2: recursively scan subdirectories
+	QDir d2(path);
+  d2.setFilter(QDir::Dirs);
+	d2.setSorting( QDir::Name );
+	const QFileInfoList* list2 = d2.entryInfoList();
+	QFileInfoListIterator it2( *list2 );								      // create list iterator
+
+	for(QFileInfo *fi2; (fi2=it2.current()); ++it2 ) {						// for each file/dir
+		if(fi2->fileName()=="." || fi2->fileName()=="..")
+      continue;
+		traverse(fi2->filePath(), filePattern, progress, mediaName);
 	}
 }
+
 
 /** adds a single songfile to the database */
 void YammiModel::addSongToDatabase(QString filename, QString mediaName=0)

@@ -87,7 +87,7 @@ public:
 	bool			noPrefsFound;
 	bool			noDatabaseFound;
 	
-	void 			traverse(QString path, QProgressDialog* progress, QString mediaName=0);
+	void 			traverse(QString path, QString filePattern, QProgressDialog* progress, QString mediaName=0);
 
 	bool			allSongsChanged();
 	void			allSongsChanged(bool changed);
@@ -119,7 +119,7 @@ public:
 public slots:
 	void			save();
 	void			saveAll();
-	void			updateSongDatabase(QString mediaName, QProgressDialog* progress);
+	void			updateSongDatabase(bool checkExistence, QString scanDir, QString filePattern, QString mediaName, QProgressDialog* progress);
 	void			addSongToDatabase(QString filename, QString mediaName);
 	bool			checkConsistency(QProgressDialog* progress);
 

@@ -25,7 +25,8 @@
 #include <qinputdialog.h>
 
 
-PreferencesDialog::PreferencesDialog(QWidget *parent, const char *name, bool modal, Prefs* config ) : Preferences(parent,name,modal)
+PreferencesDialog::PreferencesDialog(QWidget *parent, const char *name, bool modal, Prefs* config )
+  : Preferences(parent, name, modal)
 {
 	this->config=config;
 	
