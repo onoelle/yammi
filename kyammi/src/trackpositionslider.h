@@ -23,6 +23,8 @@
 #include <qslider.h>
 #include <qobject.h>
 
+class Song;
+
 /**
  *@author Oliver Nölle
  * Convenience class, copied from Scott Wheelers "Juk" project
@@ -34,7 +36,8 @@ class TrackPositionSlider : public QSlider
 
 public:
     TrackPositionSlider(Orientation orientation, QWidget *parent, const char *name);
-	
+	void setupTickmarks(Song* song);
+    
 signals:
 	void myWheelEvent(int rotation);
 	

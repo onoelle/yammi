@@ -42,6 +42,7 @@
     </Menu>
   </Menu>
 </MenuBar>
+
 <ToolBar name="MediaPlayerToolbar">
  <text>Media Player</text>
  <Action name="play_pause"/>

@@ -18,10 +18,14 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 #include "trackpositionslider.h"
+#include "song.h"
 
 
 TrackPositionSlider::TrackPositionSlider(Orientation orientation, QWidget *parent, const char *name) : QSlider(orientation, parent, name)
 {
+    setLineStep(1*1000);
+    setPageStep(10*1000);
+    setTracking( true );    
 }
 
 void TrackPositionSlider::mousePressEvent(QMouseEvent *e)
@@ -43,3 +47,20 @@ void TrackPositionSlider::wheelEvent(QWheelEvent* e)
 	emit myWheelEvent(e->delta());
 }
 
+void TrackPositionSlider::setupTickmarks(Song* song)
+{
+    if(song == 0) {
+        setRange(0, 0);
+        setTickmarks(QSlider::NoMarks);
+        setValue(0);
+        setEnabled(false);
+    }
+    else {
+        setRange(0, song->length*1000);
+        setValue(0);
+        setTickmarks(QSlider::Below);
+        setTickInterval(1000*60);
+        setEnabled(true);        
+        updateGeometry();
+    }
+}

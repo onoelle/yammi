@@ -70,8 +70,7 @@ public slots:
   bool playPause();
   bool skipForward(bool withoutCrossfading);
   bool skipBackward(bool withoutCrossfading);
-  void syncPlayer2Yammi(MyList* playlist);
-  void syncYammi2Player(bool syncAll);
+  void syncYammi2Player();
   bool jumpTo(int value);
   QString getCurrentFile();
   int getCurrentTime();

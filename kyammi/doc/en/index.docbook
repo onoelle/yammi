@@ -83,14 +83,15 @@ Do NOT change these in the translation. -->
 
 <abstract>
 <para>
-Yammi ("Yet Another Music Manager I...") is a tool to manage and search your song collection
-on your computer (eg. mp3, ogg and wav files).
-It is centered around an intuitive graphical user interface and a song database,
-which allows convenient and fast access to any songs.
-For playing songs Yammi currently supports two media players, namely XMMS
-(<ulink url="http://www.xmms.org">X MultiMedia System</ulink>).
-and
+Yammi ("Yet Another Music Manager I...") is a digital music collection (eg. mp3, ogg, wav files)
+manager targeted at large song collections (eg. a few thousand songs).
+It allows you to efficiently organize your music collection (edit tags, rename or move files, ...)
+and features intuitive and fast access to songs for playing or editing them.
+
+For playing songs Yammi currently supports three media player backends, namely XMMS
+(<ulink url="http://www.xmms.org">X MultiMedia System</ulink>), 
 <ulink url="http://www.noatun.kde.org">Noatun</ulink>
+or an internal <ulink url="http://www.arts-project.org/">arts player</ulink>.
 
 </para>
 </abstract>
@@ -131,36 +132,40 @@ problems. Basically a long version of the abstract.  Don't include a
 revision history. (see installation appendix comment) -->
 
 <para>
-Yammi ("Yet Another Music Manager I...") is a tool to manage and search your song collection
-on your computer (eg. mp3, ogg and wav files).
-It is centered around an intuitive graphical user interface and a song database,
-which allows convenient and fast access to any songs.
-For playing songs Yammi currently supports two media players, namely XMMS
-(<ulink url="http://www.xmms.org">X MultiMedia System</ulink>).
-and
-<ulink url="http://www.noatun.kde.org">Noatun</ulink>.
+With the success story of the mp3 format, more and more people are creating their personal digital music collection, consisting of a few hundred upto many thousand songs in popular formats such as mp3. With a growing song collection the need for some kind of organization tool increases. This tool should assist in finding songs and do something with them (eg. play, edit, categorize, backup or delete them). Yammi is targeted at exactly these needs, well suited to manage a song collection of 10.000 songs.
 </para>
 
 <para>
 Yammi enables you to
 
-- conveniently search for songs within seconds (fuzzy search)
+<itemizedlist>
 
-- organize your songs into playlists (called "categories")
-
-- read/write id3 and ogg tags, and easily keep tags and filenames consistent
-
-- keep statistics by logging when a song was played (when/how many times was song x played?)
-
-- assist in burning a selection of songs to a single audio CD or
-your whole song collection to multiple data CDs (distributing your songs over multiple media)
-
-- act as a jukebox, loading song files which are not on your harddisk on demand from removable media/CDs
-
-- prelisten to songs on headphone while normal playback to DJ your own party (needs a second sound card)
-
-- invoke other programs or custom scripts such as k3b, cdlabelgen, ... to burn CDs, generate CD labels or execute
-other commands, using the information from Yammi's song database
+<listitem><para>
+conveniently find even misspelled songs within seconds (fuzzy search)
+</para></listitem>
+<listitem><para>
+organize your songs into playlists (called "categories")
+</para></listitem>
+<listitem><para>
+read and write id3 and ogg tags, easily keeping tags and filenames consistent
+</para></listitem>
+<listitem><para>
+keep statistics by logging when a song was played (when/how many times was song x played?)
+</para></listitem>
+<listitem><para>
+assist in burning a selection of songs to a single audio CD or
+your whole song collection to multiple data CDs (automatically distributing your songs over multiple media)
+</para></listitem>
+<listitem><para>
+act as a jukebox, loading song files which are not on your harddisk on demand from removable media/CDs
+</para></listitem>
+<listitem><para>
+prelisten to songs on headphone while normal playback to DJ your own party (needs a second sound card)
+</para></listitem>
+<listitem><para>
+invoke other programs or custom scripts such as k3b, cdlabelgen, ... to burn CDs, generate CD labels or execute other commands, using the information from Yammi's song database
+</para></listitem>
+</itemizedlist>
 </para>
 
 <para>

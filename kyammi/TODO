@@ -1,6 +1,6 @@
 TODO
 ----
-last update 13.08.2004
+last update 15.08.2004
 
 
 for version 1.2-beta
@@ -21,19 +21,16 @@ check kde conformance:
 - consistency check:
   - better dialog texts (which song is moved?, better explanations what happens/examples?)
 - check dialog spacing & co (eg. guessing pattern!)
-- fix i18n strings to be ready for internationalization
 - fix: appropriate info messages on first startup/on importing old database
 - fix: appropriate default size for yammi window on first startup
 tag-related: (switch to taglib?)
 - fix: 0-length ogg file makes yammi crash?
 - CHECK: umlaute in tags?
 media-player-related:
-- CHECK: enqueuing songs => player starts to play immediately
 - check again: crash on clearing playlist including currently played song?
-- check skip backward functionality & filling up songPlayed list!!!
-- if you start yammi, while xmms has a song in its play list and then enqueue
-  and play a song in yammi, the song previously played in xmms is played instead.
+- fix: xmms stopped, enqueue as next: does not work
 before release:
+- fix i18n strings to be ready for internationalization
 - check all TODOs / FIXMEs
 - create a yammi entry on www.kde-apps.org
 - update website
@@ -44,6 +41,7 @@ before release:
 
 for version 1.2
 ---------------
+- skipForward in noatun while still crossfading: take current volume as start of crossfading
 - implement onPlayed and afterPlayed plugin types
 - on deleting a song: delete in *all* lists (history, categories, ...)
 - make follow symlinks a configurable option?

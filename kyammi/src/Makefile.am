@@ -34,7 +34,7 @@ shellrcdir = $(kde_datadir)/yammi
 
 noinst_HEADERS = applytoalldialog.h trackpositionslider.h util.h searchthread.h yammidcopiface.h
 
-SUBDIRS =  icons
+SUBDIRS = icons
 applnkMultimedia_DATA =  yammi.desktop
 applnkMultimediadir = $(kde_appsdir)/Multimedia
 

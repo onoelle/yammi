@@ -43,8 +43,7 @@ public slots:
   bool playPause()  {return true;}
   bool skipForward(bool)   {return true;}
   bool skipBackward(bool)  {return true;}
-  void syncPlayer2Yammi(MyList*)  {};
-  void syncYammi2Player(bool) {};
+  void syncYammi2Player() {};
   bool jumpTo(int) {return true;}
   QString getCurrentFile() {return "";}
   int getCurrentTime() {return 0;}

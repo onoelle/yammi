@@ -517,7 +517,7 @@ void YammiModel::saveSongDatabase() {
             save=songsToPlay.firstSong();
             songsToPlay.removeSong(save);
         }
-        m_yammi->player->syncYammi2Player(false);
+        m_yammi->player->syncYammi2Player();
         if(currentSongRenamed) {
             songsToPlay.insert(0, new SongEntryInt(save, 0));
         }
@@ -1312,4 +1312,28 @@ QString YammiModel::checkAvailability(Song* s, bool touch) {
         return "never";
     }
 }
+
+/**
+ * Remove all those thongs from top of playlist that are unplayable:
+ * - swapped songs not on harddisk and not loaded from removable media
+ * - those that match unplayable file mask ("*.txt")
+ * Does NOT emit the playlistChanged() signal! (TODO: is this correct?)
+ */
+bool YammiModel::skipUnplayableSongs() {
+    kdDebug() << "skipUnplayableSongs()\n";
+    QString location;
+    bool songsRemoved = false;
+    while( songsToPlay.at(0) ) {
+        location = checkAvailability( songsToPlay.at(0)->song() );
+        if( location == "" || location == "never" ) {
+            kdDebug() << "Song " << songsToPlay.at(0)->song()->displayName() << "not available, skipping\n";
+            songsToPlay.removeFirst();
+            songsRemoved = true;
+        } else {
+            break;
+        }
+    }
+    return songsRemoved;
+}
+
 

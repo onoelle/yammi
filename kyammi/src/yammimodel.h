@@ -71,6 +71,7 @@ public:
     bool traverse(QString path, QString filePattern, KProgressDialog* progress, QString mediaName=0);
     Song* getSongFromFilename(QString filename);
     QString checkAvailability(Song* s, bool touch=false);
+    bool skipUnplayableSongs();    
 
     bool allSongsChanged();
     void allSongsChanged(bool changed);

@@ -4,6 +4,7 @@ Major:
 - added: dcop interface (thanks to Daniel Raneland)
 - added: toolbar button for "Switch to/from playlist"
 - fixed: compiling with --disable-xmms
+- added: key bindings configure dialog
 
 Minor:
 - started to port yammi handbook from sgml to docbook format (including requirements for installation / compilation)
@@ -17,6 +18,7 @@ Minor:
 - fixed: restore on startup: autoplay mode, playlist, song position
 - fixed: check consistency for whole song database: only one song selected
 - improved: no restart of yammi necessary for change of media player
+- fixed: media player integration: cleanup and fixed some incorrect behaviour in noatun and artsplayer
 
 
 

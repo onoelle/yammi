@@ -33,12 +33,9 @@ enum PlayerStatus { STOPPED, PAUSED, PLAYING};
  *
  * Communication between MediaPlayer class and Yammi:
  * 1. On startup, Yammi creates the MediaPlayer object.
- * 2. When Yammi has completely started, it calls syncPlayer2Yammi(playlist).
- *    This is meant to load the playlist of the MediaPlayer into Yammi.
- * 3. The MediaPlayer should emit playlistChanged() and statusChanged() in that call.
- * 4. Yammi calls check() every 100? ms. (we should instead use a thread owned by the player)
- * 5. If the player detects a change in status or a song change, it has to signal statusChanged() or playlistChanged()
- * 6. Whenever Yammi changes it's playlist, it calls syncYammi2Player(false)
+ * 2. Yammi calls check() every 100? ms. (TODO: we should instead use a thread owned by the player)
+ * 3. If the player detects a change in status or a song change, it has to signal statusChanged() or playlistChanged()
+ * 4. Whenever Yammi changes it's playlist, it calls syncYammi2Player()
  *    to possibly fill up the playlist of the player.
  */
 class MediaPlayer : public QObject
@@ -61,8 +58,7 @@ public slots:
   virtual bool playPause() = 0;
   virtual bool skipForward(bool withoutCrossfading) = 0;
   virtual bool skipBackward(bool withoutCrossfading) = 0;
-  virtual void syncPlayer2Yammi(MyList* playlist) = 0;
-  virtual void syncYammi2Player(bool syncAll) = 0;
+  virtual void syncYammi2Player() = 0;
   virtual bool jumpTo(int value) = 0;
   virtual QString getCurrentFile() = 0;
   virtual int getCurrentTime() = 0;

@@ -95,13 +95,11 @@ public slots:
 	    @param  withoutCrossfading - not implemented
 	    @return false */
 	virtual bool skipBackward(bool withoutCrossfading);
-	/** Reimplemented from MediaPlayer.
-	     Since there is no "Player's playlist" the implementation only
-	     clears Yammi's playlist. */
-	virtual void syncPlayer2Yammi(MyList* playlist);
-	/** Reimplemented from MediaPlayer.
-	     Since there is no "Player's playlist" the implementation does nothing */
-	virtual void syncYammi2Player(bool syncAll);
+	/**
+     * Reimplemented from MediaPlayer.
+     * Only syncs the first song of yammi playlist as the current arts player object.
+     */
+	virtual void syncYammi2Player();
 	/** Reimplemented from MediaPlayer.
 	     --> Seek : jump to position value within the song
 	     @param value the position in the song to seek to */
@@ -120,11 +118,11 @@ public slots:
 	virtual void quit();
 
 private:
-	KArtsDispatcher *m_dispatcher;
-	KArtsServer *m_server;
-	KDE::PlayObjectFactory *m_factory;
-	KDE::PlayObject *m_currentPlay;
-	SongEntry *m_currentSong;
+	KArtsDispatcher* m_dispatcher;
+	KArtsServer* m_server;
+	KDE::PlayObjectFactory* m_factory;
+	KDE::PlayObject* m_currentPlay;
+	Song* m_currentSong;
 };
 
 

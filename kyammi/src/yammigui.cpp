@@ -56,6 +56,7 @@
 #include <kmessagebox.h>
 #include <kprogress.h>
 #include <kdebug.h>
+#include <kkeydialog.h>
 #include <dcopobject.h>
 
 
@@ -222,14 +223,17 @@ void YammiGui::loadDatabase(QString databaseDir) {
     if(restorePlaylistOnStartup) {
         model->readList(&(model->songsToPlay), m_config.databaseDir + "/" + "playqueue.xml");
         folderActual->update(folderActual->songlist());
-        player->syncYammi2Player(false);
-        int savedSongPosition = cfg->readNumEntry("savedSongPosition", 0);
-        if(savedSongPosition != 0) {
-            player->jumpTo(savedSongPosition);
-        }
-        int savedPlayingStatus = cfg->readNumEntry("savedPlayingStatus", STOPPED);
-        if(folderActual->songlist().count() > 0 && savedPlayingStatus==PLAYING && player->getStatus()!=PLAYING ) {
-            player->play();
+        player->syncYammi2Player();
+        if(folderActual->songlist().count() > 0) {
+            m_seekSlider->setupTickmarks(folderActual->firstSong());
+            int savedSongPosition = cfg->readNumEntry("savedSongPosition", 0);
+            if(savedSongPosition != 0) {
+                player->jumpTo(savedSongPosition);
+            }
+            int savedPlayingStatus = cfg->readNumEntry("savedPlayingStatus", STOPPED);
+            if(savedPlayingStatus==PLAYING && player->getStatus()!=PLAYING ) {
+                player->play();
+            }
         }
     }
     checkPlaylistAvailability();
@@ -503,7 +507,7 @@ void YammiGui::updatePlaylist() {
 
     // update gui
     folderActual->correctOrder();
-    player->syncYammi2Player(false);
+    player->syncYammi2Player();
     folderContentChanged(folderActual);
 }
 
@@ -511,13 +515,13 @@ void YammiGui::updatePlaylist() {
  * TODO: document, when is this method called???
  */
 void YammiGui::updateCurrentSongStatus() {
-    Song* firstInPlaylist=model->songsToPlay.count()>0 ? model->songsToPlay.firstSong() : 0;
+    Song* firstInPlaylist = 0;
+    if(model->songsToPlay.count()>0) {
+        firstInPlaylist = model->songsToPlay.firstSong();
+    }
     if(firstInPlaylist!=currentSong) {
         // a change in the first (=currently played) song!
-
-        // handle last song
         handleLastSong(currentSong);
-        // handle new song
         handleNewSong(model->songsToPlay.firstSong());
     }
 }
@@ -553,10 +557,7 @@ void YammiGui::handleNewSong(Song* newSong) {
     if(newSong==0) {
         setCaption(i18n("Yammi - not playing"));
         currentFile="";
-        m_seekSlider->setRange(0, 0);
-        m_seekSlider->setTickmarks(QSlider::NoMarks);
-        m_seekSlider->setValue(0);
-        m_seekSlider->setEnabled(false);
+        m_seekSlider->setupTickmarks(0);
         return;
     }
     // TODO: take swapped file?
@@ -573,19 +574,7 @@ void YammiGui::handleNewSong(Song* newSong) {
     }
 
     setCaption("Yammi: "+currentSong->displayName());
-
-    // setup songSlider
-    kdDebug() << "calling setRange, length: " << currentSong->length*1000 <<endl;
-    m_seekSlider->setRange(0, currentSong->length*1000);
-    // TODO: only set some of these values once?
-    // TODO: move some of these calls into the slider class!
-    m_seekSlider->setLineStep(1*1000);
-    m_seekSlider->setPageStep(10*1000);
-    m_seekSlider->setTickInterval(1000*60);
-    m_seekSlider->setTickmarks(QSlider::Below);
-    m_seekSlider->setValue(0);
-    m_seekSlider->updateGeometry();
-    m_seekSlider->setEnabled(true);
+    m_seekSlider->setupTickmarks(currentSong);
 }
 
 /**
@@ -599,10 +588,6 @@ void YammiGui::updatePlayerStatus() {
     if(player->getStatus()==PLAYING) {
         m_playPauseAction->setIcon("player_pause");
         m_playPauseAction->setText(i18n("Pause"));
-        if(currentSong==0 || currentFile!=player->getCurrentFile()) {
-            handleLastSong(currentSong);
-            (model->getSongFromFilename(player->getCurrentFile()));
-        }
     } else {
         m_playPauseAction->setIcon("player_play");
         m_playPauseAction->setText(i18n("Play"));
@@ -613,7 +598,6 @@ void YammiGui::updatePlayerStatus() {
         shutdownSequence( );
     }
 }
-
 
 
 QString YammiGui::getColumnName(int column) {
@@ -940,7 +924,7 @@ void YammiGui::setPreferences() {
         kdDebug() << "trying to switch media player...\n";
         int savedSongPosition = player->getCurrentTime();
         int savedPlayingState = player->getStatus();
-	player->stop();
+        player->stop();
         disconnectMediaPlayer();
         kdDebug() << "old player disconnected\n";
         delete player;
@@ -949,7 +933,7 @@ void YammiGui::setPreferences() {
         kdDebug() << "new media player loaded...\n";
         connectMediaPlayer();
         kdDebug() << "new media player connected...\n";
-        player->syncYammi2Player(false);
+        player->syncYammi2Player();
         if(savedSongPosition != 0) {
             player->jumpTo(savedSongPosition);
         }
@@ -959,6 +943,13 @@ void YammiGui::setPreferences() {
     }
 }
 
+/**
+ * Configures the key bindings.
+ */
+void YammiGui::configureKeys()
+{    
+    KKeyDialog::configure(actionCollection());
+}
 
 /**
  * Updates the songPopup submenus with available categories and plugins
@@ -1829,7 +1820,7 @@ void YammiGui::forSelectionEnqueue( ) {
         model->songsToPlay.append(new SongEntryInt(s, 13));
     }
     folderActual->correctOrder();
-    player->syncYammi2Player(false);
+    player->syncYammi2Player();
     folderContentChanged(folderActual);
     statusBar( )->message(QString(i18n("%1 Songs equeued at end of playlist")).arg(count), 2000);
 }
@@ -1848,13 +1839,15 @@ void YammiGui::forSelectionEnqueueAsNext( ) {
     selectedSongs.reverse();
     //FIXME - If the player is not playing, we can insert the itmes at pos 0
     for(Song* s = selectedSongs.firstSong(); s; s=selectedSongs.nextSong()) {
-        if(model->songsToPlay.count()==0 || currentSong!=model->songsToPlay.at(0)->song())
+        if(model->songsToPlay.count()==0 || currentSong!=model->songsToPlay.at(0)->song() || player->getStatus() != PLAYING) {
             model->songsToPlay.insert(0, new SongEntryInt(s, 13));
-        else
+        }
+        else {
             model->songsToPlay.insert(1, new SongEntryInt(s, 13));
+        }
     }
     folderActual->correctOrder();
-    player->syncYammi2Player(false);
+    player->syncYammi2Player();
     folderContentChanged(folderActual);
     statusBar( )->message(QString(i18n("%1 Songs equeued as next")).arg(count), 2000);
 }
@@ -1923,7 +1916,7 @@ void YammiGui::forSelectionDequeue( ) {
         }
     }
     folderActual->correctOrder();
-    player->syncYammi2Player(false);
+    player->syncYammi2Player();
     folderContentChanged(folderActual);
     bool ascending = (sortedByBefore>0);
     if(!ascending) {
@@ -2510,7 +2503,7 @@ void YammiGui::shufflePlaylist() {
     }
     folderActual->correctOrder();
     folderContentChanged(folderActual);
-    player->syncYammi2Player(false);
+    player->syncYammi2Player();
 }
 
 
@@ -2541,7 +2534,7 @@ void YammiGui::clearPlaylist() {
         folderActual->addSong(save);
     }
     folderActual->updateTitle();
-    player->syncYammi2Player(false);
+    player->syncYammi2Player();
     folderContentChanged(folderActual);
 }
 
@@ -2630,7 +2623,7 @@ void YammiGui::autoFillPlaylist() {
 
         if(songToAdd!=0) {
             folderActual->addSong(songToAdd);
-            player->syncYammi2Player(false);
+            player->syncYammi2Player();
             // update view, if folderActual is currently shown folder
             folderContentChanged(folderActual);
             // TODO: do we have to update the autoplayfolder???
@@ -2802,6 +2795,8 @@ void YammiGui::keyPressEvent(QKeyEvent* e) {
         if(e->state()!=ControlButton) {
             break;
         }
+        // intentional fall-through
+    case Key_Escape: // ESC
         m_searchField->setText("");
         m_searchField->setFocus();
         break;
@@ -2812,18 +2807,7 @@ void YammiGui::keyPressEvent(QKeyEvent* e) {
         }
         gotoFuzzyFolder(false);
         break;
-
-    case Key_R:  // Ctrl-R
-        if(e->state()!=ControlButton) {
-            break;
-        }
-        gotoFuzzyFolder(true);
-        break;
-
-    case Key_Escape:
-        m_searchField->setText("");
-        m_searchField->setFocus();
-        break;
+    
 
     default:
         e->ignore();
@@ -3040,7 +3024,7 @@ void YammiGui::stopDragging() {
     folderContentChanged();
 
     if(chosenFolder==folderActual) {
-        player->syncYammi2Player(false);
+        player->syncYammi2Player();
     }
 
     if(((QListViewItem*)chosenFolder)->parent()==folderCategories) {
@@ -3143,7 +3127,7 @@ void YammiGui::loadSongsFromMedia(QString mediaName) {
         system(cmd);
     }
 
-    player->syncYammi2Player(false);
+    player->syncYammi2Player();
     checkPlaylistAvailability();
     //	folderContentChanged(folderActual);
     songListView->triggerUpdate();
@@ -3397,13 +3381,8 @@ bool YammiGui::setupActions( ) {
     new KAction(i18n("Skip Backward"),"player_rew",KShortcut(Key_F2),this,SLOT(skipBackward()), actionCollection(),"skip_backward");
     new KAction(i18n("Skip Forward"),"player_fwd",KShortcut(Key_F3),this,SLOT(skipForward()), actionCollection(),"skip_forward");
     m_seekSlider = new TrackPositionSlider( QSlider::Horizontal, 0L, "seek_slider");
-    QToolTip::add
-        (m_seekSlider, i18n("Track position"));
-    m_seekSlider->setValue(0);
-    m_seekSlider->setRange(0, 0);
-    m_seekSlider->setTickmarks( QSlider::NoMarks );
-    m_seekSlider->setEnabled(false);
-    m_seekSlider->setTracking( true );
+    m_seekSlider->setFixedWidth(200);
+    QToolTip::add(m_seekSlider, i18n("Track position"));
     connect(m_seekSlider,SIGNAL(sliderMoved(int)),this,SLOT(seek(int)));
     connect(m_seekSlider,SIGNAL(myWheelEvent(int)),this,SLOT(seekWithWheel(int)));
     new KWidgetAction( m_seekSlider ,"text",0, 0, 0,actionCollection(),"seek");
@@ -3419,7 +3398,7 @@ bool YammiGui::setupActions( ) {
     // playlist actions
     new KAction(i18n("Shuffle Playlist..."),"roll",0,this,SLOT(shufflePlaylist()),actionCollection(),"shuffle_playlist");
     new KAction(i18n("Clear Playlist"),"edittrash",KShortcut(QKeySequence(Key_Shift,Key_F8)),this,SLOT(clearPlaylist()),actionCollection(),"clear_playlist");
-    new KAction(i18n("Switch to/from Playlist"),"toggle_playlist",KShortcut(Key_P),this,SLOT(toFromPlaylist()),actionCollection(),"toggle_playlist");
+    new KAction(i18n("Switch to/from Playlist"),"toggle_playlist",KShortcut(QKeySequence(Key_Control,Key_P)),this,SLOT(toFromPlaylist()),actionCollection(),"toggle_playlist");
 
     // selection actions
     new KAction(i18n("Enqueue as next (prepend)"), "enqueue_asnext", KShortcut(Key_F6), this, SLOT(forSelectionEnqueueAsNext()), actionCollection(), "prepend_selected");
@@ -3467,6 +3446,7 @@ bool YammiGui::setupActions( ) {
 
     // setup
     KStdAction::preferences(this,SLOT(setPreferences()),actionCollection());
+    KStdAction::keyBindings(this,SLOT(configureKeys()),actionCollection());
 
     // - "insert custom widgets in toolbar using KWidgetAction
     //search
@@ -3564,7 +3544,7 @@ void YammiGui::createSongPopup() {
 /**
  * Tells the media player to jump with the playback to the given position
  * within the currently played song.
- * 0 = beginning, 100 = end?
+ * @param pos time in milliseconds
  */
 void YammiGui::seek( int pos ) {
     kdDebug() << "seek song to pos " << pos << endl;
@@ -3574,6 +3554,7 @@ void YammiGui::seek( int pos ) {
 
 // TODO: do we need this???
 void YammiGui::seekWithWheel(int rotation) {
+    kdDebug() << "seekWithWheel() called\n";
     if(rotation<0) {
         m_seekSlider->addPage();
     } else {
@@ -3617,7 +3598,6 @@ void YammiGui::playPause() {
 }
 
 void YammiGui::stop() {
-
     player->stop();
 }
 
