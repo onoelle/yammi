@@ -668,8 +668,8 @@ bool Song::getOggInfo(QString filename)
   year    = atoi(yearStr);
   QString genreStr=getOggComment(&oggfile, "genre");
   if(genreStr!="") {
-    cout << "genre found: " << genreStr << "\n";
-    // TODO: convert to id3 genre number?
+    genreNr=CMP3Info::getGenreIndex(genreStr);
+    cout << "genre found, str: " << genreStr << ", index: " << genreNr << "\n";
   }
 
   length  = (int)ov_time_total(&oggfile, -1);
@@ -691,7 +691,6 @@ QString Song::getOggComment(OggVorbis_File* oggfile, QString commentName)
 	for(int i=0; i < (*ourComment).comments; i++)	{
 		QString curstr((*ourComment).user_comments[i]);
 		if( curstr.left(commentName.length()).upper() == commentName.upper()) {
-//      cout << "match found for name: " << commentName << ", string: " << curstr << "name.length(): " << commentName.length() << ", curstr.length(): " << curstr.length() << "\n";
 			return curstr.right(curstr.length() - commentName.length() - 1);
 		}
 	}
@@ -773,7 +772,11 @@ bool Song::setOggTags(QString filename)
   }
 
   if( genreNr!=-1) {
-    // TODO: save genre nr as string  
+    QString genreStr=CMP3Info::getGenre(genreNr);
+    cout << "genre as string: " << genreStr << "\n";
+    string  = g_strconcat("genre=", genreStr.latin1(), NULL);
+    vorbis_comment_add(vc, string);
+    g_free(string);
   }
 
   // open temp file for writing to
@@ -1134,19 +1137,21 @@ QString Song::constructFilename()
   QString suffix=this->filename.right(4);
   if(suffix=="") {
     // this is the case for swapping songs: they don't have a filename!
-    cout << "have to look up suffix...\n";
-    if(mediaLocation.count()<1) {
+    if(mediaLocation.count()==0) {
       cout << "assuming suffix \".mp3\"...\n";
+      suffix=".mp3";
     }
-    suffix=mediaLocation[0].right(4);
+    else {
+      suffix=mediaLocation[0].right(4);
+    }
   }
-//  QString s=this->artist+" - "+this->title+suffix;
   QString pattern=gYammiGui->getModel()->config.filenamePattern;
   QString s=(gYammiGui->makeReplacements(pattern, this, 0))+suffix;
   
 	
 	// replace all forbidden characters for filenames with nothing
 	// for windows and linux filesystems!
+  // TODO: make configurable (depending on filesystem?)
 	s.replace(QRegExp("\""), "");													// "
 	s.replace(QRegExp("'"), "");													// '
 	s.replace(QRegExp("/"), "");													// /
@@ -1161,7 +1166,6 @@ QString Song::constructFilename()
 	s.replace(QRegExp("ä"), "ae");													//
 	s.replace(QRegExp("Ä"), "Ae");													//
 
-//	cout << "replacedName: " << s << "\n";
 	return s;
 }
 

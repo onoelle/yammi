@@ -1569,7 +1569,7 @@ fi
 
 # Define the identity of the package.
 PACKAGE=yammi
-VERSION=0.8.0_config_test
+VERSION=0.8.2
 
 cat >>confdefs.h <<EOF
 #define PACKAGE "$PACKAGE"

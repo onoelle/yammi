@@ -1,9 +1,15 @@
 ########################
-01.05.2003 version 0.8.2
+01.05.2003??? version 0.8.2
 - "longest not played" now chooses randomly from the candidate songs (if more than one song with same timestamp)
 - switch to/from playlist with toolbutton or keyboard (CTRL-P)
 - patch from Stefan applied (cleaning up and probably fixing some memory leaks)
 - new configure.in from Bob
+- implemented a "partly checked" icon & behavior for "Insert Into" category
+- songs already in a category won't be added again
+- fixed song slider/window title refresh behavior
+- fixed grouping bug: empty values will now be grouped, too (if threshold was set to 1, empty entries caused problems)
+- implemented a dummy player class (if no media player available, easier code maintenance)
+
 
 ########################
  version 0.8.1

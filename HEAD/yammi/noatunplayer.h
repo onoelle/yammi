@@ -36,6 +36,8 @@ public:
 	NoatunPlayer(YammiModel* model);
 	~NoatunPlayer();
 
+  QString getName() {return "noatun";}
+
 protected:
 #ifdef ENABLE_NOATUN
   DCOPClient* client;

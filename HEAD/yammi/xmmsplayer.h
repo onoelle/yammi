@@ -33,6 +33,8 @@ public:
 	XmmsPlayer(int session, YammiModel* model);
 	~XmmsPlayer();
 
+  QString getName() {return "xmms";}
+
 protected:
   bool          ensurePlayerIsRunning();
   int           session;      // xmms session id

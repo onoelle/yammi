@@ -92,6 +92,7 @@ using namespace std;
 #include "mylistview.h"
 #include "lineeditshift.h"
 #include "mediaplayer.h"
+#include "dummyplayer.h"
 
 #ifdef ENABLE_XMMS
 #include "xmmsplayer.h"
@@ -131,6 +132,9 @@ public:
 	MyListView*		songListView;
 	Folder*		    chosenFolder;
 	QToolButton*	tbPlayPause;
+	QToolButton*	tbStop;
+	QToolButton*	tbSkipBackward;
+	QToolButton*	tbSkipForward;
 	Song*					currentSong;					// song that is currently played or 0 if not in database
 	MyDateTime		currentSongStarted;		// timestamp when song was started playing
 	bool					controlPressed;
@@ -235,9 +239,11 @@ protected:
 // protected methods
 //******************
 protected:
+  int           containsCheck(MyList* category, MyList* songList);
   void          changeToFolder(Folder* newFolder, bool changeAnyway=false);
   void          folderContentChanged();
   void          folderContentChanged(Folder* folder);
+  void          updateCurrentSongStatus();
   void          autoFillPlaylist();
   Folder*       getFolderByName(QString foldername);
 	void 			    decide(Song* s1, Song* s2);

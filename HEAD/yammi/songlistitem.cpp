@@ -49,7 +49,7 @@ void SongListItem::setColumns(SongEntry* entry)
 	int index=s->genreNr;
 	if(index>CMP3Info::getMaxGenreNr())
 		index=-1;
-  if(index>-1)					setText( base+6, QString("%1 (%2)").arg(CMP3Info::getGenre(index)).arg(index));
+  if(index!=-1)					setText( base+6, QString("%1").arg(CMP3Info::getGenre(index)));
 	setText( base+7, s->addedTo.writeToString());
   if(s->bitrate!=0)			setText( base+8, QString("%1").arg(s->bitrate));
 	if(s->filename!="") {

@@ -84,8 +84,8 @@ void FolderGroups::update(MyList* allSongs, int sortBy)
 				last=s->album;
 			if(sortBy==MyList::ByGenre)
 				last=CMP3Info::getGenre(s->genreNr);
-			if(last=="")          // we don't group empty values together, do we?
-				last="xxxyyyzzz";
+//			if(last=="")          // we don't group empty values together, do we?
+//				last="xxxyyyzzz";
       currentGroup.clear();
       currentGroup.appendSong(s);
 		}
@@ -123,16 +123,26 @@ void FolderGroups::createGroupFolder(MyList* group, int sortBy)
 
   // create folder name
   QString folderName("");
-  if(sortBy==MyList::ByArtist)								// name folder by artist
+  if(sortBy==MyList::ByArtist) {								// name folder by artist
 		folderName=firstSong->artist;
+    if(folderName=="") {
+      folderName="- no artist -";
+    }
+  }
   if(sortBy==MyList::ByAlbum) {								// name folder by artist (if only one) + album
 		if(sameArtist)
       folderName=firstSong->artist+" - "+firstSong->album;
 		else
       folderName=firstSong->album;
+    if(folderName=="") {
+      folderName="- no album -";
+    }
   }
 	if(sortBy==MyList::ByGenre) {
     folderName=CMP3Info::getGenre(firstSong->genreNr);
+    if(folderName=="") {
+      folderName="- no genre -";
+    }
 	}
   f->setFolderName(folderName);
   f->setText(0, folderName+QString(" (%1)").arg(group->count()));

@@ -1,0 +1,23 @@
+/* XPM */
+static const char *toFromPlaylist_xpm[]={
+"16 16 4 1",
+". c None",
+"# c #0000ff",
+"b c #ff0000",
+"a c #ffffff",
+"................",
+"....#...a...b...",
+"....##.aa..bb...",
+".....##.aab.b...",
+"########aa..b...",
+"########aa..b.b.",
+"..a..##a.aaaaaaa",
+"aaa.##aaa..##aaa",
+"aaa.#aaa..#aa#aa",
+"aaa#....aa.a#aaa",
+"aa##aa.aaaa#aaaa",
+".##aaa.aaa###a#a",
+"########a.....aa",
+"########..a##aaa",
+".##aaaaaaa#aa#aa",
+"..##aaaaaaaaa#aa"};

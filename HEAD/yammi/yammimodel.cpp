@@ -780,7 +780,6 @@ bool YammiModel::checkConsistency(QProgressDialog* progress, MyList* selection, 
         p->nonExisting++;
         cout << "file not existing or readable: " << s->displayName();
         bool onMedia=s->mediaName.count()>0;
-        cout << "(contained on " << s->mediaName.count() << " media: )\n";
         if(p->updateNonExisting) {
           // if we update, there are two cases:
           if(onMedia) {
@@ -792,14 +791,16 @@ bool YammiModel::checkConsistency(QProgressDialog* progress, MyList* selection, 
           }
           else {
             // 2. delete entry in database
+            cout << "deleting entry " << s->displayName();
             gYammiGui->forSong(s, DeleteEntry);
             p->nonExistingDeleted++;
           }
         }
         else {
-          problematicSongs.append(new SongEntryString(s, diagnosis));
+          problematicSongs.append(new SongEntryString(s, "file not readable"));
         }
       }
+
 
       if(diagnosis.contains("tags not correct") && p->checkTags) {
         p->dirtyTags++;
@@ -835,13 +836,20 @@ bool YammiModel::checkConsistency(QProgressDialog* progress, MyList* selection, 
           if(reallyCorrect) {
             if(s->saveTags()) {
               p->tagsCorrected++;
-              diagnosis.replace(QRegExp("tags not correct"), "tags corrected");
+              problematicSongs.append(new SongEntryString(s, "tags corrected"));
             }
           }
+          else {
+            problematicSongs.append(new SongEntryString(s, "tags not correct"));
+          }
+        }
+        else {
+          problematicSongs.append(new SongEntryString(s, "tags not correct"));
         }
       }
+      
+
       if(diagnosis.contains("filename not consistent") && p->checkFilenames) {
-        problematicSongs.append(new SongEntryString(s, diagnosis));
         p->dirtyFilenames++;
         if(p->correctFilenames) {
           bool reallyCorrect;
@@ -871,14 +879,17 @@ bool YammiModel::checkConsistency(QProgressDialog* progress, MyList* selection, 
           }
           if(reallyCorrect) {
             if(s->saveFilename()) {
-              diagnosis.replace(QRegExp("filename not consistent"), "filename corrected");
               p->filenamesCorrected++;
+              problematicSongs.append(new SongEntryString(s, "filename corrected"));
             }
           }
+          else {
+            problematicSongs.append(new SongEntryString(s, "filename not consistent"));
+          }
         }
-      }
-      if(diagnosis.contains("tags not correct") || diagnosis.contains("filename not consistent")) {
-        problematicSongs.append(new SongEntryString(s, diagnosis));        
+        else {
+          problematicSongs.append(new SongEntryString(s, "filename not consistent"));
+        }
       }
     }
 	}
@@ -907,7 +918,7 @@ bool YammiModel::checkConsistency(QProgressDialog* progress, MyList* selection, 
 		
       // check for songs contained twice in database (but pointing to same file+path)
       if(last->location()==s->location()) {
-        cout << "two database entries pointing to same song/file: " << s->filename << ", deleting one\n";
+        cout << "two database entries pointing to same file: " << s->filename << ", deleting one\n";
         allSongs.remove();		// problem, coz we are iterating through this list???
         allSongsChanged(true);
         p->doublesFound++;

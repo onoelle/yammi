@@ -410,30 +410,27 @@ void XmmsPlayer::check()
   }
 
   timeLeft=getTotalTime()-getCurrentTime();
+  bool yammiPlaylistChanged=false;
 
   // 2. remove already played songs
 //  if(lastStatus!=STOPPED) {
-    for(int i=0; true ; i++) {
-	    int check=xmms_remote_get_playlist_pos(session);
-      if(check==0) {
-	   	  break;
-      }
-  	  QString file(xmms_remote_get_playlist_file(session, 0));
-	    Song* firstXmmsSong=model->getSongFromFilename(file);
+  while(xmms_remote_get_playlist_pos(session)!=0) {
+    QString file(xmms_remote_get_playlist_file(session, 0));
+	  Song* firstXmmsSong=model->getSongFromFilename(file);
 
-      // the following call sometimes seems to crash xmms
-      // (and does not return until xmms is killed => freezes yammi)
-      //************************************************************
- 	    xmms_remote_playlist_delete(session, 0);
+    // the following call sometimes seems to crash xmms
+    // (and does not return until xmms is killed => freezes yammi)
+    //************************************************************
+ 	  xmms_remote_playlist_delete(session, 0);
 
-      if(playlist->count()>=1) {
-        if(playlist->at(0)->song()==firstXmmsSong) {
-          playlist->removeFirst();
-        }
-      }
-      playlistChanged();
+    if(playlist->count()>=1 && playlist->firstSong()==firstXmmsSong) {
+      playlist->removeFirst();
+      yammiPlaylistChanged=true;
     }
-//  }
+  }
+  if(yammiPlaylistChanged) {
+    playlistChanged();    
+  }
 #endif
 }
 

@@ -49,6 +49,7 @@ class MediaPlayer : public QObject
 public: 
 	MediaPlayer();
 	virtual ~MediaPlayer();
+  virtual QString getName() = 0;
 
 protected:
   PlayerStatus status;

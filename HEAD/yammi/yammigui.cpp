@@ -25,6 +25,7 @@ using namespace std;
 #include "icons/yammiicon.xpm"
 #include "icons/in.xpm"
 #include "icons/notin.xpm"
+#include "icons/some_in.xpm"
 #include "icons/newCategory.xpm"
 
 // media player actions
@@ -107,6 +108,7 @@ YammiGui::YammiGui(QString baseDir)
 #endif
   if(player==0) {
     cout << "WARNING: no media player support compiled in, only limited functionality available!\n";
+    player = new DummyPlayer();
   }
   else {
     // connect player and yammi via signals
@@ -177,26 +179,32 @@ YammiGui::YammiGui(QString baseDir)
 	
 	
 	
-  if(player!=0) {
-    // media player toolbar
-    QToolBar* mediaPlayerToolBar = new QToolBar (this, "mediaPlayerToolbar");
-    mediaPlayerToolBar->setLabel( "Media Player Controls" );
-    tbPlayPause = new QToolButton( QPixmap((const char**)pause_xpm), "Play/Pause (F1)", QString::null,
+  // media player toolbar
+  QToolBar* mediaPlayerToolBar = new QToolBar (this, "mediaPlayerToolbar");
+  mediaPlayerToolBar->setLabel( "Media Player Controls" );
+  tbPlayPause = new QToolButton( QPixmap((const char**)pause_xpm), "Play/Pause (F1)", QString::null,
                            player, SLOT(playPause()), mediaPlayerToolBar);
-    new QToolButton( QPixmap((const char**)stop_xpm), "Stop", QString::null,
+  tbStop = new QToolButton( QPixmap((const char**)stop_xpm), "Stop", QString::null,
                            player, SLOT(stop()), mediaPlayerToolBar);
-    new QToolButton( QPixmap((const char**)skipbackward_xpm), "Skip backward (F2 / SHIFT-F2)", QString::null,
+  tbSkipBackward = new QToolButton( QPixmap((const char**)skipbackward_xpm), "Skip backward (F2 / SHIFT-F2)", QString::null,
  														this, SLOT(skipBackward()), mediaPlayerToolBar);
-    new QToolButton( QPixmap((const char**)skipforward_xpm), "Skip forward (F3 / SHIFT-F3)", QString::null,
+  tbSkipForward = new QToolButton( QPixmap((const char**)skipforward_xpm), "Skip forward (F3 / SHIFT-F3)", QString::null,
                            this, SLOT(skipForward()), mediaPlayerToolBar);
-    songSlider = new QSlider( QSlider::Horizontal, mediaPlayerToolBar, "songLength" );
-    songSlider->setTickmarks(QSlider::Below);
-    songSlider->setTickInterval(1000*60);
-    songSlider->setFixedWidth(180);
-    songSlider->setPaletteBackgroundColor(QColor(179, 218, 226));
-    isSongSliderGrabbed=false;
-    connect( songSlider, SIGNAL(sliderReleased()), SLOT(songSliderMoved()) );
-    connect( songSlider, SIGNAL(sliderPressed()), SLOT(songSliderGrabbed()) );
+  songSlider = new QSlider( QSlider::Horizontal, mediaPlayerToolBar, "songLength" );
+  songSlider->setTickmarks(QSlider::Below);
+  songSlider->setTickInterval(1000*60);
+  songSlider->setFixedWidth(180);
+  songSlider->setPaletteBackgroundColor(QColor(179, 218, 226));
+  isSongSliderGrabbed=false;
+  connect( songSlider, SIGNAL(sliderReleased()), SLOT(songSliderMoved()) );
+  connect( songSlider, SIGNAL(sliderPressed()), SLOT(songSliderGrabbed()) );
+  if(player->getName()=="dummy") {
+    // disable the buttons if no media player available
+    tbPlayPause->setEnabled(false);
+    tbStop->setEnabled(false);
+    tbSkipBackward->setEnabled(false);
+    tbSkipForward->setEnabled(false);
+    songSlider->setEnabled(false);
   }
 		
 	// main toolbar
@@ -404,23 +412,21 @@ YammiGui::YammiGui(QString baseDir)
 	shiftPressed=false;
   toFromRememberFolder=folderAll;
 	
-  // finish initialization of player (if available)
-  if(player!=0) {
-    player->syncPlayer2Yammi(&(model->songsToPlay));
-    player->syncYammi2Player(false);
-    checkPlaylistAvailability();
+  // finish initialization of player
+  player->syncPlayer2Yammi(&(model->songsToPlay));
+  player->syncYammi2Player(false);
+  checkPlaylistAvailability();
   
-    if(folderActual->songList->count()>0) {
-      // check whether player is playing, if not: start playing!
-      if(player->getStatus()!=PLAYING) {
-        cout << "media player is not playing, starting it...\n";
-        player->play();
-      }
+  if(folderActual->songList->count()>0) {
+    // check whether player is playing, if not: start playing!
+    if(player->getStatus()!=PLAYING) {
+      cout << "media player is not playing, starting it...\n";
+      player->play();
     }
-    // TODO: this should be probably done by a thread owned by the media player
-    connect( &checkTimer, SIGNAL(timeout()), player, SLOT(check()) );
-    checkTimer.start( 200, FALSE );
   }
+  // TODO: this should be probably done by a thread owned by the media player
+  connect( &checkTimer, SIGNAL(timeout()), player, SLOT(check()) );
+  checkTimer.start( 200, FALSE );
 
 	// connect all timers
   connect( &regularTimer, SIGNAL(timeout()), SLOT(onTimer()) );
@@ -440,7 +446,6 @@ void YammiGui::finishInitialization()
 {
   // restore session settings
   mainStatusBar->message("Welcome to Yammi "+model->config.yammiVersion, 10000);
-  cout << "chosenFolder: " << chosenFolder->folderName() << "\n";
   changeToFolder(chosenFolder, true);
 	songListView->setSelected( songListView->firstChild(), TRUE );
 	songListView->setCurrentItem( songListView->firstChild() );
@@ -492,44 +497,44 @@ YammiGui::~YammiGui()
 	}
   updateGeometrySettings();
   writeSettings();
-  if(player!=0) {
-    player->syncYammi2Player(true);    
-    delete(player);
-  }
+  player->syncYammi2Player(true);    
+  delete(player);
 	cout << "goodbye!\n";
 }
 
 
 /**
  * This slot is called on changes in the playlist (model->songsToPlay),
- * signalled by the mediaplayer.
+ * signalled by the mediaplayer or on changes from within yammigui (enqueing, dequeing songs, ...)
  */
 void YammiGui::updatePlaylist()
 {
-  // prepare: stop user dragging action
+  cout << "updatePlaylist called\n";
+  // prepare: stop user dragging action if necessary
   if(songListView->dragging) {
     stopDragging();
   }
 
-  // handle last song
-  handleLastSong(currentSong);
-  // handle new song
-  if(model->songsToPlay.count()>0) {
-    handleNewSong(model->songsToPlay.at(0)->song());
-  }
-  else {
-    handleNewSong(0);
-  }
-
+  updateCurrentSongStatus();
+  
   // update gui
   folderActual->correctOrder();
   player->syncYammi2Player(false);
-	// update view, if folderActual is currently shown folder
   folderContentChanged(folderActual);
 }
 
+void YammiGui::updateCurrentSongStatus()
+{
+  Song* firstInPlaylist=model->songsToPlay.count()>0 ? model->songsToPlay.firstSong() : 0;
+  if(firstInPlaylist!=currentSong) {
+    // a change in the first (=currently played) song!
 
-
+    // handle last song
+    handleLastSong(currentSong);
+    // handle new song
+    handleNewSong(model->songsToPlay.firstSong());
+  }
+}
 
 /**
  * Puts the song that was just played into folder songsPlayed.
@@ -564,6 +569,7 @@ void YammiGui::handleNewSong(Song* newSong)
     currentFile="";
     songSlider->setValue(0);
     songSlider->setRange(0, 0);
+    songSlider->setTickInterval(1000*60);
     return;
   }
   // TODO: take swapped file?
@@ -583,8 +589,9 @@ void YammiGui::handleNewSong(Song* newSong)
   setCaption("Yammi: "+currentSong->displayName());
 
   // setup songSlider
-//    songSlider->setRange(0, player->getTotalTime());
+//  cout << "calling setRange, length: " << currentSong->length*1000 << "\n";
   songSlider->setRange(0, currentSong->length*1000);
+  songSlider->setTickInterval(1000*60);
 }
 
 /**
@@ -675,7 +682,6 @@ void YammiGui::readSettings()
 
 Folder* YammiGui::getFolderByName(QString folderName)
 {
-  cout << "folderByName called with string: " << folderName << "\n";
   for(QListViewItem* i=folderListView->firstChild(); i; i=i->itemBelow()) {
     Folder* f=(Folder*)i;
     if(f->folderName()==folderName) {
@@ -736,7 +742,6 @@ void YammiGui::updateView()
  */
 void YammiGui::updateListViewColumns()
 {
-  cout << "updateListViewColumns called\n";
   int noOldColumns=songListView->columns();
   for(int i=0; i<noOldColumns; i++) {
 		songListView->removeColumn(0);
@@ -843,7 +848,7 @@ void YammiGui::updateSongPopup()
 {
 	// submenu containing all categories
 	playListPopup = new QPopupMenu();
-	playListPopup->insertItem(QIconSet( QPixmap(newCategory_xpm)), "new category...", this, SLOT(toCategory(int)), 0, 9999);
+	playListPopup->insertItem(QIconSet( QPixmap(newCategory_xpm)), "New Category...", this, SLOT(toCategory(int)), 0, 9999);
 	for(unsigned int i=0; i<model->categoryNames.count(); i++) {
 		playListPopup->insertItem(QIconSet( QPixmap(in_xpm)), model->categoryNames[i], this, SLOT(toCategory(int)), 0, 10000+i);
 	}
@@ -869,7 +874,7 @@ void YammiGui::updateSongPopup()
 		songPopup->insertItem( "Prelisten to...", songPrelistenPopup);
 	}
 	songPopup->insertItem(getPopupIcon(SongInfo), "Info...", this, SLOT(forSelection(int)), 0, SongInfo);
-	songPopup->insertItem( "Insert Into...", playListPopup);
+	songPopup->insertItem( "Insert Into/Remove From...", playListPopup);
 
 	songSearchPopup = new QPopupMenu(songPopup);
 	songSearchPopup->insertItem( "Entry", this, SLOT(searchSimilar(int)), 0, 1000);
@@ -949,17 +954,13 @@ void YammiGui::toCategory(int index)
 	}
 	QString chosen=model->categoryNames[index];
 	
-	// determine mode (add/remove)
-	bool remove=false;
-	Song* s=selectedSongs.firstSong();
-	// for all songs contained in that category...
-	for(Song* tmp=category->firstSong(); tmp; tmp=category->nextSong()) {
-		if(s==tmp) {
-			remove=true;
-			break;
-		}
-	}
+  // determine whether all/some/none of the selected songs are already in the chosen category
+  int mode=containsCheck(category, &selectedSongs);
 
+	// determine mode (add/remove): we only use remove mode if all selected songs are contained in category
+  bool remove=(mode==2);
+
+  
 	// get pointer to the folder
 	FolderSorted* categoryFolder=0;
 	for( QListViewItem* f=folderCategories->firstChild(); f; f=f->nextSibling() ) {
@@ -973,39 +974,46 @@ void YammiGui::toCategory(int index)
 	}
 	// go through list of songs
 	for(Song* s=selectedSongs.firstSong(); s; s=selectedSongs.nextSong()) {
-		if(!remove)
-			categoryFolder->addSong(s);
-		else
+		if(!remove) {
+      if(!categoryFolder->songList->containsSong(s)) {
+        categoryFolder->addSong(s);
+      }
+    }
+		else {
 			categoryFolder->removeSong(s);
+    }
 	}
 	
 	model->categoriesChanged(true);
   folderContentChanged(categoryFolder);
 	
-//hh
-/*		
-	if( chosenFolder->folderName()==chosen ) {
-		QString chosen2=chosenFolder->folderName();
-		cout << "chosen2: " << chosen2 << "\n";
-		// here we lose the chosenFolder (as it is deleted and re-inserted)
-		folderCategories->update(model->allCategories, model->categoryNames);
-		// so count until we have it again & select
-		for( QListViewItem* f=folderCategories->firstChild(); f; f=f->nextSibling() ) {
-			if( ((Folder*)f)->folderName()==chosen ) {
-				folderListView->setCurrentItem(f);   //f->setSelected(true);
-				chosenFolder=(Folder*)f;
-				cout << "selected\n";
-			}
-		}
-		slotFolderChanged();
-	}
-	else {
-		folderCategories->update(model->allCategories, model->categoryNames);
-	}
-	*/
 	updateSongPopup();
 }
 
+/**
+ * returns
+ * 0 if none 
+ * 1 if some
+ * 2 if all
+ * ...of the entries in the second list are contained in the first list
+ */
+int YammiGui::containsCheck(MyList* category, MyList* songList)
+{
+  bool allContained=true;
+  bool noneContained=true;
+
+  for(Song* check=songList->firstSong(); check; check=songList->nextSong()) {
+    if(category->containsSong(check)) {
+      noneContained=false;
+    }
+    else {
+      allContained=false;
+    }
+  }
+  if(noneContained)    return 0;
+  if(allContained)     return 2;
+  return 1;
+}
 
 void YammiGui::decide(Song* s1, Song* s2)
 {
@@ -1145,7 +1153,6 @@ void YammiGui::changeToFolder(Folder* newFolder, bool changeAnyway)
     // don't do anything if current folder is already the specified one
     return;
   }
-  cout << "changeToFolder (unsame) \n";
   
   QApplication::setOverrideCursor( Qt::waitCursor );
   // TODO: history of visited folders, something like:
@@ -1174,14 +1181,22 @@ void YammiGui::folderContentChanged()
 {
 	songListView->clear();
 	addFolderContent(chosenFolder);
+  if(chosenFolder==folderActual) {
+    updateCurrentSongStatus();
+  }
 }
 
 void YammiGui::folderContentChanged(Folder* folder)
 {
-	if(folder==chosenFolder)
+	if(folder==chosenFolder) {
 		folderContentChanged();
-	else
+  }
+	else {
 		songListView->triggerUpdate();
+    if(folder==folderActual) {
+      updateCurrentSongStatus();
+    }
+  }
 }
 
 
@@ -1286,17 +1301,26 @@ void YammiGui::adjustSongPopup()
 	// we don't check whether all selected songs are contained, just first
 	int k=0;
 	for(MyList* category=model->allCategories.first(); category; category=model->allCategories.next(), k++) {
-		if(category->containsSong(first)>0)
-			playListPopup->changeItem(10000+k, QIconSet( QPixmap(in_xpm)), playListPopup->text(10000+k));
-		else
-			playListPopup->changeItem(10000+k, QIconSet( QPixmap(notin_xpm)), playListPopup->text(10000+k));
+    int mode=containsCheck(category, &selectedSongs);
+    switch(mode) {
+      case 0:
+        playListPopup->changeItem(10000+k, QIconSet( QPixmap(notin_xpm)), playListPopup->text(10000+k));
+        break;
+      case 1:
+			  playListPopup->changeItem(10000+k, QIconSet( QPixmap(some_in_xpm)), playListPopup->text(10000+k));
+        break;
+      case 2:
+			  playListPopup->changeItem(10000+k, QIconSet( QPixmap(in_xpm)), playListPopup->text(10000+k));
+        break;
+    }
 	}
 		
  	// for songs not on local harddisk: disable certain menu entries
  	// only if exactly one song selected!
  	bool enable=true;
- 	if(selected==1 && first->filename=="")
+ 	if(selected==1 && first->filename=="") {
  		enable=false;
+  }
 		
  	songPopup->setItemEnabled(PlayNow, enable);
  	songPopup->setItemEnabled(Dequeue, enable);
@@ -2026,9 +2050,7 @@ void YammiGui::forSelection(action act)
 		folderContentChanged(folderAll);
 	}
 	if(act==Enqueue || act==EnqueueAsNext || act==Dequeue) {
-    if(player!=0) {
-      player->syncYammi2Player(false);
-    }
+    player->syncYammi2Player(false);
     folderContentChanged(folderActual);
 		checkPlaylistAvailability();
 	}
@@ -2050,23 +2072,21 @@ void YammiGui::forSong(Song* s, action act, QString dir)
 
 		forSong(s, EnqueueAsNext);
 
-    if(player!=0) {
-      if(player->getStatus()==STOPPED) {
-        // case 1: player stopped (this is a bit dirty...)
-        player->play();
-      }
-      else if(player->getStatus()==PAUSED) {
-        // case 2: player paused => start playing
-        player->skipForward(shiftPressed);
-        player->play();      
-      }
-      else if(player->getStatus()==PLAYING) {
-        // case 3: player is playing
-        player->skipForward(shiftPressed);
-      }
-			
-      mainStatusBar->message(QString("playing %1").arg(s->displayName()), 2000);
+    if(player->getStatus()==STOPPED) {
+      // case 1: player stopped (this is a bit dirty...)
+      player->play();
     }
+    else if(player->getStatus()==PAUSED) {
+      // case 2: player paused => start playing
+      player->skipForward(shiftPressed);
+      player->play();      
+    }
+    else if(player->getStatus()==PLAYING) {
+      // case 3: player is playing
+      player->skipForward(shiftPressed);
+    }
+			
+    mainStatusBar->message(QString("playing %1").arg(s->displayName()), 2000);
 		break;
 		
 	case Enqueue:								// enqueue at end
@@ -2081,9 +2101,7 @@ void YammiGui::forSong(Song* s, action act, QString dir)
 		else
 			model->songsToPlay.insert(1, new SongEntryInt(s, 13));
 		folderActual->correctOrder();
-    if(player!=0) {
-      player->syncYammi2Player(false);      
-    }
+    player->syncYammi2Player(false);      
 		mainStatusBar->message(QString("%1 enqueued as next").arg(s->displayName()), 2000);
 	}
 		break;
@@ -2091,9 +2109,8 @@ void YammiGui::forSong(Song* s, action act, QString dir)
 	case Dequeue: {
 		// search for selected song and dequeue
 		int i=1;
-    if(player!=0) {
-      if(player->getStatus()==STOPPED)
-        i=0;
+    if(player->getStatus()==STOPPED) {
+      i=0;
     }
 		for(; i<(int)model->songsToPlay.count(); i++) {
 			Song* check=model->songsToPlay.at(i)->song();
@@ -2234,7 +2251,8 @@ void YammiGui::openHelp()
 void YammiGui::aboutDialog()
 {
   QString msg=QString("Yammi - Yet Another Music Manager I...\n\n\n");
-  msg+="Version "+model->config.yammiVersion+", 12-2001 - 3-2003 by Oliver Nölle\n";
+  msg+="Version "+model->config.yammiVersion+", 12-2001 - 5-2003 by Oliver Nölle\n";
+  msg+="Media player: "+player->getName()+"\n";
   #ifdef ENABLE_XMMS
   msg+="- XMMS support: yes\n";
   #else
@@ -2380,7 +2398,7 @@ void YammiGui::clearPlaylist()
 	if(model->config.childSafe)
 		return;
 	Song* save=0;
-	if(currentSong!=0 && player!=0 && player->getStatus()!=STOPPED && model->songsToPlay.count()>1) {
+	if(currentSong!=0 && player->getStatus()!=STOPPED && model->songsToPlay.count()>1) {
     if( QMessageBox::warning( this, "Yammi", "Clear complete playlist?\n(except currently played song)", "Yes", "No")!=0)
       return;
     save=model->songsToPlay.firstSong();
@@ -2394,9 +2412,7 @@ void YammiGui::clearPlaylist()
 		folderActual->addSong(save);
 	else
 		folderActual->updateTitle();
-  if(player!=0) {
-    player->syncYammi2Player(false);
-  }
+  player->syncYammi2Player(false);
   folderContentChanged(folderActual);
 }
 
@@ -2411,9 +2427,7 @@ void YammiGui::songSliderGrabbed()
 void YammiGui::songSliderMoved()
 {
 	isSongSliderGrabbed=false;
-  if(player!=0) {
-    player->jumpTo(songSlider->value());
-  }
+  player->jumpTo(songSlider->value());
 }
 
 
@@ -2625,9 +2639,7 @@ void YammiGui::shutDown()
       }
     }
     
-		if(player!=0) {
-      player->quit();                                 	// properly close player (for xmms: will save playlist) 
-    }
+    player->quit();                                 	// properly close player (for xmms: will save playlist) 
     if(model->config.shutdownScript!="")
       system(model->config.shutdownScript+" &");			// invoke shutdown script
     endProgram();
@@ -2651,24 +2663,16 @@ void YammiGui::keyPressEvent(QKeyEvent* e)
 //      cout << "shift pressed\n";
 			break;
 		case Key_F1:
-			if(player!=0) {
-        player->playPause();
-      }
+      player->playPause();
 			break;
 		case Key_F2:
-			if(player!=0) {
-        player->skipBackward(shiftPressed);
-      }
+      player->skipBackward(shiftPressed);
 			break;
 		case Key_F3:
-      if(player!=0) {
-        player->skipForward(shiftPressed);
-      }
+      player->skipForward(shiftPressed);
 			break;
 		case Key_F4:
-      if(player!=0) {
-        player->stop();
-      }
+      player->stop();
 			break;
 		case Key_F5:
 			forAllSelected(Enqueue);
@@ -2996,7 +3000,7 @@ void YammiGui::stopDragging()
 	((FolderSorted*)chosenFolder)->syncWithListView(songListView);
 	folderContentChanged();
 
-	if(chosenFolder==folderActual && player!=0) {
+	if(chosenFolder==folderActual) {
 		player->syncYammi2Player(false);
 	}
 	
@@ -3089,11 +3093,10 @@ void YammiGui::loadSongsFromMedia(QString mediaName)
 		system(cmd);
 	}
 
-  if(player!=0) {
-    player->syncYammi2Player(false);
-  }
+  player->syncYammi2Player(false);
 	checkPlaylistAvailability();
-	folderContentChanged(folderActual);
+//	folderContentChanged(folderActual);
+  songListView->triggerUpdate();
 }
 
 // manages loading songfiles from removable media
@@ -3175,17 +3178,11 @@ void YammiGui::checkSwapSize()
 
 void YammiGui::skipForward()
 {
-  if(player!=0) {
-    player->skipForward(shiftPressed);
-  }
+  player->skipForward(shiftPressed);
 }
 
 void YammiGui::skipBackward()
 {
-  if(player==0) {
-    return;
-  }
-
   int count=model->songsPlayed.count();
 	if(count==0)			// empty folder songsPlayed => can't skip backwards
 		return;
