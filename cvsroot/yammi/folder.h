@@ -24,6 +24,7 @@
 #include <qpopupmenu.h>
 
 #include "song.h"
+#include "songentry.h"
 #include "mylist.h"
 
 // represents a folder on the left
@@ -36,21 +37,23 @@ class Folder : public QObject, public QListViewItem
 	Q_OBJECT
 	
 public:
-	Folder( QListView *parent, const QString &name );						// top-level folder
-	Folder( QListViewItem *parent, const QString &name );				// subfolder
-	~Folder()    	{}
-	virtual void update(MyList* allSongs);
+	Folder		(QListView *parent, const QString &name );						// top-level folder
+	Folder		(QListViewItem *parent, const QString &name );				// subfolder
+	~Folder()	{};
+	virtual 	void update(MyList* allSongs);					// common update method
 
+	Song*			firstSong();
+	Song*			nextSong();
 
-//	void insertSubFolders( const QObjectList *lst );
-	void addSong( Song *s )    	{ songList.append(s); }					// adds an item(=Song)
+	void			addSong(Song* s)    				{ songList.append(new SongEntry(s)); }	// adds a Song as simple SongEntry
+	void			addEntry(SongEntry* entry)	{ songList.append(entry); }							// adds a given SongEntry
 	
-	void clearSongs()						{ songList.clear(); }						// clear songlist
-	void removeSong( Song *s )  { songList.removeRef(s); }			// removes an item(=Song)
+	void 			clearSongs()						{ songList.clear(); }						// clear songlist
+	void 			removeSongEntry(SongEntry* entry )  { songList.removeRef(entry); }			// removes an item(=Song)
 
-	QString folderName()				{ return fName; }
-	Song *firstSong()						{ return songList.first(); }
-	Song *nextSong()						{ return songList.next(); }
+	QString		folderName()				{ return fName; }
+	SongEntry* firstEntry()						{ return songList.first(); }
+	SongEntry* nextEntry()						{ return songList.next(); }
 
 	void popup(QPoint point, QPopupMenu* contentMenu);
 	QPopupMenu* folderPopup;
@@ -68,5 +71,6 @@ signals:
 protected:
 	QString fName;
 };
+//	void insertSubFolders( const QObjectList *lst );
 
 #endif

@@ -3,15 +3,17 @@
 <article>
 <title>The Yammi Handbook
 <author>Brian O.Nölle <tt>oli.noelle@web.de</tt>
-<date>Version 0.1 , Thu Dec 6 15:00:00 MET 2001
+<date>Version 0.3 , Mon Feb 2 15:00:00 MET 2002
 <abstract>
-This Handbook describes Yammi Version 0.1
+This Handbook describes Yammi Version 0.3
 </abstract>
 
 <toc>
 
 <sect>Introduction
-<p>Please keep in mind: This documentation needs some update...
+<p>Please keep in mind: This documentation needs some update, it does not
+really describe version 0.3, expect an updated documentation for version 0.4.
+
 <p>
 Yammi is a handy tool to manage your mp3 songs. It can
 
@@ -27,6 +29,8 @@ Yammi is a handy tool to manage your mp3 songs. It can
 
 - edit and keep your song information consistent (id3 tags, filenames)
 
+- help grabbing and encoding a track from cd to a mp3 file
+
 
 The program was born because I was unhappy with the conventional approach to
 manage your mp3s in a directory hierarchy and access them via normal file
@@ -36,15 +40,16 @@ searching for...and Yammi will show you the nearest matches.
 (For me this works great. I don't know why other mp3 tools or programs such
 as Addressbook almost never use such a feature.)
 
-This is a pretty early alpha version and my first project with qt, kdevelop and linux,
-sorry for any consequences of that! Although I tried my best,
-I can take no liability that my program
-is not causing any damage to your mp3 collection.
+This is my first project with qt, kdevelop and linux,
+sorry for any consequences of that!
+Although I tried my best, I can take no liability that my program
+is not causing any damage to your mp3 collection or anything...
 
 Any help to make this project more professional is very welcome, just contact me.
 
 <sect1>Changes
 <p>
+10.2.2002		version 0.3 released
 5.12.2001   got an account on sourceforge, now heading towards my first release
 13.8.2001		kind of first release
 Jan  2001   project started
@@ -89,7 +94,7 @@ Should you run into problems please report them to the the author at
 <sect> Usage <p>
 <sect1> General Usage
 <p>
-Yammi makes extensive use of context menus (right-click on item).
+
 
 <sect1> Scanning harddisk
 <p>
@@ -131,15 +136,23 @@ The following folder structure is provided automatically:
 <p>
 Contains all songs in database
 
-<sect3> Folder "Now Playing"
+<sect3> Folder "Playlist"
 <p>
-Contains the currently played song, plus the last n played songs
-(while Yammi was running)
+Contains all songs that are still to play, plus the currently played song.
 
 <sect3> Folder Albums (Artists)
 <p>
 Contains a subfolder for every album (artist) for which there are more than 5
 songs in the database.
+
+<sect3> Folder Categories
+<p>
+This folder contains "categories" of songs, that can be created and filled by you.
+
+<sect3> Folder History
+<p>
+This folder contains the history of played songs, each song given a timestamp
+when it was played.
 
 <sect3> Folder Media
 <p>
@@ -148,9 +161,13 @@ This enables you to quickly find, on which media you have backup copies of songs
 Later, this should also enable you to play songs that are not on harddisk,
 by automatically requesting a media that contains this song.
 
-<sect3> Folder Playlists
+<sect3> Folder Problematic Songs
+This Folder contains songs that were found problematic when performing a
+consistency check (eg. songs contained twice).
+
+<sect3> Folder Search Results
 <p>
-This folder contains "categories" of songs, that can be created and filled by you.
+This folder keeps the result of the last search process.
 
 <sect3> Folder Unclassified
 <p>
@@ -162,9 +179,6 @@ This folder contains all songs that are not appearing in either
 
 - or the folder "Albums"
 
-<sect3> Folder Search Results
-<p>
-This folder keeps the result of the last search process.
 
 Mp3 files can still be organized in a directory structure.
 There should be one base directory for all mp3s, eg. /mp3/

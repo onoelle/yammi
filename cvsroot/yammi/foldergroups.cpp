@@ -36,12 +36,11 @@ void FolderGroups::update(MyList* allSongs, int sortBy)
 	allSongs->setSortOrder(sortBy);
 	allSongs->sort();
 	
-	Song* s=allSongs->first();
 	QString last("xxx");
 	int count=0;
 	int groupCount=0;
 	bool same=false;
-	for(; s; s=allSongs->next()) {
+	for(Song* s=allSongs->firstSong(); s; s=allSongs->nextSong()) {
 		if(sortBy==MyList::ByArtist)
 			same=(last==s->artist);
 		if(sortBy==MyList::ByAlbum)
@@ -54,10 +53,10 @@ void FolderGroups::update(MyList* allSongs, int sortBy)
 	   		// go back to first song of that artist/album
 	   		groupCount++;
 	   		bool sameArtist=true;
-	   		s=allSongs->prev();
+	   		s=allSongs->prevSong();
 	   		QString last2=s->artist;
 	   		for(int m=1; m<count; m++) {
-	   			s=allSongs->prev();
+	   			s=allSongs->prevSong();
 	   			if(s->artist!=last2)
 	   				sameArtist=false;
 	   		}
@@ -77,9 +76,9 @@ void FolderGroups::update(MyList* allSongs, int sortBy)
 				f2->folderPopup->insertItem( "Burn folder...", this, SLOT(burnFolder()));
 
    			for(int m=0; m<count; m++) {
-					f2->addSong(s);
+					f2->addEntry(new SongEntry(s));
 					s->classified=true;
-	   			s=allSongs->next();
+	   			s=allSongs->nextSong();
 	   		}
 				f2->setText(0, folderName+QString(" (%1)").arg(count));
 			}

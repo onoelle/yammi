@@ -7,7 +7,7 @@ type=DATA
 [Config for BinMakefileAm]
 addcxxflags=
 bin_program=yammi
-cxxflags=\s-O3 -Wall
+cxxflags=\s-O3 -g1 -Wall
 ldadd=-lxmms $(LIB_QT)
 ldflags=
 
@@ -23,6 +23,7 @@ makefiles=Makefile.am,yammi/Makefile.am,yammi/docs/Makefile.am,yammi/docs/en/Mak
 modifyMakefiles=true
 project_name=Yammi
 project_type=normal_qt2
+sgml_file=/home/oliver/work/programming/yammi/yammi/docs/en/index.sgml
 short_info=front-end for xmms,mp3 management,fuzzy search
 sub_dir=yammi/
 version=0.3
@@ -88,7 +89,7 @@ install_location=
 type=SOURCE
 
 [yammi/Makefile.am]
-files=yammi/main.cpp,yammi/lo32-app-yammi.png,yammi/lo16-app-yammi.png,yammi/filenew.xpm,yammi/filesave.xpm,yammi/fileopen.xpm,yammi/clearPlaylist.xpm,yammi/DeleteDialog.ui,yammi/folder.cpp,yammi/folder.h,yammi/foldercategories.cpp,yammi/foldercategories.h,yammi/foldergroups.cpp,yammi/foldergroups.h,yammi/folderhistory.cpp,yammi/folderhistory.h,yammi/foldermedia.cpp,yammi/foldermedia.h,yammi/fuzzsrch.cpp,yammi/fuzzsrch.h,yammi/in.xpm,yammi/mp3_layer.cpp,yammi/mp3_layer.h,yammi/mp3tag.cpp,yammi/mp3tag.h,yammi/mydatetime.cpp,yammi/mydatetime.h,yammi/mylist.cpp,yammi/mylist.h,yammi/notin.xpm,yammi/pause.xpm,yammi/PreferencesDialogBase.ui,yammi/prefs.cpp,yammi/prefs.h,yammi/skipbackward.xpm,yammi/skipforward.xpm,yammi/song.cpp,yammi/song.h,yammi/songinfo.cpp,yammi/songinfo.h,yammi/SongInfoDialog.ui,yammi/songlistitem.cpp,yammi/songlistitem.h,yammi/yammigui.cpp,yammi/yammigui.h,yammi/yammimodel.cpp,yammi/yammimodel.h,yammi/preferencesdialog.cpp,yammi/preferencesdialog.h,yammi/defaultMiddleClick.xpm,yammi/defaultDoubleClick.xpm,yammi/mylistview.cpp,yammi/mylistview.h,yammi/YammiGuiBase.ui,yammi/enqueue.xpm,yammi/enqueueasnext.xpm,yammi/playnow.xpm,yammi/dequeueSong.xpm,yammi/prelisten.xpm,yammi/songinfo.xpm,yammi/stopPrelisten.xpm
+files=yammi/main.cpp,yammi/lo32-app-yammi.png,yammi/lo16-app-yammi.png,yammi/filenew.xpm,yammi/filesave.xpm,yammi/fileopen.xpm,yammi/clearPlaylist.xpm,yammi/DeleteDialog.ui,yammi/folder.cpp,yammi/folder.h,yammi/foldercategories.cpp,yammi/foldercategories.h,yammi/foldergroups.cpp,yammi/foldergroups.h,yammi/foldermedia.cpp,yammi/foldermedia.h,yammi/fuzzsrch.cpp,yammi/fuzzsrch.h,yammi/in.xpm,yammi/mp3_layer.cpp,yammi/mp3_layer.h,yammi/mp3tag.cpp,yammi/mp3tag.h,yammi/mydatetime.cpp,yammi/mydatetime.h,yammi/mylist.cpp,yammi/mylist.h,yammi/notin.xpm,yammi/pause.xpm,yammi/PreferencesDialogBase.ui,yammi/prefs.cpp,yammi/prefs.h,yammi/skipbackward.xpm,yammi/skipforward.xpm,yammi/song.cpp,yammi/song.h,yammi/songinfo.cpp,yammi/songinfo.h,yammi/SongInfoDialog.ui,yammi/songlistitem.cpp,yammi/songlistitem.h,yammi/yammigui.cpp,yammi/yammigui.h,yammi/yammimodel.cpp,yammi/yammimodel.h,yammi/preferencesdialog.cpp,yammi/preferencesdialog.h,yammi/defaultMiddleClick.xpm,yammi/defaultDoubleClick.xpm,yammi/mylistview.cpp,yammi/mylistview.h,yammi/YammiGuiBase.ui,yammi/enqueue.xpm,yammi/enqueueasnext.xpm,yammi/playnow.xpm,yammi/dequeueSong.xpm,yammi/prelisten.xpm,yammi/songinfo.xpm,yammi/stopPrelisten.xpm,yammi/songentry.cpp,yammi/songentry.h,yammi/songentrytimestamp.cpp,yammi/songentrytimestamp.h,yammi/songentryint.cpp,yammi/songentryint.h,yammi/songentrystring.cpp,yammi/songentrystring.h
 sub_dirs=
 type=prog_main
 
@@ -203,18 +204,6 @@ install_location=
 type=SOURCE
 
 [yammi/foldergroups.h]
-dist=true
-install=false
-install_location=
-type=HEADER
-
-[yammi/folderhistory.cpp]
-dist=true
-install=false
-install_location=
-type=SOURCE
-
-[yammi/folderhistory.h]
 dist=true
 install=false
 install_location=
@@ -395,6 +384,54 @@ install_location=
 type=SOURCE
 
 [yammi/song.h]
+dist=true
+install=false
+install_location=
+type=HEADER
+
+[yammi/songentry.cpp]
+dist=true
+install=false
+install_location=
+type=SOURCE
+
+[yammi/songentry.h]
+dist=true
+install=false
+install_location=
+type=HEADER
+
+[yammi/songentryint.cpp]
+dist=true
+install=false
+install_location=
+type=SOURCE
+
+[yammi/songentryint.h]
+dist=true
+install=false
+install_location=
+type=HEADER
+
+[yammi/songentrystring.cpp]
+dist=true
+install=false
+install_location=
+type=SOURCE
+
+[yammi/songentrystring.h]
+dist=true
+install=false
+install_location=
+type=HEADER
+
+[yammi/songentrytimestamp.cpp]
+dist=true
+install=false
+install_location=
+type=SOURCE
+
+[yammi/songentrytimestamp.h]
 dist=true
 install=false
 install_location=

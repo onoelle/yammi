@@ -155,28 +155,7 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
 	centralWidget->setResizeMode( folderListView, QSplitter::KeepSize );
 
   // set up the songlist on the right
-//	songListView = new QListView( centralWidget ); dragggg
 	songListView = new MyListView( centralWidget );
-	songListView->addColumn( "Artist", 200);
-	songListView->addColumn( "Title", 200);
-	songListView->addColumn( "Album", 150);
-	songListView->addColumn( "Length", 50);
-	songListView->setColumnAlignment( 3, Qt::AlignRight );
-	songListView->addColumn( "Year", 50);
-	songListView->setColumnAlignment( 4, Qt::AlignRight );
-	songListView->addColumn( "Track", 40);
-	songListView->setColumnAlignment( 5, Qt::AlignRight );
-	songListView->addColumn( "Added to", 60);
-	songListView->setColumnAlignment( 6, Qt::AlignRight );
-	songListView->addColumn( "Bitrate", 40);
-	songListView->setColumnAlignment( 7, Qt::AlignRight );
-	songListView->addColumn( "Filename", 80);
-	songListView->addColumn( "Path", 80);
-	songListView->addColumn( "Comment", 100);
-	songListView->setAllColumnsShowFocus( TRUE );
-	songListView->setShowSortIndicator( TRUE );
-	songListView->setSelectionMode( QListView::Extended );
-	songListView->setAllColumnsShowFocus( TRUE );
 	
 	QValueList<int> lst;
 	lst.append( 150 );
@@ -212,22 +191,26 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
 
 	// folder containing currently played song
 	folderActual = new Folder(folderListView, QString("- Playlist"));
-	folderActual->update(&songsToPlay);
+	folderActual->update(&(model->songsToPlay));
 
 	// folder containing history
-	folderHistory = new FolderHistory(folderListView, QString("History"));
-	folderHistory->update(model->songHistory);
+	folderHistory = new Folder(folderListView, QString("History"));
+	folderHistory->update(&(model->songHistory));
+
+	// folder containing songs played in this session
+	folderSongsPlayed = new Folder(folderListView, QString("Songs Played"));
+	folderSongsPlayed->update(&(model->songsPlayed));
 
 	// folder containing unclassified songs
 	folderUnclassified = new Folder(folderListView, QString("Unclassified"));
-	for(Song* s=model->allSongs.first(); s; s=model->allSongs.next()) {
-		if(!s->classified)
-			unclassifiedSongs.append(s);
+	for(SongEntry* entry=model->allSongs.first(); entry; entry=model->allSongs.next()) {
+		if(!entry->song()->classified)
+			model->unclassifiedSongs.append(entry);
 	}
-
-	folderUnclassified->update(&unclassifiedSongs);
+	folderUnclassified->update(&(model->unclassifiedSongs));
 		
 	folderSearchResults = new Folder( folderListView, QString("Search Results") );
+	folderSearchResults->update(&searchResults);
 	
 	folderProblematic = new Folder( folderListView, QString("Problematic Songs") );
 	cout << "..done\n";
@@ -277,7 +260,8 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
 	songListView->setSelected( songListView->firstChild(), TRUE );
 	songListView->setCurrentItem( songListView->firstChild() );
 	updateSongPopup();
-	
+//	updateListViewColumns();
+
 	model->allSongsChanged(false);
   model->categoriesChanged(false);
 	shuttingDown=0;
@@ -319,6 +303,8 @@ YammiGui::~YammiGui()
 		else
 			cout << "not saving any changes (data may be lost)\n";
 	}
+	if(model->config.logging)
+		model->saveHistory();
 	cout << "goodbye!\n";
 }
 
@@ -326,7 +312,7 @@ YammiGui::~YammiGui()
 /// updates the view to reflect any changes in the model
 void YammiGui::updateView()
 {
-	for(Song* s=model->allSongs.next(); s; s=model->allSongs.next())
+	for(Song* s=model->allSongs.firstSong(); s; s=model->allSongs.nextSong())
 		s->classified=false;	
 	folderAll->update(&(model->allSongs));
 	folderArtists->update(&(model->allSongs), MyList::ByArtist);
@@ -334,24 +320,58 @@ void YammiGui::updateView()
 	folderCategories->update(model->allCategories, model->categoryNames);
 	folderMedia->update(&(model->allSongs));
 	
-	unclassifiedSongs.clear();
-	for(Song* s=model->allSongs.first(); s; s=model->allSongs.next()) {
+	model->unclassifiedSongs.clear();
+	for(Song* s=model->allSongs.firstSong(); s; s=model->allSongs.nextSong()) {
 		if(!s->classified)
-			unclassifiedSongs.append(s);
+			model->unclassifiedSongs.appendSong(s);
 	}
 
-	folderUnclassified->update(&unclassifiedSongs);
+	folderUnclassified->update(&(model->unclassifiedSongs));
 	folderProblematic->update(&(model->problematicSongs));
-	folderActual->update(&songsToPlay);
+	folderSongsPlayed->update(&(model->songsPlayed));
+	folderActual->update(&(model->songsToPlay));
 	slotFolderChanged();
 }
 
 
+void YammiGui::updateListViewColumns()
+{
+	int toDel=songListView->columns();
+	for(int i=0; i<toDel; i++)
+		songListView->removeColumn(0);
+	if(chosenFolder==folderHistory || chosenFolder==folderSongsPlayed)
+		songListView->addColumn( "Played on", 135);
+	if(chosenFolder==folderSearchResults)
+		songListView->addColumn( "Match", 45);
+	if(chosenFolder==folderProblematic)
+		songListView->addColumn( "Reason", 120);
+		
+	songListView->addColumn( "Artist", 200);
+	songListView->addColumn( "Title", 200);
+	songListView->addColumn( "Album", 150);
+	songListView->addColumn( "Length", 50);
+	songListView->setColumnAlignment( 3, Qt::AlignRight );
+	songListView->addColumn( "Year", 50);
+	songListView->setColumnAlignment( 4, Qt::AlignRight );
+	songListView->addColumn( "Track", 40);
+	songListView->setColumnAlignment( 5, Qt::AlignRight );
+	songListView->addColumn( "Added to", 60);
+	songListView->setColumnAlignment( 6, Qt::AlignRight );
+	songListView->addColumn( "Bitrate", 40);
+	songListView->setColumnAlignment( 7, Qt::AlignRight );
+	songListView->addColumn( "Filename", 80);
+	songListView->addColumn( "Path", 80);
+	songListView->addColumn( "Comment", 100);
+	songListView->setAllColumnsShowFocus( TRUE );
+	songListView->setShowSortIndicator( TRUE );
+	songListView->setSelectionMode( QListView::Extended );
+	songListView->setAllColumnsShowFocus( TRUE );
+}
 
 /// opens the preferences dialogue
 void YammiGui::setPreferences()
 {
-	PreferencesDialog d(this, "testiiiii", true);
+	PreferencesDialog d(this, "preferencesDialog", true);
 	d.LineEditBaseDir->setText(model->config.baseDir);
 	d.LineEditScanDir->setText(model->config.scanDir);
 	d.CheckBoxCutPlaylist->setChecked(model->config.cutShort);
@@ -361,6 +381,10 @@ void YammiGui::setPreferences()
 	d.CheckBoxFilenamesConsistent->setChecked(model->config.filenamesConsistent);
 	d.LineEditCriticalSize->setText(QString("%1").arg(model->config.criticalSize));
 	d.LineEditSecondSoundDevice->setText(model->config.secondSoundDevice);
+	d.LineEditSearchThreshold->setText(QString("%1").arg(model->config.searchThreshold));
+	d.LineEditSearchMaximumNoResults->setText(QString("%1").arg(model->config.searchMaximumNoResults));
+	d.LineEditGrabAndEncodeCmd->setText(QString("%1").arg(model->config.grabAndEncodeCmd));
+	
 	
 	
 	d.ComboBoxDoubleClickAction->insertItem("None");
@@ -411,6 +435,9 @@ void YammiGui::setPreferences()
 		}
 		model->config.criticalSize=atoi(d.LineEditCriticalSize->text());
 		model->config.secondSoundDevice=d.LineEditSecondSoundDevice->text();
+		model->config.searchThreshold=atoi(d.LineEditSearchThreshold->text());
+		model->config.searchMaximumNoResults=atoi(d.LineEditSearchMaximumNoResults->text());
+		model->config.grabAndEncodeCmd=d.LineEditGrabAndEncodeCmd->text();
 		updateSongPopup();
 		model->savePreferences();
 	}
@@ -480,7 +507,7 @@ void YammiGui::addToWishList()
 	QString toAdd=searchField->text();
 	MyDateTime wishDate=wishDate.currentDateTime();
 	Song* newSong=new Song("{wish}", toAdd, "", "", "", 0, 0, wishDate, 0, "", 0);
-	model->allSongs.append( newSong );
+	model->allSongs.appendSong( newSong );
 	model->allSongsChanged(true);
 	folderAll->update(&(model->allSongs));
 	searchField->setText("{wish}");
@@ -504,9 +531,9 @@ void YammiGui::toPlayList(int index)
 	
 	// determine mode (add/remove)
 	bool remove=false;
-	Song* s=selectedSongs.first();
+	Song* s=selectedSongs.firstSong();
 	// for all songs contained in that category...
-	for(Song* tmp=category->first(); tmp; tmp=category->next()) {
+	for(Song* tmp=category->firstSong(); tmp; tmp=category->nextSong()) {
 		if(s==tmp) {
 			remove=true;
 			break;
@@ -514,11 +541,11 @@ void YammiGui::toPlayList(int index)
 	}
 	
 	// go through list of songs
-	for(Song* s=selectedSongs.first(); s; s=selectedSongs.next()) {
+	for(Song* s=selectedSongs.firstSong(); s; s=selectedSongs.nextSong()) {
 		if(!remove)
-			category->append(s);
+			category->appendSong(s);
 		else
-			category->remove(s);
+			category->removeSong(s);
 	}
 	
 	model->categoriesChanged(true);
@@ -565,12 +592,12 @@ void YammiGui::decide(Song* s1, Song* s2)
 	if(what==1) {				// okay, delete s2
 		cout << "deleting s2\n";
 		forSong(s2, DeleteFile);				// move it to trash...
-		model->allSongs.removeRef(s2);
+		model->allSongs.removeSong(s2);
 	}
 	if(what==2) {				// okay, delete s1
 		cout << "deleting s1\n";
 		forSong(s1, DeleteFile);				// move it to trash...
-		model->allSongs.removeRef(s1);
+		model->allSongs.removeSong(s1);
 	}
 	model->allSongsChanged(true);
 }
@@ -588,17 +615,17 @@ void YammiGui::userTyped( const QString& searchStr )
 /// search field changed => update search results
 void YammiGui::searchFieldChanged()
 {
-	QString searchStr=searchField->text();
-	if(searchStr.length()<1) return;
+	QString searchStr=" "+searchField->text()+" ";
+	if(searchStr.length()<3) return;
 	
 	FuzzySearch fs;
 	fs.initialize(searchStr.lower(), 2, 4);			// STEP 1
 	
 	// search through all songs
-	Song* s=model->allSongs.first();
+	Song* s=model->allSongs.firstSong();
 	QString composed;
-	for(; s; s=model->allSongs.next()) {
-		composed=s->artist + " - " + s->title + "  " + s->album;
+	for(; s; s=model->allSongs.nextSong()) {
+		composed=" " + s->artist + " - " + s->title + " - " + s->album + " ";
 		if(s->artist=="" || s->title=="") {							// if tags incomplete use filename for search
 			composed+=s->filename;
 		}
@@ -610,62 +637,24 @@ void YammiGui::searchFieldChanged()
 	bme=fs.getBestMatchesList();				// STEP 4
 	
 	// insert n best matches into search result list
-	folderSearchResults->clearSongs();
-	int noResults=60;
-	for(int j=0; j<noResults && bme[j]; j++) {
-		folderSearchResults->addSong( (Song*) bme[j]->objPtr);
-//		cout << j << ".Position, value: " << bme[j]->sim << "\n";
+	searchResults.clear();
+	int noResults=0;
+	for(; noResults<model->config.searchMaximumNoResults && bme[noResults] && bme[noResults]->sim>(model->config.searchThreshold*10); noResults++) {
+		searchResults.append( new SongEntryInt ((Song*)bme[noResults]->objPtr, bme[noResults]->sim) );
 	}
+	folderSearchResults->update(&searchResults);
+	
 	folderListView->setCurrentItem( folderSearchResults );
 	folderListView->setSelected( folderSearchResults, TRUE );
-//	if(chosenFolder!=folderSearchResults)
 	slotFolderChanged();
 	songListView->setContentsPos( 0, 0);			// set scroll position to top
-	QListViewItem* x=songListView->firstChild();
+	QListViewItem* item=songListView->firstChild();
+	if(item)
+		item->setSelected(true);											// select first anyway
 	int threshold=700;
-	int selected=0;
-	x->setSelected(true);											// select first anyway
-	for(int j=0; j<noResults && bme[j]; j++) {
-		if(bme[j]->sim>threshold) {
-			x->setSelected(true);
-			selected++;
-		}
-		x=x->nextSibling();
+	for(int j=0; j<noResults && bme[j] && bme[j]->sim>threshold; j++, item=item->nextSibling()) {
+		item->setSelected(true);
 	}
-	
-	/*
-	if(selected==1)
-		qApp->beep();
-	if(selected>1) {
-//	 keyboard led stuff
-	#include "Xlib.h"
-	#include "XKBlib.h"
-	
-	disp=this->x11Display();
-	unsigned int states;
-	XkbGetIndicatorState(disp,XkbUseCoreKbd,&states);
-	for (i=0,bit=1;i<XkbNumIndicators;i++,bit<<=1)
-    {
-        int flag;
-        flag=states&bit;
-        switch (i)
-        {
-         case 1: // Numlock
-           if (flag)
-           break;
-         case 0: // CapsLock
-           if (flag)
-           break;
-         case 2: //ScrollLock
-           if (flag)
-           break;
-        }
-    }
- extern	Bool	 XkbSetIndicatorMap(Display *, unsigned long,	XkbDescPtr);
-
-		qApp->beep();			// different beep/feedback here for multiple matches
-	}
-	*/
 }
 
 
@@ -688,18 +677,19 @@ void YammiGui::slotFolderChanged()
 	}
 	
 	// switch to unsorted folder => switch sorting off
-	if(newFolder==folderSearchResults || newFolder==folderActual || newFolder==folderHistory) {
+	if(newFolder==folderActual)
 		songListView->setSorting(-1);
-	}
+	else
+		songListView->setSorting(0);		// sort by first column
+		
 	// switch from unsorted to sorted folder => switch sorting back on
-	if( (chosenFolder==folderSearchResults || chosenFolder==folderActual || chosenFolder==folderHistory) &&
-			(newFolder!=folderSearchResults && newFolder!=folderActual && newFolder!=folderHistory) ) {
+	if( (chosenFolder==folderActual) &&	(newFolder!=folderActual) ) {
 		songListView->setSorting(0, TRUE);
 	}
 	
 	// only allow dragging of songs in folderActual
-	if(chosenFolder==folderActual)
-		songListView->draggable=true; 	// disabled so far, until stable???
+	if(newFolder==folderActual)
+		songListView->draggable=true;
 	else
 		songListView->draggable=false;
 	
@@ -713,8 +703,8 @@ void YammiGui::slotFolderChanged()
 	
 	chosenFolder = newFolder;
 	songListView->clear();
+	updateListViewColumns();
 	addFolderContent(chosenFolder);
-//	QApplication::restoreOverrideCursor();
 }
 
 /*
@@ -740,33 +730,36 @@ void YammiGui::slotSortOrderChanged(int sortOrder)
 void YammiGui::addFolderContent(Folder* folder)
 {	
 	folderToAdd=folder;
+	
 	alreadyAdded=0;
 	// should we first sort the entries???
 	// we need to get the column to sort folder->songList.sort();
 	addFolderContentSnappy();
 	
 	// if no songs in this folder => add subfolders?
-	/*
-	if(i==0) {
+	/* if(i==0) {
 		for ( QListViewItem* f=folder->firstChild(); f; f=f->nextSibling() )
 			addFolderContent((Folder*)f);	
-	}
-	*/
+	}	*/
+	
 }
 
 void YammiGui::addFolderContentSnappy()
 {	
 	int i=0;
-	Song* s;
-	for (s = folderToAdd->firstSong(); s && i<alreadyAdded; s = folderToAdd->nextSong(), i++ )
-	{}
+	SongEntry* entry;
+	SongListItem* lastOne=(SongListItem*)songListView->firstChild();
+	for (entry = folderToAdd->firstEntry(); entry && i<alreadyAdded; entry = folderToAdd->nextEntry(), i++ ) {
+		SongListItem* check=(SongListItem*)lastOne->itemBelow();
+		if(check!=0)
+			lastOne=check;
+	}
 	
-	SongListItem* lastOne=0;
-	for (; s && i<=alreadyAdded+200; s = folderToAdd->nextSong(), i++ ) {
-		lastOne=new SongListItem( songListView, s, lastOne);
+	for (; entry && i<=alreadyAdded+200; entry = folderToAdd->nextEntry(), i++ ) {
+		lastOne=new SongListItem( songListView, entry, lastOne);
 	}
 	alreadyAdded=i;
-	if(s) {		// any songs left to add?
+	if(entry) {		// any songs left to add?
 		QTimer* timer=new QTimer(this);
 		connect(timer, SIGNAL(timeout()), this, SLOT(addFolderContentSnappy()) );
 		timer->start(0, TRUE);
@@ -825,7 +818,7 @@ void YammiGui::adjustSongPopup()
 {
 	int selected=selectedSongs.count();	
 	QString label;
-	Song* first=selectedSongs.first();
+	Song* first=selectedSongs.firstSong();
 	if (selected>1) 							// more than one song selected
 		label=QString("%1 songs selected").arg(selected);
 	else
@@ -836,7 +829,7 @@ void YammiGui::adjustSongPopup()
 	// we don't check whether all selected songs are contained, just first(old: current)
 	int k=0;
 	for(MyList* category=model->allCategories.first(); category; category=model->allCategories.next(), k++) {
-		if(category->containsRef(first))
+		if(category->containsSong(first)>0)
 			playListPopup->changeItem(k, QIconSet( QPixmap(in_xpm)), playListPopup->text(k));
 		else
 			playListPopup->changeItem(k, QIconSet( QPixmap(notin_xpm)), playListPopup->text(k));
@@ -866,7 +859,7 @@ void YammiGui::slotFolderPopup( QListViewItem* Item, const QPoint & point, int )
 	QListViewItem *i = folderListView->currentItem();	
 	Folder* chosenFolder = ( Folder* )i;
 	for(Song* s=chosenFolder->firstSong(); s; s=chosenFolder->nextSong()) {
-		selectedSongs.append(s);
+		selectedSongs.appendSong(s);
 	}
 	if(selectedSongs.count()==0) {
 		cout << "no songs\n";
@@ -895,7 +888,7 @@ void YammiGui::forSelectionSongInfo()
 	int selected=0;
 	SongInfoDialog si(this, "test", true);
 	
-	for(Song* s=selectedSongs.first(); s; s=selectedSongs.next()) {
+	for(Song* s=selectedSongs.firstSong(); s; s=selectedSongs.nextSong()) {
 		selected++;
 		if(selected==10)			// set wait cursor (summing size of 2000 files may take a while...)
 			QApplication::setOverrideCursor( Qt::waitCursor );
@@ -981,7 +974,7 @@ void YammiGui::forSelectionSongInfo()
 	
 	if(result==QDialog::Accepted) {
 		// now set the edited info for all selected songs
-		for(Song* s=selectedSongs.first(); s; s=selectedSongs.next()) {
+		for(Song* s=selectedSongs.firstSong(); s; s=selectedSongs.nextSong()) {
 			bool change=false;
 			if(si.LineEditArtist->text()!="!" && si.LineEditArtist->text()!=s->artist)	{ s->artist=si.LineEditArtist->text(); change=true; }
 			if(si.LineEditTitle->text()!="!" && si.LineEditTitle->text()!=s->title)			{ s->title=si.LineEditTitle->text(); change=true; }
@@ -1016,14 +1009,14 @@ void YammiGui::getCurrentSong()
 	selectedSongs.clear();
 	QListViewItem* i=songListView->currentItem();
 	Song* s=((SongListItem*) i)->song();
-	selectedSongs.append(s);
+	selectedSongs.appendSong(s);
 }
 
 /// makes a list containing only the currently played song
 void YammiGui::getCurrentlyPlayedSong()
 {
 	selectedSongs.clear();
-	selectedSongs.append(lastPlayed.at(lastPlayed.count()-1));
+	selectedSongs.append(model->songsToPlay.at(0));
 }
 			
 /// makes a list of the currently selected songs
@@ -1034,7 +1027,7 @@ void YammiGui::getSelectedSongs()
 	for(; i; i=i->itemBelow()) {						// go through list of songs
 		if(i->isSelected()) {
 			Song* s=((SongListItem*) i)->song();
-			selectedSongs.append(s);
+			selectedSongs.appendSong(s);
 		}
 	}
 }
@@ -1043,8 +1036,8 @@ void YammiGui::getSelectedSongs()
 void YammiGui::getAllSongs()
 {
 	selectedSongs.clear();
-	for(Song* s=model->allSongs.first(); s; s=model->allSongs.next()) {
-		selectedSongs.append(s);
+	for(Song* s=model->allSongs.firstSong(); s; s=model->allSongs.nextSong()) {
+		selectedSongs.appendSong(s);
 	}
 }
 
@@ -1138,7 +1131,7 @@ void YammiGui::forSelection(action act)
 	
 	
 	// OKAY: go through list of songs
-	for(Song* s=selectedSongs.first(); s; s=selectedSongs.next()) {
+	for(Song* s=selectedSongs.firstSong(); s; s=selectedSongs.nextSong()) {
 
 		if(act==Delete) {
 			if(deleteFile)	forSong(s, DeleteFile);
@@ -1170,7 +1163,7 @@ void YammiGui::forSelection(action act)
 		updateView();
 	}
 	if(act==Enqueue || act==EnqueueAsNext || act==Dequeue) {
-		folderActual->update(&songsToPlay);
+		folderActual->update(&(model->songsToPlay));
 		syncYammi2Xmms();
 		if(chosenFolder==folderActual)
 			slotFolderChanged();
@@ -1198,14 +1191,14 @@ void YammiGui::syncXmms2Yammi()
 		xmms_remote_playlist_delete(0, i);
 	}
 	// 2. insert all (including currently played) songs into yammi playlist
-	songsToPlay.clear();
+	model->songsToPlay.clear();
 	for(int i=0; i<xmms_remote_get_playlist_length(0); i++) {
  		char buf[200];
 		strcpy(buf, xmms_remote_get_playlist_file(0, i));
-		Song* check=getSongEntryFromFilename(QString(buf));
+		Song* check=getSongFromFilename(QString(buf));
 		if(!check)	// song not found in database
 			continue;
-		songsToPlay.append(check);
+		model->songsToPlay.appendSong(check);
 	}
 	// 3. delete all but the keepInXmms first songs
 	for(int i=xmms_remote_get_playlist_length(0)-1; i>=model->config.keepInXmms; i--) {
@@ -1223,9 +1216,9 @@ void YammiGui::syncYammi2Xmms(bool syncAll)
 	// check whether xmms playlist is empty
 	if(xmms_remote_get_playlist_length(0)==0) {
 		// xmms playlist empty
-		for(int i=0; i<(int)songsToPlay.count() && (i<model->config.keepInXmms || syncAll); i++) {
+		for(int i=0; i<(int)model->songsToPlay.count() && (i<model->config.keepInXmms || syncAll); i++) {
 				gchar url[300];
-				strcpy(url, songsToPlay.at(i)->location());
+				strcpy(url, model->songsToPlay.at(i)->song()->location());
 				xmms_remote_playlist_add_url_string(0, url);
 		}
 		return;
@@ -1234,19 +1227,19 @@ void YammiGui::syncYammi2Xmms(bool syncAll)
 	// okay, at least one song in xmms playlist
 		
 			
-	// iterate through first keepInXmms songs in Xmms playlist
+	// iterate through first <keepInXmms> songs in Xmms playlist
 	// if different than corresponding yammi entry => delete
 	// if playlist too short => insert yammi entries
-	for(int i=1; i<model->config.keepInXmms || ( syncAll && i<(int)songsToPlay.count() ); i++) {
+	for(int i=1; i<model->config.keepInXmms || ( syncAll && i<(int)model->songsToPlay.count() ); i++) {
 		
 		// check whether playlist entry existing
 		if(i<(int)xmms_remote_get_playlist_length(0)) {
 			// yes, existing!
 	 		char buf[300];
 			strcpy(buf, xmms_remote_get_playlist_file(0, i));
-			Song* check=getSongEntryFromFilename(QString(buf));
-			if(i<(int)songsToPlay.count()) {
-				Song* s=songsToPlay.at(i);
+			Song* check=getSongFromFilename(QString(buf));
+			if(i<(int)model->songsToPlay.count()) {
+				Song* s=model->songsToPlay.at(i)->song();
 				if(check==s)
 					continue;		// okay, both are the same
 				// ups, different!
@@ -1254,13 +1247,15 @@ void YammiGui::syncYammi2Xmms(bool syncAll)
 				for(int toDel=xmms_remote_get_playlist_length(0)-1; toDel>=i; toDel--) {
 					// delete all following
 					xmms_remote_playlist_delete(0, toDel);
+					myWait(100);
 				}
 				for(int toInsert=i; toInsert<model->config.keepInXmms; toInsert++) {
 					// reinsert
 					gchar url[300];
-					Song* s=songsToPlay.at(toInsert);
+					Song* s=model->songsToPlay.at(toInsert)->song();
 					strcpy(url, s->location());
 					xmms_remote_playlist_add_url_string(0, url);
+					myWait(100);
 				}
 				return;
 			}
@@ -1269,20 +1264,18 @@ void YammiGui::syncYammi2Xmms(bool syncAll)
 				for(int toDel=xmms_remote_get_playlist_length(0)-1; toDel>=i; toDel--) {
 					// delete all following
 					xmms_remote_playlist_delete(0, toDel);
+					myWait(100);
 				}
 			}
 		}
 		else {	
 			// playlist too short => check whether songs in songsToPlay
-			if(i<(int)songsToPlay.count()) {
-				cout << "playlist was too short, filling up\n";
-				Song* s=songsToPlay.at(i);
+			if(i<(int)model->songsToPlay.count()) {
+				Song* s=model->songsToPlay.at(i)->song();
 				gchar url[300];
 				strcpy(url, s->location());
 				xmms_remote_playlist_add_url_string(0, url);
-			}
-			else {
-				cout << "yammi playlist too short to fill up!\n";
+				myWait(100);
 			}
 		}
 	} // end of for
@@ -1303,7 +1296,7 @@ void YammiGui::forSong(Song* s, action act, QString dir=0)
 		if(s->filename=="" || !s->checkReadability())
 			return;
 		forSong(s, EnqueueAsNext);
-		folderActual->update(&songsToPlay);
+		folderActual->update(&(model->songsToPlay));
 		syncYammi2Xmms();
 		xmms_remote_playlist_next(0);
 		if(!xmms_remote_is_playing(0))
@@ -1314,62 +1307,24 @@ void YammiGui::forSong(Song* s, action act, QString dir=0)
 	case Enqueue:								// enqueue at end
 		if(s->filename=="" || !s->checkReadability())
 			return;
-		if(model->config.managePlaylist) {
-			songsToPlay.append(s);
-			mainStatusBar->message(QString("%1 enqueued at end").arg(s->displayName()), 3000);
-		}
-		else {
-			gchar url[300];
-			strcpy(url, s->location());
-			xmms_remote_playlist_add_url_string(0, url);
-			mainStatusBar->message(QString("%1 enqueued at end").arg(s->displayName()), 3000);
-		}
+		model->songsToPlay.appendSong(s);
+		mainStatusBar->message(QString("%1 enqueued at end").arg(s->displayName()), 3000);
 		break;
 				
 	case EnqueueAsNext: {				// enqueue as next
 		if(s->filename=="" || !s->checkReadability())
 			return;
-		if(model->config.managePlaylist) {
-			songsToPlay.insert(1, s);
-		}
-		else {
-				// enqueue as next song
-				// (we need to delete all following and reinsert them after inserting desired song)
-				// (xmmsctrl does not provide any commands for a more convenient method)
-  	  	int pos=xmms_remote_get_playlist_pos(0);
-    		int length=xmms_remote_get_playlist_length(0);
-		
-			// remove all enqueued songs, but remember file names
-			int toRemember=length-pos-1;
-			if(toRemember>0) {
-				QArray<gchar*> rem(toRemember);
-				for(int i=0; i<toRemember; i++) {
-					rem[i]=new gchar[200];
-					strcpy(rem[i], xmms_remote_get_playlist_file(0, pos+1));
-			    	xmms_remote_playlist_delete(0, pos+1);
-			  }
-				forSong(s, Enqueue);				// enqueue desired song
-				mainStatusBar->message(QString("%1 enqueued as next").arg(s->displayName()), 2000);
-				// enqueue all remembered songs
-				for(int i=0; i<toRemember; i++) {
-					xmms_remote_playlist_add_url_string(0, rem[i]);
-					delete(rem[i]);
-			  }
-			}
-			else {
-				forSong(s, Enqueue);				// enqueue desired song
-			}
-		}
+		model->songsToPlay.insert(1, new SongEntry(s));
 		mainStatusBar->message(QString("%1 enqueued as next").arg(s->displayName()), 2000);
 	}
 		break;
 	
 	case Dequeue:
 		// search for selected song and dequeue
-		for(int i=1; i<(int)songsToPlay.count(); i++) {
-			Song* check=songsToPlay.at(i);
+		for(int i=1; i<(int)model->songsToPlay.count(); i++) {
+			Song* check=model->songsToPlay.at(i)->song();
 			if(check==s) {
-				songsToPlay.remove(i);
+				model->songsToPlay.remove(i);
 				cout << "song removed\n";
 				mainStatusBar->message(QString("song %1 dequeued").arg(s->displayName()), 3000);
 				i--;
@@ -1392,7 +1347,7 @@ void YammiGui::forSong(Song* s, action act, QString dir=0)
 	case SongInfo:
 	{
 		selectedSongs.clear();
-		selectedSongs.append(s);
+		selectedSongs.appendSong(s);
 		forSelectionSongInfo();
 	  break;
 	}
@@ -1402,8 +1357,8 @@ void YammiGui::forSong(Song* s, action act, QString dir=0)
 		if(s->filename=="")
 			return;
 		if(s->checkConsistency()==false) {
-			if(model->problematicSongs.contains(s)==0)
-				model->problematicSongs.append(s);
+			if(model->problematicSongs.containsSong(s)==0)
+				model->problematicSongs.appendSong(s);
 		}
 	 }
 		break;
@@ -1414,19 +1369,17 @@ void YammiGui::forSong(Song* s, action act, QString dir=0)
 		if(result==QDialog::Accepted) {
 			if(dd.CheckBoxDeleteFile->isChecked()) {
 				forSong(s, DeleteFile);				// 1. move songfile to trash
-				//mmm s->deleteFile();
 				mainStatusBar->message(QString("%1 removed (file)").arg(s->displayName()), 2000);
 			}
 			if(dd.CheckBoxDeleteDbEntry->isChecked()) {
 				forSong(s, DeleteEntry);			// 2. remove from database
-				//mmm s->deleteFile();
 				mainStatusBar->message(QString("%1 removed (db entry)").arg(s->displayName()), 2000);
 			}
 		}
 	} break;
 	
 	case DeleteEntry:							// delete db entry
-		model->allSongs.removeRef(s);
+		model->allSongs.removeSong(s);
 		model->allSongsChanged(true);
 		break;
 	
@@ -1523,7 +1476,7 @@ void YammiGui::enqueueFolder()
 	for(Song* s=chosenFolder->firstSong(); s; s=chosenFolder->nextSong()) {
 		forSong(s, Enqueue);
 	}
-	folderActual->update(&songsToPlay);
+	folderActual->update(&(model->songsToPlay));
 }
 
 
@@ -1616,10 +1569,10 @@ void YammiGui::xmms_clearPlaylist()
 	if(model->config.childSafe)
 		return;
 	if( QMessageBox::warning( this, "Yammi", "Clear complete playlist?", "Yes", "No")==0) {
-		Song* save=songsToPlay.getFirst();
-		songsToPlay.clear();
-		songsToPlay.append(save);
-		folderActual->update(&songsToPlay);
+		Song* save=model->songsToPlay.firstSong();
+		model->songsToPlay.clear();
+		model->songsToPlay.appendSong(save);
+		folderActual->update(&(model->songsToPlay));
 		syncYammi2Xmms();
 		if(chosenFolder==folderActual)
 			slotFolderChanged();
@@ -1670,71 +1623,46 @@ void YammiGui::onTimer()
 				cout << songsUntilShutdown << " songs left before shutdown...\n";
 			}
 			
-			Song* current=getSongEntryFromFilename(QString(file));
+			currentSong=getSongFromFilename(QString(file));
 
 			// song entry found
-			if(current!=0) {
+			if(currentSong!=0) {
 				
-				lastPlayed.append(current);			// append current...
-				// shorten history?
-				/*while(lastPlayed.count()>10) {		// model->config.noLastPlayed
-					lastPlayed.remove((unsigned int)0);
-				}*/
+				SongEntryTimestamp* entry=new SongEntryTimestamp(currentSong);
+				model->songsPlayed.append(entry);		// append to songsPlayed
+				folderSongsPlayed->update(&(model->songsPlayed));
+				if(chosenFolder==folderSongsPlayed)
+					slotFolderChanged();
 		  	
-	  		// take over playlist management from xmms
-		  	if(model->config.managePlaylist) {
+	  		// take over playlist management from xmms...
+		  	// remove played song(s) from xmms playlist
+		  	int i;
+		  	for(i=0; xmms_remote_get_playlist_pos(0)>0; i++) {
+		  		xmms_remote_playlist_delete(0, 0);
+		  		model->songsToPlay.removeFirst();
+		  	}
+		  	cout << "removed " << i << " entries from xmms/yammi\n";
+		  	
+		  	// should just check, not change anything:
+		  	syncYammi2Xmms();
 		  		
-		  		// remove played song(s) from xmms playlist
-		  		int i;
-		  		for(i=0; xmms_remote_get_playlist_pos(0)>0; i++) {
-		  			xmms_remote_playlist_delete(0, 0);
-		  			songsToPlay.removeFirst();
-		  		}
-		  		cout << "removed " << i << " entries from xmms/yammi\n";
-		  		
-		  		// should just check, not change anything:
-		  		syncYammi2Xmms();
-		  		
-					folderActual->update(&songsToPlay);
-					if(chosenFolder==folderActual)
-						slotFolderChanged();
-					else
-						songListView->triggerUpdate();					
-				}
-				// end of playlist management
+				folderActual->update(&(model->songsToPlay));
+				if(chosenFolder==folderActual)
+					slotFolderChanged();
+				// ...end of playlist management
 				
 				// set title to currently played song
-				setCaption("Yammi: "+current->displayName());
-				
-				// logging
-       	if(model->config.logging) {
-					MyDateTime now = QDateTime::currentDateTime();
-     			QString logentry=QString("<%1><%2><%3>\n").arg(current->artist).arg(current->title).arg(now.writeToString());
-
-        		
-					QFile logfile( model->config.yammiBaseDir+"/logfile.log" );
-     			if ( !logfile.open( IO_ReadWrite  ) )
-     				return;
-     			logfile.at(logfile.size());
-        		
-   	  		if(logfile.writeBlock(logentry, logentry.length()) < 1) {
-   					cout << "error writing to logfile\n";
-   				}
-   				logfile.close();
-     		}
-
+				setCaption("Yammi: "+currentSong->displayName());
 			}
 			else {				// song not found in database
 				setCaption("Yammi - song not in database");
 			}	
 			
 			// update view, if folderActual is currently shown folder
-//			QListViewItem *i = folderListView->currentItem();
-//			Folder* chosenFolder = ( Folder* )i;
+			songListView->triggerUpdate();					
 			if(chosenFolder==folderActual)
-				slotFolderChanged();
-		
-		
+				slotFolderChanged();		
+
 		}
 		// *** end of song change ***
 		// **************************
@@ -1763,7 +1691,7 @@ void YammiGui::onTimer()
 
 // finds out the corresponding song entry given a filename
 // returns 0 if no song entry found
-Song* YammiGui::getSongEntryFromFilename(QString filename)
+Song* YammiGui::getSongFromFilename(QString filename)
 {
 	// strip filename to relative name
 	int pos=filename.findRev('/', -1);
@@ -1790,18 +1718,18 @@ void YammiGui::enqueueCdTrack()
 	
 	caption="Enter artist";
 	message="Please enter artist";
-	QString artist(QInputDialog::getText( caption, message, QString("Held"), &ok, this ));
+	QString artist(QInputDialog::getText( caption, message, QString("MyArtist"), &ok, this ));
 	if(!ok)
 		return;
 	
 	caption="Enter title";
 	message="Please enter title";
-	QString title(QInputDialog::getText( caption, message, QString("tollesLied"), &ok, this ));
+	QString title(QInputDialog::getText( caption, message, QString("Fantastic Song"), &ok, this ));
 	if(!ok)
 		return;
 	
 	QString filename=QString("%1%2 - %3.mp3").arg(model->config.scanDir).arg(artist).arg(title);
-	QString cmd=QString("grabAndEncode %1 \"%2\" \"%3\" \"%4\" &").arg(trackNr).arg(artist).arg(title).arg(filename);
+	QString cmd=QString("%1 %2 \"%3\" \"%4\" \"%5\" &").arg(model->config.grabAndEncodeCmd).arg(trackNr).arg(artist).arg(title).arg(filename);
 	system(cmd);
 	grabbedTrackFilename=filename;
 	mainStatusBar->message("grabbing track, will be available shortly...", 10000);
@@ -2004,11 +1932,19 @@ void YammiGui::stopDragging()
 {
 	cout << "stop dragging\n";
 	// here we have to synchronize with xmms playlist
-	songsToPlay.clear();
+	model->songsToPlay.clear();
 	for ( QListViewItem* item=songListView->firstChild(); item; item=item->nextSibling() ) {
-		songsToPlay.append(((SongListItem*)item)->song());
+		model->songsToPlay.appendSong(((SongListItem*)item)->song());
 	}
 	syncYammi2Xmms();
 	songListView->dragging=false;
 	songListView->setCursor(Qt::arrowCursor);
+}
+
+
+void YammiGui::myWait(int msecs)
+{
+	QTime t;
+	t.start();
+	while(t.elapsed()<msecs);
 }

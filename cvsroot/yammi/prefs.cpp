@@ -30,8 +30,10 @@ Prefs::Prefs(){
 	filenamesConsistent=false;
 	criticalSize=700;
 	secondSoundDevice="";
-	managePlaylist=true;
 	keepInXmms=3;
+	searchThreshold=20;
+	searchMaximumNoResults=200;
+	grabAndEncodeCmd="grabAndEncode";
 }
 
 Prefs::~Prefs(){

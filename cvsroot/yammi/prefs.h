@@ -45,8 +45,10 @@ public:
 	bool tagsConsistent;
 	bool filenamesConsistent;
 	QString secondSoundDevice;
-	bool managePlaylist;
 	int keepInXmms;
+	int searchThreshold;
+	int searchMaximumNoResults;
+	QString grabAndEncodeCmd;
 	
 };
 

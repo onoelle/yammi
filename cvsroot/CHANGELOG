@@ -2,20 +2,21 @@ done
 ----
 
 ###########################
-6.2.			version 0.3 !!!
--  6. 2.	added number of songs to folder name in several folders
+10.2.			version 0.3 !!!
+- 9. 2. added extended song info (timestamp, string, int) to certain song entry lists
+- 6. 2.	added number of songs to folder name in several folders
 
-18.1.		version 0.2 !!!
+###########################
+18.1.			version 0.2 !!!
 - 18.1. took over playlist management (adding, deleting, moving songs)
 - 18.1. completed toolbar with quite ugly buttons
-- 13.1. a more reasonable option to grab(paranoia) & encode(notlame) songs
-from cd
+- 13.1. a more reasonable option to grab(paranoia) & encode(notlame) songs from cd
 - 13.1. snappy filling up of lists
 - 12.1.	first step to take over playlist management (dragging songs around)
 - 12.1.	restructered context menu
 
 ############################
-- ca. 10.12. !!! release 0.1 !!!
+10.12.		version 0.1 !!!
 - 5.12. got sourceforge project page, preparing for first release
 - 17.9.	showing currently played + last n songs in a folder
 - 14.9.	search & play only mode

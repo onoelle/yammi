@@ -45,7 +45,10 @@
 
 // my includes
 #include "song.h"
-//#include "songlistitem.h"
+#include "songentry.h"
+#include "songentrystring.h"
+#include "songentrytimestamp.h"
+
 #include "songinfo.h"
 #include "fuzzsrch.h"
 #include "mp3tag.h"
@@ -61,16 +64,20 @@ public:
 	~YammiModel();
 
 	// data representation
-	MyList		allSongs;										// 1. all songs in database
-	MyList		problematicSongs;
+	MyList		allSongs;										// all songs in database
+	MyList		problematicSongs;						// problematic songs (in consistency check)
+	MyList		songHistory;								// saved history of played songs
+	MyList 		songsToPlay;								// yammi playlist
+	MyList		songsPlayed;								// songs played in this session
+	MyList 		unclassifiedSongs;					// songs not in any category/album/group
+
+	QList<MyList> allCategories;					// categories
+	QStrList	categoryNames;							// names of categories
+	
 	int				songsAdded;
 	int				corruptSongs;
 	bool			_allSongsChanged;
-	QList<MyList> allCategories;					// 2. categories
-	QStrList	categoryNames;							//		names of categories
   bool			_categoriesChanged;
-	MyList		songHistory;									// history of played songs
-	QList<MyDateTime> songHistoryTimestamp;
 
 	// preferences
 	Prefs config;
@@ -95,6 +102,8 @@ public:
 	void 			readSongDatabase();
 	void 			saveSongDatabase();
 	void			readHistory();
+	void			saveHistory();
+
 
 public slots:
 	void			save();

@@ -18,7 +18,11 @@
 #include <stdio.h>
 #include "mydatetime.h"
 
-MyDateTime::MyDateTime() {}
+MyDateTime::MyDateTime()
+{
+	this->setDate(QDate::currentDate());
+	this->setTime(QTime::currentTime());
+}
 
 MyDateTime::~MyDateTime() {}
 	

@@ -33,15 +33,26 @@ Folder::Folder( QListViewItem* parent, const QString &name )
 	setText( 0, name );
 	folderPopup=0;
 	fName=name;
-/*
-	folderPopup = new QPopupMenu();
-	folderPopup->insertItem( "Folder...", 113 );
-	folderPopup->insertItem("Content...", contentMenu);
-	folderPopup->insertItem( "For content..", 114 );
-	*/
 }
 
 
+Song* Folder::firstSong()
+{
+	SongEntry* entry=songList.first();
+	if(entry)
+		return entry->song();
+	else
+		return 0;
+}
+
+Song* Folder::nextSong()
+{
+	SongEntry* entry=songList.next();
+	if(entry)
+		return entry->song();
+	else
+		return 0;
+}
 /*
 void Folder::insertSubFolders( const QObjectList *lst )
 {
@@ -56,8 +67,8 @@ void Folder::update(MyList* allSongs)
 {
 	clearSongs();
 	int count=0;
-	for(Song* s=allSongs->first(); s; s=allSongs->next(), count++) {
-		addSong(s);
+	for(SongEntry* entry=allSongs->first(); entry; entry=allSongs->next(), count++) {
+		addEntry(entry);
 	}
 	setText(0, fName+QString(" (%1)").arg(count));
 }

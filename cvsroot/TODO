@@ -1,28 +1,23 @@
 TODO
 ----
-last update 6.2.2002
+last update 10.2.2002
 
 
-for release 0.3
----------------
-- prefs for second sound device
-- recent / full history
-
-- no concistency mode guarantees untouched mp3s??? => yes, put into docu
-	=> no moving???
+for release 0.3.1 or 0.4
+------------------------
 - touch history file on first startup => yes, check whether funciona
-
-
-for release 0.3.1
----------------
-- tool tips?
-- update documentation
+- new framework for view updates
+- more tool tips
+- update documentation (esp. on grabbing/encoding songs)
+- statistic folder / more info in history folder
 
 
 for near future
 ---------------
 - more options for burning folder
 - more options for keeping consistency
+- more detailed logging + evaluation of log info
+  - playing songs that haven't been played for quite a while
 
 - fix: two albums having the same name appear as one album
 - fix: doesn't show meaningful value for bitrate and length when variable bitrate
@@ -34,8 +29,7 @@ for far future
 --------------
 - replace id3 tag handling (and mp3 layer info?) with something better
   (probably switching to id v2 tags, using a library)
+- support for other music formats (at least wav, maybe ogg)
 - port to windows?
-- more detailed logging + evaluation of log info
-  - playing songs that haven't been played for quite a while
 - put it all into a proper database (upto 5000 songs I think it'll do as is)
 

@@ -37,10 +37,9 @@ void FolderCategories::update(QList<MyList> allCategories, QStrList categoryName
 		delete(toDelete);
 	}
 	
-	MyList* ptr=allCategories.first();
 	QString name=categoryNames.first();
 	int count=0;
-	for(; ptr; ptr=allCategories.next(), name=categoryNames.next(), count++)
+	for(MyList* ptr=allCategories.first(); ptr; ptr=allCategories.next(), name=categoryNames.next(), count++)
 	{
 		Folder *f = new Folder( this, name );
 		f->folderPopup = new QPopupMenu( 0 );
@@ -48,12 +47,12 @@ void FolderCategories::update(QList<MyList> allCategories, QStrList categoryName
 		f->folderPopup->insertItem( "Enqueue", this, SLOT(enqueueFolder()));
 		f->folderPopup->insertItem( "Burn folder...", this, SLOT(burnFolder()));
 		
-		int count=0;
-		for(Song* s=ptr->first(); s; s=ptr->next(), count++) {
-			f->addSong(s);
-			s->classified=true;
+		int catCount=0;
+		for(SongEntry* entry=ptr->first(); entry; entry=ptr->next(), catCount++) {
+			f->addEntry(entry);
+			entry->song()->classified=true;
 		}
-		f->setText(0, name+QString(" (%1)").arg(count));
+		f->setText(0, name+QString(" (%1)").arg(catCount));
 	}
 	setText(0, fName+QString(" (%1)").arg(count));
 }

@@ -16,24 +16,81 @@
  ***************************************************************************/
 
 #include "mylist.h"
+#include "song.h"
 
 MyList::MyList()
 {
 	sortOrder=1;
 }
-MyList::~MyList(){
+
+MyList::~MyList()
+{
 }
 
-void MyList::setSortOrder(int orderBy)
+
+Song* MyList::firstSong()
 {
-	sortOrder=orderBy;
+	SongEntry* entry=first();
+	if(entry)
+		return entry->song();
+	else
+		return 0;
+}
+
+Song* MyList::nextSong()
+{
+	SongEntry* entry=next();
+	if(entry)
+		return entry->song();
+	else
+		return 0;
+}
+
+Song* MyList::prevSong()
+{
+	SongEntry* entry=prev();
+	if(entry)
+		return entry->song();
+	else
+		return 0;
+}
+
+void MyList::appendSong(Song* s)
+{
+	append(new SongEntry(s));
+}
+
+void MyList::removeSong(Song* toDelete)
+{
+	for(SongEntry* entry=first(); entry; entry=next()) {
+		if(entry->song()==toDelete) {
+			remove(entry);
+			entry=prev();
+			if(entry==0)
+				entry=first();
+			
+		}
+	}
+}
+
+int MyList::containsSong(Song* lookup)
+{
+	int count=0;
+	for(SongEntry* entry=first(); entry; entry=next()) {
+		if(entry->song()==lookup)
+			count++;
+	}
+	return count;
 }
 
 // compares on one or more attributes
 int MyList::compareItems( QCollection::Item item1, QCollection::Item item2)
 {
-	Song* song1=(Song*)item1;
-	Song* song2=(Song*)item2;
+	SongEntry* entry1=(SongEntry*) item1;
+	SongEntry* entry2=(SongEntry*) item2;
+	
+	Song* song1=entry1->song();
+	Song* song2=entry2->song();
 	int t=myCompare(song1, song2, sortOrder & 0xF);
 	if(t==0) {
 		t=myCompare(song1, song2, (sortOrder >> 4 )& 0xF);

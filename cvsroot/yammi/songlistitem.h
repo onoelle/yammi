@@ -19,24 +19,21 @@
 #define SONGLISTITEM_H
 
 #include "song.h"
+#include "songentry.h"
 #include "qlistview.h"
 
 class SongListItem : public QListViewItem
 {
 public:
-  SongListItem( QListView *parent, Song *s, SongListItem* after=0 );
+  SongListItem( QListView *parent, SongEntry *s, SongListItem* after=0 );
 
   virtual void paintCell( QPainter *p, const QColorGroup &cg, int column, int width, int alignment );
 	QString key(int column, bool ascending) const;
-
-//	Song* song() 				{ return mySong; }
-	Song* song() const	{ return mySong; }
+	Song* song() const	{ return songEntry->song(); }
 
 protected:
-	Song*	mySong;
+	SongEntry* songEntry;
 
 };
 
 #endif
-
-

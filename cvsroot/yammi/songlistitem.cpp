@@ -20,26 +20,31 @@
 
 extern YammiGui* gYammiGui;
 
-SongListItem::SongListItem( QListView *parent, Song *s, SongListItem* after )
+SongListItem::SongListItem( QListView *parent, SongEntry *entry, SongListItem* after )
     : QListViewItem( parent, after )
 {
-	mySong = s;
-  setText( 0, mySong->artist );
-  setText( 1, s->title );
-  setText( 2, s->album );
+	songEntry=entry;
+	Song* s=entry->song();
+	int base=entry->getBase();
+	for(int i=0; i<base; i++) {
+		setText( i, entry->getColumn(i));
+	}
+  setText( base+0, s->artist );
+  setText( base+1, s->title );
+  setText( base+2, s->album );
 	if(s->length!=0) {
 		QString lengthStr=QString("%1").arg(s->length % 60);
 		if (lengthStr.length()==1)
 	  	lengthStr="0"+lengthStr;
-		setText( 3, QString("%1:%2").arg((s->length) / 60).arg(lengthStr));
+		setText( base+3, QString("%1:%2").arg((s->length) / 60).arg(lengthStr));
 	}
-	if(s->year!=0)					setText( 4, QString("%1").arg(s->year));
-  if(s->trackNr!=0)			setText( 5, QString("%1").arg(s->trackNr));
-	setText( 6, s->addedTo.writeToString());
-  if(s->bitrate!=0)			setText( 7, QString("%1").arg(s->bitrate));
-  if(s->filename!="")		setText( 8, s->filename );
-  if(s->path!="")				setText( 9, s->path );
-  if(s->comment!="")			setText(10, s->comment );
+	if(s->year!=0)					setText( base+4, QString("%1").arg(s->year));
+  if(s->trackNr!=0)			setText( base+5, QString("%1").arg(s->trackNr));
+	setText( base+6, s->addedTo.writeToString());
+  if(s->bitrate!=0)			setText( base+7, QString("%1").arg(s->bitrate));
+  if(s->filename!="")		setText( base+8, s->filename );
+  if(s->path!="")				setText( base+9, s->path );
+  if(s->comment!="")			setText(base+10, s->comment );
 }
 
 void SongListItem::paintCell( QPainter *p, const QColorGroup &cg,
@@ -48,17 +53,18 @@ void SongListItem::paintCell( QPainter *p, const QColorGroup &cg,
 	QColorGroup _cg( cg );
   QColor c = _cg.text();
 
-  if ( mySong->artist=="{wish}" )				// show wishes in grey
+  if ( song()->artist=="{wish}" )													// wishes in grey
 		_cg.setColor( QColorGroup::Text, Qt::lightGray );
 
-	int found=gYammiGui->songsToPlay.findRef(mySong);
-	// show currently played song in red
-  if (found==0)
-		_cg.setColor( QColorGroup::Text, Qt::red );
-	// show songs in yammi playlist in blue
-  if (found>0)
+	if(gYammiGui->getModel()->songsPlayed.containsSong(song()))	// already played in green
+		_cg.setColor( QColorGroup::Text, Qt::darkGreen );
+	
+	if(gYammiGui->getModel()->songsToPlay.containsSong(song()))	// enqueued songs in blue
 		_cg.setColor( QColorGroup::Text, Qt::blue );
 
+	if(gYammiGui->currentSong==song())											// current song in red
+		_cg.setColor( QColorGroup::Text, Qt::red );
+	
   QListViewItem::paintCell( p, _cg, column, width, alignment );
   _cg.setColor( QColorGroup::Text, c );
 }
@@ -69,26 +75,31 @@ void SongListItem::paintCell( QPainter *p, const QColorGroup &cg,
  */
 QString SongListItem::key(int column, bool ascending) const
 {
+	int base=songEntry->getBase();
 	const Song* s=song();
-	switch(column)
-	{
-	case 0:
-		if(s->artist=="") return " "+s->title;
-		return s->artist+s->title;
-	case 2:
-		if(s->album=="") return " "+s->title;
-		return s->album+s->title;
-	case 3:
-		return QString("%1").arg(s->length, 10);
-	case 4:
-		return QString("%1").arg(s->year, 10);
-	case 5:
-		return QString("%1").arg(s->trackNr, 10);
-	case 7:
-		return QString("%1").arg(s->bitrate, 10);
-	case 6:	
-		return QString("%1").arg(999999999+ QDateTime( QDate(2222, 1, 1), QTime(0,0,0) ).secsTo(s->addedTo), 10);
-	default:
-		return text(column);
+	if(column<base) {
+		return songEntry->getKey(column);
 	}
+	
+	if(column==base+0)
+		if(s->artist=="")
+			return " "+s->title;
+		else
+			return s->artist+s->title;
+	if(column==base+2)
+		if(s->album=="")
+			return " "+s->title;
+		else
+			return s->album+s->title;
+	if(column==base+3)
+		return QString("%1").arg(s->length, 10);
+	if(column==base+4)
+		return QString("%1").arg(s->year, 10);
+	if(column==base+5)
+		return QString("%1").arg(s->trackNr, 10);
+	if(column==base+6)
+		return QString("%1").arg(999999999+ QDateTime( QDate(2222, 1, 1), QTime(0,0,0) ).secsTo(s->addedTo), 10);
+	if(column==base+7)
+		return QString("%1").arg(s->bitrate, 10);
+	return text(column);
 }

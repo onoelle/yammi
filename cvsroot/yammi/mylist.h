@@ -20,20 +20,33 @@
 
 #include <qlist.h>
 #include <song.h>
+#include <songentry.h>
 
 /**
-  * This class extends QList (with fixed type <Song>), to enable sorting
-  * otherwise, use exactly as QList<Song>
+  * This class extends QList (with fixed type <SongEntry>)
+  * enables sorting
+  * enables adding/removing/searching SongEntry or Song types...
+  * otherwise, use exactly as QList<SongEntry>
   */
 
-class MyList : public QList<Song>  {
+class MyList : public QList<SongEntry>  {
 public: 
 	MyList();
 	~MyList();
 	
-	int compareItems( QCollection::Item item1, QCollection::Item item2);
-	int myCompare(Song* song1, Song* song2, int sortBy);
-	void setSortOrder(int orderBy);
+	Song*			firstSong();
+	Song*			nextSong();
+	Song*			prevSong();
+	
+	void			appendSong(Song* s);					// appends <s> as simple SongEntry
+	void			removeSong(Song* toDelete);		// removes all occurences of SongEntry with pointer to <toDelete>
+	int				containsSong(Song* lookup);		// returns the number of occurences of the song
+
+	
+	int				compareItems( QCollection::Item item1, QCollection::Item item2);
+	int				myCompare(Song* song1, Song* song2, int sortBy);
+	void			setSortOrder(int orderBy) {sortOrder=orderBy; };
+
 	
 	static const int ByTitle=1;
 	static const int ByArtist=2;

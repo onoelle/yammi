@@ -1,5 +1,5 @@
 # Generated automatically from Makefile.in by configure.
-# KDE tags expanded automatically by am_edit - $Revision: 1.3 $ 
+# KDE tags expanded automatically by am_edit - $Revision: 1.4 $ 
 # Makefile.in generated automatically by automake 1.4 from Makefile.am
 
 # Copyright (C) 1994, 1995-8, 1999 Free Software Foundation, Inc.
@@ -155,7 +155,7 @@ MICO_INCLUDES = @MICO_INCLUDES@
 MICO_LDFLAGS = @MICO_LDFLAGS@
 MOC = /usr/lib/qt2/bin/moc
 MSGFMT = /usr/bin/msgfmt
-NOOPT_CXXFLAGS =  -Wall -fno-exceptions -fno-check-new
+NOOPT_CXXFLAGS =  -g1 -Wall -fno-exceptions -fno-check-new
 NOREPO = -fno-repo
 OBJDUMP = @OBJDUMP@
 OBJEXT = o
@@ -221,7 +221,7 @@ DIST_COMMON =  Makefile.am Makefile.in
 
 #>- DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
 #>+ 4
-KDE_DIST=index.sgml 
+KDE_DIST=index-2.html index-1.html index.sgml index-5.html index.html index-4.html index-3.html 
 
 DISTFILES= $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST) $(KDE_DIST)
 

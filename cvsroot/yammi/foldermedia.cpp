@@ -35,12 +35,8 @@ void FolderMedia::update(MyList* allSongs)
 		delete(toDelete);
 	}
 	
-//	allSongs->setSortOrder(sortBy);
-//	allSongs->sort();
-	
 	int noMedia=0;
-	Song* s=allSongs->first();
-	for(; s; s=allSongs->next()) {
+	for(Song* s=allSongs->firstSong() ; s; s=allSongs->nextSong()) {
 		
 		for(unsigned int i=0; i<s->mediaName.count(); i++) {
 			// try to find an existing folder for that media

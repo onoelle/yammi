@@ -59,6 +59,9 @@ void YammiModel::readPreferences()
 	config.filenamesConsistent =	getProperty(&doc, "filenamesConsistent", config.filenamesConsistent);
 	config.criticalSize			=	getProperty(&doc, "criticalSize", config.criticalSize);
 	config.secondSoundDevice=	getProperty(&doc, "secondSoundDevice", config.secondSoundDevice);
+	config.searchThreshold	=	getProperty(&doc, "searchThreshold", config.searchThreshold);
+	config.searchMaximumNoResults	=	getProperty(&doc, "searchMaximumNoResults", config.searchMaximumNoResults);
+	config.grabAndEncodeCmd	=	getProperty(&doc, "grabAndEncodeCmd", config.grabAndEncodeCmd);
 	cout << "..done\n";
 }
 
@@ -88,6 +91,9 @@ void YammiModel::savePreferences()
 	setProperty(&doc, "filenamesConsistent",config.filenamesConsistent);
 	setProperty(&doc, "criticalSize", 			config.criticalSize);
 	setProperty(&doc, "secondSoundDevice",		config.secondSoundDevice);
+	setProperty(&doc, "searchThreshold", 			config.searchThreshold);
+	setProperty(&doc, "searchMaximumNoResults",	config.searchMaximumNoResults);
+	setProperty(&doc, "grabAndEncodeCmd",	config.grabAndEncodeCmd);
 	
 	// save to file...
 	QString save=doc.toString();
@@ -181,7 +187,7 @@ bool YammiModel::startFirstTime()
 
 	// touch history file, so it exists
 	cout << "creating (empty) history file...";
-	system( QString("touch %1/logfile.log").arg(config.yammiBaseDir) );
+	system( QString("touch %1/history.log").arg(config.yammiBaseDir) );
 	cout << " ..done\n";
  	
 	cout << "Everything successfully initialized, have fun!\n";
@@ -239,9 +245,9 @@ void YammiModel::readCategories()
 				QString title=e.attribute("title");
 				// search for item in allSongs
 				bool found=false;
-				for(Song* s=allSongs.first(); s; s=allSongs.next()) {
-					if(s->title==title && s->artist==artist) {
-						ptr->append(s);
+				for(SongEntry* entry=allSongs.first(); entry; entry=allSongs.next()) {
+					if(entry->song()->title==title && entry->song()->artist==artist) {
+						ptr->append(entry);
 						found=true;
 						break;
 					}
@@ -265,15 +271,23 @@ void YammiModel::readHistory()
 {
 	// read in history of songs from logfile
 	cout << "reading song history...\n";
+	songHistory.setSortOrder(-1);
 	
-	QFile f(config.yammiBaseDir+"/logfile.log");
+	QFile f(config.yammiBaseDir+"/history.log");
 	if ( !f.open( IO_ReadOnly ) ) {
-		cout << "could not read song history\n";
+		// history file does not exist => try to create it
+		cout << "history file not existing, trying to create (empty) history file...\n";
+		int rc=system( QString("touch %1/history.log").arg(config.yammiBaseDir) );
+		if(rc==0)
+			cout << " ..done\n";
+		else {
+			cout << "could not create history file, logging of songs will be disabled!\n";
+			config.logging=false;
+		}
 		return;
 	}
 	
 	char buf[200];
-	songHistory.setSortOrder(-1);
 	// read in line per line
 	while( f.readLine(buf, 200)>0 ) {
 		QString entry(buf);
@@ -288,13 +302,14 @@ void YammiModel::readHistory()
 		
 		// search for item in allSongs
 		bool found=false;
-		for(Song* s=allSongs.first(); s; s=allSongs.next()) {
-			if(s->title==title && s->artist==artist) {
-				songHistory.append(s);
+		for(SongEntry* entry=allSongs.first(); entry; entry=allSongs.next()) {
+			if(entry->song()->title==title && entry->song()->artist==artist) {
+				found=true;
 				MyDateTime played;
 				played.readFromString(timestamp);
-				songHistoryTimestamp.append(&played);
-				found=true;
+				SongEntryTimestamp* p=new SongEntryTimestamp(entry->song(), &played);
+				songHistory.append(p);
+				
 				break;
 			}
 		}
@@ -306,6 +321,29 @@ void YammiModel::readHistory()
 	cout << "..done\n";
 }
 
+
+/// save song history (= append to logfile)
+void YammiModel::saveHistory()
+{
+	// save songsPlayed in this session to history.log
+	if(!config.logging)
+		return;
+		
+	cout << "saving song history...\n";
+	QFile logfile( config.yammiBaseDir+"/history.log" );
+	if ( !logfile.open( IO_ReadWrite  ) )
+		return;
+	logfile.at(logfile.size());
+	for(unsigned int i=0; i<songsPlayed.count(); i++) {
+		SongEntryTimestamp* entry=(SongEntryTimestamp*)songsPlayed.at(i);
+		QString logentry=QString("<%1><%2><%3>\n").arg(entry->song()->artist).arg(entry->song()->title).arg(entry->timestamp.writeToString());
+		if(logfile.writeBlock(logentry, logentry.length()) < 1) {
+			cout << "error writing to logfile history.log\n";
+  	}
+	}
+	logfile.close();
+  cout << " ..done\n";
+}
 
 /// save categories (if changed) to xml-files
 void YammiModel::saveCategories()
@@ -328,8 +366,8 @@ void YammiModel::saveCategories()
 		rootElem.setAttribute("name", categoryName);
 		
 		// for all songs contained in that category...
-		Song* s=ptr->first();
-		for(; s; s=ptr->next()) {
+		Song* s=ptr->firstSong();
+		for(; s; s=ptr->nextSong()) {
 			QDomElement elem = doc.createElement( "song" );
 			elem.setAttribute( "artist", s->artist );
 			elem.setAttribute( "title", s->title );
@@ -400,7 +438,7 @@ void YammiModel::readSongDatabase()
 			
 			
 			Song* newSong=new Song(artist, title, album, filename, path, length, bitrate, addedTo, year, comment, trackNr);
-			allSongs.append( newSong );
+			allSongs.appendSong( newSong );
 
 			QDomNode child = e.firstChild();
 		  while( !child.isNull() ) {
@@ -424,7 +462,7 @@ void YammiModel::saveSongDatabase()
 	cout << "saving database...\n";
 	int sumDirtyTags=0;
 	int sumDirtyFilenames=0;
-	for(Song* s=allSongs.first(); s; s=allSongs.next()) {
+	for(Song* s=allSongs.firstSong(); s; s=allSongs.nextSong()) {
 		if(s->tagsDirty)
 			sumDirtyTags++;
 		if(s->filenameDirty)
@@ -444,7 +482,7 @@ void YammiModel::saveSongDatabase()
 	QDomElement rootElem = doc.documentElement();
 	
 	// iterate through songs and save each song as a xml song element
-	for(Song* s=allSongs.first(); s; s=allSongs.next()) {
+	for(Song* s=allSongs.firstSong(); s; s=allSongs.nextSong()) {
 		// lets append a new element to the end of our xml database
 		QDomElement elem = doc.createElement( "song" );
 		
@@ -548,7 +586,7 @@ void YammiModel::traverse(QString path)
 			
 		// okay, we have an mp3 file, check whether already in database
 		bool found=false;
-		for(Song* s=allSongs.first(); s; s=allSongs.next()) {
+		for(Song* s=allSongs.firstSong(); s; s=allSongs.nextSong()) {
 			// this check might fail when filename has strange characters
 			if(fi->fileName()==s->filename && fi->dirPath(true)==s->path) {
 				found=true;
@@ -572,26 +610,27 @@ void YammiModel::traverse(QString path)
 		if (newSong->corrupted) {
 			cout << "new song file " << fi->filePath() << " is corrupt, skipping and moving to " << config.baseDir << "corrupt/ \n";
 			corruptSongs++;
-			newSong->moveTo(config.baseDir+"/corrupted");
+//			if(config.moveCorruptFiles)
+//				newSong->moveTo(config.baseDir+"/corrupted");
 			continue;
 		}
 		
 		// check whether heuristic is sure about artist/title
 		if(!newSong->artistSure) {
 			cout << "Please check  >>ARTIST<< on filename: " << newSong->filename << " (inserted into problematicSongs)";
-			problematicSongs.append(newSong);
+			problematicSongs.append(new SongEntryString(newSong, "check artist"));
 		}
 		if(!newSong->titleSure) {
 			cout << "Please check  >>TITLE<< on filename: " << newSong->filename << " (inserted into problematicSongs)";
-			problematicSongs.append(newSong);
+			problematicSongs.append(new SongEntryString(newSong, "check title"));
 		}
 
 				
 		// check whether other version of this song existing (with same "artist-title" identification)
-		for(Song* s=allSongs.first(); s; s=allSongs.next()) {
+		for(Song* s=allSongs.firstSong(); s; s=allSongs.nextSong()) {
 			if( (newSong->title==s->title && newSong->artist==s->artist) || (newSong->filename==s->filename) ) {
-				QFileInfo x(s->location());
-				if(!x.exists()) {
+				QFileInfo fileInfo(s->location());
+				if(!fileInfo.exists()) {
 					// old file does not exist => probably file has been moved
 					cout << "looks like file " << newSong->filename << " has been moved from " << s->path << " to " << newSong->path << ", correcting path info\n";
 					s->setTo(newSong);
@@ -602,14 +641,14 @@ void YammiModel::traverse(QString path)
 				}
 				
 				cout << "seems like new song <" << newSong->artist << " - " << newSong->title << "> already existing, please check consistency!\n";
-				problematicSongs.append(newSong);
+				problematicSongs.append(new SongEntryString(newSong, "song existing"));
  				break;
  			}
  		}
  		
  		if(!found) {
 			// new song, not in database yet
-			allSongs.append(newSong);
+			allSongs.appendSong(newSong);
 			cout << "Song added: " << newSong->displayName() << "\n";
 			songsAdded++;
 			allSongsChanged(true);
@@ -652,10 +691,10 @@ bool YammiModel::checkConsistency()
 	// 1. file existing, correct tags, correct filename?
 	int sumDirtyTags=0;
 	int sumDirtyFilenames=0;
-	for(Song* s=allSongs.first(); s; s=allSongs.next()) {
+	for(Song* s=allSongs.firstSong(); s; s=allSongs.nextSong()) {
 		if(s->checkConsistency()==false) {
-			if(problematicSongs.containsRef(s)==0)
-				problematicSongs.append(s);
+			if(problematicSongs.containsSong(s)==0)
+				problematicSongs.append(new SongEntryString(s, "checkConsistency failed"));
 		}
 		if(s->tagsDirty)
 			sumDirtyTags++;
@@ -666,8 +705,8 @@ bool YammiModel::checkConsistency()
 	// 2. check for songs contained twice
 	allSongs.setSortOrder(MyList::ByFilename);
 	allSongs.sort();
-	Song* last=allSongs.first();
-	for(Song* s=allSongs.next(); s; s=allSongs.next()) {
+	Song* last=allSongs.firstSong();
+	for(Song* s=allSongs.nextSong(); s; s=allSongs.nextSong()) {
 		if(s->artist=="{wish}")
 			continue;
 		
@@ -682,10 +721,10 @@ bool YammiModel::checkConsistency()
 		if(last->filename==s->filename) {
 			cout << "X: song contained twice: " << s->filename << ", keep both?\n";
 			cout << "path1: " << s->path << ", path2: " << last->path << "\n";
-			if(problematicSongs.containsRef(last)==0)
-				problematicSongs.append(last);
-			if(problematicSongs.containsRef(s)==0)
-				problematicSongs.append(s);
+			if(problematicSongs.containsSong(last)==0)
+				problematicSongs.append(new SongEntryString(last, "contained twice(X)"));
+			if(problematicSongs.containsSong(s)==0)
+				problematicSongs.append(new SongEntryString(s, "contained twice(X)"));
 		}
 		last=s;
 	}
@@ -693,23 +732,23 @@ bool YammiModel::checkConsistency()
 	// 3. check for songs contained twice (this time not based on filename)
 	allSongs.setSortOrder(MyList::ByArtist + 16*(MyList::ByTitle));
 	allSongs.sort();
-	last=allSongs.first();
-	for(Song* s=allSongs.next(); s; s=allSongs.next()) {
+	last=allSongs.firstSong();
+	for(Song* s=allSongs.nextSong(); s; s=allSongs.nextSong()) {
 		if(s->artist=="{wish}")
 			continue;
 	
 		// check for songs contained twice in database (but pointing to same file+path)
 		if(last->artist==s->artist && last->title==s->title) {
 			cout << "!!!   song contained twice: " << s->filename << ", keep both?\n";
-			if(problematicSongs.containsRef(last)==0)
-				problematicSongs.append(last);
-			if(problematicSongs.containsRef(s)==0)
-				problematicSongs.append(s);
+			if(problematicSongs.containsSong(last)==0)
+				problematicSongs.append(new SongEntryString(last, "contained twice(1)"));
+			if(problematicSongs.containsSong(s)==0)
+				problematicSongs.append(new SongEntryString(last, "contained twice(2)"));
 		}
 	}
 	
 	if(sumDirtyTags+sumDirtyFilenames==0)
-		cout << "your database is nice and clean!\n";
+		cout << "your yammi database is nice and clean!\n";
 	else {
 		cout << sumDirtyTags				<< " dirty tags\n";
 		cout << sumDirtyFilenames		<< " dirty filenames\n";
@@ -768,7 +807,7 @@ void YammiModel::save()
 void YammiModel::removeMedia(QString mediaToDelete)
 {
 	cout << "removing media: " << mediaToDelete << "\n";
-	for(Song* s=allSongs.first(); s; s=allSongs.next()) {
+	for(Song* s=allSongs.firstSong(); s; s=allSongs.nextSong()) {
 		QStringList::Iterator it2 = s->mediaLocation.begin();
 		for ( QStringList::Iterator it = s->mediaName.begin(); it != s->mediaName.end(); ++it ) {
 			if(mediaToDelete==(*it)) {
