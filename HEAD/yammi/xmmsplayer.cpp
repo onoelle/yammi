@@ -32,37 +32,46 @@ XmmsPlayer::XmmsPlayer(int session, YammiModel* model)
   this->session=session;
   this->model=model;
   ensureXmmsIsRunning();
+  // check whether xmms is in shuffle mode: if yes, set it to normal
+  // (confuses Yammi's playlistmanagement)
+  if(xmms_remote_is_shuffle(session)) {
+    xmms_remote_toggle_shuffle(session);
+    xmmsShuffleWasActivated=true;
+		cout << "switching off xmms shuffle mode (does confuse my playlist management otherwise)\n";
+  }
+  else {
+	 	xmmsShuffleWasActivated=false;
+  }
 }
 
 
 XmmsPlayer::~XmmsPlayer()
 {
 	if(xmmsShuffleWasActivated) {
-		xmms_remote_toggle_shuffle(0);
+		xmms_remote_toggle_shuffle(session);
   }
 }
 
 
 // check whether xmms is running, if not: start it!
-void XmmsPlayer::ensureXmmsIsRunning()
+// returns, whether xmms was already running
+bool XmmsPlayer::ensureXmmsIsRunning()
 {
-  if(!xmms_remote_is_running(0)) {
-		cout << "xmms not running, trying to start it...\n";
-		system("xmms &");
+  if(xmms_remote_is_running(session)) {
+    return true;
+  }
+  
+	cout << "xmms not running, trying to start it...\n";
+	system("xmms &");
 
-    // TODO: wait until xmms is started or move the following into a single-shot timer???
-
-    // check whether xmms is in shuffle mode: if yes, set it to normal
-	  // (confuses Yammi's playlistmanagement)
-  	if(xmms_remote_is_shuffle(session)) {
-	  	xmms_remote_toggle_shuffle(session);
-  		xmmsShuffleWasActivated=true;
-		  cout << "switching off xmms shuffle mode (does confuse my playlist management otherwise)\n";
-	  }
-  	else {
-	  	xmmsShuffleWasActivated=false;
-    }
-	}
+  // TODO: wait until xmms is started or move the following into a single-shot timer???
+  while(!xmms_remote_is_running(session)) {
+    float x=17.3*session/42.7;
+    for(int i=1; i<10000; i++)
+      x=x*x;
+//    cout << "waiting for xmms to have started...\n";
+  }
+  return false;
 }
 
 

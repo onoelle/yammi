@@ -757,83 +757,6 @@ bool Song::setOggTags(QString filename)
   return true;
 }
 
-/*
-
-
-  OggVorbis_File oggfile;
-	FILE* ourfile;
-
-	ourfile=fopen(filename, "w");
-  if(ourfile==0)
-    return false;
-	int succ=ov_open(ourfile, &oggfile, NULL, 0);
-	vorbis_comment* ourComment = ov_comment(oggfile, -1);
-
-
-
-    File_Tag *FileTag;
-    gchar *filename_in;
-    FILE *file_in;
-    vcedit_state *state;
-    vorbis_comment *vc;
-    gchar *string, *string1;
-
-
-    if (!ETFile || !ETFile->FileTag)
-        return FALSE;
-
-    FileTag     = (File_Tag *)ETFile->FileTag->data;
-    filename_in = ((File_Name *)ETFile->FileNameCur->data)->value;
-    ogg_error_msg = NULL;
-
-    // Test to know if we can write into the file
-    if ( (file_in=fopen(filename_in,"rb"))==NULL )
-    {
-        g_print(_("ERROR while opening file: '%s' (%s).\n\a"),filename_in,g_strerror(errno));
-        return FALSE;
-    }
-
-    state = vcedit_new_state();    // Allocate memory for 'state'
-    if ( vcedit_open(state,file_in) < 0 )
-    {
-        g_print(_("ERROR: Failed to open file: '%s' as vorbis (%s).\n"),filename_in,vcedit_error(state));
-        ogg_error_msg = vcedit_error(state);
-        fclose(file_in);
-        return FALSE;
-    }
-
-    // Get data from tag
-    vc = vcedit_comments(state);
-    vorbis_comment_clear(vc);
-    vorbis_comment_init(vc);
-
-
-    if ( FileTag->title )
-    {
-        string  = g_strconcat("title=",FileTag->title,NULL);
-        string1 = convert_to_utf8(string);
-        vorbis_comment_add(vc,string1);
-        g_free(string);
-        g_free(string1);
-    }
-
-
-    // Write tag
-    if ( Ogg_Tag_Write_File(file_in,filename_in,state) == FALSE )
-    {
-        g_print(_("ERROR: Failed to write comments to file '%s' (%s).\n"),filename_in,vcedit_error(state));
-        ogg_error_msg = vcedit_error(state);
-        return FALSE;
-    }else
-    {
-        g_print(_("Written tag of '%s'\n"),g_basename(filename_in));
-    }
-
-    vcedit_clear(state);
-
-    return TRUE;
-}
-*/
 
 #endif // ENABLE_OGGLIBS
 
@@ -842,32 +765,32 @@ bool Song::setOggTags(QString filename)
 
 
 
-
 ////////////////////////////////
 // special handling of wav files
 
 
-bool Song::getWavInfo(const char *filename)
+bool Song::getWavInfo(QString filename)
 {
-  // TODO: replace with QFile?
-  FILE *wfile;
-  WaveHeader header;
-
-  if( ( wfile=fopen(filename, "rb") )!=NULL ) {
-    fread( &header, sizeof(WaveHeader), 1, wfile);
-    fclose(wfile);
-    if( (header.wBitsPerSample/8)==0 || (header.nSamplesPerSec / (header.wBitsPerSample/8))==0 || (header.nChannels / header.nSamplesPerSec / (header.wBitsPerSample/8))==0) {
-      cout << "calculating length: division by zero... setting length to 0\n";
+  QFile wavFile(filename);
+  if( wavFile.open( IO_ReadOnly ) ) {
+    QDataStream stream( &wavFile );
+    WaveHeader header;
+    stream.readRawBytes((char*)&header, sizeof(WaveHeader));
+    wavFile.close();
+    
+    if(header.nChannels==0 || header.nSamplesPerSec==0 || header.wBitsPerSample==0) {
+      cout << "length calculation of file " << filename << " would have yielded division by zero, debug info:\n";
       cout << "header data: nChannels: " << header.nChannels << ", wBitsPerSample: " << header.wBitsPerSample << "\n";
       cout << "nSamplesPerSec: " << header.nSamplesPerSec << ", filesize: " << header.filesize << ", avgBytesPerSec: " << header.nAvgBytesPerSec << "\n";
       cout << "formatChunkSize: " << header.formatChunkSize << ", dataChunkSize: " << header.dataChunkSize << "\n";
-      length=0;
+      cout << "setting length to 1\n";
+      length=1;
     }
     else {
-      this->length=header.dataChunkSize / header.nChannels / header.nSamplesPerSec / (header.wBitsPerSample/8);    
+      this->length=((((header.dataChunkSize * 8) / header.nChannels) / header.nSamplesPerSec) / header.wBitsPerSample);
+      this->bitrate=header.nAvgBytesPerSec * 8 / 1000;
+      this->comment=QString("%1, %2 KHz, %3 bit").arg(header.nChannels==2 ? "stereo" : "mono").arg(header.nSamplesPerSec).arg(header.wBitsPerSample);
     }
-    this->bitrate=header.nAvgBytesPerSec * 8 / 1000;
-    this->comment=QString("%1, %2 KHz, %3 bit").arg(header.nChannels==2 ? "stereo" : "mono").arg(header.nSamplesPerSec).arg(header.wBitsPerSample);
     return true;
   }
   else {

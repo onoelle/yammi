@@ -182,6 +182,7 @@ int CMP3Info::getLengthInSeconds() {
 
 }
 
+/*
 void CMP3Info::getFormattedLength(char* input) {
 
     //  s  = complete number of seconds
@@ -208,9 +209,8 @@ void CMP3Info::getFormattedLength(char* input) {
 
     // copy to the inputstring
     strcpy(input, szTime);
-
-
 }
+*/
 
 int CMP3Info::getNumberOfFrames() {
 
@@ -250,6 +250,7 @@ int CMP3Info::getNumberOfFrames() {
 
 }
 
+/*
 void CMP3Info::getVersion(char* input) {
 
     char versionchar[32]; // temporary string
@@ -270,17 +271,11 @@ void CMP3Info::getVersion(char* input) {
     strcpy(input, versionchar);
 
 }
+*/
 
-void CMP3Info::getMode(char* input) {
-
-    char modechar[32]; // temporary string
-
+QString CMP3Info::getMode() {
     // call CFrameHeader member function
-    header.getMode(modechar);
-
-    // copy result into inputstring
-    strcpy(input, modechar);
-
+    return header.getMode();
 }
 
 /*

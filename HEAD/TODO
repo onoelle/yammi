@@ -1,6 +1,6 @@
 TODO
 ----
-last update 29.11.2002
+last update 4.12.2002
 
 
 KNOWN BUGS
@@ -12,38 +12,37 @@ KNOWN BUGS
 
 for release 0.7.1
 -----------------
-- switching off xmms shuffle mode (in ensureXmmsIsRunning?)
-- xmms lock file?  => not easy to determine whether xmms is running or just lock file present
-- failing to load a media (tom)
-- dequeue not working??? when I tested, it worked for me...? (same)
-- menu entry for inserting a song into a new category (tom)
-- incorrect track numbers if track number not present (tom)
-- assembly of burning to media: take existing files on a media into account (tom)
+- on deleting a song: delete in all lists (history, categories, ...)
+- dialog box for checking consistency options
 - test compiling with gcc 3.2
 - test jukebox functionality
+- update documentation
+- alternative to mp3burn? => test and document Tom's script
+
+- xmms lock file?  => not easy to determine whether xmms is running or just lock file present
+- failing to load a media => crash? (tom)
+- dequeue not working??? when I tested, it worked for me...? (tom)
+- menu entry for inserting a song into a new category (tom)
+- incorrect track numbers if track number not present (tom)
+- assembly of burning to media: take size of existing files on a media into account (tom)
 - update database: more information+statistics at the end
 - update database: select a single file
-- for plugins: if %D / %F occurs: popup directory dialog and let user choose directory/file: document
-- clean up yammigui.h (protected/public) !!! (oh oh...)
-- dialog box for checking consistency options
-- on deleting a song: delete in all lists (history, categories, ...)
-- choose a autoenqueue-folder
-- update documentation
-- new icon set for song actions (enqueue, playnow, ...)
-- stopping prelistening: cleaner approach with QProcess???
+- replacement: %D / %F popup directory dialog and let user choose directory/file: document
 - replacement: filename without suffix
+- clean up yammigui.h (protected/public) !!! (oh oh...)
+- clean up other classes (eg. folder)...
 
 for future releases
 -------------------
+- new icon set for song actions (enqueue, playnow, ...)
+- stopping prelistening: cleaner approach with QProcess???
 - restoring window geometry issue
 - save more session settings?
-- provide a proper tgz binary release or rpm?
+- provide a proper tgz binary release or rpm? provide translation ability? (pot-file?)
 - clean up communication with xmms in the MediaPlayer class
 - saveFilename/renaming of file in song.cpp
 - extensive testing with new user!!!
-- clean up folder class
 - clean up a lot...and complete documentation
-- alternative to mp3burn? own script?
 - dialog for burning files on cd/cdrecord plugin?
 - folder for recent additions to database?
 - specific messages on yammi update when starting

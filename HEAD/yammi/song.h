@@ -91,8 +91,6 @@ typedef struct {
 class Song
 {
 public:
-  bool getWavInfo(const char *filename);
-
   /// default constructor, just assigns default values
   Song();
 

@@ -1,5 +1,4 @@
 #include "CFrameHeader.h"
-// I don't think we need that here: #include <string.h>
 
 /* ----------------------------------------------------------
    CFrameHeader class is used to retrieve a MP3's FrameHeader
@@ -142,27 +141,19 @@ int CFrameHeader::getFrequency() {
 // the purpose of getMode is to get information about
 // the current playing mode, such as:
 // "Joint Stereo"
-void CFrameHeader::getMode(char* input) {
+QString CFrameHeader::getMode() {
 
     // here you could use a array of strings instead
     // but I think this method is nicer, at least
     // when not dealing with that many variations
     switch(getModeIndex()) {
-        default:
-            strcpy(input, "Stereo");
-            break;
-
         case 1:
-            strcpy(input, "Joint Stereo");
-            break;
-
+            return QString("Joint Stereo");
         case 2:
-            strcpy(input, "Dual Channel");
-            break;
-
+            return QString("Dual Channel");
         case 3:
-            strcpy(input, "Single Channel");
-            break;
+            return QString("Single Channel");
+        default:
+            return QString("Stereo");
     }
-
 }

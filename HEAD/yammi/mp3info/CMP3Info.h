@@ -42,17 +42,17 @@ class CMP3Info {
 //    void  getFileName(char* input);
 
     // information that is avaliable in FrameHeader & VBR header
-    void  getVersion(char* input);
+//    void  getVersion(char* input);
     int   getBitrate();
     int   getFrequency() { return header.getFrequency(); };
-    void  getMode(char* input);
+    QString getMode();
     
     int   getNumberOfFrames();
 
     // functions to calculate the length of the song
     // and to present it nicely
     int   getLengthInSeconds();
-    void  getFormattedLength(char* input);
+//    void  getFormattedLength(char* input);
 
     // just to know what kind of file it is.
     bool  isVBitRate() { return VBitRate; };

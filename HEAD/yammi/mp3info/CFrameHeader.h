@@ -1,6 +1,7 @@
 #ifndef CFRAMEHEADER_H
 #define CFRAMEHEADER_H
 
+#include <qstring.h>
 
 /* ----------------------------------------------------------
    CFrameHeader class is used to retrieve a MP3's FrameHeader
@@ -76,7 +77,7 @@ class CFrameHeader {
     // the purpose of getMode is to get information about
     // the current playing mode, such as:
     // "Joint Stereo"
-    void getMode(char* input);
+    QString getMode();
 
     private:
 

@@ -33,7 +33,7 @@ public:
 	XmmsPlayer(int session, YammiModel* model);
 	~XmmsPlayer();
 
-  void ensureXmmsIsRunning();
+  bool ensureXmmsIsRunning();
 
 public slots:
   // overriden methods

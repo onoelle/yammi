@@ -2497,8 +2497,11 @@ void YammiGui::updateSongDatabase(bool checkExistence, QString scanDir, QString 
 	qApp->processEvents();
 	
 	model->updateSongDatabase(checkExistence, scanDir, filePattern, media, &progress);
+  cout << "debug info: updating view...\n";
 	updateView();
+  cout << "debug info: updating folder problematic...\n";
 	folderProblematic->update(&model->problematicSongs);
+  cout << "debug info: updating title of folderAll...\n";
 	folderAll->updateTitle();
   QString msg="Updated your database.\n\nStatistics: \n\n";
   msg+=QString("%1 songs added to database\n").arg(model->entriesAdded);
