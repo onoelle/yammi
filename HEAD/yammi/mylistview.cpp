@@ -65,24 +65,32 @@ void MyListView::contentsMousePressEvent ( QMouseEvent * e)
 {
   
   if(gYammiGui->chosenFolder->isSorted() && sortedBy==1 && e->button()==LeftButton) {
-		dragPoint=e->globalPos();
+    cout << "conditions for dragging true!\n";
+    dragPoint=e->globalPos();
 		dragItem=itemAt(viewport()->mapFromGlobal(dragPoint));
 		if(dragItem) {
+      cout << "dragItem found: " << ((SongListItem*)dragItem)->song()->displayName() << "\n";
 			// check whether we allow dragging of first item
 			if(!dontTouchFirst || dragItem!=firstChild()) {
 				// start dragging
+        cout << "dragging started\n";
 				dragging=true;
 				dragStartedAtIndex=dragItem->itemPos();
 				setCursor(Qt::sizeVerCursor);
 				dragSong=((SongListItem*)dragItem)->song();
 			}
 		}
+    else {
+      cout << "no dragItem found\n";
+    }
 	}
 	QListView::contentsMousePressEvent(e);
 }
 
 
-
+/**
+ * called on dragging the mouse with button pressed
+ */
 void MyListView::contentsMouseMoveEvent ( QMouseEvent * e)
 {
 	if(!dragging) {
@@ -93,10 +101,39 @@ void MyListView::contentsMouseMoveEvent ( QMouseEvent * e)
 	
 	// dragging: check whether mouse has moved to new item
 	QPoint point=e->globalPos();
-	QListViewItem* item=itemAt(viewport()->mapFromGlobal(point));
+  cout << "e->globalPos(): x: " << point.x() << ", y: " << point.y() << "\n";
+  QPoint mappedPoint=viewport()->mapFromGlobal(point);
+  cout << "mappedPoint: x: " << mappedPoint.x() << ", y: " << mappedPoint.y() << "\n";
+  QPoint widgetMappedPoint=mapFromGlobal(point);
+  cout << "widgetMappedPoint: x: " << widgetMappedPoint.x() << ", y: " << widgetMappedPoint.y() << "\n";
+  
+  QPoint point2=QCursor::pos();
+  cout << "QCursor::pos(): x: " << point2.x() << ", y: " << point2.y() << "\n";
+  QPoint mappedPoint2=viewport()->mapFromGlobal(point2);
+  cout << "mappedPoint2: x: " << mappedPoint.x() << ", y: " << mappedPoint.y() << "\n";
+  QPoint widgetMappedPoint2=mapFromGlobal(point2);
+  cout << "widgetMappedPoint2: x: " << widgetMappedPoint2.x() << ", y: " << widgetMappedPoint2.y() << "\n";
+  
+	QListViewItem* item=itemAt(mappedPoint);
+  if(item!=0) {
+	  cout << "item: " << ((SongListItem*)item)->song()->displayName() << "\n";
+  }
+	QListViewItem* item2=itemAt(widgetMappedPoint);
+  if(item2!=0) {
+	  cout << "item2: " << ((SongListItem*)item2)->song()->displayName() << "\n";
+  }
+	QListViewItem* item3=itemAt(mappedPoint2);
+  if(item3!=0) {
+	  cout << "item3: " << ((SongListItem*)item3)->song()->displayName() << "\n";
+  }
+	QListViewItem* item4=itemAt(widgetMappedPoint2);
+  if(item4!=0) {
+	  cout << "item4: " << ((SongListItem*)item4)->song()->displayName() << "\n";
+  }
 	
 	// no valid item, mouse above or below listview?
 	if(item==0)	{
+    cout << "item==0\n";
 		bool above=viewport()->mapFromGlobal(point).y()<0;
 		QListViewItem* swapItem;
 		if(above) {

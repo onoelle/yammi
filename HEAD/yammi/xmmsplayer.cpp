@@ -407,12 +407,17 @@ void XmmsPlayer::check()
   // bug in XMMS?: sometimes reports a wrong status on song change (not playing)!!! 
   PlayerStatus newStatus=getStatus();
   if(newStatus!=lastStatus) {
+    // songstuck-bug
+    cout << "XmmsPlayer::check(): newStatus != lastStatus\n";
+
     lastStatus=newStatus;
     if(newStatus==STOPPED) {
       // heuristic: if player stopped "near end of song" (beware of crossfading plugin!)
       // and only one song left in playlist
       // => we remove it
       if(playlist->count()==1 && timeLeft<15000) {
+        // songstuck-bug
+        cout << "XmmsPlayer::check(): heuristic: deleting last song from playlist\n";
         xmms_remote_playlist_delete(session, 0);
         playlist->removeFirst();
         playlistChanged();
@@ -429,18 +434,33 @@ void XmmsPlayer::check()
   while(xmms_remote_get_playlist_pos(session)!=0) {
     QString file(xmms_remote_get_playlist_file(session, 0));
 	  Song* firstXmmsSong=model->getSongFromFilename(file);
-
+    
+    // songstuck-bug
+    cout << "XmmsPlayer::check(): remove already played songs:\n";
+    if(firstXmmsSong!=0) {
+      cout << "firstXmmsSong: " << firstXmmsSong->displayName() << "\n";
+    }
+    else {
+      cout << "firstXmmsSong==0, => not in yammi database\n";
+    }
+    cout << "playlist->count: " << playlist->count() << "\n";
+    if(playlist->count()>0) {
+      cout << "playlist->first: " << playlist->firstSong()->displayName() << "\n";
+    }
+    
     // the following call sometimes seems to crash xmms
     // (and does not return until xmms is killed => freezes yammi)
     //************************************************************
  	  xmms_remote_playlist_delete(session, 0);
 
     if(playlist->count()>=1 && playlist->firstSong()==firstXmmsSong) {
+      cout << "conditions true, removing first in playlist\n";
       playlist->removeFirst();
       yammiPlaylistChanged=true;
     }
   }
   if(yammiPlaylistChanged) {
+    cout << "calling playlistChanged()\n";
     playlistChanged();    
   }
 #endif

@@ -959,6 +959,7 @@ bool Song::saveTags()
 
 #ifdef ENABLE_ID3LIB
   if(filename.right(4).upper()==".MP3") {
+    cout << "writing tags to file " << this->location() << "\n";
     setMp3Tags(location());
     cout << "id3 tags corrected in file " << this->filename << "\n";
     treated=true;

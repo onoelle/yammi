@@ -22,6 +22,7 @@
 #include "song.h"
 #include <qwidget.h>
 #include <qlistview.h>
+#include <qcursor.h>
 #include <iostream>
 using namespace std;
 

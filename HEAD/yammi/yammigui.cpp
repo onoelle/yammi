@@ -528,8 +528,16 @@ YammiGui::~YammiGui()
  */
 void YammiGui::updatePlaylist()
 {
+  // songstuck-bug
+  cout << "updatePlaylist() called \n";
+  if(folderActual->songList->count()>0) {
+    cout << "first in playlist now: " << folderActual->firstSong()->displayName() << "\n";
+  }
+
   // prepare: stop user dragging action if necessary
   if(songListView->dragging) {
+    // songstuck-bug
+    cout << "stopping dragging!\n";
     stopDragging();
   }
 
@@ -546,9 +554,13 @@ void YammiGui::updatePlaylist()
  */
 void YammiGui::updateCurrentSongStatus()
 {
+  // songstuck-bug
+  cout << "updateCurrentSongStatus() called \n";
   Song* firstInPlaylist=model->songsToPlay.count()>0 ? model->songsToPlay.firstSong() : 0;
   if(firstInPlaylist!=currentSong) {
     // a change in the first (=currently played) song!
+    // songstuck-bug
+    cout << "change detected...\n";
 
     // handle last song
     handleLastSong(currentSong);
@@ -562,9 +574,13 @@ void YammiGui::updateCurrentSongStatus()
  */
 void YammiGui::handleLastSong(Song* lastSong)
 {
+  // songstuck-bug
+  cout << "handleLastSong() called \n";
   if(lastSong==0) {
     return;
   }
+  cout << "...on song: " << lastSong->displayName() << "\n";
+  
   // we put last song in folder songsPlayed
   // but first check, whether already in there as last entry
   // (due to xmms status change bug, we would sometimes insert a song twice)
