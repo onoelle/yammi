@@ -3522,3 +3522,24 @@ void YammiGui::toggleColumnVisibility(int column)
   columnVisible[column]=columnsMenu->isItemChecked(column);
   changeToFolder(chosenFolder, true);
 }
+
+void YammiGui::forAllSelectedEnqueue()
+{
+  if(shiftPressed) {
+    forAllSelected(EnqueueRandom);
+  }
+  else {
+    forAllSelected(Enqueue);
+  }
+}
+
+void YammiGui::forAllSelectedEnqueueAsNext()
+{
+  if(shiftPressed) {
+    forAllSelected(EnqueueAsNextRandom);
+  }
+  else {
+    forAllSelected(EnqueueAsNext);
+  }  
+}
+

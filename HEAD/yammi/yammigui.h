@@ -314,10 +314,8 @@ protected slots:
   void          toggleSleepModeToolbar();
   void          finishInitialization();
 
-	void				  forAllSelectedEnqueue()            { forAllSelected(Enqueue); }
-	void				  forAllSelectedEnqueueRandom()      { forAllSelected(EnqueueRandom); }
-	void				  forAllSelectedEnqueueAsNext()      { forAllSelected(EnqueueAsNext); }
-	void				  forAllSelectedEnqueueAsNextRandom(){ forAllSelected(EnqueueAsNextRandom); }
+	void				  forAllSelectedEnqueue();
+	void				  forAllSelectedEnqueueAsNext();
 	void				  forAllSelectedPlayNow()            { forAllSelected(PlayNow); }
 	void				  forAllSelectedPrelistenStart()     { forAllSelected(PrelistenStart); }
 	void				  forAllSelectedPrelistenMiddle()    { forAllSelected(PrelistenMiddle); }
