@@ -156,6 +156,7 @@ public:
 	FolderSorted*	folderActual;
 	FolderCategories* folderCategories;
 	Folder*				folderSongsPlayed;		// songs played in this session
+  Folder*       folderRecentAdditions;
   QString       autoplayFoldername;   // name of chosen autoplay folder, or empty if autoplay off
 
 
@@ -359,8 +360,9 @@ protected slots:
 
 	void				  updateSongDatabaseHarddisk();
 	void				  updateSongDatabaseMedia();
+	void				  updateSongDatabaseSingleFile();
 	void				  updateSongDatabase(QString scanDir, QString filePattern, QString media);
-	void				  updateView();
+	void				  updateView(bool startup=false);
 		
 	// song action slots
 	void				  forAllCheckConsistency();

@@ -1,26 +1,18 @@
 TODO
 ----
-last update 13.7.2003
+last update 22.7.2003
 
 
 user wishes:
 ------------
 - rating of tracks
 - subfolders
-- loading of playlists (m3u) / document saving via plugin
 
 
 for version 1.0-rc1
 -------------------
-- check for existence of directory categories when saving categories
 - integrate AM_XMMS macro from configure.in_orig
-- update database: allow to select file/m3u/directory
 - dequeue from playlist: insert "forSelectionDequeue" method...
-- disable repeat/shuffle mode in noatun?
-- related to BUG: sorting with columns hided:
-  - clean up key() / compare() methods
-  - check sorting "Last Played" (put "never" at the other end)
-  - keep sorting when changing folders?
 - properly integrate and document translation capability
 - document: if noatun stops, you might have to empty the playlists of both instances manually
 
@@ -32,6 +24,8 @@ for version 1.0
 
 later...
 --------
+- keep sorting when changing folders?
+- disable repeat/shuffle mode in noatun?
 - history of visited folders + "go back" button
 - any ripping plugin? have a look at existing ripping programs suitable to be called as plugin
 - xml export plugin?
@@ -86,6 +80,9 @@ even later...
 
 KNOWN BUGS
 ----------
+- sometimes noatun playlist will not be correctly cleared
+  => effect: noatun stops on enqueueing a song
+  => workaround: you have to both noatun instances and clear their playlist manually
 - a {wish} song causes noatun playback to stop
 - floating point exception when scanning wav file???
 - still problem of freezing xmms => xmms_remote_playlist_delete(0, 0)

@@ -81,6 +81,7 @@ public:
 	MyList songsToPlay; // yammi playlist
 	MyList songsPlayed; // songs played in this session
 	MyList unclassifiedSongs; // songs not in any category/album/group
+	MyList recentSongs; // songs recently added
 
 	QPtrList<MyList> allCategories; // categories
 	QStringList	categoryNames; // names of categories
@@ -124,12 +125,14 @@ public:
 	void saveHistory();
 
   void markPlaylists(Song* s);
+  QStringList* readM3uFile(QString filename);
 	
 	
 public slots:
 	void save();
 	void saveAll();
 	void updateSongDatabase(QString scanDir, QString filePattern, QString mediaName, QProgressDialog* progress);
+  void updateSongDatabase(QStringList list);
 	void addSongToDatabase(QString filename, QString mediaName);
 	bool checkConsistency(QProgressDialog* progress, MyList* selection, ConsistencyCheckParameter* p);
 

@@ -156,22 +156,6 @@ YammiGui::YammiGui(QString baseDir)
     columnsMenu->insertItem( columnName[column],  this, SLOT(toggleColumnVisibility(int)), 0, column);
   }
 
-  /*
-	columnsMenu->insertItem( "Artist",  this, SLOT(toggleColumnVisibility(int)), 0, COLUMN_ARTIST);
-	columnsMenu->insertItem( "Title",  this, SLOT(toggleColumnVisibility(int)), 0, COLUMN_TITLE);
-	columnsMenu->insertItem( "Album",  this, SLOT(toggleColumnVisibility(int)), 0, COLUMN_ALBUM);
-	columnsMenu->insertItem( "Length",  this, SLOT(toggleColumnVisibility(int)), 0, COLUMN_LENGTH);
-	columnsMenu->insertItem( "Year",  this, SLOT(toggleColumnVisibility(int)), 0, COLUMN_YEAR);
-	columnsMenu->insertItem( "Tracknumber",  this, SLOT(toggleColumnVisibility(int)), 0, COLUMN_TRACKNR);
-	columnsMenu->insertItem( "Genre",  this, SLOT(toggleColumnVisibility(int)), 0, COLUMN_GENRE);
-	columnsMenu->insertItem( "Added To",  this, SLOT(toggleColumnVisibility(int)), 0, COLUMN_ADDED_TO);
-	columnsMenu->insertItem( "Bitrate",  this, SLOT(toggleColumnVisibility(int)), 0, COLUMN_BITRATE);
-	columnsMenu->insertItem( "Filename",  this, SLOT(toggleColumnVisibility(int)), 0, COLUMN_FILENAME);
-	columnsMenu->insertItem( "Path",  this, SLOT(toggleColumnVisibility(int)), 0, COLUMN_PATH);
-	columnsMenu->insertItem( "Comment",  this, SLOT(toggleColumnVisibility(int)), 0, COLUMN_COMMENT);
-	columnsMenu->insertItem( "Last Played",  this, SLOT(toggleColumnVisibility(int)), 0, COLUMN_LAST_PLAYED);
-  */
-  
   // view menu
 	QPopupMenu* viewMenu = new QPopupMenu;
 	viewMenu->insertItem( tr("Update Automatic Folder Structure"),  this, SLOT(updateView()));
@@ -184,6 +168,7 @@ YammiGui::YammiGui(QString baseDir)
   databaseMenu->insertItem( tr("Save Database..."),  model, SLOT(save()));
 	databaseMenu->insertItem( tr("Scan Harddisk..."),  this, SLOT(updateSongDatabaseHarddisk()));
 	databaseMenu->insertItem( tr("Scan Removable Media..."),  this, SLOT(updateSongDatabaseMedia()));
+	databaseMenu->insertItem( tr("Import Selected File(s)..."),  this, SLOT(updateSongDatabaseSingleFile()));
 	databaseMenu->insertItem( tr("Check Consistency..."),  this, SLOT(forAllCheckConsistency()));
 	databaseMenu->insertItem( tr("Grab And Encode CD-Track..."),  this, SLOT(grabAndEncode()));
 	mainMenu->insertItem( tr("&Database"), databaseMenu );
@@ -351,62 +336,58 @@ YammiGui::YammiGui(QString baseDir)
 	//*********************
 	cout << "setting up folders...\n";
 	
-	// folder containing all music
+
+
+  // folder containing all music
 	folderAll=new Folder( folderListView, QString(tr("All Music")), &(model->allSongs));
 	
 	// folder containing all artists with more than <n> songs	
 	folderArtists = new FolderGroups( folderListView, QString( tr("Artists") ));
 	folderArtists->moveItem(folderAll);
-	folderArtists->update(&(model->allSongs), MyList::ByArtist);
 	
 	// folder containing all albums with more than <n> songs	
 	folderAlbums = new FolderGroups( folderListView, QString( tr("Albums") ));
 	folderAlbums->moveItem(folderArtists);
-	folderAlbums->update(&(model->allSongs), MyList::ByAlbum);
 
 	// folder containing all genres with more than <n> songs	
 	folderGenres = new FolderGroups( folderListView, QString( tr("Genre") ));
 	folderGenres->moveItem(folderAlbums);
-	folderGenres->update(&(model->allSongs), MyList::ByGenre);
 
 	// folder containing all categories
 	folderCategories = new FolderCategories( folderListView, QString(tr("Categories")));
 	folderCategories->moveItem(folderGenres);
-	folderCategories->update(model->allCategories, model->categoryNames);
-	updateSongPopup();
 	
 	// folder containing media
 	folderMedia = new FolderMedia( folderListView, QString(tr("Media")));
 	folderMedia->moveItem(folderCategories);
-	folderMedia->update(&(model->allSongs));
 
 	// folder containing currently played song
 	folderActual = new FolderSorted(folderListView, QString(tr("Playlist")));
-//	folderActual->moveItem(folderAll);
-	folderActual->update(&(model->songsToPlay));
 
 	// folder containing songs played in this session
-	folderSongsPlayed = new Folder(folderListView, QString(tr("Songs Played")), &(model->songsPlayed));
+	folderSongsPlayed = new Folder(folderListView, QString(tr("Songs Played"))); //, &(model->songsPlayed));
 	folderSongsPlayed->moveItem(folderCategories);
 
 	// folder containing history
-	folderHistory = new Folder(folderListView, QString(tr("History")), &(model->songHistory));
+	folderHistory = new Folder(folderListView, QString(tr("History"))); //, &(model->songHistory));
 	folderHistory->moveItem(folderSongsPlayed);
 
 	// folder containing unclassified songs
-	for(SongEntry* entry=model->allSongs.first(); entry; entry=model->allSongs.next()) {
-		if(!entry->song()->classified)
-			model->unclassifiedSongs.append(entry);
-	}
-	folderUnclassified = new Folder(folderListView, QString(tr("Unclassified")), &(model->unclassifiedSongs));
+	folderUnclassified = new Folder(folderListView, QString(tr("Unclassified"))); //, &(model->unclassifiedSongs));
 	folderUnclassified->moveItem(folderMedia);
 		
-	folderSearchResults = new Folder( folderListView, QString(tr("Search Results")), &searchResults );
+	folderSearchResults = new Folder( folderListView, QString(tr("Search Results"))); //, &searchResults );
 	folderSearchResults->moveItem(folderActual);
 	
 	folderProblematic = new Folder( folderListView, QString(tr("Problematic Songs")) );
 	folderProblematic->moveItem(folderUnclassified);
-	cout << "..done\n";
+
+  folderRecentAdditions = new Folder(folderListView, QString(tr("Recent Additions")) );
+  folderRecentAdditions->moveItem(folderUnclassified);
+
+  cout << "..done, updating view...\n";
+  updateView(true);
+  cout << "..done\n";
 
 	// connect all things...
 	//**********************
@@ -826,22 +807,53 @@ void YammiGui::updateGeometrySettings()
 
 
 /// updates the automatically calculated folders after changes to song database
-void YammiGui::updateView()
+void YammiGui::updateView(bool startup)
 {
-	for(Song* s=model->allSongs.firstSong(); s; s=model->allSongs.nextSong())
+  for(Song* s=model->allSongs.firstSong(); s; s=model->allSongs.nextSong())
 		s->classified=false;	
 	folderArtists->update(&(model->allSongs), MyList::ByArtist);
 	folderAlbums->update(&(model->allSongs), MyList::ByAlbum);
 	folderGenres->update(&(model->allSongs), MyList::ByGenre);
 	folderMedia->update(&(model->allSongs));
-	
+  folderSearchResults->update(&searchResults);
+  
+  if(startup) {
+    // this might be only necessary on startup?
+    folderActual->update(&(model->songsToPlay));
+    folderCategories->update(model->allCategories, model->categoryNames);
+    updateSongPopup();
+    folderMedia->update(&(model->allSongs));
+  }
+  
 	model->unclassifiedSongs.clear();
 	for(Song* s=model->allSongs.firstSong(); s; s=model->allSongs.nextSong()) {
 		if(!s->classified)
 			model->unclassifiedSongs.appendSong(s);
 	}
 	folderUnclassified->update(&(model->unclassifiedSongs));
-  folderContentChanged();
+
+  // recently added songs:
+  // at least 20, but if delta is less than 1 hour, add the following one, too
+  model->recentSongs.clear();
+  model->allSongs.setSortOrderAndSort(MyList::ByAddedTo, true);
+  int count=0;
+  int timeDelta=0;  // time delta between two additions in seconds
+  Song* last=0;
+	for(Song* s=model->allSongs.firstSong(); s; s=model->allSongs.nextSong()) {
+    count++;
+    if(last!=0) {
+      timeDelta=s->addedTo.secsTo(last->addedTo);
+    }
+    last=s;
+    if(count>20 && timeDelta>60*60) {
+      break;
+    }
+    model->recentSongs.appendSong(s);
+	}
+  folderRecentAdditions->update(&(model->recentSongs));
+  if(!startup) {
+    folderContentChanged();
+  }
 }
 
 /// returns true if the column should be shown
@@ -1443,10 +1455,13 @@ void YammiGui::addFolderContentSnappy()
 		QApplication::restoreOverrideCursor();
 		songListView->setUpdatesEnabled(true);
     if(((QListViewItem*)chosenFolder)->parent()==folderAlbums) {
-      songListView->setSorting(5);
+      songListView->setSorting(COLUMN_TRACKNR);
+    }
+    else if(chosenFolder==folderRecentAdditions) {
+      songListView->setSorting(COLUMN_ADDED_TO);
     }
     else {
-      songListView->setSorting(0);      
+      songListView->setSorting(0);
     }
 	}
 }
@@ -2612,33 +2627,29 @@ void YammiGui::loadM3uIntoCategory()
 	if(filename.isNull()) {
     return;
   }
-	QFile file(filename);
-	if (!file.open( IO_ReadOnly  ) )
-		return;
-	QTextStream stream(&file);
-  while(!stream.atEnd()) {
-    QString line=stream.readLine().stripWhiteSpace();
-    if(line.startsWith("#")) {
-      // skip lines starting with #
-      continue;
-    }
-    Song* toAdd=model->getSongFromFilename(line);
+  QStringList* list=model->readM3uFile(filename);
+
+  QStringList::Iterator it = list->begin();
+  while( it != list->end() ) {
+    QString filename(*it);
+    Song* toAdd=model->getSongFromFilename(filename);
     if(toAdd==0) {
       // no song found with that filename
-      cout << "no song in database found with filename \"" << line << "\" (not in Yammi database yet?), skipping\n";
-      continue;
+      cout << "no song in database found with filename \"" << filename << "\" (not in Yammi database yet?), skipping\n";
     }
-    categoryFolder->addSong(toAdd);
+    else {
+      categoryFolder->addSong(toAdd);
+    }
+    ++it;
   }
-
-  file.close();
-
-
+  delete(list);
   // update category content
 	model->categoriesChanged(true);
   folderContentChanged(categoryFolder);
 	updateSongPopup();
 }
+
+
 
 
 /**
@@ -3282,6 +3293,25 @@ void YammiGui::updateSongDatabaseHarddisk()
   updateSongDatabase(scanDir, filePattern, 0);
 }
 
+void YammiGui::updateSongDatabaseSingleFile()
+{
+  QStringList files = QFileDialog::getOpenFileNames(0, model->config.scanDir, this, "open file(s) to import", "Select one or more files to open" );
+  if(files.count()==0) {
+    return;
+  }
+  QStringList list = files;
+  model->updateSongDatabase(list);
+	updateView();
+	folderProblematic->update(&model->problematicSongs);
+	folderAll->updateTitle();
+  changeToFolder(folderRecentAdditions);
+  QString msg=tr("Updated your database.\n\nStatistics: \n\n");
+  msg+=QString(tr("%1 songs added to database\n")).arg(model->entriesAdded);
+  msg+=QString(tr("%1 songs corrupt (=not added)\n")).arg(model->corruptSongs);
+  msg+=QString(tr("%1 songs problematic (check in folder Problematic Songs)\n")).arg(model->problematicSongs.count());
+	QMessageBox::information( this, tr("Yammi"), msg, tr("Fine.") );
+}
+
 
 void YammiGui::updateSongDatabaseMedia()
 {
@@ -3321,13 +3351,11 @@ void YammiGui::updateSongDatabase(QString scanDir, QString filePattern, QString 
 
   isScanning=true;
 	model->updateSongDatabase(scanDir, filePattern, media, &progress);
-  cout << "debug info: updating view...\n";
   
 	updateView();
-  cout << "debug info: updating folder problematic...\n";
 	folderProblematic->update(&model->problematicSongs);
-  cout << "debug info: updating title of folderAll...\n";
 	folderAll->updateTitle();
+  changeToFolder(folderRecentAdditions);
   QString msg=tr("Updated your database.\n\nStatistics: \n\n");
   msg+=QString(tr("%1 songs added to database\n")).arg(model->entriesAdded);
   msg+=QString(tr("%1 songs corrupt (=not added)\n")).arg(model->corruptSongs);
@@ -3337,16 +3365,6 @@ void YammiGui::updateSongDatabase(QString scanDir, QString filePattern, QString 
   // TODO: check update actions after scanning...without danger? (=> don't need to stop xmms?)
 //  player->syncPlayer2Yammi(folderActual);
   isScanning=false;
-
-/*
-TODO: show most recently added songs in songlist
-  (does not work with the following lines)
-  folderListView->setCurrentItem( folderListView->firstChild()->firstChild() );
-	folderListView->setSelected( folderListView->firstChild(), TRUE );
-  slotFolderChanged();
-	songListView->sortedBy=7;
-  songListView->setSorting(7);
-*/
 }
 
 

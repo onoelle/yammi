@@ -234,6 +234,11 @@ void YammiModel::saveCategories()
 	// save all categories to xml-files
 	cout << "saving categories...\n";
 	
+	QDir categoryDir( config.yammiBaseDir+"/categories");
+  if(!categoryDir.exists()) {
+    cout << "category directory not existing, creating it...\n";
+    categoryDir.mkdir(config.yammiBaseDir+"/categories");
+  }
 	// for all categories, check whether dirty: if yes => save
 	for( QListViewItem* f=gYammiGui->folderCategories->firstChild(); f; f=f->nextSibling() ) {
 		Folder* folder=(Folder*)f;
@@ -507,15 +512,9 @@ void YammiModel::updateSongDatabase(QString scanDir, QString filePattern, QStrin
 		// check that scanDir is an existing directory
 		QDir d(scanDir);
 		if(!d.exists()) {
-      if(QFile::exists(scanDir)) {
-        cout << "file existing!\n";
-        addSongToDatabase(scanDir, mediaName);
-      }
-      else {
-        QString msg="The base directory for scanning does not exist!\n";
-        msg+="Set value \"scanDir\" in preferences to an existing directory!";
-        QMessageBox::information( gYammiGui, "Yammi", msg, "Good idea!" );
-      }
+      QString msg="The base directory for scanning does not exist!\n";
+      msg+="Set value \"scanDir\" in preferences to an existing directory!";
+      QMessageBox::information( gYammiGui, "Yammi", msg, "Good idea!" );
 		}
 		else {
 			traverse(scanDir, filePattern, progress);
@@ -555,6 +554,33 @@ void YammiModel::updateSongDatabase(QString scanDir, QString filePattern, QStrin
 	}
 }
 
+
+void YammiModel::updateSongDatabase(QStringList list)
+{
+	entriesAdded=0;
+	corruptSongs=0;
+	if(config.childSafe)
+		return;
+  problematicSongs.clear();
+  // iterate over list of songs to add
+  QStringList::Iterator it = list.begin();
+  while( it != list.end() ) {
+    QString filename(*it);
+    if(filename.endsWith(".m3u")) {
+      QStringList* playlist=readM3uFile(filename);
+      QStringList::Iterator it2 = playlist->begin();
+      while( it2 != playlist->end() ) {
+        addSongToDatabase(QString(*it2), 0);
+        ++it2;
+      }
+      delete(playlist);
+    }
+    else {
+      addSongToDatabase(filename, 0);
+    }
+    ++it;
+  }
+}
 
 
 
@@ -730,6 +756,26 @@ void YammiModel::addSongToDatabase(QString filename, QString mediaName=0)
 }
 			
 
+/**
+ * Read an m3u file, returning a list of strings
+ */
+QStringList* YammiModel::readM3uFile(QString filename) {
+  QStringList* list=new QStringList();
+  QFile file(filename);
+	if (!file.open( IO_ReadOnly  ) )
+		return list;
+	QTextStream stream(&file);
+  while(!stream.atEnd()) {
+    QString line=stream.readLine().stripWhiteSpace();
+    if(line.startsWith("#")) {
+      // skip lines starting with #
+      continue;
+    }
+    list->append(line);
+  }
+  file.close();
+  return list;
+}
 
 
 /**

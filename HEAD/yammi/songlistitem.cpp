@@ -195,19 +195,27 @@ int SongListItem::compare( QListViewItem *i, int visibleColumn, bool ascending )
 	const Song* s2=other->song();
   int column=gYammiGui->mapToRealColumn(visibleColumn-base);
   // 0:artist, 1:title, 2:album
-	if(column==gYammiGui->COLUMN_LENGTH)				// length
+	if(column==gYammiGui->COLUMN_LENGTH)
 		return s->length - s2->length;
-	if(column==gYammiGui->COLUMN_YEAR)				// year
+	if(column==gYammiGui->COLUMN_YEAR)
 		return s->year - s2->year;
-	if(column==gYammiGui->COLUMN_TRACKNR)				// trackNr
+	if(column==gYammiGui->COLUMN_TRACKNR)
 		return s->trackNr - s2->trackNr;
-	if(column==gYammiGui->COLUMN_ADDED_TO)				// addedTo
+	if(column==gYammiGui->COLUMN_ADDED_TO)
 		return s->addedTo.secsTo(s2->addedTo);
-	if(column==gYammiGui->COLUMN_BITRATE)				// bitrate
+	if(column==gYammiGui->COLUMN_BITRATE)
 		return s->bitrate - s2->bitrate;
 	// 9:filename, 10:path, 11:comment
-	if(column==gYammiGui->COLUMN_LAST_PLAYED)				// last played
+	if(column==gYammiGui->COLUMN_LAST_PLAYED) {
+    MyDateTime never;
+    never.setDate(QDate(1900,1,1));
+    never.setTime(QTime(0,0,0));
+    if(s->lastPlayed==never)
+      return 1;
+    if(s2->lastPlayed==never)
+      return -1;
 		return s->lastPlayed.secsTo(s2->lastPlayed);
+  }
 	
 	// all other cases: call the key() method
 	return key(visibleColumn, ascending).compare(other->key(visibleColumn, ascending) );
@@ -228,19 +236,19 @@ QString SongListItem::key(int visibleColumn, bool ascending) const
   int column=gYammiGui->mapToRealColumn(visibleColumn-base);
 	const Song* s=song();
 	
-	if(column==gYammiGui->COLUMN_ARTIST)				// artist
+	if(column==gYammiGui->COLUMN_ARTIST)
 		if(s->artist=="")
 			return " "+s->title;
 		else
 			return s->artist+s->title;
-	if(column==gYammiGui->COLUMN_TITLE)				// title
+	if(column==gYammiGui->COLUMN_TITLE)
 		return s->title;
-	if(column==gYammiGui->COLUMN_ALBUM)				// album
+	if(column==gYammiGui->COLUMN_ALBUM)
 		if(s->album=="")
 			return " "+s->title;
 		else
-			return s->album+QString("%1").arg(s->trackNr, 2);       //			return s->album+s->title;
-	if(column==gYammiGui->COLUMN_GENRE)				// genre
+			return s->album+QString("%1").arg(s->trackNr, 2);
+	if(column==gYammiGui->COLUMN_GENRE)
 		return QString("%1").arg(CMP3Info::getGenre(s->genreNr));
 	return text(column);
 }
