@@ -11,7 +11,9 @@
 - applied patch from Luis (thanks!!!):
   - support for arts media player
   - changes towards making yammi a proper kde application
-
+- added an automatic folder "by year"
+- added (ugly) application icons in 16x16, 32x32, 48x48, 64x64
+- changed the xpm icons to png icons that get installed
 
 ######################
 24.10.2003 version 1.0

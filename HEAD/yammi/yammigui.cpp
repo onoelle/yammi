@@ -588,6 +588,7 @@ void YammiGui::updateView(bool startup)
 	folderArtists->update(&(model->allSongs), MyList::ByArtist);
 	folderAlbums->update(&(model->allSongs), MyList::ByAlbum);
 	folderGenres->update(&(model->allSongs), MyList::ByGenre);
+	folderYears->update(&(model->allSongs), MyList::ByYear);
 	folderMedia->update(&(model->allSongs));
   folderSearchResults->update(searchResults);
   
@@ -3509,13 +3510,17 @@ void YammiGui::createFolders( )
 	folderAlbums = new FolderGroups( folderListView, QString( tr("Albums") ));
 	folderAlbums->moveItem(folderArtists);
 
-	// folder containing all genres with more than <n> songs	
+	// folder containing all genres with more than <n> songs
 	folderGenres = new FolderGroups( folderListView, QString( tr("Genre") ));
 	folderGenres->moveItem(folderAlbums);
 
+	// folder containing all songs from a year (if more than <n> songs)
+	folderYears = new FolderGroups( folderListView, QString( tr("Year") ));
+	folderYears->moveItem(folderGenres);
+
 	// folder containing all categories
 	folderCategories = new FolderCategories( folderListView, QString(tr("Categories")));
-	folderCategories->moveItem(folderGenres);
+	folderCategories->moveItem(folderYears);
 	
 	// folder containing media
 	folderMedia = new FolderMedia( folderListView, QString(tr("Media")));
@@ -3584,12 +3589,12 @@ void YammiGui::setupActions( )
 	new KAction(i18n("Switch to/from Playlist"),0,0,this,SLOT(toFromPlaylist()),actionCollection(),"to_from_playlist");
 	new KAction(i18n("Clear Playlist..."),0,0,this,SLOT(clearPlaylist()),actionCollection(),"clear_playlist");
 	new KAction(i18n("Shuffle Playlist..."),0,0,this,SLOT(shufflePlaylist()),actionCollection(),"shuffle_playlists");
-	new KAction("Enqueue as next (prepend)","enqueue_next",KShortcut(Key_F6),this,SLOT(prependSelected()),actionCollection(),"prepend_selected");
-	new KAction("Enqueue as end (append)","enqueue_end",KShortcut(Key_F5),this,SLOT(appendSelected()),actionCollection(),"append_selected");
-	new KAction("Play Now!","play_now",KShortcut(Key_F7),this,SLOT(playSelected()),actionCollection(),"play_selected");
-	new KAction("Dequeue Songs","dequeue",KShortcut(Key_F8),this,SLOT(dequeueSelected()),actionCollection(),"dequeue_selected");
-	new KAction("Clear Playlist","clear_playlist",KShortcut(QKeySequence(Key_Shift,Key_F8)),this,SLOT(clearPlaylist()),actionCollection(),"clear_playlist");
-	new KAction("Switch to/from Playlist","toggle_playlist",KShortcut(Key_P),this,SLOT(toFromPlaylist()),actionCollection(),"tofrom_playlist");
+	new KAction(i18n("Enqueue as next (prepend)"),"enqueue_asnext",KShortcut(Key_F6),this,SLOT(prependSelected()),actionCollection(),"prepend_selected");
+	new KAction(i18n("Enqueue as end (append)"),"enqueue",KShortcut(Key_F5),this,SLOT(appendSelected()),actionCollection(),"append_selected");
+	new KAction(i18n("Play Now!"),"play_now",KShortcut(Key_F7),this,SLOT(playSelected()),actionCollection(),"play_selected");
+	new KAction(i18n("Dequeue Songs"),"dequeue_song",KShortcut(Key_F8),this,SLOT(dequeueSelected()),actionCollection(),"dequeue_selected");
+	new KAction(i18n("Clear Playlist"),"dequeue_all",KShortcut(QKeySequence(Key_Shift,Key_F8)),this,SLOT(clearPlaylist()),actionCollection(),"clear_playlist");
+	new KAction(i18n("Switch to/from Playlist"),"toggle_playlist",KShortcut(Key_P),this,SLOT(toFromPlaylist()),actionCollection(),"toggle_playlist");
 
 	
 	//Autoplay actions
@@ -3624,14 +3629,14 @@ void YammiGui::setupActions( )
 	
 	
 	//Prelisten actions
-	new KAction(i18n("Prelisten start"),"prelistenstart",KShortcut(Key_F9),this,SLOT(forAllSelectedPrelistenStart()),actionCollection(),"prelisten_start");
-	new KAction(i18n("Prelisten middle"),"prelistenmiddle",KShortcut(Key_F10),this,SLOT(forAllSelectedPrelistenMiddle()),actionCollection(),"prelisten_middle");
-	new KAction(i18n("Prelisten end"),"prelistenend",KShortcut(Key_F11),this,SLOT(forAllSelectedPrelistenEnd()),actionCollection(),"prelisten_end");
-	new KAction(i18n("Stop prelisten"),"stopprelisten",KShortcut(Key_F12),this,SLOT(stopPrelisten()),actionCollection(),"stop_prelisten");
+	new KAction(i18n("Prelisten start"),"prelisten_start",KShortcut(Key_F9),this,SLOT(forAllSelectedPrelistenStart()),actionCollection(),"prelisten_start");
+	new KAction(i18n("Prelisten middle"),"prelisten_middle",KShortcut(Key_F10),this,SLOT(forAllSelectedPrelistenMiddle()),actionCollection(),"prelisten_middle");
+	new KAction(i18n("Prelisten end"),"prelisten_end",KShortcut(Key_F11),this,SLOT(forAllSelectedPrelistenEnd()),actionCollection(),"prelisten_end");
+	new KAction(i18n("Stop prelisten"),"stop_prelisten",KShortcut(Key_F12),this,SLOT(stopPrelisten()),actionCollection(),"stop_prelisten");
 	
 	//other actions
 	new KAction(i18n("Update Automatic Folder Structure"),0,0,this,SLOT(updateView()),actionCollection(),"update_view");
-	new KAction("Song Info...","info",KShortcut(Key_I),this,SLOT(infoSelected()),actionCollection(),"info_selected");
+	new KAction(i18n("Song Info..."),"info",KShortcut(Key_I),this,SLOT(infoSelected()),actionCollection(),"info_selected");
 	
 	//Setup
 	KStdAction::preferences(this,SLOT(setPreferences()),actionCollection());

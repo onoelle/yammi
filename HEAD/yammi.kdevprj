@@ -68,7 +68,7 @@ User Interface=*.kdevdlg,*.ui,*.rc,*.dlg
 groups=Headers,Sources,User Interface,Translations,Others
 
 [Makefile.am]
-files=yammi.kdevprj,admin,CHANGELOG,yammiGrabAndEncode,yammi.spec,AUTHORS,INSTALL,README,TODO,CREDITS,yammiMp3Edit,yammiDmburn,yammi.lsm
+files=yammi.kdevprj,admin,CHANGELOG,yammiGrabAndEncode,yammi.spec,AUTHORS,INSTALL,README,TODO,CREDITS,yammiMp3Edit,yammi.lsm
 sub_dirs=yammi
 type=normal
 
@@ -387,7 +387,7 @@ install_location=
 type=HEADER
 
 [yammi/icons/Makefile.am]
-files=yammi/icons/clearPlaylist.xpm,yammi/icons/defaultControlClick.xpm,yammi/icons/defaultDoubleClick.xpm,yammi/icons/defaultMiddleClick.xpm,yammi/icons/defaultShiftClick.xpm,yammi/icons/dequeueAll.xpm,yammi/icons/dequeueSong.xpm,yammi/icons/enqueue.xpm,yammi/icons/enqueueasnext.xpm,yammi/icons/filesave.xpm,yammi/icons/in.xpm,yammi/icons/notin.xpm,yammi/icons/songinfo.xpm,yammi/icons/stopPrelisten.xpm,yammi/icons/yammiicon.xpm,yammi/icons/pause.xpm,yammi/icons/play.xpm,yammi/icons/skipbackward.xpm,yammi/icons/skipforward.xpm,yammi/icons/stop.xpm,yammi/icons/playnow.xpm,yammi/icons/newCategory.xpm,yammi/icons/toFromPlaylist.xpm,yammi/icons/some_in.xpm,yammi/icons/prelistenEnd.xpm,yammi/icons/prelistenMiddle.xpm,yammi/icons/prelistenStart.xpm,yammi/icons/toggle_playlist.png
+files=yammi/icons/clearPlaylist.xpm,yammi/icons/defaultControlClick.xpm,yammi/icons/defaultDoubleClick.xpm,yammi/icons/defaultMiddleClick.xpm,yammi/icons/defaultShiftClick.xpm,yammi/icons/dequeueAll.xpm,yammi/icons/dequeueSong.xpm,yammi/icons/enqueue.xpm,yammi/icons/enqueueasnext.xpm,yammi/icons/filesave.xpm,yammi/icons/in.xpm,yammi/icons/notin.xpm,yammi/icons/songinfo.xpm,yammi/icons/stopPrelisten.xpm,yammi/icons/yammiicon.xpm,yammi/icons/pause.xpm,yammi/icons/play.xpm,yammi/icons/skipbackward.xpm,yammi/icons/skipforward.xpm,yammi/icons/stop.xpm,yammi/icons/playnow.xpm,yammi/icons/newCategory.xpm,yammi/icons/toFromPlaylist.xpm,yammi/icons/some_in.xpm,yammi/icons/prelistenEnd.xpm,yammi/icons/prelistenMiddle.xpm,yammi/icons/prelistenStart.xpm,yammi/icons/toggle_playlist.png,yammi/icons/yammi16x16.png,yammi/icons/yammi32x32.png,yammi/icons/yammi48x48.png,yammi/icons/yammi64x64.png,yammi/icons/stop_prelisten.png,yammi/icons/prelisten_start.png,yammi/icons/prelisten_middle.png,yammi/icons/prelisten_end.png,yammi/icons/play_now.png,yammi/icons/play.png,yammi/icons/enqueue.png,yammi/icons/enqueue_asnext.png,yammi/icons/dequeue_all.png,yammi/icons/dequeue_song.png
 sub_dirs=
 type=normal
 
@@ -433,10 +433,34 @@ install=false
 install_location=
 type=DATA
 
+[yammi/icons/dequeue_all.png]
+dist=true
+install=true
+install_location=$$(kde_datadir)/yammi/icons/hicolor/16x16/actions/dequeue_all.png
+type=DATA
+
+[yammi/icons/dequeue_song.png]
+dist=true
+install=true
+install_location=$$(kde_datadir)/yammi/icons/hicolor/16x16/actions/dequeue_song.png
+type=DATA
+
+[yammi/icons/enqueue.png]
+dist=true
+install=true
+install_location=$$(kde_datadir)/yammi/icons/hicolor/16x16/actions/enqueue.png
+type=DATA
+
 [yammi/icons/enqueue.xpm]
 dist=true
 install=false
 install_location=
+type=DATA
+
+[yammi/icons/enqueue_asnext.png]
+dist=true
+install=true
+install_location=$$(kde_datadir)/yammi/icons/hicolor/16x16/actions/enqueue_asnext.png
 type=DATA
 
 [yammi/icons/enqueueasnext.xpm]
@@ -475,10 +499,22 @@ install=false
 install_location=
 type=DATA
 
+[yammi/icons/play.png]
+dist=true
+install=true
+install_location=$$(kde_datadir)/yammi/icons/hicolor/16x16/actions/play.png
+type=DATA
+
 [yammi/icons/play.xpm]
 dist=true
 install=false
 install_location=
+type=DATA
+
+[yammi/icons/play_now.png]
+dist=true
+install=true
+install_location=$$(kde_datadir)/yammi/icons/hicolor/16x16/actions/play_now.png
 type=DATA
 
 [yammi/icons/playnow.xpm]
@@ -503,6 +539,24 @@ type=DATA
 dist=true
 install=false
 install_location=
+type=DATA
+
+[yammi/icons/prelisten_end.png]
+dist=true
+install=true
+install_location=$$(kde_datadir)/yammi/icons/hicolor/16x16/actions/prelisten_end.png
+type=DATA
+
+[yammi/icons/prelisten_middle.png]
+dist=true
+install=true
+install_location=$$(kde_datadir)/yammi/icons/hicolor/16x16/actions/prelisten_middle.png
+type=DATA
+
+[yammi/icons/prelisten_start.png]
+dist=true
+install=true
+install_location=$$(kde_datadir)/yammi/icons/hicolor/16x16/actions/prelisten_start.png
 type=DATA
 
 [yammi/icons/skipbackward.xpm]
@@ -541,6 +595,12 @@ install=false
 install_location=
 type=DATA
 
+[yammi/icons/stop_prelisten.png]
+dist=true
+install=true
+install_location=$$(kde_datadir)/yammi/icons/hicolor/16x16/actions/stop_prelisten.png
+type=DATA
+
 [yammi/icons/toFromPlaylist.xpm]
 dist=true
 install=false
@@ -551,6 +611,30 @@ type=DATA
 dist=true
 install=true
 install_location=$$(kde_datadir)/yammi/toggle_playlist.png
+type=DATA
+
+[yammi/icons/yammi16x16.png]
+dist=true
+install=true
+install_location=$$(kde_icondir)/hicolor/16x16/apps/yammi.png
+type=DATA
+
+[yammi/icons/yammi32x32.png]
+dist=true
+install=true
+install_location=$$(kde_icondir)/hicolor/32x32/apps/yammi.png
+type=DATA
+
+[yammi/icons/yammi48x48.png]
+dist=true
+install=true
+install_location=$$(kde_icondir)/hicolor/48x48/apps/yammi.png
+type=DATA
+
+[yammi/icons/yammi64x64.png]
+dist=true
+install=true
+install_location=$$(kde_icondir)/hicolor/64x64/apps/yammi.png
 type=DATA
 
 [yammi/icons/yammiicon.xpm]
@@ -876,12 +960,6 @@ dist=true
 install=false
 install_location=
 type=HEADER
-
-[yammiDmburn]
-dist=true
-install=false
-install_location=
-type=DATA
 
 [yammiGrabAndEncode]
 dist=true

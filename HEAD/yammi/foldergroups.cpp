@@ -49,13 +49,21 @@ void FolderGroups::update(MyList* allSongs, int sortBy)
   
 	for(Song* s=allSongs->firstSong(); s; s=allSongs->nextSong()) {
     QString next;
-		if(sortBy==MyList::ByArtist)
-      next=s->artist;
-		if(sortBy==MyList::ByAlbum)
-			next=s->album;
-		if(sortBy==MyList::ByGenre)
-			next=CMP3Info::getGenre(s->genreNr);
-		
+    switch(sortBy) {
+      case MyList::ByArtist:
+        next=s->artist;
+        break;
+		  case MyList::ByAlbum:
+			  next=s->album;
+        break;
+		  case MyList::ByGenre:
+			  next=CMP3Info::getGenre(s->genreNr);
+        break;
+      case MyList::ByYear:
+        next=QString("%1").arg(s->year);
+        break;
+    }
+    
     if(gYammiGui->getModel()->config.lazyGrouping) {
       // lazy grouping is not guaranteed to work, as the sorting might be different
       // (we sort once, and scan in linear time)
@@ -78,12 +86,21 @@ void FolderGroups::update(MyList* allSongs, int sortBy)
         groupCount++;
         createGroupFolder(&currentGroup, sortBy);			
 			}
-			if(sortBy==MyList::ByArtist)
-				last=s->artist;
-			if(sortBy==MyList::ByAlbum)
-				last=s->album;
-			if(sortBy==MyList::ByGenre)
-				last=CMP3Info::getGenre(s->genreNr);
+      switch(sortBy) {
+        case MyList::ByArtist:
+			    last=s->artist;
+          break;
+			  case MyList::ByAlbum:
+				  last=s->album;
+          break;
+			  case MyList::ByGenre:
+				  last=CMP3Info::getGenre(s->genreNr);
+          break;
+        case MyList::ByYear:
+			    last=QString("%1").arg(s->year);
+          break;
+      }
+
 //			if(last=="")          // we don't group empty values together, do we?
 //				last="xxxyyyzzz";
       currentGroup.clear();
@@ -123,27 +140,37 @@ void FolderGroups::createGroupFolder(MyList* group, int sortBy)
 
   // create folder name
   QString folderName("");
-  if(sortBy==MyList::ByArtist) {								// name folder by artist
-		folderName=firstSong->artist;
-    if(folderName=="") {
-      folderName="- no artist -";
-    }
+  switch(sortBy) {
+    case MyList::ByArtist:								// name folder by artist
+		  folderName=firstSong->artist;
+      if(folderName=="") {
+        folderName="- no artist -";
+      }
+      break;
+    case MyList::ByAlbum:								// name folder by artist (if only one) + album
+		  if(sameArtist)
+        folderName=firstSong->artist+" - "+firstSong->album;
+		  else
+        folderName=firstSong->album;
+      if(folderName=="") {
+        folderName="- no album -";
+      }
+      break;
+	  case MyList::ByGenre:
+      folderName=CMP3Info::getGenre(firstSong->genreNr);
+      if(folderName=="") {
+        folderName="- no genre -";
+      }
+	    break;
+	  case MyList::ByYear:
+      if(firstSong->year!=0) {
+        folderName=QString("%1").arg(firstSong->year);
+      }
+      else {
+        folderName="- no year -";
+      }
+	    break;
   }
-  if(sortBy==MyList::ByAlbum) {								// name folder by artist (if only one) + album
-		if(sameArtist)
-      folderName=firstSong->artist+" - "+firstSong->album;
-		else
-      folderName=firstSong->album;
-    if(folderName=="") {
-      folderName="- no album -";
-    }
-  }
-	if(sortBy==MyList::ByGenre) {
-    folderName=CMP3Info::getGenre(firstSong->genreNr);
-    if(folderName=="") {
-      folderName="- no genre -";
-    }
-	}
   f->setFolderName(folderName);
   f->setText(0, folderName+QString(" (%1)").arg(group->count()));
 }

@@ -290,6 +290,7 @@ protected:
 	FolderGroups*	folderArtists;
 	FolderGroups*	folderAlbums;
 	FolderGroups* folderGenres;
+	FolderGroups* folderYears;
 	FolderMedia*	folderMedia;
 	Folder* 			folderUnclassified;
 	Folder*				folderProblematic;
