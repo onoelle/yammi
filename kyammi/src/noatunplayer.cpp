@@ -78,22 +78,22 @@ bool NoatunPlayer::ensurePlayerIsRunning() {
         QProcess proc;
         proc.addArgument("dcop");
         if ( !proc.start() ) {
-            cout << "ERROR: could not start dcop process\n";
+            kdDebug() << "ERROR: could not start dcop process\n";
             return false;
         }
         while(proc.isRunning()) {}
         if(!proc.normalExit()) {
-            cout << "ERROR: normalExit is false for dcop command (trying to continue...)\n";
+            kdDebug() << "ERROR: normalExit is false for dcop command (trying to continue...)\n";
         }
         while(replyStr=proc.readLineStdout()) {
             if(replyStr.startsWith("noatun")) {
-                //        cout << count << ". noatun process found: " << replyStr << "\n";
+                //        kdDebug() << count << ". noatun process found: " << replyStr << "\n";
                 QString idStr=replyStr.mid(7);
                 if(idStr=="") {
-                    cout << "!!!!!!!!\nit looks like you have the following option checked in noatun:\n";
-                    cout << "\"allow only one instance\"\n";
-                    cout << "=> disable it first, restart noatun and then restart yammi!\n";
-                    cout << "(I think I feel like crashing now...)\n!!!!!!!\n";
+                    kdDebug() << "!!!!!!!!\nit looks like you have the following option checked in noatun:\n";
+                    kdDebug() << "\"allow only one instance\"\n";
+                    kdDebug() << "=> disable it first, restart noatun and then restart yammi!\n";
+                    kdDebug() << "(I think I feel like crashing now...)\n!!!!!!!\n";
                     return false;
                 }
                 int id=atoi(idStr);
@@ -103,13 +103,13 @@ bool NoatunPlayer::ensurePlayerIsRunning() {
         }
         for(int i=count; i<2; i++) {
             // if not enough players running: start the missing ones!
-            cout << "trying to start another instance of noatun...\n";
+            kdDebug() << "trying to start another instance of noatun...\n";
             system("noatun");
         }
     }
     if(count<2) {
-        cout << "ERROR: could not start the two required noatun instances!\n";
-        cout << "have you \"allow only one instance\" option checked? disable it first!\n";
+        kdDebug() << "ERROR: could not start the two required noatun instances!\n";
+        kdDebug() << "have you \"allow only one instance\" option checked? disable it first!\n";
         return false;
     }
     return true;
@@ -164,7 +164,7 @@ void NoatunPlayer::check() {
                 // no crossfading configured
                 // heuristic: if we were at end of last song, we should start next one
                 if(timeLeft<2000) {
-                    //          cout << "heuristic, starting song change...\n";
+                    //          kdDebug() << "heuristic, starting song change...\n";
                     startSongChange();
                 }
             }
@@ -178,7 +178,7 @@ void NoatunPlayer::check() {
     if(model->config().fadeTime>0) {
         if(getStatus()==PLAYING && timeLeft<model->config().fadeTime && timeLeft>0) {
             if(fade<100) {  // don't start fading if we are still fading last song? TODO: really?
-                cout << "start crossfading, but we are still crossfading (" << fade << ")\n";
+                kdDebug() << "start crossfading, but we are still crossfading (" << fade << ")\n";
                 sendDcopCommand(QString("clear()"), getOtherPlayerId());
             }
             startSongChange();
@@ -243,7 +243,7 @@ void NoatunPlayer::playlistAdd(QString filename, bool autoStart) {
     arg << autoStart;
 
     if (!client->send(str.local8Bit(), "Noatun", "addFile(QString, bool)", data)) {
-        cout << "could not add file to noatun playlist, dcop send() failed\n";
+        kdDebug() << "could not add file to noatun playlist, dcop send() failed\n";
     }
 }
 
@@ -334,7 +334,7 @@ PlayerStatus NoatunPlayer::getStatus() {
     // case 3: noatun is stopped
     if(state==0)
         return STOPPED;
-    cout << "unknown state received from noatun\n";
+    kdDebug() << "unknown state received from noatun\n";
     return STOPPED;
 }
 
@@ -342,8 +342,8 @@ bool NoatunPlayer::jumpTo(int value) {
     if(callGetString("title()") == "" && playlist->count() > 0) {
         kdDebug() << "workaround for seeking if song not active in noatun: play(), pause()\n";
         sendDcopCommand("play()");
-        while(callGetInt("state()") != PLAYING) {
-            kdDebug() << "waiting...\n";
+        for(int tries=0; tries<100 && callGetInt("state()") != PLAYING; tries++) {
+            kdDebug() << "waiting for noatun to change state...\n";
         }
         sendDcopCommand("playpause()");
     }            
@@ -408,8 +408,8 @@ void NoatunPlayer::syncYammi2Player() {
     */
     QString yammiCurrent=location.right(location.length()-location.findRev('/')-1);
     if(noatunCurrent!=yammiCurrent) {
-        //    cout << "setting Noatun's current to Yammi's current\n";
-        //    cout << "noatun file: |" << noatunCurrent << "|, yammi current: " << yammiCurrent << "\n";
+        //    kdDebug() << "setting Noatun's current to Yammi's current\n";
+        //    kdDebug() << "noatun file: |" << noatunCurrent << "|, yammi current: " << yammiCurrent << "\n";
         clearActivePlayerPlaylist();
         playlistAdd(location, false);
         sendDcopCommandInt("setVolume(int)", 100);
@@ -438,7 +438,7 @@ void NoatunPlayer::sendDcopCommandInt(QString command, int param, int id) {
     arg << param;
 
     if (!client->send(str.latin1(), "Noatun", command.latin1(), data)) {
-        cout << "communicating with noatun: some error using DCOP.\n";
+        kdDebug() << "communicating with noatun: some error using DCOP.\n";
     }
 }
 
@@ -453,7 +453,7 @@ void NoatunPlayer::sendDcopCommand(QString command, int id) {
     QDataStream arg(data, IO_WriteOnly);
 
     if (!client->send(str.latin1(), "Noatun", command.latin1(), data)) {
-        cout << "communicating with noatun: some error using DCOP.\n";
+        kdDebug() << "communicating with noatun: some error using DCOP.\n";
     }
 }
 
@@ -470,15 +470,15 @@ int NoatunPlayer::callGetInt(QString command, int id) {
 
     QString str=QString("noatun-%1").arg(id);
     if (!client->call(str.latin1(), QString("Noatun").latin1(), command.latin1(), data, replyType, replyData)) {
-        cout << "call() failed, maybe noatun was closed?\n";
-        cout << "I will check now and restart noatun if necessary...\n";
+        kdDebug() << "call() failed, maybe noatun was closed?\n";
+        kdDebug() << "I will check now and restart noatun if necessary...\n";
         ensurePlayerIsRunning();
     } else {
         QDataStream reply(replyData, IO_ReadOnly);
         if (replyType == "int") {
             reply >> result;
         } else
-            cout << "unexpected type of dcop reply (int expected): " << replyType << "\n";
+            kdDebug() << "unexpected type of dcop reply (int expected): " << replyType << "\n";
     }
     return result;
 }
@@ -496,13 +496,13 @@ QString NoatunPlayer::callGetString(QString command, int id) {
 
     QString str=QString("noatun-%1").arg(id);
     if (!client->call(str.latin1(), QString("Noatun").latin1(), command.latin1(), data, replyType, replyData))
-        cout << "call() failed\n";
+        kdDebug() << "call() failed\n";
     else {
         QDataStream reply(replyData, IO_ReadOnly);
         if (replyType == "QString") {
             reply >> result;
         } else
-            cout << "unexpected type of dcop reply (QString expected): " << replyType << "\n";
+            kdDebug() << "unexpected type of dcop reply (QString expected): " << replyType << "\n";
     }
     return result;
 }

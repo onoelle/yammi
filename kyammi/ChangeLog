@@ -4,12 +4,15 @@ Major:
 - added: dcop interface (thanks to Daniel Raneland)
 - added: toolbar button for "Switch to/from playlist"
 - added: configurable key bindings (according to kde standard)
+- added: i18n support (translation capability according following the KDE standard)
+- improved: consistency check
 - fixed: compiling with --disable-xmms
 
 Minor:
 - ported yammi handbook from sgml to docbook format
   - including documented requirements for installation / compilation
 - improved: media player can be changed on-the-fly (no restart of yammi necessary)
+- fixed: proposed filename changes while you type in songinfo dialog
 - fixed: bug: only selecting first 201 songs in folder popup menu
 - fixed: saving setting for filenamePattern (like "*.mp3 *.ogg")
 - fixed: shuffle playlist/toggle_playlist are back in the playlist menu

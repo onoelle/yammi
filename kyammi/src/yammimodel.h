@@ -113,7 +113,6 @@ public slots:
     void updateSongDatabase(QString scanDir, QString filePattern, QString mediaName, KProgressDialog* progress);
     void updateSongDatabase(QStringList list);
     void addSongToDatabase(QString filename, QString mediaName);
-    bool checkConsistency(KProgressDialog* progress, MyList* selection, ConsistencyCheckParameter* p);
 
 protected:
     YammiGui *m_yammi;

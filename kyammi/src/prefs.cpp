@@ -90,8 +90,6 @@ bool Prefs::loadConfig( )
 	cfg->setGroup("General Options");
 	trashDir                     = cfg->readEntry("trashDir", trashDir );
 	scanDir                      = cfg->readEntry("scanDir", scanDir);
-	filenamePattern              = cfg->readEntry("filenamePattern", filenamePattern);
-	directoryPattern             = cfg->readEntry("directoryPattern", directoryPattern);
 	guessingMode                 = cfg->readNumEntry("guessingMode", guessingMode);
 	doubleClickAction            = (Song::action) cfg->readNumEntry("doubleClickAction", doubleClickAction);
 	middleClickAction            = (Song::action) cfg->readNumEntry("middleClickAction", middleClickAction);
@@ -167,7 +165,7 @@ bool Prefs::saveConfig( )
 	
 	cfg->writeEntry("scanDir", scanDir);
 	cfg->writeEntry("guessingMode", mediaPlayer);
-	cfg->writeEntry("filenamePattern", filenamePattern);
+	cfg->writeEntry("scanPattern", scanPattern);
 	
 	cfg->writeEntry("trashDir", trashDir );
 	cfg->writeEntry("doubleClickAction", (int)doubleClickAction);

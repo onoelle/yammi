@@ -110,12 +110,12 @@ extern YammiGui* gYammiGui;
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 YammiGui::YammiGui() : DCOPObject("YammiPlayer"), KMainWindow( ) {
-    validState = false;
-
-    //FIXME Warning!!!! gYammiGui is (should) be set in main, but there are calls in *this* constructor
-    // that rely on the variable pointing to the yammi instance.. since the variable in main gets assigned
-    // after the constructor has finished, we need to do this here, until the code is cleaned up
+    kdDebug() << "ctor()...\n";
     gYammiGui = this;
+    
+    validState = false;
+    
+    kdDebug() << "loading config...\n";
 
     m_config.loadConfig( );
     currentSong = 0;
@@ -126,11 +126,14 @@ YammiGui::YammiGui() : DCOPObject("YammiPlayer"), KMainWindow( ) {
     // set up model
     model = new YammiModel( this );
 
+    kdDebug() << "1\n";
     if(!setupActions()) {
         return;
     }
+    kdDebug() << "2\n";
     createMainWidget( );
     createFolders( );
+    kdDebug() << "3\n";
 
     // final touches before start up
     isScanning = false;
@@ -163,6 +166,7 @@ void YammiGui::disconnectMediaPlayer() {
 
 
 void YammiGui::loadDatabase(QString databaseDir) {
+    kdDebug() << "4\n";
     loadMediaPlayer( );
     // TODO: replace this checkTimer with a thread owned by the media player
     connectMediaPlayer( );
@@ -1762,49 +1766,17 @@ void YammiGui::forAllCheckConsistency() {
     setSelectionMode(SELECTION_MODE_USER_SELECTED);
 }
 
+
 void YammiGui::forSelectionCheckConsistency() {
     getSelectedSongs();
-    CheckConsistencyDialog d(this, &(m_config.consistencyPara));
-    d.TextLabel1->setText(QString(i18n("checking %1 songs")).arg(selectedSongs.count()));
-
-    // show dialog
-    int result=d.exec();
-    if(result!=QDialog::Accepted) {
-        return;
-    }
+    ConsistencyCheckDialog d(this, &(m_config.consistencyPara), &selectedSongs, model);
+    d.exec();
     m_config.saveConfig();
-
-    ConsistencyCheckParameter* p=&(m_config.consistencyPara);
-    p->resetStatistics();
-
-    KProgressDialog progress( this, 0,i18n("Yammi"), i18n("Checking consistency..."),true);
-    progress.setMinimumDuration(0);
-    progress.setAutoReset(false);
-    progress.progressBar()->setProgress(0);
-    kapp->processEvents();
-    model->checkConsistency(&progress, &selectedSongs, p);
-
     folderProblematic->update(model->problematicSongs);
     folderContentChanged(folderProblematic);
     folderContentChanged(chosenFolder);
-
-    QString msg=QString(
-                    i18n("Result of consistency check:\n\n\
-                         %1 problematic issues identified (check folder \"Problematic Songs\")\n\
-                         (that folder won't be saved)\n\
-                         %2 songs not existing, of these:\n\
-                         %3 entries updated (filename cleared)\n\
-                         \t%4 entries deleted (because not existing on any media)\n\
-                         %5 songs with inconsistent tags, of these:\n\
-                         \t%6 tags corrected\n\
-                         %7 songs with inconsistent filename, of these:\n\
-                         \t%8 filenames corrected\n")).arg(model->problematicSongs.count()).arg(p->nonExisting).arg(p->nonExistingUpdated)\
-                .arg(p->nonExistingDeleted).arg(p->dirtyTags).arg(p->tagsCorrected).arg(p->dirtyFilenames).arg(p->filenamesCorrected);
-    msg+=QString(i18n("%1 songs with inconsistent path, of these:\n\
-                      \t%2 paths corrected\n\
-                      %3 double entries found\n")).arg(p->dirtyDirectories).arg(p->directoriesCorrected).arg(p->doublesFound);
-    KMessageBox::information( this, msg );
 }
+
 
 void YammiGui::forSelectionEnqueue( ) {
     kdDebug() << "appendSelected( )" << endl;
@@ -1946,7 +1918,11 @@ void YammiGui::forSelectionSongInfo( ) {
     long double _size=0;
     int _genreNr=0;
 
-    SongInfoDialog si(this);
+    Song* singleSong = 0;
+    if(count == 1) {
+        singleSong = selectedSongs.firstSong();
+    }
+    SongInfo si(this, singleSong);
 
     // fill combobox with genres, but sort them first
     QStringList genreList;
@@ -2071,9 +2047,7 @@ void YammiGui::forSelectionSongInfo( ) {
         QString x;
         si.ReadOnlyLength->setText(x.sprintf(i18n("%2d:%02d (mm:ss)"), _length/60, _length % 60));
     }
-    si.ReadOnlySize->setText( QString(i18n("%1 MB (%2 Bytes)"))
-                              .arg( (float)_size/(float)(1024*1024) , 4,'f', 2 )
-                              .arg( (float)_size                    ,10,'f', 0 ));
+    si.ReadOnlySize->setText( QString(i18n("%1 MB")).arg( (float)_size/(float)(1024*1024) , 4,'f', 2 ));
     si.ReadOnlyBitrate->setText(_bitrate);
 
     if(_genreNr==-1) {
@@ -2941,7 +2915,7 @@ void YammiGui::updateSongDatabaseHarddisk() {
         return;
     }
     m_config.saveConfig();
-    updateSongDatabase(config().scanDir, config().filenamePattern, 0);
+    updateSongDatabase(config().scanDir, config().scanPattern, 0);
 }
 
 void YammiGui::updateSongDatabaseSingleFile() {

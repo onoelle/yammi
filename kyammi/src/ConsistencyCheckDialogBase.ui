@@ -1,4 +1,4 @@
-<!DOCTYPE UI><UI version="3.2" stdsetdef="1">
+<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
 <class>CheckConsistencyDialogBase</class>
 <widget class="QDialog">
     <property name="name">
@@ -8,8 +8,8 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>593</width>
-            <height>693</height>
+            <width>733</width>
+            <height>655</height>
         </rect>
     </property>
     <property name="caption">
@@ -30,7 +30,7 @@
         </property>
         <widget class="QLabel" row="0" column="0" rowspan="1" colspan="3">
             <property name="name">
-                <cstring>TextLabel1</cstring>
+                <cstring>TextLabelTitle</cstring>
             </property>
             <property name="sizePolicy">
                 <sizepolicy>
@@ -47,104 +47,20 @@
                 </font>
             </property>
             <property name="text">
-                <string>Options for consistency check</string>
+                <string>Consistency Check</string>
             </property>
         </widget>
-        <widget class="QPushButton" row="6" column="0">
-            <property name="name">
-                <cstring>PushButtonOk</cstring>
-            </property>
-            <property name="sizePolicy">
-                <sizepolicy>
-                    <hsizetype>0</hsizetype>
-                    <vsizetype>0</vsizetype>
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                </sizepolicy>
-            </property>
-            <property name="text">
-                <string>Start Check...</string>
-            </property>
-        </widget>
-        <widget class="QPushButton" row="6" column="1">
-            <property name="name">
-                <cstring>PushButtonCancel</cstring>
-            </property>
-            <property name="sizePolicy">
-                <sizepolicy>
-                    <hsizetype>0</hsizetype>
-                    <vsizetype>0</vsizetype>
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                </sizepolicy>
-            </property>
-            <property name="text">
-                <string>Cancel</string>
-            </property>
-        </widget>
-        <widget class="QPushButton" row="6" column="2">
-            <property name="name">
-                <cstring>PushButtonPatternReplacements</cstring>
-            </property>
-            <property name="text">
-                <string>Replacements...</string>
-            </property>
-        </widget>
-        <widget class="QButtonGroup" row="1" column="0" rowspan="1" colspan="3">
-            <property name="name">
-                <cstring>buttonGroup3</cstring>
-            </property>
-            <property name="title">
-                <string></string>
-            </property>
-            <grid>
-                <property name="name">
-                    <cstring>unnamed</cstring>
-                </property>
-                <widget class="QCheckBox" row="0" column="0" rowspan="1" colspan="2">
-                    <property name="name">
-                        <cstring>CheckBoxCheckForExistence</cstring>
-                    </property>
-                    <property name="text">
-                        <string>check for existence of files</string>
-                    </property>
-                    <property name="toolTip" stdset="0">
-                        <string>Checks, whether the file is existing and readable</string>
-                    </property>
-                </widget>
-                <widget class="QCheckBox" row="1" column="1">
-                    <property name="name">
-                        <cstring>CheckBoxUpdateNonExisting</cstring>
-                    </property>
-                    <property name="text">
-                        <string>update/delete non existing entries</string>
-                    </property>
-                    <property name="toolTip" stdset="0">
-                        <string>Entries not existing at their saved location are updated (existing on media) or deleted (not existing on any media)</string>
-                    </property>
-                </widget>
-                <spacer row="1" column="0">
-                    <property name="name">
-                        <cstring>Spacer1</cstring>
-                    </property>
-                    <property name="orientation">
-                        <enum>Horizontal</enum>
-                    </property>
-                    <property name="sizeType">
-                        <enum>Fixed</enum>
-                    </property>
-                    <property name="sizeHint">
-                        <size>
-                            <width>40</width>
-                            <height>16</height>
-                        </size>
-                    </property>
-                </spacer>
-            </grid>
-        </widget>
-        <widget class="QButtonGroup" row="2" column="0" rowspan="1" colspan="3">
+        <widget class="QButtonGroup" row="2" column="0" rowspan="1" colspan="2">
             <property name="name">
                 <cstring>buttonGroup5</cstring>
+            </property>
+            <property name="sizePolicy">
+                <sizepolicy>
+                    <hsizetype>1</hsizetype>
+                    <vsizetype>5</vsizetype>
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                </sizepolicy>
             </property>
             <property name="title">
                 <string></string>
@@ -214,7 +130,7 @@
                     </property>
                     <property name="sizePolicy">
                         <sizepolicy>
-                            <hsizetype>5</hsizetype>
+                            <hsizetype>1</hsizetype>
                             <vsizetype>0</vsizetype>
                             <horstretch>0</horstretch>
                             <verstretch>0</verstretch>
@@ -234,9 +150,134 @@
                 </widget>
             </grid>
         </widget>
-        <widget class="QButtonGroup" row="3" column="0" rowspan="1" colspan="3">
+        <widget class="QButtonGroup" row="1" column="0" rowspan="1" colspan="2">
+            <property name="name">
+                <cstring>buttonGroup3</cstring>
+            </property>
+            <property name="sizePolicy">
+                <sizepolicy>
+                    <hsizetype>1</hsizetype>
+                    <vsizetype>5</vsizetype>
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                </sizepolicy>
+            </property>
+            <property name="title">
+                <string></string>
+            </property>
+            <grid>
+                <property name="name">
+                    <cstring>unnamed</cstring>
+                </property>
+                <widget class="QCheckBox" row="0" column="0" rowspan="1" colspan="2">
+                    <property name="name">
+                        <cstring>CheckBoxCheckForExistence</cstring>
+                    </property>
+                    <property name="text">
+                        <string>check for existence of files</string>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>Checks, whether the file is existing and readable</string>
+                    </property>
+                </widget>
+                <widget class="QCheckBox" row="1" column="1">
+                    <property name="name">
+                        <cstring>CheckBoxUpdateNonExisting</cstring>
+                    </property>
+                    <property name="text">
+                        <string>update/delete non existing entries</string>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>Entries not existing at their saved location are updated (existing on media) or deleted (not existing on any media)</string>
+                    </property>
+                </widget>
+                <spacer row="1" column="0">
+                    <property name="name">
+                        <cstring>Spacer1</cstring>
+                    </property>
+                    <property name="orientation">
+                        <enum>Horizontal</enum>
+                    </property>
+                    <property name="sizeType">
+                        <enum>Fixed</enum>
+                    </property>
+                    <property name="sizeHint">
+                        <size>
+                            <width>40</width>
+                            <height>16</height>
+                        </size>
+                    </property>
+                </spacer>
+            </grid>
+        </widget>
+        <widget class="QPushButton" row="6" column="2">
+            <property name="name">
+                <cstring>PushButtonOk</cstring>
+            </property>
+            <property name="sizePolicy">
+                <sizepolicy>
+                    <hsizetype>7</hsizetype>
+                    <vsizetype>0</vsizetype>
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                </sizepolicy>
+            </property>
+            <property name="text">
+                <string>Start Check...</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="6" column="3">
+            <property name="name">
+                <cstring>PushButtonCancel</cstring>
+            </property>
+            <property name="sizePolicy">
+                <sizepolicy>
+                    <hsizetype>7</hsizetype>
+                    <vsizetype>0</vsizetype>
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                </sizepolicy>
+            </property>
+            <property name="text">
+                <string>Exit</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="6" column="0">
+            <property name="name">
+                <cstring>PushButtonPatternReplacements</cstring>
+            </property>
+            <property name="text">
+                <string>Pattern Replacements...</string>
+            </property>
+        </widget>
+        <spacer row="6" column="1">
+            <property name="name">
+                <cstring>Spacer1_5_2</cstring>
+            </property>
+            <property name="orientation">
+                <enum>Horizontal</enum>
+            </property>
+            <property name="sizeType">
+                <enum>Fixed</enum>
+            </property>
+            <property name="sizeHint">
+                <size>
+                    <width>160</width>
+                    <height>20</height>
+                </size>
+            </property>
+        </spacer>
+        <widget class="QButtonGroup" row="3" column="0" rowspan="1" colspan="2">
             <property name="name">
                 <cstring>buttonGroup6</cstring>
+            </property>
+            <property name="sizePolicy">
+                <sizepolicy>
+                    <hsizetype>1</hsizetype>
+                    <vsizetype>5</vsizetype>
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                </sizepolicy>
             </property>
             <property name="title">
                 <string></string>
@@ -267,26 +308,6 @@
                         <string>If filenames differ from the configured filename scheme, they will be corrected</string>
                     </property>
                 </widget>
-                <widget class="QLineEdit" row="2" column="2">
-                    <property name="name">
-                        <cstring>LineEditFilenamePattern</cstring>
-                    </property>
-                    <property name="toolTip" stdset="0">
-                        <string>The filename pattern to use for renaming files.</string>
-                    </property>
-                </widget>
-                <widget class="QLabel" row="2" column="1">
-                    <property name="name">
-                        <cstring>LabelFilenamePattern</cstring>
-                    </property>
-                    <property name="text">
-                        <string>filename pattern
-(for renaming files)</string>
-                    </property>
-                    <property name="toolTip" stdset="0">
-                        <string>The filename pattern to use for renaming files.</string>
-                    </property>
-                </widget>
                 <spacer row="1" column="0">
                     <property name="name">
                         <cstring>Spacer1_4</cstring>
@@ -304,28 +325,46 @@
                         </size>
                     </property>
                 </spacer>
-                <spacer row="2" column="0">
+                <widget class="QLabel" row="2" column="0" rowspan="1" colspan="2">
                     <property name="name">
-                        <cstring>Spacer1_4_2</cstring>
+                        <cstring>LabelFilenamePattern</cstring>
                     </property>
-                    <property name="orientation">
-                        <enum>Horizontal</enum>
+                    <property name="text">
+                        <string>pattern:</string>
                     </property>
-                    <property name="sizeType">
-                        <enum>Fixed</enum>
+                    <property name="toolTip" stdset="0">
+                        <string>The filename pattern to use for renaming files.</string>
                     </property>
-                    <property name="sizeHint">
-                        <size>
-                            <width>40</width>
-                            <height>16</height>
-                        </size>
+                </widget>
+                <widget class="QLineEdit" row="2" column="2">
+                    <property name="name">
+                        <cstring>LineEditFilenamePattern</cstring>
                     </property>
-                </spacer>
+                    <property name="sizePolicy">
+                        <sizepolicy>
+                            <hsizetype>7</hsizetype>
+                            <vsizetype>0</vsizetype>
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                        </sizepolicy>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>The filename pattern to use for renaming files.</string>
+                    </property>
+                </widget>
             </grid>
         </widget>
-        <widget class="QButtonGroup" row="4" column="0" rowspan="1" colspan="3">
+        <widget class="QButtonGroup" row="4" column="0" rowspan="1" colspan="2">
             <property name="name">
                 <cstring>buttonGroup7</cstring>
+            </property>
+            <property name="sizePolicy">
+                <sizepolicy>
+                    <hsizetype>1</hsizetype>
+                    <vsizetype>5</vsizetype>
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                </sizepolicy>
             </property>
             <property name="title">
                 <string></string>
@@ -373,26 +412,6 @@
                         </size>
                     </property>
                 </spacer>
-                <widget class="QLineEdit" row="2" column="2">
-                    <property name="name">
-                        <cstring>LineEditDirectoryPattern</cstring>
-                    </property>
-                    <property name="toolTip" stdset="0">
-                        <string>The filename pattern to use for renaming files.</string>
-                    </property>
-                </widget>
-                <widget class="QLabel" row="2" column="1">
-                    <property name="name">
-                        <cstring>LabelDirectoryPattern</cstring>
-                    </property>
-                    <property name="text">
-                        <string>directory pattern
-(for moving files)</string>
-                    </property>
-                    <property name="toolTip" stdset="0">
-                        <string>The filename pattern to use for renaming files.</string>
-                    </property>
-                </widget>
                 <widget class="QCheckBox" row="3" column="1" rowspan="1" colspan="2">
                     <property name="name">
                         <cstring>CheckBoxDeleteEmptyDirectories</cstring>
@@ -421,28 +440,38 @@
                         </size>
                     </property>
                 </spacer>
-                <spacer row="2" column="0">
+                <widget class="QLabel" row="2" column="0" rowspan="1" colspan="2">
                     <property name="name">
-                        <cstring>Spacer1_5</cstring>
+                        <cstring>LabelDirectoryPattern</cstring>
                     </property>
-                    <property name="orientation">
-                        <enum>Horizontal</enum>
+                    <property name="text">
+                        <string>pattern:</string>
                     </property>
-                    <property name="sizeType">
-                        <enum>Fixed</enum>
+                    <property name="toolTip" stdset="0">
+                        <string>The filename pattern to use for renaming files.</string>
                     </property>
-                    <property name="sizeHint">
-                        <size>
-                            <width>40</width>
-                            <height>20</height>
-                        </size>
+                </widget>
+                <widget class="QLineEdit" row="2" column="2">
+                    <property name="name">
+                        <cstring>LineEditDirectoryPattern</cstring>
                     </property>
-                </spacer>
+                    <property name="toolTip" stdset="0">
+                        <string>The filename pattern to use for renaming files.</string>
+                    </property>
+                </widget>
             </grid>
         </widget>
-        <widget class="QButtonGroup" row="5" column="0" rowspan="1" colspan="3">
+        <widget class="QButtonGroup" row="5" column="0" rowspan="1" colspan="2">
             <property name="name">
                 <cstring>buttonGroup8</cstring>
+            </property>
+            <property name="sizePolicy">
+                <sizepolicy>
+                    <hsizetype>1</hsizetype>
+                    <vsizetype>5</vsizetype>
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                </sizepolicy>
             </property>
             <property name="title">
                 <string></string>
@@ -463,6 +492,49 @@
                     </property>
                 </widget>
             </grid>
+        </widget>
+        <widget class="KTextEdit" row="1" column="2" rowspan="5" colspan="2">
+            <property name="name">
+                <cstring>TextEditOutput</cstring>
+            </property>
+            <property name="sizePolicy">
+                <sizepolicy>
+                    <hsizetype>7</hsizetype>
+                    <vsizetype>7</vsizetype>
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                </sizepolicy>
+            </property>
+            <property name="minimumSize">
+                <size>
+                    <width>280</width>
+                    <height>0</height>
+                </size>
+            </property>
+            <property name="frameShape">
+                <enum>LineEditPanel</enum>
+            </property>
+            <property name="frameShadow">
+                <enum>Sunken</enum>
+            </property>
+            <property name="hScrollBarMode">
+                <enum>AlwaysOn</enum>
+            </property>
+            <property name="textFormat">
+                <enum>AutoText</enum>
+            </property>
+            <property name="wordWrap">
+                <enum>NoWrap</enum>
+            </property>
+            <property name="wrapPolicy">
+                <enum>Anywhere</enum>
+            </property>
+            <property name="readOnly">
+                <bool>true</bool>
+            </property>
+            <property name="toolTip" stdset="0">
+                <string>output of consistency check</string>
+            </property>
         </widget>
     </grid>
 </widget>

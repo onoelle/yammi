@@ -1227,7 +1227,7 @@ QString Song::constructFilename() {
  * Returns the path without trailing slash.
  */
 QString Song::constructPath() {
-    QString pattern=gYammiGui->config().directoryPattern;
+    QString pattern=gYammiGui->config().consistencyPara.directoryPattern;
     QString path=replacePlaceholders(pattern, 0);
     // now remove "empty navigation steps" such as "Madonna//Holiday.mp3" (because no album given)
     while(path.contains("//")) {

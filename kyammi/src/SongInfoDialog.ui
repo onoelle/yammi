@@ -1,4 +1,4 @@
-<!DOCTYPE UI><UI version="3.0" stdsetdef="1">
+<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
 <class>SongInfoDialog</class>
 <widget class="QDialog">
     <property name="name">
@@ -8,8 +8,8 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>458</width>
-            <height>471</height>
+            <width>504</width>
+            <height>613</height>
         </rect>
     </property>
     <property name="sizePolicy">
@@ -132,10 +132,30 @@
                     <property name="name">
                         <cstring>LineEditTrack</cstring>
                     </property>
+                    <property name="minimumSize">
+                        <size>
+                            <width>40</width>
+                            <height>0</height>
+                        </size>
+                    </property>
                 </widget>
                 <widget class="QLineEdit" row="4" column="1">
                     <property name="name">
                         <cstring>LineEditYear</cstring>
+                    </property>
+                    <property name="sizePolicy">
+                        <sizepolicy>
+                            <hsizetype>7</hsizetype>
+                            <vsizetype>0</vsizetype>
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                        </sizepolicy>
+                    </property>
+                    <property name="minimumSize">
+                        <size>
+                            <width>65</width>
+                            <height>0</height>
+                        </size>
                     </property>
                 </widget>
                 <widget class="QLabel" row="4" column="2">
@@ -234,7 +254,7 @@
                         <cstring>LabelAddedTo</cstring>
                     </property>
                     <property name="text">
-                        <string>Added to database</string>
+                        <string>Added</string>
                     </property>
                 </widget>
                 <widget class="QLineEdit" row="0" column="1">
@@ -270,7 +290,7 @@
                         <bool>true</bool>
                     </property>
                     <property name="text">
-                        <string>Last time played</string>
+                        <string>Last played</string>
                     </property>
                 </widget>
             </grid>

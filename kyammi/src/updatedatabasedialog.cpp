@@ -32,7 +32,7 @@ UpdateDatabaseDialog::UpdateDatabaseDialog(QWidget *parent, Prefs* config )
 {
     this->config=config;
 	LineEditScanDir->setText(config->scanDir);
-	LineEditFilePattern->setText(config->filenamePattern);
+	LineEditFilePattern->setText(config->scanPattern);
  	connect( ButtonChooseScanDir, SIGNAL( clicked() ), this, SLOT( chooseScanDir() ) );
     connect( PushButtonOk, SIGNAL( clicked() ), this, SLOT( myAccept() ) );
 }
@@ -45,7 +45,7 @@ UpdateDatabaseDialog::~UpdateDatabaseDialog()
 void UpdateDatabaseDialog::myAccept()
 {
     config->scanDir=LineEditScanDir->text();
-    config->filenamePattern=LineEditFilePattern->text();
+    config->scanPattern=LineEditFilePattern->text();
     accept();
 }
 

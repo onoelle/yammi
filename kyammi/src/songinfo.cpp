@@ -16,17 +16,41 @@
  ***************************************************************************/
 
 #include "songinfo.h"
+#include "song.h"
 
-SongInfo::SongInfo(QWidget *parent) : SongInfoDialog(parent, "song info", true)
+#include <kdebug.h>
+#include <klineedit.h>
+#include <qlabel.h>
+
+SongInfo::SongInfo(QWidget *parent, Song* editSong) : SongInfoDialog(parent, "song info", true)
 {
-/*	initCommon();
-	if(songCount==1) {
-		initSingle(songList->firstSong());
-	}
-	else {
-		kdError() << "not implemented yet...\n";
-	}
-*/
+    if(editSong != 0) {
+        this->editSong = new Song();
+        this->editSong->updateWritableFields(editSong);
+    }
+    else {
+        this->editSong = 0;
+    }
+    connect(LineEditArtist, SIGNAL(textChanged(const QString&)), this, SLOT(updateProposedFilename()));
+    connect(LineEditTitle, SIGNAL(textChanged(const QString&)), this, SLOT(updateProposedFilename()));
+    connect(LineEditAlbum, SIGNAL(textChanged(const QString&)), this, SLOT(updateProposedFilename()));
+    connect(LineEditComment, SIGNAL(textChanged(const QString&)), this, SLOT(updateProposedFilename()));
+    connect(LineEditTrack, SIGNAL(textChanged(const QString&)), this, SLOT(updateProposedFilename()));
+    connect(LineEditYear, SIGNAL(textChanged(const QString&)), this, SLOT(updateProposedFilename()));
+}
+
+void SongInfo::updateProposedFilename()
+{
+    if(editSong != 0) {
+        // only activated if single song info dialog
+        editSong->artist = LineEditArtist->text();
+        editSong->title = LineEditTitle->text();
+        editSong->album = LineEditAlbum->text();
+        editSong->comment = LineEditComment->text();
+        editSong->year = atoi(LineEditYear->text());
+        editSong->trackNr = atoi(LineEditTrack->text());
+        ReadOnlyProposedFilename->setText(editSong->constructFilename());
+    }
 }
 /*
 SongInfo::initCommon() {

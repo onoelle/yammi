@@ -1,30 +1,24 @@
 TODO
 ----
-last update 15.08.2004
+last update 18.08.2004
 
 
 for version 1.2-beta
 --------------------
 in progress:
 - define and execute smoke tests (write little script with all configure options)
+- standard kde i18n schema: add a translation and test it
 
 planned:
 - handle unplayable files (wishes, text files) => 1. dequeue on second position or 2. introduce file types and different behaviour
-check kde conformance:  
-  - standard kde i18n schema: add a translation and test it
-  - replace all couts with kdDebug/kdWarn/kdError
-  - check lsm file
-  - check icons: fix transparency or use standard ones, new application icon, check that it gets used
 - clean up: song info for multiple songs
+- refactor: meta info reading in a dedicated class
 - saveFilename/renaming of file in song.cpp (there was something I can't remember)
-- make proposed filename change while you type in songinfo dialog
-- consistency check:
-  - better dialog texts (which song is moved?, better explanations what happens/examples?)
 - check dialog spacing & co (eg. guessing pattern!)
 - fix: appropriate info messages on first startup/on importing old database
 - fix: appropriate default size for yammi window on first startup
 before release:
-- fix i18n strings to be ready for internationalization
+- try to fix i18n strings
 - check all TODOs / FIXMEs
 - create a yammi entry on www.kde-apps.org
 - update website
@@ -35,7 +29,12 @@ before release:
 
 for version 1.2
 ---------------
+review kde conformance:  
+  - replace all couts with kdDebug/kdWarn/kdError
+  - check lsm file
+  - check icons: fix transparency or use standard ones, new application icon, check that it gets used
 - implement onPlayed and afterPlayed plugin types
+- polish ConsistencyCheck
 - on deleting a song: delete in *all* lists (history, categories, ...)
 - make follow symlinks a configurable option?
 - make replace playlist + position a configurable option?

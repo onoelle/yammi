@@ -1,30 +1,34 @@
-#ifndef CHECKCONSISTENCYDIALOG_H
-#define CHECKCONSISTENCYDIALOG_H
+#ifndef CONSISTENCYCHECKDIALOG_H
+#define CONSISTENCYCHECKDIALOG_H
 
 #include <qwidget.h>
 #include <ConsistencyCheckDialogBase.h>
 
 class ConsistencyCheckParameter;
+class MyList;
+class YammiModel;
 
-class CheckConsistencyDialog : public CheckConsistencyDialogBase
-{ 
+class ConsistencyCheckDialog : public CheckConsistencyDialogBase {
     Q_OBJECT
 
 public:
-	CheckConsistencyDialog( QWidget* parent, ConsistencyCheckParameter* para);
-	~CheckConsistencyDialog();
+    ConsistencyCheckDialog( QWidget* parent, ConsistencyCheckParameter* para, MyList* selectedSongs, YammiModel* model);
+    ~ConsistencyCheckDialog();
 
-	
+
 public slots:
-	void myAccept();
-	void changeSetting();
-	void showReplacements();
-  
+    void myAccept();
+    void changeSetting();
+    void showReplacements();
+    void startCheck();
+
 private:
-	ConsistencyCheckParameter* p;
-	void setParameter();
+    ConsistencyCheckParameter* p;
+    void setParameter();
+    MyList* selectedSongs;
+    YammiModel* model;
 };
 
 
 
-#endif // CHECKCONSISTENCYDIALOG_H
+#endif // CONSISTENCYCHECKDIALOG_H

@@ -21,6 +21,8 @@
 #include <qwidget.h>
 #include <SongInfoDialog.h>
 
+class Song;
+
 /**
   *@author Brian O.Nlle
   */
@@ -28,12 +30,14 @@
 class SongInfo : public SongInfoDialog  {
    Q_OBJECT
 public: 
-	SongInfo(QWidget *parent);
+	SongInfo(QWidget *parent, Song* editSong);
 	~SongInfo();
 
+protected slots:
+    void updateProposedFilename();
+
 protected:
-//    int songCount;
-//	Song editSong;
+	Song* editSong;
 };
 
 #endif
