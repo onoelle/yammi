@@ -1,4 +1,4 @@
-# KDE tags expanded automatically by am_edit - $Revision: 1.31 $ 
+# KDE tags expanded automatically by am_edit - $Revision: 1.32 $ 
 # Makefile.in generated automatically by automake 1.5 from Makefile.am.
 
 # Copyright 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001
@@ -239,7 +239,7 @@ qt_libraries = @qt_libraries@
 x_includes = @x_includes@
 x_libraries = @x_libraries@
 
-EXTRA_DIST = clearPlaylist.xpm defaultControlClick.xpm defaultDoubleClick.xpm defaultMiddleClick.xpm defaultShiftClick.xpm dequeueAll.xpm dequeueSong.xpm enqueue.xpm enqueueasnext.xpm filesave.xpm in.xpm notin.xpm prelisten.xpm songinfo.xpm stopPrelisten.xpm yammiicon.xpm pause.xpm play.xpm skipbackward.xpm skipforward.xpm stop.xpm playnow.xpm newCategory.xpm toFromPlaylist.xpm some_in.xpm 
+EXTRA_DIST = clearPlaylist.xpm defaultControlClick.xpm defaultDoubleClick.xpm defaultMiddleClick.xpm defaultShiftClick.xpm dequeueAll.xpm dequeueSong.xpm enqueue.xpm enqueueasnext.xpm filesave.xpm in.xpm notin.xpm songinfo.xpm stopPrelisten.xpm yammiicon.xpm pause.xpm play.xpm skipbackward.xpm skipforward.xpm stop.xpm playnow.xpm newCategory.xpm toFromPlaylist.xpm some_in.xpm 
 subdir = yammi/icons
 mkinstalldirs = $(SHELL) $(top_srcdir)/admin/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/config.h
@@ -278,7 +278,7 @@ TAGS:
 
 #>- DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 #>+ 4
-KDE_DIST=enqueueasnext_old.xpm enqueue_old.xpm 
+KDE_DIST=enqueueasnext_old.xpm prelistenStart.xpm prelistenMiddle.xpm enqueue_old.xpm prelistenEnd.xpm 
 
 DISTFILES= $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST) $(KDE_DIST)
 
@@ -383,7 +383,6 @@ uninstall-am: uninstall-info-am
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:
-
 
 #>+ 2
 docs-am:

@@ -21873,81 +21873,12 @@ EOF
 
 fi
 
-if test "x$configure_enable_noatun" = "xyes"; then
-        OLDLDFLAGS=$LDFLAGS
-    LDFLAGS="$LDFLAGS -L$KDEDIR/lib"
-
-echo "$as_me:21880: checking for main in -lkdecore" >&5
-echo $ECHO_N "checking for main in -lkdecore... $ECHO_C" >&6
-if test "${ac_cv_lib_kdecore_main+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  ac_check_lib_save_LIBS=$LIBS
-LIBS="-lkdecore  $LIBS"
-cat >conftest.$ac_ext <<_ACEOF
-#line 21888 "configure"
-#include "confdefs.h"
-
-int
-main ()
-{
-main ();
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext conftest$ac_exeext
-if { (eval echo "$as_me:21900: \"$ac_link\"") >&5
-  (eval $ac_link) 2>&5
-  ac_status=$?
-  echo "$as_me:21903: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest$ac_exeext'
-  { (eval echo "$as_me:21906: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:21909: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  ac_cv_lib_kdecore_main=yes
-else
-  echo "$as_me: failed program was:" >&5
-cat conftest.$ac_ext >&5
-ac_cv_lib_kdecore_main=no
-fi
-rm -f conftest.$ac_objext conftest$ac_exeext conftest.$ac_ext
-LIBS=$ac_check_lib_save_LIBS
-fi
-echo "$as_me:21920: result: $ac_cv_lib_kdecore_main" >&5
-echo "${ECHO_T}$ac_cv_lib_kdecore_main" >&6
-if test $ac_cv_lib_kdecore_main = yes; then
-  cat >>confdefs.h <<EOF
-#define HAVE_LIBKDECORE 1
-EOF
-
-  LIBS="-lkdecore $LIBS"
-
-else
-  configure_enable_noatun=no
-fi
-
-    LDFLAGS=$OLDLDFLAGS
-fi
-
-if test "x$configure_enable_noatun" = "xyes"; then
-    { echo "$as_me:21937: *** noatun support enabled *** " >&5
-echo "$as_me: *** noatun support enabled *** " >&6;}
-
     cat >>confdefs.h <<\EOF
 #define ENABLE_NOATUN 1
 EOF
 
-else
-    { echo "$as_me:21945: WARNING: *** noatun support disabled *** " >&5
-echo "$as_me: WARNING: *** noatun support disabled *** " >&2;}
-fi
-
 if test "x$configure_enable_xmms" != "xyes" && test "x$configure_enable_noatun" != "xyes" ; then
-    { echo "$as_me:21950: WARNING: ***BOTH xmms and noatun support are disabled, another media player with yammi plugins will be needed. *** " >&5
+    { echo "$as_me:21881: WARNING: ***BOTH xmms and noatun support are disabled, another media player with yammi plugins will be needed. *** " >&5
 echo "$as_me: WARNING: ***BOTH xmms and noatun support are disabled, another media player with yammi plugins will be needed. *** " >&2;}
 fi
 
@@ -22040,7 +21971,7 @@ DEFS=-DHAVE_CONFIG_H
 : ${CONFIG_STATUS=./config.status}
 ac_clean_files_save=$ac_clean_files
 ac_clean_files="$ac_clean_files $CONFIG_STATUS"
-{ echo "$as_me:22043: creating $CONFIG_STATUS" >&5
+{ echo "$as_me:21974: creating $CONFIG_STATUS" >&5
 echo "$as_me: creating $CONFIG_STATUS" >&6;}
 cat >$CONFIG_STATUS <<_ACEOF
 #! $SHELL
@@ -22216,7 +22147,7 @@ cat >>$CONFIG_STATUS <<\EOF
     echo "$ac_cs_version"; exit 0 ;;
   --he | --h)
     # Conflict between --help and --header
-    { { echo "$as_me:22219: error: ambiguous option: $1
+    { { echo "$as_me:22150: error: ambiguous option: $1
 Try \`$0 --help' for more information." >&5
 echo "$as_me: error: ambiguous option: $1
 Try \`$0 --help' for more information." >&2;}
@@ -22235,7 +22166,7 @@ Try \`$0 --help' for more information." >&2;}
     ac_need_defaults=false;;
 
   # This is an error.
-  -*) { { echo "$as_me:22238: error: unrecognized option: $1
+  -*) { { echo "$as_me:22169: error: unrecognized option: $1
 Try \`$0 --help' for more information." >&5
 echo "$as_me: error: unrecognized option: $1
 Try \`$0 --help' for more information." >&2;}
@@ -22287,7 +22218,7 @@ do
   "yammi/icons/Makefile" ) CONFIG_FILES="$CONFIG_FILES yammi/icons/Makefile" ;;
   "default-1" ) CONFIG_COMMANDS="$CONFIG_COMMANDS default-1" ;;
   "config.h" ) CONFIG_HEADERS="$CONFIG_HEADERS config.h" ;;
-  *) { { echo "$as_me:22290: error: invalid argument: $ac_config_target" >&5
+  *) { { echo "$as_me:22221: error: invalid argument: $ac_config_target" >&5
 echo "$as_me: error: invalid argument: $ac_config_target" >&2;}
    { (exit 1); exit 1; }; };;
   esac
@@ -22649,7 +22580,7 @@ done; }
   esac
 
   if test x"$ac_file" != x-; then
-    { echo "$as_me:22652: creating $ac_file" >&5
+    { echo "$as_me:22583: creating $ac_file" >&5
 echo "$as_me: creating $ac_file" >&6;}
     rm -f "$ac_file"
   fi
@@ -22667,7 +22598,7 @@ echo "$as_me: creating $ac_file" >&6;}
       -) echo $tmp/stdin ;;
       [\\/$]*)
          # Absolute (can't be DOS-style, as IFS=:)
-         test -f "$f" || { { echo "$as_me:22670: error: cannot find input file: $f" >&5
+         test -f "$f" || { { echo "$as_me:22601: error: cannot find input file: $f" >&5
 echo "$as_me: error: cannot find input file: $f" >&2;}
    { (exit 1); exit 1; }; }
          echo $f;;
@@ -22680,7 +22611,7 @@ echo "$as_me: error: cannot find input file: $f" >&2;}
            echo $srcdir/$f
          else
            # /dev/null tree
-           { { echo "$as_me:22683: error: cannot find input file: $f" >&5
+           { { echo "$as_me:22614: error: cannot find input file: $f" >&5
 echo "$as_me: error: cannot find input file: $f" >&2;}
    { (exit 1); exit 1; }; }
          fi;;
@@ -22741,7 +22672,7 @@ for ac_file in : $CONFIG_HEADERS; do test "x$ac_file" = x: && continue
   * )   ac_file_in=$ac_file.in ;;
   esac
 
-  test x"$ac_file" != x- && { echo "$as_me:22744: creating $ac_file" >&5
+  test x"$ac_file" != x- && { echo "$as_me:22675: creating $ac_file" >&5
 echo "$as_me: creating $ac_file" >&6;}
 
   # First look for the input files in the build tree, otherwise in the
@@ -22752,7 +22683,7 @@ echo "$as_me: creating $ac_file" >&6;}
       -) echo $tmp/stdin ;;
       [\\/$]*)
          # Absolute (can't be DOS-style, as IFS=:)
-         test -f "$f" || { { echo "$as_me:22755: error: cannot find input file: $f" >&5
+         test -f "$f" || { { echo "$as_me:22686: error: cannot find input file: $f" >&5
 echo "$as_me: error: cannot find input file: $f" >&2;}
    { (exit 1); exit 1; }; }
          echo $f;;
@@ -22765,7 +22696,7 @@ echo "$as_me: error: cannot find input file: $f" >&2;}
            echo $srcdir/$f
          else
            # /dev/null tree
-           { { echo "$as_me:22768: error: cannot find input file: $f" >&5
+           { { echo "$as_me:22699: error: cannot find input file: $f" >&5
 echo "$as_me: error: cannot find input file: $f" >&2;}
    { (exit 1); exit 1; }; }
          fi;;
@@ -22882,7 +22813,7 @@ cat >>$CONFIG_STATUS <<\EOF
   rm -f $tmp/in
   if test x"$ac_file" != x-; then
     if cmp -s $ac_file $tmp/config.h 2>/dev/null; then
-      { echo "$as_me:22885: $ac_file is unchanged" >&5
+      { echo "$as_me:22816: $ac_file is unchanged" >&5
 echo "$as_me: $ac_file is unchanged" >&6;}
     else
       ac_dir=`$as_expr X"$ac_file" : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
@@ -23007,7 +22938,7 @@ if test "$no_create" != yes; then
   $ac_cs_success || { (exit 1); exit 1; }
 fi
 
-{ echo "$as_me:23010:
+{ echo "$as_me:22941:
 Configuration for $PACKAGE $VERSION :
 --------------------------------
  Source code location .: $srcdir

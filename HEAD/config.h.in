@@ -48,9 +48,6 @@
 /* Define if you have libjpeg */
 #undef HAVE_LIBJPEG
 
-/* Define if you have the `kdecore' library (-lkdecore). */
-#undef HAVE_LIBKDECORE
-
 /* Define if you have the `ogg' library (-logg). */
 #undef HAVE_LIBOGG
 

@@ -1,3 +1,10 @@
+######################
+??.09.2003 version 1.0
+- finished improving the icons (thanks to Sandra)
+- put prelisten toolbuttons in a separate toolbar
+- fixed sorting in "Recently Added" folder
+
+
 ########################
 31.08.2003 version 1.0-rc1
 - implemented "reread tags from file" functionality in consistency check

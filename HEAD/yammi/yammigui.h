@@ -194,6 +194,7 @@ public slots:
 // protected members
 //******************
 protected:
+  QString       columnName[13];
   bool          columnVisible[MAX_COLUMN_NO];
   int           realColumnMap[MAX_COLUMN_NO];
 	int				    shuttingDown;
@@ -239,6 +240,7 @@ protected:
   QToolBar*     mediaPlayerToolBar;
   QToolBar*     mainToolBar;
   QToolBar*     songActionsToolBar;
+  QToolBar*     prelistenToolBar;
   QToolBar*     removableMediaToolBar;
   QToolBar*     sleepModeToolBar;
   
@@ -316,6 +318,7 @@ protected slots:
   void          toggleMainToolbar();
   void          toggleMediaPlayerToolbar();
   void          toggleSongActionsToolbar();
+  void          togglePrelistenToolbar();
   void          toggleRemovableMediaToolbar();
   void          toggleSleepModeToolbar();
   void          finishInitialization();

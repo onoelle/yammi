@@ -42,7 +42,9 @@ using namespace std;
 #include "icons/defaultMiddleClick.xpm"
 #include "icons/defaultControlClick.xpm"
 #include "icons/defaultShiftClick.xpm"
-#include "icons/prelisten.xpm"
+#include "icons/prelistenStart.xpm"
+#include "icons/prelistenMiddle.xpm"
+#include "icons/prelistenEnd.xpm"
 #include "icons/playnow.xpm"
 #include "icons/enqueue.xpm"
 #include "icons/enqueueasnext.xpm"
@@ -71,7 +73,6 @@ using namespace std;
 
 extern YammiGui* gYammiGui;
 
-static char* columnName[13] = {QT_TR_NOOP("Artist"), QT_TR_NOOP("Title"), QT_TR_NOOP("Album"), QT_TR_NOOP("Length"), QT_TR_NOOP("Year"), QT_TR_NOOP("TrackNr"), QT_TR_NOOP("Genre"), QT_TR_NOOP("AddedTo"), QT_TR_NOOP("Bitrate"), QT_TR_NOOP("Filename"), QT_TR_NOOP("Path"), QT_TR_NOOP("Comment"), QT_TR_NOOP("Last Played")};
 
 /**
  * Constructor, sets up the whole application.
@@ -88,6 +89,19 @@ YammiGui::YammiGui(QString baseDir)
 	cout << "starting Yammi, version " << model->config.yammiVersion << "\n";
 
   model->readPreferences(baseDir);						// read preferences
+  columnName[0] = tr("Artist");
+  columnName[1] = tr("Title");
+  columnName[2] = tr("Album");
+  columnName[3] = tr("Length");
+  columnName[4] = tr("Year");
+  columnName[5] = tr("TrackNr");
+  columnName[6] = tr("Genre");
+  columnName[7] = tr("AddedTo");
+  columnName[8] = tr("Bitrate");
+  columnName[9] = tr("Filename");
+  columnName[10] = tr("Path");
+  columnName[11] = tr("Comment");
+  columnName[12] = tr("Last Played");
 
   // set up media player
   //********************
@@ -150,6 +164,8 @@ YammiGui::YammiGui(QString baseDir)
 	toolbarsMenu->insertItem( tr("Song Actions Toolbar"),  this, SLOT(toggleSongActionsToolbar()), 0, 3);
 	toolbarsMenu->insertItem( tr("Removable Media Toolbar"),  this, SLOT(toggleRemovableMediaToolbar()), 0, 4);
 	toolbarsMenu->insertItem( tr("Sleep Mode Toolbar"),  this, SLOT(toggleSleepModeToolbar()), 0, 5);
+	toolbarsMenu->insertItem( tr("Prelisten Toolbar"),  this, SLOT(togglePrelistenToolbar()), 0, 6);
+  
   // columns submenu
   columnsMenu = new QPopupMenu;
   for(int column=0; column<13; column++) {
@@ -265,18 +281,22 @@ YammiGui::YammiGui(QString baseDir)
                            this, SLOT(forAllSelectedDequeue()), songActionsToolBar);
 	new QToolButton (QPixmap(dequeueAll_xpm), tr("Clear playlist (SHIFT-F8)"), QString::null,
                            this, SLOT(clearPlaylist()), songActionsToolBar);
-	new QToolButton (QPixmap(prelisten_xpm), tr("Prelisten (start) (F9)"), QString::null,
-                           this, SLOT(forAllSelectedPrelistenStart()), songActionsToolBar);
-	new QToolButton (QPixmap(prelisten_xpm), tr("Prelisten (middle) (F10)"), QString::null,
-                           this, SLOT(forAllSelectedPrelistenMiddle()), songActionsToolBar);
-	new QToolButton (QPixmap(prelisten_xpm), tr("Prelisten (end) (F11)"), QString::null,
-                           this, SLOT(forAllSelectedPrelistenEnd()), songActionsToolBar);
-	new QToolButton (QPixmap(stopPrelisten_xpm), tr("Stop prelisten (F12)"), QString::null,
-                           this, SLOT(stopPrelisten()), songActionsToolBar);
 	new QToolButton (QPixmap(songinfo_xpm), tr("Info..."), QString::null,
                            this, SLOT(forAllSelectedSongInfo()), songActionsToolBar);
 	new QToolButton (QPixmap(toFromPlaylist_xpm), tr("Switch to/from Playlist (CTRL-P)"), QString::null,
                            this, SLOT(toFromPlaylist()), songActionsToolBar);
+
+	// prelisten	toolbar
+	prelistenToolBar = new QToolBar ( this, "prelistenToolBar");
+  prelistenToolBar->setLabel( tr("Prelisten to songs") );
+  new QToolButton (QPixmap(prelistenStart_xpm), tr("Prelisten (start) (F9)"), QString::null,
+                           this, SLOT(forAllSelectedPrelistenStart()), prelistenToolBar);
+	new QToolButton (QPixmap(prelistenMiddle_xpm), tr("Prelisten (middle) (F10)"), QString::null,
+                           this, SLOT(forAllSelectedPrelistenMiddle()), prelistenToolBar);
+	new QToolButton (QPixmap(prelistenEnd_xpm), tr("Prelisten (end) (F11)"), QString::null,
+                           this, SLOT(forAllSelectedPrelistenEnd()), prelistenToolBar);
+	new QToolButton (QPixmap(stopPrelisten_xpm), tr("Stop prelisten (F12)"), QString::null,
+                           this, SLOT(stopPrelisten()), prelistenToolBar);
 
 	// removable media management
 	removableMediaToolBar = new QToolBar ( this, "removableMediaToolBar");
@@ -393,7 +413,6 @@ YammiGui::YammiGui(QString baseDir)
 	
 	// signals of toolbar
 	connect( addToWishListButton, SIGNAL( clicked() ), this, SLOT( addToWishList() ) );
-//	connect( currentSongLabel, SIGNAL( clicked() ), this, SLOT( currentlyPlayedSongPopup() ) );
 	connect( loadFromMediaButton, SIGNAL( clicked() ), this, SLOT( loadMedia() ) );
 
 	// signals of folderListView
@@ -427,6 +446,7 @@ YammiGui::YammiGui(QString baseDir)
   connect(mainToolBar, SIGNAL( visibilityChanged(bool) ), this, SLOT(toolbarShownOrHidden()));
   connect(mediaPlayerToolBar, SIGNAL( visibilityChanged(bool) ), this, SLOT(toolbarShownOrHidden()));
   connect(songActionsToolBar, SIGNAL( visibilityChanged(bool) ), this, SLOT(toolbarShownOrHidden()));
+  connect(prelistenToolBar, SIGNAL( visibilityChanged(bool) ), this, SLOT(toolbarShownOrHidden()));
   connect(removableMediaToolBar, SIGNAL( visibilityChanged(bool) ), this, SLOT(toolbarShownOrHidden()));
   connect(sleepModeToolBar, SIGNAL( visibilityChanged(bool) ), this, SLOT(toolbarShownOrHidden()));
 	// some preparations for startup
@@ -681,6 +701,7 @@ void YammiGui::writeSettings()
   settings.writeEntry( "/Yammi/toolbars/mainToolBar", !mainToolBar->isHidden());
   settings.writeEntry( "/Yammi/toolbars/mediaPlayerToolBar", !mediaPlayerToolBar->isHidden());
   settings.writeEntry( "/Yammi/toolbars/songActionsToolBar", !songActionsToolBar->isHidden());
+  settings.writeEntry( "/Yammi/toolbars/prelistenToolBar", !prelistenToolBar->isHidden());
   settings.writeEntry( "/Yammi/toolbars/removableMediaToolBar", !removableMediaToolBar->isHidden());
   settings.writeEntry( "/Yammi/toolbars/sleepModeToolBar", !sleepModeToolBar->isHidden());
 
@@ -756,6 +777,14 @@ void YammiGui::readSettings()
   else {
     songActionsToolBar->hide();
     toolbarsMenu->setItemChecked(3, false);
+  }
+
+  if(settings.readBoolEntry("/Yammi/toolbars/prelistenToolBar", true)) {
+    toolbarsMenu->setItemChecked(6, true);
+  }
+  else {
+    prelistenToolBar->hide();
+    toolbarsMenu->setItemChecked(6, false);
   }
   
   if(settings.readBoolEntry("/Yammi/toolbars/removableMediaToolBar", true)) {
@@ -1440,8 +1469,9 @@ void YammiGui::addFolderContent(Folder* folder)
 		songListView->setUpdatesEnabled(false);
 		addFolderContentSnappy();
 	}
-	else		// no songList in that folder
+	else {		// no songList in that folder
 		QApplication::restoreOverrideCursor();
+  }
 }
 
 void YammiGui::addFolderContentSnappy()
@@ -1459,7 +1489,8 @@ void YammiGui::addFolderContentSnappy()
 		lastOne=new SongListItem( songListView, entry); //, lastOne);
 	}
 	alreadyAdded=i;
-	if(entry) {		// any songs left to add?
+  // any songs left to add?
+  if(entry) {		  // yes, add them after processing events
 		QTimer* timer=new QTimer(this);
 		connect(timer, SIGNAL(timeout()), this, SLOT(addFolderContentSnappy()) );
 		timer->start(0, TRUE);
@@ -2381,11 +2412,11 @@ void YammiGui::forSong(Song* s, action act, QString dir)
 		// songsToPlay is empty, or first song is still to play
 		if(model->songsToPlay.count()==0 || currentSong!=model->songsToPlay.at(0)->song()) {
 			model->songsToPlay.insert(0, new SongEntryInt(s, 13));
-      cout << "EnqueueAsNext: case a\n";
+//      cout << "EnqueueAsNext: case a\n";
     }
 		else {
 			model->songsToPlay.insert(1, new SongEntryInt(s, 13));
-      cout << "EnqueueAsNext: case b\n";
+//      cout << "EnqueueAsNext: case b\n";
     }
 		folderActual->correctOrder();
 		mainStatusBar->message(QString(tr("%1 enqueued as next")).arg(s->displayName()), 2000);
@@ -3278,7 +3309,8 @@ void YammiGui::preListen(Song* s, int skipTo)
 	if(s->filename.right(3).upper()=="MP3") {
 		QString skip=QString(" --skip %1").arg(seconds*skipTo*38/100);
 		QString cmd=QString("mpg123 -a %1 %2 \"%3\" &").arg(model->config.secondSoundDevice).arg(skip).arg(s->location());
-		system(cmd);
+    qDebug("command: %s", cmd.latin1());
+    system(cmd);
     lastPrelistened="MP3";
 	}
   if(s->filename.right(3).upper()=="OGG") {
@@ -3674,6 +3706,16 @@ void YammiGui::toggleSongActionsToolbar()
     songActionsToolBar->hide();
   }
 }
+/// view/hide prelisten toolbar
+void YammiGui::togglePrelistenToolbar()
+{
+  if(prelistenToolBar->isHidden()) {
+    prelistenToolBar->show();
+  }
+  else {
+    prelistenToolBar->hide();
+  }
+}
 /// view/hide removable media toolbar
 void YammiGui::toggleRemovableMediaToolbar()
 {
@@ -3705,6 +3747,7 @@ void YammiGui::toolbarShownOrHidden()
   toolbarsMenu->setItemChecked(3, songActionsToolBar->isVisible());
   toolbarsMenu->setItemChecked(4, removableMediaToolBar->isVisible());
   toolbarsMenu->setItemChecked(5, sleepModeToolBar->isVisible());
+  toolbarsMenu->setItemChecked(6, prelistenToolBar->isVisible());
 }
 
 

@@ -231,27 +231,27 @@ fi
 
 dnl Noatun support (for proper kde app: add "-lkdeui -lkio ")
 dnl check to see if KDE->DCOP is available
-if test "x$configure_enable_noatun" = "xyes"; then
+dnl if test "x$configure_enable_noatun" = "xyes"; then
     dnl additional path to libraries for linking KDE
-    OLDLDFLAGS=$LDFLAGS
-    LDFLAGS="$LDFLAGS -L$KDEDIR/lib"
+dnl    OLDLDFLAGS=$LDFLAGS
+dnl    LDFLAGS="$LDFLAGS -L$KDEDIR/libkdecore"
 dnl    CPPFLAGS="$CPPFLAGS -I$KDEDIR/include"
 
-    AC_CHECK_LIB( kdecore, main, , configure_enable_noatun=no , )
+dnl    AC_CHECK_LIB( kdecore, main, , configure_enable_noatun=no , )
 
-dnl    if test "x$configure_enable_noatun" = "xyes"; then
-dnl        AC_CHECK_LIB( DCOP, main, , configure_enable_noatun=no , )
-dnl    fi
-    LDFLAGS=$OLDLDFLAGS
-fi
+    dnl    if test "x$configure_enable_noatun" = "xyes"; then
+    dnl        AC_CHECK_LIB( DCOP, main, , configure_enable_noatun=no , )
+    dnl    fi
+dnl    LDFLAGS=$OLDLDFLAGS
+dnl fi
 
-if test "x$configure_enable_noatun" = "xyes"; then
-    AC_MSG_NOTICE( [*** noatun support enabled ***] )
+dnl if test "x$configure_enable_noatun" = "xyes"; then
+dnl    AC_MSG_NOTICE( [*** noatun support enabled ***] )
 
     AC_DEFINE( [ENABLE_NOATUN], [1] )
-else
-    AC_MSG_WARN( [*** noatun support disabled ***] )
-fi
+dnl else
+dnl    AC_MSG_WARN( [*** noatun support disabled ***] )
+dnl fi
 
 dnl ---------------------
 dnl end of library checks
