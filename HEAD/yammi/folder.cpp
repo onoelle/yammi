@@ -87,6 +87,8 @@ void Folder::init(QString name)
 	owner=false;
 	sorted=false;
   sortedBy=0;
+  scrollPosX=0;
+  scrollPosY=0;
 }
 
 // clean up
@@ -193,9 +195,11 @@ void Folder::saveSorting(int sortedBy)
 }
 
 /**
- * Restores the saved view settings.
+ * Saves the view settings (ordering, which song is at top).
  */
-int Folder::getSavedSorting()
+void Folder::saveScrollPos(int scrollPosX, int scrollPosY)
 {
-  return sortedBy;
+  this->scrollPosX=scrollPosX;
+  this->scrollPosY=scrollPosY;
 }
+
