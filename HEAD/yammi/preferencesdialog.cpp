@@ -65,39 +65,38 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, const char *name, bool mod
 	LineEditSwapSize->setText(QString("%1").arg(config->swapSize));
 	
 	// plugins
+  //////////
 	LineEditGrabAndEncodeCmd->setText(QString("%1").arg(config->grabAndEncodeCmd));
 	LineEditShutdownScript->setText(QString("%1").arg(config->shutdownScript));
 	
-	_pluginSongMenuEntry=new QStringList(*config->pluginSongMenuEntry);
-	_pluginSongCmd=new QStringList(*config->pluginSongCmd);
-	_pluginPlaylistMenuEntry=new QStringList(*config->pluginPlaylistMenuEntry);
-	_pluginPlaylistCmd=new QStringList(*config->pluginPlaylistCmd);
-	_pluginPlaylistCustomList=new QStringList(*config->pluginPlaylistCustomList);	
+	_pluginMenuEntry=new QStringList(*config->pluginMenuEntry);
+	_pluginCommand=new QStringList(*config->pluginCommand);
+	_pluginCustomList=new QStringList(*config->pluginCustomList);
+	_pluginMode=new QStringList(*config->pluginMode);
+	_pluginConfirm=new QStringList(*config->pluginConfirm);
 	
-	ComboBoxSongPlugin->insertItem("choose entry");
-	ComboBoxSongPlugin->insertStringList(*_pluginSongMenuEntry);
-	updateSongPlugin(0);
-	ComboBoxPlaylistPlugin->insertItem("choose entry");
-	ComboBoxPlaylistPlugin->insertStringList(*config->pluginPlaylistMenuEntry);
-	updatePlaylistPlugin(0);
+	ComboBoxPlugins->insertItem("choose entry");
+	ComboBoxPlugins->insertStringList(*_pluginMenuEntry);
+  ComboBoxPluginMode->insertItem("single");
+  ComboBoxPluginMode->insertItem("group");
+	updatePlugin(0);
 
-	// connections
+
+  // connections
 	connect( ButtonChooseScanDir, SIGNAL( clicked() ), this, SLOT( chooseScanDir() ) );
 	connect( ButtonChooseTrashDir, SIGNAL( clicked() ), this, SLOT( chooseTrashDir() ) );
 	connect( ButtonChooseMediaDir, SIGNAL( clicked() ), this, SLOT( chooseMediaDir() ) );
 	connect( ButtonChooseSwapDir, SIGNAL( clicked() ), this, SLOT( chooseSwapDir() ) );
-	connect( ComboBoxSongPlugin, SIGNAL( activated(int) ), this, SLOT (updateSongPlugin(int) ) );
-	connect( LineEditPluginSongMenuEntry, SIGNAL( textChanged(const QString&) ), this, SLOT (updateSongPluginMenuEntry(const QString&) ) );	
-	connect( LineEditPluginSongCmd, SIGNAL( textChanged(const QString&) ), this, SLOT (updateSongPluginCmd(const QString&) ) );	
-	connect( PushButtonNewSongPlugin, SIGNAL( clicked() ), this, SLOT( newSongPlugin() ) );
-	connect( PushButtonDeleteSongPlugin, SIGNAL( clicked() ), this, SLOT( deleteSongPlugin() ) );
+
+	connect( ComboBoxPlugins, SIGNAL( activated(int) ), this, SLOT (updatePlugin(int) ) );
+  connect( LineEditPluginMenuEntry, SIGNAL( textChanged(const QString&) ), this, SLOT (updatePluginMenuEntry(const QString&) ) );	
+	connect( LineEditPluginCommand, SIGNAL( textChanged(const QString&) ), this, SLOT (updatePluginCommand(const QString&) ) );	
+	connect( LineEditPluginCustomList, SIGNAL( textChanged(const QString&) ), this, SLOT (updatePluginCustomList(const QString&) ) );
+	connect( ComboBoxPluginMode, SIGNAL( activated(int) ), this, SLOT (updatePluginMode(int) ) );
+	connect( CheckBoxPluginConfirm, SIGNAL( toggled(bool) ), this, SLOT (updatePluginConfirm(bool) ) );
+	connect( PushButtonNewPlugin, SIGNAL( clicked() ), this, SLOT( newPlugin() ) );
+	connect( PushButtonDeletePlugin, SIGNAL( clicked() ), this, SLOT( deletePlugin() ) );
 	
-	connect( ComboBoxPlaylistPlugin, SIGNAL( activated(int) ), this, SLOT (updatePlaylistPlugin(int) ) );
-	connect( LineEditPluginPlaylistMenuEntry, SIGNAL( textChanged(const QString&) ), this, SLOT (updatePlaylistPluginMenuEntry(const QString&) ) );	
-	connect( LineEditPluginPlaylistCmd, SIGNAL( textChanged(const QString&) ), this, SLOT (updatePlaylistPluginCmd(const QString&) ) );		
-	connect( LineEditPluginPlaylistCustomList, SIGNAL( textChanged(const QString&) ), this, SLOT (updatePlaylistPluginCustomList(const QString&) ) );		
-	connect( PushButtonNewPlaylistPlugin, SIGNAL( clicked() ), this, SLOT( newPlaylistPlugin() ) );
-	connect( PushButtonDeletePlaylistPlugin, SIGNAL( clicked() ), this, SLOT( deletePlaylistPlugin() ) );
 	connect( ButtonOK, SIGNAL( clicked() ), this, SLOT( myAccept() ) );
 }
 
@@ -141,11 +140,11 @@ void PreferencesDialog::myAccept()
  	config->grabAndEncodeCmd=LineEditGrabAndEncodeCmd->text();
  	config->shutdownScript=LineEditShutdownScript->text();
 
-	config->pluginSongMenuEntry=new QStringList(*_pluginSongMenuEntry);
- 	config->pluginSongCmd=new QStringList(*_pluginSongCmd);
- 	config->pluginPlaylistMenuEntry=new QStringList(*_pluginPlaylistMenuEntry);
- 	config->pluginPlaylistCmd=new QStringList(*_pluginPlaylistCmd);
- 	config->pluginPlaylistCustomList=new QStringList(*_pluginPlaylistCustomList);
+ 	config->pluginCommand=new QStringList(*_pluginCommand);
+	config->pluginMenuEntry=new QStringList(*_pluginMenuEntry);
+ 	config->pluginCustomList=new QStringList(*_pluginCustomList);
+ 	config->pluginMode=new QStringList(*_pluginMode);
+ 	config->pluginConfirm=new QStringList(*_pluginConfirm);
  	
  	// jukebox functions
  	config->mediaDir=LineEditMediaDir->text();
@@ -197,129 +196,108 @@ void PreferencesDialog::chooseSwapDir()
 }
 
 
-void PreferencesDialog::updateSongPlugin(int newPos)
+void PreferencesDialog::updatePlugin(int newPos)
 {
 	if(newPos==0) {
-		LineEditPluginSongMenuEntry->setText("");
-		LineEditPluginSongCmd->setText("");
-		LineEditPluginSongMenuEntry->setEnabled(false);
-		LineEditPluginSongCmd->setEnabled(false);
-		PushButtonDeleteSongPlugin->setEnabled(false);
+		LineEditPluginMenuEntry->setText("");
+		LineEditPluginMenuEntry->setEnabled(false);
+		LineEditPluginCommand->setText("");
+		LineEditPluginCommand->setEnabled(false);
+		LineEditPluginCustomList->setText("");
+		LineEditPluginCustomList->setEnabled(false);
+		PushButtonDeletePlugin->setEnabled(false);
+    CheckBoxPluginConfirm->setEnabled(false);
+    ComboBoxPluginMode->setEnabled(false);
 	}
 	else {
-		LineEditPluginSongMenuEntry->setText((*_pluginSongMenuEntry)[newPos-1]);
-		LineEditPluginSongCmd->setText((*_pluginSongCmd)[newPos-1]);
-		LineEditPluginSongMenuEntry->setEnabled(true);
-		LineEditPluginSongCmd->setEnabled(true);
-		PushButtonDeleteSongPlugin->setEnabled(true);
+		LineEditPluginMenuEntry->setText((*_pluginMenuEntry)[newPos-1]);
+		LineEditPluginMenuEntry->setEnabled(true);
+		LineEditPluginCommand->setText((*_pluginCommand)[newPos-1]);
+		LineEditPluginCommand->setEnabled(true);
+		LineEditPluginCustomList->setText((*_pluginCustomList)[newPos-1]);
+		LineEditPluginCustomList->setEnabled(((*_pluginMode)[newPos-1])=="group");
+		PushButtonDeletePlugin->setEnabled(true);
+    CheckBoxPluginConfirm->setChecked(((*_pluginConfirm)[newPos-1])=="true");
+    CheckBoxPluginConfirm->setEnabled(true);
+    ComboBoxPluginMode->setEnabled(true);
+    if(((*_pluginMode)[newPos-1])=="single")
+      ComboBoxPluginMode->setCurrentItem(0);
+    if(((*_pluginMode)[newPos-1])=="group")
+      ComboBoxPluginMode->setCurrentItem(1);      
 	}
 }
 
-void PreferencesDialog::updateSongPluginMenuEntry(const QString& newText)
+void PreferencesDialog::updatePluginMenuEntry(const QString& newText)
 {
-	int pos=ComboBoxSongPlugin->currentItem();
+	int pos=ComboBoxPlugins->currentItem();
 	if(pos==0)
 		return;
-	(*_pluginSongMenuEntry)[pos-1]=newText;
-	ComboBoxSongPlugin->changeItem(newText, pos);
+	(*_pluginMenuEntry)[pos-1]=newText;
+	ComboBoxPlugins->changeItem(newText, pos);
 }
 
-void PreferencesDialog::updateSongPluginCmd(const QString& newText)
+void PreferencesDialog::updatePluginCommand(const QString& newText)
 {
-	int pos=ComboBoxSongPlugin->currentItem();
+	int pos=ComboBoxPlugins->currentItem();
 	if(pos==0)
 		return;
-	(*_pluginSongCmd)[pos-1]=newText;
+	(*_pluginCommand)[pos-1]=newText;
 }
 
-void PreferencesDialog::newSongPlugin()
+void PreferencesDialog::updatePluginCustomList(const QString& newText)
 {
-	ComboBoxSongPlugin->insertItem("new item");
-	_pluginSongMenuEntry->append("new item");
-	_pluginSongCmd->append("new command");
-	ComboBoxSongPlugin->setCurrentItem(ComboBoxSongPlugin->count()-1);
-	updateSongPlugin(ComboBoxSongPlugin->count()-1);
-}
-
-void PreferencesDialog::deleteSongPlugin()
-{
-	int pos=ComboBoxSongPlugin->currentItem();
+	int pos=ComboBoxPlugins->currentItem();
 	if(pos==0)
 		return;
-	ComboBoxSongPlugin->removeItem(pos);
-	_pluginSongMenuEntry->remove(_pluginSongMenuEntry->at(pos-1));
-	_pluginSongCmd->remove(_pluginSongCmd->at(pos-1));
-	ComboBoxSongPlugin->setCurrentItem(0);
-	updateSongPlugin(0);
+	(*_pluginCustomList)[pos-1]=newText;
 }
 
-
-
-void PreferencesDialog::updatePlaylistPlugin(int newPos)
+void PreferencesDialog::updatePluginMode(int newPos)
 {
-	if(newPos==0)
-	{
-		LineEditPluginPlaylistMenuEntry->setText("");
-		LineEditPluginPlaylistCmd->setText("");
-		LineEditPluginPlaylistCustomList->setText("");
-		LineEditPluginPlaylistMenuEntry->setEnabled(false);
-		LineEditPluginPlaylistCmd->setEnabled(false);
-		LineEditPluginPlaylistCustomList->setEnabled(false);
-		PushButtonDeletePlaylistPlugin->setEnabled(false);
-	}
-	else {
-		LineEditPluginPlaylistMenuEntry->setText((*_pluginPlaylistMenuEntry)[newPos-1]);
-		LineEditPluginPlaylistCmd->setText((*_pluginPlaylistCmd)[newPos-1]);
-		LineEditPluginPlaylistCustomList->setText((*_pluginPlaylistCustomList)[newPos-1]);
-		LineEditPluginPlaylistMenuEntry->setEnabled(true);
-		LineEditPluginPlaylistCmd->setEnabled(true);
-		LineEditPluginPlaylistCustomList->setEnabled(true);
-		PushButtonDeletePlaylistPlugin->setEnabled(true);
-	}
-}
-
-void PreferencesDialog::updatePlaylistPluginMenuEntry(const QString& newText)
-{
-	int pos=ComboBoxPlaylistPlugin->currentItem();
+	int pos=ComboBoxPlugins->currentItem();
 	if(pos==0)
 		return;
-	(*_pluginPlaylistMenuEntry)[pos-1]=newText;
-	ComboBoxPlaylistPlugin->changeItem(newText, pos);
+	if(newPos==0) {
+    (*_pluginMode)[pos-1]="single";
+    LineEditPluginCustomList->setEnabled(false);
+  }
+	if(newPos==1) {
+    (*_pluginMode)[pos-1]="group";
+    LineEditPluginCustomList->setEnabled(true);
+  }
 }
 
-void PreferencesDialog::updatePlaylistPluginCmd(const QString& newText)
+void PreferencesDialog::updatePluginConfirm(bool checked)
 {
-	int pos=ComboBoxPlaylistPlugin->currentItem();
+	int pos=ComboBoxPlugins->currentItem();
 	if(pos==0)
 		return;
-	(*_pluginPlaylistCmd)[pos-1]=newText;
-}
-void PreferencesDialog::updatePlaylistPluginCustomList(const QString& newText)
-{
-	int pos=ComboBoxPlaylistPlugin->currentItem();
-	if(pos==0)
-		return;
-	(*_pluginPlaylistCustomList)[pos-1]=newText;
+	(*_pluginConfirm)[pos-1]=checked ? "true" : "false";
 }
 
-void PreferencesDialog::newPlaylistPlugin()
+void PreferencesDialog::newPlugin()
 {
-	ComboBoxPlaylistPlugin->insertItem("new item");
-	_pluginPlaylistMenuEntry->append("new item");
-	_pluginPlaylistCmd->append("new command");
-	_pluginPlaylistCustomList->append("new custom list");
-	ComboBoxPlaylistPlugin->setCurrentItem(ComboBoxPlaylistPlugin->count()-1);
-	updatePlaylistPlugin(ComboBoxPlaylistPlugin->count()-1);
+	ComboBoxPlugins->insertItem("new item");
+	_pluginMenuEntry->append("new item");
+	_pluginCommand->append("new command");
+	_pluginMode->append("single");
+	_pluginCustomList->append("new custom list");
+	_pluginConfirm->append("true");
+	ComboBoxPlugins->setCurrentItem(ComboBoxPlugins->count()-1);
+	updatePlugin(ComboBoxPlugins->count()-1);
 }
-void PreferencesDialog::deletePlaylistPlugin()
+
+void PreferencesDialog::deletePlugin()
 {
-	int pos=ComboBoxPlaylistPlugin->currentItem();
+	int pos=ComboBoxPlugins->currentItem();
 	if(pos==0)
 		return;
-	ComboBoxPlaylistPlugin->removeItem(pos);
-	_pluginPlaylistMenuEntry->remove(_pluginPlaylistMenuEntry->at(pos-1));
-	_pluginPlaylistCmd->remove(_pluginPlaylistCmd->at(pos-1));
-	_pluginPlaylistCustomList->remove(_pluginPlaylistCustomList->at(pos-1));
-	ComboBoxSongPlugin->setCurrentItem(0);
-	updatePlaylistPlugin(0);
+	ComboBoxPlugins->removeItem(pos);
+	_pluginMenuEntry->remove(_pluginMenuEntry->at(pos-1));
+	_pluginCommand->remove(_pluginCommand->at(pos-1));
+	_pluginMode->remove(_pluginMode->at(pos-1));
+	_pluginCustomList->remove(_pluginCustomList->at(pos-1));
+	_pluginConfirm->remove(_pluginConfirm->at(pos-1));
+	ComboBoxPlugins->setCurrentItem(0);
+	updatePlugin(0);
 }

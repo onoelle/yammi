@@ -277,17 +277,12 @@ bool Song::checkTags()
 	if(tag.scan(&f)) {										// tags exist => compare to our fields
 		same=true;
 		// beware that artist/title can exceed 30 characters (by extra info in filename)
-    cout << "before artist\n";
 		if(strcmp(this->artist.left(30).stripWhiteSpace().latin1(),  tag.artist) !=0) {same=false; cout << "(artist)"; }
-    cout << "before title\n";
 		if(strcmp(this->title.left(30).stripWhiteSpace().latin1(),   tag.title)  !=0) {same=false; cout << "(title)"; }
-    cout << "before album\n";
     if(strcmp(this->album.latin1(),   tag.album)  !=0)
 		  {same=false; cout << "(album)"; }
-    cout << "before comment\n";
 		// häh??? why does application of left (on an empty string) change the string???
 		if(strcmp(this->comment.latin1(), tag.comment)!=0) {same=false;cout << "(comment)"; }
-    cout << "before trackNr\n";
 		if(this->trackNr!=0 && this->trackNr!=tag.trackNr) {same=false; cout << "(trackNr)"; }
 		if(this->genreNr!=tag.gennum)  {same=false; cout << "(genreNr)"; }
 		QString strYear;

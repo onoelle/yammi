@@ -42,26 +42,22 @@ public slots:
 	void chooseMediaDir();
 	void chooseSwapDir();
 	
-	void updateSongPlugin(int newPos);
-	void updateSongPluginMenuEntry(const QString& newText);
-	void updateSongPluginCmd(const QString& newText);
-	void newSongPlugin();
-	void deleteSongPlugin();
-	
-	void updatePlaylistPlugin(int newPos);
-	void updatePlaylistPluginMenuEntry(const QString& newText);
-	void updatePlaylistPluginCmd(const QString& newText);
-	void updatePlaylistPluginCustomList(const QString& newText);
-	void newPlaylistPlugin();
-	void deletePlaylistPlugin();
+	void updatePlugin(int newPos);
+	void updatePluginMenuEntry(const QString& newText);
+	void updatePluginCommand(const QString& newText);
+	void updatePluginCustomList(const QString& newText);
+  void updatePluginMode(int newPos);
+  void updatePluginConfirm(bool checked);
+	void newPlugin();
+	void deletePlugin();
 
 protected:
 	Prefs* config;
-	QStringList* _pluginSongMenuEntry;
-	QStringList* _pluginSongCmd;
-	QStringList* _pluginPlaylistMenuEntry;
-	QStringList* _pluginPlaylistCmd;
-	QStringList* _pluginPlaylistCustomList;
+	QStringList* _pluginMenuEntry;
+	QStringList* _pluginCommand;
+	QStringList* _pluginCustomList;
+	QStringList* _pluginMode;
+	QStringList* _pluginConfirm;
 
 };
 

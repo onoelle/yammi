@@ -83,11 +83,11 @@ void YammiModel::readPreferences()
 	config.grabAndEncodeCmd	=	getProperty(&doc, "grabAndEncodeCmd", config.grabAndEncodeCmd);
 	config.shutdownScript		=	getProperty(&doc, "shutdownScript", config.shutdownScript);
 	
-	config.pluginSongCmd		=	getProperty(&doc, "pluginSongCmd", config.pluginSongCmd);
-	config.pluginPlaylistCmd=	getProperty(&doc, "pluginPlaylistCmd", config.pluginPlaylistCmd);
-	config.pluginSongMenuEntry			=	getProperty(&doc, "pluginSongMenuEntry", config.pluginSongMenuEntry);
-	config.pluginPlaylistMenuEntry	=	getProperty(&doc, "pluginPlaylistMenuEntry", config.pluginPlaylistMenuEntry);
-	config.pluginPlaylistCustomList	=	getProperty(&doc, "pluginPlaylistCustomList", config.pluginPlaylistCustomList);
+	config.pluginCommand		=	getProperty(&doc, "pluginCommand", config.pluginCommand);
+	config.pluginMenuEntry	=	getProperty(&doc, "pluginMenuEntry", config.pluginMenuEntry);
+	config.pluginCustomList	=	getProperty(&doc, "pluginCustomList", config.pluginCustomList);
+	config.pluginConfirm  	=	getProperty(&doc, "pluginConfirm", config.pluginConfirm);
+	config.pluginMode     	=	getProperty(&doc, "pluginMode", config.pluginMode);
 	
 	// jukebox functions
 	config.mediaDir					=	getProperty(&doc, "mediaDir", config.mediaDir);
@@ -135,11 +135,12 @@ void YammiModel::savePreferences()
 	// plugins
 	setProperty(&doc, "grabAndEncodeCmd",		config.grabAndEncodeCmd);
 	setProperty(&doc, "shutdownScript",			config.shutdownScript);
-	setProperty(&doc, "pluginSongCmd",			config.pluginSongCmd);
-	setProperty(&doc, "pluginPlaylistCmd",	config.pluginPlaylistCmd);
-	setProperty(&doc, "pluginSongMenuEntry",config.pluginSongMenuEntry);
-	setProperty(&doc, "pluginPlaylistMenuEntry",	config.pluginPlaylistMenuEntry);
-	setProperty(&doc, "pluginPlaylistCustomList",	config.pluginPlaylistCustomList);
+	setProperty(&doc, "pluginCommand",			config.pluginCommand);
+  setProperty(&doc, "pluginMenuEntry",    config.pluginMenuEntry);
+	setProperty(&doc, "pluginCustomList",	  config.pluginCustomList);
+	setProperty(&doc, "pluginConfirm",	    config.pluginConfirm);
+	setProperty(&doc, "pluginMode",	        config.pluginMode);
+  
 	// jukebox functions
 	setProperty(&doc, "mediaDir", 					config.mediaDir);
 	setProperty(&doc, "mountMediaDir", 			config.mountMediaDir);
@@ -282,7 +283,9 @@ void YammiModel::readCategories()
 	// read in all xml-files found in a given directory that represent a category
 	cout << "reading categories..." << flush;
 	
-	QDir d(config.yammiBaseDir+"/categories");
+  categoriesChanged(false);
+
+  QDir d(config.yammiBaseDir+"/categories");
 	d.setFilter( QDir::Files);
 	d.setSorting( QDir::DirsFirst );
 	const QFileInfoList *list = d.entryInfoList();
@@ -499,10 +502,12 @@ void YammiModel::saveCategories()
  */
 void YammiModel::readSongDatabase()
 {
+  cout << "reading song database..." << flush;
 	// read in our xml-file
 	noDatabaseFound=true;
-	cout << "reading song database..." << flush;
-	QDomDocument doc( "songdb" );
+	allSongsChanged(false);
+
+  QDomDocument doc( "songdb" );
 	QFile f( config.yammiBaseDir+"/songdb.xml" );
 	if ( !f.open( IO_ReadOnly ) ) {
 		cout << "\ncould not open song database file (first time started?)... => no songs in database\n";
@@ -523,19 +528,30 @@ void YammiModel::readSongDatabase()
 		QString msg("");
 		msg+="Your song database is from version "+version+" of Yammi.\n";
 		msg+="This Yammi version: "+config.yammiVersion+"\n\n";
-		if(version=="0.5.3") {
-			msg+="However, the database format did not change, so no worries!";
+		if(version=="0.5.3" || version=="0.6" || version=="0.6.1") {
+			msg+="However, the database format did not change since then, so no worries!\n\n";
+      msg+="(The next time your database will be saved, it will be marked with the new version)";
 		}
-		else {
-			msg+="Yammi can only read a song database saved with version 0.5.3,\n";
-			msg+="sorry.............\n";
-			msg+="You can either get version 0.5.3 of Yammi\n";
-			msg+="and save your database with it,\n";
-			msg+="or you start with an empty database\n";
-			msg+="and scan your harddisk for your songs\n";
-			msg+="(categories and history will be lost, too!)";
-		}
+    else {  
+      if(version=="0.5.2" || version=="0.5.1" || version=="0.5" || version=="no version") {
+        msg+="Yammi can only read a song database saved with version 0.5.3 or later,\n";
+        msg+="sorry.............\n";
+        msg+="You can either get version 0.5.3 of Yammi\n";
+        msg+="and save your database with it,\n";
+        msg+="or you start with an empty database\n";
+        msg+="and scan your harddisk for your songs\n";
+        msg+="(categories and history will be lost, too!)\n\n";
+        msg+="I'm trying to read it anyway...";
+      }
+      else {
+        msg+="Your database is probably from a future version of Yammi!\n\n";
+        msg+="I cannot guarantee whether that might cause any problems...\n";
+        msg+="...so better be careful...";
+      }
+    }
+    
 		QMessageBox::information(gYammiGui, "Yammi", msg, "OK");
+    allSongsChanged(true);
 	}
 	QDomNode n = docElem.firstChild();
 	for(int i=0; !n.isNull(); i++) {
@@ -670,7 +686,8 @@ void YammiModel::saveSongDatabase()
 void YammiModel::allSongsChanged(bool changed)
 {
 	_allSongsChanged=changed;
-	gYammiGui->tbSaveDatabase->setEnabled(_allSongsChanged || _categoriesChanged);
+  if(gYammiGui && gYammiGui->tbSaveDatabase)
+    gYammiGui->tbSaveDatabase->setEnabled(_allSongsChanged || _categoriesChanged);
 }
 
 bool YammiModel::allSongsChanged()
@@ -681,7 +698,8 @@ bool YammiModel::allSongsChanged()
 void YammiModel::categoriesChanged(bool changed)
 {
 	_categoriesChanged=changed;
-	gYammiGui->tbSaveDatabase->setEnabled(_allSongsChanged || _categoriesChanged);
+  if(gYammiGui && gYammiGui->tbSaveDatabase)
+  	gYammiGui->tbSaveDatabase->setEnabled(_allSongsChanged || _categoriesChanged);
 }
 
 bool YammiModel::categoriesChanged()
@@ -692,26 +710,63 @@ bool YammiModel::categoriesChanged()
 
 /**
  * Updates the xml-database by scanning harddisk
- * - scans recursively, starting from config.scanDir
- * - constructs song objects from all mp3 files found
- * - checks whether already existing, whether modified
- * - if not => inserts new song object into database
+ * - if specified, checks existence of files in databse and updates/deletes entries
+ * - scans recursively, starting from specified scanDir
+ * - constructs song objects from all files matching the filePattern
+ * - checks whether already existing, whether modified, if not => inserts into database
  */
 void YammiModel::updateSongDatabase(bool checkExistence, QString scanDir, QString filePattern, QString mediaName, QProgressDialog* progress)
 {
 	if(config.childSafe)
 		return;
 	problematicSongs.clear();
-	songsAdded=0;
+  entriesDeleted=0;
+  entriesUpdated=0;
+	entriesAdded=0;
 	corruptSongs=0;
-	
+
+  if(checkExistence) {
+    progress->setLabelText("check for existence of files");
+    progress->setTotalSteps(allSongs.count());
+    progress->setProgress(0);
+    qApp->processEvents();
+
+    int i=0;
+    for(Song* s=allSongs.firstSong(); s; s=allSongs.nextSong(), i++) {
+      if(i%10==0) {
+        progress->setProgress(i);
+      }
+      if(progress->wasCancelled())
+        break;
+      if(s->filename=="")                 // if not on harddisk anyway, we don't need to check
+        continue;
+      bool exists=s->checkReadability();
+      if(!exists) {
+        cout << "file not existing: " << s->displayName();
+        bool onMedia=s->mediaName.count()>0;
+        cout << "(contained on " << s->mediaName.count() << " media: )\n";
+        if(onMedia) {
+          // update entry
+
+          entriesUpdated++;
+        }
+        else {
+          // delete entry
+          entriesDeleted++;
+        }
+      }
+    }    
+  }
+
+  
 	if(mediaName==0) {
 		cout << "scanning harddisk for new songs... \n";
 		// check that scanDir is an existing directory
 		QDir d(scanDir);
 		if(!d.exists()) {
-			cout << "base directory for scanning does not exist!\n";
-			cout << "set value \"scanDir\" in preferences to correct value!\n";
+      QString msg="The base directory for scanning does not exist!\n";
+      msg+="Set value \"scanDir\" in preferences to an existing directory!";
+      QMessageBox::information( gYammiGui, "Yammi", msg, "Good idea!" );
 		}
 		else {
 			traverse(scanDir, filePattern, progress);
@@ -733,8 +788,10 @@ void YammiModel::updateSongDatabase(bool checkExistence, QString scanDir, QStrin
 		// check that mediaDir is an existing directory
 		QDir d(config.mediaDir);
 		if(!d.exists()) {
-			cout << "directory for removable media not existing/readable!\n";
-			cout << "set value \"mediaDir\" in preferences to correct value!\n";
+      QString msg="The directory for removable media does not exist or is not readable!\n";
+      msg+="Set value \"mediaDir\" in preferences to an existing directory!\n";
+      msg+="(if necessary, enable \"mount media\" in preferences)";
+      QMessageBox::information( gYammiGui, "Yammi", msg, "Good idea!" );
 		}
 		else {
 			traverse(config.mediaDir, filePattern, progress, mediaName);
@@ -915,7 +972,7 @@ void YammiModel::addSongToDatabase(QString filename, QString mediaName=0)
 	// new song, not in database yet
 	allSongs.appendSong(newSong);
  	cout << "Song added: " << newSong->displayName() << "\n";
-	songsAdded++;
+	entriesAdded++;
  	allSongsChanged(true);
 }
 			

@@ -58,11 +58,11 @@ public:
 	QString grabAndEncodeCmd;
 	QString shutdownScript;
 
-	QStringList* pluginPlaylistCmd;
-	QStringList* pluginPlaylistMenuEntry;
-	QStringList* pluginPlaylistCustomList;
-	QStringList* pluginSongCmd;
-	QStringList* pluginSongMenuEntry;
+	QStringList* pluginMenuEntry;
+	QStringList* pluginCommand;
+	QStringList* pluginCustomList;
+  QStringList* pluginMode;
+  QStringList* pluginConfirm;
 
 // jukebox functions
 	int swapSize;

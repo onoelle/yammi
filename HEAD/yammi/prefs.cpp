@@ -43,16 +43,17 @@ Prefs::Prefs(){
 	grabAndEncodeCmd="yammiGrabAndEncode";
 	shutdownScript="yammiShutdownScript";
 
-	pluginSongMenuEntry = new QStringList();
-	pluginSongCmd = new QStringList();
-	pluginPlaylistMenuEntry = new QStringList();
-	pluginPlaylistCmd = new QStringList();
-	pluginPlaylistCustomList = new QStringList();
+	pluginMenuEntry = new QStringList();
+	pluginCommand = new QStringList();
+	pluginCustomList = new QStringList();
+	pluginConfirm = new QStringList();
+	pluginMode = new QStringList();
 
 // define default song plugins
 //	pluginSongMenuEntry->append("copy to");
 //	pluginSongCmd->append("cp \"%f\" \"/tmp/delme_%F\"");
 	
+/*
 // define default playlist plugins
 	pluginPlaylistMenuEntry->append("burn audio cd");
 	pluginPlaylistCmd->append("mp3burn -c ATIP %f &");
@@ -60,6 +61,7 @@ Prefs::Prefs(){
 	pluginPlaylistMenuEntry->append("create cd label");
 	pluginPlaylistCmd->append("cdlabelgen -c \"Title\" -s \"Subtitle\" -b -w -i \"%l\" > /tmp/cover.ps");
 	pluginPlaylistCustomList->append("%i. %a - %t (%l)%");
+*/
 
 // jukebox functions
 	mediaDir="/dev/cdrom/";

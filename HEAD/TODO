@@ -15,6 +15,13 @@ KNOWN BUGS
 
 for release 0.6.1
 -----------------
+to shutdown kde in a better way:
+
+dcop ksmserver ksmserver "logout" 0 2 0   (what's the third param for?)
+
+to play a file with noatun:
+dcop noatun-1734 Noatun addFile "/mm/mp3/inbox/tiziano ferro - perdono.mp3" 0  (or 1, for playing immediately)
+
 
 - dialog+options for updating database (together with scan media)
 - on deleting a song: delete in all lists (history, categories, ...)

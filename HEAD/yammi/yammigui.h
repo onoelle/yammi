@@ -153,8 +153,7 @@ protected:
 	QPopupMenu* 	songPrelistenPopup;
 	QPopupMenu* 	songSearchPopup;
 	QPopupMenu* 	songAdvancedPopup;
-	QPopupMenu* 	songPluginPopup;
-	QPopupMenu* 	playlistPluginPopup;
+	QPopupMenu* 	pluginPopup;
 	QPopupMenu* 	folderPopup;
 	QStatusBar* 	mainStatusBar;
 	QToolBar*			toolBar;
@@ -207,8 +206,8 @@ protected slots:
 	void				forSelection(int act) {forSelection((action) act);}				// just needed for menu receivers with ints
 	// special treatment needed?
 	void				forSelectionSongInfo();
-	void				forSelectionPluginPlaylist(int pluginIndex);
-	void				forSelectionPluginSong(int pluginIndex);
+//	void				forSelectionPluginPlaylist(int pluginIndex);
+	void				forSelectionPlugin(int pluginIndex);
 	void				forSelectionBurnToMedia();
 		
 	void				forSong(Song* s, action act, QString dir=0);

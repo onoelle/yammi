@@ -173,7 +173,7 @@
                                 <cstring>LabelArtist</cstring>
                             </property>
                             <property name="text">
-                                <string>Aritst</string>
+                                <string>Artist</string>
                             </property>
                         </widget>
                         <widget class="QComboBox" row="4" column="5">

@@ -1,5 +1,25 @@
-###########################
-9.8.2002    version 0.6 !!!
+1.9. 2002??? version 0.7 !!!
+############################
+- improved plugin configuration
+- added a dialog for scanning harddisk, allowing:
+  - option to check existence of files in Yammi's database, if necessary update or delete the entry
+  - scan arbitrary files (eg. ogg vorbis, wav, ...anything you like)
+    (however, only on mp3 files Yammi will be able to read the id3 tags)
+- tested dcop commands for sending a song to noatun / for shutting down kde in a regular way
+=> see homepage
+- stored column size and position in songlist
+
+- icons?
+- id3lib?
+
+
+
+13.8.2002   version 0.6.1
+#########################
+- bugfix: removed the #include "id3/tag.h", to make Yammi compile without id3lib installed
+
+#######################
+9.8.2002    version 0.6
 
 - ported to Qt3
 - dialogs scale reasonably now

@@ -19,7 +19,8 @@
 
 // include pixmaps
 #include "yammiicon.xpm"
-#include "pause.xpm"
+//#include "pause.xpm"
+#include "chromePlay.xpm"
 #include "stop.xpm"
 #include "in.xpm"
 #include "notin.xpm"
@@ -64,6 +65,8 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
   this->setIcon(QPixmap(yammiicon_xpm));
 	
   ensureXmmsIsRunning();
+
+  this->tbSaveDatabase=0;
   
   // set up model
 	model=new YammiModel();
@@ -123,6 +126,7 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
   toolBar->setLabel( "Main Toolbar" );
 	tbSaveDatabase = new QToolButton( QPixmap(filesave_xpm), "Save database (Ctrl-S)", QString::null,
 														model, SLOT(save()), toolBar);
+  tbSaveDatabase->setEnabled(model->allSongsChanged());
 	new QToolButton( QPixmap(pause_xpm), "Play/Pause (F1)", QString::null,
                            this, SLOT(xmms_playPause()), toolBar);
 	new QToolButton( QPixmap(stop_xpm), "Stop", QString::null,
@@ -169,7 +173,7 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
                            this, SLOT(forAllSelectedEnqueueAsNext()), toolBar2);
 	new QToolButton (QPixmap(playnow_xpm), "Play now (F7)", QString::null,
                            this, SLOT(forAllSelectedPlayNow()), toolBar2);
-	new QToolButton (QPixmap(playnowim_xpm), "Play now withou crossfading (SHIFT-F7)", QString::null,
+	new QToolButton (QPixmap(playnowim_xpm), "Play now without crossfading (SHIFT-F7)", QString::null,
                            this, SLOT(forAllSelectedPlayNowIm()), toolBar2);
 	new QToolButton (QPixmap(dequeueSong_xpm), "Dequeue Song (F8)", QString::null,
                            this, SLOT(forAllSelectedDequeue()), toolBar2);
@@ -339,8 +343,6 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
 	
 //	updateListViewColumns();
 
-	model->allSongsChanged(false);
-  model->categoriesChanged(false);
 	shuttingDown=0;
 	controlPressed=false;
 	shiftPressed=false;
@@ -571,16 +573,11 @@ void YammiGui::updateSongPopup()
 	songPopup->insertItem( "Advanced...", songAdvancedPopup);
 	
 	
-	songPluginPopup = new QPopupMenu(songPopup);
-	for(unsigned int i=0; i<model->config.pluginSongCmd->count(); i++) {
-		songPluginPopup->insertItem( (*(model->config.pluginSongMenuEntry))[i], this, SLOT(forSelectionPluginSong(int)), 0, 2000+i);
+	pluginPopup = new QPopupMenu(songPopup);
+	for(unsigned int i=0; i<model->config.pluginMenuEntry->count(); i++) {
+		pluginPopup->insertItem( (*(model->config.pluginMenuEntry))[i], this, SLOT(forSelectionPlugin(int)), 0, 2000+i);
 	}
-	songPopup->insertItem( "Song Plugin...", songPluginPopup);
-	playlistPluginPopup = new QPopupMenu(songPopup);
-	for(unsigned int j=0; j<model->config.pluginPlaylistCmd->count(); j++) {
-		playlistPluginPopup->insertItem( (*(model->config.pluginPlaylistMenuEntry))[j], this, SLOT(forSelectionPluginPlaylist(int)), 0, 3000+j);
-	}
-	songPopup->insertItem( "Playlist Plugin...", playlistPluginPopup);
+	songPopup->insertItem( "Plugins...", pluginPopup);
 }
 
 
@@ -971,34 +968,71 @@ void YammiGui::slotFolderPopup( QListViewItem* Item, const QPoint & point, int )
 
 
 
-// executes a command on each song
-void YammiGui::forSelectionPluginSong(int pluginIndex)
+// executes a plugin on a selection of songs
+void YammiGui::forSelectionPlugin(int pluginIndex)
 {
 	pluginIndex-=2000;
 
-  QProgressDialog progress( "Executing song plugin cmd...", "Cancel", 100, this, "progress", TRUE );
-	progress.setMinimumDuration(0);
-	progress.setTotalSteps(selectedSongs.count());	
+  bool confirm=((*model->config.pluginConfirm)[pluginIndex]=="true");
+  QString mode=((*model->config.pluginMode)[pluginIndex]);
 
-	int index=1;
-	for(Song* s=selectedSongs.firstSong(); s; s=selectedSongs.nextSong(), index++) {
-		QString cmd=(*model->config.pluginSongCmd)[pluginIndex];
-    cmd=makeReplacements(cmd, s, index);
-		if(index==1) {
-			// before executing cmd on first song, ask user
-			QString msg="Execute the following command on each selected song?\n";
-			msg+="(here shown: values for first song)\n\n";
-			for(unsigned int i=0; i<cmd.length(); i+=80)
-				msg+=cmd.mid(i, 80)+"\n";
-			if( QMessageBox::warning( this, "Yammi", msg, "Yes", "No")!=0)
-				return;
-		}
-	  progress.setProgress(index);
-		qApp->processEvents();	
-		if(progress.wasCancelled())
+  if(mode=="single") {
+    QProgressDialog progress( "Executing song plugin cmd...", "Cancel", 100, this, "progress", TRUE );
+//    progress.setMinimumDuration(0);
+    progress.setTotalSteps(selectedSongs.count());
+
+    int index=1;
+    for(Song* s=selectedSongs.firstSong(); s; s=selectedSongs.nextSong(), index++) {
+      QString cmd=(*model->config.pluginCommand)[pluginIndex];
+      cmd=makeReplacements(cmd, s, index);
+      if(index==1 && confirm) {
+        // before  executing cmd on first song, ask user
+        QString msg="Execute the following command on each selected song?\n";
+        msg+="(here shown: values for first song)\n\n";
+        for(unsigned int i=0; i<cmd.length(); i+=80)
+          msg+=cmd.mid(i, 80)+"\n";
+          if( QMessageBox::warning( this, "Yammi", msg, "Yes", "No")!=0)
+          return;
+        }
+        progress.setProgress(index);
+        qApp->processEvents();	
+        if(progress.wasCancelled())
 			return;
-		system(cmd);
-	}
+      system(cmd);
+    }
+  }
+
+  if(mode=="group") {
+    int index=1;
+    QString customList="";
+    for(Song* s=selectedSongs.firstSong(); s; s=selectedSongs.nextSong(), index++) {
+      QString entry=(*model->config.pluginCustomList)[pluginIndex];
+      customList+=makeReplacements(entry, s, index);
+    }
+    QString cmd=(*model->config.pluginCommand)[pluginIndex];
+
+    // custom list can be long => better put it into a file...
+    QFile customListFile(model->config.yammiBaseDir+"/customlist.txt");
+    customListFile.open(IO_WriteOnly);
+    customListFile.writeBlock( customList, qstrlen(customList) );
+    customListFile.close();
+    cmd.replace(QRegExp("%l"), "`cat "+model->config.yammiBaseDir+"/customlist.txt`");
+
+    if(confirm) {
+      QString msg="Execute the following command:\n";
+      for(unsigned int i=0; i<cmd.length(); i+=80) {
+        msg+=cmd.mid(i, 80)+"\n";
+        if(i>1200) {
+          msg+="\n...\n(command truncated)";
+          break;
+        }
+      }
+      if( QMessageBox::warning( this, "Yammi", msg, "Yes", "No")!=0) {
+        return;
+      }
+    }
+    system(cmd);
+  }
 }
 
 
@@ -1027,44 +1061,16 @@ QString YammiGui::makeReplacements(QString input, Song* s, int index)
   return input;  
 }
 
-
+/*
 // creates a playlist (or a space-seperated list of songs) and executes
 // a command on it (eg. mp3burn)
 void YammiGui::forSelectionPluginPlaylist(int pluginIndex)
 {
 	pluginIndex-=3000;
 	
-	int index=1;	
-	QString customList="";
-	for(Song* s=selectedSongs.firstSong(); s; s=selectedSongs.nextSong(), index++) {
-		QString entry=(*model->config.pluginPlaylistCustomList)[pluginIndex];
-		customList+=makeReplacements(entry, s, index);
-	}
-	QString cmd=(*model->config.pluginPlaylistCmd)[pluginIndex];
-	
-  // custom list can be long => better put it into a file...
-  // old version: cmd.replace(QRegExp("%l"), customList);
-  QFile customListFile(model->config.yammiBaseDir+"/customlist.txt");
-  customListFile.open(IO_WriteOnly);
-  customListFile.writeBlock( customList, qstrlen(customList) );
-  customListFile.close();
-  cmd.replace(QRegExp("%l"), "`cat "+model->config.yammiBaseDir+"/customlist.txt`");
-
-	QString msg="Execute the following command:\n";
-	for(unsigned int i=0; i<cmd.length(); i+=80) {
-		msg+=cmd.mid(i, 80)+"\n";
-		if(i>1200) {
-			msg+="\n...\n(command truncated)";
-			break;
-		}
-	}
-		
-	if( QMessageBox::warning( this, "Yammi", msg, "Yes", "No")==0) {
-    system(cmd);
-  }
 }
 
-
+*/
 
 
 /**
@@ -2071,15 +2077,12 @@ void YammiGui::onTimer()
 		// check whether currently played song has changed
  		char file[300];
   	int pos=xmms_remote_get_playlist_pos(0);
-//		cout << QString("xmms_remote_get_playlist_file %1\n").arg(pos);
 		strcpy(file, xmms_remote_get_playlist_file(0, pos));
-//		cout << "..done\n";
 				
-//		cout << QString("xmms_remote_get_output_time\n");
 		gint outputTime=outputTime=xmms_remote_get_output_time(0);
-//		cout << "..done\n";
-		// adjust songSlider (if user is not currently dragging it around)
-		if(!isSongSliderGrabbed)
+
+    // adjust songSlider (if user is not currently dragging it around)
+		if(!isSongSliderGrabbed && !xmms_remote_is_paused(0))
 			songSlider->setValue(outputTime);
 		
 		/*	some xmms statistics...
@@ -2285,9 +2288,11 @@ void YammiGui::checkForGrabbedTrack(){
 	updateView();
 	folderProblematic->update(&model->problematicSongs);
 	folderAll->updateTitle();
-	QMessageBox::information( this, "Yammi",
-		QString("Yammi tried to add the grabbed song to the database.\n\nSome statistics: \n\n %1 songs added to database\n %2 songs corrupt (=not added)\n %3 songs problematic (check in folder Problematic Songs)")
-		.arg(model->songsAdded).arg(model->corruptSongs).arg(model->problematicSongs.count()), "Fine." );
+  QString msg="Yammi tried to add the grabbed song to the database.\n\nSome statistics: \n\n";
+  msg+=QString("%1 songs added to database\n").arg(model->entriesAdded);
+  msg+=QString("%1 songs corrupt (=not added)\n").arg(model->corruptSongs);
+  msg+=QString("%1 songs problematic (check in folder Problematic Songs)").arg(model->problematicSongs.count());
+	QMessageBox::information( this, "Yammi", msg, "Fine." );
 }
 
 void YammiGui::shutDown()
@@ -2590,9 +2595,13 @@ void YammiGui::updateSongDatabase(bool checkExistence, QString scanDir, QString 
 	updateView();
 	folderProblematic->update(&model->problematicSongs);
 	folderAll->updateTitle();
-	QMessageBox::information( this, "Yammi",
-		QString("Some statistics: \n\n %1 songs added to database\n %2 songs corrupt (=not added)\n %3 songs problematic (check in folder Problematic Songs)")
-		.arg(model->songsAdded).arg(model->corruptSongs).arg(model->problematicSongs.count()), "Fine." );
+  QString msg="Updated your database.\n\nStatistics: \n\n";
+  msg+=QString("%1 songs added to database\n").arg(model->entriesAdded);
+  msg+=QString("%1 songs corrupt (=not added)\n").arg(model->corruptSongs);
+  msg+=QString("%1 songs problematic (check in folder Problematic Songs)\n").arg(model->problematicSongs.count());
+  msg+=QString("%1 entries updated\n").arg(model->entriesUpdated);
+  msg+=QString("%1 entries deleted\n").arg(model->entriesDeleted);
+	QMessageBox::information( this, "Yammi", msg, "Fine." );
 }
 
 
