@@ -3,7 +3,7 @@
 <KDevPrjSession>
  <LastCompileConfig>(Default)</LastCompileConfig>
  <Mainframe MaximizeMode="1" />
- <DocsAndViews NumberOfDocuments="7" >
+ <DocsAndViews NumberOfDocuments="8" >
   <Doc0 CursorPosLine="0" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="0" FileName="/home/oliver/work/programming/yammi/todo" >
    <View0 Top="23" Width="400" Attach="1" Height="300" Left="3" Focus="0" Type="KWriteView" MinMaxMode="0" />
   </Doc0>
@@ -11,19 +11,22 @@
    <View0 Top="44" Width="758" Attach="1" Height="364" Left="24" Focus="0" Type="KWriteView" MinMaxMode="0" />
   </Doc1>
   <Doc2 CursorPosLine="0" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="0" FileName="/home/oliver/work/programming/yammi/yammiShutdownScript" >
-   <View0 Top="65" Width="758" Attach="1" Height="439" Left="45" Focus="0" Type="KWriteView" MinMaxMode="0" />
+   <View0 Top="65" Width="758" Attach="1" Height="364" Left="45" Focus="0" Type="KWriteView" MinMaxMode="0" />
   </Doc2>
   <Doc3 CursorPosLine="0" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="0" FileName="/home/oliver/work/programming/yammi/CHANGELOG" >
-   <View0 Top="86" Width="758" Attach="1" Height="439" Left="66" Focus="0" Type="KWriteView" MinMaxMode="0" />
+   <View0 Top="86" Width="758" Attach="1" Height="364" Left="66" Focus="0" Type="KWriteView" MinMaxMode="0" />
   </Doc3>
   <Doc4 CursorPosLine="69" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="10" FileName="/home/oliver/work/programming/yammi/yammi/yammigui.h" >
-   <View0 Top="107" Width="758" Attach="1" Height="439" Left="87" Focus="0" Type="KWriteView" MinMaxMode="0" />
+   <View0 Top="107" Width="758" Attach="1" Height="364" Left="87" Focus="0" Type="KWriteView" MinMaxMode="0" />
   </Doc4>
   <Doc5 CursorPosLine="46" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="10" FileName="/home/oliver/work/programming/yammi/yammi/yammimodel.h" >
    <View0 Top="128" Width="758" Attach="1" Height="439" Left="108" Focus="0" Type="KWriteView" MinMaxMode="0" />
   </Doc5>
-  <Doc6 CursorPosLine="11" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="2" FileName="/home/oliver/work/programming/yammi/configure.in" >
-   <View0 Top="126" Width="764" Attach="1" Height="465" Left="126" Focus="1" Type="KWriteView" MinMaxMode="2" />
+  <Doc6 CursorPosLine="20" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="18" FileName="/home/oliver/work/programming/yammi/configure.in" >
+   <View0 Top="149" Width="758" Attach="1" Height="439" Left="129" Focus="1" Type="KWriteView" MinMaxMode="0" />
   </Doc6>
+  <Doc7 Type="CDocBrowser" NumberOfViews="1" FileName="/usr/share/doc/KDE3-API//khtml/DOM__Attr.html" >
+   <View Top="147" Width="130" Attach="1" Height="142" Left="147" Focus="0" Type="KHTMLView" MinMaxMode="2" />
+  </Doc7>
  </DocsAndViews>
 </KDevPrjSession>
