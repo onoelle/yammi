@@ -4,6 +4,8 @@ last update 31.8.2003
 
 for version 1.0
 ---------------
+- check: crash on clearing playlist including currently played song?
+- remove newlines from translation strings?
 - check sorting after "added to": incorrect sort order?
 - check skip backward functionality & filling up songPlayed list!!!
 - check installation directory and settings saving... (still using old version?)
@@ -13,6 +15,7 @@ for version 1.0
   and play a song in yammi, the song previously played in xmms is played instead.
 - deal with "unplayable files" (pictures, texts) in playlist (dequeue on 2. position?)
 - finish documenting requirements for compiling in handbook
+- prelisten: check whether sound device set, or do not invoke command at all
 
 
 later...

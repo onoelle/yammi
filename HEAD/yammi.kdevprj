@@ -22,8 +22,8 @@ bin_program=yammi
 cflags=
 cppflags=
 cxxflags=\s-O3 -Wall
-ldadd=\s-lkdecore $(LIB_QT)
-ldflags=\s                                            \s
+ldadd=\s$(LIB_QT)
+ldflags=\s                                              \s
 
 [General]
 AMChanged=false
@@ -375,7 +375,7 @@ install_location=
 type=HEADER
 
 [yammi/icons/Makefile.am]
-files=yammi/icons/clearPlaylist.xpm,yammi/icons/defaultControlClick.xpm,yammi/icons/defaultDoubleClick.xpm,yammi/icons/defaultMiddleClick.xpm,yammi/icons/defaultShiftClick.xpm,yammi/icons/dequeueAll.xpm,yammi/icons/dequeueSong.xpm,yammi/icons/enqueue.xpm,yammi/icons/enqueueasnext.xpm,yammi/icons/filesave.xpm,yammi/icons/in.xpm,yammi/icons/notin.xpm,yammi/icons/songinfo.xpm,yammi/icons/stopPrelisten.xpm,yammi/icons/yammiicon.xpm,yammi/icons/pause.xpm,yammi/icons/play.xpm,yammi/icons/skipbackward.xpm,yammi/icons/skipforward.xpm,yammi/icons/stop.xpm,yammi/icons/playnow.xpm,yammi/icons/newCategory.xpm,yammi/icons/toFromPlaylist.xpm,yammi/icons/some_in.xpm
+files=yammi/icons/clearPlaylist.xpm,yammi/icons/defaultControlClick.xpm,yammi/icons/defaultDoubleClick.xpm,yammi/icons/defaultMiddleClick.xpm,yammi/icons/defaultShiftClick.xpm,yammi/icons/dequeueAll.xpm,yammi/icons/dequeueSong.xpm,yammi/icons/enqueue.xpm,yammi/icons/enqueueasnext.xpm,yammi/icons/filesave.xpm,yammi/icons/in.xpm,yammi/icons/notin.xpm,yammi/icons/songinfo.xpm,yammi/icons/stopPrelisten.xpm,yammi/icons/yammiicon.xpm,yammi/icons/pause.xpm,yammi/icons/play.xpm,yammi/icons/skipbackward.xpm,yammi/icons/skipforward.xpm,yammi/icons/stop.xpm,yammi/icons/playnow.xpm,yammi/icons/newCategory.xpm,yammi/icons/toFromPlaylist.xpm,yammi/icons/some_in.xpm,yammi/icons/prelistenEnd.xpm,yammi/icons/prelistenMiddle.xpm,yammi/icons/prelistenStart.xpm
 sub_dirs=
 type=normal
 
@@ -470,6 +470,24 @@ install_location=
 type=DATA
 
 [yammi/icons/playnow.xpm]
+dist=true
+install=false
+install_location=
+type=DATA
+
+[yammi/icons/prelistenEnd.xpm]
+dist=true
+install=false
+install_location=
+type=DATA
+
+[yammi/icons/prelistenMiddle.xpm]
+dist=true
+install=false
+install_location=
+type=DATA
+
+[yammi/icons/prelistenStart.xpm]
 dist=true
 install=false
 install_location=

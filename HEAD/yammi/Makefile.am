@@ -8,7 +8,7 @@ SOURCES = CVBitRate.cpp CMP3Info.cpp CFrameHeader.cpp noatunplayer.cpp Consisten
 INTERFACES = ApplyToAllBase.ui UpdateDatabaseMediaDialogBase.ui UpdateDatabaseDialogBase.ui SongInfoDialog.ui PreferencesDialogBase.ui DeleteDialog.ui ConsistencyCheckDialogBase.ui 
 TRANSLATIONS = 
 KDE_OPTIONS = qtonly
-yammi_LDADD   =  -lkdecore $(LIB_QT) $(LIBSOCKET)
+yammi_LDADD   =  $(LIB_QT) $(LIBSOCKET)
 
 SUBDIRS = docs icons 
 

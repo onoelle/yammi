@@ -566,9 +566,11 @@ void YammiModel::updateSongDatabase(QString scanDir, QString filePattern, QStrin
 		}
 
 		// check that mediaDir is an existing directory
-		QDir d(config.mediaDir);
+		QDir d(scanDir);
 		if(!d.exists()) {
-      QString msg="The directory for removable media does not exist or is not readable!\n";
+      QString msg="The specified directory for removable media:\n";
+      msg+=QString("   %1\n").arg(scanDir);
+      msg+="does not exist or is not readable!\n";
       msg+="Set value \"mediaDir\" in preferences to an existing directory!\n";
       msg+="(if necessary, enable \"mount media\" in preferences)";
       QMessageBox::information( gYammiGui, "Yammi", msg, "Good idea!" );
@@ -702,7 +704,7 @@ void YammiModel::addSongToDatabase(QString filename, QString mediaName=0)
 		
  	// okay, new song (at least new filename/path) => construct song object
  	Song* newSong=new Song();
-  newSong->create(filename, mediaName);
+  newSong->create(filename, mediaName, config.capitalizeTags);
  	if(newSong->corrupted) {
  		cout << "new song file " << filename << " is corrupt (not readable for yammi), skipping\n";
  		corruptSongs++;

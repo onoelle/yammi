@@ -84,11 +84,12 @@ Song::Song(QString artist, QString title, QString album, QString filename, QStri
 
 
 
-/** try to create a new song object from a given filename
+/**
+ * Try to create a new song object from a given filename.
  * \return    0 if successful
  *            1 on error (file not found)
  */
-int Song::create(const QString location, const QString mediaName)
+int Song::create(const QString location, const QString mediaName, bool capitalizeTags)
 {
   // step 1:
   // - check for existence and access
@@ -261,7 +262,7 @@ int Song::create(const QString location, const QString mediaName)
 	artist=artist.simplifyWhiteSpace();
 	title=title.simplifyWhiteSpace();
 
-  if(treated) {
+  if(treated && capitalizeTags) {
     // capitalize after spaces (any exceptions?)
     album=capitalize(album);
     artist=capitalize(artist);

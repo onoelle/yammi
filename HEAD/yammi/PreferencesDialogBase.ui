@@ -709,17 +709,6 @@
                                     </property>
                                 </widget>
                             </widget>
-                            <widget class="QCheckBox" row="0" column="0" rowspan="1" colspan="4">
-                                <property name="name">
-                                    <cstring>CheckBoxTagsConsistent</cstring>
-                                </property>
-                                <property name="text">
-                                    <string>keep tags consistent</string>
-                                </property>
-                                <property name="toolTip" stdset="0">
-                                    <string>synchronizes the id3-tags of the mp3 files with the yammi database information. If activated, yammi modifies the tags of your mp3 files!</string>
-                                </property>
-                            </widget>
                             <widget class="QCheckBox" row="1" column="0" rowspan="1" colspan="2">
                                 <property name="name">
                                     <cstring>CheckBoxFilenamesConsistent</cstring>
@@ -731,6 +720,17 @@
                                     <string>Synchronizes the filenames of the mp3 files according to the information in the yammi database. If activated, yammi renames your mp3 files!</string>
                                 </property>
                             </widget>
+                            <widget class="QCheckBox" row="0" column="0" rowspan="1" colspan="2">
+                                <property name="name">
+                                    <cstring>CheckBoxTagsConsistent</cstring>
+                                </property>
+                                <property name="text">
+                                    <string>keep tags consistent</string>
+                                </property>
+                                <property name="toolTip" stdset="0">
+                                    <string>synchronizes the id3-tags of the mp3 files with the yammi database information. If activated, yammi modifies the tags of your mp3 files!</string>
+                                </property>
+                            </widget>
                             <widget class="QCheckBox" row="1" column="2" rowspan="1" colspan="2">
                                 <property name="name">
                                     <cstring>CheckBoxIgnoreCaseInFilenames</cstring>
@@ -739,7 +739,18 @@
                                     <string>ignore case on filename check</string>
                                 </property>
                                 <property name="toolTip" stdset="0">
-                                    <string>Synchronizes the filenames of the mp3 files according to the information in the yammi database. If activated, yammi renames your mp3 files!</string>
+                                    <string></string>
+                                </property>
+                            </widget>
+                            <widget class="QCheckBox" row="0" column="2" rowspan="1" colspan="2">
+                                <property name="name">
+                                    <cstring>CheckBoxCapitalizeTags</cstring>
+                                </property>
+                                <property name="text">
+                                    <string>capitalize tags on new songs</string>
+                                </property>
+                                <property name="toolTip" stdset="0">
+                                    <string>Capitalizes artist, title and album of a newly added Song</string>
                                 </property>
                             </widget>
                         </grid>

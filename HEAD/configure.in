@@ -231,27 +231,26 @@ fi
 
 dnl Noatun support (for proper kde app: add "-lkdeui -lkio ")
 dnl check to see if KDE->DCOP is available
-dnl if test "x$configure_enable_noatun" = "xyes"; then
+if test "x$configure_enable_noatun" = "xyes"; then
     dnl additional path to libraries for linking KDE
-dnl    OLDLDFLAGS=$LDFLAGS
-dnl    LDFLAGS="$LDFLAGS -L$KDEDIR/libkdecore"
-dnl    CPPFLAGS="$CPPFLAGS -I$KDEDIR/include"
+    OLDLDFLAGS=$LDFLAGS
+    LDFLAGS="$LDFLAGS -L$KDEDIR/libkdecore"
+    CPPFLAGS="$CPPFLAGS -I$KDEDIR/include"
 
-dnl    AC_CHECK_LIB( kdecore, main, , configure_enable_noatun=no , )
+    AC_CHECK_LIB( kdecore, main, , configure_enable_noatun=no , )
 
     dnl    if test "x$configure_enable_noatun" = "xyes"; then
     dnl        AC_CHECK_LIB( DCOP, main, , configure_enable_noatun=no , )
     dnl    fi
-dnl    LDFLAGS=$OLDLDFLAGS
-dnl fi
+    LDFLAGS=$OLDLDFLAGS
+fi
 
-dnl if test "x$configure_enable_noatun" = "xyes"; then
-dnl    AC_MSG_NOTICE( [*** noatun support enabled ***] )
-
+if test "x$configure_enable_noatun" = "xyes"; then
+    AC_MSG_NOTICE( [*** noatun support enabled ***] )
     AC_DEFINE( [ENABLE_NOATUN], [1] )
-dnl else
-dnl    AC_MSG_WARN( [*** noatun support disabled ***] )
-dnl fi
+else
+    AC_MSG_WARN( [*** noatun support disabled ***] )
+fi
 
 dnl ---------------------
 dnl end of library checks
@@ -272,7 +271,6 @@ AC_CONFIG_FILES(yammi/Makefile)
 AC_CONFIG_FILES(yammi/docs/Makefile)
 AC_CONFIG_FILES(yammi/docs/en/Makefile)
 AC_CONFIG_FILES(yammi/icons/Makefile)
-dnl AC_CONFIG_FILES(yammi/mp3info/Makefile)
 AC_OUTPUT
 
 AC_MSG_NOTICE( [

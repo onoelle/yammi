@@ -87,6 +87,9 @@ public:
 	bool filenamesConsistent;
   /** Ignore case in filenames (if keeping them consistent */
   bool ignoreCaseInFilenames;
+  /** capitalize title, artist and album */
+  bool capitalizeTags;
+  
   
 	/** Second sound device */
 	QString secondSoundDevice;

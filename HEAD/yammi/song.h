@@ -98,7 +98,7 @@ public:
 	Song(QString artist, QString title, QString album, QString filename, QString path, int length, int bitrate, MyDateTime addedTo, int year, QString comment, int trackNr, int genreNr);
 
 	/// constructs a song object from a given file
-	int create(const QString filename, const QString mediaName = 0);
+	int create(const QString filename, const QString mediaName, bool capitalizeTags);
 
 	/// check consistency
 	QString checkConsistency(bool requireConsistentTags, bool requireConsistentFilename, bool ignoreCaseInFilename);

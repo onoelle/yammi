@@ -27,6 +27,7 @@ MyListView::MyListView(QWidget *parent, const char *name ) : QListView(parent,na
 	dragging=false;
 	dontTouchFirst=false;
 	sortedBy=0;
+  oldSortOrder=0;
 	this->parent=parent;
 	setItemMargin(2);	
 	connect(this->header(), SIGNAL(clicked(int)), this, SLOT(sortColumnChanged(int)));
@@ -75,6 +76,13 @@ void MyListView::contentsMousePressEvent ( QMouseEvent * e)
 				// start dragging
 //        cout << "dragging started\n";
 				dragging=true;
+
+        // do we have to disable sorting???
+        // as we possibly move items not according sort order?
+        // (can't move songs bug)
+        oldSortOrder=sortedBy;
+        setSorting(-1);
+        
 				dragStartedAtIndex=dragItem->itemPos();
 				setCursor(Qt::sizeVerCursor);
 				dragSong=((SongListItem*)dragItem)->song();
@@ -184,14 +192,26 @@ void MyListView::contentsMouseMoveEvent ( QMouseEvent * e)
 }
 
 
+/**
+ * Called on release of mouse button, possibly end of dragging a song.
+ */
 void MyListView::contentsMouseReleaseEvent ( QMouseEvent * e)
 {
 	if(dragging) {
 		dragging=false;
 		setCursor(Qt::arrowCursor);
 		// check, whether item really moved to new position
-		if(dragItem->itemPos()!=dragStartedAtIndex)
+		if(dragItem->itemPos()!=dragStartedAtIndex) {
 			gYammiGui->stopDragging();			// only invoke this, if dragSong was moved
+    }
+    // reset sort order (can't move songs bug)
+    bool asc=oldSortOrder>0;
+    if(!asc) {
+      oldSortOrder=-oldSortOrder;
+    }
+    int column=oldSortOrder-1;
+    setSorting(column);
 	}
 	QListView::contentsMouseReleaseEvent(e);
 }
+

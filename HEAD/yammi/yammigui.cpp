@@ -1503,10 +1503,10 @@ void YammiGui::addFolderContentSnappy()
       songListView->setSorting(COLUMN_TRACKNR);
     }
     else if(chosenFolder==folderRecentAdditions) {
-      cout << "setting sorting to added to...\n";
       songListView->setSorting(COLUMN_ADDED_TO);
     }
     else {
+      // default sort order: first column
       songListView->setSorting(0);
     }
 	}
@@ -2244,7 +2244,6 @@ void YammiGui::forSelection(action act)
   int sortedByBefore=0;
   if(act==Dequeue) {
     sortedByBefore=songListView->sortedBy;
-    qDebug("songListView->sortedBy: %i", sortedByBefore);
   }
 	// end of special treatment
 	
@@ -2360,7 +2359,8 @@ void YammiGui::forSelection(action act)
       if(!ascending) {
         sortedByBefore = -sortedByBefore;
       }
-      songListView->setSorting(sortedByBefore-1, ascending);
+      int column=sortedByBefore-1;
+      songListView->setSorting(column, ascending);
     }
 		checkPlaylistAvailability();
 	}

@@ -108,9 +108,11 @@ void FolderSorted::correctOrder()
 	songList->dirty=true;
 }
 
-// syncs the folder entries with the ones shown in the list
-// so far: only works if sorted after position
-// => only for sorted folders
+/**
+ * syncs the folder entries with the ones shown in the list
+ * so far: only works if sorted after position
+ * => only for sorted folders
+ */
 void FolderSorted::syncWithListView(MyListView* listView)
 {
 	songList->clear();		// don't use folder->clearSongs() as it affects the list!

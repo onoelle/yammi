@@ -46,6 +46,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, const char *name, bool mod
 	CheckBoxTagsConsistent->setChecked(config->tagsConsistent);
 	CheckBoxFilenamesConsistent->setChecked(config->filenamesConsistent);
 	CheckBoxIgnoreCaseInFilenames->setChecked(config->ignoreCaseInFilenames);
+	CheckBoxCapitalizeTags->setChecked(config->capitalizeTags);
 	LineEditCriticalSize->setText(QString("%1").arg(config->criticalSize));
 	LineEditSecondSoundDevice->setText(config->secondSoundDevice);
 	SpinBoxGroupThreshold->setValue(config->groupThreshold);
@@ -162,6 +163,7 @@ void PreferencesDialog::myAccept()
  	config->tagsConsistent=CheckBoxTagsConsistent->isChecked();
  	config->filenamesConsistent=CheckBoxFilenamesConsistent->isChecked();
  	config->ignoreCaseInFilenames=CheckBoxIgnoreCaseInFilenames->isChecked();
+ 	config->capitalizeTags=CheckBoxCapitalizeTags->isChecked();
  	if(config->childSafe && !CheckBoxChildSafe->isChecked()) {
  		bool ok;
  		QString passwd=QString(QInputDialog::getText( "password", "enter password", QLineEdit::Password, QString(""), &ok, this ));

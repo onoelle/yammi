@@ -2,7 +2,9 @@
 ??.09.2003 version 1.0
 - finished improving the icons (thanks to Sandra)
 - put prelisten toolbuttons in a separate toolbar
-- fixed sorting in "Recently Added" folder
+- fixed: sorting in "Recently Added" folder
+- fixed: scanning removable media: take directory from dialog, not settings
+- last try to fix "cannot move songs in playlist"-bug (apparently successful)
 
 
 ########################

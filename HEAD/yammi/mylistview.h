@@ -40,6 +40,7 @@ public:
 	
 	bool dragging;
 	int sortedBy;
+  int oldSortOrder;
 	bool dontTouchFirst;
 
 protected:
@@ -49,11 +50,6 @@ protected:
 	QListViewItem* dragItem;
 	QWidget* parent;
 
-/*
-	void contentsDragMoveEvent ( QDragMoveEvent* e );
-	void contentsDragEnterEvent ( QDragEnterEvent* e );
-	void contentsDragLeaveEvent ( QDragLeaveEvent* e );
-	*/
 	void contentsMouseMoveEvent ( QMouseEvent * e);
 	void contentsMousePressEvent ( QMouseEvent * e);
 	void contentsMouseReleaseEvent ( QMouseEvent * e);
