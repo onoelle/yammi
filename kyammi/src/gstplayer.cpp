@@ -3,35 +3,30 @@
 #include "songentry.h"
 #include "songentryint.h"
 
-/*
-TODO: Add some config stuff 
- - ElementFactory::make("osssink", "playAudio");
- */
-
 namespace Yammi {
 
 GstPlayer::GstPlayer(YammiModel* yammi) : MediaPlayer(yammi) {
         #ifdef ENABLE_GSTREAMER
-               unsigned int maj, min, mic;
-               kdDebug() << "GstPlayer::GstPlayer(YammiModel *yammi)" << endl;
-               //init GStreamer to check if it works
-               KDE::GST::GStreamer::init();
-               KDE::GST::GStreamer::version(&maj, &min, &mic);
-               kdDebug() << "GStreamer version " << maj << " " << min << " " << mic << endl; 
-               
+        unsigned int maj, min, mic;
+        kdDebug() << "GstPlayer::GstPlayer(YammiModel *yammi)" << endl;
+        //init GStreamer to check if it works
+        KDE::GST::GStreamer::init();
+        KDE::GST::GStreamer::version(&maj, &min, &mic);
+        kdDebug() << "GStreamer version " << maj << " " << min << " " << mic << endl;
+
         m_player = new KDE::GSTPlay::Play(KDE::GSTPlay::Play::PIPE_AUDIO_BUFFER_THREADED, this, "Play");
-        
+
         //if not osssink, we are that here to circumvent GSTPlay's seeking bug
-if(QString::compare(yammi->config()->audioSink,"osssink")) {
-kdDebug() << yammi->config()->audioSink << endl;
-audiosink = KDE::GST::ElementFactory::make(yammi->config()->audioSink, NULL);
-if(audiosink) {
-           m_player->setAudioSink(audiosink);
-} else {
-kdDebug() << yammi->config()->audioSink << " is not a valid GStreamer backend. Reverting to osssink." << endl;
-}
-}
-        
+        if(QString::compare(yammi->config()->audioSink,"osssink")) {
+            kdDebug() << yammi->config()->audioSink << endl;
+            audiosink = KDE::GST::ElementFactory::make(yammi->config()->audioSink, NULL);
+            if(audiosink) {
+                m_player->setAudioSink(audiosink);
+            } else {
+                kdDebug() << yammi->config()->audioSink << " is not a valid GStreamer backend. Reverting to osssink." << endl;
+            }
+        }
+
         kdDebug() << "GstPlayer: player created, using " << yammi->config()->audioSink << " as backend" << endl;
 
         //this will tell us our position in our stream
@@ -48,7 +43,7 @@ kdDebug() << yammi->config()->audioSink << " is not a valid GStreamer backend. R
         m_currentSong = 0;
         m_done = false;
         kdDebug() << "GstPlayer::GstPlayer(YammiModel *yammi) done!" << endl;
-        
+
     }
 
     GstPlayer::~GstPlayer() {
@@ -258,7 +253,8 @@ kdDebug() << yammi->config()->audioSink << " is not a valid GStreamer backend. R
 
         return true;
         #else
-
+        // just to prevent compiler warning
+        value++;
         return false;
         #endif
 
@@ -281,6 +277,9 @@ kdDebug() << yammi->config()->audioSink << " is not a valid GStreamer backend. R
     void GstPlayer::slotSetPosition(long long d) {
         #ifdef ENABLE_GSTREAMER
         m_positionNs = d;
+        #else
+        // just to prevent compiler warning
+        d++;
         #endif
 
     }
@@ -288,6 +287,9 @@ kdDebug() << yammi->config()->audioSink << " is not a valid GStreamer backend. R
     int GstPlayer::getCurrentTime() {
         #ifdef ENABLE_GSTREAMER
         return m_positionNs/1000000LL;
+        #else
+
+        return 0;
         #endif
 
     }
@@ -295,6 +297,9 @@ kdDebug() << yammi->config()->audioSink << " is not a valid GStreamer backend. R
     void GstPlayer::slotSetDuration(long long d) {
         #ifdef ENABLE_GSTREAMER
         m_durationNs = d;
+        #else
+        // just to prevent compiler warning
+        d++;
         #endif
 
     }
@@ -302,6 +307,9 @@ kdDebug() << yammi->config()->audioSink << " is not a valid GStreamer backend. R
     int GstPlayer::getTotalTime() {
         #ifdef ENABLE_GSTREAMER
         return m_durationNs/1000000LL;
+        #else
+
+        return 0;
         #endif
 
     }

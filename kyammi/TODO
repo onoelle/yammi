@@ -1,29 +1,37 @@
 TODO
 ----
-last update 24.02.2005
+last update 04.03.2005
+
 
 for version 1.2-final
 ---------------------
-IDEA
-- add unplayable songs to problematic songs?
 
 IN PROGRESS
 - finish: translations (italian, spanish) (add portuguese?)
-
-MUST-HAVE
-- fix transparency in prelisten icons
-- after database update: correct ordering in recent additions???
-
-- properly document tags consistent, filenames consistent and directories consistent mode
-- add: publish plugin for html-export
-- add: info message on first startup/on importing old database (or menu entry for importing?)
-- simplify {wish} system: (make every entry with empty filename (no media) a wish?
-- child safe mode?
 - proper screenshots for website / freshmeat
 
 
-NICE-TO-HAVE
-Idea: Database -> Statistics... dialog:
+for version 1.2.1
+-----------------
+- add: publish plugin for html-export
+- add: add unplayable songs to problematic songs
+- improve: simplify {wish} system: (make every entry with empty filename (no media) a wish?
+- improve: child safe mode?
+- saveFilename/renaming of file in song.cpp (there was something I can't remember)
+- implement onPlayed and afterPlayed plugin types
+- on deleting a song: delete in *all* lists (history, categories, ...)
+- improve: use dialog with textbox for properly displaying a plugin's command before executing
+media-player-related:
+- speedup startup by starting media players in own thread (noatun, xmms)
+- fix: skipForward in noatun while still crossfading: take current volume as start of crossfading
+- fix: xmms stopped, enqueue as next: does not work
+- rating of songs
+
+
+
+Ideas
+-----
+Database -> Statistics... dialog:
 - no songs
 - total time (days)
 - average time per song
@@ -34,25 +42,6 @@ Idea: Database -> Statistics... dialog:
 - no of artists
 - no of albums
 - ...history file: songs listened to?
-
-- song info dialog: disable ok button before any changes took place (filename check?)
-- review kde conformance:  
-  - replace all couts with kdDebug/kdWarn/kdError
-  - check lsm file
-- saveFilename/renaming of file in song.cpp (there was something I can't remember)
-- implement onPlayed and afterPlayed plugin types
-- on deleting a song: delete in *all* lists (history, categories, ...)
-- improve: use dialog with textbox for properly displaying a plugin's command before executing
-media-player-related:
-- speedup startup by starting media players in background (noatun, xmms)
-- fix: skipForward in noatun while still crossfading: take current volume as start of crossfading
-- fix: xmms stopped, enqueue as next: does not work
-
-for version 1.4
----------------
-- use a separate player thread for mediaplayer
-- rating of songs
-
 
 
 non-reproducable bugs

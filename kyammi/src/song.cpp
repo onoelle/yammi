@@ -750,6 +750,9 @@ QString Song::getSuffix() {
     } else {
         base=filename;
     }
+    if(filename=="!") {
+        return "!";
+    }
 
     int suffixLength=base.findRev('.');
     if(suffixLength==-1) {
@@ -846,7 +849,7 @@ QString Song::getSongAction(int index) {
  */
 QString Song::getReplacementsDescription() {
     QString msg;
-    msg+=i18n("{filename} (without path)\n)");
+    msg+=i18n("{filename} (without path)\n");
     msg+=i18n("{absoluteFilename} (including path)\n");
     msg+=i18n("{filenameWithoutSuffix} (without path, without suffix)\n");
     msg+=i18n("{suffix} (without leading dot)\n");
@@ -879,8 +882,14 @@ QString Song::replacePlaceholders(QString input, int index) {
     }
 
     // filename without suffix
+    QString filenameWithoutSuffix;
     int suffixPos = filename.findRev('.');
-    QString filenameWithoutSuffix = filename.left(suffixPos);
+    if(suffixPos == -1) {
+        filenameWithoutSuffix = filename;
+    }
+    else {
+        filenameWithoutSuffix = filename.left(suffixPos);
+    }
 
     // trackNr
     QString trackNrStr;

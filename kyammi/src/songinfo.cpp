@@ -17,63 +17,142 @@
 
 #include "songinfo.h"
 #include "song.h"
+#include "mylist.h"
 
 #include <kdebug.h>
 #include <klineedit.h>
 #include <qlabel.h>
 #include <qcombobox.h>
+#include <qcheckbox.h>
 #include <qpushbutton.h>
 
 
-SongInfo::SongInfo(QWidget *parent, Song* editSong) : SongInfoDialog(parent, "song info", true)
+SongInfo::SongInfo(QWidget* parent, MyList* selectedSongs) : SongInfoDialog(parent, "song info", true)
 {
-    if(editSong != 0) {
-        this->editSong = new Song();
-        this->editSong->updateReadableFields(editSong);
-        this->editSong->updateWritableFields(editSong);
-    }
-    else {
-        this->editSong = 0;
-    }
-    connect(LineEditArtist, SIGNAL(textChanged(const QString&)), this, SLOT(updateProposedFilename()));
-    connect(LineEditTitle, SIGNAL(textChanged(const QString&)), this, SLOT(updateProposedFilename()));
-    connect(LineEditAlbum, SIGNAL(textChanged(const QString&)), this, SLOT(updateProposedFilename()));
-    connect(LineEditComment, SIGNAL(textChanged(const QString&)), this, SLOT(updateProposedFilename()));
-    connect(LineEditTrack, SIGNAL(textChanged(const QString&)), this, SLOT(updateProposedFilename()));
-    connect(LineEditYear, SIGNAL(textChanged(const QString&)), this, SLOT(updateProposedFilename()));
-    connect(ComboBoxGenre, SIGNAL(textChanged(const QString&)), this, SLOT(updateProposedFilename()));
+    this->selectedSongs = selectedSongs;
 }
 
-void SongInfo::updateProposedFilename()
+void SongInfo::activateUpdates()
 {
-    if(editSong != 0) {
-        // only activated if single song info dialog
-        editSong->artist = LineEditArtist->text();
-        editSong->title = LineEditTitle->text();
-        editSong->album = LineEditAlbum->text();
-        editSong->comment = LineEditComment->text();
-        editSong->year = atoi(LineEditYear->text());
-        editSong->trackNr = atoi(LineEditTrack->text());
-        QString proposedFilename = editSong->constructFilename();
-        QString proposedPath = editSong->constructPath();
-        QColor color;
-        if(proposedFilename != editSong->filename) {
-            color.setNamedColor("red");
+    connect(LineEditArtist, SIGNAL(textChanged(const QString&)), this, SLOT(update()));
+    connect(LineEditTitle, SIGNAL(textChanged(const QString&)), this, SLOT(update()));
+    connect(LineEditAlbum, SIGNAL(textChanged(const QString&)), this, SLOT(update()));
+    connect(LineEditComment, SIGNAL(textChanged(const QString&)), this, SLOT(update()));
+    connect(LineEditTrack, SIGNAL(textChanged(const QString&)), this, SLOT(update()));
+    connect(LineEditYear, SIGNAL(textChanged(const QString&)), this, SLOT(update()));
+    connect(ComboBoxGenre, SIGNAL(textChanged(const QString&)), this, SLOT(update()));
+    connect(CheckBoxCorrectFilename, SIGNAL(stateChanged(int)), this, SLOT(update()));
+    connect(CheckBoxCorrectPath, SIGNAL(stateChanged(int)), this, SLOT(update()));
+    update();
+}
+
+/**
+ * update proposed filename/path and enabled state of OK button.
+ */
+void SongInfo::update()
+{
+    kdDebug() << "update() called" << endl;
+    
+    QString _proposedFilename;
+    QString _proposedPath;
+     
+    bool change = false;
+    bool firstSong = true;
+    bool filenameCorrections = false;
+    bool pathCorrections = false;
+    for(Song* s = selectedSongs->firstSong(); s; s = selectedSongs->nextSong()) {
+        Song* x = new Song();
+        x->updateReadableFields(s);
+        
+        if(applyChanges(x)) {
+            change = true;
         }
-        else {
-            color.setNamedColor("grey");
+        QString _constructedFilename = x->constructFilename();
+        QString _constructedPath = x->constructPath();
+        if(firstSong) {
+            _proposedFilename = _constructedFilename;
+            _proposedPath = _constructedPath;
+            firstSong = false;
         }
-        ReadOnlyProposedFilename->setPaletteForegroundColor(color);
-        ReadOnlyProposedFilename->setText(proposedFilename);
-        if(proposedPath != editSong->path) {
-            color.setNamedColor("red");
+        else {   
+            if(_proposedFilename != _constructedFilename)
+                _proposedFilename = "!";
+            if(_proposedPath != _constructedPath)
+                _proposedPath = "!";
         }
-        else {
-            color.setNamedColor("grey");
+        if(_constructedFilename != s->filename) {
+            filenameCorrections = true;
         }
-        ReadOnlyProposedPath->setPaletteForegroundColor(color);
-        ReadOnlyProposedPath->setText(proposedPath);
+        if(_constructedPath != s->path) {
+            pathCorrections = true;
+        }
     }
+    
+    QColor color;
+    if(filenameCorrections) {
+        color.setNamedColor("red");
+    }
+    else {
+        color.setNamedColor("grey");
+    }
+    ReadOnlyProposedFilename->setPaletteForegroundColor(color);
+    ReadOnlyProposedFilename->setText(_proposedFilename);
+    
+    if(pathCorrections) {
+        color.setNamedColor("red");
+    }
+    else {
+        color.setNamedColor("grey");
+    }
+    ReadOnlyProposedPath->setPaletteForegroundColor(color);
+    ReadOnlyProposedPath->setText(_proposedPath);
+    
+    if(change || (filenameCorrections && CheckBoxCorrectFilename->isChecked()) || (pathCorrections && CheckBoxCorrectPath->isChecked()) ) {
+        PushButtonOK->setEnabled(true);
+    }
+    else {
+        PushButtonOK->setEnabled(false);
+    }
+}
+
+bool SongInfo::applyChanges(Song* s) {
+    bool change = false;
+    if(LineEditArtist->text()!="!" && LineEditArtist->text()!=s->artist) {
+        s->artist = LineEditArtist->text();
+        change=true;
+    }
+    if(LineEditTitle->text()!="!" && LineEditTitle->text()!=s->title) {
+        s->title = LineEditTitle->text();
+        change=true;
+    }
+    if(LineEditAlbum->text()!="!" && LineEditAlbum->text()!=s->album) {
+        s->album = LineEditAlbum->text();
+        change=true;
+    }
+    if(LineEditComment->text()!="!" && LineEditComment->text()!=s->comment) {
+        s->comment = LineEditComment->text();
+        change=true;
+    }
+    if(LineEditYear->text()!="!") {
+        int tryYear=atoi(LineEditYear->text());
+        if(tryYear!=s->year) {
+            change=true;
+            s->year = tryYear;
+        }
+    }
+    if(LineEditTrack->text()!="!") {
+        int tryTrackNr=atoi(LineEditTrack->text());
+        if(tryTrackNr!=s->trackNr) {
+            change=true;
+            s->trackNr = tryTrackNr;
+        }
+    }
+    
+    if(ComboBoxGenre->currentText() != "!" && ComboBoxGenre->currentText() != s->genre) {
+        s->genre = ComboBoxGenre->currentText();
+        change=true;
+    }
+    return change;
 }
 
 SongInfo::~SongInfo(){

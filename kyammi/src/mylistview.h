@@ -30,32 +30,32 @@ class QKeyEvent;
   */
 
 class MyListView : public QListView  {
-   Q_OBJECT
-public: 
-	MyListView(QWidget *parent=0, const char *name=0);
-	~MyListView();
-	
-	bool dragging;
-	int sortedBy;
-  int oldSortOrder;
-	bool dontTouchFirst;
+    Q_OBJECT
+public:
+    MyListView(QWidget *parent=0, const char *name=0);
+    ~MyListView();
+
+    bool dragging;
+    int sortedBy;
+    int oldSortOrder;
+    bool dontTouchFirst;
     void simulateKeyPressEvent(QKeyEvent* e);
 
 protected:
-	Song* dragSong;
-	QPoint dragPoint;
-	int dragStartedAtIndex;
-	QListViewItem* dragItem;
-	QWidget* parent;
+    Song* dragSong;
+    QPoint dragPoint;
+    int dragStartedAtIndex;
+    QListViewItem* dragItem;
+    QWidget* parent;
 
-	void contentsMouseMoveEvent ( QMouseEvent * e);
-	void contentsMousePressEvent ( QMouseEvent * e);
-	void contentsMouseReleaseEvent ( QMouseEvent * e);
+    void contentsMouseMoveEvent ( QMouseEvent * e);
+    void contentsMousePressEvent ( QMouseEvent * e);
+    void contentsMouseReleaseEvent ( QMouseEvent * e);
 
 protected slots:
-	void simulateMouseMove();
+    void simulateMouseMove();
 public slots:
-	void sortColumnChanged(int column);
+    void sortColumnChanged(int column);
 };
 
 #endif

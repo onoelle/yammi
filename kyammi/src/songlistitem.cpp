@@ -190,7 +190,7 @@ int SongListItem::compare( QListViewItem *i, int visibleColumn, bool ascending )
 	}
 	const Song* s=song();
 	const Song* s2=other->song();
-  int column=gYammiGui->mapToRealColumn(visibleColumn-base);
+    int column=gYammiGui->mapToRealColumn(visibleColumn-base);
   // 0:artist, 1:title, 2:album
 	if(column==gYammiGui->COLUMN_LENGTH)
 		return s->length - s2->length;
@@ -199,7 +199,7 @@ int SongListItem::compare( QListViewItem *i, int visibleColumn, bool ascending )
 	if(column==gYammiGui->COLUMN_TRACKNR)
 		return s->trackNr - s2->trackNr;
 	if(column==gYammiGui->COLUMN_ADDED_TO)
-		return s->addedTo.secsTo(s2->addedTo);
+        return s->addedTo.secsTo(s2->addedTo);
 	if(column==gYammiGui->COLUMN_BITRATE)
 		return s->bitrate - s2->bitrate;
 	// 9:filename, 10:path, 11:comment

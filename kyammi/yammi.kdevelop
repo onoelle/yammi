@@ -3,7 +3,7 @@
   <general>
     <author>Oliver Nölle</author>
     <email>oli.noelle@web.de</email>
-    <version>1.2-rc2</version>
+    <version>1.2</version>
     <projectmanagement>KDevKDEAutoProject</projectmanagement>
     <primarylanguage>C++</primarylanguage>
     <keywords>

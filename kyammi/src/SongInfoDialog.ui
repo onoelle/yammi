@@ -1,4 +1,4 @@
-<!DOCTYPE UI><UI version="3.2" stdsetdef="1">
+<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
 <class>SongInfoDialog</class>
 <widget class="QDialog">
     <property name="name">
@@ -209,6 +209,9 @@
                     <property name="name">
                         <cstring>LineEditAddedTo</cstring>
                     </property>
+                    <property name="readOnly">
+                        <bool>true</bool>
+                    </property>
                     <property name="toolTip" stdset="0">
                         <string>Indicates the date when this song was added to the database</string>
                     </property>
@@ -350,7 +353,7 @@
                 <property name="spacing">
                     <number>3</number>
                 </property>
-                <widget class="QLabel" row="1" column="0">
+                <widget class="QLabel" row="1" column="0" rowspan="1" colspan="2">
                     <property name="name">
                         <cstring>LabelSize</cstring>
                     </property>
@@ -358,7 +361,7 @@
                         <string>Size</string>
                     </property>
                 </widget>
-                <widget class="QLabel" row="2" column="0">
+                <widget class="QLabel" row="2" column="0" rowspan="1" colspan="2">
                     <property name="name">
                         <cstring>LabelPath</cstring>
                     </property>
@@ -366,7 +369,7 @@
                         <string>Path</string>
                     </property>
                 </widget>
-                <widget class="QLabel" row="0" column="0">
+                <widget class="QLabel" row="0" column="0" rowspan="1" colspan="2">
                     <property name="name">
                         <cstring>LabelLength</cstring>
                     </property>
@@ -374,7 +377,7 @@
                         <string>Length</string>
                     </property>
                 </widget>
-                <widget class="QComboBox" row="0" column="4">
+                <widget class="QComboBox" row="0" column="5">
                     <property name="name">
                         <cstring>ComboBoxMedia</cstring>
                     </property>
@@ -390,7 +393,7 @@
                         <string>lists all media containing this song</string>
                     </property>
                 </widget>
-                <widget class="QLineEdit" row="1" column="4">
+                <widget class="QLineEdit" row="1" column="5">
                     <property name="name">
                         <cstring>ReadOnlyBitrate</cstring>
                     </property>
@@ -406,7 +409,7 @@
                         <bool>true</bool>
                     </property>
                 </widget>
-                <widget class="QLabel" row="0" column="3">
+                <widget class="QLabel" row="0" column="4">
                     <property name="name">
                         <cstring>LabelMedia</cstring>
                     </property>
@@ -417,7 +420,7 @@
                         <string>lists all media containing this song</string>
                     </property>
                 </widget>
-                <widget class="QLabel" row="1" column="3">
+                <widget class="QLabel" row="1" column="4">
                     <property name="name">
                         <cstring>LabelBitrate</cstring>
                     </property>
@@ -425,7 +428,7 @@
                         <string>Bitrate</string>
                     </property>
                 </widget>
-                <widget class="QLineEdit" row="1" column="1" rowspan="1" colspan="2">
+                <widget class="QLineEdit" row="1" column="2" rowspan="1" colspan="2">
                     <property name="name">
                         <cstring>ReadOnlySize</cstring>
                     </property>
@@ -433,7 +436,7 @@
                         <bool>true</bool>
                     </property>
                 </widget>
-                <widget class="QLineEdit" row="0" column="1" rowspan="1" colspan="2">
+                <widget class="QLineEdit" row="0" column="2" rowspan="1" colspan="2">
                     <property name="name">
                         <cstring>ReadOnlyLength</cstring>
                     </property>
@@ -441,7 +444,64 @@
                         <bool>true</bool>
                     </property>
                 </widget>
-                <spacer row="2" column="1">
+                <widget class="QLineEdit" row="5" column="3" rowspan="1" colspan="3">
+                    <property name="name">
+                        <cstring>ReadOnlyProposedFilename</cstring>
+                    </property>
+                    <property name="readOnly">
+                        <bool>true</bool>
+                    </property>
+                </widget>
+                <widget class="QLineEdit" row="4" column="3" rowspan="1" colspan="3">
+                    <property name="name">
+                        <cstring>ReadOnlyFilename</cstring>
+                    </property>
+                    <property name="readOnly">
+                        <bool>true</bool>
+                    </property>
+                </widget>
+                <widget class="QLineEdit" row="2" column="3" rowspan="1" colspan="3">
+                    <property name="name">
+                        <cstring>ReadOnlyPath</cstring>
+                    </property>
+                    <property name="readOnly">
+                        <bool>true</bool>
+                    </property>
+                </widget>
+                <widget class="QLineEdit" row="3" column="3" rowspan="1" colspan="3">
+                    <property name="name">
+                        <cstring>ReadOnlyProposedPath</cstring>
+                    </property>
+                    <property name="readOnly">
+                        <bool>true</bool>
+                    </property>
+                </widget>
+                <spacer row="0" column="0">
+                    <property name="name">
+                        <cstring>spacer1_4_2</cstring>
+                    </property>
+                    <property name="orientation">
+                        <enum>Horizontal</enum>
+                    </property>
+                    <property name="sizeType">
+                        <enum>Fixed</enum>
+                    </property>
+                    <property name="sizeHint">
+                        <size>
+                            <width>50</width>
+                            <height>20</height>
+                        </size>
+                    </property>
+                </spacer>
+                <widget class="QLabel" row="4" column="0" rowspan="1" colspan="3">
+                    <property name="name">
+                        <cstring>LabelFilename</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Filename</string>
+                    </property>
+                </widget>
+                <spacer row="2" column="2">
                     <property name="name">
                         <cstring>spacer1_4</cstring>
                     </property>
@@ -458,63 +518,54 @@
                         </size>
                     </property>
                 </spacer>
-                <widget class="QLabel" row="4" column="0" rowspan="1" colspan="2">
+                <widget class="QCheckBox" row="3" column="1" rowspan="1" colspan="2">
                     <property name="name">
-                        <cstring>LabelFilename</cstring>
+                        <cstring>CheckBoxCorrectPath</cstring>
                     </property>
                     <property name="text">
-                        <string>Filename</string>
+                        <string>correct to</string>
                     </property>
                 </widget>
-                <widget class="QLabel" row="3" column="0" rowspan="1" colspan="2">
+                <spacer row="3" column="0">
                     <property name="name">
-                        <cstring>LabelPath_2</cstring>
+                        <cstring>spacer1_4_3</cstring>
+                    </property>
+                    <property name="orientation">
+                        <enum>Horizontal</enum>
+                    </property>
+                    <property name="sizeType">
+                        <enum>Fixed</enum>
+                    </property>
+                    <property name="sizeHint">
+                        <size>
+                            <width>30</width>
+                            <height>20</height>
+                        </size>
+                    </property>
+                </spacer>
+                <spacer row="5" column="0">
+                    <property name="name">
+                        <cstring>spacer1_4_3_2</cstring>
+                    </property>
+                    <property name="orientation">
+                        <enum>Horizontal</enum>
+                    </property>
+                    <property name="sizeType">
+                        <enum>Fixed</enum>
+                    </property>
+                    <property name="sizeHint">
+                        <size>
+                            <width>30</width>
+                            <height>20</height>
+                        </size>
+                    </property>
+                </spacer>
+                <widget class="QCheckBox" row="5" column="1" rowspan="1" colspan="2">
+                    <property name="name">
+                        <cstring>CheckBoxCorrectFilename</cstring>
                     </property>
                     <property name="text">
-                        <string>proposed Path</string>
-                    </property>
-                </widget>
-                <widget class="QLabel" row="5" column="0" rowspan="1" colspan="2">
-                    <property name="name">
-                        <cstring>LabelProposedFilename</cstring>
-                    </property>
-                    <property name="text">
-                        <string>proposed Filename</string>
-                    </property>
-                    <property name="toolTip" stdset="0">
-                        <string>Shows the filename that Yammi would propose using the defined filename pattern.</string>
-                    </property>
-                </widget>
-                <widget class="QLineEdit" row="5" column="2" rowspan="1" colspan="3">
-                    <property name="name">
-                        <cstring>ReadOnlyProposedFilename</cstring>
-                    </property>
-                    <property name="readOnly">
-                        <bool>true</bool>
-                    </property>
-                </widget>
-                <widget class="QLineEdit" row="4" column="2" rowspan="1" colspan="3">
-                    <property name="name">
-                        <cstring>ReadOnlyFilename</cstring>
-                    </property>
-                    <property name="readOnly">
-                        <bool>true</bool>
-                    </property>
-                </widget>
-                <widget class="QLineEdit" row="3" column="2" rowspan="1" colspan="3">
-                    <property name="name">
-                        <cstring>ReadOnlyProposedPath</cstring>
-                    </property>
-                    <property name="readOnly">
-                        <bool>true</bool>
-                    </property>
-                </widget>
-                <widget class="QLineEdit" row="2" column="2" rowspan="1" colspan="3">
-                    <property name="name">
-                        <cstring>ReadOnlyPath</cstring>
-                    </property>
-                    <property name="readOnly">
-                        <bool>true</bool>
+                        <string>correct to</string>
                     </property>
                 </widget>
             </grid>

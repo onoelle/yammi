@@ -1976,7 +1976,7 @@ void YammiGui::forSelectionSongInfo( ) {
         return;
     }
 
-    QString _artist, _title, _album, _comment, _genre, _path, _filename, _year, _trackNr, _bitrate, _proposedFilename;
+    QString _artist, _title, _album, _comment, _genre, _path, _filename, _year, _trackNr, _bitrate, _proposedFilename, _proposedPath;
     MyDateTime _addedTo, _lastTimePlayed;
     int _length=0;
     long double _size=0;
@@ -1985,7 +1985,7 @@ void YammiGui::forSelectionSongInfo( ) {
     if(count == 1) {
         singleSong = selectedSongs.firstSong();
     }
-    SongInfo si(this, singleSong);
+    SongInfo si(this, &selectedSongs);
 
     // fill combobox with genres, but sort them first
     QStringList genreList;
@@ -2037,6 +2037,7 @@ void YammiGui::forSelectionSongInfo( ) {
             _bitrate=QString("%1 kb/s").arg(s->bitrate);
             _genre=s->genre;
             _proposedFilename=s->constructFilename();
+            _proposedPath=s->constructPath();
             _lastTimePlayed=s->lastPlayed;
         } else {
             if(_addedTo!=s->addedTo)
@@ -2063,6 +2064,8 @@ void YammiGui::forSelectionSongInfo( ) {
                 _genre="!";
             if(_proposedFilename!=s->constructFilename())
                 _proposedFilename="!";
+            if(_proposedPath!=s->constructPath())
+                _proposedPath="!";
             if(_lastTimePlayed!=s->lastPlayed)
                 _lastTimePlayed=invalid; //.setDate(QDate::fromString(""));
         }
@@ -2100,6 +2103,7 @@ void YammiGui::forSelectionSongInfo( ) {
     si.ReadOnlyPath->setText(_path);
     si.ReadOnlyFilename->setText(_filename);
     si.ReadOnlyProposedFilename->setText(_proposedFilename);
+    si.ReadOnlyProposedPath->setText(_proposedPath);
     if(selected>1) {
         si.LabelHeading->setText(QString(i18n("Mass editing: %1 songs")).arg(selected));
         si.LabelSize->setText(i18n("Size (total)"));
@@ -2119,8 +2123,11 @@ void YammiGui::forSelectionSongInfo( ) {
     }
     si.ReadOnlyBitrate->setText(_bitrate);
     si.ComboBoxGenre->setCurrentText(_genre);
+    si.CheckBoxCorrectFilename->setChecked(config()->filenamesConsistent);
+    si.CheckBoxCorrectPath->setChecked(config()->directoriesConsistent);
     
     // show dialog
+    si.activateUpdates();
     int result=si.exec();
     if(result!=QDialog::Accepted) {
         return;
@@ -2128,7 +2135,13 @@ void YammiGui::forSelectionSongInfo( ) {
     
     if(selected > 20) {
         QString msg("");
-        msg += QString("Your changes will affect %1 song entries").arg(selected);
+        msg += QString("Your changes will affect %1 song entries\n").arg(selected);
+        if(si.CheckBoxCorrectFilename->isChecked()) {
+            msg += "\nNote: Your changes will affect the filenames of all selected files!\n";
+        }
+        if(si.CheckBoxCorrectPath->isChecked()) {
+            msg += "\nNote: Your changes will affect the location of all selected files!\n";
+        }
         msg += "\n\nDo you want to continue?";
         if( KMessageBox::warningYesNo( this, msg) != KMessageBox::Yes ) {
             return;
@@ -2146,12 +2159,12 @@ void YammiGui::forSelectionSongInfo( ) {
             s->title=si.LineEditTitle->text();
             change=true;
         }
-        if(change) { 		// for artist and title: mark categories as dirty on change!
-            model->markPlaylists(s);
-        }
         if(si.LineEditAlbum->text()!="!" && si.LineEditAlbum->text()!=s->album) 		{
             s->album=si.LineEditAlbum->text();
             change=true;
+        }
+        if(change) { 		// for artist and title: mark categories as dirty on change!
+            model->markPlaylists(s);
         }
         if(si.LineEditComment->text()!="!" && si.LineEditComment->text()!=s->comment)	{
             s->comment=si.LineEditComment->text();
@@ -2171,14 +2184,6 @@ void YammiGui::forSelectionSongInfo( ) {
                 change=true;
             }
         }
-        MyDateTime newAddedTo;
-        newAddedTo.readFromString(si.LineEditAddedTo->text());
-        if(newAddedTo.isValid()) {
-            if(newAddedTo!=s->addedTo) {
-                s->addedTo=newAddedTo;
-                change=true;
-            }
-        }
 
         if(si.ComboBoxGenre->currentText() != "!" && si.ComboBoxGenre->currentText() != s->genre) {
             s->genre=si.ComboBoxGenre->currentText();
@@ -2186,17 +2191,11 @@ void YammiGui::forSelectionSongInfo( ) {
         }
 
         if(change) {
+            // changes in tags
             model->allSongsChanged(true);            
             if(config()->tagsConsistent) {
                 s->saveTags();
             }
-            if(config()->filenamesConsistent && s->checkFilename(config()->consistencyPara.ignoreCaseInFilenames)==false) {
-                s->correctFilename();
-            }
-            if(config()->directoriesConsistent && s->checkDirectory(config()->consistencyPara.ignoreCaseInFilenames)==false) {
-                s->correctPath();
-            }
-            
             // update affected songs in view
             for(SongListItem* i=(SongListItem*)songListView->firstChild(); i; i=(SongListItem*)i->itemBelow()) {
                 if(i->song()!=s) {
@@ -2205,6 +2204,15 @@ void YammiGui::forSelectionSongInfo( ) {
                 i->setColumns(i->songEntry);
             }
         }
+        
+        if(si.CheckBoxCorrectFilename->isChecked() && s->checkFilename(config()->consistencyPara.ignoreCaseInFilenames)==false) {
+            s->correctFilename();
+            model->allSongsChanged(true);
+        }
+        if(si.CheckBoxCorrectPath && s->checkDirectory(config()->consistencyPara.ignoreCaseInFilenames)==false) {
+            s->correctPath();
+            model->allSongsChanged(true);
+        }        
     }
 }
 
