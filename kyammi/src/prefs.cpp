@@ -168,7 +168,7 @@ bool Prefs::saveConfig( )
 	
 	cfg->writeEntry("scanDir", scanDir);
 	cfg->writeEntry("guessingMode", mediaPlayer);
-	
+	cfg->writeEntry("filenamePattern", filenamePattern);
 	
 	cfg->writeEntry("trashDir", trashDir );
 	cfg->writeEntry("doubleClickAction", (int)doubleClickAction);

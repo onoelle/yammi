@@ -91,7 +91,7 @@ which allows convenient and fast access to any songs.</description>
       <hidenonlocation>false</hidenonlocation>
     </groups>
     <tree>
-      <hidepatterns></hidepatterns>
+      <hidepatterns/>
       <hidenonprojectfiles>false</hidenonprojectfiles>
     </tree>
   </kdevfileview>

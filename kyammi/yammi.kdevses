@@ -1,15 +1,15 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
 <!DOCTYPE KDevPrjSession>
 <KDevPrjSession>
- <DocsAndViews NumberOfDocuments="11" >
+ <DocsAndViews NumberOfDocuments="14" >
   <Doc0 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/ChangeLog" >
-   <View0 line="15" Type="???" >
-    <AdditionalSettings Top="1" Width="1202" Attach="1" Height="795" Left="1" MinMaxMode="0" />
+   <View0 line="7" Type="???" >
+    <AdditionalSettings Top="1" Width="1203" Attach="1" Height="795" Left="1" MinMaxMode="0" />
    </View0>
   </Doc0>
   <Doc1 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/TODO" >
-   <View0 line="9" Type="???" >
-    <AdditionalSettings Top="1" Width="1202" Attach="1" Height="811" Left="1" MinMaxMode="0" />
+   <View0 line="26" Type="???" >
+    <AdditionalSettings Top="1" Width="1203" Attach="1" Height="795" Left="1" MinMaxMode="0" />
    </View0>
   </Doc1>
   <Doc2 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/MyYammiHowto.txt" >
@@ -28,35 +28,50 @@
    </View0>
   </Doc4>
   <Doc5 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/src/xmmsplayer.cpp" >
-   <View0 line="451" Type="???" >
+   <View0 line="324" Type="???" >
     <AdditionalSettings Top="1" Width="1203" Attach="1" Height="795" Left="1" MinMaxMode="0" />
    </View0>
   </Doc5>
   <Doc6 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/src/yammigui.h" >
-   <View0 line="56" Type="???" >
+   <View0 line="62" Type="???" >
     <AdditionalSettings Top="1" Width="1203" Attach="1" Height="795" Left="1" MinMaxMode="0" />
    </View0>
   </Doc6>
   <Doc7 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/src/yammigui.cpp" >
-   <View0 line="1697" Type="???" >
+   <View0 line="3498" Type="???" >
     <AdditionalSettings Top="1" Width="1203" Attach="1" Height="795" Left="1" MinMaxMode="0" />
    </View0>
   </Doc7>
-  <Doc8 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/src/folder.cpp" >
-   <View0 line="159" Type="???" >
+  <Doc8 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/src/xmmsplayer.h" >
+   <View0 line="36" Type="???" >
     <AdditionalSettings Top="1" Width="1203" Attach="1" Height="795" Left="1" MinMaxMode="0" />
    </View0>
   </Doc8>
-  <Doc9 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/src/xmmsplayer.h" >
-   <View0 line="53" Type="???" >
-    <AdditionalSettings Top="1" Width="1203" Attach="1" Height="795" Left="1" MinMaxMode="0" />
+  <Doc9 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/src/xmmsctrl.h" >
+   <View0 line="30" Type="???" >
+    <AdditionalSettings Top="1" Width="1204" Attach="1" Height="795" Left="1" MinMaxMode="0" />
    </View0>
   </Doc9>
-  <Doc10 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/src/xmmsplayer.moc.cpp" >
-   <View0 line="166" Type="???" >
+  <Doc10 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/src/yammiui.rc" >
+   <View0 line="56" Type="???" >
     <AdditionalSettings Top="1" Width="1203" Attach="1" Height="795" Left="1" MinMaxMode="0" />
    </View0>
   </Doc10>
+  <Doc11 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/debug/src/icons/Makefile" >
+   <View0 line="0" Type="???" >
+    <AdditionalSettings Top="1" Width="1203" Attach="1" Height="795" Left="1" MinMaxMode="0" />
+   </View0>
+  </Doc11>
+  <Doc12 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/src/icons/Makefile.am" >
+   <View0 line="10" Type="???" >
+    <AdditionalSettings Top="1" Width="1203" Attach="1" Height="795" Left="1" MinMaxMode="0" />
+   </View0>
+  </Doc12>
+  <Doc13 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/src/yammidcopiface.h" >
+   <View0 line="20" Type="???" >
+    <AdditionalSettings Top="1" Width="1203" Attach="1" Height="795" Left="1" MinMaxMode="0" />
+   </View0>
+  </Doc13>
  </DocsAndViews>
  <pluginList>
   <kdevbookmarks>

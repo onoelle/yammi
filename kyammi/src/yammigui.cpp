@@ -108,7 +108,7 @@ static QString columnName[] = { i18n("Artist"), i18n("Title"), i18n("Album"), i1
 extern YammiGui* gYammiGui;
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-YammiGui::YammiGui() : /* DCOP: DCOPObject("YammiPlayer"),*/ KMainWindow( ) {
+YammiGui::YammiGui() : DCOPObject("YammiPlayer"), KMainWindow( ) {
 
     //FIXME Warning!!!! gYammiGui is (should) be set in main, but there are calls in *this* constructor
     // that rely on the variable pointing to the yammi instance.. since the variable in main gets assigned
@@ -181,6 +181,9 @@ void YammiGui::loadDatabase(QString databaseDir) {
 		if(databaseDir.isNull()) {
 			databaseDir=(KGlobal::dirs()->saveLocation("appdata"));
 		}
+	}
+	if(!databaseDir.endsWith("/")) {
+		databaseDir+="/";
 	}
 	kdDebug() << "trying to load database from directory " << databaseDir << endl;
 	QDir d(databaseDir);

@@ -5,14 +5,22 @@ last update 19.07.2004
 
 for version 1.2-beta
 --------------------
+in progress:
+- update and publish yammi handbook (switch from sgml to docbook format)
+
+planned:
+- save playlist (+ song position) on shutdown
 - BUG: cannot sort files according to path => cannot reproduce this bug on my system
+- FIX: progress dialog on scanning harddisk disappears
+- re-add: enqueue(asnext) (random) and "shuffle playlist"
+- search for similar: put the search text into the search field
+- CHECK: umlaute in tags?
+- FIX: file pattern to import
 - improve: wishlist items
-- define and execute smoke tests
-- check/resolve bugs on sf
+- define and execute smoke tests (write little script with all configure options)
 - check all TODOs / FIXMEs
 - child safe mode?
 - keep tags consistent mode?
-- update and publish yammi handbook (switch from sgml to docbook format)
 - create a yammi entry on www.kde-apps.org
 - handle unplayable files (wishes, text files) => 1. dequeue on second position or 2. introduce file types and different behaviour
 check kde conformance:  
@@ -61,7 +69,7 @@ for version 1.4
 - amarok support?
 - use Scott Wheelers taglib for reading metadata
 - use a player thread for mediaplayer
-- rating of tracks
+- rating of songs
 - allow subfolders for categories?
 
 

@@ -202,6 +202,148 @@ to your song collection, your speakers or your neighbour...
 
 </chapter>
 
+
+
+<chapter id="install">
+<title>Installation</title>
+
+<sect1 id="getyammi">
+<title>How to obtain Yammi</title>
+<para>
+Give it a try at <ulink url="http://yammi.sourceforge.net">The Yammi Homepage</ulink>.
+</para>
+</sect1>
+
+
+<sect1>
+<title>Requirements</title>
+<sect2>
+<title>Mandatory</title>
+<para>
+- <ulink url="http://www.trolltech.com/products/qt/">Trolltech's QT</ulink>, version 3.x
+
+- libstdc++
+</para>
+</sect2>
+
+<sect2>
+<title>Optional (but recommended)</title>
+<para>
+For reading id3 tags: <ulink url="http://www.id3lib.org">id3lib</ulink>, version 3.8.2 or higher
+(recommended: newest version).
+(-lid3 -lz)
+
+For reading ogg tags and layer information: 
+<ulink url="http://www.vorbis.com/download_unix.psp">libvorbis, libvorbisfile and libogg</ulink>
+(-lvorbisfile -lvorbis -logg)
+
+For XMMS support:
+<ulink url="http://www.xmms.org">XMMS</ulink>, version 1.2.6 or later
+and glib (-lgtk -lgdk -lgmodule -lglib -ldl -lXi -lXext -lX11 -lm -lxmms)
+
+
+For listening to songs on a second soundcard during playback on your primary soundcard
+you need the command line tools mpg123 (for mp3 files), ogg123 (for ogg files) or play (for wav files).
+
+If you want to use the ripping and encoding function offered from within yammi,
+you need cdparanoia and (not)lame or other ripping/encoding tools, for details have a look
+at the script "yammiGrabAndEncode" included in the distribution.
+
+If you want to use certain plugins you might need other programs
+(such as k3b for the "Burn with K3b" plugins or cdlabelgen for the "Create CD Label" plugin).
+</para>
+</sect2>
+
+<sect2>
+<title>...for compiling from source</title>
+<para>
+If you want to compile Yammi from source, you need additionally to the above
+mentioned requirements the following packages installed:
+
+Mandatory:
+- Xfree86-devel
+
+- qt3-devel
+
+For reading id3 tags:
+
+libz - sources
+
+For reading ogg tags and layer information: 
+
+libvorbis-dev
+
+For XMMS support:
+
+xmms-devel
+</para>
+</sect2>
+</sect1>
+
+
+
+<sect1>
+<title>Compilation and installation</title>
+<para>
+Before compilation, verify that an environment variable named "KDEDIR" points to your KDE installation
+(to check, type "export" in a shell and verify that KDEDIR is set to the proper directory).
+If this variable is not set, proper installation into the correct directories cannot be guaranteed,
+and your most likely better off to type "export KDEDIR=/opt/kde3" to set this variable (using a bash and assuming that KDE was installed to /opt/kde3).
+
+In order to compile and install Yammi on your system, type the following in
+the base directory of the Yammi distribution:
+
+% ./configure
+% make
+% make install
+
+If compilation is successful, the executable "yammi" and some other files will be installed to your KDE directories.
+</para>
+</sect1>
+
+<sect1>
+<title>Problems</title>
+<para>
+If you experience problems with compiling or installing, please consult the README file
+included in the distribution
+which explains various switches for the configure script that might be necessary on your system.
+
+If you still experience problems, try contacting the developers, not only including information
+about the problem, but also about your system configuration. If possible, attach the
+console log of configure and make.
+</para>
+</sect1>
+
+<sect1>
+<title>Deinstallation</title>
+<para>
+In the base directory of the yammi distribution, type
+
+% make uninstall
+</para>
+</sect1>
+
+<sect1>
+<title>Starting the first time</title>
+<para>
+After successful installation, you can start yammi by typing "yammi" in a shell
+(if you encounter any problems or want to know what's going on it helps to have
+a look at the terminal output that yammi creates on the console).
+On first startup, yammi will create some files (usually, in ~/.kde/share/apps/yammi) 
+to store your song database, preferences settings and logfiles.
+Before you start scanning your harddisk for songs, you should edit the preferences
+(Configure -> Settings...) and set the paths to the location of your song collection.
+</para>
+</sect1>
+
+</chapter>
+
+
+
+
+
+
+
 <chapter id="using-yammi">
 <title>Using &yammi;</title>
 

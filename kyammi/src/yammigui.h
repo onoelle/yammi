@@ -27,7 +27,7 @@
 #include "options.h"
 #include "prefs.h"
 #include "mylist.h"
-//#include "yammidcopiface.h"
+#include "yammidcopiface.h"
 
 
 
@@ -60,7 +60,7 @@ class SearchThread;
  *
  * ...still way to big and unordered...cleaning in progress (luis and oliver)
  */
-class YammiGui : public KMainWindow // DCOP, virtual public YammiDcopIface
+class YammiGui : public KMainWindow, virtual public YammiDcopIface
 {
 	Q_OBJECT
 public:
