@@ -1940,86 +1940,103 @@ void YammiGui::onTimer()
     
 				
 		if(currentFile!=file) {
-		// *** song change detected ***
-		// ****************************
-			if(songListView->dragging)
-				stopDragging();
-			
-			currentFile=file;
-			if(songsUntilShutdown>0) {
-				songsUntilShutdown--;
-				sleepModeSpinBox->setValue(songsUntilShutdown);
-				if(songsUntilShutdown==0) {
-					cout << "shutting down now...\n";
-					shutDown();
-				}
-			}
-			
-			// check, whether we put last song in folder songsPlayed
-			if(currentSong!=0) {
-				MyDateTime now;
+      songChange(currentSong, file);
+    }  	
+	}
+	else {				// player stopped
+    if(songSlider->value()!=0) {
+      // player has just stopped
+      cout << "player stopped!\n";
+      songChange(currentSong, "");
+      tbPlayPause->setIconSet(QIconSet(QPixmap((const char**)play_xpm)));            
+    }
+    else {
+      // player is still stopped => nothing to do...      
+      if(songsUntilShutdown>0) {
+        // change this???
+        // we assume end of playlist and therefore shutdown (almost) immediately
+        songsUntilShutdown--;
+        sleepModeSpinBox->setValue(songsUntilShutdown);
+        if(songsUntilShutdown<=0) {
+          cout << "shutting down now...\n";
+          shutDown();
+        }
+      }
+    }
+	}
+}
+
+
+/**
+ * lastSong is 0 if not in database or no last song
+ * newFile is empty if no new song (=player stopped)
+ */
+void YammiGui::songChange(Song* lastSong, QString newFile)
+{
+  if(songListView->dragging)
+    stopDragging();
+
+  currentFile=newFile;
+  if(songsUntilShutdown>0) {
+    songsUntilShutdown--;
+    sleepModeSpinBox->setValue(songsUntilShutdown);
+		if(songsUntilShutdown==0) {
+			cout << "shutting down now...\n";
+			shutDown();
+		}
+  }
+
+	// check, whether we put last song in folder songsPlayed
+	if(lastSong!=0) {
+		MyDateTime now;
 //				int playTime=currentSongStarted.secsTo(now);
 //				cout << "song length: " << currentSong->length << "\n";
 //				cout << "playTime: " << playTime << "\n";
 //				int x=100*(playTime+10)/currentSong->length;
 //				cout << "quotient x: " << x << "\n";
-				if(true) {
-					// eg. more than 60% of the song was played => put it into songsPlayed
-					SongEntryTimestamp* entry=new SongEntryTimestamp(currentSong, &currentSongStarted);
-					currentSong->lastPlayed=entry->timestamp;
-					folderSongsPlayed->addEntry(entry);		// append to songsPlayed
-				}
-			}
-			currentSong=model->getSongFromFilename(file);
-			currentSongStarted=currentSongStarted.currentDateTime();
-
-      // setup songSlider
-			int totalTime=player->getTotalTime();
-			songSlider->setRange(0, totalTime);
-			songSlider->setTickInterval(1000*60);
-
-			// song entry found
-			if(currentSong!=0) {		  					
-				// set title to currently played song
-				setCaption("Yammi: "+currentSong->displayName());
-			}
-			else {				// song not found in database
-				setCaption("Yammi - song not in database");
-			}	
-			
-			// remove played song(s) from player's and yammi's playlist
-      player->removePlayed();
-		  folderActual->correctOrder();
-		  	
-		  // should just check and fill up, not change anything:
-		  player->syncYammi2Player(false);
-
-			// update view, if folderActual is currently shown folder
-			if(chosenFolder==folderActual)
-				slotFolderChanged();
-			else
-				songListView->triggerUpdate();					
-
+    if(true) {
+			// eg. more than 60% of the song was played => put it into songsPlayed
+			SongEntryTimestamp* entry=new SongEntryTimestamp(lastSong, &currentSongStarted);
+			lastSong->lastPlayed=entry->timestamp;
+			folderSongsPlayed->addEntry(entry);		// append to songsPlayed
 		}
-		// *** end of song change ***
-		// **************************
-  	
-	}
-	else {				// player stopped
-    tbPlayPause->setIconSet(QIconSet(QPixmap((const char**)play_xpm)));
-		setCaption("Yammi - not playing");
-		currentFile="";
-		currentSong=0;
-		if(songsUntilShutdown>0) {
-			// change this!!! ???
-			// we assume end of playlist and therefore shutdown (almost) immediately
-			songsUntilShutdown--;
-			if(songsUntilShutdown<=0) {
-				cout << "shutting down now...\n";
-				shutDown();
-			}
-		}
-	}
+  }
+  if(newFile!="") {
+    currentSong=model->getSongFromFilename(newFile);
+    currentSongStarted=currentSongStarted.currentDateTime();
+
+    // song entry found
+    if(currentSong!=0) {
+      // set title to currently played song
+      setCaption("Yammi: "+currentSong->displayName());
+    }
+    else {				// song not found in database
+      setCaption("Yammi - song not in database");
+    }
+    // setup songSlider
+    int totalTime=player->getTotalTime();
+    songSlider->setRange(0, totalTime);
+    songSlider->setTickInterval(1000*60);
+  }
+  else {
+    setCaption("Yammi - not playing");
+    currentSong=0;
+    songSlider->setValue(0);
+  }
+
+
+	// remove played song(s) from player's and yammi's playlist
+  player->removePlayed();
+	folderActual->correctOrder();
+
+	// should just check and fill up, not change anything:
+	player->syncYammi2Player(false);
+
+	// update view, if folderActual is currently shown folder
+	if(chosenFolder==folderActual)
+		slotFolderChanged();
+	else
+		songListView->triggerUpdate();
 }
 
 
@@ -2630,3 +2647,34 @@ void YammiGui::skipBackward()
 {
   player->skipBackward(shiftPressed);
 }
+
+
+
+void YammiGui::saveState(QSessionManager& sm )
+{
+  cout << "saveState() called\n";
+}
+
+void YammiGui::commitData(QSessionManager& sm )
+{
+  cout << "commitData() called\n";
+  if ( sm.allowsInteraction() ) {
+    switch ( QMessageBox::warning(this, "Yammi", "Save changes?", "&Yes", "&No", "Cancel", 0, 2) ) {
+      case 0: // yes
+        sm.release();
+        // save document here; if saving fails, call sm.cancel()
+        break;
+      case 1: // continue without saving
+        break;
+      default: // cancel
+        sm.cancel();
+        break;
+    }
+  }
+  else {
+    cout << "no interaction allowed\n";
+    // we did not get permission to interact, then
+    // do something reasonable instead.
+  }
+}
+

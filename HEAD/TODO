@@ -16,7 +16,8 @@ KNOWN BUGS
 
 for release 0.7beta
 -------------------
-- dialog box for checking consistency options
+- lineedit: double key events???
+- session management: commitData: finish!
 - test jukebox functionality
 - update database: more information+statistics at the end
 - update database: select a single file
@@ -25,6 +26,7 @@ for release 0.7beta
 
 for release 0.7
 ---------------
+- dialog box for checking consistency options
 - -l lib issue??? configure script???
 - saving ogg tags
 - on deleting a song: delete in all lists (history, categories, ...)

@@ -26,6 +26,7 @@
 #include <iostream.h>
 
 // qt includes (non gui)
+#include <qsessionmanager.h>
 #include <qapplication.h>
 #include <qheader.h>
 #include <qregexp.h>
@@ -109,7 +110,12 @@ public:
 	void			stopDragging();
   YammiModel* getModel() { return model; };
 
+  void      commitData(QSessionManager& sm);
+  void      saveState(QSessionManager& sm);
+
 protected:
+  
+  void      songChange(Song* lastSong, QString newFile);
   void      readSettings();
   void      writeSettings();
   void      moveEvent(QMoveEvent* e)         { updateGeometrySettings(); }

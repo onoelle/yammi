@@ -7,6 +7,7 @@
 #include <qapplication.h>
 #include <qwindowsstyle.h>
 #include "yammigui.h"
+#include "yammiapplication.h"
 
 // global pointer to YammiGui
 YammiGui* gYammiGui;
@@ -16,7 +17,7 @@ YammiGui* gYammiGui;
  */
 int main( int argc, char **argv )
 {
-	QApplication application( argc, argv );
+	YammiApplication application( argc, argv );
 //	QApplication::setStyle(new QWindowsStyle());
 	// initialize gui
 	YammiGui gui;
