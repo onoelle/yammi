@@ -3,7 +3,7 @@
   <general>
     <author>Oliver Nölle</author>
     <email>oli.noelle@web.de</email>
-    <version>1.2-alpha</version>
+    <version>1.2-alpha-2</version>
     <projectmanagement>KDevKDEAutoProject</projectmanagement>
     <primarylanguage>C++</primarylanguage>
     <keywords>
@@ -91,7 +91,7 @@ which allows convenient and fast access to any songs.</description>
       <hidenonlocation>false</hidenonlocation>
     </groups>
     <tree>
-      <hidepatterns></hidepatterns>
+      <hidepatterns/>
       <hidenonprojectfiles>false</hidenonprojectfiles>
     </tree>
   </kdevfileview>
@@ -143,11 +143,11 @@ which allows convenient and fast access to any songs.</description>
   <kdevdebugger>
     <general>
       <dbgshell>libtool</dbgshell>
-      <programargs/>
-      <gdbpath/>
-      <configGdbScript/>
-      <runShellScript/>
-      <runGdbScript/>
+      <programargs></programargs>
+      <gdbpath></gdbpath>
+      <configGdbScript></configGdbScript>
+      <runShellScript></runShellScript>
+      <runGdbScript></runGdbScript>
       <breakonloadinglibs>true</breakonloadinglibs>
       <separatetty>false</separatetty>
       <floatingtoolbar>false</floatingtoolbar>
@@ -195,18 +195,18 @@ which allows convenient and fast access to any songs.</description>
     <archname/>
     <appname>yammi</appname>
     <version>1.2-alpha</version>
-    <release/>
-    <vendor/>
+    <release>1.2-alpha</release>
+    <vendor>oliver.noelle</vendor>
     <licence>GPL</licence>
     <summary>Yet Another Music Manager I...</summary>
     <group>Multimedia</group>
     <packager>Oliver Noelle</packager>
-    <description/>
-    <changelog/>
+    <description>Yet Another Music Manager I...</description>
+    <changelog>kde-ified Yammi</changelog>
     <devpackage>false</devpackage>
     <docspackage>false</docspackage>
     <appicon>false</appicon>
-    <arch>1</arch>
+    <arch>0</arch>
     <genHTML>false</genHTML>
     <useRPM>false</useRPM>
     <ftpkde>false</ftpkde>

@@ -298,18 +298,19 @@ void YammiModel::saveCategories() {
 void YammiModel::readSongDatabase(  ) {
 
     //FIXME - initialize model first!
-    kdDebug()<<"reading song database : db=" << m_yammi->config( ).dbFile << endl;
+    kdDebug() << "reading song database at: " << m_yammi->config( ).dbFile << endl;
     QFile f( m_yammi->config( ).dbFile );
     if( !f.open(IO_ReadOnly) ) {
-        kdDebug() << "Could not open data base file. Checking at old location..." << QDir::homeDirPath() << "/.yammi/songdb.xml" << endl;
         f.setName( QDir::homeDirPath() + "/.yammi/songdb.xml" );
-        if( f.exists( ) && f.open(IO_ReadOnly) ) {//move db to new location (kde)
-            kdDebug()<<"reading DB from "<<f.name()<<endl;
+        kdDebug() << "Could not open database file, checking at old location: " << f.name() << endl;
+        if( f.exists( ) && f.open(IO_ReadOnly) ) {
+            kdDebug() << "reading database from old location (" << f.name() << ")\n";
         } else {
-            QString msg( i18n( "The Song Database file could not be opened.\n\
+			// TODO: appropriate info message, the following makes yammi crash...
+/*            QString msg( i18n( "The Song Database file could not be opened.\n\
                                Please edit the settings (Settings -> Configure Yammi ...) and set the path to your Song Database\
-                               or perform a harddisk scan to create a new Database") );
-            KMessageBox::error( 0L, msg, i18n("Error opening Song Database") );
+                               or perform a harddisk scan to create a new Database") ); 
+            KMessageBox::sorry( 0, i18n("No Song database found, please scan your harddisk"), i18n("Error opening Song Database") ); */
             return;
         }
     }
@@ -331,7 +332,7 @@ void YammiModel::readSongDatabase(  ) {
         QString msg( i18n("Your Song Database seems to be very old.\n You might need to create \
                           a new Database and scan your harddisk for songs") );
         KMessageBox::sorry( 0L, msg, i18n("Unknown Song Database version") );
-        //try to continue anyways...?
+        //try to continue anyway...?
     }
 
     int total = root.attribute("count", "0").toInt( );
@@ -384,7 +385,7 @@ void YammiModel::readSongDatabase(  ) {
         e = e.nextSibling().toElement();
         count++;
     }
-    kdDebug()<<"Read "<<count<<" songs from DB. ( allSongs = "<<allSongs.count()<<" )"<<endl;
+    kdDebug() << "Read " << count << " songs from database. ( allSongs = " << allSongs.count() << " )" << endl;
     allSongsChanged( false );
 }
 

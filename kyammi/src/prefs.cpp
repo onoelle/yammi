@@ -22,6 +22,7 @@
 #include <kconfig.h>
 
 #include "options.h"
+#include "config.h"
 
 #include <kdebug.h>
 
@@ -40,7 +41,7 @@ void Prefs::setDefaultValues(void) {
 	// media player: 0=XMMS, 1=Noatun, 2=Arts
 	mediaPlayer = MEDIA_PLAYER_ARTSPLAYER;
 
-	yammiVersion = "1.2-alpha";
+	yammiVersion = VERSION;
 	dbFile = KGlobal::dirs()->findResource("appdata","songdb.xml");
 	trashDir = QDir::homeDirPath() + "/Desktop/Trash";
 	scanDir = "/mp3/inbox/";

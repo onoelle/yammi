@@ -1,3 +1,7 @@
+07.06.2004 version 1.2-alpha-2
+##############################
+- fixed: a bug that caused a crash when yammi was started without any existing song database
+
 06.06.2004 version 1.2-alpha
 ############################
 MAJOR CHANGES:

@@ -173,14 +173,15 @@ void YammiGui::loadDatabase( const QString &db ) {
     if(!db.isEmpty()) {
         m_config.dbFile = db;
     }
-    model->readSongDatabase();
+	model->readSongDatabase();
     model->readCategories();
     model->readHistory();
     //update dynamic folders based on database contents
     updateView(true);
     KConfig *cfg = kapp->config();
     cfg->setGroup("General Options");
-    Folder* f=getFolderByName(cfg->readEntry("CurrentFolder"));
+
+	Folder* f=getFolderByName(cfg->readEntry("CurrentFolder"));
     if(f == 0) {
         f=folderAll;
     }

@@ -1,6 +1,6 @@
 TODO
 ----
-last update 06.06.2004
+last update 07.06.2004
 
 
 for version 1.2-beta
@@ -41,6 +41,9 @@ check kde conformance:
 - comment in replacements?
 - check dialog spacing & co (eg. guessing pattern!)
 - fix i18n strings to be ready for internationalization
+- fix: 0-length ogg file makes yammi crash?
+- fix: appropriate info messages on first startup/on importing old database
+- fix: appropriate default size for yammi window on first startup
 
 for version 1.2
 ---------------
@@ -64,6 +67,8 @@ ideas (for which I probably don't have the time to implement)
 #############################################################
 enhancements
 ------------
+- music brainz support for tagging
+- use audiocd kio slave for ripping?
 - history of visited folders + "go back/go forward" buttons
 - any ripping plugin? have a look at existing ripping programs suitable to be called as plugin
 - xml export plugin?
