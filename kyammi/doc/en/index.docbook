@@ -866,34 +866,38 @@ Only some options are explained here, the rest should be self-explanatory if you
 provided tool tips (stay over an item with the mouse for a while).
 </para><para>
 
-Consistency Mode (this setting is disable at the moment)
+Consistency Mode Settings
 </para><para>
 
-<!--
-These settings determine, whether Yammi checks and modifies the id3 or ogg tags
-and filenames of your song collection. If both are activated this has the following effect:
-</para><para>
+These settings determine, whether Yammi modifies the meta info in your files or
+renames or moves them when you change
+any attributes (eg. the title or artist) in the song info dialog.
 
-If you change eg. the title of a song via Yammi's song info dialog, Yammi will
-not only change the entry in its internal database, but also
-the id3 or ogg tags and the filename accordingly the next time it saves its database.
-Yammi uses the schema "artist - title.mp3" (or .ogg) for naming the files,
-but first tries to remove all characters that are possibly not allowed in
-filenames (on linux as well as windows (vfat) file systems),
-however no guarantee can be given that "strange" artist or title entries
-don't cause any problems with naming the files...
-Please let me know about problems concerning the naming of files so I can try to fix them.
+</para><para>
+save tags immediately
+</para><para>
+When enabled, Yammi will immediately save all tags to the file (if possible) after altering any attributes in the song info dialog.
+
+</para><para>
+keep filenames consistent
+</para><para>
+When enabled, Yammi will rename your files (if necessary) to keep the filenames consistent with the configured filename pattern after altering relevant attributes in the song info dialog.
+
+</para><para>
+keep directories consistent
+</para><para>
+When enabled, Yammi will move your files (if necessary) to keep the directory consistent with the configured directory pattern after altering relevant attributes in the song info dialog.
+
 </para><para>
 
 If you don't want Yammi to touch your song files in any way, you should
 leave these two settings disabled!
 However, for easy organizing your song files I found it extremely useful
-to have consistent filenames and tags at any time.
+to have consistent filenames, directories and tags at any time.
 </para><para>
 
 See also "Checking consistency" in "Advanced topics".
 </para><para>
--->
 
 Group Threshold
 </para><para>

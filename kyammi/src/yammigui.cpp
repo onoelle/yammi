@@ -68,6 +68,7 @@
 #include <qpopupmenu.h>
 #include <qlistview.h>
 #include <qtooltip.h>
+#include <qcombobox.h>
 
 
 #include "yammimodel.h"
@@ -1134,7 +1135,7 @@ void YammiGui::goToFolder(int what) {
         break;
 
     case 3:
-        folderName=TStringToQString(TagLib::ID3v1::genre(s->genreNr));
+        folderName=s->genre;
         if(folderName == "") {
             folderName = "- no genre -";
         }
@@ -1364,14 +1365,12 @@ void YammiGui::slotSongChanged() {}
 /// rmb on songlist: song popup for selection
 void YammiGui::songListPopup( QListViewItem*, const QPoint & point, int) {
     // get selection
-    kdDebug() << "songListPopup\n";
     getSelectedSongs();
     doSongPopup(point);
 }
 
 void YammiGui::doSongPopup(QPoint point) {
     int selected=selectedSongs.count();
-    kdDebug() << "songPopup, selected: " << selected << endl;
     if( selected<=0 ) {
         return;
     }
@@ -1414,7 +1413,7 @@ void YammiGui::adjustSongPopup() {
     songGoToPopup->setItemEnabled(id, f!=0);
 
     id = songGoToPopup->idAt(2);
-    folderName = TStringToQString(TagLib::ID3v1::genre(first->genreNr));
+    folderName = first->genre;
     if(folderName == "") {
         folderName = "- no genre -";
     }
@@ -1837,7 +1836,6 @@ void YammiGui::forSelectionCheckConsistency() {
 
 
 void YammiGui::forSelectionEnqueue( ) {
-    kdDebug() << "appendSelected()" << endl;
     getSelectedSongs();
     int count = selectedSongs.count();
     if(count < 1) {
@@ -1857,7 +1855,6 @@ void YammiGui::forSelectionEnqueue( ) {
 }
 
 void YammiGui::forSelectionEnqueueAsNext( ) {
-    kdDebug() << "prependSelected()" << endl;
     getSelectedSongs();
     int count = selectedSongs.count();
     if(count < 1) {
@@ -1897,7 +1894,6 @@ void YammiGui::forSelectionPrelisten(int where ) {
 
 
 void YammiGui::forSelectionPlayNow() { //FIXME - this does not work too well....
-    kdDebug() << "playSelected()" << endl;
     getSelectedSongs();
     if(selectedSongs.count() < 1) {
         return;
@@ -1970,11 +1966,10 @@ void YammiGui::forSelectionSongInfo( ) {
         return;
     }
 
-    QString _artist, _title, _album, _comment, _path, _filename, _year, _trackNr, _bitrate, _proposedFilename;
+    QString _artist, _title, _album, _comment, _genre, _path, _filename, _year, _trackNr, _bitrate, _proposedFilename;
     MyDateTime _addedTo, _lastTimePlayed;
     int _length=0;
     long double _size=0;
-    int _genreNr=0;
 
     Song* singleSong = 0;
     if(count == 1) {
@@ -1997,8 +1992,9 @@ void YammiGui::forSelectionSongInfo( ) {
     QDateTime invalid;
     for(Song* s=selectedSongs.firstSong(); s; s=selectedSongs.nextSong()) {
         selected++;
-        if(selected==10)			// set wait cursor (summing size of 2000 files may take a while...)
+        if(selected==10) {			// set wait cursor (summing size of 2000 files may take a while...)
             QApplication::setOverrideCursor( Qt::waitCursor );
+        }
 
         // get filesize
         QFile file(s->location());
@@ -2029,7 +2025,7 @@ void YammiGui::forSelectionSongInfo( ) {
             _path=s->path;
             _filename=s->filename;
             _bitrate=QString("%1 kb/s").arg(s->bitrate);
-            _genreNr=s->genreNr;
+            _genre=s->genre;
             _proposedFilename=s->constructFilename();
             _lastTimePlayed=s->lastPlayed;
         } else {
@@ -2053,8 +2049,8 @@ void YammiGui::forSelectionSongInfo( ) {
                 _filename="!";
             if(_bitrate!=QString("%1").arg(s->bitrate))
                 _bitrate="!";
-            if(_genreNr!=s->genreNr)
-                _genreNr=-1;
+            if(_genre!=s->genre)
+                _genre="!";
             if(_proposedFilename!=s->constructFilename())
                 _proposedFilename="!";
             if(_lastTimePlayed!=s->lastPlayed)
@@ -2107,27 +2103,12 @@ void YammiGui::forSelectionSongInfo( ) {
     }
     si.ReadOnlySize->setText( QString(i18n("%1 MB")).arg( (float)_size/(float)(1024*1024) , 4,'f', 2 ));
     si.ReadOnlyBitrate->setText(_bitrate);
-
-    if(_genreNr==-1) {
-        si.ComboBoxGenre->setCurrentItem(0);
-    } else {
-        int found=genreList.findIndex(TStringToQString(TagLib::ID3v1::genre(_genreNr)));
-        if(found!=-1) {
-            si.ComboBoxGenre->setCurrentItem(found);
-        }
-    }
-
+    si.ComboBoxGenre->setCurrentText(_genre);
+    
     // show dialog
     int result=si.exec();
     if(result!=QDialog::Accepted) {
         return;
-    }
-
-    // get genreNr
-    int sortedGenreNr=si.ComboBoxGenre->currentItem();
-    int tryGenreNr=-1;
-    if(sortedGenreNr!=0) {
-        tryGenreNr=TagLib::ID3v1::genreIndex(QStringToTString(genreList[sortedGenreNr] ));
     }
 
     // now set the edited info for all selected songs
@@ -2175,17 +2156,23 @@ void YammiGui::forSelectionSongInfo( ) {
             }
         }
 
-        if(tryGenreNr!=-1) {
-            if(tryGenreNr!=s->genreNr) {
-                s->genreNr=tryGenreNr;
-                change=true;
-            }
+        if(si.ComboBoxGenre->currentText() != "!" && si.ComboBoxGenre->currentText() != s->genre) {
+            s->genre=si.ComboBoxGenre->currentText();
+            change=true;
         }
 
         if(change) {
-            model->allSongsChanged(true);
-            s->tagsDirty=true;						// mark song as dirty(tags)
-            s->filenameDirty=(s->checkFilename(config()->consistencyPara.ignoreCaseInFilenames)==false);
+            model->allSongsChanged(true);            
+            if(config()->tagsConsistent) {
+                s->saveTags();
+            }
+            if(config()->filenamesConsistent && s->checkFilename(config()->consistencyPara.ignoreCaseInFilenames)==false) {
+                s->correctFilename();
+            }
+            if(config()->directoriesConsistent && s->checkDirectory(config()->consistencyPara.ignoreCaseInFilenames)==false) {
+                s->correctPath();
+            }
+            
             // update affected songs in view
             for(SongListItem* i=(SongListItem*)songListView->firstChild(); i; i=(SongListItem*)i->itemBelow()) {
                 if(i->song()!=s) {
@@ -2197,35 +2184,7 @@ void YammiGui::forSelectionSongInfo( ) {
     }
 }
 
-/* new version: does not really work yet...
-void YammiGui::forSelectionSongInfo( ) {
-    getSelectedSongs();
-    int count = selectedSongs.count();
-    if(count < 1) {
-        return;
-    }
-    SongInfoDialog dialog(this, selectedSongs);
-    if(dialog.execute()) {
-        model->allSongsChanged(true);
-        for(Song* s=selectedSongs.firstSong(); s; s=selectedSongs.nextSong()) {
-            updateSongInfo(s);
-        }
-    }
-}
- 
- 
-void YammiGui::updateSongInfo(Song s) {
-    s->tagsDirty=true;
-    s->filenameDirty=(s->checkFilename(config()->ignoreCaseInFilenames)==false);
-    // manual update: go through currently shown list of songs and correct, if necessary
-    for(SongListItem* i=(SongListItem*)songListView->firstChild(); i; i=(SongListItem*)i->itemBelow()) {
-        if(i->song()!=s) {
-            continue;
-        }
-        i->setColumns(i->songEntry);
-    }
-}
-*/
+
 
 void YammiGui::forSelectionDelete( ) {
     getSelectedSongs();
@@ -2745,6 +2704,24 @@ void YammiGui::checkForGrabbedTrack() {
 }
 
 
+/**
+ * Fix all genres by re-reading them from the files.
+ */
+void YammiGui::fixGenres() {
+    if( KMessageBox::warningYesNo(this, "Do you want to fix the genre of all songs (potentially broken or incomplete from earlier versions of yammi) by re-reading all genres from available files now?" ) != KMessageBox::Yes ) {
+        return;
+    }
+    isScanning=true;
+    KProgressDialog progress( this, 0, i18n("Yammi"), i18n ("Re-Reading all genres from your files..."), true);
+    progress.setMinimumDuration(0);
+    progress.setAllowCancel(true);
+    progress.progressBar()->setTotalSteps(model->allSongs.count());
+    progress.progressBar()->setProgress(0);
+    kapp->processEvents();
+    model->fixGenres(&progress);
+    updateView();
+    isScanning=false;
+}
 
 void YammiGui::keyPressEvent(QKeyEvent* e) {
     //  cout << "x: " << this->x() << "pos.x: " << this->pos().x() << "\n";
@@ -2897,39 +2874,7 @@ void YammiGui::toFromPlaylist() {
 
 void YammiGui::saveDatabase() {
     model->save();
-    kdDebug() << "not implemented yet: keep tags and filenames consistent\n";
     return;
-    /*
-    if(!config()->tagsConsistent && (!config()->filenamesConsistent)) { // && (!config()->directoryConsistent))
-        return;
-    }
-    selectedSongs.clear();
-    int tagsDirtyCount = 0;
-    int filenameDirtyCount = 0;
-    int directoryDirtyCount = 0;
-    for(Song* s=model->allSongs.firstSong(); s; s=model->allSongs.nextSong()) {
-        if(config()->tagsConsistent && s->tagsDirty) {
-            tagsDirtyCount++;
-            selectedSongs.appendSong(s);
-        }
-        if(s->filenameDirty) {
-            filenameDirtyCount++;
-            filenamesDirtyCount++;
-            selectedSongs.appendSong(s);
-        }
-        if(s->directoryDirty) {
-            directoryDirtyCount++;
-        }
-    }
-    ConsistencyCheckParameter p;
-    p->setAllDisabled();
-    p->filenamePattern = config()->consistencyPara.filenamePattern;
-    p->directoryPattern = config()->consistencyPara.directoryPattern;
-    p->checkTags = config()->tagsConsistent;
-    p->correctTags = config()->tagsConsistent;
-    p->checkFilenames = config()->filenamesConsistent;
-    p->correctFilenames = config()->filenamesConsistent;
-    */
 }
 
 
@@ -3496,6 +3441,7 @@ bool YammiGui::setupActions( ) {
     new KAction(i18n("Scan Removable Media..."),"fileimport",0,this,SLOT(updateSongDatabaseMedia()), actionCollection(),"scan_media");
     new KAction(i18n("Import Selected File(s)..."),"edit_add",0,this,SLOT(updateSongDatabaseSingleFile()), actionCollection(),"import_file");
     new KAction(i18n("Check Consistency..."),"spellcheck",0,this,SLOT(forAllCheckConsistency()), actionCollection(),"check_consistency_all");
+    new KAction(i18n("Fix genres..."),0,0,this,SLOT(fixGenres()), actionCollection(),"fix_genres");
     new KAction(i18n("Grab And Encode CD-Track..."),"cd",0,this,SLOT(grabAndEncode()), actionCollection(),"grab");
 
     // playlist actions
@@ -3791,7 +3737,7 @@ QString YammiGui::songAlbum() {
 
 QString YammiGui::songGenre() {
 
-    return TStringToQString(TagLib::ID3v1::genre(currentSong->genreNr));
+    return currentSong->genre;
 }
 
 QString YammiGui::songComment() {

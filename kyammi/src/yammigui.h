@@ -235,6 +235,7 @@ public slots:
 
 
     void forAllCheckConsistency();
+    void fixGenres();
 
     void searchForSimilarEntry()            {
         searchSimilar(0);

@@ -80,10 +80,7 @@ void SongListItem::setColumns(SongEntry* entry)
     current++;
   }
   if(columnIsVisible(gYammiGui->COLUMN_GENRE)) {
-    int index=s->genreNr;
-    if(index!=-1) {
-        setText( current, TStringToQString(TagLib::ID3v1::genre(s->genreNr)));
-    }
+    setText( current, s->genre);
     current++;
   }
   if(columnIsVisible(gYammiGui->COLUMN_ADDED_TO)) {
@@ -249,12 +246,7 @@ QString SongListItem::key(int visibleColumn, bool) const
 		else
 			return s->album+QString("%1").arg(s->trackNr, 2);
 	if(column==gYammiGui->COLUMN_GENRE) {
-        if(s->genreNr==-1) {
-            return "";
-        }
-        else {
-            return TStringToQString(TagLib::ID3v1::genre(s->genreNr));
-        }
+        return s->genre;
     }
 	if(column==gYammiGui->COLUMN_PATH)
 		return s->path+s->filename;

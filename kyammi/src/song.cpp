@@ -42,8 +42,6 @@ extern YammiGui* gYammiGui;
  */
 Song::Song() {
     classified = false;
-    tagsDirty = false;
-    filenameDirty = false;
     corrupted = true;
 
     artist = "";
@@ -56,7 +54,7 @@ Song::Song() {
     comment = "";
     year = 0;
     trackNr = 0;
-    genreNr = -1;
+    genre = "";
     lastPlayed.setDate(QDate(1900,1,1));
     lastPlayed.setTime(QTime(0,0,0));
 }
@@ -84,15 +82,13 @@ void Song::updateWritableFields(Song* s) {
     this->title=s->title;
     this->year=s->year;
     this->trackNr=s->trackNr;
-    this->genreNr=s->genreNr;
+    this->genre=s->genre;
 }
 
 /** constructs a song object with the given parameters
  */
-Song::Song(QString artist, QString title, QString album, QString filename, QString path, int length, int bitrate, MyDateTime addedTo, int year, QString comment, int trackNr, int genreNr) {
+Song::Song(QString artist, QString title, QString album, QString filename, QString path, int length, int bitrate, MyDateTime addedTo, int year, QString comment, int trackNr, QString genre) {
     classified = false;
-    tagsDirty = false;
-    filenameDirty = false;
     lastPlayed.setDate(QDate(1900,1,1));
     lastPlayed.setTime(QTime(0,0,0));
 
@@ -108,7 +104,7 @@ Song::Song(QString artist, QString title, QString album, QString filename, QStri
     this->addedTo = addedTo;
     this->comment = comment;
     this->trackNr = trackNr;
-    this->genreNr = genreNr;
+    this->genre = genre;
     this->year = year;
 }
 
@@ -116,10 +112,10 @@ Song::Song(QString artist, QString title, QString album, QString filename, QStri
 
 /**
  * Try to create a new song object from a given filename.
- * \return    0 if successful
- *            1 on error (file not found)
+ * @return    true if successful
+ *            false on error (file not found)
  */
-int Song::create(const QString location, const QString mediaName, bool capitalizeTags) {
+bool Song::create(const QString location, const QString mediaName, bool capitalizeTags) {
     // step 1:
     // - check for existence and access
     // - get filename, path and size
@@ -127,11 +123,11 @@ int Song::create(const QString location, const QString mediaName, bool capitaliz
     QFileInfo* fi = new QFileInfo(location);
     if(!fi->exists()) {
         kdDebug() << "trying to construct song, but file " << location << " does not exist!\n";
-        return 1;
+        return false;
     }
     if(!fi->isReadable()) {
         kdDebug() << "trying to construct song, but file " << location << " is not accessible!\n";
-        return 1;
+        return false;
     }
     if(mediaName==0) {          // song is on harddisk
         filename = fi->fileName();
@@ -176,7 +172,7 @@ int Song::create(const QString location, const QString mediaName, bool capitaliz
     }
 
     corrupted=false;
-    return 0;
+    return true;
 }
 
 
@@ -209,10 +205,7 @@ bool Song::readTags(QString filename) {
     comment = TStringToQString( tag->comment() ).stripWhiteSpace();
     year = (int) tag->year();
     trackNr = (int) tag->track();
-    genreNr = TagLib::ID3v1::genreIndex(tag->genre());
-    if(genreNr == 255) {
-        genreNr = -1;
-    }
+    genre = TStringToQString ( tag->genre() ).stripWhiteSpace();
     return true;
 }
 
@@ -430,9 +423,9 @@ bool Song::checkTags() {
     QString _artist=this->artist;
     QString _comment=this->comment;
     QString _title=this->title;
+    QString _genre=this->genre;
     int _year=this->year;
     int _trackNr=this->trackNr;
-    int _genreNr=this->genreNr;
 
     if(!readTags(location())) {
         guessTagsFromFilename(filename, path, &artist, &title, &album);
@@ -464,9 +457,9 @@ bool Song::checkTags() {
         same=false;
         kdDebug() << "(trackNr)" << endl;
     }
-    if(_genreNr   != this->genreNr)  {
+    if(_genre   != this->genre)  {
         same=false;
-        kdDebug() << "(genreNr)" << endl;
+        kdDebug() << "(genre: yammi: " << _genre << ", file: " << genre << ")" << endl;
     }
 
     if(same) {            // no differences
@@ -481,7 +474,7 @@ bool Song::checkTags() {
     this->title=_title;
     this->year=_year;
     this->trackNr=_trackNr;
-    this->genreNr=_genreNr;
+    this->genre=_genre;
 
     return false;
 }
@@ -493,7 +486,6 @@ bool Song::checkTags() {
  */
 bool Song::saveTags() {
     kdDebug() << "trying to save tags on file " << filename << endl;
-    tagsDirty=false;
     QString filename = location();
     if(filename=="") {
         return false;
@@ -521,12 +513,7 @@ bool Song::saveTags() {
     tag->setComment(QStringToTString(comment));
     tag->setYear(year);
     tag->setTrack(trackNr);
-    if(genreNr != -1) {
-        tag->setGenre(TagLib::ID3v1::genre(genreNr));
-    }
-    else {
-        tag->setGenre(QStringToTString(QString("")));
-    }
+    tag->setGenre(QStringToTString(genre));
     bool success = f.save();
     if(!success) {
         kdDebug() << "saving tags: error on writing tags" << endl;
@@ -539,14 +526,12 @@ bool Song::saveTags() {
  */
 bool Song::correctFilename() {
     if(filename=="") {
-        filenameDirty=false;
         return true;
     }
     QString oldname=location();
     QFileInfo fi0(oldname);
     if(!fi0.isWritable()) {
         kdDebug() << "renaming file: file " << oldname << " not writable, skipping\n";
-        filenameDirty=false;
         return true;
     }
     QString newFilename=constructFilename();
@@ -592,7 +577,6 @@ bool Song::correctFilename() {
     }
     this->filename=newFilename;
     kdDebug() << "filename corrected to " << newFilename << "\n";
-    filenameDirty=false;
     return true;
 }
 
@@ -612,6 +596,7 @@ bool Song::correctPath() {
         return false;
     }
     path = newPath;
+    kdDebug() << "path corrected to " << newPath << "\n";
     return true;
 }
 
@@ -639,7 +624,7 @@ void Song::setTo(Song* s) {
     this->title=s->title;
     this->year=s->year;
     this->trackNr=s->trackNr;
-    this->genreNr=s->genreNr;
+    this->genre=s->genre;
 }
 
 /** check songfile (exists and readable)
@@ -680,32 +665,26 @@ QString Song::checkConsistency(bool requireConsistentTags, bool requireConsisten
     }
 
 
-    tagsDirty=false;
     if(requireConsistentTags) {
         // checking tags
         if(!checkTags()) {
             kdDebug() << "tags on file " << this->filename << " are not set correctly...\n";
-            tagsDirty=true;
             diagnosis+="tags not correct ";
         }
     }
 
-    filenameDirty=false;
     if(requireConsistentFilename && filename!="") {
         // checking filename
         if(!checkFilename(ignoreCaseInFilenames)) {
             kdDebug() << "file " << this->filename << " does not have correct filename\n";
-            filenameDirty=true;
             diagnosis+="filename not consistent ";
         }
     }
 
-    directoryDirty=false;
     if(requireConsistentDirectory && path!="") {
         // checking directory
         if(!checkDirectory(ignoreCaseInFilenames)) {
             kdDebug() << "file " << this->filename << " is not in correct directory\n";
-            directoryDirty=true;
             diagnosis+="directory not consistent ";
         }
     }

@@ -55,7 +55,7 @@ void FolderGroups::update(MyList* allSongs, int sortBy) {
             next=s->album;
             break;
         case MyList::ByGenre:
-            next=TStringToQString(TagLib::ID3v1::genre(s->genreNr));
+            next=s->genre;
             break;
         case MyList::ByYear:
             next=QString("%1").arg(s->year);
@@ -90,7 +90,7 @@ void FolderGroups::update(MyList* allSongs, int sortBy) {
                 last=s->album;
                 break;
             case MyList::ByGenre:
-                last=TStringToQString(TagLib::ID3v1::genre(s->genreNr));
+                last=s->genre;
                 break;
             case MyList::ByYear:
                 last=QString("%1").arg(s->year);
@@ -152,7 +152,7 @@ void FolderGroups::createGroupFolder(MyList* group, int sortBy) {
         }
         break;
     case MyList::ByGenre:
-        folderName=TStringToQString(TagLib::ID3v1::genre(firstSong->genreNr));
+        folderName=firstSong->genre;
         if(folderName=="") {
             folderName="- no genre -";
         }

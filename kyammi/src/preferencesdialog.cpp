@@ -41,9 +41,13 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, const char *name, bool mod
     RadioButtonAdvancedGuessmode->setChecked(config->guessingMode==config->GUESSING_MODE_ADVANCED);
     CheckBoxLogging->setChecked(config->logging);
     CheckBoxChildSafe->setChecked(config->childSafe);
+    CheckBoxCapitalizeTags->setChecked(config->capitalizeTags);
     CheckBoxTagsConsistent->setChecked(config->tagsConsistent);
     CheckBoxFilenamesConsistent->setChecked(config->filenamesConsistent);
-    CheckBoxCapitalizeTags->setChecked(config->capitalizeTags);
+    CheckBoxDirectoriesConsistent->setChecked(config->directoriesConsistent);
+    LineEditFilenamePattern->setText(config->consistencyPara.filenamePattern);
+    LineEditDirectoriesPattern->setText(config->consistencyPara.directoryPattern);
+    
     LineEditCriticalSize->setText(QString("%1").arg(config->criticalSize));
     LineEditSecondSoundDevice->setText(config->secondSoundDevice);
     SpinBoxGroupThreshold->setValue(config->groupThreshold);
@@ -174,9 +178,13 @@ void PreferencesDialog::myAccept() {
     config->doubleClickAction=(Song::action)ComboBoxDoubleClickAction->currentItem();
     config->middleClickAction=(Song::action)ComboBoxMiddleClickAction->currentItem();
     config->logging=CheckBoxLogging->isChecked();
+    config->capitalizeTags=CheckBoxCapitalizeTags->isChecked();
     config->tagsConsistent=CheckBoxTagsConsistent->isChecked();
     config->filenamesConsistent=CheckBoxFilenamesConsistent->isChecked();
-    config->capitalizeTags=CheckBoxCapitalizeTags->isChecked();
+    config->directoriesConsistent=CheckBoxDirectoriesConsistent->isChecked();
+    config->consistencyPara.filenamePattern=LineEditFilenamePattern->text();
+    config->consistencyPara.directoryPattern=LineEditDirectoriesPattern->text();
+    
     if(config->childSafe && !CheckBoxChildSafe->isChecked()) {
         bool ok;
         QString passwd=QString(QInputDialog::getText( "password", "enter password", QLineEdit::Password, QString(""), &ok, this ));

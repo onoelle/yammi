@@ -112,6 +112,7 @@ public slots:
     void updateSongDatabase(QString scanDir, bool followSymLinks, QString filePattern, QString mediaName, KProgressDialog* progress);
     void updateSongDatabase(QStringList list);
     void addSongToDatabase(QString filename, QString mediaName);
+    void fixGenres(KProgressDialog* progress);
 
 protected:
     YammiGui *m_yammi;

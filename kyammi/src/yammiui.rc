@@ -21,6 +21,7 @@
     <Action name="scan_media"/>
     <Action name="import_file"/>
     <Action name="check_consistency_all"/>
+    <Action name="fix_genres"/>
     <Action name="grab"/>
   </Menu>
   <Menu name="autoplay"><text>Autoplay</text>

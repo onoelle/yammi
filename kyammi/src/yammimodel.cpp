@@ -376,18 +376,18 @@ void YammiModel::readSongDatabase(  ) {
         QString filename = e.attribute("filename", "");
         QString path     = e.attribute("path", "");
         QString comment  = e.attribute("comment", "");
+        QString genre    = e.attribute("genre", "");
 
         unsigned long length = e.attribute("length","0").toULong( );
         int bitrate = e.attribute("bitrate", "0").toInt( );
         int year = e.attribute("year", "0").toInt( );
         int trackNr = e.attribute("trackNr", "0").toInt( );
-        int genreNr = e.attribute("genreNr", "-1").toInt( );
-
+        
         // read date as "dd/mm/yyyy, hh:mm:ss"
         MyDateTime addedTo;
         addedTo.readFromString(e.attribute("addedTo", "1/1/1970/00:00:00"));
 
-        Song* s = new Song(artist, title, album, filename, path, length, bitrate, addedTo, year, comment, trackNr, genreNr);
+        Song* s = new Song(artist, title, album, filename, path, length, bitrate, addedTo, year, comment, trackNr, genre);
         allSongs.appendSong( s );
 
         QDomNode child = e.firstChild();
@@ -411,23 +411,6 @@ void YammiModel::readSongDatabase(  ) {
 /// saves the songs in allSongs into an xml-file
 void YammiModel::saveSongDatabase() {
     kdDebug() << "saving database..." << endl;
-    int sumDirtyTags=0;
-    int sumDirtyFilenames=0;
-    for(Song* s=allSongs.firstSong(); s; s=allSongs.nextSong()) {
-        if(s->tagsDirty) {
-            sumDirtyTags++;
-        }
-        if(s->filenameDirty) {
-            sumDirtyFilenames++;
-        }
-    }
-    if(m_yammi->config()->tagsConsistent) {
-        kdDebug() << sumDirtyTags << " dirty tags..." << endl;
-    }
-    if(m_yammi->config()->filenamesConsistent) {
-        kdDebug() << sumDirtyFilenames << " dirty filenames..." << endl;
-    }
-
     QDomDocument doc;
     doc.appendChild( doc.createProcessingInstruction( "xml", "version=\"1.0\" encoding=\"UTF-8\"" ) );
     QDomElement root = doc.createElement("songs");
@@ -437,24 +420,9 @@ void YammiModel::saveSongDatabase() {
 
     // iterate through songs and save each song as a xml song element
     int count=0;
-    bool haveToReloadPlaylist=false;
-    bool currentSongRenamed=false;    // set to true, if currently played song's filename is changed
     for(Song* s = allSongs.firstSong(); s; s = allSongs.nextSong()) {
         count++;
         QDomElement elem = doc.createElement( "song" );
-        // consistencyMode: if song dirty, we make it consistent
-        if(s->tagsDirty && m_yammi->config()->tagsConsistent) {
-            s->saveTags();
-        }
-        if(s->filenameDirty && m_yammi->config()->filenamesConsistent) {
-            s->correctFilename();
-            if(songsToPlay.containsSong(s)) {
-                haveToReloadPlaylist=true;
-                if(songsToPlay.firstSong()==s) {
-                    currentSongRenamed=true;
-                }
-            }
-        }
         if(s->artist!="unknown")
             elem.setAttribute( "artist", s->artist );
         if(s->title!="unknown")
@@ -475,8 +443,8 @@ void YammiModel::saveSongDatabase() {
             elem.setAttribute( "year", QString("%1").arg(s->year) );
         if(s->trackNr!=0)
             elem.setAttribute( "trackNr", QString("%1").arg(s->trackNr));
-        if(s->genreNr!=-1)
-            elem.setAttribute( "genreNr", QString("%1").arg(s->genreNr));
+        if(s->genre!="")
+            elem.setAttribute( "genre", QString("%1").arg(s->genre));
 
         elem.setAttribute( "addedTo", s->addedTo.writeToString());
         for(unsigned int i=0; i<s->mediaName.count(); i++) {
@@ -507,23 +475,6 @@ void YammiModel::saveSongDatabase() {
     doc.save(str, 2);
     file.close();
 
-    if(haveToReloadPlaylist) {
-        //TODO: cleanup, this is really ugly...
-        kdDebug() << "Reload playlist to player..." << endl;
-        m_yammi->player->clearPlaylist();
-        Song* save=0;
-        if(songsToPlay.count()>0) {
-            currentSongRenamed=(currentSongFilenameAtStartPlay!=songsToPlay.firstSong()->location());
-        }
-        if(currentSongRenamed) {
-            save=songsToPlay.firstSong();
-            songsToPlay.removeSong(save);
-        }
-        m_yammi->player->syncYammi2Player();
-        if(currentSongRenamed) {
-            songsToPlay.insert(0, new SongEntryInt(save, 0));
-        }
-    }
     kdDebug() << "saving database: done" << endl;
     allSongsChanged(false);
 }
@@ -690,6 +641,31 @@ bool YammiModel::traverse(QString path, bool followSymLinks, QString filePattern
     return true;
 }
 
+/**
+ * fix incorrect genres by re-reading them from whole song database
+ */
+void YammiModel::fixGenres(KProgressDialog* progress) {
+    int i = 0;
+    for(Song* s=allSongs.firstSong(); s; s=allSongs.nextSong(), i++) {
+        progress->progressBar()->setProgress(i);
+        kapp->processEvents();
+        kapp->eventLoop()->processEvents(QEventLoop::ExcludeUserInput);
+        if(progress->wasCancelled()) {
+            kdDebug() << "fixing genres aborted..." << endl;
+            return;
+        }
+        
+        kdDebug() << "trying to fix genre in file " << s->location() << endl;
+        Song* fixSong=new Song();
+        bool success = fixSong->create(s->location(), 0, config()->capitalizeTags);
+        if(success) {
+            kdDebug() << "old genre saved in yammi database: " << s->genre << ", fixed genre: " << fixSong->genre << endl;
+            s->genre = fixSong->genre;
+            allSongsChanged(true);
+        }
+        delete(fixSong);
+    }
+}
 
 // adds a single songfile to the database
 void YammiModel::addSongToDatabase(QString filename, QString mediaName=0) {
@@ -699,13 +675,21 @@ void YammiModel::addSongToDatabase(QString filename, QString mediaName=0) {
         // this check might fail when filename has strange characters?
         if(filename == s->location()) {
             found=true;
+            /*
             // here we can fix/update our database with additional info...
-            //  			eg:
-            //  			// add genre number to Song info
-            //  			Song* fixSong=new Song(fi->filePath());
-            //  			s->genreNr=fixSong->genreNr;
-            //  			delete(fixSong);
-            //  			allSongsChanged(true);
+            // eg: fix genre like this:
+            if(s->genre == "") {
+                kdDebug() << "trying to fix genre in file " << filename << endl;
+                Song* fixSong=new Song();
+                bool success = fixSong->create(filename, "", config()->capitalizeTags);
+                if(success) {
+                    kdDebug() << "old genre: " << s->genre << ", fixed genre: " << fixSong->genre << endl;
+                    s->genre = fixSong->genre;
+                    allSongsChanged(true);
+                }
+                delete(fixSong);
+            }
+            */
             break;
         }
     }

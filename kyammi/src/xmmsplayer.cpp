@@ -211,7 +211,6 @@ void XmmsPlayer::syncYammi2Player() {
     
     // caution! xmms reports as "not playing" sometimes (on song change?)    
     if( (!xmms_remote_is_playing(session)) || (xmms_remote_is_paused(session)) ) {
-        kdDebug() << "setting pos to 0\n";
         xmms_remote_set_playlist_pos(session, 0);
     }
 

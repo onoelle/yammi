@@ -81,10 +81,10 @@ public:
     Song();
 
     /// constructs a song object from the given parameters
-    Song(QString artist, QString title, QString album, QString filename, QString path, int length, int bitrate, MyDateTime addedTo, int year, QString comment, int trackNr, int genreNr);
+    Song(QString artist, QString title, QString album, QString filename, QString path, int length, int bitrate, MyDateTime addedTo, int year, QString comment, int trackNr, QString genre);
 
     /// constructs a song object from a given file
-    int create(const QString filename, const QString mediaName, bool capitalizeTags);
+    bool create(const QString filename, const QString mediaName, bool capitalizeTags);
 
     /// check consistency
     QString checkConsistency(bool requireConsistentTags, bool requireConsistentFilename, bool ignoreCaseInFilename, bool requireConsistentDirectory);
@@ -169,7 +169,7 @@ public:
     QString comment;           // comment
     int trackNr;               // trackNr on CD
     int year;                  // year of song
-    int genreNr;               // genre (index number)
+    QString genre;             // genre as string
 
     // file info
     QString filename;          // filename, excluding path
@@ -187,9 +187,6 @@ public:
 
     bool classified;
     bool corrupted;
-    bool tagsDirty;
-    bool filenameDirty;
-    bool directoryDirty;
 
     static QString getSongAction(int index);
     static int getMaxSongAction()     {

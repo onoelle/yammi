@@ -53,6 +53,7 @@ void Prefs::setDefaultValues(void) {
     childSafe = false;
     tagsConsistent = false;
     filenamesConsistent = false;
+    directoriesConsistent = false;
     capitalizeTags = true;
     criticalSize = 700;
     secondSoundDevice="";
@@ -97,8 +98,6 @@ bool Prefs::loadConfig( ) {
     middleClickAction            = (Song::action) cfg->readNumEntry("middleClickAction", middleClickAction);
     logging                      = cfg->readBoolEntry("logging", logging);
     childSafe                    = cfg->readBoolEntry("childSafe", childSafe);
-    tagsConsistent               = cfg->readBoolEntry("tagsConsistent", tagsConsistent);
-    filenamesConsistent          = cfg->readBoolEntry("filenamesConsistent", filenamesConsistent);
     capitalizeTags               = cfg->readBoolEntry("capitalizeTags", capitalizeTags);
     criticalSize                 = cfg->readNumEntry("criticalSize", criticalSize);
     secondSoundDevice            = cfg->readEntry("secondSoundDevice", secondSoundDevice);
@@ -135,6 +134,9 @@ bool Prefs::loadConfig( ) {
 
 
     cfg->setGroup("ConsistencyCheck");
+    tagsConsistent          = cfg->readBoolEntry("tagsConsistent", tagsConsistent);
+    filenamesConsistent	    = cfg->readBoolEntry("filenamesConsistent", filenamesConsistent);
+    directoriesConsistent	= cfg->readBoolEntry("directoriesConsistent", directoriesConsistent);
     consistencyPara.checkDirectories	= cfg->readBoolEntry("checkDirectories", consistencyPara.checkDirectories);
     consistencyPara.checkDoubles		= cfg->readBoolEntry("checkDoubles", consistencyPara.checkDoubles);
     consistencyPara.ignoreCaseInFilenames = cfg->readBoolEntry("ignoreCaseInFilenames", consistencyPara.ignoreCaseInFilenames);
@@ -210,6 +212,7 @@ bool Prefs::saveConfig( ) {
     cfg->setGroup("ConsistencyCheck");
     cfg->writeEntry("tagsConsistent", tagsConsistent);
     cfg->writeEntry("filenamesConsistent", filenamesConsistent);
+    cfg->writeEntry("directoriesConsistent", directoriesConsistent);
 
     cfg->writeEntry("checkDirectories", consistencyPara.checkDirectories);
     cfg->writeEntry("checkDoubles", consistencyPara.checkDoubles);

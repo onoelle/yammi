@@ -73,9 +73,15 @@ void ConsistencyCheckDialog::myAccept() {
     p->correctDirectories=CheckBoxCorrectDirectories->isChecked();
     p->deleteEmptyDirectories=CheckBoxDeleteEmptyDirectories->isChecked();
     p->checkDoubles=CheckBoxCheckDoubles->isChecked();
+    QString directoryPattern = p->directoryPattern;
+    QString filenamePattern = p->filenamePattern;
     p->directoryPattern=LineEditDirectoryPattern->text();
     p->filenamePattern=LineEditFilenamePattern->text();
     startCheck();
+    // restore values that have impact on normal yammi operation
+    // (too dangerous to leave them changed!)
+    p->directoryPattern=directoryPattern;
+    p->filenamePattern=filenamePattern;
 }
 
 void ConsistencyCheckDialog::startCheck() {
@@ -154,7 +160,7 @@ void ConsistencyCheckDialog::startCheck() {
                             msg+=QString("(Write yammi info to file tags:\n");
                             msg+=QString("artist: %1, title: %2\n").arg(s->artist).arg(s->title);
                             msg+=QString("album: %1, comment: %2\n").arg(s->album).arg(s->comment);
-                            msg+=QString("year: %1, trackNr: %2, genreNr: %3)").arg(s->year).arg(s->trackNr).arg(s->genreNr);
+                            msg+=QString("year: %1, trackNr: %2, genre: %3)").arg(s->year).arg(s->trackNr).arg(s->genre);
                         }
                         if(p->correctTagsDirection==p->TAGS2YAMMI) {
                             msg+=QString("(Reread tags from filename and update Yammi info)");

@@ -97,6 +97,8 @@ public:
     bool tagsConsistent;
     /** Keep filename consistent with DB */
     bool filenamesConsistent;
+    /** Keep directories consistent with DB */
+    bool directoriesConsistent;
     /** capitalize title, artist and album */
     bool capitalizeTags;
 

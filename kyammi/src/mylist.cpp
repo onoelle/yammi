@@ -209,7 +209,7 @@ int MyList::myCompare(Song* song1, Song* song2, int sortBy)
 		return 0;
 	}
 	if(sortBy==ByGenre) {
-    return QString::compare(TStringToQString(TagLib::ID3v1::genre(song1->genreNr)),     TStringToQString(TagLib::ID3v1::genre(song2->genreNr)) );
+        return(QString::compare(song1->genre, song2->genre));
 	}
 	return 0;
 }
