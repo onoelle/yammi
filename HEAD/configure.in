@@ -37,7 +37,7 @@ dnl Perform program name transformation
 AC_ARG_PROGRAM
 
 dnl Automake doc recommends to do this only here. (Janos)
-AM_INIT_AUTOMAKE(yammi,0.8.3)
+AM_INIT_AUTOMAKE(yammi,1.0-rc1)
 
 dnl generate a header that will have all the
 dnl #defines for conditional compilation
@@ -168,8 +168,7 @@ dnl Checks for libraries.
 dnl -------------------------------
 
 dnl standard C++ library
-dnl commented out by Oliver, 14.5.2003 (maybe cout type did not match on all systems???)
-dnl AC_CHECK_LIB( stdc++, cout, , AC_MSG_ERROR( *** stdc++ library is required *** ), )
+AC_CHECK_LIB( stdc++, cout, , AC_MSG_ERROR( *** stdc++ library is required *** ), )
 
 dnl OGG vorbis libraries
 if test "x$configure_enable_ogglibs" = "xyes"; then
@@ -217,38 +216,28 @@ fi
 
 if test "x$configure_enable_id3lib" = "xyes"; then
     AC_MSG_NOTICE( [reading/writing of tags in MP3 files is supported] )
+
     AC_DEFINE( [ENABLE_ID3LIB], [1] )
 else
     AC_MSG_WARN( [*** Warning: id3lib support disabled => no reading/writing of tags in mp3 files! ***] )
 fi
 
-
-dnl XMMS support (new version)
-dnl AM_PATH_XMMS([MINIMUM-VERSION, [ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]]])
+dnl XMMS support
 if test "x$configure_enable_xmms" = "xyes"; then
-    AM_PATH_XMMS(1.2.6,,AC_MSG_ERROR([*** XMMS >= 1.2.6 not installed - please install first ***]))
-    LIBS="$XMMS_LIBS $LIBS"
-    CFLAGS="$XMMS_CFLAGS $CFLAGS"
-    AC_DEFINE( [ENABLE_XMMS], [1] )
+    AC_CHECK_LIB( xmms, xmms_remote_get_version, , configure_enable_xmms=no, )
 fi
 
+if test "x$configure_enable_xmms" = "xyes"; then
+    AC_MSG_NOTICE( [*** xmms support enabled ***] )
 
-dnl XMMS support (old version)
-dnl if test "x$configure_enable_xmms" = "xyes"; then
-dnl     AC_CHECK_LIB( xmms, xmms_remote_get_version, , configure_enable_xmms=no, )
-dnl fi
-dnl
-dnl if test "x$configure_enable_xmms" = "xyes"; then
-dnl    AC_MSG_NOTICE( [*** xmms support enabled ***] )
-dnl    AC_DEFINE( [ENABLE_XMMS], [1] )
-dnl else
-dnl    AC_MSG_WARN( [*** xmms support disabled ***] )
-dnl fi
-
+    AC_DEFINE( [ENABLE_XMMS], [1] )
+else
+    AC_MSG_WARN( [*** xmms support disabled ***] )
+fi
 
 dnl Noatun support (for proper kde app: add "-lkdeui -lkio ")
 dnl check to see if KDE->DCOP is available
-dnl this app requires KDE so noatun support might as well always be
+dnl this app requires KDE so so noatun support might as well always be
 dnl enabled.
 if test "x$configure_enable_noatun" = "xyes"; then
 #    dnl additional path to libraries for linking KDE

@@ -1,6 +1,6 @@
 TODO
 ----
-last update 21.5.2003
+last update 10.7.2003
 
 
 user wishes:
@@ -10,19 +10,29 @@ user wishes:
 - loading of playlists (m3u) / document saving via plugin
 
 
-for version 1.0
----------------
-- playnow enqueueasnext: for multiple songs/empty playlist... sometimes looses the first songs!
+for version 1.0-rc1
+-------------------
+- playnow/enqueueasnext: for multiple songs/empty playlist... sometimes looses the first songs!
 - check for existence of directory categories when saving categories
-
+- integrate AM_XMMS macro from configure.in_orig
+- update database: allow to select file/m3u/directory
 - dequeue from playlist: insert "forSelectionDequeue" method...
 - disable repeat/shuffle mode in noatun?
 - related to BUG: sorting with columns hided:
   - clean up key() / compare() methods
   - check sorting "Last Played" (put "never" at the other end)
   - keep sorting when changing folders?
-- properly integrate translation capability
+- properly integrate and document translation capability
+- document: if noatun stops, you might have to empty the playlists of both instances manually
 
+
+for version 1.0
+---------------
+- icons???
+
+
+later...
+--------
 - any ripping plugin? have a look at existing ripping programs suitable to be called as plugin
 - xml export plugin?
 - "rescan tags"-button in song info dialog or in consistency check?
@@ -44,8 +54,8 @@ for version 1.0
 - => reach stable status!!!
 
 
-probably for version 1.x
-------------------------
+even later...
+-------------
 - song length <X s: do not use crossfading?
 - remove the creating of symlinks for burning assistance (but check size of existing media!)
 - for both media players:

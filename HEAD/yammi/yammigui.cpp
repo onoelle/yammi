@@ -439,6 +439,7 @@ YammiGui::YammiGui(QString baseDir)
 	connect(folderCategories, SIGNAL( CategoryNew() ), this, SLOT(newCategory()));
 	connect(folderCategories, SIGNAL( CategoryRemoved() ), this, SLOT(removeCategory()));
 	connect(folderCategories, SIGNAL( CategoryRenamed() ), this, SLOT(renameCategory()));
+	connect(folderCategories, SIGNAL( LoadM3uIntoCategory() ), this, SLOT(loadM3uIntoCategory()));
 	connect(folderMedia, SIGNAL( RemoveMedia() ), this, SLOT(removeMedia()));
 	connect(folderMedia, SIGNAL( RenameMedia() ), this, SLOT(renameMedia()));
 
@@ -1059,7 +1060,13 @@ void YammiGui::updateSongPopup()
 	songPopup->insertItem(getPopupIcon(SongInfo), tr("Info..."), this, SLOT(forSelection(int)), 0, SongInfo);
 	songPopup->insertItem( tr("Insert Into/Remove From..."), playListPopup);
 
-	songSearchPopup = new QPopupMenu(songPopup);
+	songGoToPopup = new QPopupMenu(songPopup);
+	songGoToPopup->insertItem( tr("...Artist"), this, SLOT(goToFolder(int)), 0, 2001);
+	songGoToPopup->insertItem( tr("...Album"), this, SLOT(goToFolder(int)), 0, 2002);
+	songGoToPopup->insertItem( tr("...Genre"), this, SLOT(goToFolder(int)), 0, 2003);
+	songPopup->insertItem( tr("Go to folder..."), songGoToPopup);
+
+  songSearchPopup = new QPopupMenu(songPopup);
 	songSearchPopup->insertItem( tr("Entry"), this, SLOT(searchSimilar(int)), 0, 1000);
 	songSearchPopup->insertItem( tr("Artist"), this, SLOT(searchSimilar(int)), 0, 1001);
 	songSearchPopup->insertItem( tr("Title"), this, SLOT(searchSimilar(int)), 0, 1002);
@@ -1242,6 +1249,41 @@ void YammiGui::searchSimilar(int what)
 	searchFieldChanged();
 }
 
+/**
+ * Go to a specific folder (album/artist) of selected song.
+ */
+void YammiGui::goToFolder(int what)
+{
+	what-=2000;
+	Song* s=selectedSongs.firstSong();
+  QString folderName;
+  
+  switch(what)
+	{
+		case 1:
+      folderName=s->artist;
+      break;
+
+    case 2:
+      folderName=s->artist+" - "+s->album;
+      break;
+
+    case 3:
+      folderName=CMP3Info::getGenre(s->genreNr);
+      break;
+
+    default:
+      folderName="";
+  }
+
+  Folder* folder=this->getFolderByName(folderName);
+  if(folder==0) {
+    cout << "folder " << folderName << " not existing\n";
+  }
+  else {
+    changeToFolder(folder);
+  }
+}
 
 /// search field changed => update search results
 void YammiGui::searchFieldChanged()
@@ -1456,7 +1498,11 @@ void YammiGui::adjustSongPopup()
 	else
 		label=first->displayName();
 	songPopup->changeItem ( 113, label);
-		
+
+  songGoToPopup->changeItem( 2001, first->artist);
+  songGoToPopup->changeItem( 2002, first->artist+" - "+first->album);
+  songGoToPopup->changeItem( 2003, CMP3Info::getGenre(first->genreNr));
+  	
 	// for each category: determine whether first song contained or not
 	// we don't check whether all selected songs are contained, just first
 	int k=0;
@@ -2454,7 +2500,7 @@ void YammiGui::openHelp()
 void YammiGui::aboutDialog()
 {
   QString msg=QString(tr("Yammi - Yet Another Music Manager I...\n\n\n"));
-  msg+="Version "+model->config.yammiVersion+", 12-2001 - 5-2003 by Oliver Nölle\n";
+  msg+="Version "+model->config.yammiVersion+", 12-2001 - 7-2003 by Oliver Nölle\n";
   msg+=tr("Media player: ")+player->getName()+"\n";
   #ifdef ENABLE_XMMS
   msg+=tr("- XMMS support: yes\n");
@@ -2483,7 +2529,9 @@ void YammiGui::aboutDialog()
 }
 
 
-/** creates a new category */
+/**
+ * Creates a new category, querying the user for the name.
+ */
 bool YammiGui::newCategory(){
 	bool ok = false;
 	QString caption(tr("Enter name for category"));
@@ -2499,6 +2547,9 @@ bool YammiGui::newCategory(){
 }
 
 
+/**
+ * Removes the selected category.
+ */
 void YammiGui::removeCategory()
 {
 	QListViewItem* i = folderListView->currentItem();
@@ -2510,17 +2561,62 @@ void YammiGui::removeCategory()
 	}
 }
 
+/**
+ * Renames the selected category, querying the user for the new name.
+ */
 void YammiGui::renameCategory()
 {
 	QListViewItem* i = folderListView->currentItem();
 	QString oldName=((Folder*)i)->folderName();
 	bool ok;
 	QString newName=QString(QInputDialog::getText( tr("collection name"), tr("Please enter new name:"), QLineEdit::Normal, oldName, &ok, this ));
-	if(!ok)
+	if(!ok) {
 		return;
+  }
 
 	model->renameCategory(oldName, newName);
 	folderCategories->update(model->allCategories, model->categoryNames);
+	updateSongPopup();
+}
+
+/**
+ * Inserts all songs from a .m3u playlist into a category.
+ * Only inserts those songs already existing in yammi's database.
+ * Inserts in the order of the playlist.
+ */
+void YammiGui::loadM3uIntoCategory()
+{
+	QListViewItem* i = folderListView->currentItem();
+  FolderSorted* categoryFolder=(FolderSorted*)i;
+  QString filename = QFileDialog::getOpenFileName("/", "Playlists (*.m3u)", this, "Open File Dialog", "Choose a Playlist to insert" );
+	if(filename.isNull()) {
+    return;
+  }
+	QFile file(filename);
+	if (!file.open( IO_ReadOnly  ) )
+		return;
+	QTextStream stream(&file);
+  while(!stream.atEnd()) {
+    QString line=stream.readLine().stripWhiteSpace();
+    if(line.startsWith("#")) {
+      // skip lines starting with #
+      continue;
+    }
+    Song* toAdd=model->getSongFromFilename(line);
+    if(toAdd==0) {
+      // no song found with that filename
+      cout << "no song in database found with filename \"" << line << "\" (not in Yammi database yet?), skipping\n";
+      continue;
+    }
+    categoryFolder->addSong(toAdd);
+  }
+
+  file.close();
+
+
+  // update category content
+	model->categoriesChanged(true);
+  folderContentChanged(categoryFolder);
 	updateSongPopup();
 }
 

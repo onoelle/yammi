@@ -45,7 +45,7 @@ void Prefs::setDefaultValues(void) {
 #endif
 
 	yammiBaseDir = "";
-	yammiVersion = "0.8.2";
+	yammiVersion = "1.0-rc1";
 	trashDir = "/mp3/trash/";
 	scanDir = "/mp3/inbox/";
 	filenamePattern = "%a - %t";

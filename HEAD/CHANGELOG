@@ -3,6 +3,9 @@
 - moved all classes from mp3info into top-level folder (due to compilation issues)
 - "dequeue" called from playlist now only dequeues the selected entry (if song more than once in playlist)
 - replaced my personal email address with the new mailing list address (yammi-developer@lists.sourceforge.net)
+- fixed the sorting bug when hiding columns
+- added a "Go to folder..." functionality in song context menu to quickly go to corresponding album/artist/genre folder
+- added a "Load .m3u into category" menu entry with the corresponding functionality
 
 ########################
 14.05.2003 version 0.8.2

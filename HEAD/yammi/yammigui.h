@@ -221,6 +221,7 @@ protected:
 	QPopupMenu* 	songPopup;
 	QPopupMenu* 	songPlayPopup;
 	QPopupMenu* 	songPrelistenPopup;
+	QPopupMenu* 	songGoToPopup;
 	QPopupMenu* 	songSearchPopup;
 	QPopupMenu* 	songAdvancedPopup;
 	QPopupMenu* 	pluginPopup;
@@ -342,6 +343,7 @@ protected slots:
 	void				  songSliderMoved();
 	void				  songSliderGrabbed();
 	void				  searchSimilar(int what);
+	void				  goToFolder(int what);
 	void				  searchFieldChanged();
 	void				  slotSongChanged();
   void          autoplayChanged(int mode);
@@ -393,6 +395,7 @@ protected slots:
   bool 					newCategory();	  					/** create new category */
 	void 					removeCategory();
 	void					renameCategory();
+  void          loadM3uIntoCategory();
 	
 	void					pluginOnFolder();
 	void					removeMedia();
