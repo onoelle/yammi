@@ -150,7 +150,7 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
                            this, SLOT(forAllSelectedEnqueueAsNext()), toolBar2);
 	new QToolButton (QPixmap(playnow_xpm), "Play now (F7)", QString::null,
                            this, SLOT(forAllSelectedPlayNow()), toolBar2);
-	new QToolButton (QPixmap(playnowim_xpm), "Play now (SHIFT-F7)", QString::null,
+	new QToolButton (QPixmap(playnowim_xpm), "Play now withou crossfading (SHIFT-F7)", QString::null,
                            this, SLOT(forAllSelectedPlayNowIm()), toolBar2);
 	new QToolButton (QPixmap(dequeueSong_xpm), "Dequeue Song (F8)", QString::null,
                            this, SLOT(forAllSelectedDequeue()), toolBar2);
@@ -1651,16 +1651,23 @@ void YammiGui::forSong(Song* s, action act, QString dir=0)
 		forSong(s, EnqueueAsNext);
 
     if(xmms_remote_is_playing(0)) {
-      // case 1: xmms is playing
-			xmms_skipForward();
-		}
-    else if(xmms_remote_is_paused(0)) {
-      // case 2: xmms is paused => start playing
-			xmms_skipForward();
-			xmms_remote_play(0);
-		}
-    else if(!xmms_remote_is_playing(0) && !xmms_remote_is_paused(0)) {
-      // case 3: xmms is stopped
+      // xmms playing or playing but paused
+      if(!xmms_remote_is_paused(0)) {
+        // case 1: xmms is playing
+        cout << "case1\n";
+        xmms_skipForward();
+      }
+      else {
+        // case 2: xmms is paused => start playing
+        cout << "case2\n";
+        xmms_skipForward();
+        xmms_remote_play(0);
+      }
+    }
+    else {
+      // case 3: xmms is stopped (this is a bit dirty...)
+      cout << "case3\n";
+      xmms_remote_set_playlist_pos(0, 0);
       xmms_remote_play(0);
     }
 			
@@ -1809,17 +1816,17 @@ void YammiGui::middleClick(int button)
 void YammiGui::openHelp()
 {
 	// linux specific
-	// is this path always okay?
-	system("konqueror /opt/kde2/share/doc/HTML/en/yammi/index.html &");
+	// hardcoded path, we should probably read $KDEDIR or something instead...
+	system("konqueror /opt/kde3/share/doc/HTML/en/yammi/index.html &");
 }
 
 /// display about dialog
 void YammiGui::aboutDialog()
 {
 	QMessageBox::information( this, "Yammi",	QString("Yammi - Yet Another Music Manager I...\n\n\n")+
-																					"Version "+model->config.yammiVersion+", 12-2001 - 7-2002 by Oliver Nölle\n\n"+
-																					"Contact: oli.noelle@web.de\n\n"+
+																					"Version "+model->config.yammiVersion+", 12-2001 - 8-2002 by Oliver Nölle\n\n"+
 																					"Project home page: yammi.sourceforge.net\n\n\n"+
+																					"Contact: oli.noelle@web.de\n\n"+
 																					"have fun...\n");
 }
 

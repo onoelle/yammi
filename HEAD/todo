@@ -1,6 +1,6 @@
 TODO
 ----
-last update 28.7.2002
+last update 11.8.2002
 
 KNOWN BUGS
 ----------
@@ -12,22 +12,14 @@ KNOWN BUGS
 - still problem of freezing xmms => xmms_remote_playlist_delete(0, 0)
 	(seems to be a bug in xmms, posted to bugs@xmms)
 
-for release 0.6
----------------
-- on deleting a song: delete in all lists (history, categories, ...)
-- play now, when player is stopped!
-- before xmms commands: check whether xmms running and start if necessary
-- clean up website...
-
 
 for release 0.6.1
 -----------------
 
+- on deleting a song: delete in all lists (history, categories, ...)
 - save more session settings?
-  - column width? for each folder?
+  - column width? order? for each folder?
   - current folder?
-  
-
 - replace id3 tag handling (and mp3 layer info?) with id3lib
 - try to improve speed of listview (heaps slower in qt3!)
   - change linked list to vector or dictionary in MyList???

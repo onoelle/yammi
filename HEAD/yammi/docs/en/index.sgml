@@ -3,7 +3,7 @@
 <article>
 <title>The Yammi Handbook
 <author>Brian O.Nölle <tt>oli.noelle@web.de</tt>
-<date>Version 0.5.3 , Sun May 19 16:00:00 MET 2002
+<date>Version 0.6 , Sun August 11 16:00:00 MET 2002
 <abstract>
 This Handbook describes Yammi Version 0.6
 </abstract>
@@ -17,6 +17,7 @@ which allows convenient and fast access to any mp3 songs.
 For playing songs the program uses XMMS
 (<htmlurl url="http://www.xmms.org" name = "X MultiMedia System">).
 So far, Yammi only supports Xmms and the mp3 format.<p>
+
 Yammi enables you to
 
 - conveniently search for songs (fuzzy search)
@@ -663,6 +664,13 @@ Yammi will shut down in the following two cases:
 If there is a shutdown script specified in the preferences, this script will be invoked on
 shutting down.
 This can be used to shutdown the computer, simulating the functionality of a timer on a stereo.
+To shutdown your computer as a normal user, you might need to modify permissions to the
+shutdown command (eg., as root do a "chmod 6755 /sbin/shutdown").
+Be careful with changing permissions, as it may make your computer more vulnerable.
+
+Be also careful with shutting down your computer in that way, as any open documents will not be saved
+and running programs might not be terminated in a very soft way...
+(Anyone knows how to shutdown KDE in a regular way from a script? Please let me know!)
 
 
 <sect1> Removable Media Management <p>
@@ -717,18 +725,10 @@ These plugins can be configured in Yammi's preferences, and are available via th
 context menu in the songlist. There are two types of plugins, the first one
 ("Song plugin") is invoked for each song, the second one
 ("Songlist plugin") generates a list of items and invokes
-a program on this list (or on an m3u file).
+a program on this list.
 
-<sect2> Song plugin <p>
-Just try it out with something harmless (like an echo command).
-
-<sect2> Songlist plugin <p>
-todo...
-
-<sect2> Useful programs <p>
-cdlabelgen
-
-mp3burn (the perl script)
+Please have a look at Yammi's website (yammi.sourceforge.net) for example configurations
+for these plugins.
 
 
 <sect1> Tips and tricks...<p>

@@ -8,8 +8,8 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>599</width>
-            <height>526</height>
+            <width>585</width>
+            <height>503</height>
         </rect>
     </property>
     <property name="caption">
@@ -1020,6 +1020,14 @@ listed above
                                                 </property>
                                             </widget>
                                         </grid>
+                                    </widget>
+                                    <widget class="QLabel" row="1" column="0">
+                                        <property name="name">
+                                            <cstring>TextLabel1_4</cstring>
+                                        </property>
+                                        <property name="text">
+                                            <string>See Yammi's homepage for useful plugin configurations: http://yammi.sourceforge.net</string>
+                                        </property>
                                     </widget>
                                 </grid>
                             </widget>

@@ -1,21 +1,25 @@
 #!/bin/bash
 # script for grabbing and encoding a single track from cd
-# example script provided for yammi (see yammi.sourceforge.net)
-# 3-2002 by Oliver Noelle
-# usage: grabAndEncode <trackNr> <artist> <title> <outfile>
+# example script provided for Yammi (see http://yammi.sourceforge.net)
+# 3-2002 - 8-2002 by Oliver Noelle
+# usage: yammiGrabAndEncode <trackNr> <artist> <title> <outfile>
 #
 # if you want to customize this:
 # please make sure that <outfile> is only available when
 # the grabbing and encoding is completed
-# yammi relies on that! (it periodically checks whether <outfile> is existing)
+# Yammi relies on that! (it periodically checks whether <outfile> is existing)
 
+# step 1: rip track from cd with the help of cdparanoia
 echo "start grabbing..."
 cdparanoia -q $1 "$4.wav"
 echo "..done"
 
+# step 2: encode the ripped track with the help of notlame
+# here you can specify your encoding options like bitrate...
 echo "start encoding..."
 notlame -S -h --preset studio --ta "$2" --tt "$3" "$4".wav "$4.part"
 echo "..done"
 
+# step 3: mv the encoded mp3 file to final destination
 rm "$4.wav"
 mv "$4.part" "$4"

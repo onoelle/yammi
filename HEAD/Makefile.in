@@ -1,4 +1,4 @@
-# KDE tags expanded automatically by am_edit - $Revision: 1.5 $ 
+# KDE tags expanded automatically by am_edit - $Revision: 1.6 $ 
 # Makefile.in generated automatically by automake 1.5 from Makefile.am.
 
 # Copyright 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001
@@ -230,7 +230,7 @@ x_libraries = @x_libraries@
 
 SUBDIRS = yammi 
 
-EXTRA_DIST = yammi.kdevprj admin CHANGELOG todo 
+EXTRA_DIST = yammi.kdevprj admin CHANGELOG todo yammiGrabAndEncode yammiShutdownScript 
 
 ####### kdevelop will overwrite this part!!! (end)############
 # not a GNU package. You can remove this line, if 
@@ -410,7 +410,7 @@ distclean-tags:
 
 #>- DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 #>+ 4
-KDE_DIST=Makefile.dist subdirs yammiShutdownScript yammiGrabAndEncode yammi.kdevses 
+KDE_DIST=Makefile.dist subdirs yammi.spec yammi.kdevses 
 
 DISTFILES= $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST) $(KDE_DIST)
 
@@ -550,7 +550,7 @@ info-am:
 
 install-data-am:
 
-install-exec-am:
+install-exec-am: install-exec-local
 
 install-info: install-info-recursive
 
@@ -566,7 +566,7 @@ mostlyclean: mostlyclean-recursive
 
 mostlyclean-am: mostlyclean-generic mostlyclean-libtool
 
-uninstall-am: uninstall-info-am
+uninstall-am: uninstall-info-am uninstall-local
 
 uninstall-info: uninstall-info-recursive
 
@@ -576,16 +576,38 @@ uninstall-info: uninstall-info-recursive
 	distclean-libtool distclean-recursive distclean-tags distdir \
 	dvi dvi-am dvi-recursive info info-am info-recursive install \
 	install-am install-data install-data-am install-data-recursive \
-	install-exec install-exec-am install-exec-recursive \
-	install-info install-info-am install-info-recursive install-man \
-	install-recursive install-strip installcheck installcheck-am \
-	installdirs installdirs-am installdirs-recursive \
-	maintainer-clean maintainer-clean-generic \
-	maintainer-clean-recursive mostlyclean mostlyclean-generic \
-	mostlyclean-libtool mostlyclean-recursive tags tags-recursive \
-	uninstall uninstall-am uninstall-info-am \
-	uninstall-info-recursive uninstall-recursive
+	install-exec install-exec-am install-exec-local \
+	install-exec-recursive install-info install-info-am \
+	install-info-recursive install-man install-recursive \
+	install-strip installcheck installcheck-am installdirs \
+	installdirs-am installdirs-recursive maintainer-clean \
+	maintainer-clean-generic maintainer-clean-recursive mostlyclean \
+	mostlyclean-generic mostlyclean-libtool mostlyclean-recursive \
+	tags tags-recursive uninstall uninstall-am uninstall-info-am \
+	uninstall-info-recursive uninstall-local uninstall-recursive
 
+
+install-exec-local:
+#>- 	$(mkinstalldirs) /usr/local/bin/
+#>+ 1
+	$(mkinstalldirs) $(DESTDIR)/usr/local/bin/
+#>- 	$(INSTALL_SCRIPT) yammiGrabAndEncode /usr/local/bin/yammiGrabAndEncode
+#>+ 1
+	$(INSTALL_SCRIPT) yammiGrabAndEncode $(DESTDIR)/usr/local/bin/yammiGrabAndEncode
+#>- 	$(mkinstalldirs) /usr/local/bin/
+#>+ 1
+	$(mkinstalldirs) $(DESTDIR)/usr/local/bin/
+#>- 	$(INSTALL_SCRIPT) yammiShutdownScript /usr/local/bin/yammiShutdownScript
+#>+ 1
+	$(INSTALL_SCRIPT) yammiShutdownScript $(DESTDIR)/usr/local/bin/yammiShutdownScript
+
+uninstall-local:
+#>- 	-rm -f /usr/local/bin/yammiGrabAndEncode
+#>+ 1
+	-rm -f $(DESTDIR)/usr/local/bin/yammiGrabAndEncode
+#>- 	-rm -f /usr/local/bin/yammiShutdownScript
+#>+ 1
+	-rm -f $(DESTDIR)/usr/local/bin/yammiShutdownScript
 
 #$(top_srcdir)/configure.in: configure.in.in $(top_srcdir)/subdirs
 #	cd $(top_srcdir) && $(MAKE) -f admin/Makefile.common configure.in ;

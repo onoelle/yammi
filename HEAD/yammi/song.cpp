@@ -241,9 +241,9 @@ bool Song::checkTags()
 	}
 	bool same=false;
 
-  // id3lib (experimental)
+  // id3lib (experimental => disabled)
   //**********************
-  ID3_Tag myTag;
+/*  ID3_Tag myTag;
   myTag.Link(this->location());
 
   ID3_Frame* myFrame = myTag.Find(ID3FID_TITLE);
@@ -265,7 +265,7 @@ bool Song::checkTags()
   else {
     cout << "could not find frame\n";
   }
-
+*/
 
 
 	MP3Tag tag;

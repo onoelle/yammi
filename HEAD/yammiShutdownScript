@@ -1,8 +1,13 @@
 #!/bin/bash
-# script shutting down the computer, if yammi is in
-# shutdown(computer) mode
-# example script provided for yammi (see yammi.sourceforge.net)
-# 3-2002 by Oliver Noelle
-# usage: shutdown (no parameters)
+# script for shutting down computer, if yammi is in shutdown mode
+# example script provided for Yammi (see http://yammi.sourceforge.net)
+# 3-2002 - 8-2002 by Oliver Noelle
+# usage: yammiShutdownScript (no parameters)
 #
+# use with care!
+# running applications will shutdown immediately without saving open documents...
+# you might need to modify permissions on the /sbin/shutdown command,
+# if you want to use this script as a normal user (but think about it first!)
+# (eg. "chmod 6755 /sbin/shutdown")
+
 /sbin/shutdown -t 3 -h now &
