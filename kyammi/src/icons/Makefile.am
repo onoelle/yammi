@@ -21,6 +21,7 @@ install-data-local:
 	$(INSTALL_DATA) $(srcdir)/toggle_playlist.png $(kde_datadir)/yammi/icons/crystalsvg/22x22/actions/toggle_playlist.png
 
 	$(INSTALL_DATA) $(srcdir)/yammi16x16.png $(kde_icondir)/crystalsvg/16x16/apps/yammi.png
+	$(INSTALL_DATA) $(srcdir)/yammi22x22.png $(kde_icondir)/crystalsvg/22x22/apps/yammi.png
 	$(INSTALL_DATA) $(srcdir)/yammi32x32.png $(kde_icondir)/crystalsvg/32x32/apps/yammi.png
 	$(INSTALL_DATA) $(srcdir)/yammi48x48.png $(kde_icondir)/crystalsvg/48x48/apps/yammi.png
 	$(INSTALL_DATA) $(srcdir)/yammi64x64.png $(kde_icondir)/crystalsvg/64x64/apps/yammi.png
@@ -35,6 +36,7 @@ uninstall-local:
 	-rm -f $(kde_datadir)/yammi/icons/crystalsvg/22x22/actions/stop_prelisten.png
 	-rm -f $(kde_datadir)/yammi/icons/crystalsvg/22x22/actions/toggle_playlist.png
 	-rm -f $(kde_icondir)/crystalsvg/16x16/apps/yammi.png
+	-rm -f $(kde_icondir)/crystalsvg/22x22/apps/yammi.png
 	-rm -f $(kde_icondir)/crystalsvg/32x32/apps/yammi.png
 	-rm -f $(kde_icondir)/crystalsvg/48x48/apps/yammi.png
 	-rm -f $(kde_icondir)/crystalsvg/64x64/apps/yammi.png
