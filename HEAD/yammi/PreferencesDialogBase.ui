@@ -614,45 +614,7 @@
                             <property name="spacing">
                                 <number>6</number>
                             </property>
-                            <widget class="QLayoutWidget" row="0" column="0" rowspan="1" colspan="3">
-                                <property name="name">
-                                    <cstring>Layout9_2</cstring>
-                                </property>
-                                <vbox>
-                                    <property name="name">
-                                        <cstring>unnamed</cstring>
-                                    </property>
-                                    <property name="margin">
-                                        <number>0</number>
-                                    </property>
-                                    <property name="spacing">
-                                        <number>6</number>
-                                    </property>
-                                    <widget class="QCheckBox">
-                                        <property name="name">
-                                            <cstring>CheckBoxTagsConsistent</cstring>
-                                        </property>
-                                        <property name="text">
-                                            <string>keep tags consistent</string>
-                                        </property>
-                                        <property name="toolTip" stdset="0">
-                                            <string>synchronizes the id3-tags of the mp3 files with the yammi database information. If activated, yammi modifies the tags of your mp3 files!</string>
-                                        </property>
-                                    </widget>
-                                    <widget class="QCheckBox">
-                                        <property name="name">
-                                            <cstring>CheckBoxFilenamesConsistent</cstring>
-                                        </property>
-                                        <property name="text">
-                                            <string>keep filenames consistent</string>
-                                        </property>
-                                        <property name="toolTip" stdset="0">
-                                            <string>Synchronizes the filenames of the mp3 files according to the information in the yammi database. If activated, yammi renames your mp3 files!</string>
-                                        </property>
-                                    </widget>
-                                </vbox>
-                            </widget>
-                            <widget class="QPushButton" row="1" column="2">
+                            <widget class="QPushButton" row="2" column="3">
                                 <property name="name">
                                     <cstring>PushButtonPatternReplacements</cstring>
                                 </property>
@@ -660,7 +622,7 @@
                                     <string>Replacements...</string>
                                 </property>
                             </widget>
-                            <widget class="QLabel" row="1" column="0">
+                            <widget class="QLabel" row="2" column="0">
                                 <property name="name">
                                     <cstring>LabelFilenamePattern</cstring>
                                 </property>
@@ -672,7 +634,7 @@
                                     <string>The filename pattern to use for renaming files.</string>
                                 </property>
                             </widget>
-                            <widget class="QLineEdit" row="1" column="1">
+                            <widget class="QLineEdit" row="2" column="1" rowspan="1" colspan="2">
                                 <property name="name">
                                     <cstring>LineEditFilenamePattern</cstring>
                                 </property>
@@ -680,7 +642,7 @@
                                     <string>The filename pattern to use for renaming files.</string>
                                 </property>
                             </widget>
-                            <widget class="QLabel" row="2" column="0">
+                            <widget class="QLabel" row="3" column="0">
                                 <property name="name">
                                     <cstring>LabelGuessingPattern</cstring>
                                 </property>
@@ -692,7 +654,7 @@
                                     <string>The filename pattern to use for renaming files.</string>
                                 </property>
                             </widget>
-                            <widget class="QButtonGroup" row="2" column="1" rowspan="1" colspan="2">
+                            <widget class="QButtonGroup" row="3" column="1" rowspan="1" colspan="3">
                                 <property name="name">
                                     <cstring>GuessingPatternButtonGroup</cstring>
                                 </property>
@@ -746,6 +708,39 @@
                                         <number>2</number>
                                     </property>
                                 </widget>
+                            </widget>
+                            <widget class="QCheckBox" row="0" column="0" rowspan="1" colspan="4">
+                                <property name="name">
+                                    <cstring>CheckBoxTagsConsistent</cstring>
+                                </property>
+                                <property name="text">
+                                    <string>keep tags consistent</string>
+                                </property>
+                                <property name="toolTip" stdset="0">
+                                    <string>synchronizes the id3-tags of the mp3 files with the yammi database information. If activated, yammi modifies the tags of your mp3 files!</string>
+                                </property>
+                            </widget>
+                            <widget class="QCheckBox" row="1" column="0" rowspan="1" colspan="2">
+                                <property name="name">
+                                    <cstring>CheckBoxFilenamesConsistent</cstring>
+                                </property>
+                                <property name="text">
+                                    <string>keep filenames consistent</string>
+                                </property>
+                                <property name="toolTip" stdset="0">
+                                    <string>Synchronizes the filenames of the mp3 files according to the information in the yammi database. If activated, yammi renames your mp3 files!</string>
+                                </property>
+                            </widget>
+                            <widget class="QCheckBox" row="1" column="2" rowspan="1" colspan="2">
+                                <property name="name">
+                                    <cstring>CheckBoxIgnoreCaseInFilenames</cstring>
+                                </property>
+                                <property name="text">
+                                    <string>ignore case on filename check</string>
+                                </property>
+                                <property name="toolTip" stdset="0">
+                                    <string>Synchronizes the filenames of the mp3 files according to the information in the yammi database. If activated, yammi renames your mp3 files!</string>
+                                </property>
                             </widget>
                         </grid>
                     </widget>

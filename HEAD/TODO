@@ -1,17 +1,13 @@
 TODO
 ----
-last update 22.7.2003
+last update 20.8.2003
 
 
-user wishes:
-------------
-- rating of tracks
-- subfolders
 
 
 for version 1.0-rc1
 -------------------
-- integrate AM_XMMS macro from configure.in_orig
+- check skip backward functionality & filling up songPlayed list!!!
 - dequeue from playlist: insert "forSelectionDequeue" method...
 - properly integrate and document translation capability
 - document: if noatun stops, you might have to empty the playlists of both instances manually
@@ -22,8 +18,12 @@ for version 1.0
 - icons???
 
 
+
 later...
 --------
+- rating of tracks
+- subfolders
+- extend consistency check to not only rename, but also move files within certain folder structure
 - keep sorting when changing folders?
 - disable repeat/shuffle mode in noatun?
 - history of visited folders + "go back" button
@@ -33,7 +33,6 @@ later...
 - make configurable/auto-detected forbidden characters: http://osdev.berlios.de/osd-fs.html
 - check: moving songs in playlist not possible (on Mandrake, rpm?)
 - {wish} in playlist: noatun stops playing
-- preserve file permissions on modifying ogg tags
 - polish GUI... (esp. the "butt ugly" icons?)
 - no crossfading with noatun: replace workaround to avoid pauses in playback between songs
 - removing a song from playlist: only remove this one (idea: function "removeDuplicates" for playlist?)
@@ -82,7 +81,7 @@ KNOWN BUGS
 ----------
 - sometimes noatun playlist will not be correctly cleared
   => effect: noatun stops on enqueueing a song
-  => workaround: you have to both noatun instances and clear their playlist manually
+  => workaround: you have to look at both noatun instances and clear their playlist manually
 - a {wish} song causes noatun playback to stop
 - floating point exception when scanning wav file???
 - still problem of freezing xmms => xmms_remote_playlist_delete(0, 0)

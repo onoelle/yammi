@@ -29,6 +29,8 @@ class FolderSorted : public Folder  {
 public: 
 	FolderSorted	(QListView *parent, const QString &name );						// top-level folder
 	FolderSorted	(QListViewItem *parent, const QString &name );				// subfolder
+  FolderSorted  (QListView *parent, const QString &name, MyList* songList);
+  FolderSorted  (QListViewItem* parent, const QString &name, MyList* songList);
 	~FolderSorted();
 	
 	virtual void		update(MyList* songList);					// common update method

@@ -332,11 +332,10 @@ YammiGui::YammiGui(QString baseDir)
 	setCentralWidget(centralWidget);
 	cout << "..done\n";
 
-	// now init all Folders
-	//*********************
-	cout << "setting up folders...\n";
-	
 
+  // now init all Folders
+	//*********************
+	cout << "setting up folders...\n";	
 
   // folder containing all music
 	folderAll=new Folder( folderListView, QString(tr("All Music")), &(model->allSongs));
@@ -362,27 +361,27 @@ YammiGui::YammiGui(QString baseDir)
 	folderMedia->moveItem(folderCategories);
 
 	// folder containing currently played song
-	folderActual = new FolderSorted(folderListView, QString(tr("Playlist")));
+	folderActual = new FolderSorted(folderListView, QString(tr("Playlist")), &(model->songsToPlay));
 
 	// folder containing songs played in this session
-	folderSongsPlayed = new Folder(folderListView, QString(tr("Songs Played"))); //, &(model->songsPlayed));
+	folderSongsPlayed = new Folder(folderListView, QString(tr("Songs Played")), &(model->songsPlayed));
 	folderSongsPlayed->moveItem(folderCategories);
 
 	// folder containing history
-	folderHistory = new Folder(folderListView, QString(tr("History"))); //, &(model->songHistory));
+	folderHistory = new Folder(folderListView, QString(tr("History")), &(model->songHistory));
 	folderHistory->moveItem(folderSongsPlayed);
 
 	// folder containing unclassified songs
-	folderUnclassified = new Folder(folderListView, QString(tr("Unclassified"))); //, &(model->unclassifiedSongs));
+	folderUnclassified = new Folder(folderListView, QString(tr("Unclassified")), &(model->unclassifiedSongs));
 	folderUnclassified->moveItem(folderMedia);
 		
-	folderSearchResults = new Folder( folderListView, QString(tr("Search Results"))); //, &searchResults );
+	folderSearchResults = new Folder( folderListView, QString(tr("Search Results")), &searchResults );
 	folderSearchResults->moveItem(folderActual);
 	
 	folderProblematic = new Folder( folderListView, QString(tr("Problematic Songs")) );
 	folderProblematic->moveItem(folderUnclassified);
 
-  folderRecentAdditions = new Folder(folderListView, QString(tr("Recent Additions")) );
+  folderRecentAdditions = new Folder(folderListView, QString(tr("Recent Additions")), &(model->recentSongs));
   folderRecentAdditions->moveItem(folderUnclassified);
 
   cout << "..done, updating view...\n";
@@ -426,8 +425,6 @@ YammiGui::YammiGui(QString baseDir)
 
 	// some preparations for startup
 	//******************************
-// TODO: remove?
-//	folderListView->firstChild()->setOpen( TRUE );
 	
 	shuttingDown=0;
 	controlPressed=false;
@@ -569,7 +566,8 @@ void YammiGui::handleLastSong(Song* lastSong)
     return;
   }
   // we put last song in folder songsPlayed
-  // but first check, whether already in there (due to xmms status change bug)
+  // but first check, whether already in there as last entry
+  // (due to xmms status change bug, we would sometimes insert a song twice)
   if(model->songsPlayed.count()>=1) {
     Song* lastLogged=((SongEntry*)model->songsPlayed.getLast())->song();
     if(lastLogged==lastSong) {
@@ -1897,7 +1895,7 @@ void YammiGui::forSelectionSongInfo()
 			if(change) {
 				model->allSongsChanged(true);
 				s->tagsDirty=true;						// mark song as dirty(tags)
-				s->filenameDirty=(s->checkFilename()==false);
+				s->filenameDirty=(s->checkFilename(getModel()->config.ignoreCaseInFilenames)==false);
 				// manual update: go through list of songs and correct, if necessary
 				for(SongListItem* i=(SongListItem*)songListView->firstChild(); i; i=(SongListItem*)i->itemBelow()) {
 					if(i->song()!=s)
@@ -1982,7 +1980,7 @@ void YammiGui::forSelectionBurnToMedia()
 		size+=fi.size();
     totalSize+=fi.size();
 		// linux specific
-		QString cmd=QString("ln -s \"%1\" \"%3/%4\"").arg(s->location()).arg(mediaDir).arg(s->filename);
+		QString cmd=QString("ln -s \"%1\" \"%2/%3\"").arg(s->location()).arg(mediaDir).arg(s->filename);
 		system(cmd);
 		s->addMediaLocation(mediaName, s->filename);
     s=selectedSongs.nextSong();
@@ -2135,8 +2133,6 @@ void YammiGui::forAllCheckConsistency()
 
 void YammiGui::forSelectionCheckConsistency()
 {
-  cout << this->selectedSongs.count() << " songs selected to check\n";
-  
 	CheckConsistencyDialog d(this, tr("Check consistency - settings"));
   d.TextLabel1->setText(QString(tr("checking %1 songs")).arg(selectedSongs.count()));
   
@@ -2150,7 +2146,9 @@ void YammiGui::forSelectionCheckConsistency()
   p.updateNonExisting=d.CheckBoxUpdateNonExisting->isChecked();
   p.checkTags=d.CheckBoxCheckTags->isChecked();
   p.correctTags=d.CheckBoxCorrectTags->isChecked();
+  p.correctTagsDirection=d.ComboBoxCorrectTagsDirection->currentItem();
   p.checkFilenames=d.CheckBoxCheckFilenames->isChecked();
+  p.ignoreCaseInFilenames=model->config.ignoreCaseInFilenames;
   p.correctFilenames=d.CheckBoxCorrectFilenames->isChecked();
   p.checkDoubles=d.CheckBoxCheckDoubles->isChecked();
 
@@ -2164,6 +2162,7 @@ void YammiGui::forSelectionCheckConsistency()
 
   folderProblematic->update(&model->problematicSongs);
 	folderContentChanged(folderProblematic);
+  folderContentChanged(chosenFolder);
 
 	QString msg=QString(
   tr("Result of consistency check:\n\n\
@@ -2333,19 +2332,16 @@ void YammiGui::forSong(Song* s, action act, QString dir)
 
     if(player->getStatus()==STOPPED) {
       // case 1: player stopped (this is a bit dirty...)
-      cout << "PlayNow: case a\n";
       player->play();
     }
     else if(player->getStatus()==PAUSED) {
       // case 2: player paused => start playing
       player->skipForward(shiftPressed);
       player->play();
-      cout << "PlayNow: case b\n";      
     }
     else if(player->getStatus()==PLAYING) {
       // case 3: player is playing
       player->skipForward(shiftPressed);
-      cout << "PlayNow: case c\n";
     }
     // call check() manually so that subsequent enqueue actions are performed
     // on current playlist and status
@@ -2430,9 +2426,10 @@ void YammiGui::forSong(Song* s, action act, QString dir)
 	
 	case CheckConsistency:
 	 {
-		if(s->filename=="")
+		if(s->filename=="") {
 			return;
-		QString diagnosis=s->checkConsistency(model->config.tagsConsistent, model->config.filenamesConsistent);
+    }
+    QString diagnosis=s->checkConsistency(model->config.tagsConsistent, model->config.filenamesConsistent, model->config.ignoreCaseInFilenames);
 		if(diagnosis!="") {
 			model->problematicSongs.append(new SongEntryString(s, diagnosis));
 		}
@@ -3557,8 +3554,10 @@ void YammiGui::skipForward()
 void YammiGui::skipBackward()
 {
   int count=model->songsPlayed.count();
-	if(count==0)			// empty folder songsPlayed => can't skip backwards
-		return;
+	if(count==0) {
+    // empty folder songsPlayed => can't skip backwards
+    return;
+  }
 
 	// 1. get and remove last song from songsPlayed
 	Song* last=model->songsPlayed.at(count-1)->song();

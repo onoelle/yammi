@@ -1,5 +1,5 @@
 /* XPM */
-static char *playnow[]={
+static const char *playnow_xpm[]={
 "16 16 6 1",
 ". c None",
 "c c #000000",

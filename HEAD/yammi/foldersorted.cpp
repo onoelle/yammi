@@ -38,10 +38,26 @@ FolderSorted::FolderSorted( QListViewItem* parent, const QString &name )
 	sorted=true;
 }
 
+// construct a folder (top-level)
+FolderSorted::FolderSorted( QListView *parent, const QString &name, MyList* songList)
+			: Folder(parent, name)
+{
+	sorted=true;
+  this->songList=songList;
+}
+
+// construct a folder (not top-level)
+FolderSorted::FolderSorted( QListViewItem* parent, const QString &name, MyList* songList)
+			: Folder(parent, name)
+{
+	sorted=true;
+  this->songList=songList;
+}
+
+
+  
 FolderSorted::~FolderSorted()
 {
-// the following line causes a crash???
-//	delete(songList);
 }
 
 // update the view (after changes in songlist)

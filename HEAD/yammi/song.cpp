@@ -271,22 +271,67 @@ int Song::create(const QString location, const QString mediaName)
 	corrupted=false;
 
   // TODO: maybe perform this check only if not scanning song from media?
-  checkConsistency(gYammiGui->getModel()->config.tagsConsistent, gYammiGui->getModel()->config.filenamesConsistent);
+  checkConsistency(gYammiGui->getModel()->config.tagsConsistent, gYammiGui->getModel()->config.filenamesConsistent, gYammiGui->getModel()->config.ignoreCaseInFilenames);
   return 0;
 }
 
-// check filename (if given)
-bool Song::checkFilename()
+
+/**
+ * Re-reads the tags from filename,
+ * overwriting the info in yammi's database.
+ * (only has an effect for mp3 or ogg files so far)
+ * Returns true, if tags have been read.
+ */
+bool Song::rereadTags()
 {
-	if(filename=="")
- 		return true;
-	else
-		return (constructFilename()==filename);
+  if(location().right(4).upper()==".MP3") {
+#ifdef ENABLE_ID3LIB
+    if(!getMp3Tags(location())) {
+      cout << "could not read tag information from mp3 file \"" << location() << "\"\n";
+    }
+    else {
+		  tagsDirty=true;
+      return true;
+    }
+#endif // ENABLE_ID3LIB
+  }
+
+  if(location().right(4).upper()==".OGG") {
+#ifdef ENABLE_OGGLIBS
+    if(!getOggInfo(location())) {
+      cout << "could not read tag information from ogg file \"" << location() << "\"\n";
+    }
+    else {
+		  tagsDirty=true;
+      return true;
+    }
+#endif // ENABLE_OGGLIBS
+  }
+  return false;
+}
+
+
+
+// check filename (if given)
+bool Song::checkFilename(bool ignoreCase)
+{
+	if(filename=="") {
+    return true;
+  }
+	else {
+    if(ignoreCase) {
+      return (constructFilename().upper()==filename.upper());
+    }
+    else {
+      return (constructFilename()==filename);
+    }
+  }
 }
 
 /** Tries to guess artist and title from filename.
- * So far, assumes a pattern of "artist - title.mp3"
+ * So far, only a simple and an advanced pattern available for guessing
  * \todo: add more sophisticated pattern (leading trackNr?, directory with album?)
+ * (or add a configurable pattern description)
  */
 void Song::guessTagsFromFilename(QString filename, QString path, QString* artist, QString* title, QString* album)
 {
@@ -698,7 +743,21 @@ QString Song::getOggComment(OggVorbis_File* oggfile, QString commentName)
 	return "";
 }
 
+/**
+ * Sets a single vorbis comment
+ */
+void Song::setOggComment(vorbis_comment* vc, QString key, QString value)
+{
+  QString qstr=QString("%1=%2").arg(key).arg(value);
+  char* string=(char*) qstr.latin1();
+  vorbis_comment_add(vc, string);
+  // any useful return value?
+}
 
+
+/**
+ * Sets all ogg tags.
+ */
 bool Song::setOggTags(QString filename)
 {
   vcedit_state* state;
@@ -723,80 +782,37 @@ bool Song::setOggTags(QString filename)
   vorbis_comment_clear(vc);
   vorbis_comment_init(vc);
 
-  gchar *string; //, *string1;
 
-  // title
-  if( title!="" ) {
-    cout << "writing title...\n";
-    string  = g_strconcat("title=", title.latin1(), NULL);
-//    convert_to_utf8(string);
-     vorbis_comment_add(vc, string);
-     g_free(string);
-//     g_free(string1);
-  }
-
-  // artist
-  if( artist!="" ) {
-    cout << "writing artist...\n";
-    string  = g_strconcat("artist=", artist.latin1(), NULL);
-    vorbis_comment_add(vc, string);
-    g_free(string);
-  }
-
-  // album
-  if( album!="" ) {
-    string  = g_strconcat("album=", album.latin1(), NULL);
-    vorbis_comment_add(vc, string);
-    g_free(string);
-  }
-
-  // comment
-  if( comment!="" ) {
-    string  = g_strconcat("comment=", comment.latin1(), NULL);
-    vorbis_comment_add(vc, string);
-    g_free(string);
-  }
-
-  // tracknumber
-  if( trackNr!=0 ) {
-    string  = g_strconcat("tracknumber=", QString("%1").arg(trackNr).latin1(), NULL);
-    vorbis_comment_add(vc, string);
-    g_free(string);
-  }
-
-  // date
-  if( this->year!=0 ) {
-    string  = g_strconcat("date=", QString("%1").arg(year).latin1(), NULL);
-    vorbis_comment_add(vc, string);
-    g_free(string);
-  }
-
-  if( genreNr!=-1) {
-    QString genreStr=CMP3Info::getGenre(genreNr);
-//    cout << "genre as string: " << genreStr << "\n";
-    string  = g_strconcat("genre=", genreStr.latin1(), NULL);
-    vorbis_comment_add(vc, string);
-    g_free(string);
-  }
+  if( title!="" )       { setOggComment(vc, "title", title); }
+  if( artist!="" )      { setOggComment(vc, "artist", artist); }
+  if( album!="" )       { setOggComment(vc, "album", album); }
+  if( comment!="" )     { setOggComment(vc, "comment", comment); }
+  if( trackNr!=0 )      { setOggComment(vc, "tracknumber", QString("%1").arg(trackNr)); }
+  if( this->year!=0 )   { setOggComment(vc, "date", QString("%1").arg(year)); }
+  if( genreNr!=-1)      { setOggComment(vc, "genre", CMP3Info::getGenre(genreNr)); }
 
   // open temp file for writing to
   FILE* file_out;
-  if ( (file_out=fopen(filename+".new","w"))==NULL ) {
-    cout << "ERROR (saving ogg tags) while opening file " << filename << "\n";
+  QString newFilename=filename+".new";
+  if ( (file_out=fopen(newFilename,"w"))==NULL ) {
+    cout << "ERROR (saving ogg tags) while opening file " << newFilename << "\n";
     return false;
   }
 
   int succ=vcedit_write(state, file_out);
   fclose(file_out);
   if(succ != 0) {
-    cout << "ERROR writing new ogg-file " << filename << "\n";
+    cout << "ERROR writing new ogg-file " << newFilename << "\n";
   }
   else {
   	QDir dir;
+		// linux specific
+		QString cmd=QString("chmod --reference \"%1\" \"%2\"").arg(filename).arg(newFilename);
+		system(cmd);
     // delete original file...
     dir.remove(filename);
     // ...and rename temp file to original filename
-  	dir.rename(filename+".new", filename);
+  	dir.rename(newFilename, filename);
   }
                                                
   return true;
@@ -856,9 +872,11 @@ bool Song::getWavInfo(QString filename)
 
 
 
-/// check tags (if songfile available)
-/// true: tags correctly set
-/// false: differences between database info and tags in file
+/**
+ * check tags (if songfile available)
+ * true: tags correctly set
+ * false: differences between database info and tags in file
+ */
 bool Song::checkTags()
 {
 	if(filename=="")		// song not on local harddisk => we can't check
@@ -980,14 +998,24 @@ bool Song::saveFilename()
 		return true;
 	}
 	QString newFilename=constructFilename();
-	QString newname=QString("%3/%4").arg(this->path).arg(newFilename);
+	QString newname=QString("%1/%2").arg(this->path).arg(newFilename);
 
-	// we first check whether we can create a file with that name (overwriting anything?)
+  // bug in windows-filesystem?
+	// renaming fails if new and old are just different in case
+	QDir currentDir=QDir("/");
+	if(newname.upper()==oldname.upper()) {
+		if(!currentDir.rename(oldname, oldname+".xxx")) {
+      cout << "WARNING: renaming: new filename equals old filename (except case), and renaming failed (" << newFilename << ")\n";
+      return false;
+    }
+		oldname=oldname+".xxx";
+	}
+
+  // we first check whether we can create a file with that name (overwriting anything?)
 	QFileInfo fi1(newname);
 	if(fi1.exists()) {
-		cout << "WARNING: renaming: new Filename already existing: " << newFilename << "\n";
+		cout << "WARNING: renaming: new Filename already existing, aborting (" << newFilename << ")\n";
 		return false;			// return if we don't want to overwrite anything
-//		cout << "overwriting old file...\n";
 	}
 	
 	QFile touchFile(newname);
@@ -1005,15 +1033,7 @@ bool Song::saveFilename()
 		return false;
 	}
 	// okay, successful
-	QDir currentDir=QDir("/");
 	
-	// bug in windows-filesystem?
-	// renaming fails if new and old are just different in case
-	if(newname.upper()==oldname.upper()) {
-		currentDir.rename(oldname, oldname+".xxx");
-		oldname=oldname+".xxx";
-	}
-		
 	if(!currentDir.rename(oldname, newname)) {
 		cout << "ERROR: renaming from " << oldname << " to " << newname << "failed!\n";
 		return false;
@@ -1078,7 +1098,7 @@ bool Song::checkReadability()
  * @returns "" on song okay (or wish or filename==""), or on error:
  * "file not readable", "tags not set correctly", "filename not consistent"
  */
-QString Song::checkConsistency(bool requireConsistentTags, bool requireConsistentFilename)
+QString Song::checkConsistency(bool requireConsistentTags, bool requireConsistentFilename, bool ignoreCaseInFilenames)
 {
 	QString diagnosis="";
 	
@@ -1104,7 +1124,7 @@ QString Song::checkConsistency(bool requireConsistentTags, bool requireConsisten
 	filenameDirty=false;
 	if(requireConsistentFilename && filename!="") {
 		// checking filename
-		if(!checkFilename()) {
+		if(!checkFilename(ignoreCaseInFilenames)) {
 			cout << "file " << this->filename << " does not have correct filename\n";
 			filenameDirty=true;
 			diagnosis+="filename not consistent ";

@@ -1,4 +1,3 @@
-
 dnl http://www.vandenoever.info/software/KDEautomakemanual.html
 dnl http://www.geekcomix.com/snh/files/docs/sdl-kdev/sdl-kdev-mini-how2-2.html
 dnl http://ac-archive.sourceforge.net/acinclude.html
@@ -43,7 +42,7 @@ AC_ARG_PROGRAM
 
 dnl Automake doc recommends to do this only here. (Janos)
 AM_INIT_AUTOMAKE(yammi,1.0-rc1)
-_
+
 dnl for non KDE applications
 AC_PREFIX_DEFAULT(/usr/local)
 if test "x$prefix" = "xNONE"; then
@@ -70,16 +69,16 @@ AH_TEMPLATE( [HAVE_LIBSM], [libsm] )
 AH_TEMPLATE( [HAVE_CATGETS], [catgets] )
 AH_TEMPLATE( [HAVE_GETTEXT], [gettext] )
 AH_TEMPLATE( [HAVE_LC_MESSAGES], [lc_messages] )
-AH_TEMPLATE( [HAVE_STPCPY], [strcpy] )
+AH_TEMPLATE( [HAVE_STRCPY], [strcpy] )
 AH_TEMPLATE( [ENABLE_NLS], [nls] )
 
 AH_TEMPLATE( [HAVE_ICONV_OPEN], [iconv_open] )
 AH_TEMPLATE( [HAVE_LANGINFO_CODESET], [langinfo_codeset] )
 
 AH_TEMPLATE( [ENABLE_ID3LIB], [Support reading and writing MP3 tags] )
-AH_TEMPLATE( [ENABLE_NOATUN], [Support noatun as a multimedia player] )
-AH_TEMPLATE( [ENABLE_XMMS], [Support xmms as a multimedia player] )
-AH_TEMPLATE( [ENABLE_OGGLIBS], [Support reading and writing OGG tags])
+AH_TEMPLATE( [ENABLE_OGGLIBS], [Support reading and writing OGG tags] )
+AH_TEMPLATE( [ENABLE_XMMS], [Support xmms as media player] )
+AH_TEMPLATE( [ENABLE_NOATUN], [Support noatun as media player] )
 
 dnl -------------------------------
 dnl Configure switches.
@@ -149,10 +148,10 @@ dnl gw_CHECK_QT
 dnl http://www.gnu.org/manual/autoconf/html_mono/autoconf.html#SEC83
 dnl substitution of variables in Makefiles
 
-# all_libraries="$all_libraries $USER_LDFLAGS"
-# all_includes="$all_includes $USER_INCLUDES"
-# AC_SUBST(all_includes)
-# AC_SUBST(all_libraries)
+dnl all_libraries="$all_libraries $USER_LDFLAGS"
+dnl all_includes="$all_includes $USER_INCLUDES"
+dnl AC_SUBST(all_includes)
+dnl AC_SUBST(all_libraries)
 
 if test "x$configure_enable_KDE" = "xyes"; then
     AC_MSG_NOTICE( [Adding KDE support] )
@@ -174,12 +173,7 @@ dnl Checks for libraries.
 dnl -------------------------------
 
 dnl standard C++ library
-dnl commented out by Oliver, 14.5.2003 (maybe cout type did not match on all systems???)
 AC_CHECK_LIB( stdc++, main, , AC_MSG_ERROR( [*** stdc++ library is required ***] ), )
-
-dnl supc++ is included in stdc++ in gcc-2x but not in gcc-3x
-dnl commented out by Oliver, 12.7.2003 (does not work on my system, what is supc++???)
-dnl AC_CHECK_LIB( supc++, main, , AC_MSG_ERROR( *** supc++ library is required *** ), )
 
 dnl OGG vorbis libraries
 if test "x$configure_enable_ogglibs" = "xyes"; then
@@ -187,28 +181,21 @@ if test "x$configure_enable_ogglibs" = "xyes"; then
     dnl if not found 'configure_enable_ogglibs' is disabled
 
     AC_CHECK_LIB(ogg, ogg_sync_init, , configure_enable_ogglibs=no, )
-    if test "x$configure_enable_id3lib" = "xyes"; then
-        AC_CHECK_LIB( vorbis,
-                      vorbis_comment_init,
-                       , configure_enable_ogglibs=no, )
+    if test "x$configure_enable_ogglibs" = "xyes"; then
+        AC_CHECK_LIB( vorbis, vorbis_comment_init,, configure_enable_ogglibs=no, )
+    fi
+
+    if test "x$configure_enable_ogglibs" = "xyes"; then
+        AC_CHECK_LIB( vorbisfile, ov_open,, configure_enable_ogglibs=no, )
     fi
 
     if test "x$configure_enable_id3lib" = "xyes"; then
-        AC_CHECK_LIB( vorbisfile,
-                      ov_open,
-                       , configure_enable_ogglibs=no, )
-    fi
-
-    if test "x$configure_enable_id3lib" = "xyes"; then
-        AC_CHECK_LIB( gdk,
-                      g_free,
-                       , configure_enable_ogglibs=no, )
+        AC_CHECK_LIB( gdk, g_free,, configure_enable_ogglibs=no, )
     fi
 fi
 
 if test "x$configure_enable_ogglibs" = "xyes"; then
     AC_MSG_NOTICE( reading/writing of tags in ogg files is supported )
-
     AC_DEFINE( [ENABLE_OGGLIBS], [1] )
 else
     AC_MSG_WARN( [*** Warning: ogg libs support disabled => no reading/writing of tags in ogg files! ***] )
@@ -216,51 +203,45 @@ fi
 
 dnl id3lib library
 if test "x$configure_enable_id3lib" = "xyes"; then
-    AC_CHECK_LIB( z, deflate, , configure_enable_id3lib=no, )
+    AC_CHECK_LIB( z, deflate,, configure_enable_id3lib=no, )
 
     dnl if still adding libid3 then...
     if test "x$configure_enable_id3lib" = "xyes"; then
-        AC_CHECK_LIB( id3, ID3Tag_Link, , configure_enable_id3lib=no,
-                      -lz )
+        AC_CHECK_LIB( id3, ID3Tag_Link,, configure_enable_id3lib=no, )
     fi
 fi
 
 if test "x$configure_enable_id3lib" = "xyes"; then
     AC_MSG_NOTICE( [reading/writing of tags in MP3 files is supported] )
-
     AC_DEFINE( [ENABLE_ID3LIB], [1] )
 else
     AC_MSG_WARN( [*** Warning: id3lib support disabled => no reading/writing of tags in mp3 files! ***] )
 fi
 
-dnl XMMS support
-if test "x$configure_enable_xmms" = "xyes"; then
-    AC_CHECK_LIB( xmms, xmms_remote_get_version, , configure_enable_xmms=no, )
-fi
 
+dnl XMMS support (new version)
+dnl AM_PATH_XMMS([MINIMUM-VERSION, [ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]]])
 if test "x$configure_enable_xmms" = "xyes"; then
-    AC_MSG_NOTICE( [*** xmms support enabled ***] )
-
+    AM_PATH_XMMS(1.2.6, ,AC_MSG_ERROR([*** XMMS >= 1.2.6 not found - please install it or run configure script with --disable-xmms ***] ))
+    LIBS="$XMMS_LIBS $LIBS"
+    CFLAGS="$XMMS_CFLAGS $CFLAGS"
     AC_DEFINE( [ENABLE_XMMS], [1] )
-else
-    AC_MSG_WARN( [*** xmms support disabled ***] )
 fi
+
 
 dnl Noatun support (for proper kde app: add "-lkdeui -lkio ")
 dnl check to see if KDE->DCOP is available
-dnl this app requires KDE so noatun support might as well always be
-dnl enabled.
 if test "x$configure_enable_noatun" = "xyes"; then
-#    dnl additional path to libraries for linking KDE
+    dnl additional path to libraries for linking KDE
     OLDLDFLAGS=$LDFLAGS
     LDFLAGS="$LDFLAGS -L$KDEDIR/lib"
-#    CPPFLAGS="$CPPFLAGS -I$KDEDIR/include"
+dnl    CPPFLAGS="$CPPFLAGS -I$KDEDIR/include"
 
     AC_CHECK_LIB( kdecore, main, , configure_enable_noatun=no , )
 
-#    if test "x$configure_enable_noatun" = "xyes"; then
-#        AC_CHECK_LIB( DCOP, main, , configure_enable_noatun=no , )
-#    fi
+dnl    if test "x$configure_enable_noatun" = "xyes"; then
+dnl        AC_CHECK_LIB( DCOP, main, , configure_enable_noatun=no , )
+dnl    fi
     LDFLAGS=$OLDLDFLAGS
 fi
 
@@ -312,15 +293,7 @@ Configuration for $PACKAGE $VERSION :
    you should re-run configure, giving a suitable path with the --prefix option
    For example ./configure --prefix=/opt/kde3
 
- Look for any WARNINGs output by the configure script
+ Look for any WARNINGs output by the configure script (run ./configure --help to see all options).
  If you're satisfied, type 'make' to build $PACKAGE $VERSION,
  and then 'make install' for installation.
 ] )
-
-AC_MSG_WARN( [check to make sure the selected options are correct.] )
-
-AC_CHECK_FILE( [config.h], AC_MSG_WARN(check the contents of 'config.h'), )
-AC_MSG_WARN( [run 'make' if you're satisfied.] )
-
-AC_MSG_WARN( [run ./configure --help to see all the options.] )
-

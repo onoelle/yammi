@@ -6,13 +6,13 @@
 /* nls */
 #undef ENABLE_NLS
 
-/* Support noatun as a multimedia player */
+/* Support noatun as media player */
 #undef ENABLE_NOATUN
 
 /* Support reading and writing OGG tags */
 #undef ENABLE_OGGLIBS
 
-/* Support xmms as a multimedia player */
+/* Support xmms as media player */
 #undef ENABLE_XMMS
 
 /* catgets */
@@ -72,9 +72,6 @@
 /* Define if you have the `vorbisfile' library (-lvorbisfile). */
 #undef HAVE_LIBVORBISFILE
 
-/* Define if you have the `xmms' library (-lxmms). */
-#undef HAVE_LIBXMMS
-
 /* Define if you have the `z' library (-lz). */
 #undef HAVE_LIBZ
 
@@ -94,7 +91,7 @@
 #undef HAVE_STDLIB_H
 
 /* strcpy */
-#undef HAVE_STPCPY
+#undef HAVE_STRCPY
 
 /* Define if you have the <strings.h> header file. */
 #undef HAVE_STRINGS_H

@@ -59,6 +59,7 @@ void Prefs::setDefaultValues(void) {
 	childSafe = false;
 	tagsConsistent = false;
 	filenamesConsistent = false;
+  ignoreCaseInFilenames = false;
 	criticalSize = 700;
 	secondSoundDevice="";
 	groupThreshold = 5;
@@ -156,6 +157,7 @@ bool Prefs::loadConfig(QString baseDir)
 	childSafe                    = getProperty(doc, "childSafe", childSafe);
 	tagsConsistent               = getProperty(doc, "tagsConsistent", tagsConsistent);
 	filenamesConsistent          = getProperty(doc, "filenamesConsistent", filenamesConsistent);
+	ignoreCaseInFilenames        = getProperty(doc, "ignoreCaseInFilenames", ignoreCaseInFilenames);
 	criticalSize                 = getProperty(doc, "criticalSize", criticalSize);
 	secondSoundDevice            = getProperty(doc, "secondSoundDevice", secondSoundDevice);
 	groupThreshold               = getProperty(doc, "groupThreshold", groupThreshold);
@@ -248,6 +250,7 @@ bool Prefs::saveConfig(void)
 	setProperty(doc, "childSafe", childSafe);
 	setProperty(doc, "tagsConsistent", tagsConsistent);
 	setProperty(doc, "filenamesConsistent", filenamesConsistent);
+	setProperty(doc, "ignoreCaseInFilenames", ignoreCaseInFilenames);
 	setProperty(doc, "criticalSize", criticalSize);
 	setProperty(doc, "secondSoundDevice", secondSoundDevice);
 	setProperty(doc, "groupThreshold", groupThreshold);

@@ -21,12 +21,17 @@
 class ConsistencyCheckParameter
 {
 public:
+  static const int YAMMI2TAGS = 0;
+  static const int TAGS2YAMMI = 1;
+
   bool checkForExistence;
   bool updateNonExisting;
   bool checkTags;
   bool correctTags;
   int correctTagsConfirmed;
+  int correctTagsDirection;          // 0 = yammi => file tags, 1 = file tags => yammi
   bool checkFilenames;
+  bool ignoreCaseInFilenames;
   int correctFilenamesConfirmed;
   bool correctFilenames;
   bool checkDoubles;

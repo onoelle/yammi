@@ -101,8 +101,9 @@ public:
 	int create(const QString filename, const QString mediaName = 0);
 
 	/// check consistency
-	QString checkConsistency(bool requireConsistentTags, bool requireConsistentFilename);
+	QString checkConsistency(bool requireConsistentTags, bool requireConsistentFilename, bool ignoreCaseInFilename);
 
+  bool rereadTags();
 
   // specific to mp3 objects
   //************************
@@ -124,6 +125,7 @@ public:
   //************************
 #ifdef ENABLE_OGGLIBS
   bool getOggInfo(QString filename);
+  void setOggComment(vorbis_comment* vc, QString key, QString value);
   QString getOggComment(OggVorbis_File* oggfile, QString name);
   bool setOggTags(QString filename);  
 #endif
@@ -140,7 +142,7 @@ public:
 
   // checking methods
 	bool checkTags();
-	bool checkFilename();
+	bool checkFilename(bool ignoreCase);
 	bool checkReadability();
 	
 	// saving methods

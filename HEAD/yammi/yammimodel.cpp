@@ -820,7 +820,7 @@ bool YammiModel::checkConsistency(QProgressDialog* progress, MyList* selection, 
       }
       if(progress->wasCancelled())
         break;		
-      QString diagnosis=s->checkConsistency(true, true);
+      QString diagnosis=s->checkConsistency(true, true, p->ignoreCaseInFilenames);
       if(diagnosis=="") {
         continue;
       }
@@ -838,7 +838,7 @@ bool YammiModel::checkConsistency(QProgressDialog* progress, MyList* selection, 
             s->filename="";
             s->path="";
             p->nonExistingUpdated++;
-            problematicSongs.append(new SongEntryString(s, "file not existing on harddisk any more, filename cleared"));
+            problematicSongs.append(new SongEntryString(s, "File not existing on harddisk any more, filename cleared"));
           }
           else {
             // 2. delete entry in database
@@ -848,7 +848,7 @@ bool YammiModel::checkConsistency(QProgressDialog* progress, MyList* selection, 
           }
         }
         else {
-          problematicSongs.append(new SongEntryString(s, "file not readable"));
+          problematicSongs.append(new SongEntryString(s, "File not readable"));
         }
       }
 
@@ -861,10 +861,16 @@ bool YammiModel::checkConsistency(QProgressDialog* progress, MyList* selection, 
           if(p->correctTagsConfirmed==-1) {
             // warning dialog!
             ApplyToAllBase confirm(progress, "confirmDialog", true);
-            QString msg=QString("Correct tags in file\n\t%1\nto new values:\n").arg(s->filename);
-            msg+=QString("artist: %1, title: %2\n").arg(s->artist).arg(s->title);
-            msg+=QString("album: %1, comment: %2\n").arg(s->album).arg(s->comment);
-            msg+=QString("year: %1, trackNr: %2, genreNr: %3").arg(s->year).arg(s->trackNr).arg(s->genreNr);
+            QString msg=QString("Correct tags in file\n\n\t%1?\n\n").arg(s->filename);
+            if(p->correctTagsDirection==p->YAMMI2TAGS) {
+              msg+=QString("(Write yammi info to file tags:\n");
+              msg+=QString("artist: %1, title: %2\n").arg(s->artist).arg(s->title);
+              msg+=QString("album: %1, comment: %2\n").arg(s->album).arg(s->comment);
+              msg+=QString("year: %1, trackNr: %2, genreNr: %3)").arg(s->year).arg(s->trackNr).arg(s->genreNr);              
+            }
+            if(p->correctTagsDirection==p->TAGS2YAMMI) {
+              msg+=QString("(Reread tags from filename and update Yammi info)");
+            }
             confirm.TextLabel->setText(msg);
             // show dialog
             int result=confirm.exec();
@@ -885,19 +891,28 @@ bool YammiModel::checkConsistency(QProgressDialog* progress, MyList* selection, 
             reallyCorrect=(p->correctTagsConfirmed==1);
           }
           if(reallyCorrect) {
-            if(s->saveTags()) {
-              p->tagsCorrected++;
-              problematicSongs.append(new SongEntryString(s, "tags corrected"));
+            if(p->correctTagsDirection==p->YAMMI2TAGS) {
+              if(s->saveTags()) {
+                p->tagsCorrected++;
+                problematicSongs.append(new SongEntryString(s, "Yammi info written to file tags"));
+              }              
             }
+            if(p->correctTagsDirection==p->TAGS2YAMMI) {
+              if(s->rereadTags()) {
+                p->tagsCorrected++;
+                problematicSongs.append(new SongEntryString(s, "Tags reread from file and Yammi info updated"));
+              }
+            }              
           }
           else {
-            problematicSongs.append(new SongEntryString(s, "tags not correct"));
+            problematicSongs.append(new SongEntryString(s, "Yammi info and file tags not consistent"));
           }
         }
         else {
-          problematicSongs.append(new SongEntryString(s, "tags not correct"));
+          problematicSongs.append(new SongEntryString(s, "Yammi info and file tags not consistent"));
         }
       }
+
       
 
       if(diagnosis.contains("filename not consistent") && p->checkFilenames) {
@@ -907,8 +922,8 @@ bool YammiModel::checkConsistency(QProgressDialog* progress, MyList* selection, 
           if(p->correctFilenamesConfirmed==-1) {
             // warning dialog!
             ApplyToAllBase confirm(progress, "confirmDialog", true);
-            QString msg=QString("Correct filename in file\n\t%1\n").arg(s->filename);
-            msg+=QString("to\n\t%1").arg(s->constructFilename());
+            QString msg=QString("Correct filename from\n\t%1\n").arg(s->filename);
+            msg+=QString("to\n\t%1?").arg(s->constructFilename());
             confirm.TextLabel->setText(msg);
             // show dialog
             int result=confirm.exec();
@@ -931,15 +946,15 @@ bool YammiModel::checkConsistency(QProgressDialog* progress, MyList* selection, 
           if(reallyCorrect) {
             if(s->saveFilename()) {
               p->filenamesCorrected++;
-              problematicSongs.append(new SongEntryString(s, "filename corrected"));
+              problematicSongs.append(new SongEntryString(s, "Filename corrected"));
             }
           }
           else {
-            problematicSongs.append(new SongEntryString(s, "filename not consistent"));
+            problematicSongs.append(new SongEntryString(s, "Filename not consistent with Yammi info"));
           }
         }
         else {
-          problematicSongs.append(new SongEntryString(s, "filename not consistent"));
+          problematicSongs.append(new SongEntryString(s, "Filename not consistent with Yammi info"));
         }
       }
     }
@@ -1010,12 +1025,15 @@ bool YammiModel::checkConsistency(QProgressDialog* progress, MyList* selection, 
   // reset sortOrder
 	allSongs.setSortOrderAndSort(MyList::ByKey);
 
-	if(progress->wasCancelled())
+	if(progress->wasCancelled()) {
 		cout << "..consistency check aborted\n";
-	cout << "..consistency checked\n";
+  }
+  else {
+    cout << "..consistency checked\n";    
+  }
 
 	if(problematicSongs.count()==0) {
-		cout << "your yammi database is nice and clean!\n";
+		cout << "Your Yammi database is nice and clean!\n";
 		return true;
 	}
 	else {

@@ -85,6 +85,9 @@ public:
 	bool tagsConsistent;
 	/** Keep filename consistent with DB */
 	bool filenamesConsistent;
+  /** Ignore case in filenames (if keeping them consistent */
+  bool ignoreCaseInFilenames;
+  
 	/** Second sound device */
 	QString secondSoundDevice;
 	/** Group threshold */
