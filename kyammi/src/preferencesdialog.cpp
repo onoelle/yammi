@@ -133,20 +133,22 @@ void PreferencesDialog::insertPluginValues() {
 
 
 void PreferencesDialog::addStandardPlugins() {
-//    config->addStandardPlugins();
 	if(!_pluginMenuEntry.contains("Create CD Label")) {
-        newPlugin("Create CD Label", "cdlabelgen -c \"Title\" -s \"Subtitle\" -b -w -i \"{customList}\" > {fileDialog}", "{index}. {artist} - {title} ({length})%", "true", "group");
+        newPlugin("Create CD Label", "cdlabelgen -c \"Title\" -s \"Subtitle\" -b -w -i \"{customList}\" > {fileDialog}", "group", "{index}. {artist} - {title} ({length})%", "true");
 	}
 	
 	if(!_pluginMenuEntry.contains("Export to m3u Playlist")) {
-		newPlugin("Export to m3u Playlist", "echo -e \"#EXTM3U\n{customList}\" > {fileDialog}", "#EXTINF:{lengthInSeconds},{artist} - {title}{newline}{absoluteFilename}{newline}", "true", "group" );
+		newPlugin("Export to m3u Playlist", "echo -e \"#EXTM3U\n{customList}\" > {fileDialog}", "group", "#EXTINF:{lengthInSeconds},{artist} - {title}{newline}{absoluteFilename}{newline}", "true");
 	}
 	
 	if(!_pluginMenuEntry.contains("Burn with K3b(audio)")) {
-		newPlugin("Burn with K3b(audio)", "echo -e \"#EXTM3U\n{customList}\" > /tmp/burnlist.m3u && k3b --audiocd /tmp/burnlist.m3u &", "#EXTINF:{lengthInSeconds},{artist} - {title}{newline}{absoluteFilename}{newline}", "true", "group");
+		newPlugin("Burn with K3b(audio)", "echo -e \"#EXTM3U\n{customList}\" > /tmp/burnlist.m3u && k3b --audiocd /tmp/burnlist.m3u &", "group", "#EXTINF:{lengthInSeconds},{artist} - {title}{newline}{absoluteFilename}{newline}", "true");
 	}
 	if(!_pluginMenuEntry.contains("Burn with K3b(data)")) {
-		newPlugin("Burn with K3b(data)", "k3b --datacd {customListViaFile} &", "\"{absoluteFilename}\" ", "true", "group");
+		newPlugin("Burn with K3b(data)", "k3b --datacd {customListViaFile} &", "group", "\"{absoluteFilename}\" ", "true");
+	}
+	if(!_pluginMenuEntry.contains("MusicBrainz Search")) {
+		newPlugin("MusicBrainz Search", "konqueror http://www.musicbrainz.org/showtrm.html?trm=`/usr/bin/trm \"{absoluteFilename}\"`&", "single", "", "true");
 	}
 }
 
@@ -266,19 +268,24 @@ void PreferencesDialog::updatePlugin(int newPos) {
         ComboBoxPluginMode->setEnabled(false);
     } else {
         LineEditPluginMenuEntry->setText(_pluginMenuEntry[newPos-1]);
+        LineEditPluginMenuEntry->setCursorPosition(0);
         LineEditPluginMenuEntry->setEnabled(true);
         LineEditPluginCommand->setText(_pluginCommand[newPos-1]);
+        LineEditPluginCommand->setCursorPosition(0);
         LineEditPluginCommand->setEnabled(true);
         LineEditPluginCustomList->setText(_pluginCustomList[newPos-1]);
+        LineEditPluginCustomList->setCursorPosition(0);
         LineEditPluginCustomList->setEnabled(_pluginMode[newPos-1]=="group");
         PushButtonDeletePlugin->setEnabled(true);
         CheckBoxPluginConfirm->setChecked(_pluginConfirm[newPos-1]=="true");
         CheckBoxPluginConfirm->setEnabled(true);
         ComboBoxPluginMode->setEnabled(true);
-        if(_pluginMode[newPos-1]=="single")
+        if(_pluginMode[newPos-1]=="single") {
             ComboBoxPluginMode->setCurrentItem(0);
-        if(_pluginMode[newPos-1]=="group")
+        }
+        if(_pluginMode[newPos-1]=="group") {
             ComboBoxPluginMode->setCurrentItem(1);
+        }
     }
 }
 

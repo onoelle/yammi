@@ -1,4 +1,4 @@
-??.??.2004 version 1.2-beta
+14.09.2004 version 1.2-beta
 ###########################
 Major:
 - added: dcop interface (thanks to Daniel Raneland)
@@ -24,6 +24,8 @@ Minor:
 - fixed: check consistency for whole song database: only one song selected
 - fixed: media player integration: cleanup and fixed some incorrect behaviour in noatun and artsplayer
 - fixed: appropriate applicaton icon installed
+- fixed: smaller size for dialogs to work on 800x600 screen
+- fixed: {fileDialog} replacement for plugins, adding of standard plugins
 
 
 02.07.2004 version 1.2-alpha-3

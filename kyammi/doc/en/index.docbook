@@ -82,6 +82,7 @@ Do NOT change these in the translation. -->
 <!-- Abstract about this handbook -->
 
 <abstract>
+<para>(please note that this handbook needs a general update and re-formatting...)</para>
 <para>
 Yammi ("Yet Another Music Manager I...") is a digital music collection (eg. mp3, ogg, wav files)
 manager targeted at large song collections (eg. a few thousand songs).
@@ -358,11 +359,14 @@ and your most likely better off to type "export KDEDIR=/opt/kde3" to set this va
 
 In order to compile and install Yammi on your system, type the following in
 the base directory of the Yammi distribution:
+</para>
 
-% ./configure
-% make
-% make install
+<para>> ./configure</para>
+<para>> make</para>
+<para>> make install</para>
 
+
+<para>
 If compilation is successful, the executable "yammi" and some other files will be installed to your KDE directories.
 </para>
 </sect1>
@@ -384,9 +388,10 @@ console log of configure and make.
 <title>Deinstallation</title>
 <para>
 In the base directory of the yammi distribution, type
-
-% make uninstall
 </para>
+
+<para>> make uninstall</para>
+
 </sect1>
 
 <sect1 id="startFirstTime">

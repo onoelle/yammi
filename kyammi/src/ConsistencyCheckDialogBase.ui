@@ -8,8 +8,8 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>733</width>
-            <height>711</height>
+            <width>737</width>
+            <height>579</height>
         </rect>
     </property>
     <property name="caption">
@@ -125,6 +125,12 @@
             <grid>
                 <property name="name">
                     <cstring>unnamed</cstring>
+                </property>
+                <property name="margin">
+                    <number>4</number>
+                </property>
+                <property name="spacing">
+                    <number>1</number>
                 </property>
                 <widget class="QCheckBox" row="0" column="0" rowspan="1" colspan="3">
                     <property name="name">
@@ -276,6 +282,12 @@
                 <property name="name">
                     <cstring>unnamed</cstring>
                 </property>
+                <property name="margin">
+                    <number>4</number>
+                </property>
+                <property name="spacing">
+                    <number>1</number>
+                </property>
                 <widget class="QCheckBox" row="0" column="0" rowspan="1" colspan="2">
                     <property name="name">
                         <cstring>CheckBoxCheckForExistence</cstring>
@@ -335,6 +347,12 @@
             <grid>
                 <property name="name">
                     <cstring>unnamed</cstring>
+                </property>
+                <property name="margin">
+                    <number>4</number>
+                </property>
+                <property name="spacing">
+                    <number>1</number>
                 </property>
                 <widget class="QCheckBox" row="0" column="0" rowspan="1" colspan="2">
                     <property name="name">
@@ -436,6 +454,12 @@
                 <property name="name">
                     <cstring>unnamed</cstring>
                 </property>
+                <property name="margin">
+                    <number>4</number>
+                </property>
+                <property name="spacing">
+                    <number>1</number>
+                </property>
                 <widget class="QCheckBox" row="0" column="0" rowspan="1" colspan="3">
                     <property name="name">
                         <cstring>CheckBoxCheckFilenames</cstring>
@@ -523,6 +547,12 @@
                 <property name="name">
                     <cstring>unnamed</cstring>
                 </property>
+                <property name="margin">
+                    <number>4</number>
+                </property>
+                <property name="spacing">
+                    <number>1</number>
+                </property>
                 <widget class="QCheckBox" row="0" column="0">
                     <property name="name">
                         <cstring>CheckBoxCheckDoubles</cstring>
@@ -554,6 +584,12 @@
             <grid>
                 <property name="name">
                     <cstring>unnamed</cstring>
+                </property>
+                <property name="margin">
+                    <number>4</number>
+                </property>
+                <property name="spacing">
+                    <number>1</number>
                 </property>
                 <widget class="QCheckBox" row="0" column="0">
                     <property name="name">

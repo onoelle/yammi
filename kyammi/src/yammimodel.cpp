@@ -567,8 +567,9 @@ void YammiModel::updateSongDatabase(QString scanDir, QString filePattern, QStrin
         QDir d(scanDir);
         if(!d.exists()) {
             QString msg( i18n("The base directory for scanning does not exist!\n\
-                              Set value \"scanDir\" in the preferences to an existing directory!"));
-            KMessageBox::error( m_yammi, i18n("Yammi"), msg );
+                              Set value \"scanDir\" to an existing directory!"));
+            KMessageBox::error( m_yammi, msg, i18n("Yammi"));
+            return;
         } else {
             traverse(scanDir, filePattern, progress);
             kdDebug() << "finished scanning!" << endl;

@@ -192,10 +192,10 @@ which allows convenient and fast access to any songs.
   <dist>
     <custom>false</custom>
     <bzip>false</bzip>
-    <archname/>
+    <archname></archname>
     <appname>yammi</appname>
-    <version>1.2-alpha-3</version>
-    <release>1.2-alpha-3</release>
+    <version>1.2-beta</version>
+    <release>1.2-beta</release>
     <vendor>oliver.noelle</vendor>
     <licence>GPL</licence>
     <summary>Yet Another Music Manager I...</summary>
@@ -211,6 +211,6 @@ which allows convenient and fast access to any songs.
     <useRPM>false</useRPM>
     <ftpkde>false</ftpkde>
     <appskde>false</appskde>
-    <url/>
+    <url></url>
   </dist>
 </kdevelop>

@@ -1444,13 +1444,13 @@ void YammiGui::forSelectionPlugin(int pluginIndex) {
         QString dir = KFileDialog::getExistingDirectory("", this, i18n("choose directory for plugin"));
         if(dir.isNull())
             return;
-        cmd.replace(QRegExp("{directoryDialog}"), dir);
+        cmd.replace(QRegExp("\\{directoryDialog\\}"), dir);
     }
     if(cmd.contains("{fileDialog}")>0) {
         QString file = KFileDialog::getSaveFileName("",QString::null, this, i18n("choose file for plugin"));
         if(file.isNull())
             return;
-        cmd.replace(QRegExp("{fileDialog}"), file);
+        cmd.replace(QRegExp("\\{fileDialog\\}"), file);
     }
     if(cmd.contains("{inputString}")>0) {
         bool ok;
@@ -1458,7 +1458,7 @@ void YammiGui::forSelectionPlugin(int pluginIndex) {
         if(!ok) {
             return;
         }
-        cmd.replace(QRegExp("{inputString}"), inputString);
+        cmd.replace(QRegExp("\\{inputString\\}"), inputString);
     }
 
 

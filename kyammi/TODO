@@ -1,28 +1,23 @@
 TODO
 ----
-last update 01.09.2004
+last update 14.09.2004
 
 
-for version 1.2-beta
---------------------
-- application icon?
-- fix: handbook major issues?
-
-before release:
-- create a yammi entry on www.kde-apps.org
-- update website
-  - publish a sample plugin (echo...) with all replacements
-  - publish sample plugin for html-export
-
+for version 1.2-beta-2
+----------------------
+- improve application icon?
+- fix: handbook major issues (updating and formatting)
+- publish a sample plugin (echo...) with all replacements
+- publish plugin for html-export
+- i18n: add italian translation
 
 for version 1.2
 ---------------
 - add: info message on first startup/on importing old database
-review kde conformance:  
+- review kde conformance:  
   - replace all couts with kdDebug/kdWarn/kdError
   - check lsm file
   - check icons: fix transparency or use standard ones, new application icon, check that it gets used
-  - check standard kde i18n schema and add a translation and test it
 - refactor: meta info reading in a dedicated class
 - clean up: song info for multiple songs
 - saveFilename/renaming of file in song.cpp (there was something I can't remember)
@@ -30,20 +25,16 @@ review kde conformance:
 - make url klick working in preferences
 - on deleting a song: delete in *all* lists (history, categories, ...)
 - make follow symlinks a configurable option?
-- make replace playlist + position a configurable option?
-- make mpg123 and ogg123 configurable?
-- improve: yammi handbook (beautify, update)
-- fix: integrate columns menu into view menu as a submenu
+- make restore playlist + position a configurable option
+- make mpg123 and ogg123 configurable
 - reformat all files with kdevelop?
 - simplify {wish} system: (make every entry with empty filename (no media) a wish?
 - child safe mode?
 - keep tags consistent mode?
-- BUG: cannot sort files according to path => cannot reproduce this bug on my system
 - fix all outstanding known bugs
 - polish user interface
-- add translation(s)?
 - speedup startup by starting media players in background (noatun, xmms)
-tag-related: (switch to taglib?)
+tag-related: (switch to Scott Wheelers taglib for reading metadata)
 - fix: 0-length ogg file makes yammi crash?
 - CHECK: umlaute in tags?
 media-player-related:
@@ -57,8 +48,6 @@ for version 1.4
 - replace QListView with KListView
   - but beware of performance issues, see http://bugs.kde.org/show_bug.cgi?id=64608
   - and other QClasses too?
-- amarok support?
-- use Scott Wheelers taglib for reading metadata
 - use a player thread for mediaplayer
 - rating of songs
 - allow subfolders for categories?
@@ -66,15 +55,16 @@ for version 1.4
 
 usual steps before release
 --------------------------
-- QT version 3.3 => 3.0 in .ui files
+- QT version 3.3 => 3.2 in .ui files
 - try to check and fix i18n strings
-- execute smoke tests (write little script with all configure options)
+- execute smoke tests
 
 
 non-reproducable bugs
 #####################
 (given the date, when I could not reproduce the bug anymore)
 - (15.08.) crash on clearing playlist including currently played song (which media player?)
+- (14.09.) cannot sort files according to path
 
 
 
@@ -83,7 +73,6 @@ ideas (for which I probably don't have the time to implement)
 enhancements
 ------------
 - music brainz support for tagging
-- use audiocd kio slave for ripping?
 - history of visited folders + "go back/go forward" buttons
 - any ripping plugin? have a look at existing ripping programs suitable to be called as plugin
 - xml export plugin?
@@ -93,8 +82,6 @@ enhancements
   - skip forward/backward when stopped
 - separate folders into two categories: automatic folders and user-defined folders
 - search for similar: add an option to search for songs played "near" this one
-- integrate: show cover of album (no, amarok does this nicely, point)
-- kde panel applet with search field
 - replace mediaplayer with "KMediaPlayer" interface for easier supporting other kde media players?
 
 refactorings/fixes
