@@ -172,6 +172,13 @@ void YammiGui::loadDatabase( const QString &db )
 	model->readHistory();
 	//update dynamic folders based on database contents
 	updateView(true);
+	KConfig *cfg = kapp->config();
+	cfg->setGroup("General Options");
+	Folder* f=getFolderByName(cfg->readEntry("CurrentFolder"));
+	if(f == 0) {
+		f=folderAll;
+	}
+	changeToFolder(f, true);
 }
 
 void YammiGui::saveOptions()
@@ -200,6 +207,7 @@ void YammiGui::saveOptions()
 
 	//TODO
 	//save: current folder, autoplay mode/folder, column order and visibility
+	cfg->writeEntry("CurrentFolder", chosenFolder->folderName());
 }
 
 
@@ -265,27 +273,19 @@ void YammiGui::readOptions()
 
 void YammiGui::saveProperties(KConfig *config)
 {
-	kdDebug()<<"saveProperties(KConfig *config)"<<endl;
+	kdDebug() << "saveProperties(KConfig *config)" << endl;
     // the 'config' object points to the session managed
     // config file.  anything you write here will be available
     // later when this app is restored
-
-//     if (!m_view->currentURL().isNull())
-//         config->writeEntry("lastURL", m_view->currentURL());
 }
 
 void YammiGui::readProperties(KConfig *config)
 {
-	kdDebug()<<"readProperties(KConfig *config)"<<endl;
+	kdDebug() << "readProperties(KConfig *config)" << endl;
     // the 'config' object points to the session managed
     // config file.  this function is automatically called whenever
     // the app is being restored.  read in here whatever you wrote
     // in 'saveProperties'
-
-//     QString url = config->readEntry("lastURL");
-// 
-//     if (!url.isNull())
-//         m_view->openURL(KURL(url));
 }
 
 
@@ -311,8 +311,9 @@ bool YammiGui::queryClose()
 	}
 	else
 	{ //the db has not changed, but save history anyways...(only if more than 2 songs to add)
-		if(m_config.logging && model->songsPlayed.count()>2)
+		if(m_config.logging && model->songsPlayed.count()>2) {
 			model->saveHistory();
+		}
 	}
 	return true;
 }
@@ -604,6 +605,9 @@ void YammiGui::gotoFuzzyFolder(bool backward)
 }
 
 
+/**
+ * Return the first found folder with the given name, or 0 if no folder with that name exists
+ */
 Folder* YammiGui::getFolderByName(QString folderName)
 {
   for(QListViewItem* i=folderListView->firstChild(); i; i=i->nextSibling()) {
@@ -2811,7 +2815,7 @@ void YammiGui::preListen(Song* s, int skipTo)
 	if(s->filename.right(3).upper()=="MP3") {
 		QString skip=QString(" --skip %1").arg(seconds*skipTo*38/100);
 		QString cmd=QString("mpg123 -a %1 %2 \"%3\" &").arg(m_config.secondSoundDevice).arg(skip).arg(s->location());
-    qDebug("command: %s", cmd.latin1());
+    kdDebug() << "command: " << cmd.latin1() << endl;
     system(cmd);
     lastPrelistened="MP3";
 	}
@@ -3002,7 +3006,7 @@ void YammiGui::loadSongsFromMedia(QString mediaName)
 			if(s->mediaName[j]==mediaName) {
 		    if(model->checkAvailability(s)=="") {
 					cout << "loading song " << s->displayName() << "from " << mediaDir << s->mediaLocation[j] << "\n";
-					progress.setLabel(tr("loading song: ")+s->displayName()+" ("+QString("%1").arg(i+1)+i18n(". in playlist)"));
+					progress.setLabel(i18n("loading song: ")+s->displayName()+" ("+QString("%1").arg(i+1)+i18n(". in playlist)"));
 			    progress.progressBar()->setProgress(loaded);
   			  kapp->processEvents();
 					if(progress.wasCancelled()) {
@@ -3320,18 +3324,18 @@ void YammiGui::setupActions( )
 	new KAction(i18n("Switch to/from Playlist"),0,0,this,SLOT(toFromPlaylist()),actionCollection(),"to_from_playlist");
 	new KAction(i18n("Clear Playlist..."),0,0,this,SLOT(clearPlaylist()),actionCollection(),"clear_playlist");
 	new KAction(i18n("Shuffle Playlist..."),0,0,this,SLOT(shufflePlaylist()),actionCollection(),"shuffle_playlists");
-	new KAction(i18n("Clear Playlist"),"dequeue_all",KShortcut(QKeySequence(Key_Shift,Key_F8)),this,SLOT(clearPlaylist()),actionCollection(),"clear_playlist");
+	new KAction(i18n("Clear Playlist"),"edittrash",KShortcut(QKeySequence(Key_Shift,Key_F8)),this,SLOT(clearPlaylist()),actionCollection(),"clear_playlist");
 	new KAction(i18n("Switch to/from Playlist"),"toggle_playlist",KShortcut(Key_P),this,SLOT(toFromPlaylist()),actionCollection(),"toggle_playlist");
 
   // selection actions
-	new KAction(i18n("Enqueue as next (prepend)"),"enqueue_asnext",KShortcut(Key_F6),this,SLOT(forSelectionPrepend()),actionCollection(),"prepend_selected");
-	new KAction(i18n("Enqueue at end (append)"),"enqueue",KShortcut(Key_F5),this,SLOT(forSelectionAppend()),actionCollection(),"append_selected");
-	new KAction(i18n("Play Now!"),"play_now",KShortcut(Key_F7),this,SLOT(forSelectionPlay()),actionCollection(),"play_selected");
-	new KAction(i18n("Dequeue Songs"),"dequeue_song",KShortcut(Key_F8),this,SLOT(forSelectionDequeue()),actionCollection(),"dequeue_selected");
+	new KAction(i18n("Enqueue as next (prepend)"),"top",KShortcut(Key_F6),this,SLOT(forSelectionPrepend()),actionCollection(),"prepend_selected");
+	new KAction(i18n("Enqueue at end (append)"),"bottom",KShortcut(Key_F5),this,SLOT(forSelectionAppend()),actionCollection(),"append_selected");
+	new KAction(i18n("Play Now!"),"start",KShortcut(Key_F7),this,SLOT(forSelectionPlay()),actionCollection(),"play_selected");
+	new KAction(i18n("Dequeue Songs"),"stop",KShortcut(Key_F8),this,SLOT(forSelectionDequeue()),actionCollection(),"dequeue_selected");
 	new KAction(i18n("Prelisten start"),"prelisten_start",KShortcut(Key_F9),this,SLOT(forSelectionPrelistenStart()),actionCollection(),"prelisten_start");
 	new KAction(i18n("Prelisten middle"),"prelisten_middle",KShortcut(Key_F10),this,SLOT(forSelectionPrelistenMiddle()),actionCollection(),"prelisten_middle");
 	new KAction(i18n("Prelisten end"),"prelisten_end",KShortcut(Key_F11),this,SLOT(forSelectionPrelistenEnd()),actionCollection(),"prelisten_end");
-  new KAction(i18n("Song Info..."),"song_info",KShortcut(Key_I),this,SLOT(forSelectionSongInfo()),actionCollection(),"info_selected");
+  new KAction(i18n("Song Info..."),"info",KShortcut(Key_I),this,SLOT(forSelectionSongInfo()),actionCollection(),"info_selected");
 	new KAction(i18n("Delete Song..."),0,0,this,SLOT(forSelectionDelete()),actionCollection(),"delete_selected");
   new KAction(i18n("Burn To Media"),0,0,this,SLOT(forSelectionBurnToMedia()),actionCollection(),"burn_selected");
   new KAction(i18n("Move Files"),0,0,this,SLOT(forSelectionMove()),actionCollection(),"move_selected");
@@ -3363,7 +3367,7 @@ void YammiGui::setupActions( )
 	ta = new KToggleAction("Prelisten",0,0,this,SLOT(toolbarToggled()),actionCollection(),"PrelistenToolbar");
 	
 	// other actions
-	new KAction(i18n("Update Automatic Folder Structure"),0,0,this,SLOT(updateView()),actionCollection(),"update_view");
+	new KAction(i18n("Update Automatic Folder Structure"),"reload",0,this,SLOT(updateView()),actionCollection(),"update_view");
   
 	// setup
 	KStdAction::preferences(this,SLOT(setPreferences()),actionCollection());

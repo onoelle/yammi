@@ -1,6 +1,6 @@
 TODO
 ----
-last update 09.05.2004
+last update 16.05.2004
 
 
 for version 1.2-alpha
@@ -8,15 +8,12 @@ for version 1.2-alpha
 main purpose: clean up, so other people can more easily contribute to the project
 
 - check conformance to kde standards, such as:
-  - conforming to standard kde i18n schema
-  - check icons: transparency, remove old ones
-  - check lsm file
-  - replace qDebug / cout with kdDebug/kdWarn/kdError
+  - check icons: fix transparency or remove old ones
 - check/resolve bugs on sf
+- check compiling: warnings
 - check all TODOs / FIXMEs
 - fix song info for multiple songs
 - make mpg123 and ogg123 configurable?
-- make follow symlinks a configurable option?
 - fix or delete child-safe mode
 - fix second view menu / behaviour on hiding columns the first time
 - implement skip backwards in artsplayer
@@ -24,6 +21,12 @@ main purpose: clean up, so other people can more easily contribute to the projec
 
 for version 1.2-beta
 --------------------
+check kde conformance:  
+  - standard kde i18n schema: add a translation and test it
+  - replace cout with kdDebug/kdWarn/kdError
+  - check lsm file
+- make follow symlinks a configurable option?
+- saveFilename/renaming of file in song.cpp (there was something I can't remember)
 - make proposed filename change while you type
 - implement onPlayed and afterPlayed plugin types
 - check again: crash on clearing playlist including currently played song?
@@ -33,11 +36,16 @@ for version 1.2-beta
   and play a song in yammi, the song previously played in xmms is played instead.
 - on deleting a song: delete in *all* lists (history, categories, ...)
 - write little random(int range) method?
+- plugin: publish a sample plugin (echo...) with all replacements
 
 
 for version 1.2
 ---------------
-- plugin: publish a sample plugin (echo...) with all replacements
+- simplify {wish} system: (make every entry with empty filename (no media) a wish?
+- fix all outstanding known bugs
+- polish user interface
+- add translation(s)?
+
 
 for version 1.4
 ---------------
@@ -46,38 +54,32 @@ for version 1.4
 - subfolders ?
 
 
-later...
---------
-- history of visited folders + "go back" button
+ideas (for which I probably don't have the time to implement)
+#############################################################
+enhancements
+------------
+- history of visited folders + "go back/go forward" buttons
 - any ripping plugin? have a look at existing ripping programs suitable to be called as plugin
 - xml export plugin?
 - make configurable/auto-detected forbidden characters: http://osdev.berlios.de/osd-fs.html
-- no crossfading with noatun: replace workaround to avoid pauses in playback between songs
-- remove symlinking for "burn to media": provide "physical categories"?
-
-
-even later...
--------------
-- song length <X s: do not use crossfading?
-- remove the creating of symlinks for burning assistance (but check size of existing media!)
-- for both media players:
+- for xmms/noatun media players:
   - use QProcess for XMMS? (noatun?)
   - skip forward/backward when stopped
+- separate folders into two categories: automatic folders and user-defined folders
+- search for similar: add an option to search for songs played "near" this one
+- integrate musicbrainz
+- integrate: show cover of album
+- kde panel applet with search field
+
+refactorings/fixes
+------------------
+- speed up loading of categories and history? (eg. binary search)
+- remove symlinking for "burn to media": provide "physical categories"?
 - fix: two albums having the same name appear as one album (heuristic: same album if in same dir?)
 - page up and down keys don't work after searching
-- use QProcess instead of system() calls? (prelisten, xmms, noatun, shutdownscript, ...)
-
+- use QProcess/KProcess? instead of system() calls? (prelisten, xmms, noatun, shutdownscript, ...)
 - swap management: in song: method getFilename() vs. getRealFilename() (fast)???
-- speed up loading of categories? (binary search)
-- xmms lock file?  => not easy to determine whether xmms is running or just lock file present
-  maybe start xmms with QProcess?
-- simplify {wish} system: (make every entry with empty filename (no media) a wish?
 - playing songs not contained in Yammi's database might confuse yammi (noatun/xmms)
-- split left tree into two lists: automatic folders and user folders?
-- stopping prelistening: cleaner approach with QProcess???
-- saveFilename/renaming of file in song.cpp
-- update database: text log window
-- search for similar: add an option to search for songs played "near" this one
 
 
 KNOWN BUGS
@@ -88,7 +90,5 @@ KNOWN BUGS
 - a {wish} song causes noatun playback to stop
 - floating point exception when scanning wav file???
 - still problem of freezing xmms => xmms_remote_playlist_delete(0, 0)
-	(seems to be a bug in xmms, posted to bugs@xmms)
-- window geometry: sometimes window position gets shifted by the window decoration towards right lower corner
-- problems with filenames containing "ß"? (problem of qt/linux on fat filesystem?)
+	(seems to be a bug in xmms, posted to bugs@xmms, #855)
 - incorrect tracknumbers are shown in some cases where tracknumber is undefined (0) ?

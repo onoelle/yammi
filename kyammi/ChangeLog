@@ -1,39 +1,37 @@
-2004-05-11 Oliver Nölle <oli.noelle@web.de>
-	- fixed bme[200] bug 
-
-2004-05-02 Oliver Nölle <oli.noelle@web.de>
-	- added progress dialog to reading database, categories and history 
-
-2004-05-02 Oliver Nölle <oli.noelle@web.de>
-	- added progress dialogs to startup 
+2004-05-16 Oliver Nölle <oli.noelle@web.de>
+	- fixed remembering last opened folder 
+	- replaced custom icons with existing ones 
+	- cleaned up todo/changelog 
 
 ??.??.2004 version 1.2-alpha
 ############################
 MAJOR CHANGES:
 - first version developed and tested on new development environment (Suse 9.0)
-  - kde 3.1.4, gcc 3.3.1, qt 3.2.1, kdevelop 2.1.5
+  - kde 3.1.4 (later updated to 3.2.1), gcc 3.3.1, qt 3.2.1, kdevelop 2.1.5
   - autoconf 2.5.7, automake 1.7.6
   - noatun 2.2.1, xmms 1.2.8
-  - ...
 - yammi is a proper KDE application now!
   - new translation scheme (i18n kde default scheme)
   => requires kde libs
-  => --disable-KDE and --disable-noatun switches removed from configure script
-- repaired broken noatun communication behavior (apparently due to newer version of noatun)
+  => --disable-KDE and --disable-noatun switches removed from configure script, both are enabled by default now
+  - uses KDE's xml GUI framework
 - applied patch from Luis (thanks!!!):
   - support for arts media player
   - changes towards making yammi a proper kde application
 - added consistency check which checks location of a file (not correcting yet)
+- added progress dialogs on startup for reading database, categories and history 
 
 MINOR CHANGES:
+- fixed: broken noatun communication (apparently due to API changes in a newer version of noatun)
 - fixed: recent folder now works again
 - fixed: symlinks are not followed when scanning directories
 - fixed: interpreting ogg vorbis comments as utf-8
 - added a button to add standard plugins
 - added an automatic folder "by year"
-- simplified placeholder usage in plugins ({artist} instead of %a)
-- changed the xpm icons to png icons that get installed
+- clarified placeholder usage in plugins ({artist} instead of %a)
+- changed the xpm icons to png icons that get installed properly
 - added (ugly) application icons in 16x16, 32x32, 48x48, 64x64
+- removed configure option for "number of best matches" for fuzzy search
 
 ######################
 24.10.2003 version 1.0

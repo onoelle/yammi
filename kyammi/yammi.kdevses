@@ -1,7 +1,7 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
 <!DOCTYPE KDevPrjSession>
 <KDevPrjSession>
- <DocsAndViews NumberOfDocuments="17" >
+ <DocsAndViews NumberOfDocuments="16" >
   <Doc0 context="ctx_qt" NumberOfViews="1" URL="file:/usr/lib/qt3/doc/html/qdomnode.html#isNull" >
    <View0 Type="???" >
     <AdditionalSettings Top="-10000" Width="1" Attach="1" Height="1" Left="-10000" MinMaxMode="0" />
@@ -33,8 +33,8 @@
    </View0>
   </Doc5>
   <Doc6 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/TODO" >
-   <View0 line="15" Type="???" >
-    <AdditionalSettings Top="1" Width="1203" Attach="1" Height="795" Left="1" MinMaxMode="0" />
+   <View0 line="2" Type="???" >
+    <AdditionalSettings Top="1" Width="1204" Attach="1" Height="795" Left="1" MinMaxMode="0" />
    </View0>
   </Doc6>
   <Doc7 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/src/foldermedia.cpp" >
@@ -58,7 +58,7 @@
    </View0>
   </Doc10>
   <Doc11 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/src/preferencesdialog.cpp" >
-   <View0 line="180" Type="???" >
+   <View0 line="174" Type="???" >
     <AdditionalSettings Top="1" Width="1204" Attach="1" Height="795" Left="1" MinMaxMode="0" />
    </View0>
   </Doc11>
@@ -77,16 +77,11 @@
     <AdditionalSettings Top="1" Width="1202" Attach="1" Height="795" Left="1" MinMaxMode="0" />
    </View0>
   </Doc14>
-  <Doc15 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/src/PreferencesDialogBase.cpp" >
-   <View0 line="645" Type="???" >
+  <Doc15 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/ChangeLog" >
+   <View0 line="17" Type="???" >
     <AdditionalSettings Top="1" Width="1203" Attach="1" Height="795" Left="1" MinMaxMode="0" />
    </View0>
   </Doc15>
-  <Doc16 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/src/PreferencesDialogBase.ui" >
-   <View0 Type="???" >
-    <AdditionalSettings Top="1" Width="1203" Attach="1" Height="795" Left="1" MinMaxMode="0" />
-   </View0>
-  </Doc16>
  </DocsAndViews>
  <pluginList>
   <kdevbookmarks>

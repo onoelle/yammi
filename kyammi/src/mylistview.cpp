@@ -50,13 +50,12 @@ MyListView::~MyListView()
 void MyListView::sortColumnChanged(int column)
 {
   int newColumn=column+1;
-  #warning this wont compile ( Qt::Descending  not found )
-//   if(sortOrder()==Qt::Descending) {
-// 		sortedBy=-newColumn;
-//   }
-// 	else {
-		sortedBy=newColumn;
-//   }
+   if(sortOrder()==Qt::Descending) {
+ 	sortedBy=-newColumn;
+   }
+   else {
+	sortedBy=newColumn;
+   }
 }
 
 void MyListView::simulateMouseMove()

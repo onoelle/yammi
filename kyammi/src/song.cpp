@@ -21,6 +21,7 @@
 #include "prefs.h"
 
 #include "CMP3Info.h"
+#include <kdebug.h>
 
 #ifdef ENABLE_OGGLIBS
 #include "vcedit.h"
@@ -1381,7 +1382,7 @@ void Song::moveTo(QString dir)
   }
     
   QString newLocation=QString("%3/%4").arg(dir).arg(filename);
-  qDebug("newLocation: %s", newLocation.latin1());
+  kdDebug() << "newLocation: " << newLocation.latin1() << endl;
 	QDir currentDir("/");
 	if(!currentDir.rename(location(), newLocation)) {
 		cout << "renaming failed! song: " << displayName() << ", new location: " << newLocation << "\n";
