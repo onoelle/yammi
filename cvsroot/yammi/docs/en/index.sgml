@@ -1,0 +1,274 @@
+
+<!doctype linuxdoc system>
+<article>
+<title>The Yammi Handbook
+<author>Brian O.Nölle <tt>oli.noelle@web.de</tt>
+<date>Version 0.1 , Thu Dec 6 15:00:00 MET 2001
+<abstract>
+This Handbook describes Yammi Version 0.1
+</abstract>
+
+<toc>
+
+<sect>Introduction
+<p>Please keep in mind: This documentation needs some update...
+<p>
+Yammi is a handy tool to manage your mp3 songs. It can
+
+- scan your harddisk for mp3 files and generate a song database
+
+- conveniently search for songs/artists/albums (fuzzy search)
+
+- send selected songs to xmms (enqueue or play directly)
+
+- organize your songs in categories
+
+- help saving your mp3 collection on media (such as CD-Rs)
+
+- edit and keep your song information consistent (id3 tags, filenames)
+
+
+The program was born because I was unhappy with the conventional approach to
+manage your mp3s in a directory hierarchy and access them via normal file
+open dialogs. The feature I like most about it is the fuzzy search possibility -
+you type in something that's similar to the song or group or album that you are
+searching for...and Yammi will show you the nearest matches.
+(For me this works great. I don't know why other mp3 tools or programs such
+as Addressbook almost never use such a feature.)
+
+This is a pretty early alpha version and my first project with qt, kdevelop and linux,
+sorry for any consequences of that! Although I tried my best,
+I can take no liability that my program
+is not causing any damage to your mp3 collection.
+
+Any help to make this project more professional is very welcome, just contact me.
+
+<sect1>Changes
+<p>
+5.12.2001   got an account on sourceforge, now heading towards my first release
+13.8.2001		kind of first release
+Jan  2001   project started
+<p>
+
+<sect>Installation
+<p>
+<sect1>How to obtain Yammi
+<p>
+Give it a try at <htmlurl url="www.yammi.sourceforge.net" name = "Yammi Homepage">
+or email me at <htmlurl url="mailto:oli.noelle@web.de" name="Oliver Nölle">
+
+<sect1>Requirements
+<p>
+For me it works with qt2.3 under kde2.2.1 (it worked fine with kde2.1)
+It definitely needs qt 2.x, I'm not sure whether it really needs kde.
+For playing mp3s it is tailored to xmms.
+If you want to decode mp3s to wav files, or listen to songs on a second soundcard via headphone,
+ you need mpg123.
+There is a very simple ripping function using cdparanoia.
+
+<sect1>Compilation and installation
+<p>
+
+In order to compile and install Yammi on your system, type the following in
+the base directory of the Yammi distribution:
+
+<tscreen><verb>
+% ./configure
+% make
+% make install
+</verb></tscreen>
+
+<p>
+Since Yammi uses <verb>autoconf</verb> you should have not trouble
+compiling it.
+Should you run into problems please report them to the the author at 
+<htmlurl url="mailto:oli.noelle@web.de" name = "Oliver Nölle">
+
+
+<p>
+<sect> Usage <p>
+<sect1> General Usage
+<p>
+Yammi makes extensive use of context menus (right-click on item).
+
+<sect1> Scanning harddisk
+<p>
+The first step is to get your songs into Yammis database by having your harddisk scanned.
+
+For this to work, you need to check the configuration (->Preferences) and make sure,
+that the directory "baseDir" is existing and has the following structure
+
+- baseDir
+
+  |
+
+  |- trash
+
+  |- corrupted
+
+  |- other directories containing all mp3 songs
+
+
+<sect1> Selecting songs
+<p>
+Once you have some or all of your songs in the database, you can either use the
+search function to search for songs, or use the folder structure that is
+provided automatically to access and organise your songs.
+
+<sect2> Searching
+<p>
+Type in anything into the search field, Yammi shows you the nearest matches!
+
+That's basically it, simple but effective, just give it a try
+(e.g. horribly misspelling songs your looking for...)
+Yammi looks into title, artist, album for similarities.
+
+<sect2> Folder structure
+<p>
+The following folder structure is provided automatically:
+
+<sect3> Folder "All Music"
+<p>
+Contains all songs in database
+
+<sect3> Folder "Now Playing"
+<p>
+Contains the currently played song, plus the last n played songs
+(while Yammi was running)
+
+<sect3> Folder Albums (Artists)
+<p>
+Contains a subfolder for every album (artist) for which there are more than 5
+songs in the database.
+
+<sect3> Folder Media
+<p>
+Contains a subfolder for every media that you prepared with Yammi.
+This enables you to quickly find, on which media you have backup copies of songs.
+Later, this should also enable you to play songs that are not on harddisk,
+by automatically requesting a media that contains this song.
+
+<sect3> Folder Playlists
+<p>
+This folder contains "categories" of songs, that can be created and filled by you.
+
+<sect3> Folder Unclassified
+<p>
+This folder contains all songs that are not appearing in either
+
+- a playlist
+
+- in the folder "Artists"
+
+- or the folder "Albums"
+
+<sect3> Folder Search Results
+<p>
+This folder keeps the result of the last search process.
+
+Mp3 files can still be organized in a directory structure.
+There should be one base directory for all mp3s, eg. /mp3/
+Yammi searches for new songs recursively in that directory.
+Yammi keeps its own database of songs with all necessary information
+(artist, title, album, filename, ...). This song databse is saved as a simple xml
+file in the user's home directory under $HOME/.Yammi/songdb.xml.
+
+<sect1> Song Actions
+<p>
+Clicking on a song with the right mouse button, the context menu allows you the
+following actions:
+
+<sect2>Enqueue<p>
+Enqueues a song to the end of xmms' playlist.
+
+
+<sect2>Enqueue as next<p>
+Enqueues a song as the next song to play in xmms' playlist.
+(does not result in next song if xmms is in shuffle play mode)
+
+<sect2>Play immediately<p>
+First enqueues the song as next, then tells xmms to skip to next song.
+
+<sect2>Insert into...<p>
+Here you can insert a song into an existing playlist.
+
+<sect2>Info...<p>
+Opens a dialog with info and edit possibility for the selected song(s).
+If more than one song was selected, this enables a convenient mass-editing
+possibility:
+<P>
+Mass Editing<p>
+For multiple selected songs the song info dialog is a little different:
+
+- time and size of all selected songs are added (eg. useful for checking how many songs
+fit on one CD)
+
+- entries that are not exactly the same for all selected are shown as "!".
+  As long, as this is not changed, these entries are not touched.
+  When you change this entry, you can conveniently set that entry for all selected
+  songs to the new value.
+
+- entries that are exactly the same can be conveniently changed for all selected
+  songs by changing the value shown.
+
+
+<sect2>Delete<p>
+Delete the song from the database, and move the mp3 file to the trash directory.
+
+
+<sect1> Playlists<p>
+
+
+<sect1> Burning files
+<p>
+
+
+<sect1> Preferences<p>
+
+<sect1> Updating song database
+<p>
+For new songs found under the base directory, Yammi tries to get the song info
+such as artist, title, album... right by looking at the id3 tags (v1.0 or v1.1)
+and the filename. If Yammi is not sure about the tags, it will ask.
+Finally, the new songs are added to Yammi's database.
+
+Updating song database does not touch your mp3s.
+Exception: If a new song is already existing, either the new or old version will
+be moved to a "trash" directory.
+
+<sect1> Making database consistent with songs
+<p>
+It is recommended to make newly added songs consistent with the database,
+ie. to add id3 tags if not existing and to rename the file to the
+"artist - title.mp3" convention.
+This also facilitates file handling outside of Yammi.
+
+Performing this step touches your mp3s, changes tags, changes filenames!!!
+No guarantee that no damage is done to your files...:)
+Especially take care of characters not allowed in filenames, or songs
+that have the same artist and title identifiers.
+
+<sect>Questions and Answers<p>
+
+<sect>Copyright<p>
+
+Yammi 0.1, Copyright 2001 Brian O.Nölle , oli.noelle@web.de
+
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
+<p>
+</article>
+
