@@ -38,6 +38,7 @@ void FolderMedia::update(MyList* allSongs)
 //	allSongs->setSortOrder(sortBy);
 //	allSongs->sort();
 	
+	int noMedia=0;
 	Song* s=allSongs->first();
 	for(; s; s=allSongs->next()) {
 		
@@ -48,20 +49,25 @@ void FolderMedia::update(MyList* allSongs)
 				Folder* f2=(Folder*) li;
 				if(f2->folderName()==s->mediaName[i]) {
 					f2->addSong(s);
+					f2->setText( 0, s->mediaName[i]+QString(" (%1)").arg(f2->songList.count()) );
 					found=true;
 					break;
 				}
 			}
 
 			if(!found) { 		// folder not existing => create
+				noMedia++;
 				Folder *f = new Folder( this, s->mediaName[i] );
 				f->folderPopup = new QPopupMenu( 0 );
 				f->folderPopup->insertItem( "Enqueue", this, SLOT(enqueueFolder()));
 				f->folderPopup->insertItem( "Remove media", this, SLOT(removeMedia()));
 				f->addSong(s);
+				f->setText(0, s->mediaName[i]+QString(" (1)"));
 			}
 		}
 	}
+	setText(0, fName+QString(" (%1)").arg(noMedia));
+
 }
 
 void FolderMedia::removeMedia()

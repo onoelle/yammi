@@ -39,7 +39,8 @@ void FolderCategories::update(QList<MyList> allCategories, QStrList categoryName
 	
 	MyList* ptr=allCategories.first();
 	QString name=categoryNames.first();
-	for(; ptr; ptr=allCategories.next(), name=categoryNames.next())
+	int count=0;
+	for(; ptr; ptr=allCategories.next(), name=categoryNames.next(), count++)
 	{
 		Folder *f = new Folder( this, name );
 		f->folderPopup = new QPopupMenu( 0 );
@@ -54,7 +55,7 @@ void FolderCategories::update(QList<MyList> allCategories, QStrList categoryName
 		}
 		f->setText(0, name+QString(" (%1)").arg(count));
 	}
-//	setText(0, fname+QString(" (%1)").arg(count));
+	setText(0, fName+QString(" (%1)").arg(count));
 }
 
 void FolderCategories::removeCategory()

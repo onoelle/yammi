@@ -12,7 +12,7 @@ ldadd=-lxmms $(LIB_QT)
 ldflags=
 
 [General]
-AMChanged=true
+AMChanged=false
 author=Oliver Nölle
 configure_args=--with-qt-dir=/usr/lib/qt2
 email=oli.noelle@web.de
@@ -88,7 +88,7 @@ install_location=
 type=SOURCE
 
 [yammi/Makefile.am]
-files=yammi/main.cpp,yammi/lo32-app-yammi.png,yammi/lo16-app-yammi.png,yammi/filenew.xpm,yammi/filesave.xpm,yammi/fileopen.xpm,yammi/clearPlaylist.xpm,yammi/DeleteDialog.ui,yammi/folder.cpp,yammi/folder.h,yammi/folderactual.cpp,yammi/folderactual.h,yammi/folderall.cpp,yammi/folderall.h,yammi/foldercategories.cpp,yammi/foldercategories.h,yammi/foldergroups.cpp,yammi/foldergroups.h,yammi/folderhistory.cpp,yammi/folderhistory.h,yammi/foldermedia.cpp,yammi/foldermedia.h,yammi/folderunclassified.cpp,yammi/folderunclassified.h,yammi/fuzzsrch.cpp,yammi/fuzzsrch.h,yammi/in.xpm,yammi/mp3_layer.cpp,yammi/mp3_layer.h,yammi/mp3tag.cpp,yammi/mp3tag.h,yammi/mydatetime.cpp,yammi/mydatetime.h,yammi/mylist.cpp,yammi/mylist.h,yammi/notin.xpm,yammi/pause.xpm,yammi/PreferencesDialogBase.ui,yammi/prefs.cpp,yammi/prefs.h,yammi/skipbackward.xpm,yammi/skipforward.xpm,yammi/song.cpp,yammi/song.h,yammi/songinfo.cpp,yammi/songinfo.h,yammi/SongInfoDialog.ui,yammi/songlistitem.cpp,yammi/songlistitem.h,yammi/yammigui.cpp,yammi/yammigui.h,yammi/yammimodel.cpp,yammi/yammimodel.h,yammi/preferencesdialog.cpp,yammi/preferencesdialog.h,yammi/defaultMiddleClick.xpm,yammi/defaultDoubleClick.xpm,yammi/mylistview.cpp,yammi/mylistview.h,yammi/YammiGuiBase.ui,yammi/enqueue.xpm,yammi/enqueueasnext.xpm,yammi/playnow.xpm,yammi/dequeueSong.xpm,yammi/prelisten.xpm,yammi/songinfo.xpm,yammi/stopPrelisten.xpm
+files=yammi/main.cpp,yammi/lo32-app-yammi.png,yammi/lo16-app-yammi.png,yammi/filenew.xpm,yammi/filesave.xpm,yammi/fileopen.xpm,yammi/clearPlaylist.xpm,yammi/DeleteDialog.ui,yammi/folder.cpp,yammi/folder.h,yammi/foldercategories.cpp,yammi/foldercategories.h,yammi/foldergroups.cpp,yammi/foldergroups.h,yammi/folderhistory.cpp,yammi/folderhistory.h,yammi/foldermedia.cpp,yammi/foldermedia.h,yammi/fuzzsrch.cpp,yammi/fuzzsrch.h,yammi/in.xpm,yammi/mp3_layer.cpp,yammi/mp3_layer.h,yammi/mp3tag.cpp,yammi/mp3tag.h,yammi/mydatetime.cpp,yammi/mydatetime.h,yammi/mylist.cpp,yammi/mylist.h,yammi/notin.xpm,yammi/pause.xpm,yammi/PreferencesDialogBase.ui,yammi/prefs.cpp,yammi/prefs.h,yammi/skipbackward.xpm,yammi/skipforward.xpm,yammi/song.cpp,yammi/song.h,yammi/songinfo.cpp,yammi/songinfo.h,yammi/SongInfoDialog.ui,yammi/songlistitem.cpp,yammi/songlistitem.h,yammi/yammigui.cpp,yammi/yammigui.h,yammi/yammimodel.cpp,yammi/yammimodel.h,yammi/preferencesdialog.cpp,yammi/preferencesdialog.h,yammi/defaultMiddleClick.xpm,yammi/defaultDoubleClick.xpm,yammi/mylistview.cpp,yammi/mylistview.h,yammi/YammiGuiBase.ui,yammi/enqueue.xpm,yammi/enqueueasnext.xpm,yammi/playnow.xpm,yammi/dequeueSong.xpm,yammi/prelisten.xpm,yammi/songinfo.xpm,yammi/stopPrelisten.xpm
 sub_dirs=
 type=prog_main
 
@@ -184,30 +184,6 @@ install=false
 install_location=
 type=HEADER
 
-[yammi/folderactual.cpp]
-dist=true
-install=false
-install_location=
-type=SOURCE
-
-[yammi/folderactual.h]
-dist=true
-install=false
-install_location=
-type=HEADER
-
-[yammi/folderall.cpp]
-dist=true
-install=false
-install_location=
-type=SOURCE
-
-[yammi/folderall.h]
-dist=true
-install=false
-install_location=
-type=HEADER
-
 [yammi/foldercategories.cpp]
 dist=true
 install=false
@@ -251,18 +227,6 @@ install_location=
 type=SOURCE
 
 [yammi/foldermedia.h]
-dist=true
-install=false
-install_location=
-type=HEADER
-
-[yammi/folderunclassified.cpp]
-dist=true
-install=false
-install_location=
-type=SOURCE
-
-[yammi/folderunclassified.h]
 dist=true
 install=false
 install_location=

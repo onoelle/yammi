@@ -52,6 +52,9 @@ protected:
 	void contentsMousePressEvent ( QMouseEvent * e);
 	void contentsMouseReleaseEvent ( QMouseEvent * e);
 
+protected slots:
+	void simulateMouseMove();
+
 };
 
 #endif

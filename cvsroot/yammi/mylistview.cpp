@@ -31,41 +31,72 @@ MyListView::~MyListView()
 {
 }
 
+void MyListView::simulateMouseMove()
+{
+	// we simulate a mouse movement to keep list scrolling if we are above or below it
+	cout << "simulate event\n";
+	QMouseEvent e(QEvent::MouseMove, dragPoint, 0, 0);
+	contentsMouseMoveEvent(&e);
+}
 
 
 void MyListView::contentsMouseMoveEvent ( QMouseEvent * e)
 {
-	if(dragging) {
-		// now we should check whether item has moved to new position
-		QPoint point=e->globalPos();
-		QListViewItem* item=itemAt(viewport()->mapFromGlobal(point));
-		if(item==0)
+	if(!dragging) {
+		// if not dragging we call super class to perform normal behavior on dragging
+		QListView::contentsMouseMoveEvent(e);
+		return;
+	}
+	
+	// drag mode: we should check whether mouse has moved to new item
+	QPoint point=e->globalPos();
+	QListViewItem* item=itemAt(viewport()->mapFromGlobal(point));
+	if(item==0)	{		// no valid item, mouse above or below listview?
+//		cout << " viewport: " << viewport()->mapFromGlobal(point).y();
+		bool above=viewport()->mapFromGlobal(point).y()<0;
+		QListViewItem* swapItem;
+		if(above) {
+			swapItem=dragItem->itemAbove();
+			if(swapItem) {
+				if(swapItem!=firstChild())
+					swapItem->moveItem(dragItem);
+				else
+					ensureItemVisible(swapItem);				
+			}
+		}
+		else {
+			swapItem=dragItem->itemBelow();
+			if(swapItem)
+				dragItem->moveItem(swapItem);
+		}
+//		if(swapItem) {
+			ensureItemVisible(dragItem);
+			// keep scrolling, if mouse not moving...
+			QTimer *timer = new QTimer( this );
+			connect( timer, SIGNAL(timeout()), this, SLOT(simulateMouseMove()) );
+			timer->start( 400, TRUE );
+//		}
+		return;
+	}
+	
+	
+	Song* s=((SongListItem*)item)->song();
+	if(s==dragSong)	// item has not moved
+		return;
+		
+	bool up=(point.y() < dragPoint.y());
+	if(up) {		// don't allow dragging to top song (is played)
+		if(item==firstChild()) {
+			cout << "dragging to top song not allowed!\n";
 			return;
-		Song* s=((SongListItem*)item)->song();
-		if(s!=dragSong) {
-			bool up=(point.y() < dragPoint.y());
-			if(up) {		// don't allow dragging to top song (is played)
-//				if(s==gYammiGui->songsToPlay.at(0)) {
-				if(item==firstChild()) {
-					cout << "dragging to top song not allowed!\n";
-					return;
-				}
-			}
-			delete(dragItem);
-			if(up) {
-				dragItem=new SongListItem(this, dragSong, (SongListItem*)item->itemAbove());
-			}
-			else {
-				dragItem=new SongListItem(this, dragSong, (SongListItem*)item);
-			}
-			dragPoint=point;
-			setCurrentItem(dragItem);
-			setSelected(dragItem, true);
 		}
 	}
-	else {
-		QListView::contentsMouseMoveEvent(e);
+	
+	dragItem->moveItem(item);
+	if(up) {
+		dragItem->itemAbove()->moveItem(dragItem);
 	}
+	dragPoint=point;
 }
 
 void MyListView::contentsMousePressEvent ( QMouseEvent * e)

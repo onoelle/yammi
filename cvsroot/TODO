@@ -1,31 +1,37 @@
-todo-list
----------
+TODO
+----
+last update 6.2.2002
 
-for next release
-----------------
-- touch history file on first startup
+
+for release 0.3
+---------------
 - prefs for second sound device
+- recent / full history
+
+- no concistency mode guarantees untouched mp3s??? => yes, put into docu
+	=> no moving???
+- touch history file on first startup => yes, check whether funciona
+
+
+for release 0.3.1
+---------------
 - tool tips?
-- no concistency mode guarantees untouched mp3s???
+- update documentation
 
 
-- check update view actions after changes to database
-- better documentation
-- show history of logfile
-
-
-for future releases
--------------------
+for near future
+---------------
 - more options for burning folder
 - more options for keeping consistency
 
 - fix: two albums having the same name appear as one album
 - fix: doesn't show meaningful value for bitrate and length when variable bitrate
-- fix: some mp3s appear as corrupted (layer information not readable?)
+- fix: some mp3s xmms can play appear as corrupted
+  (layer information not readable?)
 	
 
-todo (later)
-------------
+for far future
+--------------
 - replace id3 tag handling (and mp3 layer info?) with something better
   (probably switching to id v2 tags, using a library)
 - port to windows?

@@ -49,7 +49,7 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
 	// check whether xmms is running, if not: start it!
 	if(!xmms_remote_is_running(0)) {
 		cout << "xmms not running, trying to start it...\n";
-		system("xmms > /tmp/xmms_output.delme &");
+		system("xmms > /dev/null &");
 	}
 	
 	// set up model
@@ -190,7 +190,7 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
 	cout << "setting up folders...\n";
 	
 	// folder containing all music
-	folderAll=new FolderAll( folderListView, QString("- All Music -"));
+	folderAll=new Folder( folderListView, QString("- All Music -"));
 	folderAll->update(&(model->allSongs));
 	
 	// folder containing all artists with more than <n> songs	
@@ -211,16 +211,21 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
 	folderMedia->update(&(model->allSongs));
 
 	// folder containing currently played song
-	folderActual = new FolderActual(folderListView, QString("- Playlist -"));
-	folderActual->update(songsToPlay);
+	folderActual = new Folder(folderListView, QString("- Playlist"));
+	folderActual->update(&songsToPlay);
 
 	// folder containing history
 	folderHistory = new FolderHistory(folderListView, QString("History"));
 	folderHistory->update(model->songHistory);
 
 	// folder containing unclassified songs
-	folderUnclassified = new FolderUnclassified(folderListView, QString("Unclassified"));
-	folderUnclassified->update(&(model->allSongs));
+	folderUnclassified = new Folder(folderListView, QString("Unclassified"));
+	for(Song* s=model->allSongs.first(); s; s=model->allSongs.next()) {
+		if(!s->classified)
+			unclassifiedSongs.append(s);
+	}
+
+	folderUnclassified->update(&unclassifiedSongs);
 		
 	folderSearchResults = new Folder( folderListView, QString("Search Results") );
 	
@@ -328,9 +333,16 @@ void YammiGui::updateView()
 	folderAlbums->update(&(model->allSongs), MyList::ByAlbum);
 	folderCategories->update(model->allCategories, model->categoryNames);
 	folderMedia->update(&(model->allSongs));
-	folderUnclassified->update(&(model->allSongs));
+	
+	unclassifiedSongs.clear();
+	for(Song* s=model->allSongs.first(); s; s=model->allSongs.next()) {
+		if(!s->classified)
+			unclassifiedSongs.append(s);
+	}
+
+	folderUnclassified->update(&unclassifiedSongs);
 	folderProblematic->update(&(model->problematicSongs));
-	folderActual->update(songsToPlay);
+	folderActual->update(&songsToPlay);
 	slotFolderChanged();
 }
 
@@ -1158,7 +1170,7 @@ void YammiGui::forSelection(action act)
 		updateView();
 	}
 	if(act==Enqueue || act==EnqueueAsNext || act==Dequeue) {
-		folderActual->update(songsToPlay);
+		folderActual->update(&songsToPlay);
 		syncYammi2Xmms();
 		if(chosenFolder==folderActual)
 			slotFolderChanged();
@@ -1196,7 +1208,7 @@ void YammiGui::syncXmms2Yammi()
 		songsToPlay.append(check);
 	}
 	// 3. delete all but the keepInXmms first songs
-	for(int i=xmms_remote_get_playlist_length(0)-1; i>(model->config.keepInXmms); i--) {
+	for(int i=xmms_remote_get_playlist_length(0)-1; i>=model->config.keepInXmms; i--) {
 		xmms_remote_playlist_delete(0, i);
 	}
 }
@@ -1291,7 +1303,7 @@ void YammiGui::forSong(Song* s, action act, QString dir=0)
 		if(s->filename=="" || !s->checkReadability())
 			return;
 		forSong(s, EnqueueAsNext);
-		folderActual->update(songsToPlay);
+		folderActual->update(&songsToPlay);
 		syncYammi2Xmms();
 		xmms_remote_playlist_next(0);
 		if(!xmms_remote_is_playing(0))
@@ -1511,6 +1523,7 @@ void YammiGui::enqueueFolder()
 	for(Song* s=chosenFolder->firstSong(); s; s=chosenFolder->nextSong()) {
 		forSong(s, Enqueue);
 	}
+	folderActual->update(&songsToPlay);
 }
 
 
@@ -1606,7 +1619,7 @@ void YammiGui::xmms_clearPlaylist()
 		Song* save=songsToPlay.getFirst();
 		songsToPlay.clear();
 		songsToPlay.append(save);
-		folderActual->update(songsToPlay);
+		folderActual->update(&songsToPlay);
 		syncYammi2Xmms();
 		if(chosenFolder==folderActual)
 			slotFolderChanged();
@@ -1628,7 +1641,7 @@ void YammiGui::xmms_clearPlaylist()
  * onTimer is called periodically to do some things independently of any user action
  * - cutShort
  * - logging
- * - updating FolderActual
+ * - updating folderActual
  */
 void YammiGui::onTimer()
 {	
@@ -1668,8 +1681,8 @@ void YammiGui::onTimer()
 					lastPlayed.remove((unsigned int)0);
 				}*/
 		  	
+	  		// take over playlist management from xmms
 		  	if(model->config.managePlaylist) {
-		  		// take over playlist management from xmms
 		  		
 		  		// remove played song(s) from xmms playlist
 		  		int i;
@@ -1682,29 +1695,13 @@ void YammiGui::onTimer()
 		  		// should just check, not change anything:
 		  		syncYammi2Xmms();
 		  		
-					folderActual->update(songsToPlay);
+					folderActual->update(&songsToPlay);
 					if(chosenFolder==folderActual)
 						slotFolderChanged();
 					else
 						songListView->triggerUpdate();					
 				}
 				// end of playlist management
-				else {
-		  	
-			  	// get next 10 songs...
-					toPlay.clear();
-		  		for(int i=xmms_remote_get_playlist_pos(0)+1; i<xmms_remote_get_playlist_length(0); i++)
-					{	  	
-						strcpy(file, xmms_remote_get_playlist_file(0, i));
-						Song* stillToPlay=getSongEntryFromFilename(QString(file));
-						if(stillToPlay)
-							toPlay.append(stillToPlay);
-					}
-
-					if(!songListView->dragging)
-						folderActual->update(toPlay);
-				
-				}
 				
 				// set title to currently played song
 				setCaption("Yammi: "+current->displayName());
@@ -1977,19 +1974,21 @@ void YammiGui::preListen(Song* s, int skipTo)
 	// first, kill any previous mpg123 prelisten process
 	QString cmd1=QString("kill -9 `ps h -o \"%p\" -C mpg123`");
 	system(cmd1);
-	QString cmd1b=QString("kill -9 `ps h -o \"%p\" -C aplay`");
-	system(cmd1b);
-	// now play song via mpg123 or aplay on second sound device /dev/dsp1
+//	QString cmd1b=QString("kill -9 `ps h -o \"%p\" -C aplay`");
+//	system(cmd1b);
+	// now play song via mpg123 or aplay on sound device configured in prefs
 	if(s->filename.right(3)=="mp3") {
 		QString skip=QString(" --skip %1").arg(seconds*skipTo*38/100);
-		QString cmd2=QString("mpg123 -a /dev/dsp1%1 \"%2\" &").arg(skip).arg(s->location());
+		QString cmd2=QString("mpg123 -a %1 %2 \"%3\" &").arg(model->config.secondSoundDevice).arg(skip).arg(s->location());
 		cout << "length: " << seconds << ", " << cmd2 << "\n";
 		system(cmd2);
 	}
+/*	no support for prelistening to wavs right now...
 	if(s->filename.right(3)=="wav") {
 		QString cmd2=QString("aplay -c1 \"%1\" &").arg(s->location());
 		system(cmd2);
 	}
+*/
 }
 
 void YammiGui::updateSongDatabase()

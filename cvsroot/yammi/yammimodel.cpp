@@ -180,9 +180,9 @@ bool YammiModel::startFirstTime()
 	cout << " ..done\n";
 
 	// touch history file, so it exists
+	cout << "creating (empty) history file...";
 	system( QString("touch %1/logfile.log").arg(config.yammiBaseDir) );
-//	QFile f(config.yammiBaseDir+"/logfile.log");
-//	if ( !f.open( IO_ReadOnly ) ) {
+	cout << " ..done\n";
  	
 	cout << "Everything successfully initialized, have fun!\n";
 	return true;

@@ -55,9 +55,11 @@ void Folder::insertSubFolders( const QObjectList *lst )
 void Folder::update(MyList* allSongs)
 {
 	clearSongs();
-	for(Song* s=allSongs->first(); s; s=allSongs->next()) {
+	int count=0;
+	for(Song* s=allSongs->first(); s; s=allSongs->next(), count++) {
 		addSong(s);
 	}
+	setText(0, fName+QString(" (%1)").arg(count));
 }
 
 

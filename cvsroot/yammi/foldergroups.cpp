@@ -39,6 +39,7 @@ void FolderGroups::update(MyList* allSongs, int sortBy)
 	Song* s=allSongs->first();
 	QString last("xxx");
 	int count=0;
+	int groupCount=0;
 	bool same=false;
 	for(; s; s=allSongs->next()) {
 		if(sortBy==MyList::ByArtist)
@@ -51,6 +52,7 @@ void FolderGroups::update(MyList* allSongs, int sortBy)
 		} else {
 			if(count>=5) {
 	   		// go back to first song of that artist/album
+	   		groupCount++;
 	   		bool sameArtist=true;
 	   		s=allSongs->prev();
 	   		QString last2=s->artist;
@@ -79,6 +81,7 @@ void FolderGroups::update(MyList* allSongs, int sortBy)
 					s->classified=true;
 	   			s=allSongs->next();
 	   		}
+				f2->setText(0, folderName+QString(" (%1)").arg(count));
 			}
 			if(sortBy==MyList::ByArtist)
 				last=s->artist;
@@ -89,7 +92,9 @@ void FolderGroups::update(MyList* allSongs, int sortBy)
 			count=1;
 		}
 	}
+	setText(0, fName+QString(" (%1)").arg(groupCount));
 }
+
 
 
 FolderGroups::~FolderGroups()

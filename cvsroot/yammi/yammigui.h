@@ -68,12 +68,12 @@
 #include "songinfo.h"
 #include "fuzzsrch.h"
 #include "folder.h"
-#include "folderall.h"
-#include "folderunclassified.h"
+//#include "folderall.h"
+//#include "folderunclassified.h"
 #include "foldergroups.h"
 #include "foldercategories.h"
 #include "foldermedia.h"
-#include "folderactual.h"
+//#include "folderactual.h"
 #include "folderhistory.h"
 #include "preferencesdialog.h"
 #include "DeleteDialog.h"
@@ -216,8 +216,8 @@ protected:
 
 public:		
 		QList<Song>	lastPlayed;					// contains the last n played songs, lastPlayed[n-1]=current Song
-		QList<Song>	toPlay;							// contains the next n songs to play according to playlist of xmms
-		QList<Song> songsToPlay;				// yammi playlist
+		MyList songsToPlay;							// yammi playlist
+		MyList unclassifiedSongs;
 		
 protected:
 		QTimer			regularTimer;
@@ -226,40 +226,40 @@ protected:
 
 
 	// folders
-	FolderAll* folderAll;
-	FolderGroups* folderArtists;
-	FolderGroups* folderAlbums;
+	Folder*					folderAll;
+	Folder*					folderSearchResults;
+	Folder*					folderActual;
+	FolderGroups*		folderArtists;
+	FolderGroups*		folderAlbums;
 	FolderCategories* folderCategories;
-	Folder* folderSearchResults;
-	FolderMedia* folderMedia;
-	FolderActual* folderActual;
+	FolderMedia*		folderMedia;
 protected:
-	FolderUnclassified* folderUnclassified;
-	FolderHistory* folderHistory;
-	Folder* folderProblematic;
+	Folder* 				folderUnclassified;
+	Folder*					folderProblematic;
+	FolderHistory*	folderHistory;
 
 
 protected slots:		
-		void addToWishList();
-		void toPlayList(int index);
-		void xmms_playPause();
-		void xmms_skipForward();
-		void xmms_skipBackward();
-		void xmms_clearPlaylist();
+	void 					addToWishList();
+	void					toPlayList(int index);
+	void					xmms_playPause();
+	void					xmms_skipForward();
+	void					xmms_skipBackward();
+	void					xmms_clearPlaylist();
 		
-		void onTimer();
-		Song* getSongEntryFromFilename(QString filename);
+	void 					onTimer();
+	Song*					getSongEntryFromFilename(QString filename);
 	
-	  void newCategory();	  					/** create new category */
-		void removeCategory();
-		void enqueueFolder();
-		void burnFolder();
-		void removeMedia();
-		void enqueueCdTrack();
-		void addFolderContentSnappy();
+  void 					newCategory();	  					/** create new category */
+	void 					removeCategory();
+	void					enqueueFolder();
+	void					burnFolder();
+	void					removeMedia();
+	void					enqueueCdTrack();
+	void 					addFolderContentSnappy();
 		
-public slots: // Public slots
-  void checkForGrabbedTrack();
+public slots:
+  void					checkForGrabbedTrack();
 };
 
 #endif

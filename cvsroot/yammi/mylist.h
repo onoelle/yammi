@@ -22,7 +22,8 @@
 #include <song.h>
 
 /**
-  *@author Brian O.Nölle
+  * This class extends QList (with fixed type <Song>), to enable sorting
+  * otherwise, use exactly as QList<Song>
   */
 
 class MyList : public QList<Song>  {
