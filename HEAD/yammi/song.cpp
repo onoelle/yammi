@@ -19,8 +19,9 @@
 #include "song.h"
 #include "yammigui.h"
 
+#ifdef MP3_SUPPORT
 #include "mp3info/CMP3Info.h"       // used to retrieve mp3 layer info
-
+#endif
 
 
 extern YammiGui* gYammiGui;
@@ -124,7 +125,10 @@ int Song::create(const QString location, const QString mediaName)
   // guess artist/title from filename (in case no tags can be read)
 	QString ffArtist, ffTitle;
   guessTagsFromFilename(saveFilename, &ffArtist, &ffTitle);
+  bool treated=false;
 
+
+#ifdef MP3_SUPPORT
 
   // mp3 object
   if(filename.right(4).upper()==".MP3") {
@@ -161,10 +165,17 @@ int Song::create(const QString location, const QString mediaName)
     if(title.right(4).upper()==".MP3")
       title=title.left(title.length()-4);
 
+    treated=true;
   }
 
+#endif MP3_SUPPORT
+
+
+
+#ifdef OGG_SUPPORT
+
   // ogg object
-  else if(filename.right(4).upper()==".OGG") {
+  if(filename.right(4).upper()==".OGG") {
     // get ogg info
     getOggInfo(location);
 
@@ -178,10 +189,15 @@ int Song::create(const QString location, const QString mediaName)
     if(title.right(4).upper()==".OGG")
       title=title.left(title.length()-4);
 
+    treated=true;
   }
+
+#endif OGG_SUPPORT
+
+
   
-  else {
-    cout << filename << "apparently no mp3 or ogg file...\n";
+  if(!treated) {
+    cout << filename << "no special handling (such as for mp3 or ogg files) available (or disabled)...\n";
     cout << "  => cannot read information such as bitrate, length and tags\n";
     cout << "  => Yammi tries to guess artist and title from filename (using the \"artist - title\" pattern\n";
     bitrate=0;
@@ -214,8 +230,43 @@ bool Song::checkFilename()
 		return (constructFilename()==filename);
 }
 
+/** Tries to guess artist and title from filename.
+ * So far, assumes a pattern of "artist - title.mp3"
+ * \todo: add more sophisticated pattern (leading trackNr?, directory with album?)
+ */
+void Song::guessTagsFromFilename(QString filename, QString* artist, QString* title)
+{
+  QString guessBase=filename;
+
+  // remove suffix, if it looks like we have a suffix
+  if(guessBase.at(guessBase.length()-4)=='.')
+    guessBase=guessBase.left(guessBase.length()-4);
+
+  guessBase=guessBase.replace( QRegExp("_"), " " );							// replace "_" with " "
+
+	int pos=guessBase.find('-');
+	if(pos!=-1) {
+		*artist=guessBase.left(pos);
+		*artist=artist->simplifyWhiteSpace();
+		*title=guessBase.right(guessBase.length()-pos-1);
+		*title=title->simplifyWhiteSpace();
+	}
+	else
+	{
+		*artist="unknown";
+		*title=guessBase;
+		*title=title->simplifyWhiteSpace();
+	}
+  cout << "guessed artist: " << *artist << ", title: " << *title << "\n";
+}
 
 
+
+
+////////////////////////////////////
+// special handling of mp3 files
+
+#ifdef MP3_SUPPORT
 
 /** get id3 tags from the specified mp3 file (using id3lib)
  */
@@ -347,7 +398,9 @@ bool Song::getId3Tag(ID3_Tag* tag, ID3_FrameID frame, ID3_FieldID field, QString
   }
 
   // get field
-  ID3_Field* theField = theFrame->GetField(field);
+// apparently the following line only works with id3lib3.8.x
+//  ID3_Field* theField = theFrame->GetField(field);
+  ID3_Field* theField = &(theFrame->Field(field));
   if (theField == NULL) {
     cout << "could not find field " << field << "\n";
     return false;
@@ -434,13 +487,18 @@ bool Song::setId3Tag(ID3_Tag* tag, ID3_FrameID frame, ID3_FieldID field, QString
   if (theFrame == NULL) {
     cout << "could not find frame " << frame << ", creating it...\n";
     newFrame->SetID(frame);
-    newFrame->GetField(field)->Set(content.latin1());
+
+// apparently the following line only works with id3lib3.8.x
+//    newFrame->GetField(field)->Set(content.latin1());
+    newFrame->Field(field).Set(content.latin1());
     tag->AddFrame(newFrame);
     return true;
   }
 
   // get field
-  ID3_Field* theField = theFrame->GetField(field);
+// apparently the following line only works with id3lib3.8.x
+//  ID3_Field* theField = theFrame->GetField(field);
+  ID3_Field* theField = &(theFrame->Field(field));
   if (theField == NULL) {
     cout << "could not find field " << field << "\n";
     return false;
@@ -450,39 +508,6 @@ bool Song::setId3Tag(ID3_Tag* tag, ID3_FrameID frame, ID3_FieldID field, QString
   theField->Set(content.latin1());
   return true;
 }
-
-
-
-/** Tries to guess artist and title from filename.
- * So far, assumes a pattern of "artist - title.mp3"
- * \todo: add more sophisticated pattern (leading trackNr?, directory with album?)
- */
-void Song::guessTagsFromFilename(QString filename, QString* artist, QString* title)
-{
-  QString guessBase=filename;
-
-  // remove suffix, if it looks like we have a suffix
-  if(guessBase.at(guessBase.length()-3)=='.')
-    guessBase=guessBase.left(guessBase.length()-4);
-
-  guessBase=guessBase.replace( QRegExp("_"), " " );							// replace "_" with " "
-
-	int pos=guessBase.find('-');
-	if(pos!=-1) {
-		*artist=guessBase.left(pos);
-		*artist=artist->simplifyWhiteSpace();
-		*title=guessBase.right(guessBase.length()-pos-1);
-		*title=title->simplifyWhiteSpace();
-	}
-	else
-	{
-		*artist="unknown";
-		*title=guessBase;
-		*title=title->simplifyWhiteSpace();
-	}
-  cout << "guessed artist: " << *artist << ", title: " << *title << "\n";
-}
-
 
 
 
@@ -504,6 +529,20 @@ bool Song::getMp3LayerInfo(QString filename)
 //  cout << "frequency: " << mp3Info->getFrequency() << " Hz\n";
   delete mp3Info;
 }
+
+
+#endif MP3_SUPPORT
+
+// end of special handling of mp3 files
+///////////////////////////////////////
+
+
+
+
+////////////////////////////////
+// special handling of ogg files
+
+#ifdef OGG_SUPPORT
 
 
 
@@ -555,6 +594,10 @@ QString Song::getOggComment(OggVorbis_File* oggfile, QString commentName)
 }
 
 
+#endif OGG_SUPPORT
+
+// end of special handling of ogg files
+//////////////////////////////////
 
 
 
@@ -575,16 +618,26 @@ bool Song::checkTags()
   int _year=this->year;
   int _trackNr=this->trackNr;
   int _genreNr=this->genreNr;
-  
-  if(filename.right(4).upper()==".MP3")
+
+  bool treated=false;
+
+#ifdef MP3_SUPPORT  
+  if(filename.right(4).upper()==".MP3") {
     if(!this->getMp3Tags(location()))
       return false;
+    treated=true;
+  }
+#endif
 
-  else if(filename.right(4).upper()==".OGG")
+#ifdef OGG_SUPPORT
+  if(filename.right(4).upper()==".OGG") {
     if(!this->getOggInfo(location()))
       return false;
+    treated=true;
+  }
+#endif
 
-  else
+  if(!treated)
     return true;
 
   // tags exist => compare to our fields
@@ -611,6 +664,7 @@ bool Song::checkTags()
   return false;
 }
 
+
 /// save id3 tags to file
 bool Song::saveTags()
 {
@@ -626,11 +680,24 @@ bool Song::saveTags()
 		return true;
 	}
 
-  if(filename.right(4).upper()==".MP3")
+  bool treated=false;
+  
+#ifdef MP3_SUPPORT
+  if(filename.right(4).upper()==".MP3") {
     setMp3Tags(location());
-  else if(filename.right(4).upper()==".OGG")
+    treated=true;
+  }
+#endif
+
+#ifdef OGG_SUPPORT
+  if(filename.right(4).upper()==".OGG") {
     cout << "saving ogg tags not supported yet\n";
-  else
+    treated=true;
+    return true;
+  }
+#endif
+
+  if(!treated)
     return true;
 
 	cout << "id3 tags corrected in file " << this->filename << "\n";
@@ -862,6 +929,7 @@ void Song::deleteFile(QString trashDir)						// move songfile to trash
 	path="";
 }
 		
+/*
 void Song::copyTo(QString dir)						// copy songfile to other location
 {
 	if(filename=="")
@@ -883,6 +951,7 @@ void Song::copyAsWavTo(QString dir)
 	QString cmd= QString("mpg123 -w \"%1/%2\" \"%3\"").arg(dir).arg(outName).arg(location());
 	system(cmd.data());
 }
+*/
 
 // move file to another directory	
 void Song::moveTo(QString dir)
@@ -905,7 +974,7 @@ QString Song::getSongAction(int index)
   const char* songAction[] = {"None", "Enqueue", "EnqueueAsNext", "PlayNow", "SongInfo",
 							"PrelistenStart", "PrelistenMiddle", "PrelistenEnd",
 							"Delete", "DeleteFile", "DeleteEntry",
-							"CheckConsistency", "CopyTo", "MoveTo", "CopyAsWavTo",
+							"CheckConsistency", "MoveTo",
 							"Dequeue", "BurnToMedia" };
   if(index<=MAX_SONG_ACTION)
     return QString(songAction[index]);

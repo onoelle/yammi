@@ -29,18 +29,23 @@
 #include <qdir.h>
 
 #include "mydatetime.h"
+#include "options.h"
 
+#ifdef MP3_SUPPORT
 #include <id3/tag.h>                // used to read id3 tags
-#include <vorbis/vorbisfile.h>      // for reading ogg infos
-#include <string>                   // needed by ogg functions
+#endif
 
+#ifdef OGG_SUPPORT
+#include <vorbis/vorbisfile.h>      // for reading ogg infos
+//#include <string>                   // needed by ogg functions
+#endif
 
 // all possible actions for a single or a selection of songs
 // caution: corresponds to the static songAction field in Song
 enum action {	None, Enqueue, EnqueueAsNext, PlayNow, SongInfo,
 							PrelistenStart, PrelistenMiddle, PrelistenEnd,
 							Delete, DeleteFile, DeleteEntry,
-							CheckConsistency, CopyTo, MoveTo, CopyAsWavTo,
+							CheckConsistency, MoveTo,
 							Dequeue, BurnToMedia
 };
 
@@ -72,6 +77,7 @@ public:
   // specific to mp3 objects
   //************************
 
+#ifdef MP3_SUPPORT
   // id3 tag reading / guessing
   bool getMp3Tags(QString filename);
   bool setMp3Tags(QString filename);
@@ -80,14 +86,15 @@ public:
 
   // mp3 layer info
   bool getMp3LayerInfo(QString filename);
+#endif
 
 
   // specific to ogg objects
   //************************
-  
+#ifdef OGG_SUPPORT
   bool getOggInfo(QString filename);
   QString getOggComment(OggVorbis_File* oggfile, QString name);
-
+#endif
 
   // general info (not specific to file format)
   //*************
@@ -121,8 +128,8 @@ public:
 	void renameMedia(QString oldMediaName, QString newMediaName);
 	void deleteFile(QString trashDir);
 	void moveTo(QString dir);
-	void copyTo(QString dir);
-	void copyAsWavTo(QString dir);
+//	void copyTo(QString dir);
+//	void copyAsWavTo(QString dir);
 	
 
 // this is all info that we want to save belonging to a song object:

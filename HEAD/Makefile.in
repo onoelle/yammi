@@ -1,4 +1,4 @@
-# KDE tags expanded automatically by am_edit - $Revision: 1.12 $ 
+# KDE tags expanded automatically by am_edit - $Revision: 1.16 $ 
 # Makefile.in generated automatically by automake 1.5 from Makefile.am.
 
 # Copyright 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001
@@ -230,7 +230,7 @@ x_libraries = @x_libraries@
 
 SUBDIRS = yammi 
 
-EXTRA_DIST = yammi.kdevprj admin CHANGELOG yammiGrabAndEncode yammiShutdownScript AUTHORS INSTALL README TODO 
+EXTRA_DIST = yammi.kdevprj admin CHANGELOG yammiGrabAndEncode AUTHORS INSTALL README TODO 
 
 ####### kdevelop will overwrite this part!!! (end)############
 # not a GNU package. You can remove this line, if 
@@ -595,20 +595,11 @@ install-exec-local:
 #>- 	$(INSTALL_SCRIPT) yammiGrabAndEncode /usr/local/bin/yammiGrabAndEncode
 #>+ 1
 	$(INSTALL_SCRIPT) yammiGrabAndEncode $(DESTDIR)/usr/local/bin/yammiGrabAndEncode
-#>- 	$(mkinstalldirs) /usr/local/bin/
-#>+ 1
-	$(mkinstalldirs) $(DESTDIR)/usr/local/bin/
-#>- 	$(INSTALL_SCRIPT) yammiShutdownScript /usr/local/bin/yammiShutdownScript
-#>+ 1
-	$(INSTALL_SCRIPT) yammiShutdownScript $(DESTDIR)/usr/local/bin/yammiShutdownScript
 
 uninstall-local:
 #>- 	-rm -f /usr/local/bin/yammiGrabAndEncode
 #>+ 1
 	-rm -f $(DESTDIR)/usr/local/bin/yammiGrabAndEncode
-#>- 	-rm -f /usr/local/bin/yammiShutdownScript
-#>+ 1
-	-rm -f $(DESTDIR)/usr/local/bin/yammiShutdownScript
 
 #$(top_srcdir)/configure.in: configure.in.in $(top_srcdir)/subdirs
 #	cd $(top_srcdir) && $(MAKE) -f admin/Makefile.common configure.in ;

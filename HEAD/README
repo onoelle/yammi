@@ -1,5 +1,18 @@
 Yammi - Yet Another Music Manager I...
 
+Since version 0.7 Yammi depends on id3lib and libvorbis / libvorbisfile for reading id3 and ogg tags.
+
+If you don't use mp3 files or don't use ogg files, you can disable the support for mp3 and/or ogg,
+and can compile Yammi without the corresponding libraries.
+By default, support for both formats is given.
+
+To disable support for either of them => edit the file yammi/options.h
+
 Please visit http://yammi.sourceforge.net for detailed information about Yammi.
 
-Enjoy!
+
+
+I hope it compiles, so you can enjoy using Yammi...
+
+
+Oliver Nölle

@@ -1,46 +1,43 @@
 TODO
 ----
-last update 9.8.2002
+last update 9.9.2002
 
 KNOWN BUGS
 ----------
-- doesn't show meaningful value for bitrate and length when variable bitrate
-
 - some mp3s appear as corrupted, although xmms can play them
   (layer information not readable for Yammi?)
+=> hopefully fixed with version 0.7
 
 - still problem of freezing xmms => xmms_remote_playlist_delete(0, 0)
 	(seems to be a bug in xmms, posted to bugs@xmms)
 
 
 for release 0.7beta
------------------
+-------------------
 - key events (shift/control/ skip im)
-- saving tags?
-- columns
-- autoenqueue-folder?
-- save window position issue
-
-to shutdown kde in a better way:
-
-dcop ksmserver ksmserver "logout" 0 2 0   (what's the third param for?)
-
-to play a file with noatun:
-dcop noatun-1734 Noatun addFile "/mm/mp3/inbox/tiziano ferro - perdono.mp3" 0  (or 1, for playing immediately)
-
-
-- dialog+options for updating database (together with scan media)
+- dialog+options for updating database: scanning media
 - on deleting a song: delete in all lists (history, categories, ...)
+- update database: more information+statistics at the end
+- support for prelistening to wav?
+- update database: select a single file
+- -l lib issue??? configure script???
+
+
+for release 0.7
+---------------
+- saving ogg tags
+- chose a autoenqueue-folder
+- update documentation
+- new icon set for song actions
+- for plugins: if %D / %F occurs: popup directory dialog and let user choose directory/file
+
+for future releases
+-------------------
+- restoring window geometry issue
 - save more session settings?
-  - column width? order? for each folder?
-  - current folder?
-- replace id3 tag handling (and mp3 layer info?) with id3lib
-- try to improve speed of listview (heaps slower in qt3?)
-  - change linked list to vector or dictionary in MyList???
-- provide a proper, tgz binary release
+- provide a proper tgz binary release or rpm?
 - encapsulate communication with mp3 player in a "Player" class
 - saveFilename/renaming of file in song.cpp
-- change copyTo / copyAsWavTo to plugins
 - extensive testing with new user!!!
 - clean up folder class
 - clean up a lot...and complete documentation
@@ -49,12 +46,8 @@ dcop noatun-1734 Noatun addFile "/mm/mp3/inbox/tiziano ferro - perdono.mp3" 0  (
 - folder for recent additions to database?
 - specific messages on yammi update when starting
 - more tool tips
-- update database: more information+statistics at the end
 - reach stable status
-
-
-for "sometime"
---------------
+- update database: text log window
 - make a proper kde3 app out of it or port to windows???
 - search for similar: add an option to search for songs played "near" this one
 - statistic folder / more info in history folder
@@ -63,10 +56,10 @@ for "sometime"
 - more evaluation of log info
   - playing songs that haven't been played for quite a while
 - fix: two albums having the same name appear as one album
-- (generic) support for other music formats (at least wav?)
 
 
 
+-----------------
 bug track:
 trying to fill up xmms playlist with song from yammi
 xmms_remote_playlist_add_url /mm/mp3/inbox/Supertramp - School (Paris Live).mp3

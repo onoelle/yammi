@@ -41,7 +41,7 @@ Prefs::Prefs(){
 	
 // plugins	
 	grabAndEncodeCmd="yammiGrabAndEncode";
-	shutdownScript="yammiShutdownScript";
+	shutdownScript="dcop ksmserver ksmserver \"logout\" 0 2 0";
 
 	pluginMenuEntry = new QStringList();
 	pluginCommand = new QStringList();

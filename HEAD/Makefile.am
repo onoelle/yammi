@@ -2,17 +2,14 @@
 
 SUBDIRS = yammi 
 
-EXTRA_DIST = yammi.kdevprj admin CHANGELOG yammiGrabAndEncode yammiShutdownScript AUTHORS INSTALL README TODO 
+EXTRA_DIST = yammi.kdevprj admin CHANGELOG yammiGrabAndEncode AUTHORS INSTALL README TODO 
 
 install-exec-local:
 	$(mkinstalldirs) /usr/local/bin/
 	$(INSTALL_SCRIPT) yammiGrabAndEncode /usr/local/bin/yammiGrabAndEncode
-	$(mkinstalldirs) /usr/local/bin/
-	$(INSTALL_SCRIPT) yammiShutdownScript /usr/local/bin/yammiShutdownScript
 
 uninstall-local:
 	-rm -f /usr/local/bin/yammiGrabAndEncode
-	-rm -f /usr/local/bin/yammiShutdownScript
 
 ####### kdevelop will overwrite this part!!! (end)############
 # not a GNU package. You can remove this line, if 

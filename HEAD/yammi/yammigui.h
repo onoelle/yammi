@@ -18,6 +18,7 @@
 #ifndef YAMMIGUI_H
 #define YAMMIGUI_H
 
+#define MAX_COLUMN_NO 15
 
 // general includes
 #include <stdlib.h>
@@ -103,15 +104,19 @@ class YammiGui : public QMainWindow
 public:
 	YammiGui	(QWidget *parent = 0, const char *name = 0);
 	~YammiGui	();
+  
 	void			stopDragging();
   YammiModel* getModel() { return model; };
 
 protected:
+  void      readSettings();
+  void      writeSettings();
   void      moveEvent(QMoveEvent* e);
 
   QString   makeReplacements(QString input, Song* s, int index);
 	void			myWait(int msecs);
 	int				shuttingDown;
+  QString   lastPrelistened;
 	bool			xmmsShuffleWasActivated;
 	void 			decide(Song* s1, Song* s2);
 	void			keyPressEvent(QKeyEvent* e);
@@ -158,14 +163,15 @@ protected:
 	QPopupMenu* 	pluginPopup;
 	QPopupMenu* 	folderPopup;
 	QStatusBar* 	mainStatusBar;
-	QToolBar*			toolBar;
+//	QToolBar*			toolBar;
 	QSlider*			songSlider;
 	bool					isSongSliderGrabbed;
 public:	
-	QToolButton*	tbSaveDatabase;
+//	QToolButton*	tbSaveDatabase;
 	QToolButton*	tbPlayPause;
 
 protected slots:
+  void        saveColumnSettings();
 	void				endProgram();
 	void				shutDown();
 	void				changeSleepMode();
@@ -238,6 +244,16 @@ protected:
 	QString				currentFile;					// file that is currently played by xmms
 	QString				grabbedTrackFilename;	// filename of new track being grabbed
 
+
+// move the following into a (desktop)settings class?
+  int           geometryX;
+  int           geometryY;
+  int           geometryWidth;
+  int           geometryHeight;
+  QStringList   columnOrder;
+  int           columnWidth[MAX_COLUMN_NO];
+  
+  
 	QTimer				regularTimer;
 	QTimer				typeTimer;
 	int						songsUntilShutdown;

@@ -70,7 +70,7 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
 	gYammiGui=this;
   this->setIcon(QPixmap(yammiicon_xpm));
 	
-  this->tbSaveDatabase=0;
+//  this->tbSaveDatabase=0;
   
   // set up model
 	model=new YammiModel();
@@ -85,19 +85,8 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
 	
 
   // restore session settings
-  //*************************
-
-  QSettings settings;
-  settings.insertSearchPath( QSettings::Unix, model->config.yammiBaseDir );
-  int posx = settings.readNumEntry( "/Yammi/geometry/posx", 0 );
-  int posy = settings.readNumEntry( "/Yammi/geometry/posy", 0 );
-  int width = settings.readNumEntry( "/Yammi/geometry/width", 1024 );
-  int height = settings.readNumEntry( "/Yammi/geometry/height", 468 );
-  this->setGeometry(QRect(posx, posy, width, height));
-  // anything else we want to restore?
-  // (currently opened folder, ...)
-
-
+  readSettings();
+  
 	// set up gui
 	//****************************
 	cout << "setting up gui...\n";
@@ -143,21 +132,30 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
 	
 	
 	
-	// main toolbar
-	toolBar = new QToolBar ( this, "toolbar");
-  toolBar->setLabel( "Main Toolbar" );
-	tbSaveDatabase = new QToolButton( QPixmap(filesave_xpm), "Save database (Ctrl-S)", QString::null,
-														model, SLOT(save()), toolBar);
-  tbSaveDatabase->setEnabled(model->allSongsChanged());
-	tbPlayPause = new QToolButton( QPixmap((const char**)pause_xpm), "Play/Pause (F1)", QString::null,
-                           this, SLOT(xmms_playPause()), toolBar);
+  // media player toolbar
+  QToolBar* mediaPlayerToolBar = new QToolBar (this, "mediaPlayerToolbar");
+  mediaPlayerToolBar->setLabel( "Media Player Controls" );
+  tbPlayPause = new QToolButton( QPixmap((const char**)pause_xpm), "Play/Pause (F1)", QString::null,
+                           this, SLOT(xmms_playPause()), mediaPlayerToolBar);
 	new QToolButton( QPixmap((const char**)stop_xpm), "Stop", QString::null,
-                           this, SLOT(xmms_stop()), toolBar);
+                           this, SLOT(xmms_stop()), mediaPlayerToolBar);
 	new QToolButton( QPixmap((const char**)skipbackward_xpm), "Skip backward (F2 or CTRL-F2)", QString::null,
- 														this, SLOT(xmms_skipBackward()), toolBar);
+ 														this, SLOT(xmms_skipBackward()), mediaPlayerToolBar);
 	new QToolButton( QPixmap((const char**)skipforward_xpm), "Skip forward (F3 or CTRL-F3)", QString::null,
-                           this, SLOT(xmms_skipForward()), toolBar);
+                           this, SLOT(xmms_skipForward()), mediaPlayerToolBar);
+	songSlider = new QSlider( QSlider::Horizontal, mediaPlayerToolBar, "songLength" );
+	songSlider->setTickmarks(QSlider::Below);
+	songSlider->setFixedWidth(180);
+	isSongSliderGrabbed=false;
+	connect( songSlider, SIGNAL(sliderReleased()), SLOT(songSliderMoved()) );
+	connect( songSlider, SIGNAL(sliderPressed()), SLOT(songSliderGrabbed()) );
 		
+	// main toolbar
+	QToolBar* toolBar = new QToolBar ( this, "toolbar");
+  toolBar->setLabel( "Main Toolbar" );
+//	/ = new QToolButton( QPixmap(filesave_xpm), "Save database (Ctrl-S)", QString::null,
+//														model, SLOT(save()), toolBar);
+//  tbSaveDatabase->setEnabled(model->allSongsChanged());
 	QLabel *searchLabel = new QLabel(toolBar);
 	searchLabel->setText( "Search:" );
 	searchLabel->setFrameStyle( QFrame::NoFrame );
@@ -173,12 +171,6 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
 	
 	// current song label
 	QPushButton* currentSongLabel=new QPushButton("current", toolBar);
-	songSlider = new QSlider( QSlider::Horizontal, toolBar, "songLength" );
-	songSlider->setTickmarks(QSlider::Below);
-	songSlider->setFixedWidth(180);
-	isSongSliderGrabbed=false;
-	connect( songSlider, SIGNAL(sliderReleased()), SLOT(songSliderMoved()) );
-	connect( songSlider, SIGNAL(sliderPressed()), SLOT(songSliderGrabbed()) );
 	
 	// song actions	toolbar
 	QToolBar* toolBar2 = new QToolBar ( this, "toolbar2");
@@ -339,6 +331,11 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
 	    this, SLOT( doubleClick() ) );
   connect(songListView, SIGNAL( mouseButtonClicked( int, QListViewItem *, const QPoint&, int ) ),
 	    this, SLOT( middleClick(int) ) );
+  // for saving column settings
+  connect(songListView->header(), SIGNAL( sizeChange(int, int, int) ),
+	    this, SLOT( saveColumnSettings() ) );
+  connect(songListView->header(), SIGNAL( indexChange(int, int, int) ),
+	    this, SLOT( saveColumnSettings() ) );
 
 	// signals of folders
 	connect(folderCategories, SIGNAL( CategoryNew() ), this, SLOT(newCategory()));
@@ -420,6 +417,7 @@ void YammiGui::endProgram()
 YammiGui::~YammiGui()
 {
 	cout << "trying to exit gracefully...\n";
+  writeSettings();
 	syncYammi2Xmms(true);
 	if(xmmsShuffleWasActivated)
 		xmms_remote_toggle_shuffle(0);
@@ -439,18 +437,64 @@ YammiGui::~YammiGui()
 }
 
 
-void YammiGui::moveEvent(QMoveEvent* e)
+
+
+void YammiGui::writeSettings()
 {
   QSettings settings;
   settings.insertSearchPath( QSettings::Unix, model->config.yammiBaseDir );
-  QRect r = this->frameGeometry();      // get geometry including frame
-  cout << x() << ", " << y() << ", " << r.width() << ", " << r.height() << "\n";
-  cout << width() << ", " << height() << "\n";
-  settings.writeEntry( "/Yammi/geometry/posx", x() );
-  settings.writeEntry( "/Yammi/geometry/posy", y() );
-  settings.writeEntry( "/Yammi/geometry/width",  width());
-  settings.writeEntry( "/Yammi/geometry/height", height());
+  settings.writeEntry( "/Yammi/geometry/posx", geometryX );
+  settings.writeEntry( "/Yammi/geometry/posy", geometryY );
+  settings.writeEntry( "/Yammi/geometry/width",  geometryWidth);
+  settings.writeEntry( "/Yammi/geometry/height", geometryHeight);
+  settings.writeEntry( "/Yammi/songlistview/columnOrder" , columnOrder);
+  for(int i=0; i<MAX_COLUMN_NO; i++) {
+    settings.writeEntry( "/Yammi/songlistview/column"+QString("%1").arg(i)+"Width" , columnWidth[i]);
+  }
+  settings.writeEntry( "/Yammi/folder/current", chosenFolder->folderName());
 }
+
+/// restores session settings
+void YammiGui::readSettings()
+{
+  QSettings settings;
+  settings.insertSearchPath( QSettings::Unix, model->config.yammiBaseDir );
+  int posx = settings.readNumEntry( "/Yammi/geometry/posx", 0 );
+  int posy = settings.readNumEntry( "/Yammi/geometry/posy", 0 );
+  int width = settings.readNumEntry( "/Yammi/geometry/width", 1024 );
+  int height = settings.readNumEntry( "/Yammi/geometry/height", 468 );
+  setGeometry(QRect(posx, posy, width, height));
+  columnOrder=settings.readListEntry("/Yammi/songlistview/columnOrder");
+  if(columnOrder.count()==0)
+    cout << "no column order found\n";
+  for(int i=0; i<MAX_COLUMN_NO; i++) {
+    columnWidth[i]=settings.readNumEntry("/Yammi/songlistview/column"+QString("%1").arg(i)+"Width");
+  }
+  // todo: anything else we want to restore?
+  // (currently opened folder, ...)
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/// Update the internal geometry settings.
+void YammiGui::moveEvent(QMoveEvent* e)
+{
+  geometryX=x();
+  geometryY=y();
+  geometryWidth=width();
+  geometryHeight=height();
+}
+
+
 
 /// updates the automatically calculated folders after changes to song database
 void YammiGui::updateView()
@@ -479,19 +523,8 @@ void YammiGui::updateListViewColumns(Folder* oldFolder, Folder* newFolder)
   if(oldFolder==newFolder)
     return;
 
-  QHeader* header=songListView->header();
-  int width[20];
-  QStringList list;
-
   int noOldColumns=songListView->columns();
   for(int i=0; i<noOldColumns; i++) {
-    int section=header->mapToSection(i);
-    cout << header->label(section) << "|";
-    list.append(header->label(section));
-    width[i]=header->sectionSize(section);
-  }
-  cout << "\n";
-	for(int i=0; i<noOldColumns; i++) {
 		songListView->removeColumn(0);
   }
 
@@ -534,20 +567,21 @@ void YammiGui::updateListViewColumns(Folder* oldFolder, Folder* newFolder)
 
 
   int noNewColumns=songListView->columns();
-  header=songListView->header();
+  QHeader* header=songListView->header();
 
   // iterate through old columns, and if found in new, move to the target position
-  bool exists[20];
-  for(int x=0; x<20; x++)
+  bool exists[MAX_COLUMN_NO];
+  for(int x=0; x<MAX_COLUMN_NO; x++)
     exists[x]=false;
   
   int target=0;
-  for(int i=0; i<noOldColumns; i++) {
-    QString search=list[i];
+  for(int i=0; i<(int)columnOrder.count(); i++) {
+    QString search=columnOrder[i];
     for(int j=0; j<noNewColumns; j++) {
-      if(songListView->header()->label(j)==search) {
+      if(header->label(j)==search) {
+//        cout << "found: i: " << i << ", j: " << j << "label: " << header->label(j) << "\n";
         header->moveSection(j, target);
-        header->resizeSection(j, width[i]);
+        header->resizeSection(j, columnWidth[i]);
         target++;
         exists[j]=true;
       }
@@ -557,13 +591,24 @@ void YammiGui::updateListViewColumns(Folder* oldFolder, Folder* newFolder)
   for(int j=0; j<noNewColumns; j++) {
     if(!exists[j]) {
       header->moveSection(j, target);
-      cout << "not existing: " << header->label(j) << "\n";
+//      cout << "not existing: " << header->label(j) << "\n";
       target++;
     }
   }
+  saveColumnSettings();
+}
 
-
-
+void YammiGui::saveColumnSettings()
+{
+  int noColumns=songListView->columns();
+  QHeader* header=songListView->header();
+  columnOrder.clear();
+  for(int j=0; j<noColumns; j++) {
+    int section=header->mapToSection(j);
+    columnOrder.append(header->label(section));
+    columnWidth[j]=header->sectionSize(section);
+//    cout << "j: " << j << ", columnWidth: " << columnWidth[j] << ", label: " << header->label(section) << "\n";
+  }
 }
 
 /// opens the preferences dialogue
@@ -625,8 +670,6 @@ void YammiGui::updateSongPopup()
 	
 	songAdvancedPopup = new QPopupMenu(songPopup);
 	songAdvancedPopup->insertItem( "Delete...", this, SLOT(forSelection(int)), 0, Delete);
-	songAdvancedPopup->insertItem( "Copy file to...", this, SLOT(forSelection(int)), 0, CopyTo);
-	songAdvancedPopup->insertItem( "Copy file as WAV to...", this, SLOT(forSelection(int)), 0, CopyAsWavTo);
 	songAdvancedPopup->insertItem( "Move file to...", this, SLOT(forSelection(int)), 0, MoveTo);
 	songAdvancedPopup->insertItem( "Check Consistency", this, SLOT(forSelection(int)), 0, CheckConsistency);
 	songAdvancedPopup->insertItem( "Burn to Media...", this, SLOT(forSelection(int)), 0, BurnToMedia);	
@@ -998,8 +1041,6 @@ void YammiGui::adjustSongPopup()
  	songPopup->setItemEnabled(PrelistenMiddle, enable);
  	songPopup->setItemEnabled(PrelistenEnd, enable);
  	songPopup->setItemEnabled(CheckConsistency, enable);
- 	songPopup->setItemEnabled(CopyTo, enable);
- 	songPopup->setItemEnabled(CopyAsWavTo, enable);
  	songPopup->setItemEnabled(MoveTo, enable);
  	songPopup->setItemEnabled(BurnToMedia, enable);
 }
@@ -1035,6 +1076,16 @@ void YammiGui::forSelectionPlugin(int pluginIndex)
 
   bool confirm=((*model->config.pluginConfirm)[pluginIndex]=="true");
   QString mode=((*model->config.pluginMode)[pluginIndex]);
+  QString cmd=(*model->config.pluginCommand)[pluginIndex];
+  if(cmd.contains("%X")>0) {
+    // let user choose directory (we should provide a starting directory???)
+    QString dir=QFileDialog::getExistingDirectory(QString(""), this, QString("yammi"), QString("choose directory for plugin"), true);
+    if(dir.isNull())
+      return;
+//      if(dir.right(1)=="/")						// strip trailing slash
+//        dir=dir.left(dir.length()-1);
+    cmd.replace(QRegExp("%X"), dir);
+  }
 
   if(mode=="single") {
     QProgressDialog progress( "Executing song plugin cmd...", "Cancel", 100, this, "progress", TRUE );
@@ -1043,8 +1094,8 @@ void YammiGui::forSelectionPlugin(int pluginIndex)
 
     int index=1;
     for(Song* s=selectedSongs.firstSong(); s; s=selectedSongs.nextSong(), index++) {
-      QString cmd=(*model->config.pluginCommand)[pluginIndex];
       cmd=makeReplacements(cmd, s, index);
+      
       if(index==1 && confirm) {
         // before  executing cmd on first song, ask user
         QString msg="Execute the following command on each selected song?\n";
@@ -1069,7 +1120,6 @@ void YammiGui::forSelectionPlugin(int pluginIndex)
       QString entry=(*model->config.pluginCustomList)[pluginIndex];
       customList+=makeReplacements(entry, s, index);
     }
-    QString cmd=(*model->config.pluginCommand)[pluginIndex];
 
     // custom list can be long => better put it into a file...
     QFile customListFile(model->config.yammiBaseDir+"/customlist.txt");
@@ -1462,7 +1512,7 @@ void YammiGui::forSelection(action act)
 	
 	// 1. destination directory
 	QString dir;
-	if(act==MoveTo || act==CopyTo || act==CopyAsWavTo) {
+	if(act==MoveTo) {
 		// let user choose directory (we should provide a starting directory???)
 		dir=QFileDialog::getExistingDirectory(QString(""), this, QString("yammi"), QString("choose directory"), true);
 		if(dir.isNull())
@@ -1840,6 +1890,7 @@ void YammiGui::forSong(Song* s, action act, QString dir=0)
 		model->allSongsChanged(true);
 		break;
 		
+/*
 	case CopyTo:						// copy songfile to other location
 		mainStatusBar->message(QString("copying song %1").arg(s->displayName()), 2000);
 		s->copyTo(dir);
@@ -1849,7 +1900,8 @@ void YammiGui::forSong(Song* s, action act, QString dir=0)
 	case CopyAsWavTo:
 		s->copyAsWavTo(dir);
 		break;
-	
+
+*/	
 	case MoveTo: 										// move file to another directory
 		s->moveTo(dir);
 		break;
@@ -2013,12 +2065,12 @@ void YammiGui::xmms_playPause()
 void YammiGui::xmms_skipForward()
 {
   ensureXmmsIsRunning();
-  if(controlPressed) {
+  if(shiftPressed) {
     xmms_remote_pause(0);
   }
   int x= xmms_remote_get_playlist_pos(0);
 	xmms_remote_set_playlist_pos(0, x+1);
-  if(controlPressed) {
+  if(shiftPressed) {
     xmms_remote_play(0);
   }
 }
@@ -2386,23 +2438,27 @@ void YammiGui::shutDown()
 
 void YammiGui::keyPressEvent(QKeyEvent* e)
 {
-  cout << "x: " << this->x() << "pos.x: " << this->pos().x() << "\n";
-  cout << "geometry.x: " << this->geometry().left() << "frameGeometry.x: " << this->frameGeometry().left() << "\n";
+//  cout << "x: " << this->x() << "pos.x: " << this->pos().x() << "\n";
+//  cout << "geometry.x: " << this->geometry().left() << "frameGeometry.x: " << this->frameGeometry().left() << "\n";
   cout << "key(): " << e->key() << "text(): " << e->text() << "ascii(): " << e->ascii() << "\n";
 	int key=e->key();
 	switch(key) {
 		case Key_Control:
 			controlPressed=true;
       cout << "control pressed\n";
+      this->grabKeyboard();
 			break;
 		case Key_Shift:
 			shiftPressed=true;
+      cout << "shift pressed\n";
 			break;
 		case Key_F1:
 			xmms_playPause();
 			break;
 		case Key_F2:
-			xmms_skipBackward();
+        if(e->state()==ShiftButton)
+          cout << "shift pressed\n";
+  			xmms_skipBackward();
 			break;
 		case Key_F3:
 			xmms_skipForward();
@@ -2513,15 +2569,17 @@ void YammiGui::keyPressEvent(QKeyEvent* e)
 
 void YammiGui::keyReleaseEvent(QKeyEvent* e)
 {
-	cout << "release key(): " << e->key() << "text(): " << e->text() << "ascii(): " << e->ascii() << "\n";
+//	cout << "release key(): " << e->key() << "text(): " << e->text() << "ascii(): " << e->ascii() << "\n";
 	int key=e->key();
 	switch(key) {
 		case Key_Control:
 			controlPressed=false;
       cout << "control released\n";
+      this->releaseKeyboard();
 			break;
 		case Key_Shift:
 			shiftPressed=false;
+      cout << "shift released\n";
 			break;
 		default:
 			e->ignore();
@@ -2573,11 +2631,22 @@ void YammiGui::changeShutdownValue(int value)
 // stops playback on headphone
 void YammiGui::stopPrelisten()
 {
-	// kill any previous mpg123 prelisten process
-	QString cmd1=QString("kill -9 `ps h -o \"%p\" -C mpg123`");
-	system(cmd1);
-//	cmd1=QString("kill -9 `ps h -o \"%p\" -C aplay`");
-//	system(cmd1);
+	// kill any previous prelisten process
+  if(lastPrelistened=="MP3") {
+    QString cmd1=QString("kill `ps h -o \"%p\" -C mpg123` 2&> /dev/null");
+    system(cmd1);
+  }
+  if(lastPrelistened=="OGG") {
+    QString cmd2=QString("kill `ps h -o \"%p\" -C ogg123` 2&> /dev/null");
+    system(cmd2);
+  }
+  if(lastPrelistened=="WAV") {
+    // how do we stop "play"? killing all sox processes is probably not always desired...
+    QString cmd3=QString("kill `ps h -o \"%p\" -C play` 2&> /dev/null");
+    system(cmd3);
+    QString cmd4=QString("kill `ps h -o \"%p\" -C sox` 2&> /dev/null");
+    system(cmd4);
+  }
 }
 
 /* sends the song to headphones
@@ -2587,23 +2656,29 @@ void YammiGui::stopPrelisten()
 void YammiGui::preListen(Song* s, int skipTo)
 {
 	int seconds=s->length;
-	// first, kill any previous mpg123 prelisten process
-	QString cmd=QString("kill -9 `ps h -o \"%p\" -C mpg123`");
-	system(cmd);
-//	cmd=QString("kill -9 `ps h -o \"%p\" -C aplay`");
-//	system(cmd);
-	// now play song via mpg123 or aplay on sound device configured in prefs
-	if(s->filename.right(3)=="mp3") {
+
+  // first, kill any previous mpg123 prelisten process
+  stopPrelisten();
+
+  // now play song via mpg123, ogg123 or aplay on sound device configured in prefs
+	if(s->filename.right(3).upper()=="MP3") {
 		QString skip=QString(" --skip %1").arg(seconds*skipTo*38/100);
-		cmd=QString("mpg123 -a %1 %2 \"%3\" &").arg(model->config.secondSoundDevice).arg(skip).arg(s->location());
+		QString cmd=QString("mpg123 -a %1 %2 \"%3\" &").arg(model->config.secondSoundDevice).arg(skip).arg(s->location());
 		system(cmd);
+    lastPrelistened="MP3";
 	}
-/*	no support for prelistening to wavs right now...
+  if(s->filename.right(3).upper()=="OGG") {
+		QString skip=QString(" --skip %1").arg(seconds*skipTo/100);
+		QString cmd=QString("ogg123 -d oss -odsp:%1 %2 \"%3\" &").arg(model->config.secondSoundDevice).arg(skip).arg(s->location());
+		system(cmd);
+    lastPrelistened="OGG";
+  }
 	if(s->filename.right(3)=="wav") {
-		cmd=QString("aplay -c1 \"%1\" &").arg(s->location());
+		QString cmd=QString("play -d %1 \"%2\" trim %3s &").arg(model->config.secondSoundDevice).arg(s->location()).arg(seconds*44100);
 		system(cmd);
+    lastPrelistened="WAV";
 	}
-*/
+
 }
 
 void YammiGui::updateSongDatabaseHarddisk()

@@ -16,8 +16,8 @@
  ***************************************************************************/
 
 #include "foldergroups.h"
-#include "mp3info/CMP3Info.h"
 #include "yammigui.h"
+#include "mp3info/CMP3Info.h"
 
 extern YammiGui* gYammiGui;
 

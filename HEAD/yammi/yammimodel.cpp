@@ -686,8 +686,8 @@ void YammiModel::saveSongDatabase()
 void YammiModel::allSongsChanged(bool changed)
 {
 	_allSongsChanged=changed;
-  if(gYammiGui && gYammiGui->tbSaveDatabase)
-    gYammiGui->tbSaveDatabase->setEnabled(_allSongsChanged || _categoriesChanged);
+//  if(gYammiGui && gYammiGui->tbSaveDatabase)
+//    gYammiGui->tbSaveDatabase->setEnabled(_allSongsChanged || _categoriesChanged);
 }
 
 bool YammiModel::allSongsChanged()
@@ -698,8 +698,8 @@ bool YammiModel::allSongsChanged()
 void YammiModel::categoriesChanged(bool changed)
 {
 	_categoriesChanged=changed;
-  if(gYammiGui && gYammiGui->tbSaveDatabase)
-  	gYammiGui->tbSaveDatabase->setEnabled(_allSongsChanged || _categoriesChanged);
+//  if(gYammiGui && gYammiGui->tbSaveDatabase)
+//  	gYammiGui->tbSaveDatabase->setEnabled(_allSongsChanged || _categoriesChanged);
 }
 
 bool YammiModel::categoriesChanged()
