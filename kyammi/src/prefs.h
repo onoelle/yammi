@@ -93,10 +93,6 @@ public:
 	Song::action doubleClickAction;
 	/** Action for click on middle button */
 	Song::action middleClickAction;
-	/** Action for middle button click with control key */
-	Song::action controlClickAction;
-	/** Action for middle button click with shift key */
-	Song::action shiftClickAction;
 	/** Max size of media for burning */ 
 	int criticalSize;		
 	/** Logging of played songs activated */

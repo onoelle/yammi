@@ -57,6 +57,32 @@ Song::Song()
 	this->lastPlayed.setTime(QTime(0,0,0));
 }
 
+
+void Song::updateReadableFields(Song* s) {
+	updateWritableFields(s);
+	this->lastPlayed=s->lastPlayed;
+	this->noPlayed=s->noPlayed;
+	this->addedTo=s->addedTo;
+	this->filename=s->filename;
+	this->path=s->path;
+	this->filesize=s->filesize;
+	this->bitrate=s->bitrate;
+}
+
+/**
+ * Updates all writable fields according to the given Song.
+ */
+void Song::updateWritableFields(Song* s) {
+	this->addedTo=s->addedTo;
+	this->album=s->album;
+	this->artist=s->artist;
+	this->comment=s->comment;
+	this->title=s->title;
+	this->year=s->year;
+	this->trackNr=s->trackNr;
+	this->genreNr=s->genreNr;
+}
+
 /** constructs a song object with the given parameters
  */
 Song::Song(QString artist, QString title, QString album, QString filename, QString path, int length, int bitrate, MyDateTime addedTo, int year, QString comment, int trackNr, int genreNr)
@@ -1395,7 +1421,7 @@ void Song::moveTo(QString dir)
 
 QString Song::getSongAction(int index)
 {
-  const char* songAction[] = {"None", "Enqueue", "EnqueueRandom", "EnqueueAsNext", "EnqueueAsNextRandom", "PlayNow", "SongInfo",
+  const char* songAction[] = {"None", "Enqueue", "EnqueueAsNext", "PlayNow", "SongInfo",
 							"PrelistenStart", "PrelistenMiddle", "PrelistenEnd",
 							"Delete", "DeleteFile", "DeleteEntry",
 							"CheckConsistency", "MoveTo",

@@ -173,6 +173,7 @@ public:
 	QString getColumnName(int column);
 	
 public slots:
+	void songListPopup(QListViewItem*, const QPoint&, int);
 	void deleteEntry(Song* s);
 	void checkForGrabbedTrack();
 	void slotFolderChanged();
@@ -197,10 +198,10 @@ public slots:
 
   /** Enqueue the selected songs at the end of the Playlist.
 	  * If the Shift key is pressed, the songs are shuffled before being appended */
-	void forSelectionAppend( );
+	void forSelectionEnqueue( );
 	/** Enqueue the selected songs at the beginning of the Playlist
 	  * If the Shift key is pressed, the songs are shuffled before being prepended */
-	void forSelectionPrepend( );
+	void forSelectionEnqueueAsNext( );
 	/** Put the selected songs at the beginning of the playlist and start the player */
 	void forSelectionPlay( );
 	/** Remove all selected songs from the Playlist */
@@ -224,8 +225,6 @@ public slots:
 
 	/** Remove all songs from the playlist */
 	void clearPlaylist();
-  /** Show Dialog to display/edit the song info */
-	void songInfo( Song *s );
 	
 	void autoplayFolder();
 
@@ -328,6 +327,8 @@ protected:
 // protected methods
 //******************
 protected:
+	QIconSet 	getPopupIcon(Song::action whichAction);
+	void		forSelection(int action);
   void          gotoFuzzyFolder(bool backward);
   void          changeToFolder(Folder* newFolder, bool changeAnyway=false);
   void          folderContentChanged();
@@ -390,12 +391,9 @@ protected slots:
 	void autoplayOff();
 	void autoplayLNP();
 	void autoplayRandom();
-//	void currentlyPlayedSongPopup();
-	void songListPopup( QListViewItem*, const QPoint &, int );
 	void doSongPopup(QPoint point);
 	void slotFolderPopup( QListViewItem*, const QPoint &, int );
 	void adjustSongPopup();
-	QIconSet getPopupIcon(Song::action whichAction);
 
 	void doubleClick();
 	void middleClick(int button);

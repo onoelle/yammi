@@ -50,8 +50,6 @@ void Prefs::setDefaultValues(void) {
   
 	doubleClickAction = Song::None;
 	middleClickAction = Song::None;
-	controlClickAction = Song::None;
-	shiftClickAction = Song::None;
 	logging = false;
 	childSafe = false;
 	tagsConsistent = false;
@@ -99,8 +97,6 @@ bool Prefs::loadConfig( )
 	guessingMode                 = cfg->readNumEntry("guessingMode", guessingMode);
 	doubleClickAction            = (Song::action) cfg->readNumEntry("doubleClickAction", doubleClickAction);
 	middleClickAction            = (Song::action) cfg->readNumEntry("middleClickAction", middleClickAction);
-	controlClickAction           = (Song::action) cfg->readNumEntry("controlClickAction", controlClickAction);
-	shiftClickAction             = (Song::action) cfg->readNumEntry("shiftClickAction", shiftClickAction);
 	logging                      = cfg->readBoolEntry("logging", logging);
 	childSafe                    = cfg->readBoolEntry("childSafe", childSafe);
 	tagsConsistent               = cfg->readBoolEntry("tagsConsistent", tagsConsistent);
@@ -166,8 +162,6 @@ bool Prefs::saveConfig( )
 	cfg->writeEntry("guessingMode", mediaPlayer);
 	cfg->writeEntry("doubleClickAction", (int)doubleClickAction);
 	cfg->writeEntry("middleClickAction", (int)middleClickAction);
-	cfg->writeEntry("controlClickAction", (int)controlClickAction);
-	cfg->writeEntry("shiftClickAction", (int)shiftClickAction);
 	cfg->writeEntry("logging", logging);
 	cfg->writeEntry("childSafe", childSafe);
 	cfg->writeEntry("tagsConsistent", tagsConsistent);

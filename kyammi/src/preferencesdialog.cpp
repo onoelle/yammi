@@ -80,14 +80,6 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, const char *name, bool mod
 		ComboBoxMiddleClickAction->insertItem(Song::getSongAction(i));
   }
 	ComboBoxMiddleClickAction->setCurrentItem(config->middleClickAction);
-	for(int i=0; i<Song::getMaxSongAction(); i++) {
-		ComboBoxControlClickAction->insertItem(Song::getSongAction(i));
-  }
-	ComboBoxControlClickAction->setCurrentItem(config->controlClickAction);
-	for(int i=0; i<Song::getMaxSongAction(); i++) {
-		ComboBoxShiftClickAction->insertItem(Song::getSongAction(i));
-  }
-	ComboBoxShiftClickAction->setCurrentItem(config->shiftClickAction);
 
 	// jukebox functions
 	LineEditMediaDir->setText(config->mediaDir);
@@ -162,8 +154,6 @@ void PreferencesDialog::myAccept()
  		config->scanDir+="/";
  	config->doubleClickAction=(Song::action)ComboBoxDoubleClickAction->currentItem();
  	config->middleClickAction=(Song::action)ComboBoxMiddleClickAction->currentItem();
- 	config->controlClickAction=(Song::action)ComboBoxControlClickAction->currentItem();
- 	config->shiftClickAction=(Song::action)ComboBoxShiftClickAction->currentItem();
  	config->logging=CheckBoxLogging->isChecked();
  	config->tagsConsistent=CheckBoxTagsConsistent->isChecked();
  	config->filenamesConsistent=CheckBoxFilenamesConsistent->isChecked();

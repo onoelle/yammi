@@ -74,14 +74,14 @@ typedef struct {
  * todo: make _some_ more things protected...
  */
 
- #define MAX_SONG_ACTION 17
+ #define MAX_SONG_ACTION 15
  
 class Song
 {
 public:
 	// all possible actions for a single or a selection of songs
 	// caution: corresponds to the static songAction field in class Song (song.cpp)
-	enum action {	None, Enqueue, EnqueueRandom, EnqueueAsNext, EnqueueAsNextRandom, PlayNow, SongInfo,
+	enum action {	None, Enqueue, EnqueueAsNext, PlayNow, SongInfo,
 							PrelistenStart, PrelistenMiddle, PrelistenEnd,
 							Delete, DeleteFile, DeleteEntry,
 							CheckConsistency, MoveTo,
@@ -158,7 +158,9 @@ public:
   /// replace placeholders in a string with info from this song
   QString replacePlaceholders(QString input, int index);
 
-  void setTo(Song* s);					///< set values to other song object
+	void setTo(Song* s);					///< set values to other song object
+	void updateWritableFields(Song* s);
+	void updateReadableFields(Song* s);
 
 	QString displayName() { return this->artist+" - "+this->title; }
 	QString location() 		{ return this->path+"/"+this->filename; }

@@ -854,7 +854,7 @@ void YammiGui::setPreferences() {
  * Updates the songPopup submenus with available categories and plugins
  */
 void YammiGui::updateSongPopup() {
-    cout << "updating song popup\n";
+    kdDebug() << "updating song popup\n";
     playListPopup->clear();
     playListPopup->insertItem(QIconSet( QPixmap(newCategory_xpm)), i18n("New Category..."), this, SLOT(toCategory(int)), 0, 9999);
     for(unsigned int i=0; i<model->categoryNames.count(); i++) {
@@ -873,16 +873,13 @@ void YammiGui::updateSongPopup() {
  * TODO: fix for xmlui
  */
 QIconSet YammiGui::getPopupIcon(Song::action whichAction) {
-    if(m_config.doubleClickAction==whichAction)
+    if(m_config.doubleClickAction==whichAction) {
         return QIconSet(QPixmap(defaultDoubleClick_xpm));
-    if((m_config.middleClickAction==whichAction))
+    }
+    if((m_config.middleClickAction==whichAction)) {
         return QIconSet(QPixmap(defaultMiddleClick_xpm));
-    if((m_config.controlClickAction==whichAction))
-        return QIconSet(QPixmap(defaultControlClick_xpm));
-    if((m_config.shiftClickAction==whichAction))
-        return QIconSet(QPixmap(defaultShiftClick_xpm));
-    else
-        return (QIconSet) NULL;
+    }
+    return (QIconSet) NULL;
 }
 
 
@@ -1054,18 +1051,18 @@ void YammiGui::searchSong( const QString &fuzzy ) {
     if( fuzzy.length() < 3 ) {
         return;
     }
-/*
-	if(searchThread != 0) {
-		if(searchThread->running()) {
-			searchThread->terminate();
-			searchThread->wait();
-			delete(searchThread);
-		}
-	}
-	searchThread = new SearchThread();
-	searchThread->start();
-*/
-//    fuzzyFolderName="";
+    /*
+    	if(searchThread != 0) {
+    		if(searchThread->running()) {
+    			searchThread->terminate();
+    			searchThread->wait();
+    			delete(searchThread);
+    		}
+    	}
+    	searchThread = new SearchThread();
+    	searchThread->start();
+    */
+    //    fuzzyFolderName="";
     QString searchStr=" " + fuzzy +" ";
 
     FuzzySearch fs;
@@ -1267,12 +1264,14 @@ void YammiGui::slotSongChanged() {}
 /// rmb on songlist: song popup for selection
 void YammiGui::songListPopup( QListViewItem*, const QPoint & point, int) {
     // get selection
+    kdDebug() << "songListPopup\n";
     getSelectedSongs();
     doSongPopup(point);
 }
 
 void YammiGui::doSongPopup(QPoint point) {
     int selected=selectedSongs.count();
+    kdDebug() << "songPopup, selected: " << selected << endl;
     if( selected<=0 ) {
         return;										// only if at least one song selected
     }
@@ -1425,7 +1424,7 @@ void YammiGui::forSelectionPlugin(int pluginIndex) {
         }
 
         //TODO: luis, the following lines were commented out, any particular reason?
-		// custom list can be long => we put it into a file...
+        // custom list can be long => we put it into a file...
         QFile customListFile(m_config.trashDir+"/customlist.txt");
         customListFile.open(IO_WriteOnly);
         customListFile.writeBlock( customList, qstrlen(customList) );
@@ -1727,7 +1726,7 @@ void YammiGui::forSelectionCheckConsistency() {
     KMessageBox::information( this, msg );
 }
 
-void YammiGui::forSelectionAppend( ) {
+void YammiGui::forSelectionEnqueue( ) {
     kdDebug()<<"appendSelected( )"<<endl;
     getSelectedSongs();
     int count = selectedSongs.count();
@@ -1746,7 +1745,7 @@ void YammiGui::forSelectionAppend( ) {
     statusBar( )->message(QString(i18n("%1 Songs equeued at end of playlist")).arg(count), 2000);
 }
 
-void YammiGui::forSelectionPrepend( ) {
+void YammiGui::forSelectionEnqueueAsNext( ) {
     kdDebug()<<"prependSelected( )"<<endl;
     // reverse the order, to get intended play order
     getSelectedSongs();
@@ -1793,7 +1792,7 @@ void YammiGui::forSelectionPlay( ) {//FIXME - this does not work too well....
         return;
     }
     player->stop( );
-    forSelectionPrepend( );
+    forSelectionEnqueueAsNext( );
     //this is not really clean, but...
     player->skipForward(shiftPressed);
     player->play( );
@@ -1846,23 +1845,237 @@ void YammiGui::forSelectionDequeue( ) {
     checkPlaylistAvailability();
 }
 
-
+	
+	
+/**
+ * Mass viewing/editing of song info.
+ * (I know, this needs some cleanup...)
+ */
 void YammiGui::forSelectionSongInfo( ) {
     getSelectedSongs();
     int count = selectedSongs.count();
     if(count < 1) {
         return;
     }
-    if(count == 1 ) {
-        Song *s = selectedSongs.first( )->song();
-        songInfo(s);
+	
+	QString _artist, _title, _album, _comment, _path, _filename, _year, _trackNr, _bitrate, _proposedFilename;
+	MyDateTime _addedTo, _lastTimePlayed;
+	int _length=0;
+	long double _size=0;
+	int _genreNr=0;
+		
+	SongInfoDialog si(this);
+	
+	// fill combobox with genres, but sort them first
+	QStringList genreList;
+	genreList.append("");
+	for(int genreNr=0; genreNr<=CMP3Info::getMaxGenreNr(); genreNr++) {
+		genreList.append(CMP3Info::getGenre(genreNr));
+	}
+	genreList.sort();
+	for ( QStringList::Iterator it = genreList.begin(); it != genreList.end(); ++it ) {
+		si.ComboBoxGenre->insertItem((*it).latin1());
+	}
+
+	int selected=0;
+  QDateTime invalid;
+	for(Song* s=selectedSongs.firstSong(); s; s=selectedSongs.nextSong()) {
+		selected++;
+		if(selected==10)			// set wait cursor (summing size of 2000 files may take a while...)
+			QApplication::setOverrideCursor( Qt::waitCursor );
+			
+		// get filesize
+		QFile file(s->location());
+		if(file.exists())
+			_size+=file.size();
+		_length+=s->length;
+	
+		// insert all media, over that songs are distributed
+		for(unsigned int m=0; m<s->mediaName.count(); m++) {
+			bool found=false;
+			for(int n=0; n<si.ComboBoxMedia->count(); n++) {
+				if(si.ComboBoxMedia->text(n)==s->mediaName[m])
+					found=true;
+			}
+			if(!found)
+				si.ComboBoxMedia->insertItem(s->mediaName[m]);
+		}
+
+		if(selected==1) {
+			_addedTo=s->addedTo;
+			_album=s->album;
+			_artist=s->artist;
+			_comment=s->comment;
+			_title=s->title;
+			_trackNr=QString("%1").arg(s->trackNr);
+			_year=QString("%1").arg(s->year);
+			_path=s->path;
+			_filename=s->filename;
+			_bitrate=QString("%1 kb/s").arg(s->bitrate);
+			_genreNr=s->genreNr;
+      _proposedFilename=s->constructFilename();
+      _lastTimePlayed=s->lastPlayed;
+		}
+		else {
+			if(_addedTo!=s->addedTo)          _addedTo=invalid; //.setDate(QDate::fromString(""));
+			if(_album!=s->album)							_album="!";
+			if(_artist!=s->artist)						_artist="!";
+			if(_comment!=s->comment)					_comment="!";
+			if(_title!=s->title)							_title="!";
+			if(_trackNr!=QString("%1").arg(s->trackNr))		_trackNr="!";
+			if(_year!=QString("%1").arg(s->year))					_year="!";
+			if(_path!=s->path)								_path="!";
+			if(_filename!=s->filename)				_filename="!";
+			if(_bitrate!=QString("%1").arg(s->bitrate))					_bitrate="!";
+			if(_genreNr!=s->genreNr)					_genreNr=-1;
+			if(_proposedFilename!=s->constructFilename())	_proposedFilename="!";
+			if(_lastTimePlayed!=s->lastPlayed) _lastTimePlayed=invalid; //.setDate(QDate::fromString(""));
+		}
+	}
+
+	if(selected>=10)
+		QApplication::restoreOverrideCursor();
+	
+	// now edit the (common) info
+	si.LineEditArtist->setText(_artist);
+	si.LineEditTitle->setText(_title);
+	si.LineEditAlbum->setText(_album);
+	si.LineEditComment->setText(_comment);
+	if(_year!="0")			si.LineEditYear->setText(_year);
+	if(_trackNr!="0")		si.LineEditTrack->setText(_trackNr);
+//	MyDateTime d=_addedTo;
+//	if(_addedTo.isValid())
+	if(_addedTo.isValid())
+		si.LineEditAddedTo->setText(_addedTo.writeToString());
+	else
+		si.LineEditAddedTo->setText("!");
+	if(_lastTimePlayed.isValid()) {
+    MyDateTime never;
+    never.setDate(QDate(1900,1,1));
+    never.setTime(QTime(0,0,0));
+    if(_lastTimePlayed!=never)
+      si.LineEditLastPlayed->setText(_lastTimePlayed.writeToString());
+    else
+      si.LineEditLastPlayed->setText("never");
+  }
+	else {
+		si.LineEditLastPlayed->setText("!");
+  }
+  
+	si.ReadOnlyPath->setText(_path);
+	si.ReadOnlyFilename->setText(_filename);
+	si.ReadOnlyProposedFilename->setText(_proposedFilename);
+	if(selected>1) {
+		si.LabelHeading->setText(QString(tr("Mass editing: %1 songs")).arg(selected));
+		si.LabelSize->setText(tr("Size (total)"));
+		si.LabelLength->setText(tr("Length (total)"));
+		QString x;		
+		si.ReadOnlyLength->setText(x.sprintf(tr("%d:%02d:%02d (hh:mm:ss)"), _length/(60*60), (_length % (60*60))/60, _length % 60));
+	}
+	else {
+		si.LabelHeading->setText(_artist+" - "+_title);
+		QString x;		
+		si.ReadOnlyLength->setText(x.sprintf(tr("%2d:%02d (mm:ss)"), _length/60, _length % 60));
+	}
+	si.ReadOnlySize->setText( QString(tr("%1 MB (%2 Bytes)"))
+				.arg( (float)_size/(float)(1024*1024) , 4,'f', 2 )
+				.arg( (float)_size                    ,10,'f', 0 )
+				);
+	si.ReadOnlyBitrate->setText(_bitrate);
+	
+	if(_genreNr==-1)
+		si.ComboBoxGenre->setCurrentItem(0);
+	else {
+		int found=genreList.findIndex(CMP3Info::getGenre(_genreNr));
+		if(found!=-1)
+			si.ComboBoxGenre->setCurrentItem(found);
+	}
+	
+	// show dialog
+	int result=si.exec();
+	if(result!=QDialog::Accepted) {
+    	return;
+	}
+	
+	// get genreNr
+	int sortedGenreNr=si.ComboBoxGenre->currentItem();
+	int tryGenreNr=-1;
+	if(sortedGenreNr!=0) {
+    tryGenreNr=CMP3Info::getGenreIndex(genreList[sortedGenreNr]);
+  }
+		
+	// now set the edited info for all selected songs
+	for(Song* s=selectedSongs.firstSong(); s; s=selectedSongs.nextSong()) {
+		bool change=false;
+		if(si.LineEditArtist->text()!="!" && si.LineEditArtist->text()!=s->artist)	{ s->artist=si.LineEditArtist->text(); change=true; }
+		if(si.LineEditTitle->text()!="!" && si.LineEditTitle->text()!=s->title)			{ s->title=si.LineEditTitle->text(); change=true; }
+		if(change) { 		// for artist and title: mark categories as dirty on change!
+			model->markPlaylists(s);
+			}
+		if(si.LineEditAlbum->text()!="!" && si.LineEditAlbum->text()!=s->album) 		{ s->album=si.LineEditAlbum->text(); change=true; }
+		if(si.LineEditComment->text()!="!" && si.LineEditComment->text()!=s->comment)	{s->comment=si.LineEditComment->text(); change=true; }
+		if(si.LineEditYear->text()!="!") {
+			int tryYear=atoi(si.LineEditYear->text());
+			if(tryYear!=s->year) {s->year=tryYear; change=true; }
+		}
+		if(si.LineEditTrack->text()!="!") {
+			int tryTrackNr=atoi(si.LineEditTrack->text());
+			if(tryTrackNr!=s->trackNr) {s->trackNr=tryTrackNr; change=true; }
+		}
+		MyDateTime newAddedTo;
+		newAddedTo.readFromString(si.LineEditAddedTo->text());
+		if(newAddedTo.isValid()) {
+			if(newAddedTo!=s->addedTo) { s->addedTo=newAddedTo; change=true; }
+		}
+    
+		if(tryGenreNr!=-1) {
+			if(tryGenreNr!=s->genreNr) { s->genreNr=tryGenreNr; change=true; }
+		}
+    
+		if(change) {
+			model->allSongsChanged(true);
+			s->tagsDirty=true;						// mark song as dirty(tags)
+			s->filenameDirty=(s->checkFilename(m_config.ignoreCaseInFilenames)==false);
+			// manual update: go through list of songs and correct, if necessary
+			for(SongListItem* i=(SongListItem*)songListView->firstChild(); i; i=(SongListItem*)i->itemBelow()) {
+				if(i->song()!=s) {
+					continue;
+				}
+				i->setColumns(i->songEntry);
+			}
+		}				
+	}
+}
+
+/* new version: does not really work yet...
+void YammiGui::forSelectionSongInfo( ) {
+    getSelectedSongs();
+    int count = selectedSongs.count();
+    if(count < 1) {
         return;
-    } else //FIXME -
-    {
-        KMessageBox::information(this,QString(i18n("%1 Songs selected").arg(count)));
+    }
+    SongInfoDialog dialog(this, selectedSongs);
+    if(dialog.execute()) {
+        model->allSongsChanged(true);
+        for(Song* s=selectedSongs.firstSong(); s; s=selectedSongs.nextSong()) {
+            updateSongInfo(s);
+        }
     }
 }
 
+
+void YammiGui::updateSongInfo(Song s) {
+    s->tagsDirty=true;
+    s->filenameDirty=(s->checkFilename(m_config.ignoreCaseInFilenames)==false);
+    // manual update: go through currently shown list of songs and correct, if necessary
+    for(SongListItem* i=(SongListItem*)songListView->firstChild(); i; i=(SongListItem*)i->itemBelow()) {
+        if(i->song()!=s) {
+            continue;
+        }
+        i->setColumns(i->songEntry);
+    }
+}
+*/
 
 void YammiGui::forSelectionDelete( ) {
     getSelectedSongs();
@@ -1917,188 +2130,6 @@ void YammiGui::forSelectionDelete( ) {
     }
 }
 
-void YammiGui::songInfo( Song *s ) {
-    //FIXME move all this stuff to the dialog..
-    //ie, SongInfoDialog d(s);
-    //    if(d.exec( ))
-    //		updateSongInfo(s);
-
-    QString _artist, _title, _album, _comment, _path, _filename, _year, _trackNr, _bitrate, _proposedFilename;
-    MyDateTime _addedTo, _lastTimePlayed;
-    int _length=0;
-    long double _size=0;
-    int _genreNr=0;
-
-    SongInfoDialog si(this, i18n("test"), true);
-
-    // fill combobox with genres, but sort them first
-    QStringList genreList;
-    genreList.append("");
-    for(int genreNr=0; genreNr<=CMP3Info::getMaxGenreNr(); genreNr++) {
-        genreList.append(CMP3Info::getGenre(genreNr));
-    }
-    genreList.sort();
-    for ( QStringList::Iterator it = genreList.begin(); it != genreList.end(); ++it ) {
-        si.ComboBoxGenre->insertItem((*it).latin1());
-    }
-    // get filesize
-    QFile file(s->location());
-    if(file.exists())
-        _size+=file.size();
-    _length+=s->length;
-
-    // insert all media, over that songs are distributed
-    for(unsigned int m=0; m<s->mediaName.count(); m++) {
-        bool found=false;
-        for(int n=0; n<si.ComboBoxMedia->count(); n++) {
-            if(si.ComboBoxMedia->text(n)==s->mediaName[m])
-                found=true;
-        }
-        if(!found)
-            si.ComboBoxMedia->insertItem(s->mediaName[m]);
-    }
-
-
-    _addedTo=s->addedTo;
-    _album=s->album;
-    _artist=s->artist;
-    _comment=s->comment;
-    _title=s->title;
-    _trackNr=QString("%1").arg(s->trackNr);
-    _year=QString("%1").arg(s->year);
-    _path=s->path;
-    _filename=s->filename;
-    _bitrate=QString("%1 kb/s").arg(s->bitrate);
-    _genreNr=s->genreNr;
-    _proposedFilename=s->constructFilename();
-    _lastTimePlayed=s->lastPlayed;
-
-    // now edit the (common) info
-    si.LineEditArtist->setText(_artist);
-    si.LineEditTitle->setText(_title);
-    si.LineEditAlbum->setText(_album);
-    si.LineEditComment->setText(_comment);
-    if(_year!="0")
-        si.LineEditYear->setText(_year);
-    if(_trackNr!="0")
-        si.LineEditTrack->setText(_trackNr);
-    //	MyDateTime d=_addedTo;
-    //	if(_addedTo.isValid())
-    if(_addedTo.isValid())
-        si.LineEditAddedTo->setText(_addedTo.writeToString());
-    else
-        si.LineEditAddedTo->setText("!");
-    if(_lastTimePlayed.isValid()) {
-        MyDateTime never;
-        never.setDate(QDate(1900,1,1));
-        never.setTime(QTime(0,0,0));
-        if(_lastTimePlayed!=never)
-            si.LineEditLastPlayed->setText(_lastTimePlayed.writeToString());
-        else
-            si.LineEditLastPlayed->setText("never");
-    } else {
-        si.LineEditLastPlayed->setText("!");
-    }
-
-    si.ReadOnlyPath->setText(_path);
-    si.ReadOnlyFilename->setText(_filename);
-    si.ReadOnlyProposedFilename->setText(_proposedFilename);
-
-
-    si.LabelHeading->setText(_artist+" - "+_title);
-    QString x;
-    si.ReadOnlyLength->setText(x.sprintf(i18n("%2d:%02d (mm:ss)"), _length/60, _length % 60));
-
-    si.ReadOnlySize->setText( QString(i18n("%1 MB (%2 Bytes)"))
-                              .arg( (float)_size/(float)(1024*1024) , 4,'f', 2 )
-                              .arg( (float)_size                    ,10,'f', 0 )
-                            );
-    si.ReadOnlyBitrate->setText(_bitrate);
-
-    if(_genreNr==-1)
-        si.ComboBoxGenre->setCurrentItem(0);
-    else {
-        int found=genreList.findIndex(CMP3Info::getGenre(_genreNr));
-        if(found!=-1)
-            si.ComboBoxGenre->setCurrentItem(found);
-    }
-
-    // show dialog
-    int result=si.exec();
-    if(result!=QDialog::Accepted)
-        return;
-
-    // get genreNr
-    int sortedGenreNr=si.ComboBoxGenre->currentItem();
-    int tryGenreNr=-1;
-    if(sortedGenreNr!=0) {
-        tryGenreNr=CMP3Info::getGenreIndex(genreList[sortedGenreNr]);
-    }
-
-
-    bool change=false;
-    if(si.LineEditArtist->text()!="!" && si.LineEditArtist->text()!=s->artist) {
-        s->artist=si.LineEditArtist->text();
-        change=true;
-    }
-    if(si.LineEditTitle->text()!="!" && si.LineEditTitle->text()!=s->title) {
-        s->title=si.LineEditTitle->text();
-        change=true;
-    }
-    if(change) { // for artist and title: mark categories as dirty on change!
-        model->markPlaylists(s);
-    }
-    if(si.LineEditAlbum->text()!="!" && si.LineEditAlbum->text()!=s->album) 		{
-        s->album=si.LineEditAlbum->text();
-        change=true;
-    }
-    if(si.LineEditComment->text()!="!" && si.LineEditComment->text()!=s->comment)	{
-        s->comment=si.LineEditComment->text();
-        change=true;
-    }
-    if(si.LineEditYear->text()!="!") {
-        int tryYear=atoi(si.LineEditYear->text());
-        if(tryYear!=s->year) {
-            s->year=tryYear;
-            change=true;
-        }
-    }
-    if(si.LineEditTrack->text()!="!") {
-        int tryTrackNr=atoi(si.LineEditTrack->text());
-        if(tryTrackNr!=s->trackNr) {
-            s->trackNr=tryTrackNr;
-            change=true;
-        }
-    }
-    MyDateTime newAddedTo;
-    newAddedTo.readFromString(si.LineEditAddedTo->text());
-    if(newAddedTo.isValid()) {
-        if(newAddedTo!=s->addedTo) {
-            s->addedTo=newAddedTo;
-            change=true;
-        }
-    }
-
-    if(tryGenreNr!=-1) {
-        if(tryGenreNr!=s->genreNr) {
-            s->genreNr=tryGenreNr;
-            change=true;
-        }
-    }
-
-    if(change) {
-        model->allSongsChanged(true);
-        s->tagsDirty=true; // mark song as dirty(tags)
-        s->filenameDirty=(s->checkFilename(m_config.ignoreCaseInFilenames)==false);
-        // manual update: go through list of songs and correct, if necessary
-        for(SongListItem* i=(SongListItem*)songListView->firstChild(); i; i=(SongListItem*)i->itemBelow()) {
-            if(i->song()!=s)
-                continue;
-            i->setColumns(i->songEntry);
-        }
-    }
-}
-
 
 /**
  * Delete a song entry.
@@ -2120,32 +2151,73 @@ void YammiGui::deleteEntry(Song* s) {
 
 /// doubleClick on song
 void YammiGui::doubleClick() {
-    // TODO: fix
-	kdDebug() << "doubleClick: " << m_config.doubleClickAction << endl;
-    //forCurrent(m_config.doubleClickAction);
+    int action=m_config.doubleClickAction;
+    forSelection(action);
 }
+
 
 /// middleClick on song
-void YammiGui::middleClick(int) {
-    // TODO: fix
-	kdDebug() << "middleClick: " << m_config.middleClickAction << endl;
-    //	cout << "button: " << button << "\n";
+void YammiGui::middleClick(int button) {
     //	if(button==1) {			// left button
-    //	}
-    /*
-    	if(button==4) {				// middle button
-    		if(!controlPressed && !shiftPressed)
-    			forCurrent(m_config.middleClickAction);
-    		if(controlPressed && !shiftPressed)
-    			forCurrent(m_config.controlClickAction);
-    		if(shiftPressed && !controlPressed)
-    			forCurrent(m_config.shiftClickAction);
-    //		if(shiftPressed && controlPressed)
-    //			cout << "both\n";
-    	}
-    */
+    //    }
+
+    if(button==4) {				// middle button
+        forSelection(m_config.middleClickAction);
+    }
 }
 
+
+/**
+ * Perform an action on a song, defined by a Song::action int value
+ */
+void YammiGui::forSelection(int action) {
+    switch(action) {
+    case Song::None:
+        break;
+    case Song::Enqueue:
+        forSelectionEnqueue();
+        break;
+    case Song::EnqueueAsNext:
+        forSelectionEnqueueAsNext();
+        break;
+    case Song::PlayNow:
+        forSelectionPlay();
+        break;
+    case Song::SongInfo:
+        forSelectionSongInfo();
+        break;
+    case Song::PrelistenStart:
+        forSelectionPrelistenStart();
+        break;
+    case Song::PrelistenMiddle:
+        forSelectionPrelistenMiddle();
+        break;
+    case Song::PrelistenEnd:
+        forSelectionPrelistenEnd();
+        break;
+    case Song::Delete:
+        forSelectionDelete();
+        break;
+    case Song::DeleteFile:
+        break;
+    case Song::DeleteEntry:
+        break;
+    case Song::CheckConsistency:
+        forSelectionCheckConsistency();
+        break;
+    case Song::MoveTo:
+        forSelectionMove();
+        break;
+    case Song::Dequeue:
+        forSelectionDequeue();
+        break;
+    case Song::BurnToMedia:
+        forSelectionBurnToMedia();
+        break;
+    default:
+        kdWarning() << "unknown action for double click: " << action << endl;
+    }
+}
 
 
 /**
@@ -2299,8 +2371,8 @@ void YammiGui::pluginOnFolder() {
 
 /// clear all playlist items except currently played song
 void YammiGui::shufflePlaylist() {
-    if(model->songsToPlay.count()<=1) {
-        // shuffling 0 or 1 song does not make too much sense...
+    if(model->songsToPlay.count() < 2) {
+        // shuffling less than 2 songs does not make too much sense...
         return;
     }
     Song* firstSong=0;
@@ -3099,23 +3171,16 @@ void YammiGui::createMainWidget( ) {
     setCentralWidget(centralWidget);
 
     // signals of folderListView
-    connect( folderListView, SIGNAL( currentChanged( QListViewItem* ) ),
-             this, SLOT( slotFolderChanged() ) );
-    connect(folderListView, SIGNAL( rightButtonPressed( QListViewItem *, const QPoint& , int ) ),
-            this, SLOT( slotFolderPopup( QListViewItem *, const QPoint &, int ) ) );
+    connect( folderListView, SIGNAL( currentChanged( QListViewItem* ) ), this, SLOT( slotFolderChanged() ) );
+    connect(folderListView, SIGNAL( rightButtonPressed( QListViewItem *, const QPoint& , int ) ), this, SLOT( slotFolderPopup( QListViewItem *, const QPoint &, int ) ) );
 
     // signals of songListView
-    connect(songListView, SIGNAL( rightButtonPressed( QListViewItem *, const QPoint& , int ) ),
-            this, SLOT( songListPopup( QListViewItem *, const QPoint &, int column) ) );
-    connect(songListView, SIGNAL( doubleClicked( QListViewItem * ) ),
-            this, SLOT( doubleClick() ) );
-    connect(songListView, SIGNAL( mouseButtonClicked( int, QListViewItem *, const QPoint&, int ) ),
-            this, SLOT( middleClick(int) ) );
+    connect(songListView, SIGNAL( rightButtonPressed( QListViewItem *, const QPoint& , int ) ), this, SLOT( songListPopup( QListViewItem *, const QPoint&, int ) ) );
+    connect(songListView, SIGNAL( doubleClicked( QListViewItem * ) ), this, SLOT( doubleClick() ) );
+    connect(songListView, SIGNAL( mouseButtonClicked( int, QListViewItem *, const QPoint&, int ) ), this, SLOT( middleClick(int) ) );
     // for saving column settings
-    connect(songListView->header(), SIGNAL( sizeChange(int, int, int) ),
-            this, SLOT( saveColumnSettings() ) );
-    connect(songListView->header(), SIGNAL( indexChange(int, int, int) ),
-            this, SLOT( saveColumnSettings() ) );
+    connect(songListView->header(), SIGNAL( sizeChange(int, int, int) ), this, SLOT( saveColumnSettings() ) );
+    connect(songListView->header(), SIGNAL( indexChange(int, int, int) ), this, SLOT( saveColumnSettings() ) );
 }
 
 
@@ -3215,24 +3280,24 @@ void YammiGui::setupActions( ) {
     new KAction(i18n("Switch to/from Playlist"),"toggle_playlist",KShortcut(Key_P),this,SLOT(toFromPlaylist()),actionCollection(),"toggle_playlist");
 
     // selection actions
-    new KAction(i18n("Enqueue as next (prepend)"),"top",KShortcut(Key_F6),this,SLOT(forSelectionPrepend()),actionCollection(),"prepend_selected");
-    new KAction(i18n("Enqueue at end (append)"),"bottom",KShortcut(Key_F5),this,SLOT(forSelectionAppend()),actionCollection(),"append_selected");
-    new KAction(i18n("Play Now!"),"start",KShortcut(Key_F7),this,SLOT(forSelectionPlay()),actionCollection(),"play_selected");
-    new KAction(i18n("Dequeue Songs"),"stop",KShortcut(Key_F8),this,SLOT(forSelectionDequeue()),actionCollection(),"dequeue_selected");
-    new KAction(i18n("Prelisten start"),"prelisten_start",KShortcut(Key_F9),this,SLOT(forSelectionPrelistenStart()),actionCollection(),"prelisten_start");
-    new KAction(i18n("Prelisten middle"),"prelisten_middle",KShortcut(Key_F10),this,SLOT(forSelectionPrelistenMiddle()),actionCollection(),"prelisten_middle");
-    new KAction(i18n("Prelisten end"),"prelisten_end",KShortcut(Key_F11),this,SLOT(forSelectionPrelistenEnd()),actionCollection(),"prelisten_end");
-    new KAction(i18n("Song Info..."),"info",KShortcut(Key_I),this,SLOT(forSelectionSongInfo()),actionCollection(),"info_selected");
-    new KAction(i18n("Delete Song..."),0,0,this,SLOT(forSelectionDelete()),actionCollection(),"delete_selected");
-    new KAction(i18n("Burn To Media"),0,0,this,SLOT(forSelectionBurnToMedia()),actionCollection(),"burn_selected");
-    new KAction(i18n("Move Files"),0,0,this,SLOT(forSelectionMove()),actionCollection(),"move_selected");
-    new KAction(i18n("Search for similar entry"),0,0,this,SLOT(searchForSimilarEntry()),actionCollection(),"search_similar_entry");
-    new KAction(i18n("Search for similar artist"),0,0,this,SLOT(searchForSimilarArtist()),actionCollection(),"search_similar_artist");
-    new KAction(i18n("Search for similar title"),0,0,this,SLOT(searchForSimilarTitle()),actionCollection(),"search_similar_title");
-    new KAction(i18n("Search for similar album"),0,0,this,SLOT(searchForSimilarAlbum()),actionCollection(),"search_similar_album");
-    new KAction(i18n("Goto artist"),0,0,this,SLOT(gotoFolderArtist()),actionCollection(),"goto_artist_folder");
-    new KAction(i18n("Goto album"),0,0,this,SLOT(gotoFolderAlbum()),actionCollection(),"goto_album_folder");
-    new KAction(i18n("Goto genre"),0,0,this,SLOT(gotoFolderGenre()),actionCollection(),"goto_genre_folder");
+    new KAction(i18n("Enqueue as next (prepend)"), "top", KShortcut(Key_F6), this, SLOT(forSelectionEnqueueAsNext()), actionCollection(), "prepend_selected");
+    new KAction(i18n("Enqueue at end (append)"), "bottom", KShortcut(Key_F5), this, SLOT(forSelectionEnqueue()), actionCollection(), "append_selected");
+    new KAction(i18n("Play Now!"), "start", KShortcut(Key_F7), this, SLOT(forSelectionPlay()), actionCollection(), "play_selected");
+    new KAction(i18n("Dequeue Songs"), "stop", KShortcut(Key_F8), this, SLOT(forSelectionDequeue()), actionCollection(), "dequeue_selected");
+    new KAction(i18n("Prelisten start"), "prelisten_start", KShortcut(Key_F9), this, SLOT(forSelectionPrelistenStart()), actionCollection(), "prelisten_start");
+    new KAction(i18n("Prelisten middle"), "prelisten_middle", KShortcut(Key_F10), this, SLOT(forSelectionPrelistenMiddle()), actionCollection(), "prelisten_middle");
+    new KAction(i18n("Prelisten end"), "prelisten_end", KShortcut(Key_F11), this, SLOT(forSelectionPrelistenEnd()), actionCollection(), "prelisten_end");
+    new KAction(i18n("Song Info..."), "info", KShortcut(Key_I), this, SLOT(forSelectionSongInfo()), actionCollection(), "info_selected");
+    new KAction(i18n("Delete Song..."), 0, 0, this, SLOT(forSelectionDelete()), actionCollection(), "delete_selected");
+    new KAction(i18n("Burn To Media"), 0, 0, this, SLOT(forSelectionBurnToMedia()), actionCollection(), "burn_selected");
+    new KAction(i18n("Move Files"), 0, 0, this, SLOT(forSelectionMove()), actionCollection(), "move_selected");
+    new KAction(i18n("Search for similar entry"), 0, 0, this, SLOT(searchForSimilarEntry()), actionCollection(), "search_similar_entry");
+    new KAction(i18n("Search for similar artist"), 0, 0, this, SLOT(searchForSimilarArtist()), actionCollection(), "search_similar_artist");
+    new KAction(i18n("Search for similar title"), 0, 0, this, SLOT(searchForSimilarTitle()), actionCollection(), "search_similar_title");
+    new KAction(i18n("Search for similar album"), 0, 0, this, SLOT(searchForSimilarAlbum()), actionCollection(), "search_similar_album");
+    new KAction(i18n("Goto artist"), 0, 0, this, SLOT(gotoFolderArtist()), actionCollection(), "goto_artist_folder");
+    new KAction(i18n("Goto album"), 0, 0, this, SLOT(gotoFolderAlbum()), actionCollection(), "goto_album_folder");
+    new KAction(i18n("Goto genre"), 0, 0, this, SLOT(gotoFolderGenre()), actionCollection(), "goto_genre_folder");
 
     new KAction(i18n("Stop prelisten"),"stop_prelisten",KShortcut(Key_F12),this,SLOT(stopPrelisten()),actionCollection(),"stop_prelisten");
     // autoplay actions
@@ -3265,7 +3330,8 @@ void YammiGui::setupActions( ) {
     new QLabel(i18n("Search:"),w);
     m_searchField = new LineEditShift(w);
     m_searchField->setFixedWidth(175);
-    QToolTip::add( m_searchField, i18n("Fuzzy search (Ctrl-F)"));
+    QToolTip::add
+        ( m_searchField, i18n("Fuzzy search (Ctrl-F)"));
     connect( m_searchField, SIGNAL(textChanged(const QString&)), SLOT(searchSong(const QString&)));
     QPushButton *btn = new QPushButton(i18n("to wishlist"),w);
     connect( btn, SIGNAL( clicked() ), this, SLOT( addToWishList() ) );
@@ -3328,6 +3394,7 @@ void YammiGui::createMenuBar( ) {
  * or plugins.
  */
 void YammiGui::createSongPopup() {
+    kdDebug() << "creating song popup\n";
     songPopup = (QPopupMenu *)factory()->container("song_popup", this);
     songPopup->insertItem( "", 113, 0);
     songPopup->insertSeparator(1);

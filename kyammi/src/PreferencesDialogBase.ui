@@ -175,44 +175,6 @@
                                             <string>the action that is performed when double-clicking on a song in the song list</string>
                                         </property>
                                     </widget>
-                                    <widget class="QComboBox" row="1" column="3">
-                                        <property name="name">
-                                            <cstring>ComboBoxControlClickAction</cstring>
-                                        </property>
-                                        <property name="sizePolicy">
-                                            <sizepolicy>
-                                                <hsizetype>7</hsizetype>
-                                                <vsizetype>0</vsizetype>
-                                                <horstretch>0</horstretch>
-                                                <verstretch>0</verstretch>
-                                            </sizepolicy>
-                                        </property>
-                                        <property name="toolTip" stdset="0">
-                                            <string>the action that is performed when double-clicking on a song in the song list</string>
-                                        </property>
-                                    </widget>
-                                    <widget class="QLabel" row="1" column="2">
-                                        <property name="name">
-                                            <cstring>LabelControlClickAction</cstring>
-                                        </property>
-                                        <property name="text">
-                                            <string>CTRL+middle click</string>
-                                        </property>
-                                        <property name="toolTip" stdset="0">
-                                            <string>the action that is performed when double-clicking on a song in the song list</string>
-                                        </property>
-                                    </widget>
-                                    <widget class="QLabel" row="0" column="2">
-                                        <property name="name">
-                                            <cstring>LabelShiftClickAction</cstring>
-                                        </property>
-                                        <property name="text">
-                                            <string>SHIFT+middle click</string>
-                                        </property>
-                                        <property name="toolTip" stdset="0">
-                                            <string>the action that is performed when clicking with middle mouse button on a song in the song list</string>
-                                        </property>
-                                    </widget>
                                     <widget class="QLabel" row="0" column="0">
                                         <property name="name">
                                             <cstring>LabelDoubleClickAction</cstring>
@@ -246,22 +208,6 @@
                                         </property>
                                         <property name="text">
                                             <string>middle click</string>
-                                        </property>
-                                        <property name="toolTip" stdset="0">
-                                            <string>the action that is performed when clicking with middle mouse button on a song in the song list</string>
-                                        </property>
-                                    </widget>
-                                    <widget class="QComboBox" row="0" column="3">
-                                        <property name="name">
-                                            <cstring>ComboBoxShiftClickAction</cstring>
-                                        </property>
-                                        <property name="sizePolicy">
-                                            <sizepolicy>
-                                                <hsizetype>7</hsizetype>
-                                                <vsizetype>0</vsizetype>
-                                                <horstretch>0</horstretch>
-                                                <verstretch>0</verstretch>
-                                            </sizepolicy>
                                         </property>
                                         <property name="toolTip" stdset="0">
                                             <string>the action that is performed when clicking with middle mouse button on a song in the song list</string>
@@ -1590,8 +1536,6 @@ and songs can be loaded from those media into a swap directory.</string>
 <tabstops>
     <tabstop>ComboBoxDoubleClickAction</tabstop>
     <tabstop>ComboBoxMiddleClickAction</tabstop>
-    <tabstop>ComboBoxShiftClickAction</tabstop>
-    <tabstop>ComboBoxControlClickAction</tabstop>
     <tabstop>LineEditSearchThreshold</tabstop>
     <tabstop>LineEditSecondSoundDevice</tabstop>
     <tabstop>ButtonOK</tabstop>
