@@ -1,6 +1,6 @@
 TODO
 ----
-last update 24.4.2003
+last update 25.4.2003
 
 
 
@@ -12,7 +12,7 @@ user feedback via email:
 - loading/saving of playlists to m3u (saving already implemented via plugin)
 - incorrect tracknumbers are shown in some cases where tracknumber is undefined (0) ?
 - save playlists
-- "rescan tags"-button in song info dialog
+- "rescan tags"-button in song info dialog or in consistency check?
 
 
 0.8.2
@@ -20,47 +20,48 @@ user feedback via email:
 - song length <5s: noatun stops playing
 - remove/replace "current" button?
 - {wish} in playlist: noatun stops playing
-- grabAndEncode: check whether file already existing
-- remove all from playlist: dialog box with checkbox
 - view menu: hide some columns
+- adding to media: don't add entries already existing
+- removing a song from playlist: only remove this one (idea: function "removeDuplicates" for playlist?)
+- update database: select a single file
+- make configurable/auto-detected forbidden characters: http://osdev.berlios.de/osd-fs.html
 
-
-- remove the creating of symlinks for burning assistance (but check size of existing media!)
-- check: use "lame" or "notlame"?
+1.0
+---
+- polish GUI... (esp. the "butt ugly" icons?)
+- on deleting a song: delete in *all* lists (history, categories, ...)
 - plugin: publish a sample plugin (echo...) with all replacements
 - document command line option: baseDir in handbook
+- extensive testing with new user!!!
+- folder for recent additions to database?
+- add to consistency check: update option for re-reading layer/tag info from existing songs
+  - updating tags from outside of Yammi => update info in Yammi
+- => reach stable status!!!
+
+
+probably for version 1.x
+------------------------
+- remove the creating of symlinks for burning assistance (but check size of existing media!)
 - for both media players:
   - use QProcess for XMMS? (noatun?)
   - skip forward/backward when stopped
 - fix: two albums having the same name appear as one album (heuristic: same album if in same dir?)
-- extensive testing with new user!!!
 - page up and down keys don't work after searching
 - load m3u files into a category
 - wrongly calculated song length for some songs, VBR? (tom, 8.12., )
 - evaluate TCON TTIT1 frame (tom, 8.12.)
-- removing a song from playlist: only remove this one (idea: function "removeDuplicates" for playlist?)
-- adding to media: don't add entries already existing
-- folder for recent additions to database?
-- on deleting a song: delete in *all* lists (history, categories, ...)
 - use QProcess instead of system() calls? (prelisten, xmms, noatun, shutdownscript, ...)
-- check consistency check (and consistencyModes!)
-- add to consistency check: update option for re-reading layer/tag info from existing songs
-- updating tags from outside of Yammi => update info in Yammi
 
 - cleanup
   - clean up yammigui.h (protected/public) !!! (oh oh...)
   - clean up other classes (eg. folder)...
-- polish GUI... (esp. the "butt ugly" icons?)
 - optimize startup time and behaviour
 - swap management: in song: method getFilename() vs. getRealFilename() (fast)???
 - speed up loading of categories? (binary search)
 - xmms lock file?  => not easy to determine whether xmms is running or just lock file present
   maybe start xmms with QProcess?
 - incorrect track numbers if track number not present (tom) => maybe problem of old id3lib?
-- update database: more information+statistics at the end
-- update database: select a single file
 - simplify {wish} system: (make every entry with empty filename (no media) a wish?
-- => reach stable status!!!
 
 for future releases
 -------------------

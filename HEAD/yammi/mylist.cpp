@@ -92,6 +92,32 @@ int MyList::containsSong(Song* lookup)
 	return count;
 }
 
+
+/**
+ * returns
+ * 0 if none
+ * 1 if some
+ * 2 if all
+ * ...of the entries in the second list are contained in the first list
+ */
+int MyList::containsSelection(MyList* selection)
+{
+  bool allContained=true;
+  bool noneContained=true;
+
+  for(Song* check=selection->firstSong(); check; check=selection->nextSong()) {
+    if(containsSong(check)) {
+      noneContained=false;
+    }
+    else {
+      allContained=false;
+    }
+  }
+  if(noneContained)    return 0;
+  if(allContained)     return 2;
+  return 1;
+}
+
 // returns the song with the given key, or 0 if not existing
 Song* MyList::getSongByKey(QString artist, QString title, QString album)
 {

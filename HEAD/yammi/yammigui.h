@@ -239,7 +239,6 @@ protected:
 // protected methods
 //******************
 protected:
-  int           containsCheck(MyList* category, MyList* songList);
   void          changeToFolder(Folder* newFolder, bool changeAnyway=false);
   void          folderContentChanged();
   void          folderContentChanged(Folder* folder);

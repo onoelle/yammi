@@ -59,6 +59,7 @@ using namespace std;
 #include "updatedatabasedialog.h"
 #include "updatedatabasemediadialog.h"
 #include "ConsistencyCheckDialog.h"
+#include "ApplyToAllBase.h"
 
 #include "mp3info/CMP3Info.h"
 #include "ConsistencyCheckParameter.h"
@@ -341,12 +342,12 @@ YammiGui::YammiGui(QString baseDir)
 
 	// folder containing currently played song
 	folderActual = new FolderSorted(folderListView, QString("Playlist"));
-	folderActual->moveItem(folderAll);
+//	folderActual->moveItem(folderAll);
 	folderActual->update(&(model->songsToPlay));
 
 	// folder containing songs played in this session
 	folderSongsPlayed = new Folder(folderListView, QString("Songs Played"), &(model->songsPlayed));
-	folderSongsPlayed->moveItem(folderActual);
+	folderSongsPlayed->moveItem(folderCategories);
 
 	// folder containing history
 	folderHistory = new Folder(folderListView, QString("History"), &(model->songHistory));
@@ -361,7 +362,7 @@ YammiGui::YammiGui(QString baseDir)
 	folderUnclassified->moveItem(folderMedia);
 		
 	folderSearchResults = new Folder( folderListView, QString("Search Results"), &searchResults );
-	folderSearchResults->moveItem(folderAll);
+	folderSearchResults->moveItem(folderActual);
 	
 	folderProblematic = new Folder( folderListView, QString("Problematic Songs") );
 	folderProblematic->moveItem(folderUnclassified);
@@ -398,7 +399,6 @@ YammiGui::YammiGui(QString baseDir)
 	connect(folderCategories, SIGNAL( CategoryNew() ), this, SLOT(newCategory()));
 	connect(folderCategories, SIGNAL( CategoryRemoved() ), this, SLOT(removeCategory()));
 	connect(folderCategories, SIGNAL( CategoryRenamed() ), this, SLOT(renameCategory()));
-//	connect(folderCategories, SIGNAL( CategoryAutoplay() ), this, SLOT(autoplayCategory()));
 	connect(folderMedia, SIGNAL( RemoveMedia() ), this, SLOT(removeMedia()));
 	connect(folderMedia, SIGNAL( RenameMedia() ), this, SLOT(renameMedia()));
 
@@ -955,7 +955,7 @@ void YammiGui::toCategory(int index)
 	QString chosen=model->categoryNames[index];
 	
   // determine whether all/some/none of the selected songs are already in the chosen category
-  int mode=containsCheck(category, &selectedSongs);
+  int mode=category->containsSelection(&selectedSongs);
 
 	// determine mode (add/remove): we only use remove mode if all selected songs are contained in category
   bool remove=(mode==2);
@@ -990,30 +990,6 @@ void YammiGui::toCategory(int index)
 	updateSongPopup();
 }
 
-/**
- * returns
- * 0 if none 
- * 1 if some
- * 2 if all
- * ...of the entries in the second list are contained in the first list
- */
-int YammiGui::containsCheck(MyList* category, MyList* songList)
-{
-  bool allContained=true;
-  bool noneContained=true;
-
-  for(Song* check=songList->firstSong(); check; check=songList->nextSong()) {
-    if(category->containsSong(check)) {
-      noneContained=false;
-    }
-    else {
-      allContained=false;
-    }
-  }
-  if(noneContained)    return 0;
-  if(allContained)     return 2;
-  return 1;
-}
 
 void YammiGui::decide(Song* s1, Song* s2)
 {
@@ -1301,7 +1277,7 @@ void YammiGui::adjustSongPopup()
 	// we don't check whether all selected songs are contained, just first
 	int k=0;
 	for(MyList* category=model->allCategories.first(); category; category=model->allCategories.next(), k++) {
-    int mode=containsCheck(category, &selectedSongs);
+    int mode=category->containsSelection(&selectedSongs);
     switch(mode) {
       case 0:
         playListPopup->changeItem(10000+k, QIconSet( QPixmap(notin_xpm)), playListPopup->text(10000+k));
@@ -2398,20 +2374,25 @@ void YammiGui::clearPlaylist()
 	if(model->config.childSafe)
 		return;
 	Song* save=0;
-	if(currentSong!=0 && player->getStatus()!=STOPPED && model->songsToPlay.count()>1) {
-    if( QMessageBox::warning( this, "Yammi", "Clear complete playlist?\n(except currently played song)", "Yes", "No")!=0)
-      return;
+
+  bool saveCurrentSong=(currentSong!=0 && player->getStatus()!=STOPPED && model->songsToPlay.count()>1);
+  ApplyToAllBase confirm(this, "confirmDialog", true);
+  QString msg=QString("Clear complete playlist?\n(%1 entries)").arg(model->songsToPlay.count());
+  confirm.TextLabel->setText(msg);
+  confirm.CheckBoxApply->setText("including current song");
+  confirm.CheckBoxApply->setChecked(!saveCurrentSong);
+  // show dialog
+  int result=confirm.exec();
+  if(result!=QDialog::Accepted) {
+    return;
+  }
+  if(!confirm.CheckBoxApply->isChecked()) {
     save=model->songsToPlay.firstSong();
   }
-  else {
-    if( QMessageBox::warning( this, "Yammi", "Clear complete playlist?\n(including currently played song)", "Yes", "No")!=0)
-      return;
-  }
-	model->songsToPlay.clear();
-	if(save!=0)
-		folderActual->addSong(save);
-	else
-		folderActual->updateTitle();
+  model->songsToPlay.clear();
+  if(!confirm.CheckBoxApply->isChecked())
+    folderActual->addSong(save);
+  folderActual->updateTitle();
   player->syncYammi2Player(false);
   folderContentChanged(folderActual);
 }
@@ -2569,8 +2550,13 @@ void YammiGui::grabAndEncode()
 	if(!ok)
 		return;
 	
-	// linux specific
 	QString filename=QString("%1%2 - %3.mp3").arg(model->config.scanDir).arg(artist).arg(title);
+  QFileInfo fi(filename);
+  if(fi.exists()) {
+    QMessageBox::information( this, "Yammi", "The file\n"+filename+"\nalready exists!\n\nPlease choose a different artist/title combination.", "Ok");
+    return;
+  }
+	// linux specific
 	QString cmd=QString("%1 %2 \"%3\" \"%4\" \"%5\" &").arg(model->config.grabAndEncodeCmd).arg(trackNr).arg(artist).arg(title).arg(filename);
 	system(cmd);
 	grabbedTrackFilename=filename;
@@ -2656,20 +2642,18 @@ void YammiGui::keyPressEvent(QKeyEvent* e)
 	switch(key) {
 		case Key_Control:
 			controlPressed=true;
-//      cout << "control pressed\n";
 			break;
 		case Key_Shift:
 			shiftPressed=true;
-//      cout << "shift pressed\n";
 			break;
 		case Key_F1:
       player->playPause();
 			break;
 		case Key_F2:
-      player->skipBackward(shiftPressed);
+      skipBackward();
 			break;
 		case Key_F3:
-      player->skipForward(shiftPressed);
+      skipForward();
 			break;
 		case Key_F4:
       player->stop();

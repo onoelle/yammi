@@ -28,7 +28,7 @@ ldflags=\s                                     \s
 [General]
 AMChanged=false
 author=Oliver Nölle
-configure_args=\s--build=i386-linux --host=i386-linux --target=i386-linux --disable-noatun --disable-xmms
+configure_args=\s--build=i386-linux --host=i386-linux --target=i386-linux
 email=oli.noelle@web.de
 kdevprj_version=1.3
 lfv_open_groups=User Interface

@@ -9,7 +9,9 @@
 - fixed song slider/window title refresh behavior
 - fixed grouping bug: empty values will now be grouped, too (if threshold was set to 1, empty entries caused problems)
 - implemented a dummy player class (if no media player available, easier code maintenance)
-
+- dialog for clearing playlist improved
+- check for existing file on grabAndEncode
+- changed the executable in the grabAndEncode script from "notlame" to "lame" (as this is the executable on my system)
 
 ########################
  version 0.8.1

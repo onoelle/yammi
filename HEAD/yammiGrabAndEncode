@@ -14,10 +14,11 @@ echo "start grabbing..."
 cdparanoia -q $1 "$4.wav"
 echo "..done"
 
-# step 2: encode the ripped track with the help of notlame
+# step 2: encode the ripped track with the help of (not)lame
+# (please check whether your executable is "lame" or "notlame" and correct the command if necessary)
 # here you can specify your encoding options like bitrate...
 echo "start encoding..."
-notlame -S -h --preset studio --ta "$2" --tt "$3" "$4".wav "$4.part"
+lame -S -h --preset studio --ta "$2" --tt "$3" "$4".wav "$4.part"
 echo "..done"
 
 # step 3: mv the encoded mp3 file to final destination
