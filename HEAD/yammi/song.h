@@ -22,8 +22,8 @@
 #include <qstringlist.h>
 #include <qdatetime.h>
 #include <stdlib.h>
-#include <stdio.h>
-#include <iostream.h>
+//#include <stdio.h>
+#include <iostream>
 #include <qregexp.h>
 #include <qfileinfo.h>
 #include <qdir.h>

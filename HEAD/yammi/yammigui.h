@@ -282,13 +282,13 @@ protected:
 public:	
 	FolderCategories* folderCategories;
 	Folder*				folderSongsPlayed;		// songs played in this session
+  FolderSorted* folderAutoplay;
 protected:
 	FolderMedia*	folderMedia;
 	Folder* 			folderUnclassified;
 	Folder*				folderProblematic;
 	Folder*				folderHistory;				// songs played sometime
 	
-  FolderCategories* folderAutoplay;
   Folder*				folderToAdd;					// for snappy folder adding in background
 	int						alreadyAdded;
 	void					addFolderContent(Folder* folder);

@@ -25,7 +25,7 @@ class CFrameHeader {
 
     // This function is quite easy to understand, it loads
     // 4 chars of information into the CFrameHeader class
-    // The validity is not tested, so qith this function
+    // The validity is not tested, so with this function
     // an invalid FrameHeader could be retrieved
     void loadHeader(char c[4]);
 
@@ -35,8 +35,8 @@ class CFrameHeader {
     // or just four different chars
     bool isValidHeader();
 
-    // Following är functions to get the "indexes" for the various
-    // information avaliable. To know which meaning the different
+    // The following are functions to get the "indexes" for the various
+    // information avalaible. To know which meaning the different
     // bits you need to look into a table, instead of having to
     // do this everytime these functions get the correct index
     // from the correct bits. :)
@@ -55,9 +55,9 @@ class CFrameHeader {
     int getEmphasisIndex() { return ((bithdr    ) & 3);  };
 
 
-    // now comes som function to make life easier once again
+    // now come some functions to make life easier once again
     // you don't even have to know what the different indexes
-    // means. to get the version, just use the function
+    // mean. to get the version, just use the function
     // getVersion. You can't have it easier
        
 

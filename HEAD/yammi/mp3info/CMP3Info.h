@@ -3,7 +3,7 @@
 
 #include "CFrameHeader.h"
 #include "CVBitRate.h"
-#include "qstring.h"
+#include <qstring.h>
 
 /* ----------------------------------------------------------
    CMP3Info class is your complete guide to the 
@@ -35,11 +35,11 @@ class CMP3Info {
 
     // function to load a file into this structure
     // the argument passed is the path to a MP3 file
-    int   loadInfo( char srcMP3[256] );
+    int   loadInfo(QString srcMP3);
 
     // functions used to get information about the "file"
     int   getFileSize() { return fileSize; };
-    void  getFileName(char* input);
+//    void  getFileName(char* input);
 
     // information that is avaliable in FrameHeader & VBR header
     void  getVersion(char* input);
@@ -72,7 +72,7 @@ private:
     bool VBitRate;
 
     // the file information can not be found elsewhere
-    char fileName[256];
+//    char fileName[256];
     int fileSize;
 
 };

@@ -1,5 +1,5 @@
 #include "CFrameHeader.h"
-#include <string.h>
+// I don't think we need that here: #include <string.h>
 
 /* ----------------------------------------------------------
    CFrameHeader class is used to retrieve a MP3's FrameHeader
@@ -33,7 +33,7 @@ void CFrameHeader::loadHeader(char c[4]) {
     // the operator << means that we'll move the bits in that direction
     // 00000011 << 24 = 00000011000000000000000000000000
     // 00001100 << 16 =         000011000000000000000000
-    // 00110000 << 24 =                 0011000000000000
+    // 00110000 <<  8 =                 0011000000000000
     // 11000000       =                         11000000
     //                +_________________________________
     //                  00000011000011000011000011000000
@@ -88,7 +88,7 @@ int CFrameHeader::getLayer() {
 
     // when speaking of layers there is a 
     // cute coincidence, the Layer always
-    // eauals 4 - layerIndex, so that's what
+    // equals 4 - layerIndex, so that's what
     // we will return
     return ( 4 - getLayerIndex() );
 

@@ -140,42 +140,47 @@ int Song::create(const QString location, const QString mediaName)
 
 #ifdef ENABLE_ID3LIB
     // get id3 tags
-    if(!getMp3Tags(location)) {
-      cout << "could not read tag information from mp3 file \"" << location << "\"\n";
+    if(getMp3Tags(location)) {
+
+      // now perform some consistency checks on the read tags...
+
+      // check whether artist/title exceeding 30 characters of id3 tags
+      // (due to the fact that upto id3 v1.1, the length was restricted to 30 characters)
+      // if so, we might be able to retrieve the complete artist/title from the filename
+      if(ffArtist.upper()!=this->artist.upper()) {
+        if(ffArtist.length()>30 && ffArtist.left(29)==this->artist.left(29) && artist.length()<=30) {
+          cout << "artist exceeding 30 characters, taking full artist from filename\n";
+          artist=ffArtist;
+        }
+      }
+      if(ffTitle.upper()!=this->title.upper()) {
+        if(ffTitle.length()>30 && ffTitle.left(29)==this->title.left(29) && title.length()<=30) {
+          cout << "title exceeding 30 characters, taking full title from filename\n";
+          title=ffTitle;
+        }
+      }
+      // in case the id3 tags are empty => better trust filename info
+      if(title=="" && artist=="") {
+        title=ffTitle;
+        artist=ffArtist;
+      }      
     }
-
-    // now perform some consistency checks on the read tags...
-
-    // check whether artist/title exceeding 30 characters of id3 tags
-    // (due to the fact that upto id3 v1.1, the length was restricted to 30 characters)
-    // if so, we might be able to retrieve the complete artist/title from the filename
-    if(ffArtist.upper()!=this->artist.upper()) {
-			if(ffArtist.length()>30 && ffArtist.left(29)==this->artist.left(29) && artist.length()<=30) {
-				cout << "artist exceeding 30 characters, taking full artist from filename\n";
-				artist=ffArtist;
-			}
-		}
-		if(ffTitle.upper()!=this->title.upper()) {
-			if(ffTitle.length()>30 && ffTitle.left(29)==this->title.left(29) && title.length()<=30) {
-				cout << "title exceeding 30 characters, taking full title from filename\n";
-				title=ffTitle;
-			}
-		}
-
-		// in case the id3 tags are empty => better trust filename info
-		if(title=="" && artist=="") {
+    else {
+      cout << "could not read tag information from mp3 file \"" << location << "\", guessing values from filename\n";
 			title=ffTitle;
 			artist=ffArtist;
-		}
+    }
+
     // just in case: remove trailing mp3 in title
     if(title.right(4).upper()==".MP3")
       title=title.left(title.length()-4);
+
 
 #else
     // we have no id3lib support => we have to get info from filename
     title=ffTitle;
 		artist=ffArtist;
-#endif ENABLE_ID3LIB
+#endif // ENABLE_ID3LIB
 
     treated=true;
   }
@@ -206,13 +211,13 @@ int Song::create(const QString location, const QString mediaName)
     treated=true;
   }
 
-#endif ENABLE_OGGLIBS
+#endif // ENABLE_OGGLIBS
 
 
   // wav object
 
   if(location.right(4).upper()==".WAV") {
-    char loc[200];
+    char loc[1000];
     strcpy(loc, location);
     if(!getWavInfo(loc)) {
       cout << "could not read wav header information from wav file \"" << location << "\"\n";
@@ -538,7 +543,7 @@ bool Song::setId3Tag(ID3_Tag* tag, ID3_FrameID frame, ID3_FieldID field, QString
 }
 
 
-#endif ENABLE_ID3LIB
+#endif // ENABLE_ID3LIB
 
 /** Gets the mp3 layer info (ie. for our purpose: bitrate and length) from the file.
  * For VBR songs: retrieves the average bitrate.
@@ -830,7 +835,7 @@ bool Song::setOggTags(QString filename)
 }
 */
 
-#endif ENABLE_OGGLIBS
+#endif // ENABLE_OGGLIBS
 
 // end of special handling of ogg files
 //////////////////////////////////
@@ -844,16 +849,23 @@ bool Song::setOggTags(QString filename)
 
 bool Song::getWavInfo(const char *filename)
 {
+  // TODO: replace with QFile?
   FILE *wfile;
   WaveHeader header;
 
   if( ( wfile=fopen(filename, "rb") )!=NULL ) {
     fread( &header, sizeof(WaveHeader), 1, wfile);
     fclose(wfile);
-//    cout << "header data: nChannels: " << header.nChannels << ", wBitsPerSample: " << header.wBitsPerSample << "\n";
-//    cout << "nSamplesPerSec: " << header.nSamplesPerSec << ", filesize: " << header.filesize << ", avgBytesPerSec: " << header.nAvgBytesPerSec << "\n";
-//    cout << "formatChunkSize: " << header.formatChunkSize << ", dataChunkSize: " << header.dataChunkSize << "\n";
-    this->length=header.dataChunkSize / header.nChannels / header.nSamplesPerSec / (header.wBitsPerSample/8);
+    if( (header.wBitsPerSample/8)==0 || (header.nSamplesPerSec / (header.wBitsPerSample/8))==0 || (header.nChannels / header.nSamplesPerSec / (header.wBitsPerSample/8))==0) {
+      cout << "calculating length: division by zero... setting length to 0\n";
+      cout << "header data: nChannels: " << header.nChannels << ", wBitsPerSample: " << header.wBitsPerSample << "\n";
+      cout << "nSamplesPerSec: " << header.nSamplesPerSec << ", filesize: " << header.filesize << ", avgBytesPerSec: " << header.nAvgBytesPerSec << "\n";
+      cout << "formatChunkSize: " << header.formatChunkSize << ", dataChunkSize: " << header.dataChunkSize << "\n";
+      length=0;
+    }
+    else {
+      this->length=header.dataChunkSize / header.nChannels / header.nSamplesPerSec / (header.wBitsPerSample/8);    
+    }
     this->bitrate=header.nAvgBytesPerSec * 8 / 1000;
     this->comment=QString("%1, %2 KHz, %3 bit").arg(header.nChannels==2 ? "stereo" : "mono").arg(header.nSamplesPerSec).arg(header.wBitsPerSample);
     return true;

@@ -18,7 +18,6 @@
 #include "foldercategories.h"
 #include "foldersorted.h"
 
-
 FolderCategories::FolderCategories( QListView* parent, QString title)
 		: Folder( parent, title )
 {
@@ -51,27 +50,10 @@ void FolderCategories::update(QPtrList<MyList> allCategories, QStringList catego
 		f->folderPopup->insertItem( "Remove Category", this, SLOT(removeCategory()));
 		f->folderPopup->insertItem( "New Category..", this, SLOT(newCategory()));
 		f->folderPopup->insertItem( "Rename Category..", this, SLOT(renameCategory()));
-		f->folderPopup->insertItem( "Autoplay", this, SLOT(autoplayCategory()));
+		f->folderPopup->insertItem( "Autoplay", this, SLOT(autoplayCategory()), 0, 13);
+    f->folderPopup->setItemChecked(13, true);
 	}
 	setText(0, fName+QString(" (%1)").arg(count));
   sortChildItems(0, true);
 }
 
-
-
-// insert content menu...
-void FolderCategories::popup(QPoint point, QPopupMenu* contentMenu)
-{
-	allPopup=new QPopupMenu();
-	if (folderPopup) {
-		allPopup->insertItem("Folder...", folderPopup);
-// TODO:
-//    cout << "checking..\n";
-//    if(gYammiGui->folderAutoplay==this)
-//      cout << "it this one\n";
-  }
-	if (contentMenu)
-		allPopup->insertItem("Content...", contentMenu);
-	if(folderPopup || contentMenu)
-		allPopup->popup(point);
-}

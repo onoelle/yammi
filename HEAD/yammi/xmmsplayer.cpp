@@ -16,7 +16,7 @@
  ***************************************************************************/
 
 #include "xmmsplayer.h"
-#include <iostream.h>
+#include <iostream>
 #include <stdlib.h>
 // xmms control
 #include <xmmsctrl.h>
@@ -46,7 +46,7 @@ XmmsPlayer::~XmmsPlayer()
 // check whether xmms is running, if not: start it!
 void XmmsPlayer::ensureXmmsIsRunning()
 {
-	if(!xmms_remote_is_running(0)) {
+  if(!xmms_remote_is_running(0)) {
 		cout << "xmms not running, trying to start it...\n";
 		system("xmms &");
 
@@ -169,10 +169,11 @@ void XmmsPlayer::syncYammi2Player(bool syncAll)
 
 			}
 			else {		// yammi playlist too short
-				if(check==0)
-					cout << "xmms playlist longer than yammi playlist, but unknown song\n";
+				if(check==0) {
+//					cout << "xmms playlist longer than yammi playlist, but unknown song\n";
+        }
 				else {
-					cout << "xmms playlist longer than yammi playlist, deleting\n";
+//					cout << "xmms playlist longer than yammi playlist, deleting\n";
 					xmms_remote_playlist_delete(session, iXmms);
 //TODO:?					myWait(50);
 					iXmms--;

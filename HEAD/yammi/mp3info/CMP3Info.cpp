@@ -1,7 +1,10 @@
-#include <fstream.h>
-#include <stdio.h>
-
 #include "CMP3Info.h"
+
+#include <iostream.h>
+
+#include <qfile.h>
+#include <qdatastream.h>
+
 
 /* ----------------------------------------------------------
    CMP3Info class is your complete guide to the 
@@ -26,19 +29,26 @@
 #define ERR_NOMP3FILE   0x0004
 #define ERR_ID3TAG      0x0008
 
-int CMP3Info::loadInfo( char srcMP3[256] ) {
+int CMP3Info::loadInfo( QString srcMP3 ) {
     
     // open input-file stream to the specified file, name
-    ifstream* ifile = new ifstream(srcMP3, ios::in | ios::binary | ios::nocreate);
-    
-    if (ifile) { // if the file was opened correctly
 
+//**    ifstream* ifile = new ifstream(srcMP3, ios::in | ios::binary | ios::nocreate);
+//**    if (ifile) { // if the file was opened correctly
+
+
+    QFile file(srcMP3);
+    if( file.open( IO_ReadOnly ) ) {
+        QDataStream stream( &file );
+        
+    
         // get file size, by setting the pointer in the end and tell the position
-        ifile->seekg(0,ios::end);
-        fileSize = ifile->tellg();
+//**        ifile->seekg(0,ios::end);
+//**        fileSize = ifile->tellg();
+        fileSize=file.size();
 
         // get srcMP3 into fileName variable
-        strcpy(fileName,srcMP3);
+//        strcpy(fileName,srcMP3);
 
         int pos = 0; // current position in file...
 
@@ -49,36 +59,37 @@ int CMP3Info::loadInfo( char srcMP3[256] ) {
         
         char headerchars[4]; // char variable used for header-loading
 
-        do {
-            // if no header has been found after 200kB
-            // or the end of the file has been reached
-            // then there's probably no mp3-file
-            if ( pos>(1024*200) || ifile->eof() ) {
-                ifile->close();
-                delete ifile;
-                return ERR_NOMP3FILE;
-            }
+        stream.readRawBytes(headerchars, 4);
+        pos+=4;
+        bool headerFound=false;
+        for(; !headerFound && pos<(1024*200) && !stream.atEnd(); pos++) {
 
-            // read in four characters
-            ifile->seekg(pos);
-            ifile->read (headerchars, 4);
-
-            // move file-position forward
-            pos++;
-            
-            // convert four chars to CFrameHeader structure
-            header.loadHeader(headerchars);
-
+          // convert four chars to CFrameHeader structure
+          header.loadHeader(headerchars);
+          if(header.isValidHeader()) {
+            headerFound=true;
+          }
+          else {
+            // read one more byte and try again
+            headerchars[0]=headerchars[1];
+            headerchars[1]=headerchars[2];
+            headerchars[2]=headerchars[3];
+            stream.readRawBytes(&headerchars[3], 1);
+          }
         }
-        while ( !header.isValidHeader() );  // test for correct header
 
-        // to correct the position to be right after the frame-header
-        // we'll need to add another 3 to the current position
-        pos += 3;
+        if(!headerFound) {
+          // if no header has been found after 200kB
+          // or the end of the file has been reached
+          // then there's probably no mp3-file
+          return ERR_NOMP3FILE;
+        }
 
+
+        
 
         /******************************************************/
-        /* check for an vbr-header, to ensure the info from a */
+        /* check for a vbr-header, to ensure the info from a  */
         /* vbr-mp3 is correct                                 */
         /******************************************************/
 
@@ -88,35 +99,41 @@ int CMP3Info::loadInfo( char srcMP3[256] ) {
         // it depends on two things, the mpeg-version
         // and the mode(stereo/mono)
 
+        int skip=0;
         if( header.getVersionIndex()==3 ) {  // mpeg version 1
 
-            if( header.getModeIndex()==3 ) pos += 17; // Single Channel
-            else                           pos += 32;
+            if( header.getModeIndex()==3 ) skip = 17; // Single Channel
+            else                           skip = 32;
 
         } else {                             // mpeg version 2 or 2.5
 
-            if( header.getModeIndex()==3 ) pos +=  9; // Single Channel
-            else                           pos += 17;
-
+            if( header.getModeIndex()==3 ) skip =  9; // Single Channel
+            else                           skip = 17;
         }
 
+        char skipChars[64];
+        stream.readRawBytes(skipChars, skip);
+        pos+=skip;
+
         // read next twelve bits in
-        ifile->seekg(pos);
-        ifile->read (vbrchars, 12);
+//**        ifile->seekg(pos);
+//**        ifile->read (vbrchars, 12);
+        stream.readRawBytes(vbrchars, 12);
 
         // turn 12 chars into a CVBitRate class structure
         VBitRate = vbr.loadHeader(vbrchars);        
     }
     else {
-        ifile->close();
-        delete ifile;
+//**        ifile->close();
+//**        delete ifile;
+//        file.close();
         return ERR_NOSUCHFILE;
     }
 
-    ifile->close();
-    delete ifile;
+//**    ifile->close();
+    file.close();
+//    delete ifile;
     return 0;
-
 }
 
 
@@ -266,14 +283,15 @@ void CMP3Info::getMode(char* input) {
 
 }
 
-
+/*
 void CMP3Info::getFileName(char* input) {
 
     strcpy(input, fileName);
 
 }
+*/
 
-/** retursn the genre of a given index as a string, or "not supported" if index too high
+/** returns the genre of a given index as a string, or "not supported" if index too high
  */
 QString CMP3Info::getGenre(int index)
 {
@@ -297,7 +315,7 @@ QString CMP3Info::getGenre(int index)
                               "Drum Solo","Acapella","Euro-House","Dance Hall"
                              };
 
-  if(index<=MAX_GENRE_NR)
+  if(index<=MAX_GENRE_NR && index>=0)
     return QString(table[index]);
   else
     return QString("not supported");

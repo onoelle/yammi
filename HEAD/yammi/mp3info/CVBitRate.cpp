@@ -18,7 +18,7 @@
    ---------------------------------------------------------- */
 
 
-// flags to know what information who could
+// flags to know what information could
 // be found in the headers
 #define FRAMES_FLAG    0x0001
 #define BYTES_FLAG     0x0002
@@ -83,5 +83,4 @@ bool CVBitRate::loadHeader (char inputheader[12]) {
     // if it gets this far, everything went according
     // to plans, so we should return true!
     return true;
-
 }

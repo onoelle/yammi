@@ -17,7 +17,6 @@
 #ifndef FOLDER_H
 #define FOLDER_H
 
-#include <stream.h>
 #include <qobject.h>
 #include <qlistview.h>
 #include <qlist.h>
@@ -61,7 +60,7 @@ public:
 	SongEntry*			firstEntry()								{ return songList->first(); }
 	SongEntry*			nextEntry()									{ return songList->next(); }
 
-	void 						popup(QPoint point, QPopupMenu* contentMenu);
+	virtual void 		popup(QPoint point, QPopupMenu* contentMenu);
 	
 	
 	QPopupMenu*			folderPopup;

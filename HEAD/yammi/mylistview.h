@@ -22,7 +22,7 @@
 #include "song.h"
 #include <qwidget.h>
 #include <qlistview.h>
-#include <iostream.h>
+#include <iostream>
 
 /**extends the QListView class, esp. for dragging songs...
   *@author Oliver Nölle

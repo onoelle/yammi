@@ -1,12 +1,13 @@
 ######################
 29.11.2002 version 0.7
+- fixed a lot of bugs that prevented compiling on many systems
 - successfully compiled on sourceforge's compile farm on
-  - RedHat 7.3
+  - Linux 2.4 (RedHat 7.3)
 - added --disable-ogglibs and --disable-id3lib configure switches to disable linking aginst these libs
-- some bugfixes
-- added a (very primitive) autoplay function for a category
+- added a (experimental and primitive) autoplay function for categories
 - added experimental writing of ogg tags
   (only the tags corresponding to id3v1 tags will be written, other tags will get lost)
+- some minor improvements and bugfixes
 
 
 ##########################

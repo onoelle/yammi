@@ -81,7 +81,9 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
 #ifdef XMMS_SUPPORT
   cout << "media player: XMMS\n";
   player = new XmmsPlayer(0, model);         // use xmms as media player (session 0)
+  cout << "started...\n";
 #endif
+
   
 	model->readPreferences();						// read preferences
 	model->readSongDatabase();					// read song database
@@ -375,6 +377,10 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
       player->play();
     }
   }
+  if(player->getStatus()!=PLAYING)
+    tbPlayPause->setIconSet(QIconSet(QPixmap((const char**)play_xpm)));
+  else
+    tbPlayPause->setIconSet(QIconSet(QPixmap((const char**)pause_xpm)));
 
 
 	// connect all timers
@@ -730,7 +736,6 @@ void YammiGui::toPlayList(int index)
 		category=model->allCategories.next();
 	}
 	QString chosen=model->categoryNames[index];
-	cout << "chosen1: " << chosen << "\n";
 	
 	// determine mode (add/remove)
 	bool remove=false;
@@ -1062,7 +1067,7 @@ void YammiGui::slotFolderPopup( QListViewItem* Item, const QPoint & point, int )
 		selectedSongs.appendSong(((SongListItem*) i)->song());
 
 	if(selectedSongs.count()==0) {
-		cout << "no songs in this folder\n";
+		// no songs in this folder
 		chosenFolder->popup( point, 0);
 		return;
 	}
@@ -1712,10 +1717,24 @@ void YammiGui::forSong(Song* s, action act, QString dir)
 		}
 	} break;
 	
-	case DeleteEntry:							// delete db entry
-		folderAll->removeSong(s);
+	case DeleteEntry:	{						// delete db entry
+    // remove from database
+    folderAll->removeSong(s);
 		model->allSongsChanged(true);
-		break;
+
+    // ...and from categories
+    for( QListViewItem* f=folderCategories->firstChild(); f; f=f->nextSibling() ) {
+      FolderSorted* category=(FolderSorted*)f;
+      category->removeSong(s);
+    }
+    model->categoriesChanged(true);
+
+    // ...and from playlist
+    folderActual->removeSong(s);
+		if(chosenFolder==folderActual)
+			slotFolderChanged();
+
+  } break;
 	
 	case DeleteFile:						// move songfile to trash
 		s->deleteFile(model->config.trashDir);
@@ -1844,8 +1863,8 @@ void YammiGui::renameCategory()
 void YammiGui::autoplayCategory()
 {
 	QListViewItem* i = folderListView->currentItem();
-  if(folderAutoplay!=(FolderCategories*)i) {
-    folderAutoplay=(FolderCategories*)i;
+  if(folderAutoplay!=(FolderSorted*)i) {
+    folderAutoplay=(FolderSorted*)i;
     QString folderName=folderAutoplay->folderName();
     cout << "setting autoplay (experimental) to folder " << folderName << "\n";
   }
@@ -1972,8 +1991,13 @@ void YammiGui::onTimer()
       // fill up from autoplay folder
       // so far, no intelligence in choosing the song here!
       int total=folderAutoplay->songList->count();
-      QTime t=t.currentTime();
-      int chosen=t.msec() % total;
+      QDateTime dt = QDateTime::currentDateTime();
+      QDateTime xmas( QDate(2050,12,24), QTime(17,00) );
+      int chosen=(dt.secsTo(xmas) + dt.time().msec()) % total;
+      cout << "chosen: " << chosen << "\n";
+      if(chosen<0) {
+        chosen=-chosen;
+      }
       folderActual->addSong(folderAutoplay->songList->at(chosen)->song());
     }
 
@@ -2613,7 +2637,7 @@ void YammiGui::loadSongsFromMedia(QString mediaName)
 // manages loading songfiles from removable media
 void YammiGui::checkPlaylistAvailability()
 {
-//	cout << "checking availability...\n";
+	cout << "checking availability...\n";
 	// iterate through playlist & check whether we need to load songs to swap dir
 	
 	// collect all possibly required media into a listbox,

@@ -4,22 +4,28 @@ Please visit http://yammi.sourceforge.net for detailed information about Yammi.
 
 Note:
 
-Since version 0.7 Yammi depends on id3lib and libvorbis / libvorbisfile for reading id3 and ogg tags.
+Yammi now depends on
+- id3lib (for reading id3 tags)
+- libvorbis / libvorbisfile (and libvorbis-dev) (for reading ogg tags)
 
-I would like to make these dependencies configurable,
-(ie. disable ogg vorbis support with a --disable-OGG flag to the configure script)
-but haven't figured out how to do that - any help is appreciated!
+...but these dependencies can be switched off!
 
+If you don't have these libraries (and end up with linking errors when trying to compile),
+use the following switches to the configure script to disable the use of these libraries:
 
-So the following is not of much use yet (linker still needs the libraries):
-
-If you don't use MP3 files or don't use OGG files, you can disable the support for mp3 and/or ogg,
-and can compile Yammi without the corresponding libraries.
-By default, support for both formats is compiled in.
-To disable support for either of them => edit the file yammi/options.h
+--disable-id3lib  (disables the use of id3lib => no id3 tags can be read/written from/to mp3 files)
+--disable-ogglibs (disables the use of libvorbis/libvorbisfile => no ogg tags can be read/written from/to ogg files)
 
 
-I hope it compiles, so you can enjoy using Yammi...
+For example, use
+./configure --disable-id3lib --disable-ogglibs
+to disable both options. When finishing
 
+Note that in this case, you have to fill in tag information yourself
+(although Yammi tries to extract artist and title from the filename).
+
+
+
+Enjoy using Yammi...
 
 Oliver Nölle

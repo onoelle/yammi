@@ -15,7 +15,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FOLDERCATGEGORIES_H
+#ifndef FOLDERCATEGORIES_H
 #define FOLDERCATEGORIES_H
 
 #include <qptrlist.h>
@@ -41,7 +41,6 @@ public:
 	FolderCategories( QListView* parent, QString title );
 	~FolderCategories();
 	void update(QPtrList<MyList> allCategories, QStringList categoryNames);
-  void popup(QPoint point, QPopupMenu* contentMenu);  
 public slots:
 	void removeCategory() { emit CategoryRemoved(); }
 	void newCategory()		{ emit CategoryNew(); }
