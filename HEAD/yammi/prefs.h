@@ -71,6 +71,7 @@ public:
 	QString mediaDir;
 	QString swapDir;
 
+  int player;
 };
 
 #endif

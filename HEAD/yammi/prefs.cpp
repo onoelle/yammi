@@ -81,6 +81,8 @@ Prefs::Prefs(){
 	swapDir="/tmp/";
 	swapSize=200;
 	mountMediaDir=true;
+
+  player=0;       // 0=XMMS, 1=Noatun
 }
 
 Prefs::~Prefs(){

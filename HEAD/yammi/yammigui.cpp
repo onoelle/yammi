@@ -83,14 +83,22 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
 	model=new YammiModel();
 	cout << "starting Yammi, version " << model->config.yammiVersion << "\n";
 
+  model->readPreferences();						// read preferences
+
 #ifdef XMMS_SUPPORT
-  cout << "media player: XMMS\n";
-  cout << "     (if nothing happens after this line, you probably have to remove the xmms lock file (/tmp/xmms_<user>.0) and try again.\n";
-  player = new XmmsPlayer(0, model);         // use xmms as media player (session 0)
+  if(model->config.player==0) {
+    cout << "media player: XMMS\n";
+    cout << "     (if nothing happens after this line, you probably have to remove the xmms lock file (/tmp/xmms_<user>.0) and try again.\n";
+    player = new XmmsPlayer(0, model);         // use xmms as media player (session 0)
+  }
 #endif
 
-  
-	model->readPreferences();						// read preferences
+  if(model->config.player==1) {
+    cout << "media player: Noatun\n";
+    player = new NoatunPlayer(model);         // use noatun as media player
+    
+  }
+
 	model->readSongDatabase();					// read song database
 	model->readCategories();						// read categories
 	model->readHistory();								// read history
@@ -394,6 +402,12 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
   regularTimer.start( 1000, FALSE );	// call onTimer once a second
 	connect( &typeTimer, SIGNAL(timeout()), this, SLOT(searchFieldChanged()) );
 
+  // TODO: this should be a thread owned by the media player
+  // (use signals/slots to connect media player and yammi)
+  if(model->config.player==1) {
+    connect( &checkTimer, SIGNAL(timeout()), SLOT(onCheck()) );
+    checkTimer.start( 5000, FALSE );
+  }
 	// finish!
   cout << "initialisation successfully completed!\n";
 
@@ -2117,6 +2131,13 @@ void YammiGui::songSliderMoved()
 	isSongSliderGrabbed=false;
 	player->jumpTo(songSlider->value());
 }
+
+
+void YammiGui::onCheck()
+{
+  ((NoatunPlayer*)player)->check("/mm/mp3/inbox/wonderwall - just more.mp3");
+}
+
 
 /**
  * onTimer is called periodically to do some things independently of any user action

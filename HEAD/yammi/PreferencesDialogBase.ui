@@ -412,52 +412,109 @@
                         <property name="title">
                             <string>second sound device (for headphones)</string>
                         </property>
-                        <grid>
+                        <widget class="QLayoutWidget">
                             <property name="name">
-                                <cstring>unnamed</cstring>
+                                <cstring>Layout13</cstring>
                             </property>
-                            <property name="margin">
-                                <number>11</number>
+                            <property name="geometry">
+                                <rect>
+                                    <x>11</x>
+                                    <y>18</y>
+                                    <width>239</width>
+                                    <height>23</height>
+                                </rect>
                             </property>
-                            <property name="spacing">
-                                <number>6</number>
-                            </property>
-                            <widget class="QLayoutWidget" row="0" column="0">
+                            <hbox>
                                 <property name="name">
-                                    <cstring>Layout13</cstring>
+                                    <cstring>unnamed</cstring>
                                 </property>
-                                <hbox>
+                                <property name="margin">
+                                    <number>0</number>
+                                </property>
+                                <property name="spacing">
+                                    <number>6</number>
+                                </property>
+                                <widget class="QLabel">
                                     <property name="name">
-                                        <cstring>unnamed</cstring>
+                                        <cstring>LabelSecondSoundDevice</cstring>
                                     </property>
-                                    <property name="margin">
-                                        <number>0</number>
+                                    <property name="text">
+                                        <string>device (eg. /dev/dsp1)</string>
                                     </property>
-                                    <property name="spacing">
-                                        <number>6</number>
+                                    <property name="toolTip" stdset="0">
+                                        <string>This device is used (with mpg123) to send songs to your headphone.</string>
                                     </property>
-                                    <widget class="QLabel">
-                                        <property name="name">
-                                            <cstring>LabelSecondSoundDevice</cstring>
-                                        </property>
-                                        <property name="text">
-                                            <string>device (eg. /dev/dsp1)</string>
-                                        </property>
-                                        <property name="toolTip" stdset="0">
-                                            <string>This device is used (with mpg123) to send songs to your headphone.</string>
-                                        </property>
-                                    </widget>
-                                    <widget class="QLineEdit">
-                                        <property name="name">
-                                            <cstring>LineEditSecondSoundDevice</cstring>
-                                        </property>
-                                        <property name="toolTip" stdset="0">
-                                            <string>This device is used (with mpg123) to send songs to your headphone.</string>
-                                        </property>
-                                    </widget>
-                                </hbox>
+                                </widget>
+                                <widget class="QLineEdit">
+                                    <property name="name">
+                                        <cstring>LineEditSecondSoundDevice</cstring>
+                                    </property>
+                                    <property name="toolTip" stdset="0">
+                                        <string>This device is used (with mpg123) to send songs to your headphone.</string>
+                                    </property>
+                                </widget>
+                            </hbox>
+                        </widget>
+                        <widget class="QButtonGroup">
+                            <property name="name">
+                                <cstring>MediaPlayerGroup</cstring>
+                            </property>
+                            <property name="geometry">
+                                <rect>
+                                    <x>10</x>
+                                    <y>50</y>
+                                    <width>240</width>
+                                    <height>80</height>
+                                </rect>
+                            </property>
+                            <property name="title">
+                                <string>Media Player</string>
+                            </property>
+                            <widget class="QRadioButton">
+                                <property name="name">
+                                    <cstring>RadioButtonNoatun</cstring>
+                                </property>
+                                <property name="geometry">
+                                    <rect>
+                                        <x>10</x>
+                                        <y>50</y>
+                                        <width>101</width>
+                                        <height>20</height>
+                                    </rect>
+                                </property>
+                                <property name="text">
+                                    <string>Noatun</string>
+                                </property>
+                                <property name="checked">
+                                    <bool>false</bool>
+                                </property>
+                                <property name="buttonGroupId">
+                                    <number>1</number>
+                                </property>
                             </widget>
-                        </grid>
+                            <widget class="QRadioButton">
+                                <property name="name">
+                                    <cstring>RadioButtonXmms</cstring>
+                                </property>
+                                <property name="geometry">
+                                    <rect>
+                                        <x>10</x>
+                                        <y>20</y>
+                                        <width>101</width>
+                                        <height>20</height>
+                                    </rect>
+                                </property>
+                                <property name="text">
+                                    <string>XMMS</string>
+                                </property>
+                                <property name="checked">
+                                    <bool>true</bool>
+                                </property>
+                                <property name="buttonGroupId">
+                                    <number>1</number>
+                                </property>
+                            </widget>
+                        </widget>
                     </widget>
                     <widget class="QGroupBox" row="1" column="0" rowspan="1" colspan="2">
                         <property name="name">

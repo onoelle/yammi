@@ -17,6 +17,8 @@ for release 0.7.1
 -----------------
 - plugin: publish a sample plugin (echo...) with all replacements
 
+- F1 does not work, if stopped?
+
 - on deleting a song: delete in *all* lists (history, categories, ...)
 - check consistency check (and consistencyModes!)
 - alternative to mp3burn? => test Tom's script

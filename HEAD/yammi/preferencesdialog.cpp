@@ -19,6 +19,7 @@
 
 #include <qfiledialog.h>
 #include <qpushbutton.h>
+#include <qradiobutton.h>
 #include <qcombobox.h>
 #include <qvaluelist.h>
 #include <qcheckbox.h>
@@ -45,6 +46,8 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, const char *name, bool mod
 	LineEditSearchThreshold->setText(QString("%1").arg(config->searchThreshold));
 	LineEditSearchMaximumNoResults->setText(QString("%1").arg(config->searchMaximumNoResults));
 	LineEditKeepInXmms->setText(QString("%1").arg(config->keepInXmms));
+  RadioButtonXmms->setChecked(config->player==0);
+  RadioButtonNoatun->setChecked(config->player==1);
 
 	for(int i=0; i<Song::getMaxSongAction(); i++)
 		ComboBoxDoubleClickAction->insertItem(Song::getSongAction(i));
@@ -81,6 +84,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, const char *name, bool mod
   ComboBoxPluginMode->insertItem("single");
   ComboBoxPluginMode->insertItem("group");
 	updatePlugin(0);
+  
 
 
   // connections
@@ -137,7 +141,12 @@ void PreferencesDialog::myAccept()
  	config->searchThreshold=atoi(LineEditSearchThreshold->text());
  	config->searchMaximumNoResults=atoi(LineEditSearchMaximumNoResults->text());
  	config->keepInXmms=atoi(LineEditKeepInXmms->text());
- 	// plugins
+  if(RadioButtonXmms->isChecked())
+    config->player=0;
+  if(RadioButtonNoatun->isChecked())
+    config->player=1;
+
+  // plugins
  	config->grabAndEncodeCmd=LineEditGrabAndEncodeCmd->text();
  	config->shutdownScript=LineEditShutdownScript->text();
 

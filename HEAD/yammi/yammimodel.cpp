@@ -83,6 +83,7 @@ void YammiModel::readPreferences()
 	config.searchThreshold	=	getProperty(&doc, "searchThreshold", config.searchThreshold);
 	config.searchMaximumNoResults	=	getProperty(&doc, "searchMaximumNoResults", config.searchMaximumNoResults);
 	config.keepInXmms				=	getProperty(&doc, "keepInXmms", config.keepInXmms);
+  config.player			      =	getProperty(&doc, "mediaPlayer", config.player);
 	
 	// plugins
 	config.grabAndEncodeCmd	=	getProperty(&doc, "grabAndEncodeCmd", config.grabAndEncodeCmd);
@@ -137,6 +138,7 @@ void YammiModel::savePreferences()
 	setProperty(&doc, "searchThreshold", 		config.searchThreshold);
 	setProperty(&doc, "searchMaximumNoResults",		config.searchMaximumNoResults);
 	setProperty(&doc, "keepInXmms", 				config.keepInXmms);
+	setProperty(&doc, "mediaPlayer", 				config.player);
 	// plugins
 	setProperty(&doc, "grabAndEncodeCmd",		config.grabAndEncodeCmd);
 	setProperty(&doc, "shutdownScript",			config.shutdownScript);

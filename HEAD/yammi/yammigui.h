@@ -95,6 +95,7 @@ using namespace std;
 #ifdef XMMS_SUPPORT
 #include "xmmsplayer.h"
 #endif
+#include "noatunplayer.h"
 #include "lineeditshift.h"
 // -----------------------------------------------------------------
 
@@ -256,7 +257,7 @@ public:
 	
 protected:
 	YammiModel*		model;								// pointer to our model
-  XmmsPlayer*   player;               // TODO: change to MediaPlayer* soon!
+  MediaPlayer*  player;
 	QString				currentFile;					// file that is currently played by player
 	QString				grabbedTrackFilename;	// filename of new track being grabbed
 
@@ -271,6 +272,7 @@ protected:
   
   
 	QTimer				regularTimer;
+	QTimer				checkTimer;
 	QTimer				typeTimer;
 	int						songsUntilShutdown;
 
@@ -315,6 +317,7 @@ protected slots:
 	void					toCategory(int index);
 
   void 					onTimer();
+  void 					onCheck();
 	// removable media management
 	void					checkPlaylistAvailability();
 	void					loadSongsFromMedia(QString mediaName);
