@@ -1,62 +1,58 @@
 TODO
 ----
-last update 25.02.2004
-
-- clean up the content of this file!!!
+last update 09.05.2004
 
 
-for version 1.2
----------------
+for version 1.2-alpha
+---------------------
 main purpose: clean up, so other people can more easily contribute to the project
-
-- check KActions
 
 - check conformance to kde standards, such as:
   - conforming to standard kde i18n schema
   - check icons: transparency, remove old ones
   - check lsm file
-  - replace tr() with i18n()
-  - replace qDebug / cout with kdDebug? different loglevel?
-
-- clean up CVS repo
-- check bugs on sf
+  - replace qDebug / cout with kdDebug/kdWarn/kdError
+- check/resolve bugs on sf
 - check all TODOs / FIXMEs
-- make proposed filename change while you change things
 - fix song info for multiple songs
 - make mpg123 and ogg123 configurable?
-- implement onPlayed and afterPlayed plugin types
 - make follow symlinks a configurable option?
 - fix or delete child-safe mode
-- on startup: progress bar when loading database
 - fix second view menu / behaviour on hiding columns the first time
 - implement skip backwards in artsplayer
-- handle unplayable files (wishes, text files) => introduce file types and different behaviour
+- handle unplayable files (wishes, text files) => 1. dequeue on second position or 2. introduce file types and different behaviour
 
-for version 1.0.1
------------------
+for version 1.2-beta
+--------------------
+- make proposed filename change while you type
+- implement onPlayed and afterPlayed plugin types
 - check again: crash on clearing playlist including currently played song?
 - check skip backward functionality & filling up songPlayed list!!!
+- finish documenting requirements for compiling in handbook
 - if you start yammi, while xmms has a song in its play list and then enqueue
   and play a song in yammi, the song previously played in xmms is played instead.
-- deal with "unplayable files" (pictures, texts) in playlist (dequeue on 2. position?)
-- finish documenting requirements for compiling in handbook
+- on deleting a song: delete in *all* lists (history, categories, ...)
+- write little random(int range) method?
+
+
+for version 1.2
+---------------
+- plugin: publish a sample plugin (echo...) with all replacements
+
+for version 1.4
+---------------
+- use Scott Wheelers taglib for reading metadata
+- rating of tracks
+- subfolders ?
 
 
 later...
 --------
-- add new plugin types: "on song played", "after song played"
-- rating of tracks
-- subfolders
 - history of visited folders + "go back" button
 - any ripping plugin? have a look at existing ripping programs suitable to be called as plugin
 - xml export plugin?
 - make configurable/auto-detected forbidden characters: http://osdev.berlios.de/osd-fs.html
-- {wish} in playlist: noatun stops playing
-- polish GUI... (esp. the "butt ugly" icons?)
 - no crossfading with noatun: replace workaround to avoid pauses in playback between songs
-- on deleting a song: delete in *all* lists (history, categories, ...)
-- write little random(int range) method?
-- plugin: publish a sample plugin (echo...) with all replacements
 - remove symlinking for "burn to media": provide "physical categories"?
 
 

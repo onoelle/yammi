@@ -20,7 +20,7 @@ static KCmdLineOptions options[] = {
 //{ "d <dir>", I18N_NOOP("specifies location of .yammi dir (defaults to user home)"), 0 },
 			{ "db <file>", I18N_NOOP("Specifies the location of the Song Database to use"), 0 } };
 static const char description[] =   I18N_NOOP("Yammi - Yet Another Music Manager I...");
-static const char version[] = "1.1";
+static const char version[] = "1.2";
 
 // global pointer to YammiGui
 YammiGui* gYammiGui;
@@ -30,7 +30,7 @@ YammiGui* gYammiGui;
  */
 int main( int argc, char **argv )
 {
-	QString build_opts = "";
+	QString build_opts("");
 	build_opts+=i18n("- Arts  support: yes\n");
 	build_opts+=i18n("- Noatun support: yes\n");
 #ifdef ENABLE_XMMS
@@ -52,8 +52,10 @@ int main( int argc, char **argv )
   
 
 
+//	KAboutData about("yammi", I18N_NOOP("Yammi"), version, description,
+//                     KAboutData::License_GPL, "(C) 2001-2004 by Oliver Nölle", build_opts + "\n\n\nhave fun...", "http://yammi.sourceforge.net", "yammi-developer@lists.sourceforge.net");
 	KAboutData about("yammi", I18N_NOOP("Yammi"), version, description,
-                     KAboutData::License_GPL, "(C) 2001-2003 by Oliver Nölle", build_opts + "\n\n\nhave fun...", "http://yammi.sourceforge.net", "yammi-developer@lists.sourceforge.net");
+                     KAboutData::License_GPL, "(C) 2001-2004 by Oliver Noelle", build_opts, "http://yammi.sourceforge.net", "yammi-developer@lists.sourceforge.net");
 
 	KCmdLineArgs::init(argc, argv, &about);
 	KCmdLineArgs::addCmdLineOptions( options );
@@ -77,7 +79,7 @@ int main( int argc, char **argv )
 	{//the configuration file could not be opened, most likely we are starting for the first time
 		QString msg( i18n( "Yammi - Yet Another Music Manager I...\n\n\n \
 It looks like you are starting Yammi for the first time...\n\n\
-Welcome to convenient song lookups and organization!\n\n\
+Welcome to convenient music organization!\n\n\
 Please edit the settings (Settings -> Configure Yammi...)\n\
 to adjust your personal configuration and options\
 (especially the path to your media files).\n\

@@ -38,7 +38,7 @@ Prefs::~Prefs(){
 void Prefs::setDefaultValues(void) {
 	// general	
 	// media player: 0=XMMS, 1=Noatun, 2=Arts
-	player = MEDIA_PLAYER_ARTSPLAYER;
+	mediaPlayer = MEDIA_PLAYER_ARTSPLAYER;
 
 	yammiVersion = "1.2";
 	dbFile = KGlobal::dirs()->findResource("appdata","songdb.xml");
@@ -63,7 +63,6 @@ void Prefs::setDefaultValues(void) {
 	groupThreshold = 5;
 	lazyGrouping = false;
 	searchThreshold = 20;
-	searchMaximumNoResults = 200;
 
 	keepInXmms = 3;
 
@@ -97,7 +96,7 @@ bool Prefs::loadConfig( )
 	scanDir                      = cfg->readEntry("scanDir", scanDir);
 	filenamePattern              = cfg->readEntry("filenamePattern", filenamePattern);
 	directoryPattern             = cfg->readEntry("directoryPattern", directoryPattern);
-	guessingMode                 = cfg->readNumEntry("guessingMode", player);
+	guessingMode                 = cfg->readNumEntry("guessingMode", guessingMode);
 	doubleClickAction            = (Song::action) cfg->readNumEntry("doubleClickAction", doubleClickAction);
 	middleClickAction            = (Song::action) cfg->readNumEntry("middleClickAction", middleClickAction);
 	controlClickAction           = (Song::action) cfg->readNumEntry("controlClickAction", controlClickAction);
@@ -116,8 +115,7 @@ bool Prefs::loadConfig( )
 	}
 	lazyGrouping                 = cfg->readBoolEntry("lazyGrouping", lazyGrouping);
 	searchThreshold              = cfg->readNumEntry("searchThreshold", searchThreshold);
-	searchMaximumNoResults       = cfg->readNumEntry("searchMaximumNoResults", searchMaximumNoResults);
-	player = cfg->readNumEntry("mediaPlayer", MEDIA_PLAYER_ARTSPLAYER );
+	mediaPlayer = cfg->readNumEntry("mediaPlayer", mediaPlayer);
 	
 	cfg->setGroup("Database");
 	dbFile = cfg->readEntry( "dbFile", dbFile );
@@ -146,11 +144,7 @@ bool Prefs::loadConfig( )
 	swapDir                      = cfg->readEntry("swapDir", swapDir);
 	swapSize                     = cfg->readNumEntry("swapSize", swapSize);
 
-// 	if(prefsVersion != yammiVersion) {
-// 		addStandardPlugins();
-// 		saveConfig();
-// 	}
-	kdDebug()<<"Config loaded"<<endl;
+	kdDebug() << "Config loaded" << endl;
 	return true;
 }
 
@@ -159,7 +153,7 @@ bool Prefs::loadConfig( )
  */
 bool Prefs::saveConfig( )
 {
-	kdDebug()<<"saving Configuration..."<<endl;
+	kdDebug() << "saving Configuration..." << endl;
 	
 	KConfig *cfg = kapp->config();
 	
@@ -169,7 +163,7 @@ bool Prefs::saveConfig( )
 	cfg->writeEntry("scanDir", scanDir);
 	cfg->writeEntry("filenamePattern", filenamePattern);
 	cfg->writeEntry("directoryPattern", directoryPattern);
-	cfg->writeEntry("guessingMode", player);
+	cfg->writeEntry("guessingMode", mediaPlayer);
 	cfg->writeEntry("doubleClickAction", (int)doubleClickAction);
 	cfg->writeEntry("middleClickAction", (int)middleClickAction);
 	cfg->writeEntry("controlClickAction", (int)controlClickAction);
@@ -185,8 +179,7 @@ bool Prefs::saveConfig( )
 	cfg->writeEntry("groupThreshold", groupThreshold);
 	cfg->writeEntry("lazyGrouping", lazyGrouping);
 	cfg->writeEntry("searchThreshold", searchThreshold);
-	cfg->writeEntry("searchMaximumNoResults", searchMaximumNoResults);
-	cfg->writeEntry("mediaPlayer", MEDIA_PLAYER_ARTSPLAYER );
+	cfg->writeEntry("mediaPlayer", mediaPlayer );
   
 	cfg->setGroup("Database");
 	cfg->writeEntry( "dbFile", dbFile );
@@ -223,7 +216,7 @@ bool Prefs::saveConfig( )
  */
 void Prefs::addStandardPlugins()
 {
-	kdDebug()<<"Prefs::addStandardPlugins() adding Yammi's standard plugins to the plugin list"<<endl;;
+	kdDebug() << "Prefs::addStandardPlugins() adding Yammi's standard plugins to the plugin list" << endl;;
 
 	if(!pluginMenuEntry.contains("Create CD Label")) {
 		pluginMenuEntry.append("Create CD Label");
@@ -255,7 +248,7 @@ void Prefs::addStandardPlugins()
 		pluginConfirm.append("true");
 		pluginMode.append("group");
 	}
-	kdDebug()<<"Prefs::addStandardPlugins() done"<<endl;	
+	kdDebug() << "Prefs::addStandardPlugins() done" << endl;	
 }
 
 

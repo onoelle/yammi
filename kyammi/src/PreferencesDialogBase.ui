@@ -1,4 +1,4 @@
-<!DOCTYPE UI><UI version="3.2" stdsetdef="1">
+<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
 <class>Preferences</class>
 <widget class="QDialog">
     <property name="name">
@@ -8,8 +8,8 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>567</width>
-            <height>586</height>
+            <width>888</width>
+            <height>626</height>
         </rect>
     </property>
     <property name="caption">
@@ -40,30 +40,11 @@
             </property>
             <property name="sizeHint">
                 <size>
-                    <width>120</width>
-                    <height>0</height>
+                    <width>168</width>
+                    <height>16</height>
                 </size>
             </property>
         </spacer>
-        <widget class="QPushButton" row="1" column="1">
-            <property name="name">
-                <cstring>ButtonOK</cstring>
-            </property>
-            <property name="sizePolicy">
-                <sizepolicy>
-                    <hsizetype>7</hsizetype>
-                    <vsizetype>0</vsizetype>
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                </sizepolicy>
-            </property>
-            <property name="text">
-                <string>OK</string>
-            </property>
-            <property name="toolTip" stdset="0">
-                <string>Accept &amp; Save configuration</string>
-            </property>
-        </widget>
         <widget class="QPushButton" row="1" column="3">
             <property name="name">
                 <cstring>ButtonCancel</cstring>
@@ -95,8 +76,8 @@
             </property>
             <property name="sizeHint">
                 <size>
-                    <width>99</width>
-                    <height>0</height>
+                    <width>168</width>
+                    <height>16</height>
                 </size>
             </property>
         </spacer>
@@ -112,8 +93,8 @@
             </property>
             <property name="sizeHint">
                 <size>
-                    <width>99</width>
-                    <height>0</height>
+                    <width>168</width>
+                    <height>16</height>
                 </size>
             </property>
         </spacer>
@@ -321,31 +302,12 @@
                                     <property name="spacing">
                                         <number>6</number>
                                     </property>
-                                    <widget class="QLineEdit" row="1" column="1">
-                                        <property name="name">
-                                            <cstring>LineEditSearchMaximumNoResults</cstring>
-                                        </property>
-                                        <property name="toolTip" stdset="0">
-                                            <string>Limits the maximum number of entries listed when searching. Must be between 0 and 200, reasonable: 100</string>
-                                        </property>
-                                    </widget>
                                     <widget class="QLineEdit" row="0" column="1">
                                         <property name="name">
                                             <cstring>LineEditSearchThreshold</cstring>
                                         </property>
                                         <property name="toolTip" stdset="0">
                                             <string>determines how many hits will be shown when searching. Must be between 0 and 100, reasonable values are around 25.</string>
-                                        </property>
-                                    </widget>
-                                    <widget class="QLabel" row="1" column="0">
-                                        <property name="name">
-                                            <cstring>LabelSearchMaximumNoResults</cstring>
-                                        </property>
-                                        <property name="text">
-                                            <string>maximum no. results</string>
-                                        </property>
-                                        <property name="toolTip" stdset="0">
-                                            <string>Limits the maximum number of entries listed when searching. Must be between 0 and 200, reasonable: 100</string>
                                         </property>
                                     </widget>
                                     <widget class="QLabel" row="0" column="0">
@@ -1584,6 +1546,25 @@ and songs can be loaded from those media into a swap directory.</string>
                 </grid>
             </widget>
         </widget>
+        <widget class="QPushButton" row="1" column="1">
+            <property name="name">
+                <cstring>ButtonOK</cstring>
+            </property>
+            <property name="sizePolicy">
+                <sizepolicy>
+                    <hsizetype>7</hsizetype>
+                    <vsizetype>0</vsizetype>
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                </sizepolicy>
+            </property>
+            <property name="text">
+                <string>OK</string>
+            </property>
+            <property name="toolTip" stdset="0">
+                <string>Accept &amp; Save configuration</string>
+            </property>
+        </widget>
     </grid>
 </widget>
 <connections>
@@ -1600,7 +1581,6 @@ and songs can be loaded from those media into a swap directory.</string>
     <tabstop>ComboBoxShiftClickAction</tabstop>
     <tabstop>ComboBoxControlClickAction</tabstop>
     <tabstop>LineEditSearchThreshold</tabstop>
-    <tabstop>LineEditSearchMaximumNoResults</tabstop>
     <tabstop>LineEditSecondSoundDevice</tabstop>
     <tabstop>ButtonOK</tabstop>
     <tabstop>ButtonCancel</tabstop>

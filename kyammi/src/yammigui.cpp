@@ -164,9 +164,10 @@ YammiGui::YammiGui( ) : KMainWindow( )
 
 void YammiGui::loadDatabase( const QString &db )
 {
-	if(!db.isEmpty())
+	if(!db.isEmpty()) {
 		m_config.dbFile = db;
-	model->readSongDatabase(  );
+	}
+	model->readSongDatabase();
 	model->readCategories();
 	model->readHistory();
 	//update dynamic folders based on database contents
@@ -290,7 +291,10 @@ void YammiGui::readProperties(KConfig *config)
 
 bool YammiGui::queryClose()
 {
-	kdDebug()<<"queryClose()"<<endl;
+	kdDebug() << "queryClose()" << endl;
+	if(model->categoriesChanged()) {
+		kdDebug() << "allSongsChanged\n";
+	}
 	if(model->allSongsChanged() || model->categoriesChanged()) 
 	{
 		QString msg=i18n("The Song Database has been modified.\nDo you want to save the changes?");
@@ -321,16 +325,6 @@ bool YammiGui::queryExit()
 	return true;
 }
 
-// void YammiGui::finishInitialization()
-// {
-//   // restore session settings
-// 	statusBar( )->message(tr("Welcome to Yammi ")+m_config.yammiVersion, 10000);
-// 	changeToFolder(chosenFolder, true);
-// 	songListView->setSelected( songListView->firstChild(), TRUE );
-// 	songListView->setCurrentItem( songListView->firstChild() );
-// 	updateSongPopup();
-//  
-// }
 
 void YammiGui::shutdownSequence( )
 {	
@@ -578,7 +572,8 @@ void YammiGui::gotoFuzzyFolder(bool backward)
     BestMatchEntry** bme;
     bme=fs.getBestMatchesList();				// STEP 4
     int noResults=0;
-    for(; noResults<FUZZY_FOLDER_LIST_SIZE && noResults<m_config.searchMaximumNoResults && bme[noResults]; noResults++) {
+    // TODO:xxx
+    for(; noResults<FUZZY_FOLDER_LIST_SIZE && noResults<200 && bme[noResults]; noResults++) {
       Folder* f=(Folder*)(bme[noResults]->objPtr);
 //      cout << noResults << ".: " << f->folderName() << ", match: " << bme[noResults]->sim << "\n";
       fuzzyFolderList[noResults]=f;
@@ -645,6 +640,8 @@ void YammiGui::updateView(bool startup)
     folderActual->update(model->songsToPlay);
     folderCategories->update(model->allCategories, model->categoryNames);
     folderMedia->update(&(model->allSongs));
+    folderAll->updateTitle();
+    folderHistory->updateTitle();
     createSongPopup();
   }
 
@@ -1100,7 +1097,7 @@ void YammiGui::searchSong( const QString &fuzzy )
 	// insert n best matches into search result list
 	searchResults.clear();
 	int noResults=0;
-	for(; noResults<m_config.searchMaximumNoResults && bme[noResults] && bme[noResults]->sim>(m_config.searchThreshold*10); noResults++) {
+	for(; noResults<200 && bme[noResults] && bme[noResults]->sim>(m_config.searchThreshold*10); noResults++) {
 		searchResults.append( new SongEntryInt2 ((Song*)bme[noResults]->objPtr, bme[noResults]->sim) );
 	}
   folderSearchResults->updateTitle();
@@ -2558,7 +2555,7 @@ void YammiGui::grabAndEncode()
 	if(!ok)
 		return;
 	
-	QString filename=QString(tr("%1%2 - %3.mp3")).arg(m_config.scanDir).arg(artist).arg(title);
+	QString filename=QString(i18n("%1%2 - %3.mp3")).arg(m_config.scanDir).arg(artist).arg(title);
   QFileInfo fi(filename);
   if(fi.exists())
   {
@@ -2600,10 +2597,10 @@ void YammiGui::checkForGrabbedTrack(){
 	updateView();
 	folderProblematic->update(model->problematicSongs);
 	folderAll->updateTitle();
-  QString msg=tr("Yammi tried to add the grabbed song to the database.\n\nSome statistics: \n\n");
-  msg+=QString(tr("%1 songs added to database\n")).arg(model->entriesAdded);
-  msg+=QString(tr("%1 songs corrupt (=not added)\n")).arg(model->corruptSongs);
-  msg+=QString(tr("%1 problematic issues(check in folder Problematic Songs)")).arg(model->problematicSongs.count());
+  QString msg=i18n("Yammi tried to add the grabbed song to the database.\n\nSome statistics: \n\n");
+  msg+=QString(i18n("%1 songs added to database\n")).arg(model->entriesAdded);
+  msg+=QString(i18n("%1 songs corrupt (=not added)\n")).arg(model->corruptSongs);
+  msg+=QString(i18n("%1 problematic issues(check in folder Problematic Songs)")).arg(model->problematicSongs.count());
 	KMessageBox::information( this,msg);
 }
 
@@ -2862,7 +2859,7 @@ void YammiGui::updateSongDatabaseSingleFile()
 	folderProblematic->update(model->problematicSongs);
 	folderAll->updateTitle();
   changeToFolder(folderRecentAdditions);
-  QString msg=tr("Updated your database.\n\nStatistics: \n\n");
+  QString msg=i18n("Updated your database.\n\nStatistics: \n\n");
   msg+=QString(i18n("%1 songs added to database\n")).arg(model->entriesAdded);
   msg+=QString(i18n("%1 songs corrupt (=not added)\n")).arg(model->corruptSongs);
   msg+=QString(i18n("%1 songs problematic (check in folder Problematic Songs)\n")).arg(model->problematicSongs.count());
@@ -3005,7 +3002,7 @@ void YammiGui::loadSongsFromMedia(QString mediaName)
 			if(s->mediaName[j]==mediaName) {
 		    if(model->checkAvailability(s)=="") {
 					cout << "loading song " << s->displayName() << "from " << mediaDir << s->mediaLocation[j] << "\n";
-					progress.setLabel(tr("loading song: ")+s->displayName()+" ("+QString("%1").arg(i+1)+tr(". in playlist)"));
+					progress.setLabel(tr("loading song: ")+s->displayName()+" ("+QString("%1").arg(i+1)+i18n(". in playlist)"));
 			    progress.progressBar()->setProgress(loaded);
   			  kapp->processEvents();
 					if(progress.wasCancelled()) {
@@ -3170,7 +3167,7 @@ void YammiGui::toggleColumnVisibility(int column)
 
 void YammiGui::loadMediaPlayer( )
 {
-  switch( m_config.player )
+  switch( m_config.mediaPlayer )
   {
   	case 0: player = new XmmsPlayer(0, model);
 		break;
@@ -3180,7 +3177,7 @@ void YammiGui::loadMediaPlayer( )
 		break;
 	default:player = new DummyPlayer( model );
   }
-  kdDebug()<<"Media Player : "<<player->getName( )<<endl;
+  kdDebug() << "Media Player : " << player->getName( ) << endl;
 }
 
 void YammiGui::createMainWidget( )

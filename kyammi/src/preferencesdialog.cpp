@@ -53,12 +53,11 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, const char *name, bool mod
 	SpinBoxGroupThreshold->setValue(config->groupThreshold);
 	CheckBoxLazyGrouping->setChecked(config->lazyGrouping);
 	LineEditSearchThreshold->setText(QString("%1").arg(config->searchThreshold));
-	LineEditSearchMaximumNoResults->setText(QString("%1").arg(config->searchMaximumNoResults));
 
 // xmms specific
   LineEditKeepInXmms->setText(QString("%1").arg(config->keepInXmms));
 #ifdef ENABLE_XMMS
-  RadioButtonXmms->setChecked(config->player==config->MEDIA_PLAYER_XMMS);
+  RadioButtonXmms->setChecked(config->mediaPlayer==config->MEDIA_PLAYER_XMMS);
 #else
   RadioButtonXmms->setEnabled(false);
 	LineEditKeepInXmms->setEnabled(false);
@@ -68,10 +67,10 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, const char *name, bool mod
   LineEditFadeTime->setText(QString("%1").arg(config->fadeTime));
   LineEditFadeOutEnd->setText(QString("%1").arg(config->fadeOutEnd));
   LineEditFadeInStart->setText(QString("%1").arg(config->fadeInStart));
-  RadioButtonNoatun->setChecked(config->player==config->MEDIA_PLAYER_NOATUN);
+  RadioButtonNoatun->setChecked(config->mediaPlayer==config->MEDIA_PLAYER_NOATUN);
 
   // artsplayer specific
-  RadioButtonArtsPlayer->setChecked(config->player==config->MEDIA_PLAYER_ARTSPLAYER);
+  RadioButtonArtsPlayer->setChecked(config->mediaPlayer==config->MEDIA_PLAYER_ARTSPLAYER);
   
 	for(int i=0; i<Song::getMaxSongAction(); i++) {
 		ComboBoxDoubleClickAction->insertItem(Song::getSongAction(i));
@@ -184,18 +183,17 @@ void PreferencesDialog::myAccept()
  	config->groupThreshold=SpinBoxGroupThreshold->value();
  	config->lazyGrouping=CheckBoxLazyGrouping->isChecked();
  	config->searchThreshold=atoi(LineEditSearchThreshold->text());
- 	config->searchMaximumNoResults=atoi(LineEditSearchMaximumNoResults->text());
 
 // xmms specific
   config->keepInXmms=atoi(LineEditKeepInXmms->text());
   if(RadioButtonXmms->isChecked()) {
-    config->player=config->MEDIA_PLAYER_XMMS;
+    config->mediaPlayer=config->MEDIA_PLAYER_XMMS;
   }
   if(RadioButtonNoatun->isChecked()) {
-    config->player=config->MEDIA_PLAYER_NOATUN;
+    config->mediaPlayer=config->MEDIA_PLAYER_NOATUN;
   }
   if(RadioButtonArtsPlayer->isChecked()) {
-    config->player=config->MEDIA_PLAYER_ARTSPLAYER;
+    config->mediaPlayer=config->MEDIA_PLAYER_ARTSPLAYER;
   }
   
 

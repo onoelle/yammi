@@ -71,7 +71,7 @@ public:
   
 // general	
 	/** player which is used for playing songs */
-	int player;
+	int mediaPlayer;
 	/** version of yammi */
 	QString yammiVersion;
 	/** Base directory for scanning */
@@ -121,8 +121,6 @@ public:
 	bool lazyGrouping;
 	/** Threshold for searching */
 	int searchThreshold;
-	/** Maximum results for searching */
-	int searchMaximumNoResults;
 
 // xmms specific
 	/** Songs in playlist of xmms */

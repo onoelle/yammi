@@ -76,9 +76,9 @@ Prefs YammiModel::config( )
 void YammiModel::readCategories()
 {
 	// read in all xml-files found in a given directory that represent a category
-	kdDebug()<<"Reading categories..." <<endl;
+	kdDebug() << "Reading categories..." << endl;
 	
-	QDomDocument doc("category");
+	QDomDocument doc;
 	int count=0;
 
 	QStringList cats = KGlobal::dirs()->findAllResources( "appdata","categories/*.xml", true );
@@ -94,23 +94,30 @@ void YammiModel::readCategories()
 	{
 		p->setProgress( progressCount );
 		kapp->eventLoop()->processEvents(QEventLoop::ExcludeUserInput);
-		kdDebug()<<"cat resource found: "<<*it<<endl;
+		kdDebug() << "category found: " << *it << endl;
 		QFile f( *it );
 		if ( !f.open( IO_ReadOnly ) )
 		{
-			kdError()<<"Could not open file for reading:"<<*it<<endl;
+			kdError() << "Could not open file for reading:" << *it << endl;
 			continue;
 		}
-		if ( !doc.setContent( &f ) ) 
+		QString errorMsg;
+		int errorLine;
+		int errorColumn;		
+		if( !doc.setContent(&f, false, &errorMsg, &errorLine, &errorColumn) )
 		{
-			kdError()<<"Error reading file contents"<<*it<<endl;
+			QString msg = QString(i18n("Error reading categories file:\n%1\n(Error: %2, line %3, column %4)") ).arg(f.name()).arg(errorMsg).arg(errorLine).arg(errorColumn);
+			kdError() << "Error reading file contents: " << *it << endl << msg << endl;
 			f.close();
 			continue;
 		}
 		f.close();
 		// get root element
 		QDomElement e = doc.documentElement();
-		if(e.tagName()!="category") continue;
+		if(e.tagName()!="category") {
+			kdError() << "Does not seem to be a category xml file: " << *it << endl;
+			continue;
+		}
 		
 		QString name = e.attribute("name");
 		
@@ -132,7 +139,7 @@ void YammiModel::readCategories()
 			Song* s = allSongs.getSongByKey(artist, title, album);
 			if(!s)
 			{
-				kdWarning()<<"Song not found in database : "<<artist<<"/"<<title<<"/"<<album<<endl;
+				kdWarning() << "Song not found in database : " << artist << "/" << title << "/" << album << endl;
 			}
 			else 
 			{
@@ -143,28 +150,29 @@ void YammiModel::readCategories()
 			e = e.nextSibling().toElement();
 		}
 	}
+	categoriesChanged(false);
 }
 
 
 // Reads song history
 void YammiModel::readHistory()
 {
-	kdDebug()<<"reading song history..."<<endl;
+	kdDebug() << "reading song history..." << endl;
 
 	// new version, history as xml-file
-	QDomDocument doc( "history" );
+	QDomDocument doc;
 	QString file = KGlobal::dirs()->findResource( "appdata","history.xml");
-	kdDebug()<<"appdata hist"<<file<<endl;
+	kdDebug() << "appdata hist" << file << endl;
 	
 	QFile f( file );
 	if ( !f.open( IO_ReadOnly ) ) 
 	{
-		kdError()<<"could not open history file : "<<file<<endl;
+		kdError() << "could not open history file : " << file << endl;
 		return;
 	}
 	if ( !doc.setContent( &f ) ) 
 	{
-		kdError()<<"could not parse history file, incorrect xml format? "<<file<<endl;
+		kdError() << "could not parse history file, incorrect xml format? " << file << endl;
 		f.close();
 		return;
 	}
@@ -183,8 +191,6 @@ void YammiModel::readHistory()
 	for(int i=0; !e.isNull(); i++)
 	{
 		if(i % 100==0) {
-			//FIXME replace for progress bar indicator?
-			cout << "." << flush;
 			p->setProgress( i );
 			kapp->eventLoop()->processEvents(QEventLoop::ExcludeUserInput);
 		}		
@@ -218,7 +224,7 @@ void YammiModel::saveHistory()
 {
 	kdDebug()<<"saving history..."<<endl;
 
-	QDomDocument doc( "history" );
+	QDomDocument doc;
 	QDomElement root = doc.createElement("history");
 	doc.appendChild(root);
 	
@@ -283,7 +289,7 @@ void YammiModel::saveCategories()
 		name = folder->folderName();
 		kdDebug() << "Saving category: " << name << endl;
 
-		QDomDocument doc( "category" );
+		QDomDocument doc;
 		QDomElement root = doc.createElement("category");
 		root.setAttribute("name", name);
 		doc.appendChild(root);
@@ -339,7 +345,7 @@ or perform a harddisk scan to create a new Database") );
 		}
 	}
 	
-	QDomDocument doc("songdb");
+	QDomDocument doc;
 	QString errorMsg;
 	int errorLine;
 	int errorColumn;
@@ -373,8 +379,10 @@ a new Database and scan your harddisk for songs") );
 	int count = 0;
 	while( !e.isNull( ) )
 	{
-		p->setProgress( count );
-		kapp->eventLoop()->processEvents(QEventLoop::ExcludeUserInput);
+		if(count % 100==0) {
+			p->setProgress( count );
+			kapp->eventLoop()->processEvents(QEventLoop::ExcludeUserInput);
+		}
 		
 		QString artist   = e.attribute("artist", "unknown");
 		QString title    = e.attribute("title", "unknown");
@@ -526,7 +534,7 @@ void YammiModel::saveSongDatabase()
 	
 	if(haveToReloadPlaylist) 
 	{//FIXME!! this is kinda ugly...
-		kdDebug()<<"Reload playlist to player..."<<endl;
+		kdDebug() << "Reload playlist to player..." << endl;
 		m_yammi->player->clearPlaylist();
 		Song* save=0;
 		if(songsToPlay.count()>0) 
@@ -544,7 +552,7 @@ void YammiModel::saveSongDatabase()
 			songsToPlay.insert(0, new SongEntryInt(save, 0));
 		}
 	}
-	kdDebug()<<"saving database: done"<<endl;
+	kdDebug() << "saving database: done" << endl;
 	allSongsChanged(false);
 }
 
