@@ -188,12 +188,12 @@ int Song::create(const QString location, const QString mediaName)
 
 
 
-
-#ifdef ENABLE_OGGLIBS
-
   // ogg object
   if(location.right(4).upper()==".OGG") {
     // get ogg info
+
+#ifdef ENABLE_OGGLIBS
+
     if(!getOggInfo(location)) {
       cout << "could not read tag information from ogg file \"" << location << "\"\n";
     }
@@ -208,11 +208,14 @@ int Song::create(const QString location, const QString mediaName)
     if(title.right(4).upper()==".OGG") {
       title=title.left(title.length()-4);
     }
+#else
+    artist=ffArtist;
+    title=ffTitle;
+#endif // ENABLE_OGGLIBS
 
     treated=true;
   }
 
-#endif // ENABLE_OGGLIBS
 
 
   // wav object
@@ -230,13 +233,12 @@ int Song::create(const QString location, const QString mediaName)
 
 
   if(!treated) {
-    cout << location << ": no special handling (such as for mp3 or ogg files) available (or disabled)...\n";
+    cout << location << ": unknown suffix, no special handling available...\n";
     cout << "  => cannot read information such as bitrate, length and tags\n";
-    cout << "  => Yammi tries to guess artist and title from filename (using a simple \"artist - title\" pattern\n";
     bitrate=0;
     length=0;
-    artist=ffArtist;
-    title=ffTitle;
+    artist="";
+    title=saveFilename;
   }
 
 
@@ -244,12 +246,15 @@ int Song::create(const QString location, const QString mediaName)
 	artist=artist.simplifyWhiteSpace();
 	title=title.simplifyWhiteSpace();
 
-	// capitalize after spaces (any exceptions?)
-	album=capitalize(album);
-	artist=capitalize(artist);
-	title=capitalize(title);
-
+  if(treated) {
+    // capitalize after spaces (any exceptions?)
+    album=capitalize(album);
+    artist=capitalize(artist);
+    title=capitalize(title);
+  }
+  
 	corrupted=false;
+
   // TODO: maybe perform this check only if not scanning song from media?
   checkConsistency(gYammiGui->getModel()->config.tagsConsistent, gYammiGui->getModel()->config.filenamesConsistent);
   return 0;
@@ -346,6 +351,7 @@ bool Song::getMp3Tags(QString filename)
   }
   cout << "Bitrate: " << mp3info->bitrate/1000 << "KBps\n";
   cout << "Frequency: " << mp3info->frequency/1000 << "KHz\n";
+
   // end experimental
   */
 
@@ -355,7 +361,6 @@ bool Song::getMp3Tags(QString filename)
   // title
   this->title="";
   if(getId3Tag(&tag, ID3FID_TITLE, ID3FN_TEXT, &str)) {
-//    cout << "found tag: (title)" << str << "\n";
     this->title=str;
     foundSomething=true;
   }
@@ -363,7 +368,6 @@ bool Song::getMp3Tags(QString filename)
   // artist
   this->artist="";
   if(getId3Tag(&tag, ID3FID_LEADARTIST, ID3FN_TEXT, &str)) {
-//    cout << "found tag: (artist)" << str << "\n";
     this->artist=str;
     foundSomething=true;
   }
@@ -371,7 +375,6 @@ bool Song::getMp3Tags(QString filename)
   // album
   this->album="";
   if(getId3Tag(&tag, ID3FID_ALBUM, ID3FN_TEXT, &str)) {
-//    cout << "found tag: (album)" << str << "\n";
     this->album=str;
     foundSomething=true;
   }
@@ -379,7 +382,6 @@ bool Song::getMp3Tags(QString filename)
   // year
   this->year=0;
   if(getId3Tag(&tag, ID3FID_YEAR, ID3FN_TEXT, &str)) {
-//    cout << "found tag: (year)" << str << "\n";
 		sscanf(str, "%d", &(this->year));
     foundSomething=true;
   }
@@ -387,7 +389,6 @@ bool Song::getMp3Tags(QString filename)
   // comment
   this->comment="";
   if(getId3Tag(&tag, ID3FID_COMMENT, ID3FN_TEXT, &str)) {
-//    cout << "found tag: (comment)" << str << "\n";
     this->comment=str;
     foundSomething=true;
   }
@@ -395,7 +396,6 @@ bool Song::getMp3Tags(QString filename)
   // tracknum
   this->trackNr=0;
   if(getId3Tag(&tag, ID3FID_TRACKNUM, ID3FN_TEXT, &str)) {
-//    cout << "found tag: (tracknum)" << str << "\n";
 		sscanf(str, "%d", &(this->trackNr));
     foundSomething=true;
   }
@@ -403,12 +403,10 @@ bool Song::getMp3Tags(QString filename)
   // genre
   this->genreNr=-1;
   if(getId3Tag(&tag, ID3FID_CONTENTTYPE, ID3FN_TEXT, &str)) {
-//    cout << "found tag: (genre)" << str << "\n";
     if(str.left(1)=="(")
       str=str.right(str.length()-1);
     if(str.right(1)==")")
       str=str.left(str.length()-1);
-//    cout << "stripped: " << str << "|\n";
 		sscanf(str, "%d", &(this->genreNr));
     foundSomething=true;
   }
@@ -427,7 +425,6 @@ bool Song::getId3Tag(ID3_Tag* tag, ID3_FrameID frame, ID3_FieldID field, QString
   // get frame
   ID3_Frame* theFrame = tag->Find(frame);
   if (theFrame == NULL) {
-//    cout << "could not find frame " << frame << "\n";
     return false;
   }
 
@@ -436,7 +433,6 @@ bool Song::getId3Tag(ID3_Tag* tag, ID3_FrameID frame, ID3_FieldID field, QString
 //  ID3_Field* theField = theFrame->GetField(field);
   ID3_Field* theField = &(theFrame->Field(field));
   if (theField == NULL) {
-//    cout << "could not find field " << field << "\n";
     return false;
   }
 
@@ -1099,10 +1095,10 @@ QString Song::constructFilename()
     }
     suffix=mediaLocation[0].right(4);
   }
-  QString s=this->artist+" - "+this->title+suffix;
-//	QCString s2=QFile::encodeName(s);
-//	QString s3=QFile::decodeName(s2);
-//	cout << "raw name: " << s << ", encodedName: " << s2 << ", decodedName: " << s3 << "\n";
+//  QString s=this->artist+" - "+this->title+suffix;
+  QString pattern=gYammiGui->getModel()->config.filenamePattern;
+  QString s=(gYammiGui->makeReplacements(pattern, this, 0))+suffix;
+  
 	
 	// replace all forbidden characters for filenames with nothing
 	// for windows and linux filesystems!

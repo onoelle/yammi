@@ -392,8 +392,8 @@ void XmmsPlayer::check()
     // if player stopped and only one song left in playlist, we should probably(?) remove it
     // not too nice and clean, I know...
     if(xmms_remote_get_playlist_length(session)==1) {
- 	    xmms_remote_playlist_delete(session, 0);
-      if(playlist->count()>=1) {
+      if(playlist->count()==0) {
+        xmms_remote_playlist_delete(session, 0);
         playlist->removeFirst();
         playlistChanged();
       }
@@ -422,6 +422,7 @@ void XmmsPlayer::check()
           playlist->removeFirst();
         }
       }
+      playlistChanged();
     }
   }
 }

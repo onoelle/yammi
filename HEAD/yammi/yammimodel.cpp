@@ -17,6 +17,7 @@
 
 #include "yammimodel.h"
 #include "yammigui.h"
+#include "options.h"
 
 using namespace std;
 
@@ -68,6 +69,7 @@ void YammiModel::readPreferences()
   }
 	config.trashDir					=	getProperty(&doc, "trashDir", config.trashDir);
 	config.scanDir					=	getProperty(&doc, "scanDir", config.scanDir);
+	config.filenamePattern	=	getProperty(&doc, "filenamePattern", config.filenamePattern);
 	config.doubleClickAction=	(action) getProperty(&doc, "doubleClickAction", config.doubleClickAction);
 	config.middleClickAction=	(action) getProperty(&doc, "middleClickAction", config.middleClickAction);
 	config.controlClickAction=(action) getProperty(&doc, "controlClickAction", config.controlClickAction);
@@ -82,11 +84,35 @@ void YammiModel::readPreferences()
 	config.lazyGrouping			=	getProperty(&doc, "lazyGrouping", config.lazyGrouping);
 	config.searchThreshold	=	getProperty(&doc, "searchThreshold", config.searchThreshold);
 	config.searchMaximumNoResults	=	getProperty(&doc, "searchMaximumNoResults", config.searchMaximumNoResults);
-	config.keepInXmms				=	getProperty(&doc, "keepInXmms", config.keepInXmms);
+
   config.player			      =	getProperty(&doc, "mediaPlayer", config.player);
-	
+#ifndef ENABLE_XMMS
+  // xmms not enabled => set to noatun
+  if(config.player==0)
+    config.player=1;
+#endif
+#ifndef ENABLE_NOATUN
+  // noatun not enabled => set to xmms
+  if(config.player==1)
+    config.player=0;
+#endif
+#ifndef ENABLE_XMMS
+#ifndef ENABLE_NOATUN
+  cout << "ERROR: no media player support! (you need at least support for one media player compiled in)\n";
+  config.player=-1;
+#endif
+#endif
+
+  // xmms specific
+  config.keepInXmms				=	getProperty(&doc, "keepInXmms", config.keepInXmms);
+
+  // noatun specific
+  config.fadeTime			    =	getProperty(&doc, "fadeTime", config.fadeTime);
+  config.fadeOutEnd			  =	getProperty(&doc, "fadeOutEnd", config.fadeOutEnd);
+  config.fadeInStart		  =	getProperty(&doc, "fadeInStart", config.fadeInStart);
+  
 	// plugins
-	config.grabAndEncodeCmd	=	getProperty(&doc, "grabAndEncodeCmd", config.grabAndEncodeCmd);
+  config.grabAndEncodeCmd	=	getProperty(&doc, "grabAndEncodeCmd", config.grabAndEncodeCmd);
 	config.shutdownScript		=	getProperty(&doc, "shutdownScript", config.shutdownScript);
 	
 	config.pluginCommand		=	getProperty(&doc, "pluginCommand", config.pluginCommand);
@@ -137,8 +163,14 @@ void YammiModel::savePreferences()
 	setProperty(&doc, "lazyGrouping", 			config.lazyGrouping);
 	setProperty(&doc, "searchThreshold", 		config.searchThreshold);
 	setProperty(&doc, "searchMaximumNoResults",		config.searchMaximumNoResults);
-	setProperty(&doc, "keepInXmms", 				config.keepInXmms);
 	setProperty(&doc, "mediaPlayer", 				config.player);
+  // xmms
+	setProperty(&doc, "keepInXmms", 				config.keepInXmms);
+  // noatun
+  setProperty(&doc, "fadeTime", 				  config.fadeTime);
+  setProperty(&doc, "fadeOutEnd", 				config.fadeOutEnd);
+  setProperty(&doc, "fadeInStart", 				config.fadeInStart);
+  
 	// plugins
 	setProperty(&doc, "grabAndEncodeCmd",		config.grabAndEncodeCmd);
 	setProperty(&doc, "shutdownScript",			config.shutdownScript);
@@ -185,13 +217,15 @@ bool YammiModel::getProperty(const QDomDocument* doc, const QString propName, co
 QString YammiModel::getProperty(const QDomDocument* doc, const QString propName, const QString propDefault)
 {	
 	QDomNodeList list=doc->elementsByTagName ( propName );
-	QDomNode node=list.item(0);					// we only retrieve first item
-	if(node.isNull() || !node.isElement()) {
-		cout << "setting " << propName << " to default value: " << propDefault << "\n";
-		return propDefault;
-	}
-	QDomElement elem=node.toElement();
-	return elem.text();
+  if(list.count()>0) {
+    QDomNode node=list.item(0);					// we only retrieve first item
+    if(!(node.isNull()) && node.isElement()) {
+      QDomElement elem=node.toElement();
+      return elem.text();
+    }
+  }
+  cout << "setting " << propName << " to default value: " << propDefault << "\n";
+  return propDefault;
 }
 
 /// for multiple entries: QStringList

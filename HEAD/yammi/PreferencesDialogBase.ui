@@ -330,17 +330,6 @@
                                     <property name="spacing">
                                         <number>6</number>
                                     </property>
-                                    <widget class="QLabel" row="3" column="0">
-                                        <property name="name">
-                                            <cstring>LabelKeepInXmms</cstring>
-                                        </property>
-                                        <property name="text">
-                                            <string>songs in xmms playlist</string>
-                                        </property>
-                                        <property name="toolTip" stdset="0">
-                                            <string>the number of songs to keep in Xmms playlist</string>
-                                        </property>
-                                    </widget>
                                     <widget class="QCheckBox" row="1" column="1">
                                         <property name="name">
                                             <cstring>CheckBoxLazyGrouping</cstring>
@@ -361,14 +350,6 @@
                                         </property>
                                         <property name="toolTip" stdset="0">
                                             <string>the minimum number for a subfolder to be created (Folder Albums, Artists and Genres)</string>
-                                        </property>
-                                    </widget>
-                                    <widget class="QLineEdit" row="3" column="1">
-                                        <property name="name">
-                                            <cstring>LineEditKeepInXmms</cstring>
-                                        </property>
-                                        <property name="toolTip" stdset="0">
-                                            <string>the number of songs to keep in Xmms playlist</string>
                                         </property>
                                     </widget>
                                     <widget class="QCheckBox" row="1" column="0">
@@ -454,66 +435,6 @@
                                     </property>
                                 </widget>
                             </hbox>
-                        </widget>
-                        <widget class="QButtonGroup">
-                            <property name="name">
-                                <cstring>MediaPlayerGroup</cstring>
-                            </property>
-                            <property name="geometry">
-                                <rect>
-                                    <x>10</x>
-                                    <y>50</y>
-                                    <width>240</width>
-                                    <height>80</height>
-                                </rect>
-                            </property>
-                            <property name="title">
-                                <string>Media Player</string>
-                            </property>
-                            <widget class="QRadioButton">
-                                <property name="name">
-                                    <cstring>RadioButtonNoatun</cstring>
-                                </property>
-                                <property name="geometry">
-                                    <rect>
-                                        <x>10</x>
-                                        <y>50</y>
-                                        <width>101</width>
-                                        <height>20</height>
-                                    </rect>
-                                </property>
-                                <property name="text">
-                                    <string>Noatun</string>
-                                </property>
-                                <property name="checked">
-                                    <bool>false</bool>
-                                </property>
-                                <property name="buttonGroupId">
-                                    <number>1</number>
-                                </property>
-                            </widget>
-                            <widget class="QRadioButton">
-                                <property name="name">
-                                    <cstring>RadioButtonXmms</cstring>
-                                </property>
-                                <property name="geometry">
-                                    <rect>
-                                        <x>10</x>
-                                        <y>20</y>
-                                        <width>101</width>
-                                        <height>20</height>
-                                    </rect>
-                                </property>
-                                <property name="text">
-                                    <string>XMMS</string>
-                                </property>
-                                <property name="checked">
-                                    <bool>true</bool>
-                                </property>
-                                <property name="buttonGroupId">
-                                    <number>1</number>
-                                </property>
-                            </widget>
                         </widget>
                     </widget>
                     <widget class="QGroupBox" row="1" column="0" rowspan="1" colspan="2">
@@ -739,6 +660,281 @@
                     <cstring>tab</cstring>
                 </property>
                 <attribute name="title">
+                    <string>MediaPlayer</string>
+                </attribute>
+                <widget class="QGroupBox">
+                    <property name="name">
+                        <cstring>GroupBoxXmms</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>10</x>
+                            <y>170</y>
+                            <width>240</width>
+                            <height>231</height>
+                        </rect>
+                    </property>
+                    <property name="title">
+                        <string>XMMS settings</string>
+                    </property>
+                    <widget class="QLineEdit">
+                        <property name="name">
+                            <cstring>LineEditKeepInXmms</cstring>
+                        </property>
+                        <property name="geometry">
+                            <rect>
+                                <x>120</x>
+                                <y>30</y>
+                                <width>108</width>
+                                <height>21</height>
+                            </rect>
+                        </property>
+                        <property name="toolTip" stdset="0">
+                            <string>the number of songs to keep in Xmms playlist</string>
+                        </property>
+                    </widget>
+                    <widget class="QLabel">
+                        <property name="name">
+                            <cstring>LabelKeepInXmms</cstring>
+                        </property>
+                        <property name="geometry">
+                            <rect>
+                                <x>10</x>
+                                <y>30</y>
+                                <width>90</width>
+                                <height>21</height>
+                            </rect>
+                        </property>
+                        <property name="text">
+                            <string>songs in playlist</string>
+                        </property>
+                        <property name="toolTip" stdset="0">
+                            <string>the number of songs to keep in Xmms playlist</string>
+                        </property>
+                    </widget>
+                </widget>
+                <widget class="QGroupBox">
+                    <property name="name">
+                        <cstring>GroupBoxNoatun</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>271</x>
+                            <y>170</y>
+                            <width>260</width>
+                            <height>231</height>
+                        </rect>
+                    </property>
+                    <property name="title">
+                        <string>Noatun settings</string>
+                    </property>
+                    <widget class="QGroupBox">
+                        <property name="name">
+                            <cstring>GroupBoxNoatunCrossfading</cstring>
+                        </property>
+                        <property name="geometry">
+                            <rect>
+                                <x>10</x>
+                                <y>30</y>
+                                <width>241</width>
+                                <height>121</height>
+                            </rect>
+                        </property>
+                        <property name="title">
+                            <string>Crossfading</string>
+                        </property>
+                        <widget class="QLabel">
+                            <property name="name">
+                                <cstring>LabelFadeTime</cstring>
+                            </property>
+                            <property name="geometry">
+                                <rect>
+                                    <x>10</x>
+                                    <y>20</y>
+                                    <width>90</width>
+                                    <height>21</height>
+                                </rect>
+                            </property>
+                            <property name="text">
+                                <string>fading time (sec)</string>
+                            </property>
+                            <property name="toolTip" stdset="0">
+                                <string>The total time of crossfading (in seconds)</string>
+                            </property>
+                        </widget>
+                        <widget class="QLineEdit">
+                            <property name="name">
+                                <cstring>LineEditFadeTime</cstring>
+                            </property>
+                            <property name="geometry">
+                                <rect>
+                                    <x>120</x>
+                                    <y>20</y>
+                                    <width>108</width>
+                                    <height>21</height>
+                                </rect>
+                            </property>
+                            <property name="toolTip" stdset="0">
+                                <string>The total time of crossfading (in seconds)</string>
+                            </property>
+                        </widget>
+                        <widget class="QLabel">
+                            <property name="name">
+                                <cstring>LabelFadeOutEnd</cstring>
+                            </property>
+                            <property name="geometry">
+                                <rect>
+                                    <x>10</x>
+                                    <y>50</y>
+                                    <width>90</width>
+                                    <height>21</height>
+                                </rect>
+                            </property>
+                            <property name="text">
+                                <string>fade out end %</string>
+                            </property>
+                            <property name="toolTip" stdset="0">
+                                <string>Volume in percentage to fade out to</string>
+                            </property>
+                        </widget>
+                        <widget class="QLineEdit">
+                            <property name="name">
+                                <cstring>LineEditFadeOutEnd</cstring>
+                            </property>
+                            <property name="geometry">
+                                <rect>
+                                    <x>120</x>
+                                    <y>50</y>
+                                    <width>108</width>
+                                    <height>21</height>
+                                </rect>
+                            </property>
+                            <property name="toolTip" stdset="0">
+                                <string>Volume in percentage to fade out to</string>
+                            </property>
+                        </widget>
+                        <widget class="QLabel">
+                            <property name="name">
+                                <cstring>LabelFadeInStart</cstring>
+                            </property>
+                            <property name="geometry">
+                                <rect>
+                                    <x>10</x>
+                                    <y>80</y>
+                                    <width>90</width>
+                                    <height>21</height>
+                                </rect>
+                            </property>
+                            <property name="text">
+                                <string>fade in start %</string>
+                            </property>
+                            <property name="toolTip" stdset="0">
+                                <string>Volume in percentage to fade in from</string>
+                            </property>
+                        </widget>
+                        <widget class="QLineEdit">
+                            <property name="name">
+                                <cstring>LineEditFadeInStart</cstring>
+                            </property>
+                            <property name="geometry">
+                                <rect>
+                                    <x>120</x>
+                                    <y>80</y>
+                                    <width>108</width>
+                                    <height>21</height>
+                                </rect>
+                            </property>
+                            <property name="toolTip" stdset="0">
+                                <string>Volume in percentage to fade in from</string>
+                            </property>
+                        </widget>
+                    </widget>
+                </widget>
+                <widget class="QButtonGroup">
+                    <property name="name">
+                        <cstring>MediaPlayerGroup</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>10</x>
+                            <y>30</y>
+                            <width>520</width>
+                            <height>90</height>
+                        </rect>
+                    </property>
+                    <property name="title">
+                        <string>Media Player</string>
+                    </property>
+                    <widget class="QRadioButton">
+                        <property name="name">
+                            <cstring>RadioButtonXmms</cstring>
+                        </property>
+                        <property name="geometry">
+                            <rect>
+                                <x>10</x>
+                                <y>20</y>
+                                <width>101</width>
+                                <height>20</height>
+                            </rect>
+                        </property>
+                        <property name="text">
+                            <string>XMMS</string>
+                        </property>
+                        <property name="checked">
+                            <bool>true</bool>
+                        </property>
+                        <property name="buttonGroupId">
+                            <number>1</number>
+                        </property>
+                    </widget>
+                    <widget class="QRadioButton">
+                        <property name="name">
+                            <cstring>RadioButtonNoatun</cstring>
+                        </property>
+                        <property name="geometry">
+                            <rect>
+                                <x>10</x>
+                                <y>50</y>
+                                <width>101</width>
+                                <height>20</height>
+                            </rect>
+                        </property>
+                        <property name="text">
+                            <string>Noatun</string>
+                        </property>
+                        <property name="checked">
+                            <bool>false</bool>
+                        </property>
+                        <property name="buttonGroupId">
+                            <number>1</number>
+                        </property>
+                    </widget>
+                    <widget class="QLabel">
+                        <property name="name">
+                            <cstring>TextLabel1_2</cstring>
+                        </property>
+                        <property name="geometry">
+                            <rect>
+                                <x>170</x>
+                                <y>20</y>
+                                <width>197</width>
+                                <height>60</height>
+                            </rect>
+                        </property>
+                        <property name="text">
+                            <string>You have to restart Yammi 
+after changing the media player!
+
+Noatun support is still experimental!</string>
+                        </property>
+                    </widget>
+                </widget>
+            </widget>
+            <widget class="QWidget">
+                <property name="name">
+                    <cstring>tab</cstring>
+                </property>
+                <attribute name="title">
                     <string>Burning folder</string>
                 </attribute>
                 <widget class="QLayoutWidget">
@@ -797,6 +993,41 @@
                             </property>
                         </widget>
                     </grid>
+                </widget>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>LabelFilenamePattern</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>20</x>
+                            <y>170</y>
+                            <width>100</width>
+                            <height>21</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>filename pattern</string>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>The filename pattern to use for renaming files.</string>
+                    </property>
+                </widget>
+                <widget class="QLineEdit">
+                    <property name="name">
+                        <cstring>LineEditFilenamePattern</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>130</x>
+                            <y>170</y>
+                            <width>156</width>
+                            <height>21</height>
+                        </rect>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>The filename pattern to use for renaming files.</string>
+                    </property>
                 </widget>
             </widget>
             <widget class="QWidget">
@@ -1353,7 +1584,6 @@ and songs can be loaded from those media into a swap directory.</string>
     <tabstop>CheckBoxChildSafe</tabstop>
     <tabstop>CheckBoxLazyGrouping</tabstop>
     <tabstop>LineEditGroupThreshold</tabstop>
-    <tabstop>LineEditKeepInXmms</tabstop>
     <tabstop>LineEditSecondSoundDevice</tabstop>
     <tabstop>ButtonOK</tabstop>
     <tabstop>ButtonCancel</tabstop>

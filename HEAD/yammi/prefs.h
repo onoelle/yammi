@@ -33,10 +33,12 @@ public:
 	~Prefs();
 	
 // general	
+  int player;
 	QString yammiVersion;
 	QString scanDir;
 	QString trashDir;					// our trashcan for songs (files will be moved to this dir on deleting)
 	QString yammiBaseDir;
+  QString filenamePattern;
 	
 	action doubleClickAction;
 	action middleClickAction;
@@ -48,11 +50,18 @@ public:
 	bool tagsConsistent;
 	bool filenamesConsistent;
 	QString secondSoundDevice;
-	int keepInXmms;
 	int groupThreshold;
   bool lazyGrouping;
 	int searchThreshold;
 	int searchMaximumNoResults;
+
+// xmms specific
+	int keepInXmms;
+
+// noatun specific
+  int fadeTime;
+  int fadeOutEnd;
+  int fadeInStart;
 
 // plugins
 	QString grabAndEncodeCmd;
@@ -71,7 +80,6 @@ public:
 	QString mediaDir;
 	QString swapDir;
 
-  int player;
 };
 
 #endif

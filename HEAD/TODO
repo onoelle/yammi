@@ -1,6 +1,6 @@
 TODO
 ----
-last update 30.1.2003
+last update 7.2.2003
 
 
 KNOWN BUGS
@@ -14,7 +14,10 @@ KNOWN BUGS
 
 for noatun support
 ------------------
-swap management: in song: method getFilename() vs. getRealFilename() (fast)???
+- swap management: in song: method getFilename() vs. getRealFilename() (fast)???
+- recognize active player on startup
+- check sleep mode
+- xmms: remove last file after played?
 
 email to noatun:
 - no access to any other but first song
@@ -22,6 +25,7 @@ email to noatun:
 
 for release 0.7.1
 -----------------
+- load m3u files into a category
 - plugin: publish a sample plugin (echo...) with all replacements
 
 - F1 does not work, if stopped?

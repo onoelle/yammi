@@ -170,8 +170,10 @@ int NoatunPlayer::getOtherPlayerId()
 void NoatunPlayer::onFade()
 {
   if(fade<100) {
-    sendDcopCommandInt("setVolume(int)", 100-(fade/2), fadeOut);
-    sendDcopCommandInt("setVolume(int)", 50+(fade/2), fadeIn);
+    sendDcopCommandInt("setVolume(int)", 100-(fade*(100-model->config.fadeOutEnd)/100), fadeOut);
+    sendDcopCommandInt("setVolume(int)", model->config.fadeInStart+(fade*(100-model->config.fadeInStart)/100), fadeIn);
+//    sendDcopCommandInt("setVolume(int)", 100-(fade/2), fadeOut);
+//    sendDcopCommandInt("setVolume(int)", 50+(fade/2), fadeIn);
     fade+=3;
     fadeTimer.start( 200, TRUE );
   }
@@ -202,7 +204,7 @@ void NoatunPlayer::check()
     return;
   }
   int timeLeft=getTotalTime()-getCurrentTime();
-  if(getStatus()==PLAYING && timeLeft<10000 && timeLeft>0) {
+  if(getStatus()==PLAYING && timeLeft<model->config.fadeTime && timeLeft>0) {
     startSongChange();
   }
 }
@@ -228,17 +230,15 @@ void NoatunPlayer::startSongChange()
 }
 
 
-void NoatunPlayer::playlistAdd(QString filename, bool autoStart, int id)
+void NoatunPlayer::playlistAdd(QString filename, bool autoStart, bool fakePassiveAdd)
 {
-  if(id==0) {
-    id=getCurrentPlayerId();
-  }
+  int id=getCurrentPlayerId();
   QString str=QString("noatun-%1").arg(id);
   QByteArray data;
   QDataStream arg(data, IO_WriteOnly);
 
   arg << filename;
-  arg << true;
+  arg << fakePassiveAdd;
   
 #ifdef ENABLE_NOATUN
   if (!client->send(str.latin1(), "Noatun", "addFile(QString, bool)", data)) {
@@ -352,39 +352,31 @@ int NoatunPlayer::getTotalTime()
 void NoatunPlayer::syncPlayer2Yammi(MyList* playlist)
 {
   // go back as long as the result of currentFile() changes...
-  // TODO: a song queued twice?
+  // TODO: a song queued three times?
+  QString prev2=getCurrentFile();
+  sendDcopCommand(QString("back()"));
   QString prev=getCurrentFile();
   sendDcopCommand(QString("back()"));
-  for(int tries=0; prev!=getCurrentFile() && tries<100; tries++) {
+  for(int tries=0; prev!=getCurrentFile() || prev2!=getCurrentFile() && tries<500; tries++) {
+    prev2=prev;
     prev=getCurrentFile();
     sendDcopCommand(QString("back()"));
   }
   
   // now delete all other entries (as long as currentFile()!="")
-  bool first=true;
   for(QString file=getCurrentFile(); file!=""; file=getCurrentFile()) {
-    cout << "file found: |" << file << "|, calling removeCurrent()\n";
     Song* toAdd=model->getSongFromFilename(file);
     if(toAdd!=0) {
-      // TODO: we have to append a SongEntryInt!!!
       playlist->append(new SongEntryInt(toAdd, playlist->count()+1));
     }
     else {
       cout << "song not in database: " << file << "\n";
     }
-    if(!first) {
-      sendDcopCommand(QString("removeCurrent()"));
-    }
-    else {
-      sendDcopCommand(QString("forward()"));
-      first=false;
-    }
+    sendDcopCommand(QString("removeCurrent()"));
   }
-  sendDcopCommand(QString("back()"));
   playlistChanged();
   lastStatus=getStatus();
   statusChanged();
-//  syncYammi2Player(false);
 }
 
 
@@ -408,8 +400,8 @@ void NoatunPlayer::syncYammi2Player(bool syncAll)
   }
   QString yammiCurrent=location.right(location.length()-location.findRev('/')-1);
   if(noatunCurrent!=yammiCurrent) {
-    cout << "setting Noatun's current to Yammi's current\n";
-    cout << "noatun file: |" << noatunCurrent << "|, yammi current: " << yammiCurrent << "\n";
+//    cout << "setting Noatun's current to Yammi's current\n";
+//    cout << "noatun file: |" << noatunCurrent << "|, yammi current: " << yammiCurrent << "\n";
     clearPlaylist();
     playlistAdd(location, false);
     sendDcopCommandInt("setVolume(int)", 100);
@@ -422,12 +414,12 @@ void NoatunPlayer::syncYammi2Player(bool syncAll)
       if(location=="" || location=="never") {
         continue;
       }
-      // TODO: HERE we would need a passive addFile(foo, false)...
-      playlistAdd(location, false);
+      playlistAdd(location, true, false);
     }
+    return;
   }
   for(unsigned int i=0; i<playlist->count(); i++) {
-    sendDcopCommand(QString("back()"));    
+    sendDcopCommand(QString("back()"));
   }
 }
 

@@ -8,8 +8,8 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>510</width>
-            <height>462</height>
+            <width>458</width>
+            <height>471</height>
         </rect>
     </property>
     <property name="sizePolicy">
@@ -26,7 +26,7 @@
     <property name="sizeGripEnabled">
         <bool>true</bool>
     </property>
-    <hbox>
+    <grid>
         <property name="name">
             <cstring>unnamed</cstring>
         </property>
@@ -36,11 +36,147 @@
         <property name="spacing">
             <number>6</number>
         </property>
-        <widget class="QLayoutWidget">
+        <widget class="QLabel" row="0" column="0">
             <property name="name">
-                <cstring>Layout3</cstring>
+                <cstring>LabelHeading</cstring>
             </property>
-            <vbox>
+            <property name="sizePolicy">
+                <sizepolicy>
+                    <hsizetype>3</hsizetype>
+                    <vsizetype>4</vsizetype>
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                </sizepolicy>
+            </property>
+            <property name="font">
+                <font>
+                    <pointsize>15</pointsize>
+                    <bold>1</bold>
+                    <italic>1</italic>
+                </font>
+            </property>
+            <property name="text">
+                <string>song info...</string>
+            </property>
+        </widget>
+        <widget class="QGroupBox" row="1" column="0">
+            <property name="name">
+                <cstring>GroupBox1</cstring>
+            </property>
+            <property name="title">
+                <string>tag information</string>
+            </property>
+            <grid>
+                <property name="name">
+                    <cstring>unnamed</cstring>
+                </property>
+                <property name="margin">
+                    <number>11</number>
+                </property>
+                <property name="spacing">
+                    <number>6</number>
+                </property>
+                <widget class="QLineEdit" row="0" column="1" rowspan="1" colspan="5">
+                    <property name="name">
+                        <cstring>LineEditArtist</cstring>
+                    </property>
+                </widget>
+                <widget class="QLineEdit" row="1" column="1" rowspan="1" colspan="5">
+                    <property name="name">
+                        <cstring>LineEditTitle</cstring>
+                    </property>
+                </widget>
+                <widget class="QLineEdit" row="2" column="1" rowspan="1" colspan="5">
+                    <property name="name">
+                        <cstring>LineEditAlbum</cstring>
+                    </property>
+                </widget>
+                <widget class="QLabel" row="2" column="0">
+                    <property name="name">
+                        <cstring>LabelAlbum</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Album</string>
+                    </property>
+                </widget>
+                <widget class="QLineEdit" row="3" column="1" rowspan="1" colspan="5">
+                    <property name="name">
+                        <cstring>LineEditComment</cstring>
+                    </property>
+                </widget>
+                <widget class="QLabel" row="3" column="0">
+                    <property name="name">
+                        <cstring>LabelComment</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Comment</string>
+                    </property>
+                </widget>
+                <widget class="QLabel" row="4" column="0">
+                    <property name="name">
+                        <cstring>LabelYear</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Year</string>
+                    </property>
+                </widget>
+                <widget class="QLabel" row="1" column="0">
+                    <property name="name">
+                        <cstring>LabelTitle</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Title</string>
+                    </property>
+                </widget>
+                <widget class="QLineEdit" row="4" column="3">
+                    <property name="name">
+                        <cstring>LineEditTrack</cstring>
+                    </property>
+                </widget>
+                <widget class="QLineEdit" row="4" column="1">
+                    <property name="name">
+                        <cstring>LineEditYear</cstring>
+                    </property>
+                </widget>
+                <widget class="QLabel" row="4" column="2">
+                    <property name="name">
+                        <cstring>LabelTrack</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Track</string>
+                    </property>
+                </widget>
+                <widget class="QLabel" row="4" column="4">
+                    <property name="name">
+                        <cstring>LabelGenre</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Genre</string>
+                    </property>
+                </widget>
+                <widget class="QLabel" row="0" column="0">
+                    <property name="name">
+                        <cstring>LabelArtist</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Artist</string>
+                    </property>
+                </widget>
+                <widget class="QComboBox" row="4" column="5">
+                    <property name="name">
+                        <cstring>ComboBoxGenre</cstring>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string></string>
+                    </property>
+                </widget>
+            </grid>
+        </widget>
+        <widget class="QLayoutWidget" row="4" column="0">
+            <property name="name">
+                <cstring>Layout1</cstring>
+            </property>
+            <hbox>
                 <property name="name">
                     <cstring>unnamed</cstring>
                 </property>
@@ -50,391 +186,249 @@
                 <property name="spacing">
                     <number>6</number>
                 </property>
-                <widget class="QLabel">
+                <widget class="QPushButton">
                     <property name="name">
-                        <cstring>LabelHeading</cstring>
-                    </property>
-                    <property name="sizePolicy">
-                        <sizepolicy>
-                            <hsizetype>3</hsizetype>
-                            <vsizetype>4</vsizetype>
-                            <horstretch>0</horstretch>
-                            <verstretch>0</verstretch>
-                        </sizepolicy>
-                    </property>
-                    <property name="font">
-                        <font>
-                            <pointsize>15</pointsize>
-                            <bold>1</bold>
-                            <italic>1</italic>
-                        </font>
+                        <cstring>PushButtonOK</cstring>
                     </property>
                     <property name="text">
-                        <string>song info...</string>
+                        <string>OK</string>
                     </property>
                 </widget>
-                <widget class="QGroupBox">
+                <widget class="QPushButton">
                     <property name="name">
-                        <cstring>GroupBox1</cstring>
+                        <cstring>PushButtonCancel</cstring>
                     </property>
-                    <property name="title">
-                        <string>id3 tag info</string>
+                    <property name="text">
+                        <string>Cancel</string>
                     </property>
-                    <grid>
-                        <property name="name">
-                            <cstring>unnamed</cstring>
-                        </property>
-                        <property name="margin">
-                            <number>11</number>
-                        </property>
-                        <property name="spacing">
-                            <number>6</number>
-                        </property>
-                        <widget class="QLineEdit" row="0" column="1" rowspan="1" colspan="5">
-                            <property name="name">
-                                <cstring>LineEditArtist</cstring>
-                            </property>
-                        </widget>
-                        <widget class="QLineEdit" row="1" column="1" rowspan="1" colspan="5">
-                            <property name="name">
-                                <cstring>LineEditTitle</cstring>
-                            </property>
-                        </widget>
-                        <widget class="QLineEdit" row="2" column="1" rowspan="1" colspan="5">
-                            <property name="name">
-                                <cstring>LineEditAlbum</cstring>
-                            </property>
-                        </widget>
-                        <widget class="QLabel" row="2" column="0">
-                            <property name="name">
-                                <cstring>LabelAlbum</cstring>
-                            </property>
-                            <property name="text">
-                                <string>Album</string>
-                            </property>
-                        </widget>
-                        <widget class="QLineEdit" row="3" column="1" rowspan="1" colspan="5">
-                            <property name="name">
-                                <cstring>LineEditComment</cstring>
-                            </property>
-                        </widget>
-                        <widget class="QLabel" row="3" column="0">
-                            <property name="name">
-                                <cstring>LabelComment</cstring>
-                            </property>
-                            <property name="text">
-                                <string>Comment</string>
-                            </property>
-                        </widget>
-                        <widget class="QLabel" row="4" column="0">
-                            <property name="name">
-                                <cstring>LabelYear</cstring>
-                            </property>
-                            <property name="text">
-                                <string>Year</string>
-                            </property>
-                        </widget>
-                        <widget class="QLabel" row="1" column="0">
-                            <property name="name">
-                                <cstring>LabelTitle</cstring>
-                            </property>
-                            <property name="text">
-                                <string>Title</string>
-                            </property>
-                        </widget>
-                        <widget class="QLineEdit" row="4" column="3">
-                            <property name="name">
-                                <cstring>LineEditTrack</cstring>
-                            </property>
-                        </widget>
-                        <widget class="QLineEdit" row="4" column="1">
-                            <property name="name">
-                                <cstring>LineEditYear</cstring>
-                            </property>
-                        </widget>
-                        <widget class="QLabel" row="4" column="2">
-                            <property name="name">
-                                <cstring>LabelTrack</cstring>
-                            </property>
-                            <property name="text">
-                                <string>Track</string>
-                            </property>
-                        </widget>
-                        <widget class="QLabel" row="4" column="4">
-                            <property name="name">
-                                <cstring>LabelGenre</cstring>
-                            </property>
-                            <property name="text">
-                                <string>Genre</string>
-                            </property>
-                        </widget>
-                        <widget class="QLabel" row="0" column="0">
-                            <property name="name">
-                                <cstring>LabelArtist</cstring>
-                            </property>
-                            <property name="text">
-                                <string>Artist</string>
-                            </property>
-                        </widget>
-                        <widget class="QComboBox" row="4" column="5">
-                            <property name="name">
-                                <cstring>ComboBoxGenre</cstring>
-                            </property>
-                            <property name="toolTip" stdset="0">
-                                <string></string>
-                            </property>
-                        </widget>
-                    </grid>
                 </widget>
-                <widget class="QGroupBox">
+            </hbox>
+        </widget>
+        <widget class="QGroupBox" row="3" column="0">
+            <property name="name">
+                <cstring>GroupBox2</cstring>
+            </property>
+            <property name="sizePolicy">
+                <sizepolicy>
+                    <hsizetype>5</hsizetype>
+                    <vsizetype>5</vsizetype>
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                </sizepolicy>
+            </property>
+            <property name="title">
+                <string>database info</string>
+            </property>
+            <grid>
+                <property name="name">
+                    <cstring>unnamed</cstring>
+                </property>
+                <property name="margin">
+                    <number>11</number>
+                </property>
+                <property name="spacing">
+                    <number>6</number>
+                </property>
+                <widget class="QLabel" row="0" column="0">
                     <property name="name">
-                        <cstring>GroupBox3</cstring>
+                        <cstring>LabelAddedTo</cstring>
                     </property>
-                    <property name="title">
-                        <string>read only</string>
+                    <property name="text">
+                        <string>Added to database</string>
                     </property>
-                    <grid>
-                        <property name="name">
-                            <cstring>unnamed</cstring>
-                        </property>
-                        <property name="margin">
-                            <number>11</number>
-                        </property>
-                        <property name="spacing">
-                            <number>6</number>
-                        </property>
-                        <widget class="QLabel" row="2" column="0">
-                            <property name="name">
-                                <cstring>LabelPath</cstring>
-                            </property>
-                            <property name="text">
-                                <string>Path</string>
-                            </property>
-                        </widget>
-                        <widget class="QLabel" row="3" column="0">
-                            <property name="name">
-                                <cstring>LabelFilename</cstring>
-                            </property>
-                            <property name="text">
-                                <string>Filename</string>
-                            </property>
-                        </widget>
-                        <widget class="QLabel" row="0" column="0">
-                            <property name="name">
-                                <cstring>LabelLength</cstring>
-                            </property>
-                            <property name="text">
-                                <string>Length</string>
-                            </property>
-                        </widget>
-                        <widget class="QLabel" row="1" column="0">
-                            <property name="name">
-                                <cstring>LabelSize</cstring>
-                            </property>
-                            <property name="text">
-                                <string>Size</string>
-                            </property>
-                        </widget>
-                        <widget class="QLabel" row="0" column="2">
-                            <property name="name">
-                                <cstring>LabelMedia</cstring>
-                            </property>
-                            <property name="text">
-                                <string>Media</string>
-                            </property>
-                            <property name="toolTip" stdset="0">
-                                <string>lists all media containing this song</string>
-                            </property>
-                        </widget>
-                        <widget class="QLabel" row="0" column="1">
-                            <property name="name">
-                                <cstring>ReadOnlyLength</cstring>
-                            </property>
-                            <property name="text">
-                                <string>unknown</string>
-                            </property>
-                        </widget>
-                        <widget class="QLabel" row="3" column="1" rowspan="1" colspan="4">
-                            <property name="name">
-                                <cstring>ReadOnlyFilename</cstring>
-                            </property>
-                            <property name="text">
-                                <string>unknown</string>
-                            </property>
-                        </widget>
-                        <widget class="QLabel" row="1" column="1" rowspan="1" colspan="2">
-                            <property name="name">
-                                <cstring>ReadOnlySize</cstring>
-                            </property>
-                            <property name="text">
-                                <string>unknown</string>
-                            </property>
-                        </widget>
-                        <widget class="QLabel" row="1" column="3">
-                            <property name="name">
-                                <cstring>LabelBitrate</cstring>
-                            </property>
-                            <property name="text">
-                                <string>Bitrate</string>
-                            </property>
-                        </widget>
-                        <widget class="QLabel" row="1" column="4">
-                            <property name="name">
-                                <cstring>ReadOnlyBitrate</cstring>
-                            </property>
-                            <property name="backgroundOrigin">
-                                <enum>ParentOrigin</enum>
-                            </property>
-                            <property name="frameShape">
-                                <enum>Panel</enum>
-                            </property>
-                            <property name="frameShadow">
-                                <enum>Sunken</enum>
-                            </property>
-                            <property name="text">
-                                <string>unknown</string>
-                            </property>
-                        </widget>
-                        <widget class="QComboBox" row="0" column="3" rowspan="1" colspan="2">
-                            <property name="name">
-                                <cstring>ComboBoxMedia</cstring>
-                            </property>
-                            <property name="toolTip" stdset="0">
-                                <string>lists all media containing this song</string>
-                            </property>
-                        </widget>
-                        <widget class="QLabel" row="2" column="1" rowspan="1" colspan="4">
-                            <property name="name">
-                                <cstring>ReadOnlyPath</cstring>
-                            </property>
-                            <property name="text">
-                                <string>unknown</string>
-                            </property>
-                        </widget>
-                    </grid>
                 </widget>
-                <widget class="QGroupBox">
+                <widget class="QLineEdit" row="0" column="1">
                     <property name="name">
-                        <cstring>GroupBox2</cstring>
+                        <cstring>LineEditAddedTo</cstring>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>Indicates the date when this song was added to the database</string>
+                    </property>
+                </widget>
+                <widget class="QLineEdit" row="0" column="3">
+                    <property name="name">
+                        <cstring>LineEditLastPlayed</cstring>
+                    </property>
+                    <property name="enabled">
+                        <bool>true</bool>
+                    </property>
+                    <property name="edited">
+                        <bool>false</bool>
+                    </property>
+                    <property name="readOnly">
+                        <bool>true</bool>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>not implemented yet...</string>
+                    </property>
+                </widget>
+                <widget class="QLabel" row="0" column="2">
+                    <property name="name">
+                        <cstring>LabelLastPlayed</cstring>
+                    </property>
+                    <property name="enabled">
+                        <bool>true</bool>
+                    </property>
+                    <property name="text">
+                        <string>Last time played</string>
+                    </property>
+                </widget>
+            </grid>
+        </widget>
+        <widget class="QGroupBox" row="2" column="0">
+            <property name="name">
+                <cstring>GroupBox3</cstring>
+            </property>
+            <property name="title">
+                <string>read only</string>
+            </property>
+            <grid>
+                <property name="name">
+                    <cstring>unnamed</cstring>
+                </property>
+                <property name="margin">
+                    <number>11</number>
+                </property>
+                <property name="spacing">
+                    <number>6</number>
+                </property>
+                <widget class="QLabel" row="1" column="0">
+                    <property name="name">
+                        <cstring>LabelSize</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Size</string>
+                    </property>
+                </widget>
+                <widget class="QLabel" row="2" column="0">
+                    <property name="name">
+                        <cstring>LabelPath</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Path</string>
+                    </property>
+                </widget>
+                <widget class="QLabel" row="4" column="0" rowspan="1" colspan="2">
+                    <property name="name">
+                        <cstring>LabelProposedFilename</cstring>
+                    </property>
+                    <property name="text">
+                        <string>proposed Filename:</string>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>Shows the filename that Yammi would propose using the defined filename pattern.</string>
+                    </property>
+                </widget>
+                <widget class="QLabel" row="3" column="0" rowspan="1" colspan="2">
+                    <property name="name">
+                        <cstring>LabelFilename</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Filename</string>
+                    </property>
+                </widget>
+                <widget class="QLabel" row="0" column="0">
+                    <property name="name">
+                        <cstring>LabelLength</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Length</string>
+                    </property>
+                </widget>
+                <widget class="QLineEdit" row="2" column="1" rowspan="1" colspan="4">
+                    <property name="name">
+                        <cstring>ReadOnlyPath</cstring>
+                    </property>
+                    <property name="readOnly">
+                        <bool>true</bool>
+                    </property>
+                </widget>
+                <widget class="QLineEdit" row="3" column="2" rowspan="1" colspan="3">
+                    <property name="name">
+                        <cstring>ReadOnlyFilename</cstring>
+                    </property>
+                    <property name="readOnly">
+                        <bool>true</bool>
+                    </property>
+                </widget>
+                <widget class="QLineEdit" row="4" column="2" rowspan="1" colspan="3">
+                    <property name="name">
+                        <cstring>ReadOnlyProposedFilename</cstring>
+                    </property>
+                    <property name="readOnly">
+                        <bool>true</bool>
+                    </property>
+                </widget>
+                <widget class="QComboBox" row="0" column="4">
+                    <property name="name">
+                        <cstring>ComboBoxMedia</cstring>
                     </property>
                     <property name="sizePolicy">
                         <sizepolicy>
-                            <hsizetype>5</hsizetype>
-                            <vsizetype>5</vsizetype>
+                            <hsizetype>1</hsizetype>
+                            <vsizetype>0</vsizetype>
                             <horstretch>0</horstretch>
                             <verstretch>0</verstretch>
                         </sizepolicy>
                     </property>
-                    <property name="title">
-                        <string>database info</string>
+                    <property name="toolTip" stdset="0">
+                        <string>lists all media containing this song</string>
                     </property>
-                    <grid>
-                        <property name="name">
-                            <cstring>unnamed</cstring>
-                        </property>
-                        <property name="margin">
-                            <number>11</number>
-                        </property>
-                        <property name="spacing">
-                            <number>6</number>
-                        </property>
-                        <widget class="QLineEdit" row="0" column="3">
-                            <property name="name">
-                                <cstring>LineEditLastPlayed</cstring>
-                            </property>
-                            <property name="enabled">
-                                <bool>false</bool>
-                            </property>
-                            <property name="toolTip" stdset="0">
-                                <string>not implemented yet...</string>
-                            </property>
-                        </widget>
-                        <widget class="QLabel" row="0" column="0">
-                            <property name="name">
-                                <cstring>LabelAddedTo</cstring>
-                            </property>
-                            <property name="text">
-                                <string>Added to database</string>
-                            </property>
-                        </widget>
-                        <widget class="QLabel" row="0" column="2">
-                            <property name="name">
-                                <cstring>LabelLastPlayed</cstring>
-                            </property>
-                            <property name="enabled">
-                                <bool>false</bool>
-                            </property>
-                            <property name="text">
-                                <string>Last time played</string>
-                            </property>
-                        </widget>
-                        <widget class="QLabel" row="1" column="2">
-                            <property name="name">
-                                <cstring>LabelFrequency</cstring>
-                            </property>
-                            <property name="enabled">
-                                <bool>false</bool>
-                            </property>
-                            <property name="text">
-                                <string>Play Frequency</string>
-                            </property>
-                        </widget>
-                        <widget class="QLineEdit" row="1" column="3">
-                            <property name="name">
-                                <cstring>LineEditFrequency</cstring>
-                            </property>
-                            <property name="enabled">
-                                <bool>false</bool>
-                            </property>
-                            <property name="toolTip" stdset="0">
-                                <string>not implemented yet...</string>
-                            </property>
-                        </widget>
-                        <widget class="QLineEdit" row="0" column="1">
-                            <property name="name">
-                                <cstring>LineEditAddedTo</cstring>
-                            </property>
-                            <property name="toolTip" stdset="0">
-                                <string>Indicates the date when this song was added to the database</string>
-                            </property>
-                        </widget>
-                    </grid>
                 </widget>
-                <widget class="QLayoutWidget">
+                <widget class="QLineEdit" row="1" column="4">
                     <property name="name">
-                        <cstring>Layout1</cstring>
+                        <cstring>ReadOnlyBitrate</cstring>
                     </property>
-                    <hbox>
-                        <property name="name">
-                            <cstring>unnamed</cstring>
-                        </property>
-                        <property name="margin">
-                            <number>0</number>
-                        </property>
-                        <property name="spacing">
-                            <number>6</number>
-                        </property>
-                        <widget class="QPushButton">
-                            <property name="name">
-                                <cstring>PushButtonOK</cstring>
-                            </property>
-                            <property name="text">
-                                <string>OK</string>
-                            </property>
-                        </widget>
-                        <widget class="QPushButton">
-                            <property name="name">
-                                <cstring>PushButtonCancel</cstring>
-                            </property>
-                            <property name="text">
-                                <string>Cancel</string>
-                            </property>
-                        </widget>
-                    </hbox>
+                    <property name="sizePolicy">
+                        <sizepolicy>
+                            <hsizetype>1</hsizetype>
+                            <vsizetype>0</vsizetype>
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                        </sizepolicy>
+                    </property>
+                    <property name="readOnly">
+                        <bool>true</bool>
+                    </property>
                 </widget>
-            </vbox>
+                <widget class="QLabel" row="0" column="3">
+                    <property name="name">
+                        <cstring>LabelMedia</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Media</string>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>lists all media containing this song</string>
+                    </property>
+                </widget>
+                <widget class="QLabel" row="1" column="3">
+                    <property name="name">
+                        <cstring>LabelBitrate</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Bitrate</string>
+                    </property>
+                </widget>
+                <widget class="QLineEdit" row="1" column="1" rowspan="1" colspan="2">
+                    <property name="name">
+                        <cstring>ReadOnlySize</cstring>
+                    </property>
+                    <property name="readOnly">
+                        <bool>true</bool>
+                    </property>
+                </widget>
+                <widget class="QLineEdit" row="0" column="1" rowspan="1" colspan="2">
+                    <property name="name">
+                        <cstring>ReadOnlyLength</cstring>
+                    </property>
+                    <property name="readOnly">
+                        <bool>true</bool>
+                    </property>
+                </widget>
+            </grid>
         </widget>
-    </hbox>
+    </grid>
 </widget>
 <connections>
     <connection>
@@ -469,7 +463,6 @@
     <tabstop>PushButtonOK</tabstop>
     <tabstop>PushButtonCancel</tabstop>
     <tabstop>LineEditLastPlayed</tabstop>
-    <tabstop>LineEditFrequency</tabstop>
 </tabstops>
 <layoutdefaults spacing="6" margin="11"/>
 </UI>

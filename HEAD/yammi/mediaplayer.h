@@ -27,11 +27,20 @@ enum PlayerStatus { STOPPED, PAUSED, PLAYING};
 
 
 /** This class abstracts away the details of a supported media player.
- * So far, the only supported players are XMMS and noatun.
+ * So far, the only supported players are XMMS and Noatun.
  * Support for Winamp might come, if I should ever try to create a Windows-version of Yammi...
  *
  * Most methods should be straight-forward.
- * The player should emit a signal playlistChanged() when a songchange took place.
+ *
+ * Communication between MediaPlayer class and Yammi:
+ * 1. On startup, Yammi creates the MediaPlayer object.
+ * 2. When Yammi has completely started, it calls syncPlayer2Yammi(playlist).
+ *    This is meant to load the playlist of the MediaPlayer into Yammi.
+ * 3. The MediaPlayer should emit playlistChanged() and statusChanged() in that call.
+ * 4. Yammi calls check() every 100? ms. (we should instead use a thread owned by the player)
+ * 5. If the player detects a change in status or a song change, it has to signal statusChanged() or playlistChanged()
+ * 6. Whenever Yammi changes it's playlist, it calls syncYammi2Player(false)
+ *    to possibly fill up the playlist of the player.
  */
 class MediaPlayer : public QObject
 {

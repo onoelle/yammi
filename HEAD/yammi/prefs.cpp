@@ -20,9 +20,17 @@
 /// sets preferences to the default values
 Prefs::Prefs(){
 // general	
+  // media player: 0=XMMS, 1=Noatun
+#ifdef ENABLE_NOATUN
+  player=1;
+#endif
+#ifdef ENABLE_XMMS
+  player=0;
+#endif
 	yammiVersion="0.7.1";
 	trashDir="/mp3/trash/";
 	scanDir="/mp3/inbox/";
+  filenamePattern="%a - %t";
 	doubleClickAction=None;
 	middleClickAction=None;
 	controlClickAction=None;
@@ -33,11 +41,16 @@ Prefs::Prefs(){
 	filenamesConsistent=false;
 	criticalSize=700;
 	secondSoundDevice="";
-	keepInXmms=3;
 	groupThreshold=5;
   lazyGrouping=false;
 	searchThreshold=20;
 	searchMaximumNoResults=200;
+
+	keepInXmms=3;
+
+  fadeTime=10000;
+  fadeOutEnd=50;
+  fadeInStart=70;
 	
 // plugins	
 	grabAndEncodeCmd="yammiGrabAndEncode";
@@ -82,13 +95,6 @@ Prefs::Prefs(){
 	swapSize=200;
 	mountMediaDir=true;
 
-  // media player: 0=XMMS, 1=Noatun
-#ifdef ENABLE_NOATUN
-  player=1;
-#endif
-#ifdef ENABLE_XMMS
-  player=0;
-#endif
 }
 
 Prefs::~Prefs(){

@@ -21,13 +21,15 @@
 #include "mediaplayer.h"
 #include <qprocess.h>
 
+// this class only works as expected if the following define is true!
 #ifdef ENABLE_NOATUN
 #include <dcopclient.h>
 #endif
+
+
 /**
  * The mediaplayer class tailored for controlling two noatun instances.
  */
-
 class NoatunPlayer : public MediaPlayer  {
   Q_OBJECT
 public: 
@@ -40,7 +42,7 @@ protected:
 #endif
 	QTimer fadeTimer;
   bool ensurePlayerIsRunning();
-  void playlistAdd(QString filename, bool autoStart, int id=0);
+  void playlistAdd(QString filename, bool autoStart, bool fakePassiveAdd=true);
   void sendDcopCommand(QString command, int id=0);
   void sendDcopCommandInt(QString command, int param, int id=0);
   int callGetInt(QString command, int id=0);

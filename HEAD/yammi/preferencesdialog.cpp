@@ -36,6 +36,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, const char *name, bool mod
 	// general
 	LineEditTrashDir->setText(config->trashDir);
 	LineEditScanDir->setText(config->scanDir);
+	LineEditFilenamePattern->setText(config->filenamePattern);
 	CheckBoxLogging->setChecked(config->logging);
 	CheckBoxChildSafe->setChecked(config->childSafe);
 	CheckBoxTagsConsistent->setChecked(config->tagsConsistent);
@@ -46,18 +47,27 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, const char *name, bool mod
 	CheckBoxLazyGrouping->setChecked(config->lazyGrouping);
 	LineEditSearchThreshold->setText(QString("%1").arg(config->searchThreshold));
 	LineEditSearchMaximumNoResults->setText(QString("%1").arg(config->searchMaximumNoResults));
-	LineEditKeepInXmms->setText(QString("%1").arg(config->keepInXmms));
+
+// xmms specific
+  LineEditKeepInXmms->setText(QString("%1").arg(config->keepInXmms));
 #ifdef ENABLE_XMMS
   RadioButtonXmms->setChecked(config->player==0);
-  RadioButtonXmms->setEnabled(true);
 #else
   RadioButtonXmms->setEnabled(false);
+	LineEditKeepInXmms->setEnabled(false);
 #endif
+
+  LineEditFadeTime->setText(QString("%1").arg(config->fadeTime));
+  LineEditFadeOutEnd->setText(QString("%1").arg(config->fadeOutEnd));
+  LineEditFadeInStart->setText(QString("%1").arg(config->fadeInStart));
+
 #ifdef ENABLE_NOATUN
-  RadioButtonNoatun->setEnabled(true);
   RadioButtonNoatun->setChecked(config->player==1);
 #else
   RadioButtonNoatun->setEnabled(false);
+	LineEditFadeTime->setEnabled(false);
+	LineEditFadeOutEnd->setEnabled(false);
+	LineEditFadeInStart->setEnabled(false);
 #endif
 
   
@@ -126,6 +136,7 @@ void PreferencesDialog::myAccept()
  	config->trashDir=LineEditTrashDir->text();
  	config->scanDir=LineEditScanDir->text();
  	config->mediaDir=LineEditMediaDir->text();
+ 	config->filenamePattern=LineEditFilenamePattern->text();
  	if(config->trashDir.right(1)!="/")
  		config->trashDir+="/";
  	if(config->scanDir.right(1)!="/")
@@ -152,11 +163,19 @@ void PreferencesDialog::myAccept()
  	config->lazyGrouping=CheckBoxLazyGrouping->isChecked();
  	config->searchThreshold=atoi(LineEditSearchThreshold->text());
  	config->searchMaximumNoResults=atoi(LineEditSearchMaximumNoResults->text());
- 	config->keepInXmms=atoi(LineEditKeepInXmms->text());
+
+// xmms specific
+  config->keepInXmms=atoi(LineEditKeepInXmms->text());
   if(RadioButtonXmms->isChecked())
     config->player=0;
   if(RadioButtonNoatun->isChecked())
     config->player=1;
+
+// noatun specific
+ 	config->fadeTime=atoi(LineEditFadeTime->text());
+ 	config->fadeOutEnd=atoi(LineEditFadeOutEnd->text());
+ 	config->fadeInStart=atoi(LineEditFadeInStart->text());
+
 
   // plugins
  	config->grabAndEncodeCmd=LineEditGrabAndEncodeCmd->text();

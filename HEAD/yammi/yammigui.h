@@ -140,6 +140,7 @@ public:
   YammiModel*   getModel() { return model; };
   void          commitData(QSessionManager& sm);
   void          saveState(QSessionManager& sm);
+  QString       makeReplacements(QString input, Song* s, int index);
 
 
 // public slots
@@ -148,7 +149,6 @@ public slots:
 	void				  forSong(Song* s, action act, QString dir=0);
   void				  checkForGrabbedTrack();
 	void				  slotFolderChanged();
-  void          songChange();
   void          updatePlaylist();
   void          updatePlayerStatus();
   void          selectAll();									  /** selects all in songListView */
@@ -164,13 +164,11 @@ protected:
 	MyList		    selectedSongs;
 	MyList		    searchResults;
   bool          isScanning;
-//  void          songChange(Song* lastSong, QString newFile);
   void          readSettings();
   void          writeSettings();
   void          moveEvent(QMoveEvent* e)         { updateGeometrySettings(); }
   void          resizeEvent(QResizeEvent* e)     { updateGeometrySettings(); }
   void          updateGeometrySettings();
-  QString       makeReplacements(QString input, Song* s, int index);
 	void			    updateSongPopup();
 	void			    updateListViewColumns(Folder* oldFolder, Folder* newFolder);
 
