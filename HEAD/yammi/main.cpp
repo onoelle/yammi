@@ -17,7 +17,7 @@ YammiGui* gYammiGui;
 int main( int argc, char **argv )
 {
 	QApplication application( argc, argv );
-	QApplication::setStyle(new QWindowsStyle());
+//	QApplication::setStyle(new QWindowsStyle());
 	// initialize gui
 	YammiGui gui;
 	application.setMainWidget( &gui );

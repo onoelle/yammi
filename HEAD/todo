@@ -15,15 +15,20 @@ KNOWN BUGS
 for release 0.6
 ---------------
 - on deleting a song: delete in all lists (history, categories, ...)
+- play now, when player is stopped!
+- before xmms commands: check whether xmms running and start if necessary
+- clean up website...
+
 
 for release 0.6.1
 -----------------
 
-- save session settings:
-  - save column width? for each folder?
-- before xmms commands: check whether xmms running and start if necessary
+- save more session settings?
+  - column width? for each folder?
+  - current folder?
+  
 
-- clean up website...
+- replace id3 tag handling (and mp3 layer info?) with id3lib
 - try to improve speed of listview (heaps slower in qt3!)
   - change linked list to vector or dictionary in MyList???
 - provide a proper, tgz binary release
@@ -52,8 +57,6 @@ for "sometime"
 - more evaluation of log info
   - playing songs that haven't been played for quite a while
 - fix: two albums having the same name appear as one album
-- replace id3 tag handling (and mp3 layer info?) with something better
-  (probably switching to id3v2 tags, using the id3lib-project)
 - (generic) support for other music formats (at least wav?)
 
 

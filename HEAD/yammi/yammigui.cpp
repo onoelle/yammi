@@ -18,6 +18,7 @@
 #include "yammigui.h"
 
 // include pixmaps
+#include "yammiicon.xpm"
 #include "pause.xpm"
 #include "stop.xpm"
 #include "in.xpm"
@@ -33,6 +34,7 @@
 #include "defaultShiftClick.xpm"
 #include "prelisten.xpm"
 #include "playnow.xpm"
+#include "playnowim.xpm"
 #include "enqueue.xpm"
 #include "enqueueasnext.xpm"
 #include "dequeueSong.xpm"
@@ -51,14 +53,11 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
     : QMainWindow( parent, name )
 {
 	gYammiGui=this;
+  this->setIcon(QPixmap(yammiicon_xpm));
 	
-  // check whether xmms is running, if not: start it!
-	if(!xmms_remote_is_running(0)) {
-		cout << "xmms not running, trying to start it...\n";
-		system("xmms > /dev/null &");
-	}
-	
-	// set up model
+  ensureXmmsIsRunning();
+  
+  // set up model
 	model=new YammiModel();
 	cout << "starting Yammi, version " << model->config.yammiVersion << "\n";
 	model->readPreferences();						// read preferences
@@ -145,25 +144,27 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
   toolBar2->setLabel( "Song Actions" );
 
 	// now all the buttons that correspond to context menu entries
-	tbEnqueue = new QToolButton (QPixmap(enqueue_xpm), "Enqueue at end (F5)", QString::null,
+	new QToolButton (QPixmap(enqueue_xpm), "Enqueue at end (F5)", QString::null,
                            this, SLOT(forAllSelectedEnqueue()), toolBar2);
-	tbEnqueueAsNext = new QToolButton (QPixmap(enqueueasnext_xpm), "Enqueue as next (F6)", QString::null,
+	new QToolButton (QPixmap(enqueueasnext_xpm), "Enqueue as next (F6)", QString::null,
                            this, SLOT(forAllSelectedEnqueueAsNext()), toolBar2);
-	tbPlayNow = new QToolButton (QPixmap(playnow_xpm), "Play now (F7)", QString::null,
+	new QToolButton (QPixmap(playnow_xpm), "Play now (F7)", QString::null,
                            this, SLOT(forAllSelectedPlayNow()), toolBar2);
-	tbDequeueSong = new QToolButton (QPixmap(dequeueSong_xpm), "Dequeue Song (F8)", QString::null,
+	new QToolButton (QPixmap(playnowim_xpm), "Play now (SHIFT-F7)", QString::null,
+                           this, SLOT(forAllSelectedPlayNowIm()), toolBar2);
+	new QToolButton (QPixmap(dequeueSong_xpm), "Dequeue Song (F8)", QString::null,
                            this, SLOT(forAllSelectedDequeue()), toolBar2);
-	tbClearPlaylist = new QToolButton (QPixmap(dequeueAll_xpm), "Clear playlist (SHIFT-F8)", QString::null,
+	new QToolButton (QPixmap(dequeueAll_xpm), "Clear playlist (SHIFT-F8)", QString::null,
                            this, SLOT(xmms_clearPlaylist()), toolBar2);
-	tbPrelistenStart = new QToolButton (QPixmap(prelisten_xpm), "Prelisten (start) (F9)", QString::null,
+	new QToolButton (QPixmap(prelisten_xpm), "Prelisten (start) (F9)", QString::null,
                            this, SLOT(forAllSelectedPrelistenStart()), toolBar2);
-	tbPrelistenMiddle = new QToolButton (QPixmap(prelisten_xpm), "Prelisten (middle) (F10)", QString::null,
+	new QToolButton (QPixmap(prelisten_xpm), "Prelisten (middle) (F10)", QString::null,
                            this, SLOT(forAllSelectedPrelistenMiddle()), toolBar2);
-	tbPrelistenEnd = new QToolButton (QPixmap(prelisten_xpm), "Prelisten (end) (F11)", QString::null,
+	new QToolButton (QPixmap(prelisten_xpm), "Prelisten (end) (F11)", QString::null,
                            this, SLOT(forAllSelectedPrelistenEnd()), toolBar2);
-	tbStopPrelisten = new QToolButton (QPixmap(stopPrelisten_xpm), "Stop prelisten (F12)", QString::null,
+	new QToolButton (QPixmap(stopPrelisten_xpm), "Stop prelisten (F12)", QString::null,
                            this, SLOT(stopPrelisten()), toolBar2);
-	tbSongInfo = new QToolButton (QPixmap(songinfo_xpm), "Info...", QString::null,
+	new QToolButton (QPixmap(songinfo_xpm), "Info...", QString::null,
                            this, SLOT(forAllSelectedSongInfo()), toolBar2);
 
 	// removable media management
@@ -188,15 +189,15 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
 	shutdownSpinBox->setValue(songsUntilShutdown);
 	QToolTip::add( shutdownSpinBox, "number songs until shutdown");
 	shutdownSpinBox->setEnabled(false);
+  connect( shutdownSpinBox, SIGNAL( valueChanged(int) ), this, SLOT( changeShutdownValue(int) ) );
 
-	// status bar
-	mainStatusBar=statusBar();
-	mainStatusBar->message("Everything loaded", 10000);
-	
 	// now setup main area
 	QSplitter* centralWidget=new QSplitter(Qt::Horizontal, this);
 	
-	// set up the quick browser on the left
+  // statusbar
+  mainStatusBar=statusBar();
+
+  // set up the quick browser on the left
 	folderListView = new QListView( centralWidget );
 	folderListView->header()->setClickEnabled( FALSE );
 	folderListView->addColumn( "Quick Browser" );
@@ -364,7 +365,8 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
 
 	// finish!
   cout << "initialisation successfully completed!\n";
-	mainStatusBar->message("Welcome to Yammi "+model->config.yammiVersion, 20000);
+
+  mainStatusBar->message("Welcome to Yammi "+model->config.yammiVersion, 20000);
 	slotFolderChanged();
 	if(model->noPrefsFound && model->noDatabaseFound) {
 		QMessageBox::information( this, "Yammi",	QString("Yammi - Yet Another Music Manager I...\n\n\n")+
@@ -1652,6 +1654,7 @@ void YammiGui::forSong(Song* s, action act, QString dir=0)
 	case None:									// no action
 		return;
 	case PlayNow:								// enqueue at front and immediately skip to it
+    ensureXmmsIsRunning();
 		if(s->filename=="" || !s->checkReadability()) {
 			cout << "song not available (try to first enqueue and load from a media)\n";
 			return;
@@ -1659,28 +1662,24 @@ void YammiGui::forSong(Song* s, action act, QString dir=0)
 
 		forSong(s, EnqueueAsNext);
 		if(xmms_remote_is_playing(0)) {
-//			cout << "calling skipForward!\n";
-//			cout << QString("xmms_remote_playlist_next\n");
 			xmms_skipForward();
-//			myWait(2000);
-//			cout << "..done\n";
 		}
 		else {
-			cout << "not playing???\n";
-//			cout << QString("xmms_remote_play\n");
+			xmms_skipForward();
 			xmms_remote_play(0);
-//			cout << "..done\n";
 		}
 			
 		mainStatusBar->message(QString("playing %1").arg(s->displayName()), 2000);
 		break;
 		
 	case Enqueue:								// enqueue at end
+    ensureXmmsIsRunning();
 		folderActual->addSong(s);
 		mainStatusBar->message(QString("%1 enqueued at end").arg(s->displayName()), 3000);
 		break;
 				
 	case EnqueueAsNext: {				// enqueue as next
+    ensureXmmsIsRunning();
 		// songsToPlay is empty, or first song is still to play
 		if(model->songsToPlay.count()==0 || currentSong!=model->songsToPlay.at(0)->song())
 			model->songsToPlay.insert(0, new SongEntryInt(s, 13));
@@ -1913,30 +1912,39 @@ void YammiGui::pluginOnFolder()
 	f.close();
 }
 
+
+
+// check whether xmms is running, if not: start it!
+void YammiGui::ensureXmmsIsRunning()
+{
+	if(!xmms_remote_is_running(0)) {
+		cout << "xmms not running, trying to start it...\n";
+		system("xmms > /dev/null &");
+	}
+}
+
+
+
 /// toggle between play and pause
 void YammiGui::xmms_playPause()
 {
+  ensureXmmsIsRunning();
 	xmms_remote_play_pause(0);
-/*
-	gboolean playing=xmms_remote_is_playing(0);
-	if(playing)
-		xmms_remote_pause(0);
-	else
-		if(xmms_remote_get_playlist_length(0)>0)
-			xmms_remote_play(0);
-*/
 }
 
 
 /// skip forward in playlist
 void YammiGui::xmms_skipForward()
 {
-	int x= xmms_remote_get_playlist_pos(0);
+  ensureXmmsIsRunning();
+  int x= xmms_remote_get_playlist_pos(0);
 	xmms_remote_set_playlist_pos(0, x+1);
 }
 
+
 void YammiGui::xmms_skipForwardIm()
 {
+  ensureXmmsIsRunning();
 	xmms_remote_pause(0);
 	xmms_skipForward();
 	xmms_remote_play(0);
@@ -1944,15 +1952,18 @@ void YammiGui::xmms_skipForwardIm()
 
 void YammiGui::xmms_skipBackwardIm()
 {
+  ensureXmmsIsRunning();
 	xmms_remote_pause(0);
 	xmms_skipBackward();
 	xmms_remote_play(0);
 }
 
-/// skip backward in playlist ???
+
+// skip backward in playlist
 void YammiGui::xmms_skipBackward()
 {
-	int count=model->songsPlayed.count();
+  ensureXmmsIsRunning();
+  int count=model->songsPlayed.count();
 	if(count==0)			// empty folder songsPlayed => can's skip backwards
 		return;
 	
@@ -1980,12 +1991,14 @@ void YammiGui::xmms_skipBackward()
 /// stop playback
 void YammiGui::xmms_stop()
 {
+  ensureXmmsIsRunning();
 	xmms_remote_stop(0);
 }
 
 /// clear all playlist items except currently played song
 void YammiGui::xmms_clearPlaylist()
 {
+  ensureXmmsIsRunning();
 	if(model->config.childSafe)
 		return;
 	if( QMessageBox::warning( this, "Yammi", "Clear complete playlist?\n(except currently played song)", "Yes", "No")!=0)
@@ -2354,7 +2367,6 @@ void YammiGui::keyPressEvent(QKeyEvent* e)
 				cout << "songs until shutdown: " << songsUntilShutdown << "\n";
 			}
 			break;
-
 		case Key_Up: {
 			QListViewItem* i=songListView->firstChild();
 			for(; i; i=i->itemBelow()) {
@@ -2411,6 +2423,7 @@ void YammiGui::changeShutdownMode()
 		shuttingDown=1;
 		songsUntilShutdown=3;
 		shutdownSpinBox->setEnabled(true);
+    shutdownSpinBox->setValue(3);
 		shutdownButton->setText("normal");
 		cout << "shutting down (normal)...\n";
 		if(model->allSongsChanged() || model->categoriesChanged()) {
@@ -2452,6 +2465,14 @@ void YammiGui::changeShutdownMode()
  		cout << "shutting down cancelled!\n";
  	}
 }
+
+void YammiGui::changeShutdownValue(int value)
+{
+  songsUntilShutdown=value;
+  cout << "songs until shutdown: " << songsUntilShutdown << "\n";
+}
+
+
 
 void YammiGui::keyReleaseEvent(QKeyEvent* e)
 {

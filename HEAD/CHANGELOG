@@ -3,9 +3,12 @@
 
 - ported to Qt3
 - dialogs scale reasonably now
-- added a toolbar for shutdown mode
+- added a toolbar for controlling shutdown mode
 - window position & size will be saved for next start
-- a few bugfixes
+- does not automatically set Windows-Style => allows any styles (such as Liquid)
+- Yammi finally gets an individual icon (for titlebar and kicker)
+- toolbutton + key-combination (SHIFT-F7) for playing a song immediately without crossfading
+- bugfix: defined playlist plugins show up in context menu now
 
 
 #######################

@@ -1,4 +1,4 @@
-# KDE tags expanded automatically by am_edit - $Revision: 1.3 $ 
+# KDE tags expanded automatically by am_edit - $Revision: 1.5 $ 
 # Makefile.in generated automatically by automake 1.5 from Makefile.am.
 
 # Copyright 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001
@@ -239,7 +239,7 @@ TRANSLATIONS =
 KDE_OPTIONS = qtonly
 yammi_LDADD = -lxmms -lid3 $(LIB_QT) $(LIBSOCKET)
 
-EXTRA_DIST = lo32-app-yammi.png lo16-app-yammi.png clearPlaylist.xpm defaultControlClick.xpm defaultDoubleClick.xpm defaultMiddleClick.xpm defaultShiftClick.xpm DeleteDialog.ui dequeueAll.xpm dequeueSong.xpm enqueue.xpm enqueueasnext.xpm filesave.xpm folder.cpp folder.h foldercategories.cpp foldercategories.h foldergroups.cpp foldergroups.h foldermedia.cpp foldermedia.h foldersorted.cpp foldersorted.h fuzzsrch.cpp fuzzsrch.h in.xpm main.cpp mp3_layer.cpp mp3_layer.h mp3tag.cpp mp3tag.h mydatetime.cpp mydatetime.h mylist.cpp mylist.h mylistview.cpp mylistview.h notin.xpm pause.xpm playnow.xpm preferencesdialog.cpp preferencesdialog.h PreferencesDialogBase.ui prefs.cpp prefs.h prelisten.xpm skipbackward.xpm skipbackwardim.xpm skipforward.xpm skipforwardim.xpm song.cpp song.h songentry.cpp songentry.h songentryint.cpp songentryint.h songentryint2.cpp songentryint2.h songentrystring.cpp songentrystring.h songentrytimestamp.cpp songentrytimestamp.h songinfo.cpp songinfo.h songinfo.xpm SongInfoDialog.ui songlistitem.cpp songlistitem.h stop.xpm stopPrelisten.xpm WorkDialogBase.ui yammigui.cpp yammigui.h YammiGuiBase.ui yammimodel.cpp yammimodel.h 
+EXTRA_DIST = lo32-app-yammi.png lo16-app-yammi.png clearPlaylist.xpm defaultControlClick.xpm defaultDoubleClick.xpm defaultMiddleClick.xpm defaultShiftClick.xpm DeleteDialog.ui dequeueAll.xpm dequeueSong.xpm enqueue.xpm enqueueasnext.xpm filesave.xpm folder.cpp folder.h foldercategories.cpp foldercategories.h foldergroups.cpp foldergroups.h foldermedia.cpp foldermedia.h foldersorted.cpp foldersorted.h fuzzsrch.cpp fuzzsrch.h in.xpm main.cpp mp3_layer.cpp mp3_layer.h mp3tag.cpp mp3tag.h mydatetime.cpp mydatetime.h mylist.cpp mylist.h mylistview.cpp mylistview.h notin.xpm pause.xpm playnow.xpm preferencesdialog.cpp preferencesdialog.h PreferencesDialogBase.ui prefs.cpp prefs.h prelisten.xpm skipbackward.xpm skipbackwardim.xpm skipforward.xpm skipforwardim.xpm song.cpp song.h songentry.cpp songentry.h songentryint.cpp songentryint.h songentryint2.cpp songentryint2.h songentrystring.cpp songentrystring.h songentrytimestamp.cpp songentrytimestamp.h songinfo.cpp songinfo.h songinfo.xpm SongInfoDialog.ui songlistitem.cpp songlistitem.h stop.xpm stopPrelisten.xpm WorkDialogBase.ui yammigui.cpp yammigui.h YammiGuiBase.ui yammimodel.cpp yammimodel.h playnowim.xpm yammiicon.xpm 
 
 ####### kdevelop will overwrite this part!!! (end)############
 
@@ -476,7 +476,7 @@ distclean-tags:
 
 #>- DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 #>+ 4
-KDE_DIST=glib.h glibconfig.h WorkDialogBase.h DeleteDialog.h xmmsctrl.h PreferencesDialogBase.h YammiGuiBase.h fileopen.xpm filenew.xpm SongInfoDialog.h 
+KDE_DIST=glib.h glibconfig.h WorkDialogBase.h DeleteDialog.h xmmsctrl.h PreferencesDialogBase.h YammiGuiBase.h fileopen.xpm filenew.xpm yammi SongInfoDialog.h 
 
 DISTFILES= $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST) $(KDE_DIST)
 

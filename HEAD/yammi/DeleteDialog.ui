@@ -259,5 +259,12 @@
         <slot>reject()</slot>
     </connection>
 </connections>
+<tabstops>
+    <tabstop>CheckBoxDeleteDbEntry</tabstop>
+    <tabstop>CheckBoxDeleteFile</tabstop>
+    <tabstop>ComboBoxOnMedia</tabstop>
+    <tabstop>PushButtonOK</tabstop>
+    <tabstop>PushButtonCancel</tabstop>
+</tabstops>
 <layoutdefaults spacing="6" margin="11"/>
 </UI>

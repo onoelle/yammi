@@ -1,13 +1,10 @@
-<!DOCTYPE UI><UI>
+<!DOCTYPE UI><UI version="3.0" stdsetdef="1">
 <class>WorkDialogBase</class>
-<widget>
-    <class>QDialog</class>
-    <property stdset="1">
-        <name>name</name>
+<widget class="QDialog">
+    <property name="name">
         <cstring>WorkDialogBase</cstring>
     </property>
-    <property stdset="1">
-        <name>geometry</name>
+    <property name="geometry">
         <rect>
             <x>0</x>
             <y>0</y>
@@ -15,22 +12,17 @@
             <height>226</height>
         </rect>
     </property>
-    <property stdset="1">
-        <name>caption</name>
+    <property name="caption">
         <string>Work in progress...</string>
     </property>
-    <widget>
-        <class>QPushButton</class>
-        <property stdset="1">
-            <name>name</name>
+    <widget class="QPushButton">
+        <property name="name">
             <cstring>ButtonOK</cstring>
         </property>
-        <property stdset="1">
-            <name>enabled</name>
+        <property name="enabled">
             <bool>false</bool>
         </property>
-        <property stdset="1">
-            <name>geometry</name>
+        <property name="geometry">
             <rect>
                 <x>340</x>
                 <y>170</y>
@@ -38,19 +30,15 @@
                 <height>26</height>
             </rect>
         </property>
-        <property stdset="1">
-            <name>text</name>
+        <property name="text">
             <string>OK</string>
         </property>
     </widget>
-    <widget>
-        <class>QPushButton</class>
-        <property stdset="1">
-            <name>name</name>
+    <widget class="QPushButton">
+        <property name="name">
             <cstring>ButtonCancel</cstring>
         </property>
-        <property stdset="1">
-            <name>geometry</name>
+        <property name="geometry">
             <rect>
                 <x>340</x>
                 <y>110</y>
@@ -58,19 +46,15 @@
                 <height>26</height>
             </rect>
         </property>
-        <property stdset="1">
-            <name>text</name>
+        <property name="text">
             <string>Cancel</string>
         </property>
     </widget>
-    <widget>
-        <class>QProgressBar</class>
-        <property stdset="1">
-            <name>name</name>
+    <widget class="QProgressBar">
+        <property name="name">
             <cstring>ProgressBar</cstring>
         </property>
-        <property stdset="1">
-            <name>geometry</name>
+        <property name="geometry">
             <rect>
                 <x>10</x>
                 <y>40</y>
@@ -78,31 +62,24 @@
                 <height>23</height>
             </rect>
         </property>
-        <property stdset="1">
-            <name>frameShape</name>
+        <property name="frameShape">
             <enum>NoFrame</enum>
         </property>
-        <property stdset="1">
-            <name>frameShadow</name>
+        <property name="frameShadow">
             <enum>Raised</enum>
         </property>
-        <property stdset="1">
-            <name>lineWidth</name>
+        <property name="lineWidth">
             <number>0</number>
         </property>
-        <property stdset="1">
-            <name>margin</name>
+        <property name="margin">
             <number>1</number>
         </property>
     </widget>
-    <widget>
-        <class>QLabel</class>
-        <property stdset="1">
-            <name>name</name>
+    <widget class="QLabel">
+        <property name="name">
             <cstring>TextLabel</cstring>
         </property>
-        <property stdset="1">
-            <name>geometry</name>
+        <property name="geometry">
             <rect>
                 <x>10</x>
                 <y>10</y>
@@ -110,19 +87,15 @@
                 <height>20</height>
             </rect>
         </property>
-        <property stdset="1">
-            <name>text</name>
+        <property name="text">
             <string>working on...</string>
         </property>
     </widget>
-    <widget>
-        <class>QMultiLineEdit</class>
-        <property stdset="1">
-            <name>name</name>
+    <widget class="QMultiLineEdit">
+        <property name="name">
             <cstring>Out</cstring>
         </property>
-        <property stdset="1">
-            <name>geometry</name>
+        <property name="geometry">
             <rect>
                 <x>10</x>
                 <y>80</y>
@@ -132,4 +105,10 @@
         </property>
     </widget>
 </widget>
+<tabstops>
+    <tabstop>ButtonCancel</tabstop>
+    <tabstop>ButtonOK</tabstop>
+    <tabstop>Out</tabstop>
+</tabstops>
+<layoutdefaults spacing="6" margin="11"/>
 </UI>

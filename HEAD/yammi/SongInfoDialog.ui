@@ -456,5 +456,20 @@
         <slot>reject()</slot>
     </connection>
 </connections>
+<tabstops>
+    <tabstop>LineEditArtist</tabstop>
+    <tabstop>LineEditTitle</tabstop>
+    <tabstop>LineEditAlbum</tabstop>
+    <tabstop>LineEditComment</tabstop>
+    <tabstop>LineEditYear</tabstop>
+    <tabstop>LineEditTrack</tabstop>
+    <tabstop>ComboBoxGenre</tabstop>
+    <tabstop>ComboBoxMedia</tabstop>
+    <tabstop>LineEditAddedTo</tabstop>
+    <tabstop>PushButtonOK</tabstop>
+    <tabstop>PushButtonCancel</tabstop>
+    <tabstop>LineEditLastPlayed</tabstop>
+    <tabstop>LineEditFrequency</tabstop>
+</tabstops>
 <layoutdefaults spacing="6" margin="11"/>
 </UI>

@@ -1256,19 +1256,22 @@ and songs can be loaded from those media into a swap directory.</string>
     <tabstop>ButtonChooseTrashDir</tabstop>
     <tabstop>ComboBoxDoubleClickAction</tabstop>
     <tabstop>ComboBoxMiddleClickAction</tabstop>
+    <tabstop>ComboBoxShiftClickAction</tabstop>
+    <tabstop>ComboBoxControlClickAction</tabstop>
     <tabstop>CheckBoxTagsConsistent</tabstop>
     <tabstop>CheckBoxFilenamesConsistent</tabstop>
     <tabstop>LineEditSearchThreshold</tabstop>
     <tabstop>LineEditSearchMaximumNoResults</tabstop>
     <tabstop>CheckBoxLogging</tabstop>
     <tabstop>CheckBoxChildSafe</tabstop>
+    <tabstop>CheckBoxLazyGrouping</tabstop>
     <tabstop>LineEditGroupThreshold</tabstop>
     <tabstop>LineEditKeepInXmms</tabstop>
     <tabstop>LineEditSecondSoundDevice</tabstop>
     <tabstop>ButtonOK</tabstop>
     <tabstop>ButtonCancel</tabstop>
-    <tabstop>CheckBoxCreateDirectoryStructure</tabstop>
     <tabstop>LineEditCriticalSize</tabstop>
+    <tabstop>CheckBoxCreateDirectoryStructure</tabstop>
     <tabstop>LineEditGrabAndEncodeCmd</tabstop>
     <tabstop>LineEditShutdownScript</tabstop>
     <tabstop>ComboBoxSongPlugin</tabstop>

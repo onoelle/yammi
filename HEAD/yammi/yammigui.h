@@ -171,25 +171,11 @@ protected:
 	bool					isSongSliderGrabbed;
 public:	
 	QToolButton*	tbSaveDatabase;
-protected:
-	QToolButton*	tbForward;
-	QToolButton*	tbBackward;
-	QToolButton*	tbPause;
-	QToolButton*	tbClearPlaylist;
-	QToolButton*	tbEnqueue;
-	QToolButton*	tbEnqueueAsNext;
-	QToolButton*	tbPlayNow;
-	QToolButton*	tbPrelistenStart;
-	QToolButton*	tbPrelistenMiddle;
-	QToolButton*	tbPrelistenEnd;
-	QToolButton*	tbStopPrelisten;
-	QToolButton*	tbDequeueSong;
-	QToolButton*	tbSongInfo;
-
 protected slots:
 	void				endProgram();
 	void				shutDown();
 	void				changeShutdownMode();
+  void        changeShutdownValue(int value);
 	void				setPreferences();
 	void				openHelp();
 	void				aboutDialog();
@@ -238,6 +224,7 @@ protected slots:
 	void				forAllSelectedEnqueue() {forAllSelected(Enqueue); }
 	void				forAllSelectedEnqueueAsNext() {forAllSelected(EnqueueAsNext); }
 	void				forAllSelectedPlayNow() {forAllSelected(PlayNow); }
+	void				forAllSelectedPlayNowIm() { xmms_remote_pause(0);	forAllSelected(PlayNow); }
 	void				forAllSelectedPrelistenStart() {forAllSelected(PrelistenStart); }
 	void				forAllSelectedPrelistenMiddle() {forAllSelected(PrelistenMiddle); }
 	void				forAllSelectedPrelistenEnd() {forAllSelected(PrelistenEnd); }
@@ -297,6 +284,7 @@ public slots:
 protected slots:		
 	void 					addToWishList();
 	void					toPlayList(int index);
+  void          ensureXmmsIsRunning();
 	void					xmms_playPause();
 	void					xmms_stop();
 	void					xmms_skipForward();
