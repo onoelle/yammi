@@ -109,6 +109,8 @@ Please at least include KDE, the KDE package it is in, the name
 <keyword>wav</keyword>
 <keyword>flac</keyword>
 <keyword>tag</keyword>
+<keyword>xmms</keyword>
+<keyword>noatun</keyword>
 <keyword>fuzzy search</keyword>
 <keyword>digital music</keyword>
 <keyword>collection</keyword>
@@ -266,8 +268,7 @@ and glib (-lgtk -lgdk -lgmodule -lglib -ldl -lXi -lXext -lX11 -lm -lxmms)
 <listitem>
 <para>
 For Gstreamer support (experimental):
-<ulink url="http://developer.kde.org/~wheeler/juk.html">kgst bindings</ulink>
- (version 0.6.x, I think) and <ulink url="http://gstreamer.freedesktop.org/">gstreamer</ulink> (version 0.6.x, I think).
+<ulink url="http://gstreamer.freedesktop.org/">gstreamer</ulink> (version 0.6.x, versions 0.8.x will NOT work) and <ulink url="http://developer.kde.org/~wheeler/juk.html">kgst bindings</ulink> (version 0.6.1)
 </para>
 </listitem>
 
@@ -275,7 +276,7 @@ For Gstreamer support (experimental):
 <listitem>
 <para>
 For listening to songs on a second soundcard during playback on your primary soundcard
-you need the command line tools mpg123 (for mp3 files), ogg123 (for ogg files) or play (for wav files).
+you need a suited command line tool. By default these can be mpg123 (for mp3 files), ogg123 (for ogg files), mplayer (for flac files) or play (for wav files).
 </para>
 </listitem>
 
@@ -289,8 +290,8 @@ at the script "yammiGrabAndEncode" included in the distribution.
 
 <listitem>
 <para>
-If you want to use certain plugins you might need other programs
-(such as k3b for the "Burn with K3b" plugins or cdlabelgen for the "Create CD Label" plugin).
+Depending on your plugin configuration you might need other programs
+(such as k3b for the "Burn Audio/Data CD" plugins or cdlabelgen for the "Create CD Label" plugin).
 See the <ulink url="http://yammi.sourceforge.net/plugins">Yammi plugin page</ulink> for details.
 </para>
 </listitem>
@@ -397,7 +398,7 @@ In the base directory of the yammi distribution, type
 <title>Starting the first time</title>
 <para>
 After successful installation, you can start yammi via the KDE menu (it should be installed under "Multimedia" -> "Audio Player") or by typing "yammi" in a shell
-(if you encounter any problems or want to know what's going on: start yammi in a shell and have a look at the output that yammi creates on the console).
+(Tip: if you encounter any problems or want to know what's going on: start yammi in a shell and have a look at the output that yammi creates on the console).
 </para>
 
 <para>
@@ -440,17 +441,20 @@ The general usage of Yammi is intuitive:
 
 <itemizedlist>
 <listitem><para>
-On the left, the "quick browser" provides a list of folders, each containing a list of songs (or subfolders).
+On the left, the "Quick Browser" provides a list of folders, each containing a list of songs or subfolders.
 </para></listitem>
 
 <listitem><para>
-On the right, the "songlist" lists all songs contained in the selected folder.
+On the right, all songs contained in the currently selected folder are shown.
 </para></listitem>
 
 <listitem><para>
-Normally you would use the quick browser to pick a selection of (or all) songs, then the songlist to
+Normally you would use the Quick Browser to pick a selection of (or all) songs, then the songlist to
 pick one (or more) songs to play, edit, categorise, ...
 </para></listitem>
+
+<listitem><para>
+Alternatively, you can type something into the search field to search for a particular song, artist or album.</para></listitem>
 
 <listitem><para>
 The most important actions are available in the toolbar or context-menu (right-click on a song or a folder), the rest is available via the main menu.
@@ -470,6 +474,48 @@ to this directory and skips this directory when scanning for new songs).
 
 Now start your database update (Database->Update), which should insert all found songs into Yammi's database. After the update you are ready to use Yammi, for example search for songs, categorize them or enqueue them to your media player. For more information about scanning your harddisk, or for information about scanning CDs, see "Updating Database" in "Advanced Topics".
 </para>
+</sect1>
+
+<sect1 id="chooseMediaPlayer">
+<title>Choosing a media player</title>
+<para>
+Yammi supports different media player backends. Depending on your system, not all of them may be available, see the installation chapter for requirements.
+</para>
+
+
+<sect2 id="artsplayer">
+<title>ArtsPlayer</title>
+<para>
+This player uses KDE's standard sound server <ulink url="http://www.arts-project.org/">arts</ulink>. It does not provide any crossfading capabilities.
+</para>
+</sect2>
+
+<sect2 id="xmms">
+<title>XMMS</title>
+<para>
+This backend uses the <ulink url="http://www.xmms.org">X MultiMedia System</ulink> for playback of songs. It synchronizes the playlist of Yammi with that of XMMS (in both directions, so you can also use the controls of the XMMS gui to skip tracks or seek). You can use all available plugins existing for XMMS, eg. the crossfading plugin.
+</para>
+</sect2>
+
+<sect2 id="noatun">
+<title>Noatun</title>
+<para>
+This backend uses two <ulink url="http://noatun.kde.org">Noatun</ulink>,
+instances for playing your songs. By using two instances, Yammi implements a crossfading of successive tracks (fading out the first Noatun instance while already fading in the second Noatun instance).
+</para>
+</sect2>
+
+<sect2 id="gstreamer">
+<title>GStreamer</title>
+<para>
+This player backend is still in an experimental state.
+It uses the <ulink url="http://gstreamer.freedesktop.org/">gstreamer</ulink> framework for playback.
+
+GStreamer itself uses different backends. It is recommended to use the "osssink" backend, because other backends might crash Yammi when seeking in songs (apparently a bug in the KDE gstreamer bindings, not in Yammi).
+</para>
+</sect2>
+
+
 </sect1>
 
 <sect1 id="searching">
@@ -566,23 +612,27 @@ Reason (displaying the reason why there was a reason with this song, only in fol
 <title>Song coloring</title>
 <para>
 The songs entries in the songlist are normally written in black, except:
+</para>
 
+<itemizedlist>
+<listitem><para>
 </para><para>
 currently played song (red)
-
-</para><para>
+</para></listitem>
+<listitem><para>
 song enqueued in playlist (blue)
-
-</para><para>
+</para></listitem>
+<listitem><para>
 song already played in this session (green)
-
-</para><para>
+</para></listitem>
+<listitem><para>
 song not available on local harddisk (grey) (=> probably needs to be loaded before playing)
-
-</para><para>
+</para></listitem>
+<listitem><para>
 song available in swap dir (dark grey) (=> song is already loaded, will be only
 checked for folder "Playlist")
-</para>
+</para></listitem>
+</itemizedlist>
 </sect1>
 
 <sect1 id="folderStructure">
@@ -728,12 +778,12 @@ This song databse is saved as a simple xml file in the user's home directory (no
 </para>
 
 <para>
-However, you should not move your songfiles from outside Yammi, because Yammi might not find the files any more (although Yammi tries to detect files that have been moved on a database update).
-Therefore Yammi provides a function to move song files, which at the same time updates the information in Yammi's database. Please make use of that function when you reorganize your songs on your harddisk.
+However, you should not move your songfiles from outside Yammi, because Yammi will not find the files any more (although Yammi tries to detect files that have been moved on a database update).
+Therefore Yammi provides a function to move song files, which at the same time updates the information in Yammi's database.
 </para>
 
 <para>
-Tip: It still helps a lot to have a fixed directory structure, like {artist}/{album}/{title}, and Yammi actively supports this with the consistency check (which allows to move your songs to the appropriate location automatically).
+Tip: It still helps a lot to have a fixed directory structure, like {artist}/{album}/{artist} - {title}.{suffix}, and Yammi actively supports this with its consistency check modes (which allow you to move your songs to the appropriate location and/or rename them automatically when you change tags).
 </para>
 </sect2>
 
@@ -793,19 +843,33 @@ end - Immediately starts playing the song via the second sound device, starting 
 <sect2>
 <title>Info...</title>
 <para>
-Opens a dialog with information and edit possibility for the selected song(s).
-The dialog shows the different fields that Yammi saves in its database.
-</para><para>
-Multiple selected songs / mass editing
-</para><para>
-If more than one song is selected, the song info dialog is slightly different:
-</para><para>
-- Yammi shows the total size and length of the selection
-</para><para>
-- entries that are not exactly the same for all selected songs are shown as "!". When you change this entry, you can conveniently set that entry for all selected songs to the new value (ie. unifying that value for the whole selection). As long, as this is not changed, these entries are not touched
-</para><para>
-- entries that are exactly the same can be conveniently changed for all selected songs by changing the value shown.
+Opens a dialog showing information about the selected song(s), which also allows to edit the tags.
 </para>
+
+<sect3>
+<title>Correct filename / directory</title>
+<para>
+If you have the consistency modes (keep filenames/directories consistent) activated, the checkbox "correct to" after the filename/directory will be checked, and you will see how Yammi will modify the filename or directory when you change the tag information of songs. A grey entry indicates that the filename or directory is consistent with the naming scheme you configured in the preferences, whereas a red entry indicates that it has to be corrected. If corresponding box is checked, these corrections will be made as soon as you exit the dialog with the "OK" button.
+</para>
+</sect3>
+
+<sect3>
+<title>Multiple selected songs / mass editing</title>
+<para>
+If more than one song is selected, the song info dialog is slightly different:
+</para>
+<itemizedlist>
+<listitem><para>
+Yammi shows the total size and length of the selection
+</para></listitem>
+<listitem><para>
+entries that are not exactly the same for all selected songs are shown as "!". When you change this entry, you can conveniently set that entry for all selected songs to the new value (ie. unifying that value for the whole selection). As long, as this is not changed, these entries are not touched
+</para></listitem>
+<listitem><para>
+entries that are exactly the same can be conveniently changed for all selected songs by changing the value shown
+</para></listitem>
+</itemizedlist>
+</sect3>
 </sect2>
 
 
@@ -829,29 +893,38 @@ This allows you to quickly search for songs from the same artist (or album or ti
 
 <sect2>
 <title>Advanced...</title>
+<sect3>
+<title>Delete</title>
 <para>
-Delete
-</para><para>
 Deleting can be done in two ways:
 </para><para>
 1. Deleting the database entry in Yammi's database (does not touch the song file).
 </para><para>
 2. Deleting the song file, which is done by moving the song file to the trash directory.
 Yammi still keeps the database entry. Usually this makes sense if the song is present on at least one media, and therefore can be loaded to the harddisk before playing via Yammi's jukebox functionality (and therefore the dialog shows you on which media that song is registered).
+</para>
+</sect3>
 
-</para><para>
-Move file to...
-</para><para>
+<sect3>
+<title>Move file to...</title>
+<para>
 Moves a file to another directory. The path information in Yammi's database will be updated with the new location of that file.
-</para><para>
-Check consistency...
-</para><para>
+</para>
+</sect3>
+
+<sect3>
+<title>Check consistency...</title>
+<para>
 Performs a consistency check on the selected song(s). See "Checking consistency" in "Advanced topics".
-</para><para>
-Burn to media...
-</para><para>
+</para>
+</sect3>
+
+<sect3>
+<title>Burn to media...</title>
+<para>
 assists in burning the selected songs to one or more media (distributing the selection of songs over multiple media according to the configured media capacity). See "Burning files" in "Advanced Topics".
 </para>
+</sect3>
 </sect2>
 
 </sect1>
@@ -885,14 +958,14 @@ When enabled, Yammi will immediately save all tags to the file (if possible) aft
 <sect3>
 <title>keep filenames consistent</title>
 <para>
-When enabled, Yammi will rename your files (if necessary) to keep the filenames consistent with the configured filename pattern after altering relevant attributes in the song info dialog.
+When enabled, Yammi will by default correct your filenames (if necessary) to keep the filenames consistent with the configured filename pattern after altering relevant attributes in the song info dialog.
 </para>
 </sect3>
 
 <sect3>
 <title>keep directories consistent</title>
 <para>
-When enabled, Yammi will move your files (if necessary) to keep the directory consistent with the configured directory pattern after altering relevant attributes in the song info dialog.
+When enabled, Yammi will by default move your files (if necessary) to keep the directory consistent with the configured directory pattern after altering relevant attributes in the song info dialog.
 </para>
 </sect3>
 
@@ -901,6 +974,8 @@ When enabled, Yammi will move your files (if necessary) to keep the directory co
 <para>
 If you don't want Yammi to touch your song files in any way, you should
 leave these three settings disabled!
+</para>
+<para>
 However, for easy organizing your song files I found it extremely useful
 to have consistent filenames, directories and tags at any time.
 </para>
@@ -913,7 +988,6 @@ See also "Checking consistency" in "Advanced topics".
 <sect2>
 <title>Group Threshold</title>
 <para>
-
 This value determines, how many items of one group must be present for a subfolder within the folder Artists/Albums/Genre/Year to be created. If you set this value to 1, every artist/album/genre/year will appear as a subfolder, a value of 10 only will create subfolders for artists/albums/genres/years which contain at least 10 entries.
 </para>
 </sect2>
@@ -942,6 +1016,8 @@ For these cases press the SHIFT key in combination with the requested action, wh
 <title>Autoplay</title>
 <para>
 Too lazy to manually enqueue songs all the time?
+</para>
+<para>
 Use Yammi's autoplay functionality to let Yammi automatically enqueue songs for you!
 </para><para>
 Choose a folder to enqueue songs from and choose "Autoplay" from

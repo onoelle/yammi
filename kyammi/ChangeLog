@@ -1,4 +1,4 @@
-??.??.2005 version 1.2
+09.03.2005 version 1.2
 ######################
 - fixed: problems with umlauts in categories/history (saving to correct UTF-8 encoding now)
 - fixed: crash when scanning unreadable directories (eg. over samba shares)
@@ -10,6 +10,7 @@
 - improved: updated italian translation
 - improved: added confirm dialog when editing more than 20 songs
 - improved: made gstreamer audiosink configurable
+- improved: handbook updated
 
 
 
