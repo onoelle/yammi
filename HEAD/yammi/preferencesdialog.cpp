@@ -99,14 +99,14 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, const char *name, bool mod
 	LineEditGrabAndEncodeCmd->setText(QString("%1").arg(config->grabAndEncodeCmd));
 	LineEditShutdownScript->setText(QString("%1").arg(config->shutdownScript));
 	
-	_pluginMenuEntry=new QStringList(*config->pluginMenuEntry);
-	_pluginCommand=new QStringList(*config->pluginCommand);
-	_pluginCustomList=new QStringList(*config->pluginCustomList);
-	_pluginMode=new QStringList(*config->pluginMode);
-	_pluginConfirm=new QStringList(*config->pluginConfirm);
+	_pluginMenuEntry=config->pluginMenuEntry;
+	_pluginCommand= config->pluginCommand;
+	_pluginCustomList= config->pluginCustomList;
+	_pluginMode= config->pluginMode;
+	_pluginConfirm= config->pluginConfirm;
 	
 	ComboBoxPlugins->insertItem("choose entry");
-	ComboBoxPlugins->insertStringList(*_pluginMenuEntry);
+	ComboBoxPlugins->insertStringList(_pluginMenuEntry);
   ComboBoxPluginMode->insertItem("single");
   ComboBoxPluginMode->insertItem("group");
 	updatePlugin(0);
@@ -193,11 +193,11 @@ void PreferencesDialog::myAccept()
  	config->grabAndEncodeCmd=LineEditGrabAndEncodeCmd->text();
  	config->shutdownScript=LineEditShutdownScript->text();
 
- 	config->pluginCommand=new QStringList(*_pluginCommand);
-	config->pluginMenuEntry=new QStringList(*_pluginMenuEntry);
- 	config->pluginCustomList=new QStringList(*_pluginCustomList);
- 	config->pluginMode=new QStringList(*_pluginMode);
- 	config->pluginConfirm=new QStringList(*_pluginConfirm);
+ 	config->pluginCommand = _pluginCommand;
+	config->pluginMenuEntry = _pluginMenuEntry;
+ 	config->pluginCustomList = _pluginCustomList;
+ 	config->pluginMode = _pluginMode;
+ 	config->pluginConfirm = _pluginConfirm;
  	
  	// jukebox functions
  	config->mediaDir=LineEditMediaDir->text();
@@ -263,19 +263,19 @@ void PreferencesDialog::updatePlugin(int newPos)
     ComboBoxPluginMode->setEnabled(false);
 	}
 	else {
-		LineEditPluginMenuEntry->setText((*_pluginMenuEntry)[newPos-1]);
+		LineEditPluginMenuEntry->setText(_pluginMenuEntry[newPos-1]);
 		LineEditPluginMenuEntry->setEnabled(true);
-		LineEditPluginCommand->setText((*_pluginCommand)[newPos-1]);
+		LineEditPluginCommand->setText(_pluginCommand[newPos-1]);
 		LineEditPluginCommand->setEnabled(true);
-		LineEditPluginCustomList->setText((*_pluginCustomList)[newPos-1]);
-		LineEditPluginCustomList->setEnabled(((*_pluginMode)[newPos-1])=="group");
+		LineEditPluginCustomList->setText(_pluginCustomList[newPos-1]);
+		LineEditPluginCustomList->setEnabled(_pluginMode[newPos-1]=="group");
 		PushButtonDeletePlugin->setEnabled(true);
-    CheckBoxPluginConfirm->setChecked(((*_pluginConfirm)[newPos-1])=="true");
+    CheckBoxPluginConfirm->setChecked(_pluginConfirm[newPos-1]=="true");
     CheckBoxPluginConfirm->setEnabled(true);
     ComboBoxPluginMode->setEnabled(true);
-    if(((*_pluginMode)[newPos-1])=="single")
+    if(_pluginMode[newPos-1]=="single")
       ComboBoxPluginMode->setCurrentItem(0);
-    if(((*_pluginMode)[newPos-1])=="group")
+    if(_pluginMode[newPos-1]=="group")
       ComboBoxPluginMode->setCurrentItem(1);      
 	}
 }
@@ -285,7 +285,7 @@ void PreferencesDialog::updatePluginMenuEntry(const QString& newText)
 	int pos=ComboBoxPlugins->currentItem();
 	if(pos==0)
 		return;
-	(*_pluginMenuEntry)[pos-1]=newText;
+	_pluginMenuEntry[pos-1] = newText;
 	ComboBoxPlugins->changeItem(newText, pos);
 }
 
@@ -294,7 +294,7 @@ void PreferencesDialog::updatePluginCommand(const QString& newText)
 	int pos=ComboBoxPlugins->currentItem();
 	if(pos==0)
 		return;
-	(*_pluginCommand)[pos-1]=newText;
+	_pluginCommand[pos-1] = newText;
 }
 
 void PreferencesDialog::updatePluginCustomList(const QString& newText)
@@ -302,7 +302,7 @@ void PreferencesDialog::updatePluginCustomList(const QString& newText)
 	int pos=ComboBoxPlugins->currentItem();
 	if(pos==0)
 		return;
-	(*_pluginCustomList)[pos-1]=newText;
+	_pluginCustomList[pos-1] = newText;
 }
 
 void PreferencesDialog::updatePluginMode(int newPos)
@@ -311,11 +311,11 @@ void PreferencesDialog::updatePluginMode(int newPos)
 	if(pos==0)
 		return;
 	if(newPos==0) {
-    (*_pluginMode)[pos-1]="single";
+    _pluginMode[pos-1] = "single";
     LineEditPluginCustomList->setEnabled(false);
   }
 	if(newPos==1) {
-    (*_pluginMode)[pos-1]="group";
+    _pluginMode[pos-1] = "group";
     LineEditPluginCustomList->setEnabled(true);
   }
 }
@@ -325,17 +325,17 @@ void PreferencesDialog::updatePluginConfirm(bool checked)
 	int pos=ComboBoxPlugins->currentItem();
 	if(pos==0)
 		return;
-	(*_pluginConfirm)[pos-1]=checked ? "true" : "false";
+	_pluginConfirm[pos-1] = checked ? "true" : "false";
 }
 
 void PreferencesDialog::newPlugin()
 {
 	ComboBoxPlugins->insertItem("new item");
-	_pluginMenuEntry->append("new item");
-	_pluginCommand->append("new command");
-	_pluginMode->append("single");
-	_pluginCustomList->append("new custom list");
-	_pluginConfirm->append("true");
+	_pluginMenuEntry.append("new item");
+	_pluginCommand.append("new command");
+	_pluginMode.append("single");
+	_pluginCustomList.append("new custom list");
+	_pluginConfirm.append("true");
 	ComboBoxPlugins->setCurrentItem(ComboBoxPlugins->count()-1);
 	updatePlugin(ComboBoxPlugins->count()-1);
 }
@@ -346,11 +346,11 @@ void PreferencesDialog::deletePlugin()
 	if(pos==0)
 		return;
 	ComboBoxPlugins->removeItem(pos);
-	_pluginMenuEntry->remove(_pluginMenuEntry->at(pos-1));
-	_pluginCommand->remove(_pluginCommand->at(pos-1));
-	_pluginMode->remove(_pluginMode->at(pos-1));
-	_pluginCustomList->remove(_pluginCustomList->at(pos-1));
-	_pluginConfirm->remove(_pluginConfirm->at(pos-1));
+	_pluginMenuEntry.remove(_pluginMenuEntry.at(pos-1));
+	_pluginCommand.remove(_pluginCommand.at(pos-1));
+	_pluginMode.remove(_pluginMode.at(pos-1));
+	_pluginCustomList.remove(_pluginCustomList.at(pos-1));
+	_pluginConfirm.remove(_pluginConfirm.at(pos-1));
 	ComboBoxPlugins->setCurrentItem(0);
 	updatePlugin(0);
 }

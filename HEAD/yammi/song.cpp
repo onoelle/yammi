@@ -20,7 +20,7 @@
 #include "yammigui.h"
 #include "prefs.h"
 
-#include "mp3info/CMP3Info.h"       // used to retrieve mp3 layer info
+#include "mp3info/CMP3Info.h" /* used to retrieve mp3 layer info */
 
 #ifdef ENABLE_OGGLIBS
 #include "vcedit.h"
@@ -36,22 +36,22 @@ extern YammiGui* gYammiGui;
  */
 Song::Song()
 {
-	classified=false;
-	tagsDirty=false;
-	filenameDirty=false;
-	corrupted=true;
+	classified = false;
+	tagsDirty = false;
+	filenameDirty = false;
+	corrupted = true;
 
-	artist="";
-	title="";
-	album="";
-	length=0;
-	bitrate=-1;
-	MyDateTime now=now.currentDateTime();
-	addedTo=now;
-	comment="";
-	year=0;
-	this->trackNr=0;
-	this->genreNr=0;
+	artist = "";
+	title = "";
+	album = "";
+	length = 0;
+	bitrate = -1;
+	MyDateTime now = now.currentDateTime();
+	addedTo = now;
+	comment = "";
+	year = 0;
+	this->trackNr = 0;
+	this->genreNr = 0;
 	this->lastPlayed.setDate(QDate(1900,1,1));
 	this->lastPlayed.setTime(QTime(0,0,0));
 }
@@ -60,26 +60,26 @@ Song::Song()
  */
 Song::Song(QString artist, QString title, QString album, QString filename, QString path, int length, int bitrate, MyDateTime addedTo, int year, QString comment, int trackNr, int genreNr)
 {
-	classified=false;
-	tagsDirty=false;
-	filenameDirty=false;
+	classified = false;
+	tagsDirty = false;
+	filenameDirty = false;
 	lastPlayed.setDate(QDate(1900,1,1));
 	lastPlayed.setTime(QTime(0,0,0));
 
-  corrupted=false;
+	corrupted = false;
 
-  this->artist=artist;
-	this->title=title;
-	this->album=album;
-	this->filename=filename;
-	this->path=path;
-	this->length=length;
-	this->bitrate=bitrate;
-	this->addedTo=addedTo;
-	this->comment=comment;
-	this->trackNr=trackNr;
-	this->genreNr=genreNr;
-	this->year=year;
+	this->artist = artist;
+	this->title = title;
+	this->album = album;
+	this->filename = filename;
+	this->path = path;
+	this->length = length;
+	this->bitrate = bitrate;
+	this->addedTo = addedTo;
+	this->comment = comment;
+	this->trackNr = trackNr;
+	this->genreNr = genreNr;
+	this->year = year;
 }
 
 

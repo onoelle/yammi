@@ -13,8 +13,13 @@ user feedback via email:
 - incorrect tracknumbers are shown in some cases where tracknumber is undefined (0).
 
 
+
 0.8.1
 -----
+- remove cout assuming suffix ".mp3".../ have to look up suffix...
+- autoplay: don't refresh view for choosing song to enqueue
+- song length <5s: noatun stops playing
+- {wish} in playlist: noatun stops playing
 - grabAndEncode: check whether file already existing
 - remove all from playlist: dialog box with checkbox
 - remove the creating of symlinks for burning assistance (but check size of existing media!)

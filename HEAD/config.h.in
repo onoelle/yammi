@@ -1,20 +1,16 @@
 /* config.h.in.  Generated automatically from configure.in by autoheader.  */
-#undef PACKAGE
-#undef VERSION
-#undef HAVE_LIBSM
-#undef HAVE_CATGETS
-#undef HAVE_GETTEXT
-#undef HAVE_LC_MESSAGES
-#undef HAVE_STPCPY
-#undef ENABLE_NLS
 
-#undef ENABLE_OGGLIBS
+/* Support reading and writing MP3 tags */
 #undef ENABLE_ID3LIB
-#undef ENABLE_NOATUN
-#undef ENABLE_XMMS
 
-#undef HAVE_ICONV_OPEN
-#undef HAVE_LANGINFO_CODESET
+/* Support noatun as a multimedia player */
+#undef ENABLE_NOATUN
+
+/* Support reading and writing OGG tags */
+#undef ENABLE_OGGLIBS
+
+/* Support xmms as a multimedia player */
+#undef ENABLE_XMMS
 
 /* Defines if your system has the crypt function */
 #undef HAVE_CRYPT
@@ -25,8 +21,14 @@
 /* Define if you have the <inttypes.h> header file. */
 #undef HAVE_INTTYPES_H
 
+/* Define if you have the `id3' library (-lid3). */
+#undef HAVE_LIBID3
+
 /* Define if you have libjpeg */
 #undef HAVE_LIBJPEG
+
+/* Define if you have the `kdecore' library (-lkdecore). */
+#undef HAVE_LIBKDECORE
 
 /* Define if you have the `ogg' library (-logg). */
 #undef HAVE_LIBOGG
@@ -37,13 +39,19 @@
 /* Define if you have a working libpthread (will enable threaded code) */
 #undef HAVE_LIBPTHREAD
 
+/* Define if you have the `stdc++' library (-lstdc++). */
+#undef HAVE_LIBSTDC__
+
 /* Define if you have the `vorbis' library (-lvorbis). */
 #undef HAVE_LIBVORBIS
 
 /* Define if you have the `vorbisfile' library (-lvorbisfile). */
 #undef HAVE_LIBVORBISFILE
 
-/* Define if you have libz */
+/* Define if you have the `xmms' library (-lxmms). */
+#undef HAVE_LIBXMMS
+
+/* Define if you have the `z' library (-lz). */
 #undef HAVE_LIBZ
 
 /* Define if you have the <memory.h> header file. */

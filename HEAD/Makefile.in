@@ -1,4 +1,4 @@
-# KDE tags expanded automatically by am_edit - $Revision: 1.43 $ 
+# KDE tags expanded automatically by am_edit - $Revision: 1.44 $ 
 # Makefile.in generated automatically by automake 1.5 from Makefile.am.
 
 # Copyright 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001
@@ -250,11 +250,11 @@ RECURSIVE_TARGETS = info-recursive dvi-recursive install-info-recursive \
 	install-exec-recursive installdirs-recursive install-recursive \
 	uninstall-recursive check-recursive installcheck-recursive
 DIST_COMMON = README ./stamp-h.in AUTHORS INSTALL Makefile.am \
-	Makefile.in TODO acconfig.h acinclude.m4 aclocal.m4 \
-	admin/ChangeLog admin/config.guess admin/config.sub \
-	admin/depcomp admin/install-sh admin/ltconfig admin/ltmain.sh \
-	admin/missing admin/mkinstalldirs admin/ylwrap config.h.in \
-	configure configure.in
+	Makefile.in TODO acinclude.m4 aclocal.m4 admin/ChangeLog \
+	admin/config.guess admin/config.sub admin/depcomp \
+	admin/install-sh admin/ltconfig admin/ltmain.sh admin/missing \
+	admin/mkinstalldirs admin/ylwrap config.h.in configure \
+	configure.in
 DIST_SUBDIRS = $(SUBDIRS)
 #>- all: config.h
 #>+ 1
@@ -307,7 +307,7 @@ $(srcdir)/config.h.in:  $(srcdir)/./stamp-h.in
 	rm -f $(srcdir)/./stamp-h.in; \
 	$(MAKE) $(srcdir)/./stamp-h.in; \
 	else :; fi
-$(srcdir)/./stamp-h.in: $(top_srcdir)/configure.in $(ACLOCAL_M4) $(top_srcdir)/acconfig.h
+$(srcdir)/./stamp-h.in: $(top_srcdir)/configure.in $(ACLOCAL_M4) 
 	@rm -f $(srcdir)/./stamp-h.in $(srcdir)/./stamp-h.inT
 	@echo timestamp > $(srcdir)/./stamp-h.inT 2> /dev/null
 	cd $(top_srcdir) && $(AUTOHEADER)
@@ -411,7 +411,7 @@ distclean-tags:
 
 #>- DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 #>+ 4
-KDE_DIST=Makefile.dist MyYammiHowto.txt yammi.spec configure.scan yammi.doxygen configure.in_bob1 configure.in_bob2 autoscan.log [config.h].in YammiGui.db subdirs YammiGui.pro configure.in_oli yammi.kdevses 
+KDE_DIST=make.log Makefile.dist MyYammiHowto.txt yammi.spec configure.scan yammi.doxygen configure.in_bob1 configure.in_bob2 configure.in_bob3 configure.log autoscan.log [config.h].in YammiGui.db subdirs patch-1-030410.diff YammiGui.pro configure.in_oli yammi.kdevses 
 
 DISTFILES= $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST) $(KDE_DIST)
 

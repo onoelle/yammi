@@ -6,10 +6,10 @@
  *
  * Comment editing backend, suitable for use by nice frontend interfaces.
  *
- * last modified: $Id: vcedit.c,v 1.3 2003/02/26 21:27:35 onoelle Exp $
+ * last modified: $Id: vcedit.c,v 1.4 2003/04/17 20:30:49 onoelle Exp $
  */
 
-#include <options.h> // For definition of ENABLE_OGGLIBS
+#include <options.h> /* For definition of ENABLE_OGGLIBS */
 
 
 

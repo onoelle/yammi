@@ -1,8 +1,14 @@
-# Original Author was Kalle@kde.org
-# I lifted it in some mater. (Stephan Kulow)
-# I used much code from Janos Farkas
+
+dnl Original Author was Kalle@kde.org
+dnl I lifted it in some mater. (Stephan Kulow)
+dnl I used much code from Janos Farkas
 
 dnl Process this file with autoconf to produce a configure script.
+dnl tested with autoconf --version
+dnl tested (GNU Autoconf) 2.53
+
+dnl tested with automake --version
+dnl automake (GNU automake) 1.6.3
 
 AC_INIT(acinclude.m4) dnl a source file from your sub dir
 
@@ -12,9 +18,19 @@ AC_CONFIG_AUX_DIR(admin)
 AC_CANONICAL_SYSTEM 
 
 dnl Automake doc recommends to do this only here. (Janos)
-AM_INIT_AUTOMAKE(yammi,0.7.1)
+AM_INIT_AUTOMAKE(yammi,0.8.0)
 
-KDE_SET_PREFIX
+dnl generate the config header
+AM_CONFIG_HEADER( [config.h] )
+
+dnl #define's that we want autoheader to create for us
+dnl are in acconfig.h
+AH_TEMPLATE( [ENABLE_ID3LIB], [Support reading and writing MP3 tags] )
+AH_TEMPLATE( [ENABLE_NOATUN], [Support noatun as a multimedia player] )
+AH_TEMPLATE( [ENABLE_XMMS], [Support xmms as a multimedia player] )
+AH_TEMPLATE( [ENABLE_OGGLIBS], [Support reading and writing OGG tags])
+
+dnl KDE_SET_PREFIX
 
 AC_PREFIX_DEFAULT(/usr/local)
 if test "x$prefix" = "xNONE"; then
@@ -22,142 +38,197 @@ if test "x$prefix" = "xNONE"; then
   ac_configure_args="$ac_configure_args --prefix $prefix"
 fi
 
-dnl generate the config header
-AM_CONFIG_HEADER(config.h) dnl at the distribution this done
+dnl add -I. to the include path
+CPPFLAGS="$CPPFLAGS -I.."
 
 dnl Checks for programs.
 AC_CHECK_COMPILERS
+
+dnl require a C++ compiler
+AC_LANG(C++)
+AC_REQUIRE_CPP
 
 dnl CXXFLAGS="$NOOPT_CXXFLAGS" dnl __kdevelop[noopt]__
 dnl CFLAGS="$NOOPT_CFLAGS" dnl __kdevelop[noopt]__
 dnl CXXFLAGS="$CXXFLAGS $USE_EXCEPTIONS" dnl __kdevelop[exc]__
 
-
 dnl -------------------------------
 dnl Configure switches.
 dnl -------------------------------
-AC_ARG_ENABLE(ogglibs,
-[  --disable-ogglibs          disable support of ogg libs for reading ogg tags], enable_ogglibs=no, enable_ogglibs=yes)
-AC_ARG_ENABLE(id3lib,
-[  --disable-id3lib           disable support of id3lib for reading id3 tags], enable_id3lib=no, enable_id3lib=yes)
-AC_ARG_ENABLE(noatun,
-[  --disable-noatun           disable support for noatun (don't use kdelibs)], enable_noatun=no, enable_noatun=yes)
-AC_ARG_ENABLE(xmms,
-[  --disable-xmms             disable support for xmms (don't need xmmsctrl)], enable_xmms=no, enable_xmms=yes)
+AC_ARG_ENABLE( [xmms],
+               AC_HELP_STRING( [--disable-xmms],
+                               [disable support for xmms (don't need xmmsctrl)] ),
+               enable_xmms=no,
+               enable_xmms=yes )
 
+AC_ARG_ENABLE( [noatun],
+             AC_HELP_STRING( [--disable-noatun],
+                             [disable support for noatun (don't use kdelibs)] ),
+             enable_noatun=$enableval,
+             enable_noatun=yes )
 
-dnl -------------------------------
-dnl Checks for libraries.
-dnl -------------------------------
+AC_ARG_ENABLE( [ogglibs],
+             AC_HELP_STRING( [--disable-ogglibs],
+                             [disable support of ogglibs for reading/writing ogg tags] ),
+             enable_ogglibs=no,
+             enable_ogglibs=yes )
 
-dnl OGG vorbis libraries
-if test "x$enable_ogglibs" = xyes; then
-    dnl Libraries required for reading ogg tags, if not found 'enable_ogglibs' is disabled
-    AC_CHECK_LIB(ogg, ogg_sync_init, , enable_ogglibs=no)
-    AC_CHECK_LIB(vorbis, vorbis_comment_init, , enable_ogglibs=no)
-    AC_CHECK_LIB(vorbisfile, ov_open, , enable_ogglibs=no)
-fi
-
-AC_MSG_CHECKING(for ogg libs for reading ogg tags)
-if test "x$enable_ogglibs" = xyes; then
-    AC_DEFINE(ENABLE_OGGLIBS)
-    AC_MSG_RESULT(yes)
-else
-    echo "*** Warning: ogg libs support disabled => no reading/writing of tags in ogg files! ***"
-    AC_MSG_RESULT(no)
-fi
-
-
-dnl id3lib library
-AC_MSG_CHECKING(for id3lib support)
-if test "x$enable_id3lib" = xyes; then
-dnl    LIBS="-lid3lib $LIBS"
-dnl    AC_CHECK_LIB(id3lib, , , enable_id3lib=no)
-dnl
-    AC_SEARCH_LIBS(ID3Tag_Link,"id3" "id3 -lstdc++" "id3 -lz" "id3 -lz -lstdc++",,AC_MSG_ERROR(id3lib not found))
-dnl Needed to link correctly with id3lib 3.8.0
-    LIBS="-lz -lstdc++ $LIBS"
-    AC_DEFINE(ENABLE_ID3LIB)
-    AC_MSG_RESULT(yes)
-else
-    echo "*** Warning: id3lib support disabled => no reading/writing of tags in mp3 files! ***"
-    AC_MSG_RESULT(no)
-fi
-
-
-if test "x$enable_xmms" = xyes; then
-    LIBS="-lxmms $LIBS"
-    AC_DEFINE(ENABLE_XMMS)
-    AC_MSG_RESULT(yes)
-else
-    echo "*** xmms support disabled ***"
-    AC_MSG_RESULT(no)
-fi
-
-
-dnl ---------------------
-dnl end of library checks
-dnl ---------------------
-
+AC_ARG_ENABLE( [id3lib],
+               AC_HELP_STRING( [--disable-id3lib],
+                               [disable support of id3lib for reading id3 tags] ),
+               enable_id3lib=no,
+               enable_id3lib=yes )
 
 AC_ENABLE_SHARED(yes)
 AC_ENABLE_STATIC(no)
+
+dnl just a wrapper, apparently not KDE specific
+dnl see "acinclude.m4" for the function
 KDE_PROG_LIBTOOL
+
+dnl http://autoqt.sourceforge.net/
+dnl gw_CHECK_QT
 
 all_libraries="$all_libraries $USER_LDFLAGS"
 all_includes="$all_includes $USER_INCLUDES"
 AC_SUBST(all_includes)
 AC_SUBST(all_libraries)
 
-dnl for NLS support. Call them in this order!
-dnl WITH_NLS is for the po files
-AM_KDE_WITH_NLS
+if test "x$enable_noatun" = "xyes"; then
+    AC_MSG_NOTICE( [Adding KDE support] )
 
-KDE_USE_QT(3)
-AC_PATH_KDE
-
-AC_MSG_CHECKING(for noatun support)
-if test "x$enable_noatun" = xyes; then
-    LIBS="-lkdecore $LIBS"
-    AC_DEFINE(ENABLE_NOATUN)
-    AC_MSG_RESULT(yes)
-else
-    echo "*** noatun support disabled ***"
-    AC_MSG_RESULT(no)
+    dnl for NLS support. Call them in this order!
+    dnl WITH_NLS is for the po files
+    AM_KDE_WITH_NLS
 fi
 
+dnl QT KDE_SET_PREFIX
+if test "x$enable_noatun" = "xyes"; then
+    KDE_USE_QT(3)
+fi
+    KDE_USE_QT(3)
 
-AC_MSG_CHECKING(for xmms support)
-dnl KDE_NEED_FLEX dnl __kdevelop__
-dnl AC_PROG_YACC dnl __kdevelop__
+AC_PATH_QT
 
-dnl Perform program name transformation
-dnl AC_ARG_PROGRAM
+dnl check for KDE libraries and includes
+if test "x$enable_noatun" = "xyes"; then
+    AC_PATH_KDE	
+fi
 
-
-dnl PACKAGE set before
-
+dnl I can't figure this out :-) but it is needed by QT
 KDE_CREATE_SUBDIRSLIST
 
-dnl add here all your Makefiles. This are created by configure
+dnl -------------------------------
+dnl Checks for libraries.
+dnl -------------------------------
+
+dnl standard C++ library
+AC_CHECK_LIB( stdc++, cout, , AC_MSG_ERROR( *** stdc++ library is required *** ), )
+
+dnl XMMS support
+if test "x$enable_xmms" = "xyes"; then
+    AC_CHECK_LIB( xmms, xmms_remote_get_version, , [AC_MSG_ERROR( [Requested XMMS support is not available] )], )
+fi
+if test "x$enable_xmms" = "xyes"; then
+    AC_MSG_NOTICE( *** xmms support enabled *** )
+
+    AC_DEFINE( [ENABLE_XMMS], [1] )
+else
+    AC_MSG_WARN( *** xmms support disabled *** )
+fi
+
+dnl Noatun/KDE support (for proper kde app: add "-lkdeui -lkio ")
+dnl check to see if KDE->DCOP is available
+dnl this app requires KDE so so noatun support might as well always be
+dnl enabled.
+if test "x$enable_noatun" = "xyes"; then
+OLDCPPFLAGS="$CPPFLAGS"
+CPPFLAGS="$CPPFLAGS -I$KDEDIR/include"
+    AC_CHECK_HEADER( $KDEDIR/include/dcopclient.h, , AC_MSG_WARN( No DCOP/KDE ) )
+    AC_CHECK_HEADER( dcopclient.h, , AC_MSG_WARN( No DCOP/KDE ) )
+CPPFLAGS="$OLDCPPFLAGS"
+
+# additional libraries for linking KDE
+LDFLAGS="$LDFLAGS -L$KDEDIR/lib"
+
+    AC_CHECK_LIB( kdecore, DCOPClient, , LIBS="$LIBS -lkdecore", )
+fi
+if test "x$enable_noatun" = "xyes"; then
+    AC_MSG_NOTICE( *** noatun support enabled *** )
+
+    AC_DEFINE(ENABLE_NOATUN, 1 )
+else
+    AC_MSG_WARN( *** noatun support disabled *** )
+fi
+
+if [test "x$enable_xmms" != "xyes"] && [test "x$enable_noatun" != "xyes"] ; then
+    AC_MSG_WARN( ***BOTH xmms and noatun support are disabled, another media player with yammi plugins will be needed. *** )
+fi
+
+dnl OGG vorbis libraries
+if test "x$enable_ogglibs" = "xyes"; then
+   dnl Libraries required for reading ogg tags, if not found 'enable_ogglibs' is disabled
+    AC_CHECK_LIB(ogg, ogg_sync_init, , enable_ogglibs=no, )
+    AC_CHECK_LIB(vorbis, vorbis_comment_init, , enable_ogglibs=no, )
+    AC_CHECK_LIB(vorbisfile, ov_open, , enable_ogglibs=no, )
+fi
+
+if test "x$enable_ogglibs" = "xyes"; then
+    AC_MSG_NOTICE( reading/writing of tags in ogg files is supported )
+
+    AC_DEFINE( [ENABLE_OGGLIBS], [1] )
+else
+    AC_MSG_WARN( *** Warning: ogg libs support disabled => no reading/writing of tags in ogg files! *** )
+fi
+
+dnl id3lib library
+if test "x$enable_id3lib" = "xyes"; then
+    AC_CHECK_LIB( z, deflate, , enable_id3lib=no, )
+
+    dnl if still adding libid3 then...
+    if test "x$enable_id3lib" = "xyes"; then
+        AC_CHECK_LIB( id3, ID3Tag_Link, , enable_id3lib=no,
+                      -lz )
+    fi
+fi
+if test "x$enable_id3lib" = "xyes"; then
+    AC_MSG_NOTICE( reading/writing of tags in MP3 files is supported )
+
+    AC_DEFINE(ENABLE_ID3LIB, 1 )
+else
+    AC_MSG_WARN( *** Warning: id3lib support disabled => no reading/writing of tags in mp3 files! *** )
+fi
+
+dnl ---------------------
+dnl end of library checks
+dnl ---------------------
+
+dnl add here all your Makefiles. These are created by configure
+dnl from Makefile.in which is create by automake from Makefile.am
 AC_OUTPUT(Makefile yammi/Makefile yammi/docs/Makefile yammi/docs/en/Makefile yammi/icons/Makefile yammi/mp3info/Makefile )
 
-
-echo "
+AC_MSG_NOTICE( [
 Configuration for $PACKAGE $VERSION :
 --------------------------------
-
  Source code location .: $srcdir
  Host System Type .....: $host
  Preprocessor .........: $CC $CPPFLAGS
  Compiler .............: $CC $CFLAGS $LIBFLAC_CFLAGS
  Linker ...............: $CC $LDFLAGS $LIBS $LIBFLAC_LIBS
- ogg libs support .....: $enable_ogglibs
+ XMMS support .........: $enable_xmms
+ Noatun support .......: $enable_noatun
+ ogglibs support ......: $enable_ogglibs
  id3lib support .......: $enable_id3lib
- noatun support .......: $enable_noatun
- xmms support .........: $enable_xmms
  Install path .........: $prefix
+   If this path does not exist or is not the desired install path,
+   you should re-run configure, giving a suitable path with the --prefix option
+   For example ./configure --prefix=/opt/kde3
 
- Now type 'make' to build $PACKAGE $VERSION,
+ Look for any WARNINGs output by the configure script
+ If you're satisfied, type 'make' to build $PACKAGE $VERSION,
  and then 'make install' for installation.
-"
+] )
+
+AC_MSG_WARN( [check to make sure the selected options are correct.] )
+AC_MSG_WARN( [run ./configure --help to see all the options.] )
+

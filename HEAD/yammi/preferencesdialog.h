@@ -54,11 +54,11 @@ public slots:
 
 protected:
 	Prefs* config;
-	QStringList* _pluginMenuEntry;
-	QStringList* _pluginCommand;
-	QStringList* _pluginCustomList;
-	QStringList* _pluginMode;
-	QStringList* _pluginConfirm;
+	QStringList _pluginMenuEntry;
+	QStringList _pluginCommand;
+	QStringList _pluginCustomList;
+	QStringList _pluginMode;
+	QStringList _pluginConfirm;
 
 };
 

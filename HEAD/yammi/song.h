@@ -91,10 +91,10 @@ typedef struct {
 class Song
 {
 public:
-  /// default constructor, just assigns default values
-  Song();
+	/// default constructor, just assigns default values
+	Song();
 
-  /// constructs a song object from the given parameters
+	/// constructs a song object from the given parameters
 	Song(QString artist, QString title, QString album, QString filename, QString path, int length, int bitrate, MyDateTime addedTo, int year, QString comment, int trackNr, int genreNr);
 
 	/// constructs a song object from a given file
@@ -156,10 +156,10 @@ public:
 	QString displayName() { return this->artist+" - "+this->title; }
 	QString location() 		{ return this->path+"/"+this->filename; }
 
-  /* Constructs a filename following the "artist-title.mp3" pattern.
-   * (Should) Take care of special characters not allowed in filenames.
-   */
-  QString constructFilename();
+	/* Constructs a filename following the "artist-title.mp3" pattern.
+	 * (Should) Take care of special characters not allowed in filenames.
+	 */
+	QString constructFilename();
 	
 
 	void addMediaLocation(QString mediaName, QString locationOnMedia);  ///< adds the location on a media to song info
@@ -170,27 +170,27 @@ public:
 //	void copyAsWavTo(QString dir);
 	
 
-// this is all info that we want to save belonging to a song object:
+	// this is all info that we want to save belonging to a song object:
 	// id3 info
-	QString artist;													// artist
-	QString title;													// title
-	QString album;													// album
-	QString comment;												// comment
-	int trackNr;														// trackNr on CD
-	int year;																// year of song
-	int genreNr;														// genre (index number)
+	QString artist;            // artist
+	QString title;             // title
+	QString album;             // album
+	QString comment;           // comment
+	int trackNr;               // trackNr on CD
+	int year;                  // year of song
+	int genreNr;               // genre (index number)
 
 	// file info
-	QString filename;												// filename, excluding path
-	QString path;														// path to file, excluding filename, no trailing slash
-	unsigned long filesize;									// filesize in bytes
-	int length;															// length of song in seconds
-	int bitrate;														// bitrate in kbps
+	QString filename;          // filename, excluding path
+	QString path;              // path to file, excluding filename, no trailing slash
+	unsigned long filesize;    // filesize in bytes
+	int length;                // length of song in seconds
+	int bitrate;               // bitrate in kbps
 	
 	// additional database info
-	MyDateTime addedTo;											// when song was added to my database
-	MyDateTime lastPlayed;									// last time song was played
-	int noPlayed;														// how often song was played since added
+	MyDateTime addedTo;        // when song was added to my database
+	MyDateTime lastPlayed;     // last time song was played
+	int noPlayed;              // how often song was played since added
 	QStringList mediaName;
 	QStringList mediaLocation;
 	
@@ -199,11 +199,11 @@ public:
 	bool tagsDirty;
 	bool filenameDirty;
 
-  static QString getSongAction(int index);
-  static int getMaxSongAction()     { return MAX_SONG_ACTION; }	
+	static QString getSongAction(int index);
+	static int getMaxSongAction()     { return MAX_SONG_ACTION; }	
 
 protected:
-	QString capitalize(QString str);				///< capitalize all words
+	QString capitalize(QString str); ///< capitalize all words
 };
 
 #endif

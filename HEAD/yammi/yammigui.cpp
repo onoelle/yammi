@@ -894,8 +894,8 @@ void YammiGui::updateSongPopup()
 	
 	
 	pluginPopup = new QPopupMenu(songPopup);
-	for(unsigned int i=0; i<model->config.pluginMenuEntry->count(); i++) {
-		pluginPopup->insertItem( (*(model->config.pluginMenuEntry))[i], this, SLOT(forSelectionPlugin(int)), 0, 2000+i);
+	for(unsigned int i=0; i<model->config.pluginMenuEntry.count(); i++) {
+		pluginPopup->insertItem( model->config.pluginMenuEntry[i], this, SLOT(forSelectionPlugin(int)), 0, 2000+i);
 	}
 	songPopup->insertItem( "Plugins...", pluginPopup);
 }
@@ -1304,9 +1304,9 @@ void YammiGui::forSelectionPlugin(int pluginIndex)
 {
 	pluginIndex-=2000;
 
-  bool confirm=((*model->config.pluginConfirm)[pluginIndex]=="true");
-  QString mode=((*model->config.pluginMode)[pluginIndex]);
-  QString cmd=(*model->config.pluginCommand)[pluginIndex];
+  bool confirm=model->config.pluginConfirm[pluginIndex]=="true";
+  QString mode=model->config.pluginMode[pluginIndex];
+  QString cmd=model->config.pluginCommand[pluginIndex];
 
   if(cmd.contains("%X")>0) {
     QString dir=QFileDialog::getExistingDirectory(QString(""), this, QString("yammi"), QString("choose directory for plugin"), true);
@@ -1362,7 +1362,7 @@ void YammiGui::forSelectionPlugin(int pluginIndex)
     int index=1;
     QString customList="";
     for(Song* s=selectedSongs.firstSong(); s; s=selectedSongs.nextSong(), index++) {
-      QString entry=(*model->config.pluginCustomList)[pluginIndex];
+      QString entry = model->config.pluginCustomList[pluginIndex];
       customList+=makeReplacements(entry, s, index);
     }
 
