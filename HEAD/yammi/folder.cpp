@@ -153,8 +153,16 @@ void Folder::updateTitle()
 void Folder::popup(QPoint point, QPopupMenu* contentMenu)
 {
 	allPopup=new QPopupMenu();
+  folderPopup = new QPopupMenu( 0 );
+	folderPopup->insertItem( "Autoplay", this, SLOT(autoplayFolder()), 0, 13);
 	if (folderPopup) {
 		allPopup->insertItem("Folder...", folderPopup);
+    if(gYammiGui->autoplayFoldername==this->folderName()) {
+      this->folderPopup->setItemChecked(13, true);
+    }
+    else {
+      this->folderPopup->setItemChecked(13, false);
+    }
   }
 	if (contentMenu)
 		allPopup->insertItem("Content...", contentMenu);
@@ -162,4 +170,8 @@ void Folder::popup(QPoint point, QPopupMenu* contentMenu)
 		allPopup->popup(point);
 }
 
+void Folder::autoplayFolder()
+{
+  gYammiGui->autoplayFolder();
+}
 

@@ -1,5 +1,7 @@
 ########################
 ??.??.2003 version 0.8.0
+- added command-line parameter to specify different base directory (for database and settings)
+- inserted a proper autoplay function (working on all folders)
 - finished noatun support (skip backward, restarting instances???)
 - set default sort order for albums: trackNr
 - fixed: genre grouping bug

@@ -1,6 +1,6 @@
 TODO
 ----
-last update 25.2.2003
+last update 5.3.2003
 
 
 
@@ -24,6 +24,11 @@ for noatun support
 
 for release 0.8.0
 -----------------
+- document k3b plugin configuration
+- command line option: yammi directory
+- check autoplay: if not enough songs in folderAutoplay (longest not played):
+    don't try all the time...
+- add a command-line option to start with different .yammi directory
 - plugin: publish a sample plugin (echo...) with all replacements
 - add default plugins on first start (if not already contained)
 - move rpms to sourceforge download server/system

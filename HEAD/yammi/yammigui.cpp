@@ -73,8 +73,8 @@ extern YammiGui* gYammiGui;
  * Constructor, sets up the whole application.
  * (maybe not nice??)
  */
-YammiGui::YammiGui( QWidget *parent, const char *name )
-    : QMainWindow( parent, name )
+YammiGui::YammiGui(QString baseDir)
+    : QMainWindow()
 {
 	gYammiGui=this;
   this->setIcon(QPixmap(yammiicon_xpm));
@@ -83,7 +83,7 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
 	model=new YammiModel();
 	cout << "starting Yammi, version " << model->config.yammiVersion << "\n";
 
-  model->readPreferences();						// read preferences
+  model->readPreferences(baseDir);						// read preferences
 
   // set up media player
   //********************
@@ -115,7 +115,6 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
   model->readSongDatabase();					// read song database
 	model->readCategories();						// read categories
 	model->readHistory();								// read history
-	folderAutoplay=0;
   isScanning=false;
 
 	// set up gui
@@ -147,7 +146,7 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
 	databaseMenu->insertItem( "Scan Harddisk...",  this, SLOT(updateSongDatabaseHarddisk()));
 	databaseMenu->insertItem( "Scan Removable Media...",  this, SLOT(updateSongDatabaseMedia()));
 	databaseMenu->insertItem( "Check Consistency...",  this, SLOT(forAllCheckConsistency()));
-	databaseMenu->insertItem( "Grab and encode CD-Track...",  this, SLOT(grabAndEncode()));
+	databaseMenu->insertItem( "Grab And Encode CD-Track...",  this, SLOT(grabAndEncode()));
 	mainMenu->insertItem( "&Database", databaseMenu );
 		
   // settings menu
@@ -155,6 +154,18 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
   settingsMenu->insertItem( "Configure Yammi...",  this, SLOT(setPreferences()));
 	mainMenu->insertItem( "&Settings", settingsMenu );
 
+  // autoplay menu
+  autoplayMenu = new QPopupMenu;
+  autoplayMenu->insertItem( "Off",  this, SLOT(autoplayChanged(int)), 0, AUTOPLAY_OFF);
+	autoplayMenu->insertItem( "Longest Not Played",  this, SLOT(autoplayChanged(int)), 0, AUTOPLAY_LNP);
+	autoplayMenu->insertItem( "Random",  this, SLOT(autoplayChanged(int)), 0, AUTOPLAY_RANDOM);
+  autoplayMenu->insertSeparator();
+  autoplayMenu->insertItem( "",  this, 0, 0, AUTOPLAY_FOLDER);
+  autoplayMode=AUTOPLAY_OFF;
+  autoplayMenu->setItemChecked(autoplayMode, true);
+
+  mainMenu->insertItem( "&Autoplay", autoplayMenu );
+  
   // help menu	
 	QPopupMenu* helpMenu = new QPopupMenu;
 	helpMenu->insertItem( "&Handbook...",  this, SLOT(openHelp()));
@@ -373,7 +384,7 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
 	connect(folderCategories, SIGNAL( CategoryNew() ), this, SLOT(newCategory()));
 	connect(folderCategories, SIGNAL( CategoryRemoved() ), this, SLOT(removeCategory()));
 	connect(folderCategories, SIGNAL( CategoryRenamed() ), this, SLOT(renameCategory()));
-	connect(folderCategories, SIGNAL( CategoryAutoplay() ), this, SLOT(autoplayCategory()));
+//	connect(folderCategories, SIGNAL( CategoryAutoplay() ), this, SLOT(autoplayCategory()));
 	connect(folderMedia, SIGNAL( RemoveMedia() ), this, SLOT(removeMedia()));
 	connect(folderMedia, SIGNAL( RenameMedia() ), this, SLOT(renameMedia()));
 
@@ -586,6 +597,9 @@ void YammiGui::updatePlayerStatus()
 }
 
 
+/**
+ * Writes the current session settings of GUI to a settings file.
+ */
 void YammiGui::writeSettings()
 {
   QSettings settings;
@@ -599,6 +613,7 @@ void YammiGui::writeSettings()
     settings.writeEntry( "/Yammi/songlistview/column"+QString("%1").arg(i)+"Width" , columnWidth[i]);
   }
   settings.writeEntry( "/Yammi/folder/current", chosenFolder->folderName());
+  settings.writeEntry( "/Yammi/folder/autoplay", autoplayFoldername);
 }
 
 /**
@@ -609,11 +624,15 @@ void YammiGui::readSettings()
 {
   QSettings settings;
   settings.insertSearchPath( QSettings::Unix, model->config.yammiBaseDir );
+
+  // geometry
   int posx = settings.readNumEntry( "/Yammi/geometry/posx", 0 );
   int posy = settings.readNumEntry( "/Yammi/geometry/posy", 0 );
   int width = settings.readNumEntry( "/Yammi/geometry/width", 1024 );
   int height = settings.readNumEntry( "/Yammi/geometry/height", 468 );
   setGeometry(QRect(posx, posy, width, height));
+
+  // column order
   columnOrder=settings.readListEntry("/Yammi/songlistview/columnOrder");
   if(columnOrder.count()==0)
     cout << "no column order found\n";
@@ -621,33 +640,37 @@ void YammiGui::readSettings()
     columnWidth[i]=settings.readNumEntry("/Yammi/songlistview/column"+QString("%1").arg(i)+"Width");
   }
 
-  chosenFolder=0;
-  QString folderName = settings.readEntry( "/Yammi/folder/current", "All Music");
+  // chosen folder
+  chosenFolder=getFolderByName(settings.readEntry("/Yammi/folder/current", "All Music"));
+  if(chosenFolder==0) {
+    chosenFolder=folderAll;
+  }  
+  folderListView->setCurrentItem( (QListViewItem*)chosenFolder );
+  folderListView->setSelected( (QListViewItem*)chosenFolder , TRUE );
+  folderListView->ensureItemVisible((QListViewItem*)chosenFolder);
+
+  // autoplay folder
+  autoplayFoldername=settings.readEntry("/Yammi/folder/autoplay", "All Music");
+  autoplayMenu->changeItem(AUTOPLAY_FOLDER, "Folder: "+autoplayFoldername);
+}
+
+
+Folder* YammiGui::getFolderByName(QString folderName)
+{
   for(QListViewItem* i=folderListView->firstChild(); i; i=i->itemBelow()) {
     Folder* f=(Folder*)i;
     if(f->folderName()==folderName) {
-      chosenFolder=f;
-      break;
+      return f;
     }
     for(QListViewItem* i2=i->firstChild(); i2; i2=i2->itemBelow()) {
       Folder* f2=(Folder*)i2;
       if(f2->folderName()==folderName) {
-        chosenFolder=f2;
-        break;
-      }    
+        return f2;
+      }
     }
   }
-  if(chosenFolder==0) {
-    chosenFolder=folderAll;
-  }
-  folderListView->setCurrentItem( (QListViewItem*)chosenFolder );
-  folderListView->setSelected( (QListViewItem*)chosenFolder , TRUE );
-  folderListView->ensureItemVisible((QListViewItem*)chosenFolder);
-  // todo: anything else we want to restore?
+  return 0;
 }
-
-
-
 
 
 
@@ -2226,18 +2249,25 @@ void YammiGui::renameCategory()
 }
 
 
-void YammiGui::autoplayCategory()
+void YammiGui::autoplayFolder()
 {
-	QListViewItem* i = folderListView->currentItem();
-  if(folderAutoplay!=(FolderSorted*)i) {
-    folderAutoplay=(FolderSorted*)i;
-    QString folderName=folderAutoplay->folderName();
-    cout << "setting autoplay (experimental) to folder " << folderName << "\n";
+	Folder* f = (FolderSorted*)folderListView->currentItem();
+  if(autoplayFoldername!=f->folderName()) {
+    autoplayFoldername=f->folderName();
+    autoplayMenu->changeItem(AUTOPLAY_FOLDER, "Folder: "+autoplayFoldername);    
   }
   else {
-    cout << "switching autoplay off\n";
-    folderAutoplay=0;
+    autoplayFoldername="";
+    autoplayMenu->changeItem(AUTOPLAY_FOLDER, "no folder chosen");
   }
+}
+
+
+void YammiGui::autoplayChanged(int mode)
+{
+  autoplayMenu->setItemChecked(autoplayMode, false);
+  autoplayMenu->setItemChecked(mode, true);
+  autoplayMode=mode;
 }
 
 /// remove media
@@ -2349,6 +2379,11 @@ void YammiGui::onTimer()
   if(player==0) {
     return;
   }
+
+  // check for autplay function: fill up playlist?
+  if(folderActual->songList->count()<5 && autoplayMode!=AUTOPLAY_OFF && this->autoplayFoldername!="") {
+    autoFillPlaylist();
+  }
   
 	// perform these actions only if player is playing or paused
 	if(player->getStatus()!=STOPPED) {
@@ -2359,14 +2394,19 @@ void YammiGui::onTimer()
 			songSlider->setValue(outputTime);
     }
 
-    // check for autplay function: fill up playlist?
-    if(folderActual->songList->count()<5 && this->folderAutoplay!=0 && folderAutoplay->songList->count()>0) {
-      cout << "not enough songs in playlist, filling up from Autoplay category\n";
-      // fill up from autoplay folder
-      // so far, no intelligence in choosing the song here!
-      int total=folderAutoplay->songList->count();
+	}
+}
 
-      // method 1: randomly pick a song
+
+void YammiGui::autoFillPlaylist()
+{
+  Folder* toAddFrom=getFolderByName(autoplayFoldername);
+  if(toAddFrom!=0 && toAddFrom->songList->count()>0) {
+    // fill up from chosen autoplay folder
+    int total=toAddFrom->songList->count();
+
+    if(autoplayMode==AUTOPLAY_RANDOM) {
+      // method 1: randomly pick a song, no further intelligence
       // create random number
       QDateTime dt = QDateTime::currentDateTime();
       QDateTime xmas( QDate(2050,12,24), QTime(17,00) );
@@ -2374,22 +2414,21 @@ void YammiGui::onTimer()
       if(chosen<0) {
         chosen=-chosen;
       }
-//      folderActual->addSong(folderAutoplay->songList->at(chosen)->song());
+      folderActual->addSong(toAddFrom->songList->at(chosen)->song());
+    }
 
+    if(autoplayMode==AUTOPLAY_LNP) {
       // method 2: try to pick the song we didn't play for longest time
-      folderAutoplay->songList->setSortOrderAndSort(MyList::ByLastPlayed);
-      for(unsigned int i=0; i<folderAutoplay->songList->count() && folderActual->songList->count()<5; i++) {
-        Song* toAdd=folderAutoplay->songList->at(i)->song();
+      toAddFrom->songList->setSortOrderAndSort(MyList::ByLastPlayed);
+      for(unsigned int i=0; i<toAddFrom->songList->count() && folderActual->songList->count()<5; i++) {
+        Song* toAdd=toAddFrom->songList->at(i)->song();
         if(!(folderActual->songList->containsSong(toAdd))) {
           folderActual->addSong(toAdd);
         }
       }
-      
     }
-	}
+  }
 }
-
-
 
 
 

@@ -111,10 +111,18 @@ class YammiGui : public QMainWindow
 {
 	Q_OBJECT
 
+// constants
+//**********
+protected:
+  static const int AUTOPLAY_OFF = 0;
+  static const int AUTOPLAY_LNP = 1;
+  static const int AUTOPLAY_RANDOM = 2;
+  static const int AUTOPLAY_FOLDER = 10;
+
 // constructors
 //*************
 public:
-	YammiGui	(QWidget *parent = 0, const char *name = 0);
+	YammiGui	(QString baseDir);
 	~YammiGui	();
   
 // public members
@@ -130,7 +138,7 @@ public:
 	FolderSorted*	folderActual;
 	FolderCategories* folderCategories;
 	Folder*				folderSongsPlayed;		// songs played in this session
-  FolderSorted* folderAutoplay;
+  QString       autoplayFoldername;   // name of chosen autoplay folder, or empty if autoplay off
 
 
 // public methods
@@ -155,6 +163,7 @@ public slots:
   void          updatePlayerStatus();
   void          selectAll();									  /** selects all in songListView */
   void          invertSelection();							/** inverts selection in songListView */
+	void					autoplayFolder();
 
 
 
@@ -192,7 +201,8 @@ protected:
 	QPopupMenu* 	songAdvancedPopup;
 	QPopupMenu* 	pluginPopup;
 	QPopupMenu* 	folderPopup;
-	QStatusBar* 	mainStatusBar;
+  QPopupMenu*   autoplayMenu;
+  QStatusBar* 	mainStatusBar;
 	QSlider*			songSlider;
 	bool					isSongSliderGrabbed;
 	YammiModel*		model;								// pointer to our model
@@ -225,6 +235,8 @@ protected:
 // protected methods
 //******************
 protected:
+  void          autoFillPlaylist();
+  Folder*       getFolderByName(QString foldername);
 	void 			    decide(Song* s1, Song* s2);
   long double   diskUsage(QString path, long double sizeLimit);
 	void			    keyPressEvent(QKeyEvent* e);
@@ -246,6 +258,7 @@ protected:
   Folder*				folderToAdd;					// for snappy folder adding in background
 	int						alreadyAdded;
 	void					addFolderContent(Folder* folder);
+  int           autoplayMode;
 
 		
 
@@ -280,6 +293,7 @@ protected slots:
 	void				  searchSimilar(int what);
 	void				  searchFieldChanged();
 	void				  slotSongChanged();
+  void          autoplayChanged(int mode);
 	void				  currentlyPlayedSongPopup();
 	void				  songListPopup( QListViewItem*, const QPoint &, int );
 	void				  doSongPopup(QPoint point);
@@ -328,7 +342,6 @@ protected slots:
   bool 					newCategory();	  					/** create new category */
 	void 					removeCategory();
 	void					renameCategory();
-	void					autoplayCategory();
 	
 	void					pluginOnFolder();
 	void					removeMedia();

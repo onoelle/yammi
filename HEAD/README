@@ -2,7 +2,7 @@ Yammi - Yet Another Music Manager I...
 
 Please visit http://yammi.sourceforge.net for detailed information about Yammi.
 
-Note concerning compiling:
+PLEASE READ THIS BEFORE COMPILING:
 
 Yammi has some dependencies that can be switched off:
 
@@ -42,6 +42,10 @@ For example, use
 ./configure --disable-ogglibs --disable-noatun
 to disable support for ogg files and disable noatun support.
 
+
+Install path
+------------
+The default install path is /usr/local/
 
 
 Enjoy using Yammi...

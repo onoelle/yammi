@@ -69,6 +69,10 @@ public:
 	MyList*					songList;
 	bool						sorted;
 
+public slots:
+  void            autoplayFolder();
+
+
 protected:
 	QString					fName;
 };

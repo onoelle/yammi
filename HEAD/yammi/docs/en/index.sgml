@@ -14,9 +14,10 @@ Yammi ("Yet Another Music Manager I...") is a tool to manage and search your son
 (eg. mp3, ogg and wav files).
 It is centered around an intuitive graphical user interface and a song database,
 which allows convenient and fast access to any songs.
-For playing songs the program uses XMMS
+For playing songs Yammi currently supports XMMS
 (<htmlurl url="http://www.xmms.org" name = "X MultiMedia System">).
-(Future versions might support <htmlurl url="http://www.noatun.kde.org" name = "Noatun"> and/or Winamp as well.)<p>
+and
+<htmlurl url="http://www.noatun.kde.org" name = "Noatun">.<p>
 
 Yammi enables you to
 
@@ -86,7 +87,7 @@ Give it a try at <htmlurl url="http://yammi.sourceforge.net" name = "The Yammi H
 
 <sect1>Requirements
 <p>
-Yammi needs Qt 3.x and Xmms >= 1.2.6.
+Yammi needs Qt 3.x and Xmms >= 1.2.6 or
 For reading id3 tags, id3lib is required (can be switched off, see below).
 For reading ogg tags and layer information, libvorbis and libvorbisfile are required (can be switched off, see below).
 
@@ -132,10 +133,10 @@ In the base directory of the yammi distribution, type
 
 % make uninstall
 
-If you are not upgrading to a new version of yammi, but want to completely
-remove all files related to yammi from your harddisk,
-you can also delete the directory .yammi in your home directory.
-(This deletes your preferences, categories and the complete database!)
+If you are not upgrading to a new version of Yammi, but want to completely
+remove all files related to Yammi from your harddisk,
+you can also delete the directory ".yammi" in your home directory
+(This deletes your preferences, categories, settings and the complete database!).
 
 
 <sect1> Starting the first time <p>
@@ -495,7 +496,7 @@ Ctrl-S: Save song database
 
 
 Note concerning crossfading:
-If you use the crossfading plugin from XMMS, it sometimes comes in handy to change to the next
+If you use crossfading, it sometimes comes in handy to change to the next
 song without crossfading (e.g. to quickly listen to the next song).
 For these cases press the SHIFT key in combination with the requested action.
 
@@ -594,22 +595,18 @@ so that the song can be loaded from the media on demand.
 
 <sect1> Playlist management of yammi <p>
 
-Yammi takes over the playlist management of xmms and has its own folder
+Yammi takes over the playlist management of the media player and has its own folder
 named "Playlist" where you can move songs up and down, remove them from the
 playlist, or directly retrieve information about them.
-Yammi always tries to keep 5 (or the number that is configured in Yammi's preferences)
-songs in the Xmms playlist. When a song finished
-playling, Yammi will remove it from the playlist, and fill up the playlist
-again.
-You should not directly modify the playlist of Xmms any longer, as Yammi might overwrite
-your song ordering or songs added from within Xmms. Yammi also disables
-the random play setting of Xmms, as this would confuse Yammi's playlist management.
+You should not directly modify the playlist of the media player any longer, as Yammi might overwrite
+your song ordering or songs added from within the media player. Yammi also disables
+the random play setting of XMMS, as this would confuse Yammi's playlist management.
 
 When Yammi is terminated, it writes all songs from its playlist back to the
-Xmms playlist (in that way, Yammi does not need to save the current playlist,
-as Xmms does it when it is terminated correctly).
+playlist of the media player (in that way, Yammi does not need to save the current playlist,
+as the media player does it when it is terminated correctly).
 When Yammi starts the next time, it reads the current playlist
-of Xmms and again takes over the playlist management.
+from the media player and again takes over the playlist management.
 
 <sect1> Updating song database <p>
 The "Database" menu offers the possibility to update your database in two ways:
@@ -699,13 +696,11 @@ Yammi will shut down in the following two cases:
 
 - the number of songs to play (visible and editable in the toolbar) has reached 0
 
-- XMMS stops playback (only if it STOPS, PAUSING playback will have no effect)
+- the media player stops playback (only if it STOPS, PAUSING playback will have no effect)
 
 The second case can be because of
 
 - last song in playlist was played
-
-- you pressed stop in XMMS or in Yammi
 
 A dialog box appears giving you the possibility to cancel the shutdown.
 
@@ -726,7 +721,7 @@ Yammi has support to function as a "Jukebox". That is, you don't need all your
 songfiles on your local harddisk, but can load them on demand from removable
 media (such as CDs) into a swap directory. Yammi still keeps all songs in its
 database to enable you to search and enqueue conveniently. However, before
-enqueuing the songs to Xmms, Yammi will check for availability and enqueue only
+enqueuing the songs to the media player, Yammi will check for availability and enqueue only
 those songs that are on the harddisk.
 
 To use this jukebox functionality, you should first create a swap directory
@@ -755,7 +750,7 @@ From this media list, you simply select the media that you inserted into your
 computer (eg. into your CD-Rom), and click "Load". Yammi will then load all
 songs that it needs in its current playlist from this media into the swap directory
 (given in the preferences). After loading, Yammi will update its playlist
-(and the playlist of Xmms) and update the list of needed media to reflect the changes.
+(and the playlist of XMMS) and update the list of needed media to reflect the changes.
 
 For the swap directory, you can give a size limit (also in the preferences).
 If the size that all the swapped song files use in this directory increases
@@ -791,9 +786,10 @@ you might need to disable "Allow multiple instances" in Xmms (Preferences->Optio
 
 <sect>Questions and Answers<p>
 
-Why does Yammi delete all played songs from the xmms playlist?
+Why does Yammi delete all played songs from the XMMS playlist?
 
-It just does so. If you want to listen to a series of songs again, you can
+It just does so.
+If you want to listen to a series of songs again, you can
 select the songs in the "History" folder (where the songs are normally ordered
 after the time when they were played).
 

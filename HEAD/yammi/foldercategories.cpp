@@ -50,7 +50,7 @@ void FolderCategories::update(QPtrList<MyList> allCategories, QStringList catego
 		f->folderPopup->insertItem( "Remove Category", this, SLOT(removeCategory()));
 		f->folderPopup->insertItem( "New Category..", this, SLOT(newCategory()));
 		f->folderPopup->insertItem( "Rename Category..", this, SLOT(renameCategory()));
-		f->folderPopup->insertItem( "Autoplay", this, SLOT(autoplayCategory()), 0, 13);
+		f->folderPopup->insertItem( "Autoplay", this, SLOT(autoplayFolder()), 0, 13);
     f->folderPopup->setItemChecked(13, true);
 	}
 	setText(0, fName+QString(" (%1)").arg(count));

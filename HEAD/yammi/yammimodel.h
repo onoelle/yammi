@@ -104,7 +104,7 @@ public:
   void			removeMedia(QString mediaToDelete);
 	void			renameMedia(QString oldMediaName, QString newMediaName);
 		
-	void 			readPreferences();
+	void 			readPreferences(QString baseDir);
 	void 			savePreferences();
 		
 	void 			readSongDatabase();
@@ -134,7 +134,7 @@ protected:
 	void			setProperty(QDomDocument* doc, const QString propName, const bool propValue);
 	void 			setProperty(QDomDocument* doc, const QString propName, const QStringList* propValue);
 
-	bool			startFirstTime();
+	bool			startFirstTime(QString baseDir);
 };
 
 #endif

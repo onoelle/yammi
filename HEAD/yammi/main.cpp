@@ -25,9 +25,13 @@ int main( int argc, char **argv )
 //  KCmdLineArgs::init(argc, argv, "Yammi", "", "");
 //#endif
 	YammiApplication application( argc, argv );
-//	QApplication::setStyle(new QWindowsStyle());
 	// initialize gui
-	YammiGui gui;
+  QString arg1="";
+  if(argc>=2) {
+    // argv[0] is the command name
+    arg1=QString(argv[1]);
+  }
+  YammiGui gui(arg1);
 	application.setMainWidget( &gui );
 	gui.show();
 	// enter event loop

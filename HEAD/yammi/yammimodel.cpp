@@ -36,14 +36,28 @@ YammiModel::~YammiModel()
 
 
 /// read preferences from xml-file
-void YammiModel::readPreferences()
+void YammiModel::readPreferences(QString baseDir)
 {
 	cout << "reading preferences...\n";
 	noPrefsFound=true;
-	QDir d = QDir::home();  // now points to home directory
-	if(!d.cd(".yammi")) {
-		startFirstTime();			// return on false?
-		d.cd(".yammi");
+
+  QDir d;
+  if(baseDir=="") {
+    // default case: take directory ".yammi" in user's home dir as base dir
+    d = QDir::home();  // now points to home directory
+  }
+  else {
+    // user specified a base dir
+    d=QDir(baseDir);
+    if(!d.exists()) {
+      cout << "directory " << baseDir << " not existing, taking home directory...\n";
+      d = QDir::home();  // now points to home directory
+    }
+  }
+    
+  if(!d.cd(".yammi")) {
+    startFirstTime(baseDir);			// return on false?
+    d.cd(".yammi");
 	}
 
 	config.yammiBaseDir=d.absPath();
@@ -291,11 +305,11 @@ void YammiModel::setProperty(QDomDocument* doc, const QString propName, const QS
  * called when the program is started the first time by a user
  * (ie. there is no .yammi directory existing in the user's home dir)
  */
-bool YammiModel::startFirstTime()
+bool YammiModel::startFirstTime(QString baseDir)
 {
 	cout << "you seem to start Yammi for the first time!\n";
 	cout << "creating directory .yammi in your home directory...";
-	QDir d = QDir::home();  // now points to home directory
+	QDir d(baseDir);  // now points to home directory
  	if ( !d.mkdir( ".yammi" ) ) {
  		cout << "\nERROR: Could not create directory .yammi in your home directory...";
  		return false;

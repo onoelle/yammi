@@ -45,12 +45,10 @@ public slots:
 	void removeCategory() { emit CategoryRemoved(); }
 	void newCategory()		{ emit CategoryNew(); }
 	void renameCategory() { emit CategoryRenamed(); }
-	void autoplayCategory() { emit CategoryAutoplay(); }
 signals:
 	void CategoryRemoved();
 	void CategoryNew();
 	void CategoryRenamed();
-	void CategoryAutoplay();
 };
 
 #endif

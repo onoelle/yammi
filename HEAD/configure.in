@@ -12,9 +12,10 @@ AC_CONFIG_AUX_DIR(admin)
 AC_CANONICAL_SYSTEM 
 
 dnl Automake doc recommends to do this only here. (Janos)
-AM_INIT_AUTOMAKE(yammi,0.8.0beta)
+AM_INIT_AUTOMAKE(yammi,0.8.0)
 
 KDE_SET_PREFIX
+KDE_USE_QT(3)
 
 AC_PREFIX_DEFAULT(/usr/local)
 if test "x$prefix" = "xNONE"; then
@@ -129,17 +130,7 @@ dnl for NLS support. Call them in this order!
 dnl WITH_NLS is for the po files
 AM_KDE_WITH_NLS
 
-KDE_USE_QT(3)
 AC_PATH_KDE
-
-dnl KDE_NEED_FLEX dnl __kdevelop__
-dnl AC_PROG_YACC dnl __kdevelop__
-
-dnl Perform program name transformation
-dnl AC_ARG_PROGRAM
-
-
-dnl PACKAGE set before
 
 KDE_CREATE_SUBDIRSLIST
 
@@ -150,7 +141,6 @@ AC_OUTPUT(Makefile yammi/Makefile yammi/docs/Makefile yammi/docs/en/Makefile yam
 echo "
 Configuration for $PACKAGE $VERSION :
 --------------------------------
-
  Source code location .: $srcdir
  Host System Type .....: $host
  Preprocessor .........: $CC $CPPFLAGS
@@ -161,7 +151,9 @@ Configuration for $PACKAGE $VERSION :
  ogglibs support ......: $enable_ogglibs
  id3lib support .......: $enable_id3lib
  Install path .........: $prefix
- (if this path does not exist, you might have to create this directory temporarily, sorry...)
+   If this path does not exist or is not the desired install path,
+   you should re-run configure, giving a suitable path with the --prefix option
+   For example ./configure --prefix=/opt/kde3
 
  Now type 'make' to build $PACKAGE $VERSION,
  and then 'make install' for installation.

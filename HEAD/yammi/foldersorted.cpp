@@ -114,13 +114,10 @@ void FolderSorted::popup(QPoint point, QPopupMenu* contentMenu)
 	allPopup=new QPopupMenu();
 	if (folderPopup) {
 		allPopup->insertItem("Folder...", folderPopup);
-    cout << "checking..\n";
-    if(gYammiGui->folderAutoplay==this) {
-      cout << "yep!\n";
+    if(gYammiGui->autoplayFoldername==this->folderName()) {
       this->folderPopup->setItemChecked(13, true);
     }
     else {
-      cout << "no!\n";
       this->folderPopup->setItemChecked(13, false);      
     }
 
