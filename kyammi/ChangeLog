@@ -1,8 +1,16 @@
-??.??.2005 version 1.2-rc2
+18.01.2005 version 1.2-rc2
 ##########################
 - improved: finally switched to taglib
-  - => removed dependency to id3lib and ogglibs
+  - removed dependency to id3lib and ogglibs
+  - correct handling of all file types and tags that taglib can handle (eg. flac)
+  - custom genres are allowed now
+    (changed representation from int to string and added menu entry to fix an existing database)
+- improved: consistency mode:
+  - save tags immediately (after changing song meta info in song info dialog)
+  - keep filenames consistent (also after changing meta info)
+  - keep directories consistent (also after changing meta info)
 - improved: application icon (thanks to Alessandro)
+- improved: context menu -> go to Folder (menu shows available folders, samplers correctly treated)
 - fixed: artsplayer crash (sorry for that one...)
 - fixed: yammi becoming unresponsive if noatun not available (thanks to Bernhard)
 - fixed: character conversion when reading characters from id3 tags (using fromLocal8Bit on reading tags)
@@ -10,7 +18,6 @@
 - fixed: deadlock when closing yammi while initialization
 - fixed: restoring "guessing mode" setting
 - fixed: crash (NPE) when reading layer information from corrupt mp3 files
-- fixed: context menu -> go to Folder (menu shows available folders, samplers correctly treated)
 
 13.12.2004 version 1.2-rc
 #########################
