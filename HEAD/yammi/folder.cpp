@@ -152,8 +152,9 @@ void Folder::updateTitle()
 void Folder::popup(QPoint point, QPopupMenu* contentMenu)
 {
 	allPopup=new QPopupMenu();
-	if (folderPopup)
+	if (folderPopup) {
 		allPopup->insertItem("Folder...", folderPopup);
+  }
 	if (contentMenu)
 		allPopup->insertItem("Content...", contentMenu);
 	if(folderPopup || contentMenu)

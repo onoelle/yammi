@@ -47,7 +47,7 @@ enum action {	None, Enqueue, EnqueueAsNext, PlayNow, SongInfo,
 							PrelistenStart, PrelistenMiddle, PrelistenEnd,
 							Delete, DeleteFile, DeleteEntry,
 							CheckConsistency, MoveTo,
-							Dequeue, BurnToMedia
+							Dequeue, BurnToMedia, AutoPlay
 };
 
 #define MAX_SONG_ACTION 17

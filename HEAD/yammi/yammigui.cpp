@@ -81,13 +81,13 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
 #ifdef XMMS_SUPPORT
   cout << "media player: XMMS\n";
   player = new XmmsPlayer(0, model);         // use xmms as media player (session 0)
-#endif XMMS_SUPPORT
+#endif
   
 	model->readPreferences();						// read preferences
 	model->readSongDatabase();					// read song database
 	model->readCategories();						// read categories
 	model->readHistory();								// read history
-	
+	folderAutoplay=0;
 
 	// set up gui
 	//****************************
@@ -344,6 +344,7 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
 	connect(folderCategories, SIGNAL( CategoryNew() ), this, SLOT(newCategory()));
 	connect(folderCategories, SIGNAL( CategoryRemoved() ), this, SLOT(removeCategory()));
 	connect(folderCategories, SIGNAL( CategoryRenamed() ), this, SLOT(renameCategory()));
+	connect(folderCategories, SIGNAL( CategoryAutoplay() ), this, SLOT(autoplayCategory()));
 	connect(folderMedia, SIGNAL( RemoveMedia() ), this, SLOT(removeMedia()));
 	connect(folderMedia, SIGNAL( RenameMedia() ), this, SLOT(renameMedia()));
 
@@ -673,7 +674,8 @@ void YammiGui::updateSongPopup()
 	songAdvancedPopup->insertItem( "Delete...", this, SLOT(forSelection(int)), 0, Delete);
 	songAdvancedPopup->insertItem( "Move file to...", this, SLOT(forSelection(int)), 0, MoveTo);
 	songAdvancedPopup->insertItem( "Check Consistency", this, SLOT(forSelection(int)), 0, CheckConsistency);
-	songAdvancedPopup->insertItem( "Burn to Media...", this, SLOT(forSelection(int)), 0, BurnToMedia);	
+	songAdvancedPopup->insertItem( "Burn to Media...", this, SLOT(forSelection(int)), 0, BurnToMedia);
+//	songAdvancedPopup->insertItem( "Autoplay", this, SLOT(forSelection(int)), 0, AutoPlay);
 	songPopup->insertItem( "Advanced...", songAdvancedPopup);
 	
 	
@@ -1421,8 +1423,6 @@ void YammiGui::forSelectionBurnToMedia()
 	model->allSongsChanged(true);
 }
 
-
-
 /// makes a list containing only the current song
 void YammiGui::getCurrentSong()
 {
@@ -1834,12 +1834,26 @@ void YammiGui::renameCategory()
 	QString newName=QString(QInputDialog::getText( "collection name", "Please enter new name:", QLineEdit::Normal, oldName, &ok, this ));
 	if(!ok)
 		return;
-	
+
 	model->renameCategory(oldName, newName);
 	folderCategories->update(model->allCategories, model->categoryNames);
 	updateSongPopup();
 }
 
+
+void YammiGui::autoplayCategory()
+{
+	QListViewItem* i = folderListView->currentItem();
+  if(folderAutoplay!=(FolderCategories*)i) {
+    folderAutoplay=(FolderCategories*)i;
+    QString folderName=folderAutoplay->folderName();
+    cout << "setting autoplay (experimental) to folder " << folderName << "\n";
+  }
+  else {
+    cout << "switching autoplay off\n";
+    folderAutoplay=0;
+  }
+}
 
 /// remove media
 // uahhaa... ugly! make mediaName + mediaLocation a struct/class, oli!
@@ -1953,10 +1967,20 @@ void YammiGui::onTimer()
     else
       tbPlayPause->setIconSet(QIconSet(QPixmap((const char**)pause_xpm)));
     
-				
+    if(folderActual->songList->count()<5 && this->folderAutoplay!=0) {
+      cout << "not enough songs in playlist, filling up from Autoplay category\n";
+      // fill up from autoplay folder
+      // so far, no intelligence in choosing the song here!
+      int total=folderAutoplay->songList->count();
+      QTime t=t.currentTime();
+      int chosen=t.msec() % total;
+      folderActual->addSong(folderAutoplay->songList->at(chosen)->song());
+    }
+
+                
 		if(currentFile!=file) {
       songChange(currentSong, file);
-    }  	
+    }
 	}
 	else {				// player stopped
     if(songSlider->value()!=0) {
@@ -1978,6 +2002,7 @@ void YammiGui::onTimer()
       }
     }
 	}
+
 }
 
 

@@ -48,7 +48,7 @@ dnl -------------------------------
 
 dnl OGG vorbis libraries
 if test "x$enable_ogglibs" = xyes; then
-    dnl Librairies required for reading ogg tags, if not found 'enable_ogglibs' is disabled
+    dnl Libraries required for reading ogg tags, if not found 'enable_ogglibs' is disabled
     AC_CHECK_LIB(ogg, ogg_sync_init, , enable_ogglibs=no)
     AC_CHECK_LIB(vorbis, vorbis_comment_init, , enable_ogglibs=no)
     AC_CHECK_LIB(vorbisfile, ov_open, , enable_ogglibs=no)
@@ -56,27 +56,28 @@ fi
 
 AC_MSG_CHECKING(for ogg libs for reading ogg tags)
 if test "x$enable_ogglibs" = xyes; then
-    AC_MSG_RESULT(yes)
     AC_DEFINE(ENABLE_OGGLIBS)
+    AC_MSG_RESULT(yes)
 else
-    AC_MSG_RESULT(no)
-    echo "***"
     echo "*** Warning: ogg libs support disabled => no reading/writing of tags in ogg files! ***"
-    echo "***"
+    AC_MSG_RESULT(no)
 fi
 
 
 dnl id3lib library
 AC_MSG_CHECKING(for id3lib support)
 if test "x$enable_id3lib" = xyes; then
-  LIBS="-lid3lib " $LIBS
-  AC_MSG_RESULT(yes)
-  AC_DEFINE(ENABLE_ID3LIB)
+dnl    LIBS="-lid3lib $LIBS"
+dnl    AC_CHECK_LIB(id3lib, , , enable_id3lib=no)
+
+    AC_SEARCH_LIBS(ID3Tag_Link,"id3" "id3 -lstdc++" "id3 -lz" "id3 -lz -lstdc++",,AC_MSG_ERROR(id3lib not found))
+dnl Needed to link correctly with id3lib 3.8.0
+    LIBS="-lz -lstdc++ $LIBS"
+    AC_DEFINE(ENABLE_ID3LIB)
+    AC_MSG_RESULT(yes)
 else
-  AC_MSG_RESULT(no)
-  echo "***"
-  echo "*** Warning: id3lib support disabled => no reading/writing of tags in mp3 files! ***"
-  echo "***"
+    echo "*** Warning: id3lib support disabled => no reading/writing of tags in mp3 files! ***"
+    AC_MSG_RESULT(no)
 fi
 
 

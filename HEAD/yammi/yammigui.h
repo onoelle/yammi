@@ -288,7 +288,8 @@ protected:
 	Folder*				folderProblematic;
 	Folder*				folderHistory;				// songs played sometime
 	
-	Folder*				folderToAdd;					// for snappy folder adding in background
+  FolderCategories* folderAutoplay;
+  Folder*				folderToAdd;					// for snappy folder adding in background
 	int						alreadyAdded;
 	void					addFolderContent(Folder* folder);
 
@@ -314,6 +315,7 @@ protected slots:
   void 					newCategory();	  					/** create new category */
 	void 					removeCategory();
 	void					renameCategory();
+	void					autoplayCategory();
 	
 	void					pluginOnFolder();
 	void					removeMedia();

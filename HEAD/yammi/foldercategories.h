@@ -41,14 +41,17 @@ public:
 	FolderCategories( QListView* parent, QString title );
 	~FolderCategories();
 	void update(QPtrList<MyList> allCategories, QStringList categoryNames);
+  void popup(QPoint point, QPopupMenu* contentMenu);  
 public slots:
 	void removeCategory() { emit CategoryRemoved(); }
 	void newCategory()		{ emit CategoryNew(); }
 	void renameCategory() { emit CategoryRenamed(); }
+	void autoplayCategory() { emit CategoryAutoplay(); }
 signals:
 	void CategoryRemoved();
 	void CategoryNew();
 	void CategoryRenamed();
+	void CategoryAutoplay();
 };
 
 #endif

@@ -624,7 +624,7 @@ bool Song::getOggInfo(QString filename)
   QString genreStr=getOggComment(&oggfile, "genre");
   if(genreStr!="") {
     cout << "genre found: " << genreStr << "\n";
-    // convert to id3 genre number?
+    // TODO: convert to id3 genre number?
   }
 
   this->length  = (int)ov_time_total(&oggfile, -1);
@@ -683,13 +683,54 @@ bool Song::setOggTags(QString filename)
 
   gchar *string; //, *string1;
 
-  // Title
-  if( true ) {
-    string  = g_strconcat("title=", "success", NULL);
+  // title
+  if( title!="" ) {
+    cout << "writing title...\n";
+    string  = g_strconcat("title=", title.latin1(), NULL);
 //    convert_to_utf8(string);
      vorbis_comment_add(vc, string);
      g_free(string);
 //     g_free(string1);
+  }
+
+  // artist
+  if( artist!="" ) {
+    cout << "writing artist...\n";
+    string  = g_strconcat("artist=", artist.latin1(), NULL);
+    vorbis_comment_add(vc, string);
+    g_free(string);
+  }
+
+  // album
+  if( album!="" ) {
+    string  = g_strconcat("album=", "testing album", NULL);
+    vorbis_comment_add(vc, string);
+    g_free(string);
+  }
+
+  // comment
+  if( comment!="" ) {
+    string  = g_strconcat("comment=", comment.latin1(), NULL);
+    vorbis_comment_add(vc, string);
+    g_free(string);
+  }
+
+  // tracknumber
+  if( trackNr!=0 ) {
+    string  = g_strconcat("tracknumber=", QString("%1").arg(trackNr).latin1(), NULL);
+    vorbis_comment_add(vc, string);
+    g_free(string);
+  }
+
+  // date
+  if( this->year!=0 ) {
+    string  = g_strconcat("date=", QString("%1").arg(year).latin1(), NULL);
+    vorbis_comment_add(vc, string);
+    g_free(string);
+  }
+
+  if( genreNr!=-1) {
+    // TODO: save genre nr as string  
   }
 
   // open temp file for writing to
@@ -1204,7 +1245,7 @@ QString Song::getSongAction(int index)
 							"PrelistenStart", "PrelistenMiddle", "PrelistenEnd",
 							"Delete", "DeleteFile", "DeleteEntry",
 							"CheckConsistency", "MoveTo",
-							"Dequeue", "BurnToMedia" };
+							"Dequeue", "BurnToMedia", "AutoPlay" };
   if(index<=MAX_SONG_ACTION)
     return QString(songAction[index]);
   else
