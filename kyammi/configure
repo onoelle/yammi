@@ -1889,7 +1889,7 @@ fi
 
 # Define the identity of the package.
  PACKAGE=yammi
- VERSION=0.1
+ VERSION=1.2-alpha
 
 
 cat >>confdefs.h <<_ACEOF

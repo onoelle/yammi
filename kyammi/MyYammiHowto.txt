@@ -12,35 +12,11 @@ cvs -d:ext:onoelle@cvs.sourceforge.net:/cvsroot/yammi import kyammi vendor start
 checkout: cvs@sourceforge -> bob
 cvs -d:ext:onoelle@cvs.sourceforge.net:/cvsroot/yammi co kyammi
 
-checkin (=commit): bob -> cvs@sourceforge
-cvs commit -m "comments for this commit" uic_command.txt
-
-
-Compile Farm benutzen
----------------------
-auf compile farm einloggen:
-ssh -lonoelle cf.sourceforge.net
-
-dann erstmal:
-cvs -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/yammi login
-(und bei Frage nach Passwort einfach Return)
-
-und schliesslich yammi vom cvs getten:
-cvs -z3 -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/yammi co kyammi
-
 
 VI essentials
 -------------
 ESC + :w    save file
 ESC + :q    quit vi
-
-
-Logo einbinden
---------------
-Group ID: 40376
-
-<A href="http://sourceforge.net"> <IMG src="http://sourceforge.net/sflogo.php?group_id=40376" width="88" height="31" border="0" alt="SourceForge Logo"></A>
-
 
 
 
@@ -57,4 +33,4 @@ In kdevelop
 1. distclean
 2. autoconf and automake
 3. configure
-4. make distribution
+4. Tools -> Project Distribution & Publishing -> make distribution

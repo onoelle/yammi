@@ -20,7 +20,7 @@ static KCmdLineOptions options[] = {
 //{ "d <dir>", I18N_NOOP("specifies location of .yammi dir (defaults to user home)"), 0 },
 			{ "db <file>", I18N_NOOP("Specifies the location of the Song Database to use"), 0 } };
 static const char description[] =   I18N_NOOP("Yammi - Yet Another Music Manager I...");
-static const char version[] = "1.2";
+static const char version[] = "1.2-alpha";
 
 // global pointer to YammiGui
 YammiGui* gYammiGui;

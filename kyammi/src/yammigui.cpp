@@ -891,6 +891,7 @@ void YammiGui::updateSongPopup() {
  * (according to configured action for doubleclick, etc.)
  * TODO: fix for xmlui
  */
+/*
 QIconSet YammiGui::getPopupIcon(Song::action whichAction) {
     if(m_config.doubleClickAction==whichAction) {
         return QIconSet(QPixmap(defaultDoubleClick_xpm));
@@ -900,7 +901,7 @@ QIconSet YammiGui::getPopupIcon(Song::action whichAction) {
     }
     return (QIconSet) NULL;
 }
-
+*/
 
 /// adds the text in search field to the wishlist
 void YammiGui::addToWishList() {

@@ -3,7 +3,7 @@
   <general>
     <author>Oliver Nölle</author>
     <email>oli.noelle@web.de</email>
-    <version>0.1</version>
+    <version>1.2-alpha</version>
     <projectmanagement>KDevKDEAutoProject</projectmanagement>
     <primarylanguage>C++</primarylanguage>
     <keywords>
@@ -14,7 +14,10 @@
     </keywords>
     <projectdirectory>.</projectdirectory>
     <absoluteprojectpath>false</absoluteprojectpath>
-    <description/>
+    <description>Yammi (&quot;Yet Another Music Manager I...&quot;) is a tool to manage and search your music collection
+on your computer (eg. mp3, ogg and wav files).
+It is centered around an intuitive graphical user interface and a song database,
+which allows convenient and fast access to any songs.</description>
     <ignoreparts>
       <part>KDevClearCase</part>
       <part>KDevPerforce</part>
@@ -190,20 +193,20 @@
     <custom>false</custom>
     <bzip>false</bzip>
     <archname/>
-    <appname/>
-    <version>0.1</version>
+    <appname>yammi</appname>
+    <version>1.2-alpha</version>
     <release/>
     <vendor/>
-    <licence/>
-    <summary/>
-    <group/>
-    <packager/>
+    <licence>GPL</licence>
+    <summary>Yet Another Music Manager I...</summary>
+    <group>Multimedia</group>
+    <packager>Oliver Noelle</packager>
     <description/>
     <changelog/>
     <devpackage>false</devpackage>
     <docspackage>false</docspackage>
     <appicon>false</appicon>
-    <arch>0</arch>
+    <arch>1</arch>
     <genHTML>false</genHTML>
     <useRPM>false</useRPM>
     <ftpkde>false</ftpkde>

@@ -9,5 +9,5 @@
 #include "icons/newCategory.xpm"
 
 // song actions
-#include "icons/defaultDoubleClick.xpm"
-#include "icons/defaultMiddleClick.xpm"
+//#include "icons/defaultDoubleClick.xpm"
+//#include "icons/defaultMiddleClick.xpm"

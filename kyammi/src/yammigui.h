@@ -333,7 +333,7 @@ protected:
 // protected methods
 //******************
 protected:
-	QIconSet 	getPopupIcon(Song::action whichAction);
+//	QIconSet 	getPopupIcon(Song::action whichAction);
 	void		forSelection(int action);
   void          gotoFuzzyFolder(bool backward);
   void          changeToFolder(Folder* newFolder, bool changeAnyway=false);
