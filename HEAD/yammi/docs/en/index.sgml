@@ -23,7 +23,7 @@ Yammi enables you to
 
 - conveniently search for songs within seconds (fuzzy search)
 
-- organize your songs into playlists/categories
+- organize your songs into playlists (called "categories")
 
 - easily keep your song info (id3 and ogg tags) and filenames consistent
 
@@ -43,14 +43,14 @@ The feature that distinguishes this tool from others is probably the extremely p
 search function, that is still as intuitive and easy as it can get:
 Type in anything that you are looking for (eg. artist, title, album, comment) and within a second Yammi
 will provide a list of "best matches", using a clever fuzzy search algorithm.
-Not knowing the exact spelling of titles or artists is not a problem any more, as Yammi will find them
+Not knowing the exact spelling of titles or artists is no longer a problem, as Yammi will find them
 anyway - even if you are horribly misspelling them in the search.
 This fuzzy search works just as you would expect it, even with a couple of thousand songs in the database.
 Therefore you never ever have to dig through your directory structure to find a particular song.
 <p>
 
-Yammi also offers a folder structure to organize your songs. Songs can be inserted automatically
-into artist, album and genre folders, and the user can create custom folders (=playlists).
+Yammi also offers a folder structure to organize your songs. Songs are inserted automatically
+into artist, album and genre folders, and custom folders (=playlists) can be created by the user.
 In each folder, songs can be sorted after
 just every available information, eg. title, artist, length, most recently added songs,
 most recently played, bitrate...
@@ -506,15 +506,18 @@ For these cases press the SHIFT key in combination with the requested action.
 If you are too lazy to manually enqueue the songs to listen to, you can use Yammi's autoplay
 functionality to automatically enqueue songs for you, if the playlist contains less than 5 songs.
 
-To use this, you first choose a folder to use for selecting songs and choose "Autoplay" from
-the context menu. Then you can set the autoplay mode from Yammi's "Autoplay" menu.
+To use this, you first choose a folder to use for selecting songs from and choose "Autoplay" from
+the folder's context menu. Then you can set the autoplay mode from Yammi's "Autoplay" menu.
 
 Currently, Yammi offers two modes:
 
-"Random" randomly selects songs from the autoplay folder.
+"Random" randomly selects songs from the autoplay folder
+(Yammi does not select songs already enqueued in the playlist).
 
 "Longest not played" chooses those songs, that haven't been played for the longest time.
-For this to work, you need to enable the "logging of played songs" feature in the settings.
+For this to work correctly, you need to enable the "logging of played songs" feature in the settings
+(If more than one song haven't been played at all, Yammi chooses randomly from those songs).
+
 
 <sect1> Checking consistency <p>
 Note: This functionality changed slightly since version 0.7.

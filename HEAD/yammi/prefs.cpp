@@ -120,8 +120,8 @@ bool Prefs::loadConfig(void)
 	// open configuration file for parsing
 	QFile f(yammiBaseDir+"/prefs.xml");
 	if (!f.open(IO_ReadOnly)) {
-		int btn = QMessageBox::warning(gYammiGui, QObject::QObject::tr("Yammi"),
-			QObject::QObject::tr("No configuration file found or file couldn't be opened.\n"
+		int btn = QMessageBox::warning(gYammiGui, QObject::tr("Yammi"),
+			QObject::tr("No configuration file found, or file couldn't be opened.\n"
 			"Should a new file with default values be created?"),
 			QMessageBox::Yes, QMessageBox::No, 0);
 
@@ -139,8 +139,8 @@ bool Prefs::loadConfig(void)
 
 	// set file for parsing
 	if (!doc.setContent(&f)) {
-		QMessageBox::critical(gYammiGui, QObject::QObject::tr("Yammi"),
-			QObject::QObject::tr("Error parsing configuration file!"),
+		QMessageBox::critical(gYammiGui, QObject::tr("Yammi"),
+			QObject::tr("Error parsing configuration file!"),
 			QMessageBox::Abort, 0, 0);
 
 		// close file

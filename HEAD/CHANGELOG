@@ -1,5 +1,5 @@
 ########################
-??11.05.2003 version 0.8.2
+12.05.2003 version 0.8.2
 - "longest not played" now chooses randomly from the candidate songs (if more than one song with same timestamp)
 - switch to/from playlist with toolbutton or keyboard (CTRL-P)
 - patch from Stefan applied (cleaning up and probably fixing some memory leaks)
@@ -16,6 +16,11 @@
 - fixed behavior (song order) when using EnqueueAsNext/PlayNow on more than one song
 - added EnqueueRandom and EnqueueAsNextRandom (enqueue with a random order of songs)
 - added "Shuffle Playlist" as an item into new menu "Playlist"
+- removed "current song" toolbutton and functionality (was too buggy and crappy)
+- added a workaround for noatun stops playing if crossfading set to 0 (but creates pauses between songs)
+- added viewing/hiding toolbars via view menu + saving to next session (but not position yet)
+- added hiding of columns via view menu + saving to next session
+- adding to media: entries already existing on that media won't be added
 
 ########################
  version 0.8.1

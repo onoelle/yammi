@@ -27,6 +27,11 @@ SongListItem::SongListItem( QListView* parent, SongEntry* entry, SongListItem* a
 	setColumns(entry);
 }
 
+bool SongListItem::columnIsVisible(int column)
+{
+  return gYammiGui->columnIsVisible(column);
+}
+
 void SongListItem::setColumns(SongEntry* entry)
 {
 	songEntry=entry;
@@ -35,41 +40,104 @@ void SongListItem::setColumns(SongEntry* entry)
 	for(int i=0; i<base; i++) {
 		setText( i, entry->getColumn(i));
 	}
-  setText( base+0, s->artist );
-  setText( base+1, s->title );
-  setText( base+2, s->album );
-	if(s->length!=0) {
-		QString lengthStr=QString("%1").arg(s->length % 60);
-		if (lengthStr.length()==1)
-	  	lengthStr="0"+lengthStr;
-		setText( base+3, QString("%1:%2").arg((s->length) / 60).arg(lengthStr));
+  int current=base;
+  if(columnIsVisible(gYammiGui->COLUMN_ARTIST)) {
+    setText( current, s->artist );
+    current++;
+  }
+
+  if(columnIsVisible(gYammiGui->COLUMN_TITLE)) {
+    setText( current, s->title );
+    current++;
+  }
+  if(columnIsVisible(gYammiGui->COLUMN_ALBUM)) {
+    setText( current, s->album );
+    current++;
+  }
+  if(columnIsVisible(gYammiGui->COLUMN_LENGTH)) {
+    if(s->length!=0) {
+      QString lengthStr=QString("%1").arg(s->length % 60);
+      if (lengthStr.length()==1) {
+        lengthStr="0"+lengthStr;
+      }
+      setText( current, QString("%1:%2").arg((s->length) / 60).arg(lengthStr));
+    }
+    current++;
+  }
+  if(columnIsVisible(gYammiGui->COLUMN_YEAR)) {
+    if(s->year!=0) {
+      setText( current, QString("%1").arg(s->year)); 
+    }
+    current++;
+  }
+  if(columnIsVisible(gYammiGui->COLUMN_TRACKNR)) {
+    if(s->trackNr!=0)	{
+    	setText( current, QString("%1").arg(s->trackNr));
+    }	
+    current++;
+  }
+  if(columnIsVisible(gYammiGui->COLUMN_GENRE)) {
+    int index=s->genreNr;
+    if(index>CMP3Info::getMaxGenreNr()) {
+      index=-1;
+    }
+    if(index!=-1) {
+			setText( current, QString("%1").arg(CMP3Info::getGenre(index)));
+    }	
+    current++;
+  }
+  if(columnIsVisible(gYammiGui->COLUMN_ADDED_TO)) {
+    setText( current, s->addedTo.writeToString());
+    current++;
+  }
+  if(columnIsVisible(gYammiGui->COLUMN_BITRATE)) {
+    if(s->bitrate!=0) {
+  		setText( current, QString("%1").arg(s->bitrate));
+    }
+    current++;
+  }
+  if(s->filename!="") {
+    if(columnIsVisible(gYammiGui->COLUMN_FILENAME)) {
+      setText( current, s->filename );
+      current++;
+    }
+    if(columnIsVisible(gYammiGui->COLUMN_PATH)) {
+      setText( current, s->path );
+      current++;
+    }
+  }
+  else {		// song not on harddisk
+    if(columnIsVisible(gYammiGui->COLUMN_FILENAME)) {
+      current++;
+    }
+    if(columnIsVisible(gYammiGui->COLUMN_PATH)) {
+      QString mediaNameList("");
+      for(unsigned int i=0; i<s->mediaName.count(); i++) {
+        mediaNameList+="<"+s->mediaName[i]+"> ";
+      }
+      setText( current, mediaNameList);
+      current++;
+    }
 	}
-	if(s->year!=0)				setText( base+4, QString("%1").arg(s->year));
-  if(s->trackNr!=0)			setText( base+5, QString("%1").arg(s->trackNr));
-	int index=s->genreNr;
-	if(index>CMP3Info::getMaxGenreNr())
-		index=-1;
-  if(index!=-1)					setText( base+6, QString("%1").arg(CMP3Info::getGenre(index)));
-	setText( base+7, s->addedTo.writeToString());
-  if(s->bitrate!=0)			setText( base+8, QString("%1").arg(s->bitrate));
-	if(s->filename!="") {
-  	setText( base+9, s->filename );
-  	setText( base+10, s->path );
-	}
-	else {		// song not on harddisk
-		QString mediaNameList("");
-		for(unsigned int i=0; i<s->mediaName.count(); i++)
-			mediaNameList+="<"+s->mediaName[i]+"> ";
-		setText( base+10, mediaNameList);
-	}
-	if(s->comment!="")		setText( base+11, s->comment );
-	MyDateTime never;
-	never.setDate(QDate(1900,1,1));
-	never.setTime(QTime(0,0,0));
-  if(s->lastPlayed!=never)
-		setText( base+12, s->lastPlayed.writeToString() );
-	else
-		setText( base+12, "never" );
+  if(columnIsVisible(gYammiGui->COLUMN_COMMENT)) {
+    if(s->comment!="") {
+      setText( current, s->comment );
+    }
+    current++;
+  }
+  if(columnIsVisible(gYammiGui->COLUMN_LAST_PLAYED)) {
+    MyDateTime never;
+    never.setDate(QDate(1900,1,1));
+    never.setTime(QTime(0,0,0));
+    if(s->lastPlayed!=never) {
+      setText( current, s->lastPlayed.writeToString() );
+    }
+    else {
+      setText( current, "never" );
+    }
+    current++;
+  }
+  
 }
 
 void SongListItem::paintCell( QPainter *p, const QColorGroup &cg,

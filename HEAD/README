@@ -9,7 +9,7 @@ Yammi has some dependencies/requirements that can be switched off:
 
 kdecore (http://www.kde.org)
 ----------------------------
-Needed for noatun support (for using dcop). Required if you use Noatun as your media player.
+Needed for noatun support (via using dcop). Required if you use Noatun as your media player.
 To disable:
 --disable-noatun         (=> disables noatun support)
 
@@ -111,7 +111,3 @@ I hope you enjoy using Yammi...
 
 --------------------------------
 Oliver Nölle (oli.noelle@web.de)
-
-
-
-

@@ -26,16 +26,17 @@ class SongListItem : public QListViewItem
 {
 public:
   SongListItem( QListView *parent, SongEntry *s, SongListItem* after=0 );
-	void setColumns(SongEntry* entry);
+	void       setColumns(SongEntry* entry);
 
-  virtual void paintCell( QPainter *p, const QColorGroup &cg, int column, int width, int alignment );
-	int compare( QListViewItem *i, int col, bool ascending ) const;
-	QString key(int column, bool ascending) const;
-	Song* song() const	{ return songEntry->song(); }
+  virtual void   paintCell( QPainter *p, const QColorGroup &cg, int column, int width, int alignment );
+	int        compare( QListViewItem *i, int col, bool ascending ) const;
+	QString    key(int column, bool ascending) const;
+	Song*      song() const	{ return songEntry->song(); }
 
 //protected:
 	SongEntry* songEntry;
-
+protected:
+  bool            columnIsVisible(int i);
 };
 
 #endif

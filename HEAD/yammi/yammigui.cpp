@@ -71,6 +71,7 @@ using namespace std;
 
 extern YammiGui* gYammiGui;
 
+static char* columnName[13] = {"Artist", "Title", "Album", "Length", "Year", "TrackNr", "Genre", "AddedTo", "Bitrate", "Filename", "Path", "Comment", "Last Played"};
 
 /**
  * Constructor, sets up the whole application.
@@ -128,6 +129,7 @@ YammiGui::YammiGui(QString baseDir)
 	cout << "setting up gui...\n";
 	
 	// set up menu
+  //************
 	QMenuBar* mainMenu = new QMenuBar(this);
 	
 	// file menu
@@ -141,9 +143,40 @@ YammiGui::YammiGui(QString baseDir)
 	editMenu->insertItem( "Invert selection",  this, SLOT(invertSelection()));
 	mainMenu->insertItem( "&Edit", editMenu );
 
+  // toolbars submenu
+	toolbarsMenu = new QPopupMenu;
+	toolbarsMenu->insertItem( "Main Toolbar",  this, SLOT(toggleMainToolbar()), 0, 1);
+	toolbarsMenu->insertItem( "Media Player Toolbar",  this, SLOT(toggleMediaPlayerToolbar()), 0, 2);
+	toolbarsMenu->insertItem( "Song Actions Toolbar",  this, SLOT(toggleSongActionsToolbar()), 0, 3);
+	toolbarsMenu->insertItem( "Removable Media Toolbar",  this, SLOT(toggleRemovableMediaToolbar()), 0, 4);
+	toolbarsMenu->insertItem( "Sleep Mode Toolbar",  this, SLOT(toggleSleepModeToolbar()), 0, 5);
+  // columns submenu
+  columnsMenu = new QPopupMenu;
+  for(int column=0; column<13; column++) {
+    columnsMenu->insertItem( columnName[column],  this, SLOT(toggleColumnVisibility(int)), 0, column);
+  }
+
+  /*
+	columnsMenu->insertItem( "Artist",  this, SLOT(toggleColumnVisibility(int)), 0, COLUMN_ARTIST);
+	columnsMenu->insertItem( "Title",  this, SLOT(toggleColumnVisibility(int)), 0, COLUMN_TITLE);
+	columnsMenu->insertItem( "Album",  this, SLOT(toggleColumnVisibility(int)), 0, COLUMN_ALBUM);
+	columnsMenu->insertItem( "Length",  this, SLOT(toggleColumnVisibility(int)), 0, COLUMN_LENGTH);
+	columnsMenu->insertItem( "Year",  this, SLOT(toggleColumnVisibility(int)), 0, COLUMN_YEAR);
+	columnsMenu->insertItem( "Tracknumber",  this, SLOT(toggleColumnVisibility(int)), 0, COLUMN_TRACKNR);
+	columnsMenu->insertItem( "Genre",  this, SLOT(toggleColumnVisibility(int)), 0, COLUMN_GENRE);
+	columnsMenu->insertItem( "Added To",  this, SLOT(toggleColumnVisibility(int)), 0, COLUMN_ADDED_TO);
+	columnsMenu->insertItem( "Bitrate",  this, SLOT(toggleColumnVisibility(int)), 0, COLUMN_BITRATE);
+	columnsMenu->insertItem( "Filename",  this, SLOT(toggleColumnVisibility(int)), 0, COLUMN_FILENAME);
+	columnsMenu->insertItem( "Path",  this, SLOT(toggleColumnVisibility(int)), 0, COLUMN_PATH);
+	columnsMenu->insertItem( "Comment",  this, SLOT(toggleColumnVisibility(int)), 0, COLUMN_COMMENT);
+	columnsMenu->insertItem( "Last Played",  this, SLOT(toggleColumnVisibility(int)), 0, COLUMN_LAST_PLAYED);
+  */
+  
   // view menu
 	QPopupMenu* viewMenu = new QPopupMenu;
 	viewMenu->insertItem( "Update Automatic Folder Structure",  this, SLOT(updateView()));
+	viewMenu->insertItem( "Toolbars", toolbarsMenu );
+	viewMenu->insertItem( "Columns", columnsMenu );
 	mainMenu->insertItem( "&View", viewMenu );
 
   // database menu
@@ -179,16 +212,19 @@ YammiGui::YammiGui(QString baseDir)
 
   mainMenu->insertItem( "&Autoplay", autoplayMenu );
   
-  // help menu	
+  // help menu
 	QPopupMenu* helpMenu = new QPopupMenu;
 	helpMenu->insertItem( "&Handbook...",  this, SLOT(openHelp()));
 	helpMenu->insertItem( "&About...", this, SLOT(aboutDialog()));
 	mainMenu->insertItem( "&Help", helpMenu );
 	
+
+
+  // setup toolbars
+  //***************
 	
-	
-  // media player toolbar
-  QToolBar* mediaPlayerToolBar = new QToolBar (this, "mediaPlayerToolbar");
+  // mediaPlayer toolbar
+  mediaPlayerToolBar = new QToolBar (this, "mediaPlayerToolbar");
   mediaPlayerToolBar->setLabel( "Media Player Controls" );
   tbPlayPause = new QToolButton( QPixmap((const char**)pause_xpm), "Play/Pause (F1)", QString::null,
                            player, SLOT(playPause()), mediaPlayerToolBar);
@@ -216,81 +252,75 @@ YammiGui::YammiGui(QString baseDir)
   }
 		
 	// main toolbar
-	QToolBar* toolBar = new QToolBar ( this, "toolbar");
-  toolBar->setLabel( "Main Toolbar" );
-//	/ = new QToolButton( QPixmap(filesave_xpm), "Save database (Ctrl-S)", QString::null,
-//														model, SLOT(save()), toolBar);
-//  tbSaveDatabase->setEnabled(model->allSongsChanged());
-	QLabel *searchLabel = new QLabel(toolBar);
+	mainToolBar = new QToolBar ( this, "mainToolBar");
+  mainToolBar->setLabel( "Main Toolbar" );
+	QLabel *searchLabel = new QLabel(mainToolBar);
 	searchLabel->setText( "Search:" );
 	searchLabel->setFrameStyle( QFrame::NoFrame );
-	searchField = new LineEditShift ( toolBar );
+	searchField = new LineEditShift ( mainToolBar );
 	connect( searchField, SIGNAL(textChanged(const QString&)), SLOT(userTyped(const QString&)) );
 	searchField->setFocus();
 	searchField->setFixedWidth(175);
 	QToolTip::add( searchField, "Fuzzy search (Ctrl-F)");
-	
-	// button "add to wishlist"	
-	QPushButton* addToWishListButton=new QPushButton("to wishlist", toolBar);
+	QPushButton* addToWishListButton=new QPushButton("to wishlist", mainToolBar);
 	QToolTip::add( addToWishListButton, "Add this entry to the database as a \"wish\"");
 	
-	// current song label
-	QPushButton* currentSongLabel=new QPushButton("current", toolBar);
-	
 	// song actions	toolbar
-	QToolBar* toolBar2 = new QToolBar ( this, "toolbar2");
-  toolBar2->setLabel( "Song Actions" );
+	songActionsToolBar = new QToolBar ( this, "songActionsToolBar");
+  songActionsToolBar->setLabel( "Song Actions" );
 
 	// now all the buttons that correspond to context menu entries
   new QToolButton (QPixmap(enqueue_xpm), "Enqueue at end (F5, SHIFT-F5 for random order)", QString::null,
-                           this, SLOT(forAllSelectedEnqueue()), toolBar2);
+                           this, SLOT(forAllSelectedEnqueue()), songActionsToolBar);
 	new QToolButton (QPixmap(enqueueasnext_xpm), "Enqueue as next (F6, SHIFT-F6 for random order)", QString::null,
-                           this, SLOT(forAllSelectedEnqueueAsNext()), toolBar2);
+                           this, SLOT(forAllSelectedEnqueueAsNext()), songActionsToolBar);
 	new QToolButton (QPixmap(playnow_xpm), "Play now (F7 / SHIFT-F7)", QString::null,
-                           this, SLOT(forAllSelectedPlayNow()), toolBar2);
+                           this, SLOT(forAllSelectedPlayNow()), songActionsToolBar);
 	new QToolButton (QPixmap(dequeueSong_xpm), "Dequeue Song (F8)", QString::null,
-                           this, SLOT(forAllSelectedDequeue()), toolBar2);
+                           this, SLOT(forAllSelectedDequeue()), songActionsToolBar);
 	new QToolButton (QPixmap(dequeueAll_xpm), "Clear playlist (SHIFT-F8)", QString::null,
-                           this, SLOT(clearPlaylist()), toolBar2);
+                           this, SLOT(clearPlaylist()), songActionsToolBar);
 	new QToolButton (QPixmap(prelisten_xpm), "Prelisten (start) (F9)", QString::null,
-                           this, SLOT(forAllSelectedPrelistenStart()), toolBar2);
+                           this, SLOT(forAllSelectedPrelistenStart()), songActionsToolBar);
 	new QToolButton (QPixmap(prelisten_xpm), "Prelisten (middle) (F10)", QString::null,
-                           this, SLOT(forAllSelectedPrelistenMiddle()), toolBar2);
+                           this, SLOT(forAllSelectedPrelistenMiddle()), songActionsToolBar);
 	new QToolButton (QPixmap(prelisten_xpm), "Prelisten (end) (F11)", QString::null,
-                           this, SLOT(forAllSelectedPrelistenEnd()), toolBar2);
+                           this, SLOT(forAllSelectedPrelistenEnd()), songActionsToolBar);
 	new QToolButton (QPixmap(stopPrelisten_xpm), "Stop prelisten (F12)", QString::null,
-                           this, SLOT(stopPrelisten()), toolBar2);
+                           this, SLOT(stopPrelisten()), songActionsToolBar);
 	new QToolButton (QPixmap(songinfo_xpm), "Info...", QString::null,
-                           this, SLOT(forAllSelectedSongInfo()), toolBar2);
+                           this, SLOT(forAllSelectedSongInfo()), songActionsToolBar);
 	new QToolButton (QPixmap(toFromPlaylist_xpm), "Switch to/from Playlist (CTRL-P)", QString::null,
-                           this, SLOT(toFromPlaylist()), toolBar2);
+                           this, SLOT(toFromPlaylist()), songActionsToolBar);
 
 	// removable media management
-	QToolBar* toolBarRemovableMedia = new QToolBar ( this, "Removable Media Toolbar");
-  toolBarRemovableMedia->setLabel( "Jukebox Functions" );
-	QLabel *neededMediaLabel = new QLabel(toolBarRemovableMedia);
+	removableMediaToolBar = new QToolBar ( this, "removableMediaToolBar");
+  removableMediaToolBar->setLabel( "Jukebox Functions" );
+	QLabel *neededMediaLabel = new QLabel(removableMediaToolBar);
 	neededMediaLabel->setText( "Needed media:" );
-	mediaListCombo = new QComboBox( FALSE, toolBarRemovableMedia, "mediaList Combo" );
+	mediaListCombo = new QComboBox( FALSE, removableMediaToolBar, "mediaList Combo" );
 	mediaListCombo->setFixedWidth(150);
-	loadFromMediaButton=new QPushButton("load", toolBarRemovableMedia);
+	loadFromMediaButton=new QPushButton("load", removableMediaToolBar);
 	
 	// Sleep mode
-	QToolBar* toolBarSleepMode = new QToolBar ( this, "Sleep Mode Toolbar");
-  toolBarSleepMode->setLabel( "Sleep Mode" );
+	sleepModeToolBar = new QToolBar ( this, "sleepModeToolBar");
+  sleepModeToolBar->setLabel( "Sleep Mode" );
 	songsUntilShutdown=-3;
-	sleepModeLabel = new QLabel(toolBarSleepMode);
+	sleepModeLabel = new QLabel(sleepModeToolBar);
 	sleepModeLabel->setText( "Sleep mode:" );
 	sleepModeLabel->setFrameStyle( QFrame::NoFrame );
-	sleepModeButton=new QPushButton("(disabled)", toolBarSleepMode);
+	sleepModeButton=new QPushButton("(disabled)", sleepModeToolBar);
 	connect( sleepModeButton, SIGNAL( clicked() ), this, SLOT( changeSleepMode() ) );
 	QToolTip::add( sleepModeButton, "change sleep mode");
-	sleepModeSpinBox=new QSpinBox(1, 99, 1, toolBarSleepMode);
+	sleepModeSpinBox=new QSpinBox(1, 99, 1, sleepModeToolBar);
 	sleepModeSpinBox->setValue(songsUntilShutdown);
 	sleepModeSpinBox->setEnabled(false);
 	QToolTip::add( sleepModeSpinBox, "number songs until shutdown");
   connect( sleepModeSpinBox, SIGNAL( valueChanged(int) ), this, SLOT( changeShutdownValue(int) ) );
 
-	// now setup main area
+
+
+  // now setup main area
 	QSplitter* centralWidget=new QSplitter(Qt::Horizontal, this);
 	
   // statusbar
@@ -306,6 +336,9 @@ YammiGui::YammiGui(QString baseDir)
 
   // set up the songlist on the right
 	songListView = new MyListView( centralWidget );
+  for(int i=0; i<MAX_COLUMN_NO; i++) {
+    columnVisible[i]=true;
+  }
 	
 	QValueList<int> lst;
 	lst.append( 150 );
@@ -380,7 +413,7 @@ YammiGui::YammiGui(QString baseDir)
 	
 	// signals of toolbar
 	connect( addToWishListButton, SIGNAL( clicked() ), this, SLOT( addToWishList() ) );
-	connect( currentSongLabel, SIGNAL( clicked() ), this, SLOT( currentlyPlayedSongPopup() ) );
+//	connect( currentSongLabel, SIGNAL( clicked() ), this, SLOT( currentlyPlayedSongPopup() ) );
 	connect( loadFromMediaButton, SIGNAL( clicked() ), this, SLOT( loadMedia() ) );
 
 	// signals of folderListView
@@ -433,7 +466,7 @@ YammiGui::YammiGui(QString baseDir)
   }
   // TODO: this should be probably done by a thread owned by the media player
   connect( &checkTimer, SIGNAL(timeout()), player, SLOT(check()) );
-  checkTimer.start( 200, FALSE );
+  checkTimer.start( 100, FALSE );
 
 	// connect all timers
   connect( &regularTimer, SIGNAL(timeout()), SLOT(onTimer()) );
@@ -461,14 +494,14 @@ void YammiGui::finishInitialization()
 	if(model->noPrefsFound && model->noDatabaseFound) {
 		QMessageBox::information( this, "Yammi",	QString("Yammi - Yet Another Music Manager I...\n\n\n")+
 																					"It looks like you are starting Yammi the first time...\n\n"+
-                                          " Welcome to convenient song lookups and organization!\n\n"+
+                                          "   Welcome to convenient song lookups and organization!\n\n"+
 																					"Please edit the settings (Settings -> Configure Yammi...)\n"+
 																					"to adjust your personal configuration and options"+
                                           "(especially the path to your media files).\n"+
 																					"Then perform a database update (Database -> Scan Harddisk...)\n"+
 																					"to scan your harddisk for media files.\n\n"+
-																					"I hope you have fun using Yammi...\n\n"+
-																					"Please check out Yammi's website for new versions and other info:\n"+
+																					"Have fun using Yammi...\n\n"+
+																					"Check out Yammi's website for new versions and other info:\n"+
 																					"http://yammi.sourceforge.net");
 	}
 
@@ -529,6 +562,9 @@ void YammiGui::updatePlaylist()
   folderContentChanged(folderActual);
 }
 
+/**
+ * TODO: document, when is this method called???
+ */
 void YammiGui::updateCurrentSongStatus()
 {
   Song* firstInPlaylist=model->songsToPlay.count()>0 ? model->songsToPlay.firstSong() : 0;
@@ -647,6 +683,24 @@ void YammiGui::writeSettings()
   }
   settings.writeEntry( "/Yammi/folder/current", chosenFolder->folderName());
   settings.writeEntry( "/Yammi/folder/autoplay", autoplayFoldername);
+
+  // toolbar visibility
+  settings.writeEntry( "/Yammi/toolbars/mainToolBar", !mainToolBar->isHidden());
+  settings.writeEntry( "/Yammi/toolbars/mediaPlayerToolBar", !mediaPlayerToolBar->isHidden());
+  settings.writeEntry( "/Yammi/toolbars/songActionsToolBar", !songActionsToolBar->isHidden());
+  settings.writeEntry( "/Yammi/toolbars/removableMediaToolBar", !removableMediaToolBar->isHidden());
+  settings.writeEntry( "/Yammi/toolbars/sleepModeToolBar", !sleepModeToolBar->isHidden());
+
+  // column visibility
+  for(int column=0; column<13; column++) {
+    settings.writeEntry( "/Yammi/columns/"+getColumnName(column), columnsMenu->isItemChecked(column));    
+  }
+
+}
+
+QString YammiGui::getColumnName(int column)
+{
+  return QString(columnName[column]);
 }
 
 /**
@@ -683,6 +737,53 @@ void YammiGui::readSettings()
   // autoplay folder
   autoplayFoldername=settings.readEntry("/Yammi/folder/autoplay", "All Music");
   autoplayMenu->changeItem(AUTOPLAY_FOLDER, "Folder: "+autoplayFoldername);
+
+  // toolbars
+  if(settings.readBoolEntry("/Yammi/toolbars/mainToolBar", true)) {
+    toolbarsMenu->setItemChecked(1, true);
+  }
+  else {
+    mainToolBar->hide();
+    toolbarsMenu->setItemChecked(1, false);
+  }
+  
+  if(settings.readBoolEntry("/Yammi/toolbars/mediaPlayerToolBar", true)) {
+    toolbarsMenu->setItemChecked(2, true);
+  }
+  else {
+    mediaPlayerToolBar->hide();
+    toolbarsMenu->setItemChecked(2, false);
+  }
+  
+  if(settings.readBoolEntry("/Yammi/toolbars/songActionsToolBar", true)) {
+    toolbarsMenu->setItemChecked(3, true);
+  }
+  else {
+    songActionsToolBar->hide();
+    toolbarsMenu->setItemChecked(3, false);
+  }
+  
+  if(settings.readBoolEntry("/Yammi/toolbars/removableMediaToolBar", true)) {
+    toolbarsMenu->setItemChecked(4, true);
+  }
+  else {
+    removableMediaToolBar->hide();
+    toolbarsMenu->setItemChecked(4, false);
+  }
+  
+  if(settings.readBoolEntry("/Yammi/toolbars/sleepModeToolBar", true)) {
+    toolbarsMenu->setItemChecked(5, true);
+  }
+  else {
+    sleepModeToolBar->hide();
+    toolbarsMenu->setItemChecked(5, false);
+  }
+
+  // columns
+  for(int column=0; column<13; column++) {
+    columnVisible[column]=settings.readBoolEntry("/Yammi/columns/"+getColumnName(column), true);
+    columnsMenu->setItemChecked(column, columnVisible[column]);
+  }
 }
 
 
@@ -742,6 +843,11 @@ void YammiGui::updateView()
   folderContentChanged();
 }
 
+/// returns true if the column should be shown
+bool YammiGui::columnIsVisible(int column)
+{
+  return columnVisible[column];
+}
 
 /** Updates listview columns.
  * Tries to maintain the size and position of columns (as good as possible, as columns are changing)
@@ -752,40 +858,88 @@ void YammiGui::updateListViewColumns()
   for(int i=0; i<noOldColumns; i++) {
 		songListView->removeColumn(0);
   }
+  int current=0;
 
-  if(chosenFolder==folderActual)
+  if(chosenFolder==folderActual) {
 		songListView->addColumn( "Pos", 35);
-	if(chosenFolder==folderHistory || chosenFolder==folderSongsPlayed)
+    current++;
+  }
+	if(chosenFolder==folderHistory || chosenFolder==folderSongsPlayed) {
 		songListView->addColumn( "Played on", 135);
-	if(chosenFolder==folderSearchResults)
+    current++;
+  }
+	if(chosenFolder==folderSearchResults) {
 		songListView->addColumn( "Match", 45);
-	if(chosenFolder==folderProblematic)
+    current++;
+  }
+	if(chosenFolder==folderProblematic) {
 		songListView->addColumn( "Reason", 120);
-	if(((QListViewItem*)chosenFolder)->parent()==folderCategories)
+    current++;
+  }
+	if(((QListViewItem*)chosenFolder)->parent()==folderCategories) {
 		songListView->addColumn( "Pos", 35);
+    current++;
+  }
 		
-		
-	int offset=songListView->columns();
-	songListView->addColumn( "Artist", 200);
-	songListView->addColumn( "Title", 200);
-	songListView->addColumn( "Album", 150);
-	songListView->addColumn( "Length", 50);
-	songListView->setColumnAlignment( offset+3, Qt::AlignRight );
-	songListView->addColumn( "Year", 50);
-	songListView->setColumnAlignment( offset+4, Qt::AlignRight );
-	songListView->addColumn( "Track", 40);
-	songListView->setColumnAlignment( offset+5, Qt::AlignRight );
-	songListView->addColumn( "Genre", 40);
-//	songListView->setColumnAlignment( offset+6, Qt::AlignRight );
-	songListView->addColumn( "Added to", 60);
-	songListView->setColumnAlignment( offset+7, Qt::AlignRight );
-	songListView->addColumn( "Bitrate", 40);
-	songListView->setColumnAlignment( offset+8, Qt::AlignRight );
-	songListView->addColumn( "Filename", 80);
-	songListView->addColumn( "Path", 80);
-	songListView->addColumn( "Comment", 100);
-	songListView->addColumn( "Last played", 100);
-	songListView->setAllColumnsShowFocus( TRUE );
+  if(columnIsVisible(COLUMN_ARTIST)) {
+    songListView->addColumn( getColumnName(COLUMN_ARTIST), 200);
+    current++;
+  } 
+	if(columnIsVisible(COLUMN_TITLE)) {
+    songListView->addColumn( getColumnName(COLUMN_TITLE), 200);
+    current++;
+  }
+  if(columnIsVisible(COLUMN_ALBUM)) {
+    songListView->addColumn( getColumnName(COLUMN_ALBUM), 150);
+    current++;
+  } 
+	if(columnIsVisible(COLUMN_LENGTH)) {
+    songListView->addColumn( getColumnName(COLUMN_LENGTH), 50);
+    songListView->setColumnAlignment( current, Qt::AlignRight );
+    current++;
+  } 
+  if(columnIsVisible(COLUMN_YEAR)) {
+    songListView->addColumn( getColumnName(COLUMN_YEAR), 50);
+    songListView->setColumnAlignment( current, Qt::AlignRight );
+    current++;
+  }
+	if(columnIsVisible(COLUMN_TRACKNR)) {
+    songListView->addColumn( getColumnName(COLUMN_TRACKNR), 40);
+    songListView->setColumnAlignment( current, Qt::AlignRight );
+    current++;
+  }
+	if(columnIsVisible(COLUMN_GENRE)) {
+    songListView->addColumn( getColumnName(COLUMN_GENRE), 40);
+    current++;
+  } 
+	if(columnIsVisible(COLUMN_ADDED_TO)) {
+    songListView->addColumn( getColumnName(COLUMN_ADDED_TO), 60);
+    songListView->setColumnAlignment( current, Qt::AlignRight );
+    current++;
+  } 
+	if(columnIsVisible(COLUMN_BITRATE)) {
+    songListView->addColumn( getColumnName(COLUMN_BITRATE), 40);
+    songListView->setColumnAlignment( current, Qt::AlignRight );
+    current++;
+  }
+	if(columnIsVisible(COLUMN_FILENAME)) {
+    songListView->addColumn( getColumnName(COLUMN_FILENAME), 80);
+    current++;
+  }	
+	if(columnIsVisible(COLUMN_PATH)) {
+    songListView->addColumn( getColumnName(COLUMN_PATH), 80);
+    current++;
+  } 
+	if(columnIsVisible(COLUMN_COMMENT)) {
+ 	  songListView->addColumn( getColumnName(COLUMN_COMMENT), 100);
+    current++;
+  } 
+	if(columnIsVisible(COLUMN_LAST_PLAYED)) {
+    songListView->addColumn( getColumnName(COLUMN_LAST_PLAYED), 100);
+    current++;
+  } 
+
+  songListView->setAllColumnsShowFocus( TRUE );
 	songListView->setShowSortIndicator( TRUE );
 	songListView->setSelectionMode( QListView::Extended );
 	songListView->setAllColumnsShowFocus( TRUE );
@@ -812,6 +966,7 @@ void YammiGui::updateListViewColumns()
       }
     }
   }
+  // now move those that have not existed before to the front
   target=0;
   for(int j=0; j<noNewColumns; j++) {
     if(!exists[j]) {
@@ -820,6 +975,7 @@ void YammiGui::updateListViewColumns()
     }
   }
   saveColumnSettings();
+  
 }
 
 void YammiGui::saveColumnSettings()
@@ -831,6 +987,7 @@ void YammiGui::saveColumnSettings()
     int section=header->mapToSection(j);
     columnOrder.append(header->label(section));
     columnWidth[j]=header->sectionSize(section);
+//    cout << "j: " << j << ", section: " << section << "label: " << header->label(section) << ", size: " << header->sectionSize(section) << "\n";
   }
 }
 
@@ -1242,6 +1399,7 @@ void YammiGui::slotSongChanged()
 
 
 /// pushbutton on current song
+/*
 void YammiGui::currentlyPlayedSongPopup()
 {
 	// get currently played song
@@ -1249,6 +1407,7 @@ void YammiGui::currentlyPlayedSongPopup()
 	// we should get mouse position, but how???
 	doSongPopup(QPoint(500, 50));
 }
+*/
 
 /// rmb on songlist: song popup for selection
 void YammiGui::songListPopup( QListViewItem* Item, const QPoint & point, int )
@@ -1669,8 +1828,10 @@ void YammiGui::forSelectionSongInfo()
 }
 
 
-/// prepare burning selection to media
-/// (burning order will be the order of the selected songs)
+/**
+ * prepare burning selection to media
+ * (burning order will be the order of the selected songs)
+ */
 void YammiGui::forSelectionBurnToMedia()
 {
 	long double totalSize=0;
@@ -1727,7 +1888,15 @@ void YammiGui::forSelectionBurnToMedia()
       }
 		}
 
-    // okay, we can really add the song to the current media
+    count++;
+    // check, whether song already contained on media
+    if(s->mediaName.contains(mediaName)) {
+      cout << "song already existing on this media, skipping...\n";
+      s=selectedSongs.nextSong();
+      continue;
+    }
+    
+    // okay, we really add the song to the current media
 		size+=fi.size();
     totalSize+=fi.size();
 		// linux specific
@@ -1735,7 +1904,6 @@ void YammiGui::forSelectionBurnToMedia()
 		system(cmd);
 		s->addMediaLocation(mediaName, s->filename);
     s=selectedSongs.nextSong();
-    count++;
 	}
 	
 	cout << "no of media: " << mediaNo+1-startIndex << " (size limit: " << model->config.criticalSize << " MB, ";
@@ -2543,7 +2711,6 @@ void YammiGui::autoFillPlaylist()
           songToAdd=candidateList.firstSong();
         }
         else {
-          cout << "candidate songs: " << candidates << "\n";
           QDateTime dt = QDateTime::currentDateTime();
           QDateTime xmas( QDate(2050,12,24), QTime(17,00) );
           int chosen=(dt.secsTo(xmas) + dt.time().msec()) % candidates;
@@ -3287,3 +3454,71 @@ void YammiGui::commitData(QSessionManager& sm )
   }
 }
 
+/// view/hide main toolbar
+void YammiGui::toggleMainToolbar()
+{
+  if(mainToolBar->isHidden()) {
+    mainToolBar->show();
+    toolbarsMenu->setItemChecked(1, true);
+  }
+  else {
+    mainToolBar->hide();
+    toolbarsMenu->setItemChecked(1, false);
+  }
+}
+/// view/hide media player toolbar
+void YammiGui::toggleMediaPlayerToolbar()
+{
+  if(mediaPlayerToolBar->isHidden()) {
+    mediaPlayerToolBar->show();
+    toolbarsMenu->setItemChecked(2, true);
+  }
+  else {
+    mediaPlayerToolBar->hide();
+    toolbarsMenu->setItemChecked(2, false);
+  }
+}
+/// view/hide song actions toolbar
+void YammiGui::toggleSongActionsToolbar()
+{
+  if(songActionsToolBar->isHidden()) {
+    songActionsToolBar->show();
+    toolbarsMenu->setItemChecked(3, true);
+  }
+  else {
+    songActionsToolBar->hide();
+    toolbarsMenu->setItemChecked(3, false);
+  }
+}
+/// view/hide removable media toolbar
+void YammiGui::toggleRemovableMediaToolbar()
+{
+  if(removableMediaToolBar->isHidden()) {
+    removableMediaToolBar->show();
+    toolbarsMenu->setItemChecked(4, true);
+  }
+  else {
+    removableMediaToolBar->hide();
+    toolbarsMenu->setItemChecked(4, false);
+  }
+}
+/// view/hide sleep mode toolbar
+void YammiGui::toggleSleepModeToolbar()
+{
+  if(sleepModeToolBar->isHidden()) {
+    sleepModeToolBar->show();
+    toolbarsMenu->setItemChecked(5, true);
+  }
+  else {
+    sleepModeToolBar->hide();
+    toolbarsMenu->setItemChecked(5, false);
+  }
+}
+
+/// view/hide sleep mode toolbar
+void YammiGui::toggleColumnVisibility(int column)
+{
+  columnsMenu->setItemChecked(column, !columnsMenu->isItemChecked(column));
+  columnVisible[column]=columnsMenu->isItemChecked(column);
+  changeToFolder(chosenFolder, true);
+}

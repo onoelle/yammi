@@ -1,43 +1,31 @@
 TODO
 ----
-last update 5.5.2003
+last update 12.5.2003
 
 
-
-user feedback via email:
-------------------------
+user wishes:
+------------
 - rating of tracks
-- folder for recent additions
 - subfolders
-- loading/saving of playlists to m3u (saving already implemented via plugin)
-- incorrect tracknumbers are shown in some cases where tracknumber is undefined (0) ?
-- save playlists
+- loading of playlists (m3u) / document saving via plugin
+
+
+for version 1.0
+---------------
 - "rescan tags"-button in song info dialog or in consistency check?
-
-
-0.8.2
------
-- song length <5s: noatun stops playing
-- no crossfading with noatun: noatun stops
-- check: moving songs in playlist not possible (on Mandrake?)
-- remove/replace "current" button?
+- make configurable/auto-detected forbidden characters: http://osdev.berlios.de/osd-fs.html
+- check: moving songs in playlist not possible (on Mandrake, rpm?)
 - {wish} in playlist: noatun stops playing
-- view menu: hide some columns
-- adding to media: don't add entries already existing
+- preserve file permissions on modifying ogg tags
+- polish GUI... (esp. the "butt ugly" icons?)
+- no crossfading with noatun: replace workaround to avoid pauses in playback between songs
 - removing a song from playlist: only remove this one (idea: function "removeDuplicates" for playlist?)
 - update database: select a single file
-- make configurable/auto-detected forbidden characters: http://osdev.berlios.de/osd-fs.html
-- preserve file permissions?
-
-1.0
----
-- polish GUI... (esp. the "butt ugly" icons?)
 - on deleting a song: delete in *all* lists (history, categories, ...)
 - write little random(int range) method?
 - plugin: publish a sample plugin (echo...) with all replacements
-- document command line option: baseDir in handbook
-- extensive testing with new user!!!
 - folder for recent additions to database?
+- remove symlinking for "burn to media": provide "physical categories"?
 - add to consistency check: update option for re-reading layer/tag info from existing songs
   - updating tags from outside of Yammi => update info in Yammi
 - => reach stable status!!!
@@ -45,6 +33,7 @@ user feedback via email:
 
 probably for version 1.x
 ------------------------
+- song length <X s: do not use crossfading?
 - remove the creating of symlinks for burning assistance (but check size of existing media!)
 - for both media players:
   - use QProcess for XMMS? (noatun?)
@@ -66,17 +55,11 @@ probably for version 1.x
   maybe start xmms with QProcess?
 - incorrect track numbers if track number not present (tom) => maybe problem of old id3lib?
 - simplify {wish} system: (make every entry with empty filename (no media) a wish?
-
-for future releases
--------------------
 - playing songs not contained in Yammi's database might confuse yammi (noatun/xmms)
 - new icon set for song actions (enqueue, playnow, ...)
 - split left tree into two lists: automatic folders and user folders?
 - stopping prelistening: cleaner approach with QProcess???
-- restoring window geometry issue
-- provide a proper tgz binary release or rpm? provide translation ability? (po-file?)
 - saveFilename/renaming of file in song.cpp
-- more tool tips
 - update database: text log window
 - search for similar: add an option to search for songs played "near" this one
 - statistic folder / more info in history folder
@@ -85,11 +68,10 @@ for future releases
 
 KNOWN BUGS
 ----------
-- song length <5s: noatun stops playing
+- a {wish} song causes noatun playback to stop
 - floating point exception when scanning wav file???
 - still problem of freezing xmms => xmms_remote_playlist_delete(0, 0)
 	(seems to be a bug in xmms, posted to bugs@xmms)
 - window geometry: sometimes window position gets shifted by the window decoration towards right lower corner
 - problems with filenames containing "ß"? (problem of qt/linux on fat filesystem?)
-- deleting a song that is currently played, then pressing "current" => crash
-
+- incorrect tracknumbers are shown in some cases where tracknumber is undefined (0) ?

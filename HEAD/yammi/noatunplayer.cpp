@@ -191,6 +191,7 @@ void NoatunPlayer::check()
         // no crossfading configured
         // heuristic: if we were at end of last song, we should start next one
         if(timeLeft<2000) {
+//          cout << "heuristic, starting song change...\n";
           startSongChange();
         }
       }
@@ -202,11 +203,17 @@ void NoatunPlayer::check()
 
   // 2. check, whether we should initiate a song change (start crossfading)
   if(model->config.fadeTime>0) {
-    if(fade<100) {  // don't start fading if we are still fading last song? TODO: really? 
-      return;
+    if(fade<100) {  // don't start fading if we are still fading last song? TODO: really?
+      cout << "start crossfading, but we are still fading (" << fade << ")\n";
+//      return;
     }
     if(getStatus()==PLAYING && timeLeft<model->config.fadeTime && timeLeft>0) {
       startSongChange();
+    }
+  }
+  else {
+    if(getStatus()==PLAYING && timeLeft<1000 && timeLeft>0) {
+//      cout << "should prepare for next song without crossfading...\n";      
     }
   }
 }
@@ -227,7 +234,7 @@ void NoatunPlayer::startSongChange(bool withoutCrossfading)
     clearPlaylist();
     QString location=model->checkAvailability(playlist->at(1)->song());
     if(location!="" && location!="never") {
-      playlistAdd(location, status==PLAYING);
+      playlistAdd(location, status==PLAYING || model->config.fadeTime==0);
       playlist->removeFirst();
     }
     playlistChanged();

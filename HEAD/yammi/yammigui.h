@@ -129,7 +129,21 @@ public:
 // public members
 //***************
 public:
-	MyListView*		songListView;
+  static const int COLUMN_ARTIST = 0;
+  static const int COLUMN_TITLE = 1;
+  static const int COLUMN_ALBUM = 2;
+  static const int COLUMN_LENGTH = 3;
+  static const int COLUMN_YEAR = 4;
+  static const int COLUMN_TRACKNR = 5;
+  static const int COLUMN_GENRE = 6;
+  static const int COLUMN_ADDED_TO = 7;
+  static const int COLUMN_BITRATE = 8;
+  static const int COLUMN_FILENAME = 9;
+  static const int COLUMN_PATH = 10;
+  static const int COLUMN_COMMENT = 11;
+  static const int COLUMN_LAST_PLAYED = 12;
+
+  MyListView*		songListView;
 	Folder*		    chosenFolder;
 	QToolButton*	tbPlayPause;
 	QToolButton*	tbStop;
@@ -155,6 +169,8 @@ public:
   void          commitData(QSessionManager& sm);
   void          saveState(QSessionManager& sm);
   QString       makeReplacements(QString input, Song* s, int index);
+  bool          columnIsVisible(int column);
+  QString       getColumnName(int column);
 
 
 // public slots
@@ -174,6 +190,7 @@ public slots:
 // protected members
 //******************
 protected:
+  bool          columnVisible[MAX_COLUMN_NO];
 	int				    shuttingDown;
   QString       lastPrelistened;
 	MyList		    selectedSongs;
@@ -191,7 +208,7 @@ protected:
 	//***************
 	QListView*		folderListView;
 	LineEditShift*	searchField;
-	QPushButton*	currentSongLabel;
+//	QPushButton*	currentSongLabel;
 	QComboBox*		mediaListCombo;
 	QPushButton*	loadFromMediaButton;
 	QSpinBox*			sleepModeSpinBox;
@@ -206,6 +223,19 @@ protected:
 	QPopupMenu* 	pluginPopup;
 	QPopupMenu* 	folderPopup;
   QPopupMenu*   autoplayMenu;
+
+  QPopupMenu*   lastSongPopupMenu;
+  QPopupMenu*   currentSongPopupMenu;
+  QPopupMenu*   nextSongPopupMenu;
+  
+  QPopupMenu*   toolbarsMenu;
+  QPopupMenu*   columnsMenu;
+  QToolBar*     mediaPlayerToolBar;
+  QToolBar*     mainToolBar;
+  QToolBar*     songActionsToolBar;
+  QToolBar*     removableMediaToolBar;
+  QToolBar*     sleepModeToolBar;
+  
   QStatusBar* 	mainStatusBar;
 	QSlider*			songSlider;
 	bool					isSongSliderGrabbed;
@@ -276,6 +306,12 @@ protected:
 // protected slots
 //****************
 protected slots:
+  void          toggleColumnVisibility(int column);
+  void          toggleMainToolbar();
+  void          toggleMediaPlayerToolbar();
+  void          toggleSongActionsToolbar();
+  void          toggleRemovableMediaToolbar();
+  void          toggleSleepModeToolbar();
   void          finishInitialization();
 
 	void				  forAllSelectedEnqueue()            { forAllSelected(Enqueue); }
@@ -308,7 +344,7 @@ protected slots:
 	void				  searchFieldChanged();
 	void				  slotSongChanged();
   void          autoplayChanged(int mode);
-	void				  currentlyPlayedSongPopup();
+//	void				  currentlyPlayedSongPopup();
 	void				  songListPopup( QListViewItem*, const QPoint &, int );
 	void				  doSongPopup(QPoint point);
 	void				  slotFolderPopup( QListViewItem*, const QPoint &, int );
