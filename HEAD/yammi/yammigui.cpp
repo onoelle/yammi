@@ -18,30 +18,38 @@
 #include "yammigui.h"
 
 // include pixmaps
-#include "yammiicon.xpm"
-//#include "pause.xpm"
-#include "chromePlay.xpm"
-#include "stop.xpm"
-#include "in.xpm"
-#include "notin.xpm"
-#include "filesave.xpm"
-#include "skipforward.xpm"
-#include "skipforwardim.xpm"
-#include "skipbackward.xpm"
-#include "skipbackwardim.xpm"
-#include "defaultDoubleClick.xpm"
-#include "defaultMiddleClick.xpm"
-#include "defaultControlClick.xpm"
-#include "defaultShiftClick.xpm"
-#include "prelisten.xpm"
-#include "playnow.xpm"
-#include "playnowim.xpm"
-#include "enqueue.xpm"
-#include "enqueueasnext.xpm"
-#include "dequeueSong.xpm"
-#include "dequeueAll.xpm"
-#include "songinfo.xpm"
-#include "stopPrelisten.xpm"
+
+// general
+#include "icons/yammiicon.xpm"
+#include "icons/in.xpm"
+#include "icons/notin.xpm"
+#include "icons/filesave.xpm"
+
+// media player actions
+// now using the icons from multimedia chrome from mediabuilder.com:
+// http://mediabuilder.com/ds_icons_multimedia_chrome_page_aa.html
+#include "icons/play.xpm"
+#include "icons/pause.xpm"
+#include "icons/stop.xpm"
+#include "icons/skipforward.xpm"
+#include "icons/skipforwardim.xpm"
+#include "icons/skipbackward.xpm"
+#include "icons/skipbackwardim.xpm"
+
+// song actions
+#include "icons/defaultDoubleClick.xpm"
+#include "icons/defaultMiddleClick.xpm"
+#include "icons/defaultControlClick.xpm"
+#include "icons/defaultShiftClick.xpm"
+#include "icons/prelisten.xpm"
+#include "icons/playnow.xpm"
+#include "icons/playnowim.xpm"
+#include "icons/enqueue.xpm"
+#include "icons/enqueueasnext.xpm"
+#include "icons/dequeueSong.xpm"
+#include "icons/dequeueAll.xpm"
+#include "icons/songinfo.xpm"
+#include "icons/stopPrelisten.xpm"
 
 
 // dialog includes
@@ -50,6 +58,7 @@
 #include "WorkDialogBase.h"
 #include "updatedatabasedialog.h"
 
+#include "mp3info/CMP3Info.h"
 
 extern YammiGui* gYammiGui;
 
@@ -127,17 +136,17 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
 	tbSaveDatabase = new QToolButton( QPixmap(filesave_xpm), "Save database (Ctrl-S)", QString::null,
 														model, SLOT(save()), toolBar);
   tbSaveDatabase->setEnabled(model->allSongsChanged());
-	new QToolButton( QPixmap(pause_xpm), "Play/Pause (F1)", QString::null,
+	tbPlayPause = new QToolButton( QPixmap((const char**)pause_xpm), "Play/Pause (F1)", QString::null,
                            this, SLOT(xmms_playPause()), toolBar);
-	new QToolButton( QPixmap(stop_xpm), "Stop", QString::null,
+	new QToolButton( QPixmap((const char**)stop_xpm), "Stop", QString::null,
                            this, SLOT(xmms_stop()), toolBar);
-	new QToolButton( QPixmap(skipbackwardim_xpm), "Skip backward without crossfading (SHIFT-F2)", QString::null,
+	new QToolButton( QPixmap((const char**)skipbackwardim_xpm), "Skip backward without crossfading (SHIFT-F2)", QString::null,
                            this, SLOT(xmms_skipBackwardIm()), toolBar);
-	new QToolButton( QPixmap(skipbackward_xpm), "Skip backward (F2)", QString::null,
+	new QToolButton( QPixmap((const char**)skipbackward_xpm), "Skip backward (F2)", QString::null,
  														this, SLOT(xmms_skipBackward()), toolBar);
-	new QToolButton( QPixmap(skipforward_xpm), "Skip forward (F3)", QString::null,
+	new QToolButton( QPixmap((const char**)skipforward_xpm), "Skip forward (F3)", QString::null,
                            this, SLOT(xmms_skipForward()), toolBar);
-	new QToolButton( QPixmap(skipforwardim_xpm), "Skip forward without crossfading (SHIFT-F3)", QString::null,
+	new QToolButton( QPixmap((const char**)skipforwardim_xpm), "Skip forward without crossfading (SHIFT-F3)", QString::null,
                            this, SLOT(xmms_skipForwardIm()), toolBar);
 		
 	QLabel *searchLabel = new QLabel(toolBar);
@@ -1091,8 +1100,8 @@ void YammiGui::forSelectionSongInfo()
 	// fill combobox with genres, but sort them first
 	QStringList genreList;
 	genreList.append("");
-	for(int genreNr=0; genreNr<=MP3Tag::ID3v1_MaxGenreNr; genreNr++) {
-		genreList.append( QString("%1").arg(ID3v1_Genre[genreNr]) );
+	for(int genreNr=0; genreNr<=CMP3Info::getMaxGenreNr(); genreNr++) {
+		genreList.append(CMP3Info::getGenre(genreNr));
 	}
 	genreList.sort();
 	
@@ -1189,9 +1198,7 @@ void YammiGui::forSelectionSongInfo()
 	if(_genreNr==-1)
 		si.ComboBoxGenre->setCurrentItem(0);
 	else {
-		QString songGenre;
-		songGenre=QString("%1").arg(ID3v1_Genre[_genreNr]);
-		int found=genreList.findIndex(songGenre);
+		int found=genreList.findIndex(CMP3Info::getGenre(_genreNr));
 		if(found!=-1)
 			si.ComboBoxGenre->setCurrentItem(found);
 	}
@@ -1203,15 +1210,8 @@ void YammiGui::forSelectionSongInfo()
 		// get genreNr
 		int sortedGenreNr=si.ComboBoxGenre->currentItem();
 		int tryGenreNr=-1;
-		if(sortedGenreNr!=0) {
-			QString chosenGenre=genreList[sortedGenreNr];
-			for(int genreNr=0; genreNr<=MP3Tag::ID3v1_MaxGenreNr; genreNr++) {
-				if( chosenGenre==QString("%1").arg(ID3v1_Genre[genreNr]) ) {
-					tryGenreNr=genreNr;
-					break;
-				}
-			}
-		}
+		if(sortedGenreNr!=0)
+      tryGenreNr=CMP3Info::getGenreIndex(genreList[sortedGenreNr]);
 
 		
 		// now set the edited info for all selected songs
@@ -2079,11 +2079,16 @@ void YammiGui::onTimer()
   	int pos=xmms_remote_get_playlist_pos(0);
 		strcpy(file, xmms_remote_get_playlist_file(0, pos));
 				
-		gint outputTime=outputTime=xmms_remote_get_output_time(0);
-
     // adjust songSlider (if user is not currently dragging it around)
+		gint outputTime=outputTime=xmms_remote_get_output_time(0);
 		if(!isSongSliderGrabbed && !xmms_remote_is_paused(0))
 			songSlider->setValue(outputTime);
+
+    if(xmms_remote_is_paused(0))
+      tbPlayPause->setIconSet(QIconSet(QPixmap((const char**)play_xpm)));
+    else
+      tbPlayPause->setIconSet(QIconSet(QPixmap((const char**)pause_xpm)));
+    
 		
 		/*	some xmms statistics...
 		gint len=xmms_remote_get_playlist_length(0);
@@ -2188,6 +2193,7 @@ void YammiGui::onTimer()
   	
 	}
 	else {				// xmms not playing (after stop, NOT after pause)
+    tbPlayPause->setIconSet(QIconSet(QPixmap((const char**)play_xpm)));
 		setCaption("Yammi - XMMS not playing");
 		currentFile="";
 		currentSong=0;

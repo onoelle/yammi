@@ -30,6 +30,8 @@
 
 #include "mydatetime.h"
 
+#include <id3/tag.h>                // used to read id3 tags
+
 
 // all possible actions for a single or a selection of songs
 // caution: corresponds to the static songAction field in Song
@@ -39,13 +41,8 @@ enum action {	None, Enqueue, EnqueueAsNext, PlayNow, SongInfo,
 							CheckConsistency, CopyTo, MoveTo, CopyAsWavTo,
 							Dequeue, BurnToMedia
 };
-static const char* songAction[] = {"None", "Enqueue", "EnqueueAsNext", "PlayNow", "SongInfo",
-							"PrelistenStart", "PrelistenMiddle", "PrelistenEnd",
-							"Delete", "DeleteFile", "DeleteEntry",
-							"CheckConsistency", "CopyTo", "MoveTo", "CopyAsWavTo",
-							"Dequeue", "BurnToMedia" };
-static const int maxSongAction=17;
 
+#define MAX_SONG_ACTION 17
 
 /**
  * This class represents all information related to a single song.
@@ -57,16 +54,29 @@ class Song
 {
 public:
 
-	/// default constructor
+  /// default constructor, just assigns default values
+  Song();
+  
+  /// constructs a song object from the given parameters
 	Song(QString artist, QString title, QString album, QString filename, QString path, int length, int bitrate, MyDateTime addedTo, int year, QString comment, int trackNr, int genreNr);
 	
 	/// constructs a song object from a given file
-	Song(const QString filename, const QString mediaName = 0);
+	int create(const QString filename, const QString mediaName = 0);
 	
 	/// check consistency
 	QString checkConsistency(bool requireConsistentTags, bool requireConsistentFilename);
 	
-	// checking methods
+  // id3 tag reading / guessing
+  bool getTags(QString filename);
+  bool setTags(QString filename);
+  bool getId3Tag(ID3_Tag* tag, ID3_FrameID frame, ID3_FieldID field, QString* content);
+  bool setId3Tag(ID3_Tag* tag, ID3_FrameID frame, ID3_FieldID field, QString content);
+  void guessTagsFromFilename(QString filename, QString* artist, QString* title);
+
+  // mp3 layer info
+  bool getLayerInfo(QString filename);
+
+  // checking methods
 	bool checkTags();
 	bool checkFilename();
 	bool checkReadability();
@@ -123,12 +133,12 @@ public:
 	QStringList mediaLocation;
 	
 	bool classified;
-	bool artistSure;
-	bool titleSure;
 	bool corrupted;
 	bool tagsDirty;
 	bool filenameDirty;
-	
+
+  static QString getSongAction(int index);
+  static int getMaxSongAction()     { return MAX_SONG_ACTION; }	
 
 protected:
 	QString capitalize(QString str);				///< capitalize all words

@@ -24,6 +24,7 @@
 #include <qcheckbox.h>
 #include <qinputdialog.h>
 
+#include "song.h"
 
 PreferencesDialog::PreferencesDialog(QWidget *parent, const char *name, bool modal, Prefs* config )
   : Preferences(parent, name, modal)
@@ -45,17 +46,17 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, const char *name, bool mod
 	LineEditSearchMaximumNoResults->setText(QString("%1").arg(config->searchMaximumNoResults));
 	LineEditKeepInXmms->setText(QString("%1").arg(config->keepInXmms));
 
-	for(int i=0; i<maxSongAction; i++)
-		ComboBoxDoubleClickAction->insertItem(songAction[i]);
+	for(int i=0; i<Song::getMaxSongAction(); i++)
+		ComboBoxDoubleClickAction->insertItem(Song::getSongAction(i));
 	ComboBoxDoubleClickAction->setCurrentItem(config->doubleClickAction);
-	for(int i=0; i<maxSongAction; i++)
-		ComboBoxMiddleClickAction->insertItem(songAction[i]);
+	for(int i=0; i<Song::getMaxSongAction(); i++)
+		ComboBoxMiddleClickAction->insertItem(Song::getSongAction(i));
 	ComboBoxMiddleClickAction->setCurrentItem(config->middleClickAction);
-	for(int i=0; i<maxSongAction; i++)
-		ComboBoxControlClickAction->insertItem(songAction[i]);
+	for(int i=0; i<Song::getMaxSongAction(); i++)
+		ComboBoxControlClickAction->insertItem(Song::getSongAction(i));
 	ComboBoxControlClickAction->setCurrentItem(config->controlClickAction);
-	for(int i=0; i<maxSongAction; i++)
-		ComboBoxShiftClickAction->insertItem(songAction[i]);
+	for(int i=0; i<Song::getMaxSongAction(); i++)
+		ComboBoxShiftClickAction->insertItem(Song::getSongAction(i));
 	ComboBoxShiftClickAction->setCurrentItem(config->shiftClickAction);
 
 	// jukebox functions

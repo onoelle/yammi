@@ -1,5 +1,7 @@
-1.9. 2002??? version 0.7 !!!
+8.9. 2002??? version 0.7 !!!
 ############################
+- new id3 layer reading
+- new id3 tags reading with id3lib
 - improved plugin configuration
 - added a dialog for scanning harddisk, allowing:
   - option to check existence of files in Yammi's database, if necessary update or delete the entry

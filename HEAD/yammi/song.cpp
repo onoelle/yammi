@@ -15,16 +15,39 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <id3/tag.h>
 
 #include "song.h"
-#include "mp3tag.h"
-#include "mp3_layer.h"
 #include "yammigui.h"
+
+#include "mp3info/CMP3Info.h"       // used to retrieve mp3 layer info
 
 
 
 extern YammiGui* gYammiGui;
+
+/** creates a song object with default values
+ */
+Song::Song()
+{
+	classified=false;
+	tagsDirty=false;
+	filenameDirty=false;
+	corrupted=true;
+
+	artist="";
+	title="";
+	album="";
+	length=0;
+	bitrate=-1;
+	MyDateTime now=now.currentDateTime();
+	addedTo=now;
+	comment="";
+	year=0;
+	this->trackNr=0;
+	this->genreNr=0;
+	this->lastPlayed.setDate(QDate(1900,1,1));
+	this->lastPlayed.setTime(QTime(0,0,0));
+}
 
 /** constructs a song object with the given parameters
  */
@@ -33,7 +56,12 @@ Song::Song(QString artist, QString title, QString album, QString filename, QStri
 	classified=false;
 	tagsDirty=false;
 	filenameDirty=false;
-	this->artist=artist;
+	lastPlayed.setDate(QDate(1900,1,1));
+	lastPlayed.setTime(QTime(0,0,0));
+
+  corrupted=false;
+
+  this->artist=artist;
 	this->title=title;
 	this->album=album;
 	this->filename=filename;
@@ -45,169 +73,101 @@ Song::Song(QString artist, QString title, QString album, QString filename, QStri
 	this->trackNr=trackNr;
 	this->genreNr=genreNr;
 	this->year=year;
-	this->lastPlayed.setDate(QDate(1900,1,1));
-	this->lastPlayed.setTime(QTime(0,0,0));
-
-	
-	this->artistSure=true;
-	this->titleSure=true;
-	this->corrupted=false;
 }
 
 
 
-/** construct a new song object from a given filename
+/** try to create a new song object from a given filename
+ * \return    0 if successful
+ *            1 on error (file not found)
  */
-Song::Song(const QString location, const QString mediaName)
+int Song::create(const QString location, const QString mediaName)
 {
-	classified=false;
-	tagsDirty=false;
-	filenameDirty=false;
-	corrupted=true;
-	artistSure=true;
-	titleSure=true;
-	
-	this->artist="";
-	this->title="";
-	this->album="";
-	this->length=0;
-	this->bitrate=-1;
-	MyDateTime now=now.currentDateTime();
-	this->addedTo=now;
-	this->comment="";
-	this->year=0;
-	this->trackNr=0;
-	this->genreNr=0;
-	this->lastPlayed.setDate(QDate(1900,1,1));
-	this->lastPlayed.setTime(QTime(0,0,0));
-
-	QFileInfo* fi=new QFileInfo(location);
-	QString saveFilename(fi->fileName());
-	if (!fi->exists()) {
+  // step 1:
+  // - check for existence and access
+  // - get filename, path and size
+  
+  QFileInfo* fi=new QFileInfo(location);
+	if(!fi->exists()) {
 		cout << "trying to construct song, but file " << location << " does not exist!\n";
-		return;
+		return 1;
 	}
-	if(mediaName==0) {			// standard: song is on harddisk
+  if(!fi->isReadable()) {
+		cout << "trying to construct song, but file " << location << " is not accessible!\n";
+		return 1;    
+  }
+	if(mediaName==0) {			// song is on harddisk
 		this->filename=fi->fileName();
 		this->path=fi->dirPath(TRUE);
 	}
-	else {									// new: scanning removable media
+	else {									// scanning removable media
 		this->filename="";
 		this->path="";
 		QString mountPath=gYammiGui->getModel()->config.mediaDir;
 		QString locationOnMedia=location;
 		if(locationOnMedia.left(mountPath.length())!=mountPath)
-			cout << "not on the mount path\n";
+			cout << "warning: song file is not on the mount path\n";
 		locationOnMedia=locationOnMedia.right(locationOnMedia.length()-mountPath.length());
 		cout << "mediaName: " << mediaName << ", locationOnMedia: " << locationOnMedia << "\n";
 		addMediaLocation(mediaName, locationOnMedia);
 	}
+  this->filesize=fi->size();
+	QString saveFilename(fi->fileName());
 	delete fi;
-	
-	// open file
-	QFile f(location);
-	if(!f.open(IO_ReadOnly)) {
-		cout << "error opening file " << location << "\n";
-		return;
-	}
-	
-  if(location.right(4).upper()!=".MP3") {
-    cout << "no mp3 file?\n";
-    return;
-  }
+
   
-	// get mp3layer info
-	MP3Layer layer;
-	if(!layer.scan(&f, location)) {
-		cout << "could not get mp3 layer info from file " << location << "\n";
-		f.close();
-		return;
-	}
-	
-	this->bitrate=layer.bitrate();
-	this->filesize=layer.getFileSize();
-	this->length=layer.length();
-	//this->stereo=layer.stereo();				// we're not interested so far
 
-	
-	// guess artist/title from filename (if no id3 tags or in case of overlength)
+
+  // step 2:
+  // if mp3: get layer info and tags
+  
+  // guess artist/title from filename (if no id3 tags or in case of overlength)
 	QString ffArtist, ffTitle;
-	QString guessBase=saveFilename.left(saveFilename.length()-4);					// remove .mp3 suffix
-	guessBase=guessBase.replace( QRegExp("_"), " " );												// replace "_" with " "
-	
-	int pos=guessBase.find('-');
-	if(pos!=-1) {
-		ffArtist=guessBase.left(pos);
-		ffArtist=ffArtist.simplifyWhiteSpace();
-		ffTitle=guessBase.right(guessBase.length()-pos-1);
-		ffTitle=ffTitle.simplifyWhiteSpace();
-	}
-	else
-	{
-		ffArtist="unknown";
-		ffTitle=guessBase;
-		ffTitle=ffTitle.simplifyWhiteSpace();
-	}
+  guessTagsFromFilename(saveFilename, &ffArtist, &ffTitle);
 
-			
-	// get ID3 tags
-	MP3Tag tag;
-	if(!tag.scan(&f)) {										// no id3 tags => guess values
-		cout << "could not get mp3 tags from file " << location << ", try guessing values...\n";
-		if(ffArtist=="unknown" || ffTitle.find('-')!=-1) {
-			cout << "WARNING: not exactly one ""-"" separator... don't know whether my guess will be right...\n";
-			artistSure=false;
-			titleSure=false;
-		}
-		this->artist=ffArtist;
-		this->title=ffTitle;
-	}
-	else																					// id3 tags existing
-	{
-		this->artist=tag.artist;
-		this->artist=this->artist.simplifyWhiteSpace();
-		this->title=tag.title;
-		this->title=this->title.simplifyWhiteSpace();
-		this->album=tag.album;
-		this->album=this->album.simplifyWhiteSpace();
-		this->comment=tag.comment;
-		this->comment=this->comment.simplifyWhiteSpace();
-		this->trackNr=tag.trackNr;
-		this->genreNr=tag.gennum;
-		QString strYear;
-		strYear=tag.year;
-		sscanf(strYear, "%d", &(this->year));
-		
-		// check whether artist/title exceeding 30 characters of id3 tags
-		if(ffArtist.upper()!=this->artist.upper()) {
-			if(ffArtist.length()>30 && ffArtist.left(29)==this->artist.left(29)) {
+  if(filename.right(4).upper()==".MP3") {
+    // get mp3 layer info
+    getLayerInfo(location);
+
+    // get id3 tags with id3lib...
+    getTags(location);
+
+    // now perform some consistency checks on the read tags...
+    
+    // check whether artist/title exceeding 30 characters of id3 tags
+    if(ffArtist.upper()!=this->artist.upper()) {
+			if(ffArtist.length()>30 && ffArtist.left(29)==this->artist.left(29) && artist.length()<=30) {
 				cout << "artist exceeding 30 characters, taking full artist from filename\n";
 				this->artist=ffArtist;
 			}
-			else
-				artistSure=false;
 		}
 		if(ffTitle.upper()!=this->title.upper()) {
-			if(ffTitle.length()>30 && ffTitle.left(29)==this->title.left(29)) {
+			if(ffTitle.length()>30 && ffTitle.left(29)==this->title.left(29) && title.length()<=30) {
 				cout << "title exceeding 30 characters, taking full title from filename\n";
 				this->title=ffTitle;
 			}
-			else
-				titleSure=false;
 		}
-		
-		// in case the id3 tags are empty => trust filename info
+
+		// in case the id3 tags are empty => better trust filename info
 		if(this->title=="" && this->artist=="") {
 			title=ffTitle;
 			artist=ffArtist;
 		}
-	}
-	f.close();
+    // remove trailing mp3 in title
+    if(title.right(4).upper()==".MP3")
+      title=title.left(title.length()-4);
+    
+  }
+  else {
+    cout << filename << "apparently no mp3 file...\n";
+    cout << "  => cannot read mp3 layer info and tags, but guessing artist and title from filename\n";
+    this->bitrate=0;
+    this->length=0;
+    this->artist=ffArtist;
+    this->title=ffTitle;
+  }
+
 	
- 	// remove trailing mp3 in title
-	if(title.right(4).upper()==".MP3")
-		title=title.left(title.length()-4);
-			
 	// simplify whitespaces
 	artist=artist.simplifyWhiteSpace();
 	title=title.simplifyWhiteSpace();
@@ -219,6 +179,7 @@ Song::Song(const QString location, const QString mediaName)
 	
 	corrupted=false;
 	checkConsistency(gYammiGui->getModel()->config.tagsConsistent, gYammiGui->getModel()->config.filenamesConsistent);
+  return 0;
 }
 	
 // check filename (if given)
@@ -230,88 +191,324 @@ bool Song::checkFilename()
 		return (constructFilename()==filename);
 }
 
+
+
+
+/** get id3 tags from the specified file (using id3lib)
+ */
+bool Song::getTags(QString filename)
+{
+  ID3_Tag tag;
+  tag.Link(filename, ID3TT_ALL);
+
+  // experimental mp3 layer info retrieval
+  // disabled => cannot handle VBR and is not documented in id3lib... (maybe later?)
+  /*
+  const Mp3_Headerinfo* mp3info;
+  mp3info = tag.GetMp3HeaderInfo();
+  switch (mp3info->version) {
+    case MPEGVERSION_2_5:
+    cout << "MPEG2.5/";
+    break;
+  case MPEGVERSION_2:
+    cout << "MPEG2/";
+    break;
+  case MPEGVERSION_1:
+    cout << "MPEG1/";
+    break;
+  default:
+    cout << "unknown MPEGVERSION/";
+    break;
+  }
+
+  switch (mp3info->layer)
+  {
+  case MPEGLAYER_III:
+    cout << "layer III\n";
+    break;
+  case MPEGLAYER_II:
+    cout << "layer II\n";
+    break;
+  case MPEGLAYER_I:
+    cout << "layer I\n";
+    break;
+  default:
+    cout << "unknown layer\n";
+    break;
+  }
+  cout << "Bitrate: " << mp3info->bitrate/1000 << "KBps\n";
+  cout << "Frequency: " << mp3info->frequency/1000 << "KHz\n";
+  // end experimental
+  */
+
+  bool foundSomething=false;
+  QString str;
+
+  // title
+  this->title="";
+  if(getId3Tag(&tag, ID3FID_TITLE, ID3FN_TEXT, &str)) {
+    cout << "found tag: (title)" << str << "\n";
+    this->title=str;
+    foundSomething=true;
+  }
+
+  // artist
+  this->artist="";
+  if(getId3Tag(&tag, ID3FID_LEADARTIST, ID3FN_TEXT, &str)) {
+    cout << "found tag: (artist)" << str << "\n";
+    this->artist=str;
+    foundSomething=true;
+  }
+
+  // album
+  this->album="";
+  if(getId3Tag(&tag, ID3FID_ALBUM, ID3FN_TEXT, &str)) {
+    cout << "found tag: (album)" << str << "\n";
+    this->album=str;
+    foundSomething=true;
+  }
+
+  // year
+  this->year=0;
+  if(getId3Tag(&tag, ID3FID_YEAR, ID3FN_TEXT, &str)) {
+    cout << "found tag: (year)" << str << "\n";
+		sscanf(str, "%d", &(this->year));
+    foundSomething=true;
+  }
+
+  // comment
+  this->comment="";
+  if(getId3Tag(&tag, ID3FID_COMMENT, ID3FN_TEXT, &str)) {
+    cout << "found tag: (comment)" << str << "\n";
+    this->comment=str;
+    foundSomething=true;
+  }
+
+  // tracknum
+  this->trackNr=0;
+  if(getId3Tag(&tag, ID3FID_TRACKNUM, ID3FN_TEXT, &str)) {
+    cout << "found tag: (tracknum)" << str << "\n";
+		sscanf(str, "%d", &(this->trackNr));
+    foundSomething=true;
+  }
+
+  // genre
+  this->genreNr=-1;
+  if(getId3Tag(&tag, ID3FID_CONTENTTYPE, ID3FN_TEXT, &str)) {
+    cout << "found tag: (genre)" << str << "\n";
+    if(str.left(1)=="(")
+      str=str.right(str.length()-1);
+    if(str.right(1)==")")
+      str=str.left(str.length()-1);
+    cout << "stripped: " << str << "|\n";
+		sscanf(str, "%d", &(this->genreNr));
+    foundSomething=true;
+  }
+
+  if(foundSomething)
+    return true;
+  else
+    return false;
+}
+
+
+/** accesses a particular frame content using id3lib.
+ */
+bool Song::getId3Tag(ID3_Tag* tag, ID3_FrameID frame, ID3_FieldID field, QString* content)
+{
+  // get frame
+  ID3_Frame* theFrame = tag->Find(frame);
+  if (theFrame == NULL) {
+    cout << "could not find frame " << frame << "\n";
+    return false;
+  }
+
+  // get field
+  ID3_Field* theField = theFrame->GetField(field);
+  if (theField == NULL) {
+    cout << "could not find field " << field << "\n";
+    return false;
+  }
+
+  // convert to ascii string
+  char theContent[1024];
+  theField->Get(theContent, 1024); // copies up to 1024 bytes of the field data into char array
+  *content=theContent;
+  return true;
+}
+
+
+
+/** save id3 tags to the specified file (using id3lib)
+ */
+bool Song::setTags(QString filename)
+{
+  ID3_Tag tag;
+  tag.Link(filename, ID3TT_ALL);
+
+  // title
+  if(!setId3Tag(&tag, ID3FID_TITLE, ID3FN_TEXT, this->title))
+    cout << "could not set tag (title)\n";
+  // artist
+  if(!setId3Tag(&tag, ID3FID_TITLE, ID3FN_TEXT, this->title))
+    cout << "could not set tag (title)\n";
+  // album
+  if(!setId3Tag(&tag, ID3FID_TITLE, ID3FN_TEXT, this->title))
+    cout << "could not set tag (title)\n";
+  // comment
+  if(!setId3Tag(&tag, ID3FID_TITLE, ID3FN_TEXT, this->title))
+    cout << "could not set tag (title)\n";
+
+    // todoXXX
+  tag.Update();
+  return true;
+}
+
+
+
+
+/** sets a particular frame content using id3lib.
+ */
+bool Song::setId3Tag(ID3_Tag* tag, ID3_FrameID frame, ID3_FieldID field, QString content)
+{
+  // get frame
+  ID3_Frame* theFrame = tag->Find(frame);
+  if (theFrame == NULL) {
+    cout << "could not find frame " << frame << "\n";
+    // todo: create the frame here!
+    return false;
+  }
+
+  // get field
+  ID3_Field* theField = theFrame->GetField(field);
+  if (theField == NULL) {
+    cout << "could not find field " << field << "\n";
+    return false;
+  }
+
+//  char temp[1024];
+//  strcpy(temp, content);
+
+  cout << "trying to set field to: " << content.latin1() << "\n";
+  theField->Set(content.latin1());
+  return true;
+}
+
+
+
+/** Tries to guess artist and title from filename.
+ * So far, assumes a pattern of "artist - title.mp3"
+ * \todo: add more sophisticated pattern (leading trackNr?, directory with album?)
+ */
+void Song::guessTagsFromFilename(QString filename, QString* artist, QString* title)
+{
+	QString guessBase=filename.left(filename.length()-4);					// remove .mp3 suffix
+	guessBase=guessBase.replace( QRegExp("_"), " " );							// replace "_" with " "
+
+	int pos=guessBase.find('-');
+	if(pos!=-1) {
+		*artist=guessBase.left(pos);
+		*artist=artist->simplifyWhiteSpace();
+		*title=guessBase.right(guessBase.length()-pos-1);
+		*title=title->simplifyWhiteSpace();
+	}
+	else
+	{
+		*artist="unknown";
+		*title=guessBase;
+		*title=title->simplifyWhiteSpace();
+	}
+}
+
+
+
+
+/** Gets the mp3 layer info (ie. for our purpose: bitrate and length) from the file.
+ * For VBR songs: retrieves the average bitrate.
+ */
+bool Song::getLayerInfo(QString filename)
+{
+  CMP3Info* mp3Info = new CMP3Info();
+  char _filename[1000];
+  strcpy(_filename, filename);
+  int loadstate = mp3Info->loadInfo(_filename);
+  if (loadstate!=0) {
+    cout << "error on reading mp3 layer info: " << loadstate << "\n";
+    return false;
+  }
+  this->bitrate=mp3Info->getBitrate();
+  this->length=mp3Info->getLengthInSeconds();
+//  cout << "frequency: " << mp3Info->getFrequency() << " Hz\n";
+  delete mp3Info;
+}
+
+
+
+
+
+
+
 /// check id3 tags (if songfile available)
 /// true: tags correctly set
-/// false: differences between database info and file
+/// false: differences between database info and tags in file
 bool Song::checkTags()
 {
 	if(filename=="")		// song not on local harddisk => we can't check
 		return true;
-	// get id3 tags
-	QString location=this->path+"/"+this->filename;
-	QFile f(location);
-	if (! f.open(IO_ReadOnly) ) {
-		cout << "ERROR: error opening file " << location << "\n";
-		return false;
-	}
+
 	bool same=false;
 
-  // id3lib (experimental)
-  //**********************
-  ID3_Tag myTag;
-  myTag.Link(this->location());
-
-  ID3_Frame* myFrame = myTag.Find(ID3FID_TITLE);
-  if (NULL != myFrame)
-  {
-    ID3_Field* myField = myFrame->GetField(ID3FN_TEXT);
-    if (NULL != myField)
-    {
-      // do something with myField
-      // for ascii strings
-      char title[1024];
-      myField->Get(title, 1024); // copies up to 1024 bytes of the field data into str1
-      cout << "title tag found: " << title << "|\n";
-    }
-    else {
-      cout << "could not find field\n";
-    }
-  }
-  else {
-    cout << "could not find frame\n";
-  }
-
-
-
-	MP3Tag tag;
-	if(tag.scan(&f)) {										// tags exist => compare to our fields
+  QString _album=this->album;
+  QString _artist=this->artist;
+  QString _comment=this->comment;
+  QString _title=this->title;
+  int _year=this->year;
+  int _trackNr=this->trackNr;
+  int _genreNr=this->genreNr;
+  
+  if(this->getTags(location())) {
+    // tags exist => compare to our fields
 		same=true;
-		// beware that artist/title can exceed 30 characters (by extra info in filename)
-		if(strcmp(this->artist.left(30).stripWhiteSpace().latin1(),  tag.artist) !=0) {same=false; cout << "(artist)"; }
-		if(strcmp(this->title.left(30).stripWhiteSpace().latin1(),   tag.title)  !=0) {same=false; cout << "(title)"; }
-    if(strcmp(this->album.latin1(),   tag.album)  !=0)
-		  {same=false; cout << "(album)"; }
-		// häh??? why does application of left (on an empty string) change the string???
-		if(strcmp(this->comment.latin1(), tag.comment)!=0) {same=false;cout << "(comment)"; }
-		if(this->trackNr!=0 && this->trackNr!=tag.trackNr) {same=false; cout << "(trackNr)"; }
-		if(this->genreNr!=tag.gennum)  {same=false; cout << "(genreNr)"; }
-		QString strYear;
-		int intYear;
-		strYear=tag.year;
-		sscanf(strYear, "%d", &intYear);
-		if(this->year!=0 && this->year!=intYear) {same=false; cout << "(year)"; }
+    if(_album     != this->album)    {same=false; cout << "(album)"; }
+		if(_artist    != this->artist)   {same=false; cout << "(artist)"; }
+		if(_comment   != this->comment)  {same=false; cout << "(comment)"; }
+    if(_title     != this->title)    {same=false; cout << "(title)"; }
+    if(_year      != this->year)     {same=false; cout << "(year)"; }
+		if(_trackNr   != this->trackNr)  {same=false; cout << "(trackNr)"; }
+		if(_genreNr   != this->genreNr)  {same=false; cout << "(genreNr)"; }
 	}
-	f.close();
-	return same;
+
+  this->album=_album;
+  this->artist=_artist;
+  this->comment=_comment;
+  this->title=_title;
+  this->year=_year;
+  this->trackNr=_trackNr;
+  this->genreNr=_genreNr;
+
+  return same;
 }
 
 /// save id3 tags to file
 bool Song::saveTags()
 {
-	if(filename=="") {
+  if(filename=="") {
 		tagsDirty=false;
 		return true;
 	}
 	QString filename=location();
 	QFileInfo fi(filename);
 	if(!fi.isWritable()) {
-		cout << "wirting tags: file " << filename << " not writable, skipping\n";
+		cout << "writing tags: file " << filename << " not writable, skipping\n";
 		tagsDirty=false;
 		return true;
 	}
 	
-	// set ID3 tags according to info in song
-	MP3Tag tag;
+  setTags(location());
+
+  // set ID3 tags according to info in song
+  /*
+  MP3Tag tag;
 	tag.spacecopy(tag.artist, this->artist.latin1(), 30);
 	tag.spacecopy(tag.title, this->title.latin1(), 30);
 	tag.spacecopy(tag.album, this->album.latin1(), 30);
@@ -342,6 +539,7 @@ bool Song::saveTags()
 	}
 	cout << "id3 tags corrected in file " << this->filename << "\n";
 	tagsDirty=false;
+  */
 	return true;
 }
 
@@ -431,8 +629,6 @@ void Song::setTo(Song* s)
 	this->path=s->path;
 	this->title=s->title;
 	this->year=s->year;
-	this->artistSure=s->artistSure;
-	this->titleSure=s->titleSure;
 	this->trackNr=s->trackNr;
 	this->genreNr=s->genreNr;
 }
@@ -606,4 +802,18 @@ void Song::moveTo(QString dir)
 	else {
 		path=dir;
 	}
+}
+
+
+QString Song::getSongAction(int index)
+{
+  const char* songAction[] = {"None", "Enqueue", "EnqueueAsNext", "PlayNow", "SongInfo",
+							"PrelistenStart", "PrelistenMiddle", "PrelistenEnd",
+							"Delete", "DeleteFile", "DeleteEntry",
+							"CheckConsistency", "CopyTo", "MoveTo", "CopyAsWavTo",
+							"Dequeue", "BurnToMedia" };
+  if(index<=MAX_SONG_ACTION)
+    return QString(songAction[index]);
+  else
+    return QString("no such action");
 }

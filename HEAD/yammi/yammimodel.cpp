@@ -890,7 +890,8 @@ void YammiModel::addSongToDatabase(QString filename, QString mediaName=0)
  		return;
 		
  	// okay, new song (at least new filename/path) => construct song object
- 	Song* newSong=new Song(filename, mediaName);
+ 	Song* newSong=new Song();
+  newSong->create(filename, mediaName);
  	if(newSong->corrupted) {
  		cout << "new song file " << filename << " is corrupt (not readable for yammi), skipping\n";
  		corruptSongs++;

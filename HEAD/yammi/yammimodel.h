@@ -54,7 +54,6 @@
 
 #include "songinfo.h"
 #include "fuzzsrch.h"
-#include "mp3tag.h"
 #include "prefs.h"
 #include "mylist.h"
 #include "mydatetime.h"

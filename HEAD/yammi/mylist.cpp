@@ -17,7 +17,7 @@
 
 #include "mylist.h"
 #include "song.h"
-#include "mp3tag.h"
+#include "mp3info/CMP3Info.h"
 
 MyList::MyList()
 {
@@ -154,7 +154,7 @@ int MyList::myCompare(Song* song1, Song* song2, int sortBy)
 		return 0;
 	}
 	if(sortBy==ByGenre) {
-		return QString::compare( QString(ID3v1_Genre[song1->genreNr]), QString(ID3v1_Genre[song2->genreNr]) );
+		return QString::compare(CMP3Info::getGenre(song1->genreNr), CMP3Info::getGenre(song2->genreNr) );
 	}
 	return 0;
 }

@@ -17,7 +17,7 @@
 
 #include "songlistitem.h"
 #include "yammigui.h"
-#include "mp3tag.h"
+#include "mp3info/CMP3Info.h"
 
 extern YammiGui* gYammiGui;
 
@@ -47,9 +47,9 @@ void SongListItem::setColumns(SongEntry* entry)
 	if(s->year!=0)				setText( base+4, QString("%1").arg(s->year));
   if(s->trackNr!=0)			setText( base+5, QString("%1").arg(s->trackNr));
 	int index=s->genreNr;
-	if(index>MP3Tag::ID3v1_MaxGenreNr)
+	if(index>CMP3Info::getMaxGenreNr())
 		index=-1;
-  if(index!=-1)					setText( base+6, QString("%1 (%2)").arg(ID3v1_Genre[index]).arg(s->genreNr));
+  if(index!=-1)					setText( base+6, QString("%1 (%2)").arg(CMP3Info::getGenre(index)).arg(s->genreNr));
 	setText( base+7, s->addedTo.writeToString());
   if(s->bitrate!=0)			setText( base+8, QString("%1").arg(s->bitrate));
 	if(s->filename!="") {
@@ -167,6 +167,6 @@ QString SongListItem::key(int column, bool ascending) const
 		else
 			return s->album+s->title;
 	if(column==base+6)				// genre
-		return QString("%1").arg(ID3v1_Genre[s->genreNr]);
+		return QString("%1").arg(CMP3Info::getGenre(s->genreNr));
 	return text(column);
 }

@@ -161,6 +161,7 @@ protected:
 	bool					isSongSliderGrabbed;
 public:	
 	QToolButton*	tbSaveDatabase;
+	QToolButton*	tbPlayPause;
 
 protected slots:
 	void				endProgram();

@@ -16,7 +16,7 @@
  ***************************************************************************/
 
 #include "foldergroups.h"
-#include "mp3tag.h"
+#include "mp3info/CMP3Info.h"
 #include "yammigui.h"
 
 extern YammiGui* gYammiGui;
@@ -88,7 +88,7 @@ void FolderGroups::update(MyList* allSongs, int sortBy)
 						folderName=s->album;					
 				}
 				if(sortBy==MyList::ByGenre) {
-					folderName=QString(ID3v1_Genre[s->genreNr]);
+					folderName=CMP3Info::getGenre(s->genreNr);
 				}
 			
 				Folder *f2 = new Folder( this, folderName );

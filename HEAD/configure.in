@@ -60,4 +60,4 @@ dnl PACKAGE set before
 KDE_CREATE_SUBDIRSLIST
 
 dnl add here all your Makefiles. This are created by configure
-AC_OUTPUT(Makefile yammi/Makefile yammi/docs/Makefile yammi/docs/en/Makefile )
+AC_OUTPUT(Makefile yammi/Makefile yammi/docs/Makefile yammi/docs/en/Makefile yammi/icons/Makefile yammi/mp3info/Makefile )
