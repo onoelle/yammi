@@ -1,0 +1,2 @@
+foldergroups.moc.o: foldergroups.moc.cpp
+foldergroups.moc.cpp :

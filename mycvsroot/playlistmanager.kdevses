@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE KDevPrjSession ><KDevPrjSession>
+ <Mainframe MaximizeMode="1" />
+ <DocsAndViews NumberOfDocuments="28" >
+  <Doc0 CursorPosLine="0" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="11" FileName="/home/oliver/work/programming/playlistmanager/playlistmanager/listviews.cpp" >
+   <View0 Top="0" Width="783" Attach="0" Height="348" Left="0" Focus="0" Type="KWriteView" MinMaxMode="0" />
+  </Doc0>
+  <Doc1 CursorPosLine="0" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="0" FileName="/home/oliver/work/programming/playlistmanager/playlistmanager/listviews.h" >
+   <View0 Top="0" Width="94" Attach="0" Height="1" Left="0" Focus="0" Type="KWriteView" MinMaxMode="0" />
+  </Doc1>
+  <Doc2 CursorPosLine="0" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="0" FileName="/home/oliver/work/programming/playlistmanager/playlistmanager/yammmodel.h" >
+   <View0 Top="0" Width="783" Attach="0" Height="447" Left="0" Focus="0" Type="KWriteView" MinMaxMode="0" />
+  </Doc2>
+  <Doc3 CursorPosLine="0" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="31" FileName="/home/oliver/work/programming/playlistmanager/playlistmanager/yammmodel.cpp" >
+   <View0 Top="0" Width="783" Attach="0" Height="447" Left="0" Focus="0" Type="KWriteView" MinMaxMode="0" />
+  </Doc3>
+  <Doc4 CursorPosLine="21" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="22" FileName="/home/oliver/work/programming/playlistmanager/playlistmanager/main.cpp" >
+   <View0 Top="0" Width="783" Attach="0" Height="447" Left="0" Focus="0" Type="KWriteView" MinMaxMode="0" />
+  </Doc4>
+  <Doc5 CursorPosLine="45" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="0" FileName="/home/oliver/work/programming/playlistmanager/playlistmanager/song.h" >
+   <View0 Top="0" Width="783" Attach="0" Height="447" Left="0" Focus="0" Type="KWriteView" MinMaxMode="0" />
+  </Doc5>
+  <Doc6 CursorPosLine="407" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="2" FileName="/home/oliver/work/programming/playlistmanager/playlistmanager/song.cpp" >
+   <View0 Top="0" Width="783" Attach="0" Height="447" Left="0" Focus="0" Type="KWriteView" MinMaxMode="0" />
+  </Doc6>
+  <Doc7 CursorPosLine="7" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="0" FileName="/home/oliver/work/programming/playlistmanager/TODO" >
+   <View0 Top="0" Width="783" Attach="0" Height="447" Left="0" Focus="0" Type="KWriteView" MinMaxMode="0" />
+  </Doc7>
+  <Doc8 CursorPosLine="0" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="0" FileName="/home/oliver/work/programming/playlistmanager/stamp-h.in" >
+   <View0 Top="0" Width="783" Attach="0" Height="447" Left="0" Focus="0" Type="KWriteView" MinMaxMode="0" />
+  </Doc8>
+  <Doc9 CursorPosLine="26" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="68" FileName="/home/oliver/work/programming/playlistmanager/playlistmanager/songlistitem.h" >
+   <View0 Top="0" Width="783" Attach="0" Height="447" Left="0" Focus="0" Type="KWriteView" MinMaxMode="0" />
+  </Doc9>
+  <Doc10 CursorPosLine="21" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="6" FileName="/home/oliver/work/programming/playlistmanager/playlistmanager/songlistitem.cpp" >
+   <View0 Top="0" Width="783" Attach="0" Height="447" Left="0" Focus="0" Type="KWriteView" MinMaxMode="0" />
+  </Doc10>
+  <Doc11 CursorPosLine="33" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="0" FileName="/home/oliver/work/programming/playlistmanager/playlistmanager/folder.h" >
+   <View0 Top="0" Width="783" Attach="0" Height="447" Left="0" Focus="0" Type="KWriteView" MinMaxMode="0" />
+  </Doc11>
+  <Doc12 CursorPosLine="36" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="0" FileName="/home/oliver/work/programming/playlistmanager/playlistmanager/folderplaylists.h" >
+   <View0 Top="0" Width="783" Attach="0" Height="447" Left="0" Focus="0" Type="KWriteView" MinMaxMode="0" />
+  </Doc12>
+  <Doc13 CursorPosLine="37" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="0" FileName="/home/oliver/work/programming/playlistmanager/playlistmanager/folderplaylists.cpp" >
+   <View0 Top="0" Width="783" Attach="0" Height="447" Left="0" Focus="0" Type="KWriteView" MinMaxMode="0" />
+  </Doc13>
+  <Doc14 CursorPosLine="131" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="0" FileName="/usr/lib/qt-2.3.0/include/qlistview.h" >
+   <View0 Top="0" Width="783" Attach="0" Height="447" Left="0" Focus="0" Type="KWriteView" MinMaxMode="0" />
+  </Doc14>
+  <Doc15 CursorPosLine="130" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="0" FileName="/usr/lib/qt-2.3.0/include/qobject.h" >
+   <View0 Top="0" Width="783" Attach="0" Height="447" Left="0" Focus="0" Type="KWriteView" MinMaxMode="0" />
+  </Doc15>
+  <Doc16 CursorPosLine="223" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="0" FileName="/home/oliver/work/programming/playlistmanager/playlistmanager/docs/en/index.sgml" >
+   <View0 Top="0" Width="783" Attach="0" Height="447" Left="0" Focus="0" Type="KWriteView" MinMaxMode="0" />
+  </Doc16>
+  <Doc17 CursorPosLine="19" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="0" FileName="/home/oliver/work/programming/playlistmanager/playlistmanager/yammigui.h" >
+   <View0 Top="0" Width="783" Attach="0" Height="447" Left="0" Focus="0" Type="KWriteView" MinMaxMode="0" />
+  </Doc17>
+  <Doc18 CursorPosLine="1" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="0" FileName="/home/oliver/work/programming/yammi/playlistmanager/folderactual.cpp" >
+   <View0 Top="0" Width="783" Attach="0" Height="447" Left="0" Focus="0" Type="KWriteView" MinMaxMode="0" />
+  </Doc18>
+  <Doc19 CursorPosLine="0" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="0" FileName="/home/oliver/work/programming/yammi/CVS/Entries" >
+   <View0 Top="0" Width="783" Attach="0" Height="447" Left="0" Focus="0" Type="KWriteView" MinMaxMode="0" />
+  </Doc19>
+  <Doc20 CursorPosLine="0" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="0" FileName="/home/oliver/work/programming/yammi/CVS/Repository" >
+   <View0 Top="0" Width="783" Attach="0" Height="447" Left="0" Focus="0" Type="KWriteView" MinMaxMode="0" />
+  </Doc20>
+  <Doc21 CursorPosLine="1" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="0" FileName="/home/oliver/work/programming/yammi/CVS/Root" >
+   <View0 Top="0" Width="783" Attach="0" Height="447" Left="0" Focus="0" Type="KWriteView" MinMaxMode="0" />
+  </Doc21>
+  <Doc22 CursorPosLine="1" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="0" FileName="/home/oliver/work/programming/yammi/playlistmanager/folder.cpp" >
+   <View0 Top="0" Width="783" Attach="0" Height="447" Left="0" Focus="0" Type="KWriteView" MinMaxMode="0" />
+  </Doc22>
+  <Doc23 CursorPosLine="0" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="0" FileName="/home/oliver/work/programming/yammi/playlistmanager/CVS/Entries" >
+   <View0 Top="0" Width="783" Attach="0" Height="447" Left="0" Focus="0" Type="KWriteView" MinMaxMode="0" />
+  </Doc23>
+  <Doc24 CursorPosLine="0" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="0" FileName="/home/oliver/work/programming/yammi/playlistmanager/CVS/Root" >
+   <View0 Top="0" Width="783" Attach="0" Height="447" Left="0" Focus="1" Type="KWriteView" MinMaxMode="0" />
+  </Doc24>
+  <Doc25 CursorPosLine="0" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="0" FileName="/home/oliver/work/programming/yammi/playlistmanager/CVS/Repository" >
+   <View0 Top="0" Width="783" Attach="0" Height="447" Left="0" Focus="0" Type="KWriteView" MinMaxMode="0" />
+  </Doc25>
+  <Doc26 CursorPosLine="1" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="0" FileName="/home/oliver/work/programming/yammi/playlistmanager/docs/en/index.sgml" >
+   <View0 Top="0" Width="783" Attach="0" Height="447" Left="0" Focus="0" Type="KWriteView" MinMaxMode="0" />
+  </Doc26>
+  <Doc27 Type="CDocBrowser" NumberOfViews="1" FileName="file:/opt/kde2/share/doc/HTML/en/kdevelop/index-13.html" >
+   <View Top="0" Width="783" Attach="0" Height="447" Left="0" Focus="0" Type="KHTMLView" MinMaxMode="0" />
+  </Doc27>
+ </DocsAndViews>
+</KDevPrjSession>
