@@ -254,7 +254,7 @@ void FuzzySearch::newOrder() {
 	ngr->maxScore=0;
 	for(i = 1; i <= ngr->noNgrams; i++) {
 		double prob=(double)ngs[i]->frequency/(double)noObjects;		// probability of appearance
-		double loggi=log(prob*100+1)/log(2);							// clevere Formel...
+		double loggi=log(prob*100+1)/log(2.0);							// clevere Formel...
 		int entro = 20+(ngs[i]->length)*10;
 		entro=(int) (entro*(1.0-loggi/10.0));
 		if (entro<1) entro=1;

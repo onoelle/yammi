@@ -10,7 +10,7 @@ TRANSLATIONS =
 KDE_OPTIONS = qtonly
 yammi_LDADD   = ./mp3info/libmp3info.a -lxmms $(LIB_QT) $(LIBSOCKET)
 
-SUBDIRS = mp3info 
+SUBDIRS = docs icons mp3info
 
 EXTRA_DIST = lo32-app-yammi.png lo16-app-yammi.png folder.cpp folder.h foldercategories.cpp foldercategories.h foldergroups.cpp foldergroups.h foldermedia.cpp foldermedia.h foldersorted.cpp foldersorted.h fuzzsrch.cpp fuzzsrch.h main.cpp mydatetime.cpp mydatetime.h mylist.cpp mylist.h mylistview.cpp mylistview.h preferencesdialog.cpp preferencesdialog.h prefs.cpp prefs.h song.cpp song.h songentry.cpp songentry.h songentryint.cpp songentryint.h songentryint2.cpp songentryint2.h songentrystring.cpp songentrystring.h songentrytimestamp.cpp songentrytimestamp.h songinfo.cpp songinfo.h songlistitem.cpp songlistitem.h yammigui.cpp yammigui.h yammimodel.cpp yammimodel.h glib.h glibconfig.h xmmsctrl.h updatedatabasedialog.cpp updatedatabasedialog.h options.h updatedatabasemediadialog.cpp updatedatabasemediadialog.h lineeditshift.cpp lineeditshift.h mediaplayer.cpp mediaplayer.h xmmsplayer.cpp xmmsplayer.h yammiapplication.cpp yammiapplication.h vcedit.c vcedit.h acconfig.h ConsistencyCheckDialog.cpp ConsistencyCheckDialog.h ConsistencyCheckParameter.h ConsistencyCheckDialogBase.ui DeleteDialog.ui PreferencesDialogBase.ui SongInfoDialog.ui UpdateDatabaseDialogBase.ui UpdateDatabaseMediaDialogBase.ui i18n.h 
 

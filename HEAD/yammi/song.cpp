@@ -1101,7 +1101,7 @@ QString Song::constructFilename()
 	s.replace(QRegExp("'"), "");													// '
 	s.replace(QRegExp("/"), "");													// /
 	s.replace(QRegExp("&"), "");													// &
-	s.replace(QRegExp("[?]"), "");													// ?
+	s.replace(QRegExp("[?]"), "");												// ?
 	s.replace(QRegExp(":"), "");													// :
 
 	s.replace(QRegExp("ü"), "ue");													// umlaute
@@ -1139,29 +1139,6 @@ void Song::deleteFile(QString trashDir)						// move songfile to trash
 	path="";
 }
 		
-/*
-void Song::copyTo(QString dir)						// copy songfile to other location
-{
-	if(filename=="")
-		return;
-	cout << "copying song " << displayName() << "\n";
-//mmm	mainStatusBar->message(QString("copying song %1").arg(s->displayName()), 2000);
-	QString cmd= QString("cp \"%1\" \"%3/%4\"").arg(location()).arg(dir).arg(filename);
-	system(cmd.data());
-//mmm	mainStatusBar->message(QString("song %1 copied").arg(s->displayName()), 2000);
-}
-
-void Song::copyAsWavTo(QString dir)
-{
-	if(filename=="")
-		return;
-	// copy song as wav to somewhere (think of padding before burning as audio track!)
-	QString outName=filename;
-	outName=outName.left(outName.length()-3) + "wav";
-	QString cmd= QString("mpg123 -w \"%1/%2\" \"%3\"").arg(dir).arg(outName).arg(location());
-	system(cmd.data());
-}
-*/
 
 // move file to another directory	
 void Song::moveTo(QString dir)

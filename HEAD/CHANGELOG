@@ -1,4 +1,9 @@
 ######################
+end of january? version 0.7.1
+- little changes to configure.in (no more checking for id3lib, you have to disable it manually if needed)
+- added replacements: %X, %Y, ???
+
+######################
 14.12.2002 version 0.7
 - fixed a lot of bugs that prevented compiling on many systems:
   - replaced stdlib io functions with the corresponding QT file access methods

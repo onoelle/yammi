@@ -69,7 +69,7 @@ AC_MSG_CHECKING(for id3lib support)
 if test "x$enable_id3lib" = xyes; then
 dnl    LIBS="-lid3lib $LIBS"
 dnl    AC_CHECK_LIB(id3lib, , , enable_id3lib=no)
-
+dnl
     AC_SEARCH_LIBS(ID3Tag_Link,"id3" "id3 -lstdc++" "id3 -lz" "id3 -lz -lstdc++",,AC_MSG_ERROR(id3lib not found))
 dnl Needed to link correctly with id3lib 3.8.0
     LIBS="-lz -lstdc++ $LIBS"
@@ -114,7 +114,7 @@ dnl PACKAGE set before
 KDE_CREATE_SUBDIRSLIST
 
 dnl add here all your Makefiles. This are created by configure
-AC_OUTPUT(Makefile yammi/Makefile yammi/mp3info/Makefile )
+AC_OUTPUT(Makefile yammi/Makefile yammi/docs/Makefile yammi/docs/en/Makefile yammi/icons/Makefile yammi/mp3info/Makefile )
 
 
 echo "

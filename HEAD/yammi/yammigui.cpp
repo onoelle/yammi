@@ -1093,15 +1093,22 @@ void YammiGui::forSelectionPlugin(int pluginIndex)
   bool confirm=((*model->config.pluginConfirm)[pluginIndex]=="true");
   QString mode=((*model->config.pluginMode)[pluginIndex]);
   QString cmd=(*model->config.pluginCommand)[pluginIndex];
+
   if(cmd.contains("%X")>0) {
-    // let user choose directory (we should provide a starting directory???)
+    // let user choose directory (TODO: we should provide a starting directory)
     QString dir=QFileDialog::getExistingDirectory(QString(""), this, QString("yammi"), QString("choose directory for plugin"), true);
     if(dir.isNull())
       return;
-//      if(dir.right(1)=="/")						// strip trailing slash
-//        dir=dir.left(dir.length()-1);
     cmd.replace(QRegExp("%X"), dir);
   }
+  if(cmd.contains("%Y")>0) {
+    // let user choose a file (TODO: we should provide a starting directory)
+    QString file=QFileDialog::getSaveFileName(QString(""), 0, this, QString("yammi"), QString("choose file for plugin"));
+    if(file.isNull())
+      return;
+    cmd.replace(QRegExp("%Y"), file);
+  }
+
 
   if(mode=="single") {
     QProgressDialog progress( "Executing song plugin cmd...", "Cancel", 100, this, "progress", TRUE );
@@ -1145,8 +1152,11 @@ void YammiGui::forSelectionPlugin(int pluginIndex)
     customListFile.writeBlock( customList, qstrlen(customList) );
     customListFile.close();
     cmd.replace(QRegExp("%l"), "`cat "+model->config.yammiBaseDir+"/customlist.txt`");
+    cmd.replace(QRegExp("%L"), customList);
 
     if(confirm) {
+      cout << "plugin command: " << cmd << "\n";
+      cout << "custom list: " << customList << "\n";
       QString msg="Execute the following command:\n";
       for(unsigned int i=0; i<cmd.length(); i+=80) {
         msg+=cmd.mid(i, 80)+"\n";
@@ -1167,6 +1177,7 @@ void YammiGui::forSelectionPlugin(int pluginIndex)
 QString YammiGui::makeReplacements(QString input, Song* s, int index)
 {
   input.replace(QRegExp("%f"), s->location());
+//  QString escapedFilename=s->filename.replace(QRegExp(" "), "\\x20");
 	input.replace(QRegExp("%F"), s->filename);
 	input.replace(QRegExp("%p"), s->path);
 	input.replace(QRegExp("%a"), s->artist);
@@ -1188,17 +1199,6 @@ QString YammiGui::makeReplacements(QString input, Song* s, int index)
 	input.replace(QRegExp("%m"), mediaList);
   return input;  
 }
-
-/*
-// creates a playlist (or a space-seperated list of songs) and executes
-// a command on it (eg. mp3burn)
-void YammiGui::forSelectionPluginPlaylist(int pluginIndex)
-{
-	pluginIndex-=3000;
-	
-}
-
-*/
 
 
 /**

@@ -1,4 +1,4 @@
-# KDE tags expanded automatically by am_edit - $Revision: 1.10 $ 
+# KDE tags expanded automatically by am_edit - $Revision: 1.11 $ 
 # Makefile.in generated automatically by automake 1.5 from Makefile.am.
 
 # Copyright 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001
@@ -390,7 +390,7 @@ distclean-tags:
 
 #>- DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 #>+ 4
-KDE_DIST=libmp3info.a CId3Tag.h CId3Tag.cpp 
+KDE_DIST=CId3Tag.h CId3Tag.cpp 
 
 DISTFILES= $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST) $(KDE_DIST)
 
