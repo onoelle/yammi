@@ -66,6 +66,7 @@
 #include <qcombobox.h>
 #include <qprogressdialog.h>
 #include <qsettings.h>
+#include <qprocess.h>
 
 // xmms control
 #include <xmmsctrl.h>

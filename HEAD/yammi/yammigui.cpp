@@ -1040,7 +1040,14 @@ void YammiGui::forSelectionPluginPlaylist(int pluginIndex)
 	
 	cmd.replace(QRegExp("%f"), filenameList);
 	cmd.replace(QRegExp("%s"), songnameList);
-	cmd.replace(QRegExp("%l"), customList);
+
+  // custom list can be long => better put it into a file...
+  // old version: cmd.replace(QRegExp("%l"), customList);
+  QFile customListFile("/tmp/customlist.txt");
+  customListFile.open(IO_WriteOnly);
+  customListFile.writeBlock( customList, qstrlen(customList) );
+  customListFile.close();
+  cmd.replace(QRegExp("%l"), "`cat /tmp/customlist.txt`");
 	cmd.replace(QRegExp("%m"), model->config.yammiBaseDir+"/plugin.m3u\"");
 
 	QString msg="Execute the following command:\n";
@@ -1052,8 +1059,12 @@ void YammiGui::forSelectionPluginPlaylist(int pluginIndex)
 		}
 	}
 		
-	if( QMessageBox::warning( this, "Yammi", msg, "Yes", "No")==0)
-		system(cmd);
+	if( QMessageBox::warning( this, "Yammi", msg, "Yes", "No")==0) {
+//    QProcess* proc = new QProcess( this );
+//    proc->addArgument( cmd );
+//    proc->start();
+        system(cmd);
+  }
 }
 
 
@@ -1661,13 +1672,20 @@ void YammiGui::forSong(Song* s, action act, QString dir=0)
 		}
 
 		forSong(s, EnqueueAsNext);
-		if(xmms_remote_is_playing(0)) {
+
+    if(xmms_remote_is_playing(0)) {
+      // case 1: xmms is playing
 			xmms_skipForward();
 		}
-		else {
+    else if(xmms_remote_is_paused(0)) {
+      // case 2: xmms is paused => start playing
 			xmms_skipForward();
 			xmms_remote_play(0);
 		}
+    else if(!xmms_remote_is_playing(0) && !xmms_remote_is_paused(0)) {
+      // case 3: xmms is stopped
+      xmms_remote_play(0);
+    }
 			
 		mainStatusBar->message(QString("playing %1").arg(s->displayName()), 2000);
 		break;
@@ -2081,12 +2099,9 @@ void YammiGui::onTimer()
 				shutdownSpinBox->setValue(songsUntilShutdown);
 				if(songsUntilShutdown==0) {
 					cout << "shutting down now...\n";
-					// we wait 10 seconds (because of crossfading, songchange is detected
-					// before xmms stops playing the song)
-					myWait(8000);
+          // here we could open a self-destroying dialog box that enables to cancel the shutdown...
 					shutDown();
 				}
-				cout << songsUntilShutdown << " songs left before shutdown...\n";
 			}
 			
 			// check, whether we put last song in folder songsPlayed
@@ -2274,11 +2289,35 @@ void YammiGui::shutDown()
 {
 	if(shuttingDown==0)				// canceled
 		return;
-	if(shuttingDown==2) {
+	if(shuttingDown==1) {
+    QProgressDialog progress( "shuttind down now...", "Cancel", 10, this, "progress", TRUE );
+    progress.setMinimumDuration(0);
+    int total=10;                 // number of seconds before shutdown...
+    progress.setTotalSteps(total);
+    progress.setProgress(0);
+    for(int i=0; i<=total; i++) {
+      progress.setProgress(i);
+      QString msg=QString("shutting down in %1 seconds").arg(total-i);
+      progress.setLabelText(msg);
+      qApp->processEvents();
+      QTimer* ttimer=new QTimer();
+      qApp->processEvents();
+      ttimer->start(1000, TRUE);
+      while(ttimer->isActive()) {
+        qApp->processEvents();
+      }
+      delete(ttimer);
+      if(progress.wasCancelled()) {
+        changeShutdownMode();
+        return;
+      }
+    }
+    
 		xmms_remote_quit(0);						// properly close xmms => xmms will remember playlist
-		system(model->config.shutdownScript+" &");			// invoke shutdown script
+    if(model->config.shutdownScript!="")
+      system(model->config.shutdownScript+" &");			// invoke shutdown script
+    endProgram();
 	}
-	endProgram();
 }
 
 
@@ -2354,17 +2393,15 @@ void YammiGui::keyPressEvent(QKeyEvent* e)
 			break;
 				
 		case Key_PageUp:
-			if(songsUntilShutdown!=-1) {
+			if(songsUntilShutdown>0) {
 				songsUntilShutdown++;
 				shutdownSpinBox->setValue(songsUntilShutdown);
-				cout << "songs until shutdown: " << songsUntilShutdown << "\n";
 			}
 			break;
 		case Key_PageDown:
-			if(songsUntilShutdown!=-1) {
+			if(songsUntilShutdown>1) {
 				songsUntilShutdown--;
 				shutdownSpinBox->setValue(songsUntilShutdown);
-				cout << "songs until shutdown: " << songsUntilShutdown << "\n";
 			}
 			break;
 		case Key_Up: {
@@ -2417,33 +2454,15 @@ void YammiGui::keyPressEvent(QKeyEvent* e)
 		
 void YammiGui::changeShutdownMode()
 {
-	if(shuttingDown==0) {
-		// disabled -> normal
-		qApp->beep();
-		shuttingDown=1;
-		songsUntilShutdown=3;
-		shutdownSpinBox->setEnabled(true);
-    shutdownSpinBox->setValue(3);
-		shutdownButton->setText("normal");
-		cout << "shutting down (normal)...\n";
-		if(model->allSongsChanged() || model->categoriesChanged()) {
-			if( QMessageBox::warning( this, "Yammi", "Save changes?\n(answering no will abort shutdown mode)", "Yes", "No")==0)
-				model->save();
-			else {
-				shuttingDown=0;
-				songsUntilShutdown=-3;
-				shutdownSpinBox->setEnabled(false);
-				shutdownButton->setText("(disabled)");
-				cout << "shutting down aborted!\n";
-			}
-		}
- 	}	
- 	else if(shuttingDown==1 && !model->config.childSafe) {							// shutdown computer !!!
- 		// normal -> shutdown
+ 	if(shuttingDown==0 && !model->config.childSafe) {							// shutdown computer !!!
+ 		// disabled -> shutdown
  		qApp->beep();
- 		shuttingDown=2;
+ 		shuttingDown=1;
+		songsUntilShutdown=3;
+    shutdownSpinBox->setValue(3);
 		shutdownButton->setText("shutdown");
- 		cout << "shutting down (computer!), press Pause again to cancel...\n";
+ 		shutdownSpinBox->setEnabled(true);
+		cout << "shutting down, press Pause again to cancel...\n";
  		if(model->allSongsChanged() || model->categoriesChanged()) {
  			if( QMessageBox::warning( this, "Yammi", "Save changes?\n(answering no will abort shutdown mode)", "Yes", "No")==0)
  				model->save();
@@ -2451,6 +2470,7 @@ void YammiGui::changeShutdownMode()
  				shuttingDown=0;
  				songsUntilShutdown=-3;
 				shutdownButton->setText("(disabled)");
+        shutdownSpinBox->setEnabled(false);
  				cout << "shutting down aborted!\n";
  			}
  		}
@@ -2469,7 +2489,6 @@ void YammiGui::changeShutdownMode()
 void YammiGui::changeShutdownValue(int value)
 {
   songsUntilShutdown=value;
-  cout << "songs until shutdown: " << songsUntilShutdown << "\n";
 }
 
 
