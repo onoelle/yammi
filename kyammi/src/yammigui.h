@@ -166,6 +166,7 @@ public:
 	// checks whether the swapped songs take more space than the given limit
 	void checkSwapSize();
 	void stopDragging();
+	void updateSearchResults(MyList* results);
 	YammiModel* getModel() { return model; };
 	
 	bool columnIsVisible(int column);

@@ -57,7 +57,6 @@
 #include <kprogress.h>
 #include <kdebug.h>
 
-#include <qslider.h>
 
 #include <qheader.h>
 #include <qspinbox.h>
@@ -86,6 +85,7 @@
 #include "mylistview.h"
 #include "lineeditshift.h"
 #include "trackpositionslider.h"
+#include "searchthread.h"
 
 #include "mediaplayer.h"
 #include "dummyplayer.h"
@@ -149,6 +149,9 @@ YammiGui::YammiGui( ) : KMainWindow( ) {
     // TODO: this should be probably done by a thread owned by the media player
     connect( &checkTimer, SIGNAL(timeout()), player, SLOT(check()) );
     checkTimer.start( 100, FALSE );
+	
+	searchThread = new SearchThread();
+	searchThread->start();
 
     // connect all timers
     connect( &regularTimer, SIGNAL(timeout()), SLOT(onTimer()) );
@@ -407,6 +410,7 @@ void YammiGui::toolbarToggled( const QString& name ) {
 YammiGui::~YammiGui() {
     player->syncYammi2Player(true);
     delete player;
+	searchThread->stopThread();
 }
 
 
@@ -1063,19 +1067,21 @@ void YammiGui::searchSong( const QString &fuzzy ) {
     if( fuzzy.length() < 3 ) {
         return;
     }
+	kdDebug() << "setting new search term...\n";
+	searchThread->setSearchTerm(fuzzy);
+
+/*	if(searchThread != 0) {
+		if(searchThread->running()) {
+			searchThread->terminate();
+			searchThread->wait();
+			delete(searchThread);
+		}
+	}
+*/
+	
+
     /*
-    	if(searchThread != 0) {
-    		if(searchThread->running()) {
-    			searchThread->terminate();
-    			searchThread->wait();
-    			delete(searchThread);
-    		}
-    	}
-    	searchThread = new SearchThread();
-    	searchThread->start();
-    */
-    //    fuzzyFolderName="";
-    QString searchStr=" " + fuzzy +" ";
+	QString searchStr=" " + fuzzy +" ";
 
     FuzzySearch fs;
     fs.initialize(searchStr.lower(), 2, 4);			// STEP 1
@@ -1123,8 +1129,36 @@ void YammiGui::searchSong( const QString &fuzzy ) {
         }
         item->setSelected(true);
     }
+	*/
 }
 
+/**
+ * Update the search results from the background search thread.
+ */
+void YammiGui::updateSearchResults(MyList* results)
+{
+	kdDebug() << "updating search results\n";
+	searchResults.clear();
+	searchResults.appendList(results);
+	folderSearchResults->updateTitle();
+	folderContentChanged(folderSearchResults);
+	if(chosenFolder!=folderSearchResults) {
+		// we better reset these settings to not confuse the user with his own changes
+		// (sort order and scroll position)
+		folderSearchResults->saveScrollPos(0, 0);
+		folderSearchResults->saveSorting(0);
+		changeToFolder(folderSearchResults);
+	}
+    songListView->setContentsPos( 0, 0);			// set scroll position to top
+	// TODO: mark more than one entry?
+	int noSelected=1;
+	QListViewItem* item=songListView->firstChild();
+    for(int j=0; j==1 || j<noSelected; j++, item=item->nextSibling()) {
+    	if(item) {
+        	item->setSelected(true);											// select first anyway
+    	}
+    }
+}
 
 /**
  * user clicked on a folder
@@ -1703,6 +1737,7 @@ void YammiGui::forSelectionCheckConsistency() {
     p.correctFilenames=d.CheckBoxCorrectFilenames->isChecked();
     p.checkDirectories=d.CheckBoxCheckDirectories->isChecked();
     p.correctDirectories=d.CheckBoxCorrectDirectories->isChecked();
+    p.deleteEmptyDirectories=d.CheckBoxDeleteEmptyDirectories->isChecked();
     p.checkDoubles=d.CheckBoxCheckDoubles->isChecked();
 
     KProgressDialog progress( this, 0,i18n("Yammi"), i18n("Checking consistency..."),true);

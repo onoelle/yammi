@@ -1,38 +1,38 @@
 TODO
 ----
-last update 01.06.2004
+last update 04.06.2004
 
 
 for version 1.2-alpha
 ---------------------
 main purpose: clean up, so other people can more easily contribute to the project
 
-- finish: mouse wheel handling on seekSlider
 - check/resolve bugs on sf
 - check all TODOs / FIXMEs
-- handle unplayable files (wishes, text files) => 1. dequeue on second position or 2. introduce file types and different behaviour
 - check dialog spacing & co (eg. guessing pattern!)
 - icons for enqueing: add big "plus"
-- 0 MB files => 560 Bytes shown in song info dialog?
 - consistency check:
-  - option to remove empty directories when moving songs
   - better dialog texts (which song is moved?, better explanations what happens/examples?)
-- fix: progress dialog on plugins before confirmation
+  - move settings to this dialog
+  - save check options
+- finish & test: move fuzzy search to a background thread
 
 for version 1.2-beta
 --------------------
+- file a yammi entry on kde-apps successor
+- handle unplayable files (wishes, text files) => 1. dequeue on second position or 2. introduce file types and different behaviour
 check kde conformance:  
   - standard kde i18n schema: add a translation and test it
-  - replace cout with kdDebug/kdWarn/kdError
+  - replace all couts with kdDebug/kdWarn/kdError
   - check lsm file
   - check icons: fix transparency or use standard ones
 - clean up: song info for multiple songs
 - fix or delete child-safe mode
-- fix: integrate columns menu into view menu
+- fix: integrate columns menu into view menu as a submenu
 - make follow symlinks a configurable option?
 - make mpg123 and ogg123 configurable?
 - saveFilename/renaming of file in song.cpp (there was something I can't remember)
-- make proposed filename change while you type
+- make proposed filename change while you type in songinfo dialog
 - implement onPlayed and afterPlayed plugin types
 - check again: crash on clearing playlist including currently played song?
 - check skip backward functionality & filling up songPlayed list!!!
@@ -40,13 +40,13 @@ check kde conformance:
 - if you start yammi, while xmms has a song in its play list and then enqueue
   and play a song in yammi, the song previously played in xmms is played instead.
 - on deleting a song: delete in *all* lists (history, categories, ...)
-- write little random(int range) method?
 - plugin: publish a sample plugin (echo...) with all replacements
 - replace QListView with KListView
   - and other QClasses too?
 
 for version 1.2
 ---------------
+- reformat all files with kdevelop?
 - simplify {wish} system: (make every entry with empty filename (no media) a wish?
 - fix all outstanding known bugs
 - polish user interface
@@ -92,9 +92,6 @@ refactorings/fixes
 
 KNOWN BUGS
 ----------
-- sometimes noatun playlist will not be correctly cleared
-  => effect: noatun stops on enqueueing a song
-  => workaround: you have to look at both noatun instances and clear their playlist manually
 - a {wish} song causes noatun playback to stop
 - floating point exception when scanning wav file???
 - still problem of freezing xmms => xmms_remote_playlist_delete(0, 0)

@@ -226,7 +226,6 @@ public:
 
 protected:
 	QString capitalize(QString str); ///< capitalize all words
-  bool ensurePathExists(QString path);
 };
 
 #endif

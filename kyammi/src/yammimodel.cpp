@@ -55,6 +55,7 @@
 #include "prefs.h"
 #include "mylist.h"
 #include "mydatetime.h"
+#include "util.h"
 
 
 YammiModel::YammiModel( YammiGui *y ) {
@@ -992,9 +993,13 @@ bool YammiModel::checkConsistency(KProgressDialog* progress, MyList* selection, 
                         reallyCorrect=(p->correctDirectoriesConfirmed==1);
                     }
                     if(reallyCorrect) {
+						QString pathBefore=s->path;
                         if(s->correctPath()) {
                             p->directoriesCorrected++;
                             problematicSongs.append(new SongEntryString(s, "Directory corrected"));
+							if(p->deleteEmptyDirectories) {
+								Util::deleteDirectoryIfEmpty(pathBefore, config().scanDir);
+							}
                         }
                     } else {
                         problematicSongs.append(new SongEntryString(s, "Directory not consistent with Yammi info"));

@@ -19,6 +19,7 @@
 #include "song.h"
 #include "yammigui.h"
 #include "prefs.h"
+#include "util.h"
 
 #include "CMP3Info.h"
 #include <kdebug.h>
@@ -1121,7 +1122,7 @@ bool Song::correctFilename()
 bool Song::correctPath()
 {
   QString newPath=constructPath();
-  if(!ensurePathExists(newPath)) {
+  if(!Util::ensurePathExists(newPath)) {
     cout << "could not create path " << newPath << "\n";
     return false;
   }
@@ -1134,40 +1135,6 @@ bool Song::correctPath()
   return true;
 }
 
-/**
- * Makes sure that the given path exists.
- * Creates directories if needed.
- * Returns false if the path does not exist and could not be created.
- */
-bool Song::ensurePathExists(QString path)
-{
-  if(path.length()<=1) {
-    return true;
-  }
-  int lastSlashIndex=path.findRev('/');
-  QString frontPath=path.left(lastSlashIndex);
-  QDir frontPathDir;
-  if(frontPath.length()>0) {
-    if(!ensurePathExists(frontPath)) {
-      return false;
-    }
-    frontPathDir=QDir(frontPath);
-  }
-  else {
-    frontPathDir=QDir("/");
-  }
-  QString endDir=path.mid(lastSlashIndex+1);
-  cout << "endDir: " << endDir << "\n";
-  if(frontPathDir.exists(endDir)) {
-    cout << "already existing: " << endDir << "\n";
-    return true;
-  }
-  if(!frontPathDir.mkdir(endDir)) {
-    cout << "failed creating dir " << endDir << " in dir " << frontPath << "\n";
-    return false;
-  }
-  return true;  
-}
 
 /** returns true if primary key (artist, title, album) is the same
  */

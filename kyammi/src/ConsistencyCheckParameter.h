@@ -38,6 +38,7 @@ public:
   bool checkDirectories;
   int correctDirectoriesConfirmed;
   bool correctDirectories;
+  bool deleteEmptyDirectories;
   bool checkDoubles;
 
   int nonExisting;
