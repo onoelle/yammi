@@ -693,7 +693,7 @@ bool YammiModel::traverse(QString path, bool followSymLinks, QString filePattern
 
 // adds a single songfile to the database
 void YammiModel::addSongToDatabase(QString filename, QString mediaName=0) {
-    kdDebug() << "adding file '" << filename << "' to database..." << endl;
+    kdDebug() << "scanning file '" << filename << "'..." << endl;
     bool found=false;
     for(Song* s=allSongs.firstSong(); s; s=allSongs.nextSong()) {
         // this check might fail when filename has strange characters?
@@ -790,7 +790,7 @@ void YammiModel::addSongToDatabase(QString filename, QString mediaName=0) {
     }
     // new song, not in database yet
     allSongs.appendSong(newSong);
-    kdDebug() << "Song added: " << newSong->displayName() << endl;
+    kdDebug() << "Song added to database: " << newSong->displayName() << endl;
     entriesAdded++;
     allSongsChanged(true);
 }

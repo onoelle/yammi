@@ -32,17 +32,6 @@ using namespace std;
 #include "options.h"
 
 
-#ifdef ENABLE_ID3LIB
-#include <id3/tag.h>                // used to read id3 tags
-#endif
-
-#ifdef ENABLE_OGGLIBS
-#include <vorbis/vorbisfile.h>      // for reading ogg infos
-#include <string>                   // needed by ogg functions?
-#endif
-
-
-
 /* Wave File header structure */
 typedef struct {
     char riff[4];
@@ -103,34 +92,9 @@ public:
     /// rereads the id3 or ogg tags from the file
     bool rereadTags();
 
-    // specific to mp3 objects
-    //************************
-
-    #ifdef ENABLE_ID3LIB
-    // id3 tag reading
-    bool getMp3Tags(QString filename, QString guessedArtist, QString guessedTitle, QString guessedAlbum);
-    bool setMp3Tags(QString filename);
-    bool getId3Tag(ID3_Tag* tag, ID3_FrameID frame, ID3_FieldID field, QString* content);
-    bool setId3Tag(ID3_Tag* tag, ID3_FrameID frame, ID3_FieldID field, QString content, ID3_Frame* newFrame);
-
-    #endif
-
-    // mp3 layer info (does not need id3lib)
-    bool getMp3LayerInfo(QString filename);
-
-
-    // specific to ogg objects
-    //************************
-    #ifdef ENABLE_OGGLIBS
-
-    bool getOggLayerInfo(QString filename);
-    bool getOggTags(QString filename, QString guessedArtist, QString guessedTitle, QString guessedAlbum);
-    void setOggComment(vorbis_comment* vc, QString key, QString value);
-    QString getOggComment(OggVorbis_File* oggfile, QString name);
-    bool setOggTags(QString filename);
-    #endif
-
-
+    bool readTags(QString filename);
+    bool readLayerInfo(QString filename);
+    
     // specific to wav objects
     //************************
     bool getWavInfo(QString filename);

@@ -67,8 +67,6 @@ void MyListView::simulateMouseMove() {
  * - song list is sorted ascending by first column (which must be the "Pos" column)
  */
 void MyListView::contentsMousePressEvent ( QMouseEvent * e) {
-    kdDebug() << "pressed! \n";
-    kdDebug() << "chosen folder: " << gYammiGui->chosenFolder->folderName() << endl;
     if(gYammiGui->chosenFolder->isSorted() && sortedBy==1 && e->button()==LeftButton) {
         dragPoint=e->globalPos();
         dragItem=itemAt(viewport()->mapFromGlobal(dragPoint));

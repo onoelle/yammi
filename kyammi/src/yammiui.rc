@@ -98,6 +98,7 @@
     <Action name="goto_artist_folder"/>
     <Action name="goto_album_folder"/>
     <Action name="goto_genre_folder"/>
+    <Action name="goto_year_folder"/>
   </Menu>
   <Menu name="search_similar"><text>Search for similar...</text>
     <Action name="search_similar_entry"/>

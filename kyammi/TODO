@@ -1,11 +1,15 @@
 TODO
 ----
-last update 13.12.2004
+last update 12.01.2004
+
+for 1.2-rc2
+-----------
+- test: switch to taglib
+- document: deps for taglib
 
 for version 1.2-final
 ---------------------
 MUST-HAVE
-- finish: consistency check with flac files
 - finish: translations (italian, spanish)
 - fix: noatun stops playback sometimes
 - fix: page up and down keys don't work after searching
@@ -14,15 +18,13 @@ MUST-HAVE
 - add: make mpg123 and ogg123 configurable
 - simplify {wish} system: (make every entry with empty filename (no media) a wish?
 - child safe mode?
-- keep tags consistent mode?
-
+- keep tags consistent mode? or change OK => Save in SongInfo dialog
 
 NICE-TO-HAVE
-- reading layer info in flac files? (or switch to taglib?)
 - review kde conformance:  
   - replace all couts with kdDebug/kdWarn/kdError
   - check lsm file
-- refactor: meta info reading in a dedicated class
+- change genre from int to string
 - clean up: song info for multiple songs
 - saveFilename/renaming of file in song.cpp (there was something I can't remember)
 - implement onPlayed and afterPlayed plugin types
@@ -37,9 +39,6 @@ media-player-related:
 
 for version 1.4
 ---------------
-- replace QListView with KListView
-  - but beware of performance issues, see http://bugs.kde.org/show_bug.cgi?id=64608
-  - and other QClasses too?
 - use a player thread for mediaplayer
 - rating of songs
 
@@ -89,6 +88,5 @@ refactorings/fixes
 
 KNOWN BUGS
 ----------
-- floating point exception when scanning wav file???
 - still problem of freezing xmms => xmms_remote_playlist_delete(0, 0)
 	(seems to be a bug in xmms, posted to bugs@xmms, #855)

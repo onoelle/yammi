@@ -257,6 +257,9 @@ public slots:
     void gotoFolderGenre()                  {
         goToFolder(3);
     }
+    void gotoFolderYear()                   {
+        goToFolder(4);
+    }
 
     /** Remove all songs from the playlist */
     void clearPlaylist();

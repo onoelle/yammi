@@ -3,12 +3,6 @@
 /* Support gstreamer as media player */
 #undef ENABLE_GSTREAMER
 
-/* Support reading and writing MP3 tags */
-#undef ENABLE_ID3LIB
-
-/* Support reading and writing OGG tags */
-#undef ENABLE_OGGLIBS
-
 /* Support xmms as media player */
 #undef ENABLE_XMMS
 
@@ -27,14 +21,8 @@
 /* Define to 1 if you have the <inttypes.h> header file. */
 #undef HAVE_INTTYPES_H
 
-/* Define to 1 if you have the `id3' library (-lid3). */
-#undef HAVE_LIBID3
-
 /* Define if you have libjpeg */
 #undef HAVE_LIBJPEG
-
-/* Define to 1 if you have the `ogg' library (-logg). */
-#undef HAVE_LIBOGG
 
 /* Define if you have libpng */
 #undef HAVE_LIBPNG
@@ -45,13 +33,7 @@
 /* Define to 1 if you have the `stdc++' library (-lstdc++). */
 #undef HAVE_LIBSTDC__
 
-/* Define to 1 if you have the `vorbis' library (-lvorbis). */
-#undef HAVE_LIBVORBIS
-
-/* Define to 1 if you have the `vorbisfile' library (-lvorbisfile). */
-#undef HAVE_LIBVORBISFILE
-
-/* Define to 1 if you have the `z' library (-lz). */
+/* Define if you have libz */
 #undef HAVE_LIBZ
 
 /* Define to 1 if you have the <memory.h> header file. */
@@ -98,6 +80,9 @@
 
 /* Define to 1 if you have the <sys/types.h> header file. */
 #undef HAVE_SYS_TYPES_H
+
+/* have TagLib */
+#undef HAVE_TAGLIB
 
 /* Define to 1 if you have the <unistd.h> header file. */
 #undef HAVE_UNISTD_H

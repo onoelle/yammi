@@ -18,7 +18,7 @@
 #include "foldergroups.h"
 #include "yammigui.h"
 #include "prefs.h"
-#include "CMP3Info.h"
+#include <taglib/id3v1genres.h>
 
 extern YammiGui* gYammiGui;
 
@@ -55,7 +55,7 @@ void FolderGroups::update(MyList* allSongs, int sortBy) {
             next=s->album;
             break;
         case MyList::ByGenre:
-            next=CMP3Info::getGenre(s->genreNr);
+            next=TStringToQString(TagLib::ID3v1::genre(s->genreNr));
             break;
         case MyList::ByYear:
             next=QString("%1").arg(s->year);
@@ -90,7 +90,7 @@ void FolderGroups::update(MyList* allSongs, int sortBy) {
                 last=s->album;
                 break;
             case MyList::ByGenre:
-                last=CMP3Info::getGenre(s->genreNr);
+                last=TStringToQString(TagLib::ID3v1::genre(s->genreNr));
                 break;
             case MyList::ByYear:
                 last=QString("%1").arg(s->year);
@@ -152,7 +152,7 @@ void FolderGroups::createGroupFolder(MyList* group, int sortBy) {
         }
         break;
     case MyList::ByGenre:
-        folderName=CMP3Info::getGenre(firstSong->genreNr);
+        folderName=TStringToQString(TagLib::ID3v1::genre(firstSong->genreNr));
         if(folderName=="") {
             folderName="- no genre -";
         }

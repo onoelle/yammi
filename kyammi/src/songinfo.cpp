@@ -28,11 +28,6 @@ SongInfo::SongInfo(QWidget *parent, Song* editSong) : SongInfoDialog(parent, "so
         this->editSong = new Song();
         this->editSong->updateReadableFields(editSong);
         this->editSong->updateWritableFields(editSong);
-        QDir d("/");
-        bool so=d.exists(this->editSong->location());
-        bool so2=d.exists(this->editSong->location().local8Bit());
-        bool so3=d.exists(this->editSong->location().latin1());
-        kdDebug() << "so: " << so << this->editSong->location() << ", local8Bit: " << so2 << this->editSong->location().local8Bit() << ", latin1: " << so3 << this->editSong->location().latin1() << endl;        
     }
     else {
         this->editSong = 0;

@@ -463,7 +463,7 @@ ac_includes_default="\
 # include <unistd.h>
 #endif"
 
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA CYGPATH_W PACKAGE VERSION ACLOCAL AUTOCONF AUTOMAKE AUTOHEADER MAKEINFO AMTAR install_sh STRIP ac_ct_STRIP INSTALL_STRIP_PROGRAM AWK SET_MAKE am__leading_dot CONF_FILES CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT DEPDIR am__include am__quote AMDEP_TRUE AMDEP_FALSE AMDEPBACKSLASH CCDEPMODE am__fastdepCC_TRUE am__fastdepCC_FALSE CPP CXX CXXFLAGS ac_ct_CXX CXXDEPMODE am__fastdepCXX_TRUE am__fastdepCXX_FALSE WOVERLOADED_VIRTUAL USE_EXCEPTIONS USE_RTTI CXXCPP NOOPT_CXXFLAGS NOOPT_CFLAGS KDE_USE_FINAL_TRUE KDE_USE_FINAL_FALSE KDE_USE_CLOSURE_TRUE KDE_USE_CLOSURE_FALSE KDE_NO_UNDEFINED KDE_USE_NMCHECK_TRUE KDE_USE_NMCHECK_FALSE EGREP LN_S ECHO AR ac_ct_AR RANLIB ac_ct_RANLIB F77 FFLAGS ac_ct_F77 LIBTOOL KDE_PLUGIN MSGFMT GMSGFMT XGETTEXT LIBUTIL LIBCOMPAT LIBCRYPT LIBRESOLV LIB_POLL FRAMEWORK_COREAUDIO LIBSOCKET X_EXTRA_LIBS LIBUCB LIBDL X_PRE_LIBS LIB_X11 LIB_XRENDER LIBSM X_INCLUDES X_LDFLAGS x_includes x_libraries QTE_NORTTI LIB_XEXT LIBPTHREAD USE_THREADS KDE_MT_LDFLAGS KDE_MT_LIBS USER_INCLUDES USER_LDFLAGS LIBZ LIBPNG LIBJPEG qt_libraries qt_includes QT_INCLUDES QT_LDFLAGS PERL MOC UIC UIC_TR LIB_QT LIB_QPE kde_qtver KDE_EXTRA_RPATH KDE_RPATH X_RPATH kde_libraries kde_includes KDE_LDFLAGS KDE_INCLUDES all_includes all_libraries AUTODIRS include_ARTS_TRUE include_ARTS_FALSE KCONFIG_COMPILER KCFG_DEPENDENCIES DCOPIDLNG DCOPIDL DCOPIDL2CPP DCOP_DEPENDENCIES MCOPIDL ARTSCCONFIG KDECONFIG MEINPROC KDE_XSL_STYLESHEET XMLLINT kde_libs_prefix kde_libs_htmldir kde_htmldir kde_appsdir kde_icondir kde_sounddir kde_datadir kde_locale kde_confdir kde_kcfgdir kde_mimedir kde_wallpaperdir kde_bindir xdg_appsdir xdg_menudir xdg_directorydir kde_templatesdir kde_servicesdir kde_servicetypesdir kde_moduledir kdeinitdir kde_styledir kde_widgetdir LIB_KDECORE LIB_KDEUI LIB_KIO LIB_SMB LIB_KAB LIB_KABC LIB_KHTML LIB_KSPELL LIB_KPARTS LIB_KDEPRINT LIB_KUTILS LIB_KDEPIM LIB_KSYCOCA LIB_KFILE LIB_KFM XMMS_CONFIG XMMS_CFLAGS XMMS_LIBS XMMS_VERSION XMMS_DATA_DIR XMMS_PLUGIN_DIR XMMS_VISUALIZATION_PLUGIN_DIR XMMS_INPUT_PLUGIN_DIR XMMS_OUTPUT_PLUGIN_DIR XMMS_GENERAL_PLUGIN_DIR XMMS_EFFECT_PLUGIN_DIR TOPSUBDIRS LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA CYGPATH_W PACKAGE VERSION ACLOCAL AUTOCONF AUTOMAKE AUTOHEADER MAKEINFO AMTAR install_sh STRIP ac_ct_STRIP INSTALL_STRIP_PROGRAM AWK SET_MAKE am__leading_dot CONF_FILES CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT DEPDIR am__include am__quote AMDEP_TRUE AMDEP_FALSE AMDEPBACKSLASH CCDEPMODE am__fastdepCC_TRUE am__fastdepCC_FALSE CPP CXX CXXFLAGS ac_ct_CXX CXXDEPMODE am__fastdepCXX_TRUE am__fastdepCXX_FALSE WOVERLOADED_VIRTUAL USE_EXCEPTIONS USE_RTTI CXXCPP NOOPT_CXXFLAGS NOOPT_CFLAGS KDE_USE_FINAL_TRUE KDE_USE_FINAL_FALSE KDE_USE_CLOSURE_TRUE KDE_USE_CLOSURE_FALSE KDE_NO_UNDEFINED KDE_USE_NMCHECK_TRUE KDE_USE_NMCHECK_FALSE EGREP LN_S ECHO AR ac_ct_AR RANLIB ac_ct_RANLIB F77 FFLAGS ac_ct_F77 LIBTOOL KDE_PLUGIN MSGFMT GMSGFMT XGETTEXT LIBUTIL LIBCOMPAT LIBCRYPT LIBRESOLV LIB_POLL FRAMEWORK_COREAUDIO LIBSOCKET X_EXTRA_LIBS LIBUCB LIBDL X_PRE_LIBS LIB_X11 LIB_XRENDER LIBSM X_INCLUDES X_LDFLAGS x_includes x_libraries QTE_NORTTI LIB_XEXT LIBPTHREAD USE_THREADS KDE_MT_LDFLAGS KDE_MT_LIBS USER_INCLUDES USER_LDFLAGS LIBZ LIBPNG LIBJPEG qt_libraries qt_includes QT_INCLUDES QT_LDFLAGS PERL MOC UIC UIC_TR LIB_QT LIB_QPE kde_qtver KDE_EXTRA_RPATH KDE_RPATH X_RPATH kde_libraries kde_includes KDE_LDFLAGS KDE_INCLUDES all_includes all_libraries AUTODIRS include_ARTS_TRUE include_ARTS_FALSE KCONFIG_COMPILER KCFG_DEPENDENCIES DCOPIDLNG DCOPIDL DCOPIDL2CPP DCOP_DEPENDENCIES MCOPIDL ARTSCCONFIG KDECONFIG MEINPROC KDE_XSL_STYLESHEET XMLLINT kde_libs_prefix kde_libs_htmldir kde_htmldir kde_appsdir kde_icondir kde_sounddir kde_datadir kde_locale kde_confdir kde_kcfgdir kde_mimedir kde_wallpaperdir kde_bindir xdg_appsdir xdg_menudir xdg_directorydir kde_templatesdir kde_servicesdir kde_servicetypesdir kde_moduledir kdeinitdir kde_styledir kde_widgetdir LIB_KDECORE LIB_KDEUI LIB_KIO LIB_SMB LIB_KAB LIB_KABC LIB_KHTML LIB_KSPELL LIB_KPARTS LIB_KDEPRINT LIB_KUTILS LIB_KDEPIM LIB_KSYCOCA LIB_KFILE LIB_KFM TAGLIB_CONFIG taglib_includes taglib_libs XMMS_CONFIG XMMS_CFLAGS XMMS_LIBS XMMS_VERSION XMMS_DATA_DIR XMMS_PLUGIN_DIR XMMS_VISUALIZATION_PLUGIN_DIR XMMS_INPUT_PLUGIN_DIR XMMS_OUTPUT_PLUGIN_DIR XMMS_GENERAL_PLUGIN_DIR XMMS_EFFECT_PLUGIN_DIR TOPSUBDIRS LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -1056,9 +1056,6 @@ Optional Features:
   --disable-path-check    don't try to find out, where to install
   --disable-xmms          disable support for xmms (don't need xmmsctrl)
   --disable-gstreamer     disable support for gstreamer
-  --disable-ogglibs       disable support of ogglibs for reading/writing ogg
-                          tags
-  --disable-id3lib        disable support of id3lib for reading id3 tags
 
 Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
@@ -1890,7 +1887,7 @@ fi
 
 # Define the identity of the package.
  PACKAGE=yammi
- VERSION=1.2-rc
+ VERSION=1.2-rc2
 
 
 cat >>confdefs.h <<_ACEOF
@@ -6492,7 +6489,7 @@ ia64-*-hpux*)
   ;;
 *-*-irix6*)
   # Find out which ABI we are using.
-  echo '#line 6495 "configure"' > conftest.$ac_ext
+  echo '#line 6492 "configure"' > conftest.$ac_ext
   if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   (eval $ac_compile) 2>&5
   ac_status=$?
@@ -7104,7 +7101,7 @@ fi
 
 
 # Provide some information about the compiler.
-echo "$as_me:7107:" \
+echo "$as_me:7104:" \
      "checking for Fortran 77 compiler version" >&5
 ac_compiler=`set X $ac_compile; echo $2`
 { (eval echo "$as_me:$LINENO: \"$ac_compiler --version </dev/null >&5\"") >&5
@@ -8110,11 +8107,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:8113: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:8110: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:8117: \$? = $ac_status" >&5
+   echo "$as_me:8114: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
@@ -8343,11 +8340,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:8346: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:8343: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:8350: \$? = $ac_status" >&5
+   echo "$as_me:8347: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
@@ -8410,11 +8407,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:8413: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:8410: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:8417: \$? = $ac_status" >&5
+   echo "$as_me:8414: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -10416,7 +10413,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 10419 "configure"
+#line 10416 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -10514,7 +10511,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 10517 "configure"
+#line 10514 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -12633,11 +12630,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:12636: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:12633: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:12640: \$? = $ac_status" >&5
+   echo "$as_me:12637: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
@@ -12700,11 +12697,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:12703: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:12700: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:12707: \$? = $ac_status" >&5
+   echo "$as_me:12704: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -13950,7 +13947,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 13953 "configure"
+#line 13950 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -14048,7 +14045,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 14051 "configure"
+#line 14048 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -14871,11 +14868,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:14874: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:14871: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:14878: \$? = $ac_status" >&5
+   echo "$as_me:14875: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
@@ -14938,11 +14935,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:14941: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:14938: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:14945: \$? = $ac_status" >&5
+   echo "$as_me:14942: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -16874,11 +16871,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:16877: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:16874: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:16881: \$? = $ac_status" >&5
+   echo "$as_me:16878: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
@@ -17107,11 +17104,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:17110: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:17107: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:17114: \$? = $ac_status" >&5
+   echo "$as_me:17111: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
@@ -17174,11 +17171,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:17177: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:17174: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:17181: \$? = $ac_status" >&5
+   echo "$as_me:17178: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -19180,7 +19177,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 19183 "configure"
+#line 19180 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -19278,7 +19275,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 19281 "configure"
+#line 19278 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -26575,7 +26572,7 @@ for i in $jpeg_incdirs;
 do
   for j in jpeglib.h;
   do
-    echo "configure: 26578: $i/$j" >&5
+    echo "configure: 26575: $i/$j" >&5
     if test -r "$i/$j"; then
       echo "taking that" >&5
       jpeg_incdir=$i
@@ -26880,7 +26877,7 @@ for i in $qt_incdirs;
 do
   for j in $kde_qt_header;
   do
-    echo "configure: 26883: $i/$j" >&5
+    echo "configure: 26880: $i/$j" >&5
     if test -r "$i/$j"; then
       echo "taking that" >&5
       qt_incdir=$i
@@ -27697,7 +27694,7 @@ for i in $kde_incdirs;
 do
   for j in $kde_check_header;
   do
-    echo "configure: 27700: $i/$j" >&5
+    echo "configure: 27697: $i/$j" >&5
     if test -r "$i/$j"; then
       echo "taking that" >&5
       kde_incdir=$i
@@ -27727,7 +27724,7 @@ for i in $kde_libdirs;
 do
   for j in $kde_check_lib;
   do
-    echo "configure: 27730: $i/$j" >&5
+    echo "configure: 27727: $i/$j" >&5
     if test -r "$i/$j"; then
       echo "taking that" >&5
       kde_libdir=$i
@@ -27745,7 +27742,7 @@ for i in $kde_libdirs;
 do
   for j in "kde3/plugins/designer/kdewidgets.la";
   do
-    echo "configure: 27748: $i/$j" >&5
+    echo "configure: 27745: $i/$j" >&5
     if test -r "$i/$j"; then
       echo "taking that" >&5
       kde_widgetdir=$i
@@ -29193,7 +29190,7 @@ for i in $kde_sharedirs;
 do
   for j in apps/ksgmltools2/customization/kde-chunk.xsl;
   do
-    echo "configure: 29196: $i/$j" >&5
+    echo "configure: 29193: $i/$j" >&5
     if test -r "$i/$j"; then
       echo "taking that" >&5
       KDE_XSL_STYLESHEET=$i
@@ -29613,10 +29610,6 @@ _ACEOF
 
 
 
-
-
-
-
 # Check whether --enable-xmms or --disable-xmms was given.
 if test "${enable_xmms+set}" = set; then
   enableval="$enable_xmms"
@@ -29633,35 +29626,16 @@ else
   configure_enable_gstreamer=yes
 fi;
 
-# Check whether --enable-ogglibs or --disable-ogglibs was given.
-if test "${enable_ogglibs+set}" = set; then
-  enableval="$enable_ogglibs"
-  configure_enable_ogglibs=$enableval
-else
-  configure_enable_ogglibs=yes
-fi;
-
-# Check whether --enable-id3lib or --disable-id3lib was given.
-if test "${enable_id3lib+set}" = set; then
-  enableval="$enable_id3lib"
-  configure_enable_id3lib=$enableval
-else
-  configure_enable_id3lib=yes
-fi;
 
 { echo "$as_me:$LINENO:
  Requested:
  XMMS support .........: $configure_enable_xmms
  gstreamer support ....: $configure_enable_gstreamer
- ogglibs support ......: $configure_enable_ogglibs
- id3lib support .......: $configure_enable_id3lib
  " >&5
 echo "$as_me:
  Requested:
  XMMS support .........: $configure_enable_xmms
  gstreamer support ....: $configure_enable_gstreamer
- ogglibs support ......: $configure_enable_ogglibs
- id3lib support .......: $configure_enable_id3lib
  " >&6;}
 
 
@@ -29729,369 +29703,78 @@ echo "$as_me: error: *** stdc++ library is required *** " >&2;}
 fi
 
 
-if test "x$configure_enable_ogglibs" = "xyes"; then
 
 
-echo "$as_me:$LINENO: checking for ogg_sync_init in -logg" >&5
-echo $ECHO_N "checking for ogg_sync_init in -logg... $ECHO_C" >&6
-if test "${ac_cv_lib_ogg_ogg_sync_init+set}" = set; then
+TAGLIB_REQ_VERSION="1.3";
+
+
+# Extract the first word of "taglib-config", so it can be a program name with args.
+set dummy taglib-config; ac_word=$2
+echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
+if test "${ac_cv_path_TAGLIB_CONFIG+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else
-  ac_check_lib_save_LIBS=$LIBS
-LIBS="-logg  $LIBS"
-cat >conftest.$ac_ext <<_ACEOF
-/* #line $LINENO "configure" */
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
+  case $TAGLIB_CONFIG in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_TAGLIB_CONFIG="$TAGLIB_CONFIG" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if $as_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
+    ac_cv_path_TAGLIB_CONFIG="$as_dir/$ac_word$ac_exec_ext"
+    echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+done
 
-/* Override any gcc2 internal prototype to avoid an error.  */
-#ifdef __cplusplus
-extern "C"
-#endif
-/* We use char because int might match the return type of a gcc2
-   builtin and then its argument prototype would still apply.  */
-char ogg_sync_init ();
-int
-main ()
-{
-ogg_sync_init ();
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext conftest$ac_exeext
-if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
-  (eval $ac_link) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest$ac_exeext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  ac_cv_lib_ogg_ogg_sync_init=yes
+  test -z "$ac_cv_path_TAGLIB_CONFIG" && ac_cv_path_TAGLIB_CONFIG="no"
+  ;;
+esac
+fi
+TAGLIB_CONFIG=$ac_cv_path_TAGLIB_CONFIG
+
+if test -n "$TAGLIB_CONFIG"; then
+  echo "$as_me:$LINENO: result: $TAGLIB_CONFIG" >&5
+echo "${ECHO_T}$TAGLIB_CONFIG" >&6
 else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-ac_cv_lib_ogg_ogg_sync_init=no
+  echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6
 fi
-rm -f conftest.$ac_objext conftest$ac_exeext conftest.$ac_ext
-LIBS=$ac_check_lib_save_LIBS
-fi
-echo "$as_me:$LINENO: result: $ac_cv_lib_ogg_ogg_sync_init" >&5
-echo "${ECHO_T}$ac_cv_lib_ogg_ogg_sync_init" >&6
-if test $ac_cv_lib_ogg_ogg_sync_init = yes; then
-  cat >>confdefs.h <<_ACEOF
-#define HAVE_LIBOGG 1
-_ACEOF
 
-  LIBS="-logg $LIBS"
 
+if test "x$TAGLIB_CONFIG" = "xno" ; then
+    { { echo "$as_me:$LINENO: error: *** taglib not found! *** " >&5
+echo "$as_me: error: *** taglib not found! *** " >&2;}
+   { (exit 1); exit 1; }; }
 else
-  configure_enable_ogglibs=no
-fi
 
-    if test "x$configure_enable_ogglibs" = "xyes"; then
-
-echo "$as_me:$LINENO: checking for vorbis_comment_init in -lvorbis" >&5
-echo $ECHO_N "checking for vorbis_comment_init in -lvorbis... $ECHO_C" >&6
-if test "${ac_cv_lib_vorbis_vorbis_comment_init+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  ac_check_lib_save_LIBS=$LIBS
-LIBS="-lvorbis  $LIBS"
-cat >conftest.$ac_ext <<_ACEOF
-/* #line $LINENO "configure" */
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-/* Override any gcc2 internal prototype to avoid an error.  */
-#ifdef __cplusplus
-extern "C"
-#endif
-/* We use char because int might match the return type of a gcc2
-   builtin and then its argument prototype would still apply.  */
-char vorbis_comment_init ();
-int
-main ()
-{
-vorbis_comment_init ();
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext conftest$ac_exeext
-if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
-  (eval $ac_link) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest$ac_exeext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  ac_cv_lib_vorbis_vorbis_comment_init=yes
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-ac_cv_lib_vorbis_vorbis_comment_init=no
-fi
-rm -f conftest.$ac_objext conftest$ac_exeext conftest.$ac_ext
-LIBS=$ac_check_lib_save_LIBS
-fi
-echo "$as_me:$LINENO: result: $ac_cv_lib_vorbis_vorbis_comment_init" >&5
-echo "${ECHO_T}$ac_cv_lib_vorbis_vorbis_comment_init" >&6
-if test $ac_cv_lib_vorbis_vorbis_comment_init = yes; then
-  cat >>confdefs.h <<_ACEOF
-#define HAVE_LIBVORBIS 1
+cat >>confdefs.h <<\_ACEOF
+#define HAVE_TAGLIB 1
 _ACEOF
 
-  LIBS="-lvorbis $LIBS"
+    taglib_includes=`$TAGLIB_CONFIG --cflags`
+    taglib_libs=`$TAGLIB_CONFIG --libs`
+    taglib_version=`$TAGLIB_CONFIG --version`
 
-else
-  configure_enable_ogglibs=no
-fi
-
-    fi
-
-    if test "x$configure_enable_ogglibs" = "xyes"; then
-
-echo "$as_me:$LINENO: checking for ov_open in -lvorbisfile" >&5
-echo $ECHO_N "checking for ov_open in -lvorbisfile... $ECHO_C" >&6
-if test "${ac_cv_lib_vorbisfile_ov_open+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  ac_check_lib_save_LIBS=$LIBS
-LIBS="-lvorbisfile  $LIBS"
-cat >conftest.$ac_ext <<_ACEOF
-/* #line $LINENO "configure" */
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-/* Override any gcc2 internal prototype to avoid an error.  */
-#ifdef __cplusplus
-extern "C"
-#endif
-/* We use char because int might match the return type of a gcc2
-   builtin and then its argument prototype would still apply.  */
-char ov_open ();
-int
-main ()
-{
-ov_open ();
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext conftest$ac_exeext
-if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
-  (eval $ac_link) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest$ac_exeext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  ac_cv_lib_vorbisfile_ov_open=yes
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-ac_cv_lib_vorbisfile_ov_open=no
-fi
-rm -f conftest.$ac_objext conftest$ac_exeext conftest.$ac_ext
-LIBS=$ac_check_lib_save_LIBS
-fi
-echo "$as_me:$LINENO: result: $ac_cv_lib_vorbisfile_ov_open" >&5
-echo "${ECHO_T}$ac_cv_lib_vorbisfile_ov_open" >&6
-if test $ac_cv_lib_vorbisfile_ov_open = yes; then
-  cat >>confdefs.h <<_ACEOF
-#define HAVE_LIBVORBISFILE 1
-_ACEOF
-
-  LIBS="-lvorbisfile $LIBS"
-
-else
-  configure_enable_ogglibs=no
-fi
-
-    fi
-
-    if test "x$configure_enable_ogglibs" = "xyes"; then
-        cat >>confdefs.h <<\_ACEOF
-#define ENABLE_OGGLIBS 1
-_ACEOF
-
+    if test `echo $taglib_version | awk 'BEGIN { FS = "."; } { printf "%d",  ($1* 1000 + $2) * 1000 + $3;}'` -lt `echo $TAGLIB_REQ_VERSION | awk 'BEGIN { FS = "."; } { printf "%d",  ($1* 1000 + $2) * 1000 + $3;}'`; then
+        { { echo "$as_me:$LINENO: error: *** taglib too old! *** " >&5
+echo "$as_me: error: *** taglib too old! *** " >&2;}
+   { (exit 1); exit 1; }; }
     fi
 fi
 
-if test "x$configure_enable_id3lib" = "xyes"; then
-
-echo "$as_me:$LINENO: checking for deflate in -lz" >&5
-echo $ECHO_N "checking for deflate in -lz... $ECHO_C" >&6
-if test "${ac_cv_lib_z_deflate+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  ac_check_lib_save_LIBS=$LIBS
-LIBS="-lz  $LIBS"
-cat >conftest.$ac_ext <<_ACEOF
-/* #line $LINENO "configure" */
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-/* Override any gcc2 internal prototype to avoid an error.  */
-#ifdef __cplusplus
-extern "C"
-#endif
-/* We use char because int might match the return type of a gcc2
-   builtin and then its argument prototype would still apply.  */
-char deflate ();
-int
-main ()
-{
-deflate ();
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext conftest$ac_exeext
-if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
-  (eval $ac_link) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest$ac_exeext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  ac_cv_lib_z_deflate=yes
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-ac_cv_lib_z_deflate=no
-fi
-rm -f conftest.$ac_objext conftest$ac_exeext conftest.$ac_ext
-LIBS=$ac_check_lib_save_LIBS
-fi
-echo "$as_me:$LINENO: result: $ac_cv_lib_z_deflate" >&5
-echo "${ECHO_T}$ac_cv_lib_z_deflate" >&6
-if test $ac_cv_lib_z_deflate = yes; then
-  cat >>confdefs.h <<_ACEOF
-#define HAVE_LIBZ 1
-_ACEOF
-
-  LIBS="-lz $LIBS"
-
-else
-  configure_enable_id3lib=no
-fi
 
 
-        if test "x$configure_enable_id3lib" = "xyes"; then
+LIBS="$taglib_libs $LIBS"
+CFLAGS="$taglib_includes $CFLAGS"
 
-echo "$as_me:$LINENO: checking for ID3Tag_Link in -lid3" >&5
-echo $ECHO_N "checking for ID3Tag_Link in -lid3... $ECHO_C" >&6
-if test "${ac_cv_lib_id3_ID3Tag_Link+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  ac_check_lib_save_LIBS=$LIBS
-LIBS="-lid3  $LIBS"
-cat >conftest.$ac_ext <<_ACEOF
-/* #line $LINENO "configure" */
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-/* Override any gcc2 internal prototype to avoid an error.  */
-#ifdef __cplusplus
-extern "C"
-#endif
-/* We use char because int might match the return type of a gcc2
-   builtin and then its argument prototype would still apply.  */
-char ID3Tag_Link ();
-int
-main ()
-{
-ID3Tag_Link ();
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext conftest$ac_exeext
-if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
-  (eval $ac_link) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest$ac_exeext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  ac_cv_lib_id3_ID3Tag_Link=yes
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-ac_cv_lib_id3_ID3Tag_Link=no
-fi
-rm -f conftest.$ac_objext conftest$ac_exeext conftest.$ac_ext
-LIBS=$ac_check_lib_save_LIBS
-fi
-echo "$as_me:$LINENO: result: $ac_cv_lib_id3_ID3Tag_Link" >&5
-echo "${ECHO_T}$ac_cv_lib_id3_ID3Tag_Link" >&6
-if test $ac_cv_lib_id3_ID3Tag_Link = yes; then
-  cat >>confdefs.h <<_ACEOF
-#define HAVE_LIBID3 1
-_ACEOF
-
-  LIBS="-lid3 $LIBS"
-
-else
-  configure_enable_id3lib=no
-fi
-
-    fi
-fi
-
-if test "x$configure_enable_id3lib" = "xyes"; then
-    { echo "$as_me:$LINENO: reading/writing of tags in MP3 files is supported " >&5
-echo "$as_me: reading/writing of tags in MP3 files is supported " >&6;}
-    cat >>confdefs.h <<\_ACEOF
-#define ENABLE_ID3LIB 1
-_ACEOF
-
-else
-    { echo "$as_me:$LINENO: WARNING: *** Warning: id3lib support disabled => no reading/writing of tags in mp3 files! *** " >&5
-echo "$as_me: WARNING: *** Warning: id3lib support disabled => no reading/writing of tags in mp3 files! *** " >&2;}
-fi
 
 
 if test "x$configure_enable_xmms" = "xyes"; then
@@ -30327,6 +30010,8 @@ _ACEOF
 
 fi
 
+
+
 if test "x$configure_enable_gstreamer" = "xyes"; then
 
 
@@ -30510,8 +30195,6 @@ Configuration for $PACKAGE $VERSION :
  Linker ...............: $CC $LDFLAGS $LIBS $LIBFLAC_LIBS
  XMMS support .........: $configure_enable_xmms
  gstreamer support ....: $configure_enable_gstreamer
- ogglibs support ......: $configure_enable_ogglibs
- id3lib support .......: $configure_enable_id3lib
  Install path .........: $prefix
    If this path does not exist or is not the desired install path,
    you should re-run configure, giving a suitable path with the --prefix option
@@ -30532,8 +30215,6 @@ Configuration for $PACKAGE $VERSION :
  Linker ...............: $CC $LDFLAGS $LIBS $LIBFLAC_LIBS
  XMMS support .........: $configure_enable_xmms
  gstreamer support ....: $configure_enable_gstreamer
- ogglibs support ......: $configure_enable_ogglibs
- id3lib support .......: $configure_enable_id3lib
  Install path .........: $prefix
    If this path does not exist or is not the desired install path,
    you should re-run configure, giving a suitable path with the --prefix option
@@ -31441,6 +31122,9 @@ s,@LIB_KDEPIM@,$LIB_KDEPIM,;t t
 s,@LIB_KSYCOCA@,$LIB_KSYCOCA,;t t
 s,@LIB_KFILE@,$LIB_KFILE,;t t
 s,@LIB_KFM@,$LIB_KFM,;t t
+s,@TAGLIB_CONFIG@,$TAGLIB_CONFIG,;t t
+s,@taglib_includes@,$taglib_includes,;t t
+s,@taglib_libs@,$taglib_libs,;t t
 s,@XMMS_CONFIG@,$XMMS_CONFIG,;t t
 s,@XMMS_CFLAGS@,$XMMS_CFLAGS,;t t
 s,@XMMS_LIBS@,$XMMS_LIBS,;t t

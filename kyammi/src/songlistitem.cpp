@@ -20,7 +20,7 @@
 #include "yammimodel.h"
 #include "folder.h"
 #include "foldersorted.h"
-#include "CMP3Info.h"
+#include <taglib/id3v1genres.h>
 
 extern YammiGui* gYammiGui;
 
@@ -81,12 +81,9 @@ void SongListItem::setColumns(SongEntry* entry)
   }
   if(columnIsVisible(gYammiGui->COLUMN_GENRE)) {
     int index=s->genreNr;
-    if(index>CMP3Info::getMaxGenreNr()) {
-      index=-1;
-    }
     if(index!=-1) {
-			setText( current, QString("%1").arg(CMP3Info::getGenre(index)));
-    }	
+        setText( current, TStringToQString(TagLib::ID3v1::genre(s->genreNr)));
+    }
     current++;
   }
   if(columnIsVisible(gYammiGui->COLUMN_ADDED_TO)) {
@@ -251,8 +248,14 @@ QString SongListItem::key(int visibleColumn, bool) const
 			return " "+s->title;
 		else
 			return s->album+QString("%1").arg(s->trackNr, 2);
-	if(column==gYammiGui->COLUMN_GENRE)
-		return QString("%1").arg(CMP3Info::getGenre(s->genreNr));
+	if(column==gYammiGui->COLUMN_GENRE) {
+        if(s->genreNr==-1) {
+            return "";
+        }
+        else {
+            return TStringToQString(TagLib::ID3v1::genre(s->genreNr));
+        }
+    }
 	if(column==gYammiGui->COLUMN_PATH)
 		return s->path+s->filename;
 	return text(column);

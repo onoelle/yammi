@@ -31,7 +31,7 @@
 #include "ConsistencyCheckDialog.h"
 #include "ApplyToAllBase.h"
 
-#include "CMP3Info.h"
+#include <taglib/id3v1genres.h>
 #include "ConsistencyCheckParameter.h"
 
 
@@ -1124,6 +1124,9 @@ void YammiGui::goToFolder(int what) {
     switch(what) {
     case 1:
         folderName=s->artist;
+        if(folderName == "") {
+            folderName = "- no artist -";
+        }
         break;
 
     case 2:
@@ -1131,7 +1134,18 @@ void YammiGui::goToFolder(int what) {
         break;
 
     case 3:
-        folderName=CMP3Info::getGenre(s->genreNr);
+        folderName=TStringToQString(TagLib::ID3v1::genre(s->genreNr));
+        if(folderName == "") {
+            folderName = "- no genre -";
+        }
+        break;
+
+    case 4:
+        if(s->year == 0) {
+            folderName = "- no year -";
+        } else {
+            folderName=QString("%1").arg(s->year);
+        }
         break;
 
     default:
@@ -1145,7 +1159,7 @@ void YammiGui::goToFolder(int what) {
         folder=getFolderByName(folderName);
     }
     if(folder==0) {
-        kdDebug() << "goto artist/album/genre: folder " << folderName << " not existing\n";
+        kdDebug() << "goto artist/album/genre/year: folder '" << folderName << "' not existing\n";
     } else {
         changeToFolder(folder);
     }
@@ -1359,12 +1373,11 @@ void YammiGui::doSongPopup(QPoint point) {
     int selected=selectedSongs.count();
     kdDebug() << "songPopup, selected: " << selected << endl;
     if( selected<=0 ) {
-        return;										// only if at least one song selected
+        return;
     }
     adjustSongPopup();
     songPopup->popup( point );
 }
-
 
 /// adjust SongPopup corresponding to <selectedSongs>
 void YammiGui::adjustSongPopup() {
@@ -1378,17 +1391,47 @@ void YammiGui::adjustSongPopup() {
     }
     songPopup->changeItem ( 113, label);
 
-    /*
-      songGoToPopup->changeItem( 2001, first->artist);
-      songGoToPopup->setItemEnabled(2001, getFolderByName(first->artist)!=0);
-      songGoToPopup->changeItem( 2002, first->artist+" - "+first->album);
-      songGoToPopup->setItemEnabled(2002, getFolderByName(first->artist+" - "+first->album)!=0);
-      songGoToPopup->changeItem( 2003, CMP3Info::getGenre(first->genreNr));
-      songGoToPopup->setItemEnabled(2003, getFolderByName(CMP3Info::getGenre(first->genreNr))!=0);
-    */
 
-    // for each category: determine whether first song contained or not
-    // we don't check whether all selected songs are contained, just first
+    int id = songGoToPopup->idAt(0);
+    QString folderName = first->artist;
+    if(folderName == "") {
+        folderName = "- no artist -";
+    }
+    songGoToPopup->changeItem(id, i18n("Artist: ") + folderName);
+    songGoToPopup->setItemEnabled(id, getFolderByName(folderName)!=0);
+
+    id = songGoToPopup->idAt(1);
+    folderName = first->artist + " - " + first->album;
+    Folder* f = getFolderByName(folderName);
+    if(f == 0) {
+        folderName = first->album;
+        if(folderName == "") {
+            folderName = "- no album -";
+        }
+        f = getFolderByName(folderName);
+    }
+    songGoToPopup->changeItem(id, i18n("Album: ") + folderName);
+    songGoToPopup->setItemEnabled(id, f!=0);
+
+    id = songGoToPopup->idAt(2);
+    folderName = TStringToQString(TagLib::ID3v1::genre(first->genreNr));
+    if(folderName == "") {
+        folderName = "- no genre -";
+    }
+    songGoToPopup->changeItem(id, i18n("Genre: ") + folderName);
+    songGoToPopup->setItemEnabled(id, getFolderByName(folderName)!=0);
+
+    id = songGoToPopup->idAt(3);
+    if(first->year == 0) {
+        folderName = "- no year -";
+    } else {
+        folderName = QString("%1").arg(first->year);
+    }
+    songGoToPopup->changeItem(id, i18n("Year: ") + folderName);
+    songGoToPopup->setItemEnabled(id, getFolderByName(folderName)!=0);
+
+
+    // for each category: determine whether all, some or no songs of selection are contained
     int k=0;
     for(MyList* category=model->allCategories.first(); category; category=model->allCategories.next(), k++) {
         int mode=category->containsSelection(&selectedSongs);
@@ -1942,8 +1985,8 @@ void YammiGui::forSelectionSongInfo( ) {
     // fill combobox with genres, but sort them first
     QStringList genreList;
     genreList.append("");
-    for(int genreNr=0; genreNr<=CMP3Info::getMaxGenreNr(); genreNr++) {
-        genreList.append(CMP3Info::getGenre(genreNr));
+    for(int genreNr=0; !(TagLib::ID3v1::genre(genreNr).isNull()); genreNr++) {
+        genreList.append(TStringToQString(TagLib::ID3v1::genre(genreNr)));
     }
     genreList.sort();
     for ( QStringList::Iterator it = genreList.begin(); it != genreList.end(); ++it ) {
@@ -2068,7 +2111,7 @@ void YammiGui::forSelectionSongInfo( ) {
     if(_genreNr==-1) {
         si.ComboBoxGenre->setCurrentItem(0);
     } else {
-        int found=genreList.findIndex(CMP3Info::getGenre(_genreNr));
+        int found=genreList.findIndex(TStringToQString(TagLib::ID3v1::genre(_genreNr)));
         if(found!=-1) {
             si.ComboBoxGenre->setCurrentItem(found);
         }
@@ -2084,7 +2127,7 @@ void YammiGui::forSelectionSongInfo( ) {
     int sortedGenreNr=si.ComboBoxGenre->currentItem();
     int tryGenreNr=-1;
     if(sortedGenreNr!=0) {
-        tryGenreNr=CMP3Info::getGenreIndex(genreList[sortedGenreNr]);
+        tryGenreNr=TagLib::ID3v1::genreIndex(QStringToTString(genreList[sortedGenreNr] ));
     }
 
     // now set the edited info for all selected songs
@@ -3323,9 +3366,9 @@ void YammiGui::loadMediaPlayer( ) {
     }
     if (!player) {
         player = new DummyPlayer( model );
-/*        KMessageBox::error(this, i18n("Can't create the player object.\n"
-                                      "Please select a suitable backend player\n"
-                                      "from the Preferences Dialog"), i18n("Error"));*/
+        /*        KMessageBox::error(this, i18n("Can't create the player object.\n"
+                                              "Please select a suitable backend player\n"
+                                              "from the Preferences Dialog"), i18n("Error"));*/
         kdDebug() << "Can't create player backend, select a suitable backend in the Preferences Dialog\n";
     }
     kdDebug() << "Media Player : " << player->getName( ) << endl;
@@ -3480,6 +3523,7 @@ bool YammiGui::setupActions( ) {
     new KAction(i18n("Goto artist"), 0, 0, this, SLOT(gotoFolderArtist()), actionCollection(), "goto_artist_folder");
     new KAction(i18n("Goto album"), 0, 0, this, SLOT(gotoFolderAlbum()), actionCollection(), "goto_album_folder");
     new KAction(i18n("Goto genre"), 0, 0, this, SLOT(gotoFolderGenre()), actionCollection(), "goto_genre_folder");
+    new KAction(i18n("Goto year"), 0, 0, this, SLOT(gotoFolderYear()), actionCollection(), "goto_year_folder");
 
     new KAction(i18n("Stop prelisten"),"stop_prelisten",KShortcut(Key_F12),this,SLOT(stopPrelisten()),actionCollection(),"stop_prelisten");
 
@@ -3590,7 +3634,8 @@ void YammiGui::createMenuBar( ) {
 void YammiGui::createSongPopup() {
     kdDebug() << "creating song popup\n";
     songPopup = (QPopupMenu *)factory()->container("song_popup", this);
-    if(songPopup == 0) {
+    songGoToPopup = (QPopupMenu *)factory()->container("goto", this);
+    if(songPopup == 0 || songGoToPopup == 0) {
         kdFatal() << "yammiui.rc not installed correctly!!!\n";
         return;
     }
@@ -3746,7 +3791,7 @@ QString YammiGui::songAlbum() {
 
 QString YammiGui::songGenre() {
 
-    return CMP3Info::getGenre(currentSong->genreNr);
+    return TStringToQString(TagLib::ID3v1::genre(currentSong->genreNr));
 }
 
 QString YammiGui::songComment() {
