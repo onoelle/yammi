@@ -864,46 +864,59 @@ You can configure Yammi's settings via the menu: Settings -> Configure Yammi.
 </para><para>
 Only some options are explained here, the rest should be self-explanatory if you read the
 provided tool tips (stay over an item with the mouse for a while).
-</para><para>
+</para>
 
-Consistency Mode Settings
-</para><para>
+<sect2>
+<title>Consistency Mode Settings</title>
+<para>
 
 These settings determine, whether Yammi modifies the meta info in your files or
 renames or moves them when you change
 any attributes (eg. the title or artist) in the song info dialog.
 
-</para><para>
-save tags immediately
-</para><para>
+</para>
+<sect3>
+<title>save tags immediately</title>
+<para>
 When enabled, Yammi will immediately save all tags to the file (if possible) after altering any attributes in the song info dialog.
+</para>
+</sect3>
 
-</para><para>
-keep filenames consistent
-</para><para>
+<sect3>
+<title>keep filenames consistent</title>
+<para>
 When enabled, Yammi will rename your files (if necessary) to keep the filenames consistent with the configured filename pattern after altering relevant attributes in the song info dialog.
+</para>
+</sect3>
 
-</para><para>
-keep directories consistent
-</para><para>
+<sect3>
+<title>keep directories consistent</title>
+<para>
 When enabled, Yammi will move your files (if necessary) to keep the directory consistent with the configured directory pattern after altering relevant attributes in the song info dialog.
+</para>
+</sect3>
 
-</para><para>
-
+<sect3>
+<title>Tip</title>
+<para>
 If you don't want Yammi to touch your song files in any way, you should
-leave these two settings disabled!
+leave these three settings disabled!
 However, for easy organizing your song files I found it extremely useful
 to have consistent filenames, directories and tags at any time.
-</para><para>
-
+</para>
+<para>
 See also "Checking consistency" in "Advanced topics".
-</para><para>
+</para>
+</sect3>
+</sect2>
 
-Group Threshold
-</para><para>
+<sect2>
+<title>Group Threshold</title>
+<para>
 
 This value determines, how many items of one group must be present for a subfolder within the folder Artists/Albums/Genre/Year to be created. If you set this value to 1, every artist/album/genre/year will appear as a subfolder, a value of 10 only will create subfolders for artists/albums/genres/years which contain at least 10 entries.
 </para>
+</sect2>
 </sect1>
 
 <sect1 id="keyBindings">
