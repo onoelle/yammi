@@ -1,6 +1,6 @@
 TODO
 ----
-last update 27.05.2004
+last update 01.06.2004
 
 
 for version 1.2-alpha
@@ -9,10 +9,9 @@ main purpose: clean up, so other people can more easily contribute to the projec
 
 - check/resolve bugs on sf
 - check all TODOs / FIXMEs
-- fix: song info for multiple songs
-- fix: double click / middle click action
 - handle unplayable files (wishes, text files) => 1. dequeue on second position or 2. introduce file types and different behaviour
 - check dialog spacing & co (eg. guessing pattern!)
+- icons for enqueing: add big "plus"
 
 for version 1.2-beta
 --------------------
@@ -21,6 +20,7 @@ check kde conformance:
   - replace cout with kdDebug/kdWarn/kdError
   - check lsm file
   - check icons: fix transparency or use standard ones
+- clean up: song info for multiple songs
 - fix or delete child-safe mode
 - fix: integrate columns menu into view menu
 - make follow symlinks a configurable option?

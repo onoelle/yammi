@@ -1,3 +1,7 @@
+2004-06-01 Oliver Nölle <oli.noelle@web.de>
+	- re-inserted old mass editing/song info dialog stuff 
+	- fixed doubleclick/middleclick 
+
 2004-05-27 Oliver Nölle <oli.noelle@web.de>
 	fixed some more things: 
 	- artsplayer: skip backward / update notification 
