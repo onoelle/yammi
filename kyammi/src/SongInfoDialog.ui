@@ -476,23 +476,6 @@
                         <bool>true</bool>
                     </property>
                 </widget>
-                <spacer row="0" column="0">
-                    <property name="name">
-                        <cstring>spacer1_4_2</cstring>
-                    </property>
-                    <property name="orientation">
-                        <enum>Horizontal</enum>
-                    </property>
-                    <property name="sizeType">
-                        <enum>Fixed</enum>
-                    </property>
-                    <property name="sizeHint">
-                        <size>
-                            <width>50</width>
-                            <height>20</height>
-                        </size>
-                    </property>
-                </spacer>
                 <widget class="QLabel" row="4" column="0" rowspan="1" colspan="3">
                     <property name="name">
                         <cstring>LabelFilename</cstring>
@@ -501,23 +484,6 @@
                         <string>Filename</string>
                     </property>
                 </widget>
-                <spacer row="2" column="2">
-                    <property name="name">
-                        <cstring>spacer1_4</cstring>
-                    </property>
-                    <property name="orientation">
-                        <enum>Horizontal</enum>
-                    </property>
-                    <property name="sizeType">
-                        <enum>Fixed</enum>
-                    </property>
-                    <property name="sizeHint">
-                        <size>
-                            <width>100</width>
-                            <height>20</height>
-                        </size>
-                    </property>
-                </spacer>
                 <widget class="QCheckBox" row="3" column="1" rowspan="1" colspan="2">
                     <property name="name">
                         <cstring>CheckBoxCorrectPath</cstring>
@@ -538,7 +504,7 @@
                     </property>
                     <property name="sizeHint">
                         <size>
-                            <width>30</width>
+                            <width>20</width>
                             <height>20</height>
                         </size>
                     </property>
@@ -555,7 +521,7 @@
                     </property>
                     <property name="sizeHint">
                         <size>
-                            <width>30</width>
+                            <width>20</width>
                             <height>20</height>
                         </size>
                     </property>

@@ -51,8 +51,6 @@ void SongInfo::activateUpdates()
  */
 void SongInfo::update()
 {
-    kdDebug() << "update() called" << endl;
-    
     QString _proposedFilename;
     QString _proposedPath;
      

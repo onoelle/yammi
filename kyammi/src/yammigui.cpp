@@ -1302,7 +1302,6 @@ void YammiGui::addFolderContent(Folder* folder) {
 }
 
 void YammiGui::addFolderContentSnappy() {
-    kdDebug() << "addSnappy" << endl;
     int i=0;
     SongEntry* entry;
     SongListItem* lastOne=(SongListItem*)songListView->firstChild();
@@ -2034,7 +2033,7 @@ void YammiGui::forSelectionSongInfo( ) {
             _year=QString("%1").arg(s->year);
             _path=s->path;
             _filename=s->filename;
-            _bitrate=QString("%1 kb/s").arg(s->bitrate);
+            _bitrate=QString(i18n("%1 kb/s")).arg(s->bitrate);
             _genre=s->genre;
             _proposedFilename=s->constructFilename();
             _proposedPath=s->constructPath();
@@ -2135,14 +2134,14 @@ void YammiGui::forSelectionSongInfo( ) {
     
     if(selected > 20) {
         QString msg("");
-        msg += QString("Your changes will affect %1 song entries\n").arg(selected);
+        msg += QString(i18n("Your changes will affect %1 song entries.\n")).arg(selected);
         if(si.CheckBoxCorrectFilename->isChecked()) {
-            msg += "\nNote: Your changes will affect the filenames of all selected files!\n";
+            msg += i18n("\nNote: Your changes may change the filenames of the selected files!\n");
         }
         if(si.CheckBoxCorrectPath->isChecked()) {
-            msg += "\nNote: Your changes will affect the location of all selected files!\n";
+            msg += i18n("\nNote: Your changes may affect the location of the selected files!\n");
         }
-        msg += "\n\nDo you want to continue?";
+        msg += i18n("\n\nDo you want to continue?");
         if( KMessageBox::warningYesNo( this, msg) != KMessageBox::Yes ) {
             return;
         }
@@ -2277,7 +2276,7 @@ void YammiGui::forSelectionDelete( ) {
 
 /**
  * Delete a song entry.
- * TODO: move this (partly) to yammimodel?
+ * TODO: delete from *all* folders
  */
 void YammiGui::deleteEntry(Song* s) {
     // remove from database

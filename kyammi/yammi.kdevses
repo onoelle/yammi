@@ -1,22 +1,37 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
 <!DOCTYPE KDevPrjSession>
 <KDevPrjSession>
- <DocsAndViews NumberOfDocuments="3" >
+ <DocsAndViews NumberOfDocuments="6" >
   <Doc0 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/doc/en/index.docbook" >
    <View0 line="17" Type="???" >
     <AdditionalSettings Top="1" Width="1202" Attach="1" Height="829" Left="1" MinMaxMode="0" />
    </View0>
   </Doc0>
-  <Doc1 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/config.h" >
-   <View0 line="130" Type="???" >
+  <Doc1 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/src/gstplayer.cpp" >
+   <View0 line="5" Type="???" >
     <AdditionalSettings Top="1" Width="1202" Attach="1" Height="795" Left="1" MinMaxMode="0" />
    </View0>
   </Doc1>
-  <Doc2 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/src/gstplayer.cpp" >
-   <View0 line="261" Type="???" >
+  <Doc2 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/src/gstplayer.h" >
+   <View0 line="18" Type="???" >
     <AdditionalSettings Top="1" Width="1202" Attach="1" Height="795" Left="1" MinMaxMode="0" />
    </View0>
   </Doc2>
+  <Doc3 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/configure.in.in" >
+   <View0 line="8" Type="???" >
+    <AdditionalSettings Top="1" Width="1204" Attach="1" Height="795" Left="1" MinMaxMode="0" />
+   </View0>
+  </Doc3>
+  <Doc4 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/ChangeLog" >
+   <View0 line="15" Type="???" >
+    <AdditionalSettings Top="1" Width="1203" Attach="1" Height="795" Left="1" MinMaxMode="0" />
+   </View0>
+  </Doc4>
+  <Doc5 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/src/yammigui.cpp" >
+   <View0 line="1296" Type="???" >
+    <AdditionalSettings Top="1" Width="1203" Attach="1" Height="795" Left="1" MinMaxMode="0" />
+   </View0>
+  </Doc5>
  </DocsAndViews>
  <pluginList>
   <kdevbookmarks>

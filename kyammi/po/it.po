@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: it\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-01-18 22:18+0100\n"
+"POT-Creation-Date: 2005-03-07 15:10+0100\n"
 "PO-Revision-Date: 2005-01-25 19:32+0100\n"
 "Last-Translator: R@>0~86 <radon86@3mw.org>\n"
 "Language-Team: italiano\n"
@@ -71,7 +71,8 @@ msgid "check directories"
 msgstr "controlla cartelle"
 
 #: ConsistencyCheckDialogBase.cpp:265 rc.cpp:31
-msgid "Checks, whether the directories correspond to the configured directory scheme"
+msgid ""
+"Checks, whether the directories correspond to the configured directory scheme"
 msgstr "Controlla se le cartelle corrispondono allo schema configurato"
 
 #: ConsistencyCheckDialogBase.cpp:266 rc.cpp:32
@@ -82,7 +83,8 @@ msgstr "correggi cartelle inconsistenti"
 msgid ""
 "If directories differ from the configured directory scheme, the files will "
 "be moved"
-msgstr "Se le cartelle sono diverse da quelle configurate, il file verrà spostato"
+msgstr ""
+"Se le cartelle sono diverse da quelle configurate, il file verrà spostato"
 
 #: ConsistencyCheckDialogBase.cpp:268 rc.cpp:34
 msgid "delete empty directories"
@@ -90,7 +92,8 @@ msgstr "elimina cartelle vuote"
 
 #: ConsistencyCheckDialogBase.cpp:269 rc.cpp:35
 msgid "If directories are empty after moving files, these will be removed."
-msgstr "Se le cartelle sono vuote prima di muovere i file, esse saranno rimosse."
+msgstr ""
+"Se le cartelle sono vuote prima di muovere i file, esse saranno rimosse."
 
 #: ConsistencyCheckDialogBase.cpp:270 ConsistencyCheckDialogBase.cpp:292
 #: rc.cpp:36 rc.cpp:57
@@ -99,8 +102,8 @@ msgstr "schema:"
 
 #: ConsistencyCheckDialogBase.cpp:271 ConsistencyCheckDialogBase.cpp:272
 #: ConsistencyCheckDialogBase.cpp:293 ConsistencyCheckDialogBase.cpp:294
-#: PreferencesDialogBase.cpp:717 rc.cpp:37 rc.cpp:38 rc.cpp:58 rc.cpp:59
-#: rc.cpp:130
+#: PreferencesDialogBase.cpp:765 rc.cpp:37 rc.cpp:38 rc.cpp:58 rc.cpp:59
+#: rc.cpp:127
 msgid "The filename pattern to use for renaming files."
 msgstr "Lo schema del nome del file da usare per rinominare i file."
 
@@ -134,7 +137,8 @@ msgstr "controlla le tag"
 
 #: ConsistencyCheckDialogBase.cpp:281 rc.cpp:47
 msgid "Checks, whether the (mp3/ogg) tags are consistent with Yammi's database"
-msgstr "Controlla se le tag (mp3/ogg) sono consistenti con il database di yammi"
+msgstr ""
+"Controlla se le tag (mp3/ogg) sono consistenti con il database di yammi"
 
 #: ConsistencyCheckDialogBase.cpp:283 rc.cpp:48
 msgid "Yammi database => File Tags"
@@ -161,7 +165,8 @@ msgid "check filenames"
 msgstr "controlla i nomi dei file"
 
 #: ConsistencyCheckDialogBase.cpp:289 rc.cpp:54
-msgid "Checks, whether the filenames correspond to the configured filename scheme"
+msgid ""
+"Checks, whether the filenames correspond to the configured filename scheme"
 msgstr ""
 "Controlla se i nomi dei file corrispondono allo schema del nome di file "
 "configurato"
@@ -202,8 +207,8 @@ msgstr "Configurazione controllo consistenza"
 msgid "Checking %1 songs"
 msgstr "Controllo di %1 canzoni in corso"
 
-#: ConsistencyCheckDialog.cpp:91 main.cpp:52 yammigui.cpp:1546
-#: yammigui.cpp:2715 yammigui.cpp:3025 yammigui.cpp:3103
+#: ConsistencyCheckDialog.cpp:91 main.cpp:52 yammigui.cpp:1548
+#: yammigui.cpp:2739 yammigui.cpp:3018 yammigui.cpp:3096
 msgid "Yammi"
 msgstr "Yammi"
 
@@ -380,8 +385,10 @@ msgid "delete database entry (in Yammi's database)"
 msgstr "elimina la voce del database (nel database di Yammi)"
 
 #: DeleteDialog.cpp:128 rc.cpp:68
-msgid "deletes the database entry in Yammi's database (does not affect the file)"
-msgstr "elimina la voce nel database di Yammi (non elimina fisicamente il file)"
+msgid ""
+"deletes the database entry in Yammi's database (does not affect the file)"
+msgstr ""
+"elimina la voce nel database di Yammi (non elimina fisicamente il file)"
 
 #: DeleteDialog.cpp:129 rc.cpp:69
 msgid "Delete a song entry and/or its file"
@@ -473,8 +480,8 @@ msgstr "- Supporto gstreamer: sí\n"
 msgid "- gstreamer support: no\n"
 msgstr "- Supporto gstreamer: no\n"
 
-#: mediaplayer.moc.cpp:34 mediaplayer.moc.cpp:42 PreferencesDialogBase.cpp:752
-#: rc.cpp:132
+#: mediaplayer.moc.cpp:34 mediaplayer.moc.cpp:42 PreferencesDialogBase.cpp:801
+#: rc.cpp:129
 msgid "MediaPlayer"
 msgstr "MediaPlayer"
 
@@ -486,48 +493,56 @@ msgstr "MyListView"
 msgid "NoatunPlayer"
 msgstr "NoatunPlayer"
 
-#: PreferencesDialogBase.cpp:665 rc.cpp:78
+#: PreferencesDialogBase.cpp:716 rc.cpp:78
 msgid "Edit Preferences"
 msgstr "Modifica preferenze"
 
-#: PreferencesDialogBase.cpp:667 rc.cpp:80
+#: PreferencesDialogBase.cpp:718 rc.cpp:80
 msgid "don't make any changes"
 msgstr "non effettuare alcun cambiamento"
 
-#: PreferencesDialogBase.cpp:669 rc.cpp:82
+#: PreferencesDialogBase.cpp:720 rc.cpp:82
 msgid "Accept & Save configuration"
 msgstr "Accetta e salva la configurazione"
 
-#: PreferencesDialogBase.cpp:670 rc.cpp:84
+#: PreferencesDialogBase.cpp:721 rc.cpp:84
 msgid "Mouse configuration / Default actions for..."
 msgstr "Configurazione del mouse / Azione predefinita per..."
 
-#: PreferencesDialogBase.cpp:671 PreferencesDialogBase.cpp:673 rc.cpp:85
+#: PreferencesDialogBase.cpp:722 PreferencesDialogBase.cpp:724 rc.cpp:85
 #: rc.cpp:87
-msgid "the action that is performed when double-clicking on a song in the song list"
+msgid ""
+"the action that is performed when double-clicking on a song in the song list"
 msgstr "l'azione eseguita con il doppio clic su di una voce"
 
-#: PreferencesDialogBase.cpp:672 rc.cpp:86
+#: PreferencesDialogBase.cpp:723 rc.cpp:86
 msgid "doubleclick"
 msgstr "doppioclic"
 
-#: PreferencesDialogBase.cpp:674 PreferencesDialogBase.cpp:676 rc.cpp:88
+#: PreferencesDialogBase.cpp:725 PreferencesDialogBase.cpp:727 rc.cpp:88
 #: rc.cpp:90
 msgid ""
 "the action that is performed when clicking with middle mouse button on a "
 "song in the song list"
 msgstr "l'azione eseguita con il clic in mezzo su di una voce"
 
-#: PreferencesDialogBase.cpp:675 rc.cpp:89
+#: PreferencesDialogBase.cpp:726 rc.cpp:89
 msgid "middle click"
 msgstr "clic in mezzo"
 
-#: PreferencesDialogBase.cpp:677 rc.cpp:91
+#: PreferencesDialogBase.cpp:728 rc.cpp:91
+#, fuzzy
+msgid ""
+"You can assign default actions for a double-click or click with middle mouse "
+"buttion on a song in the songlist."
+msgstr "l'azione eseguita con il clic in mezzo su di una voce"
+
+#: PreferencesDialogBase.cpp:729 rc.cpp:92
 msgid "Searching"
 msgstr "Ricerca"
 
-#: PreferencesDialogBase.cpp:678 PreferencesDialogBase.cpp:680 rc.cpp:92
-#: rc.cpp:94
+#: PreferencesDialogBase.cpp:730 PreferencesDialogBase.cpp:732 rc.cpp:93
+#: rc.cpp:95
 msgid ""
 "determines how many hits will be shown when searching. Must be between 0 and "
 "100, reasonable values are around 25."
@@ -535,54 +550,38 @@ msgstr ""
 "determina quanti risultati vengono mostrati dopo la ricerca: Deve essere fra "
 "0 e 100; valori consogliato: intorno ai 25"
 
-#: PreferencesDialogBase.cpp:679 rc.cpp:93
+#: PreferencesDialogBase.cpp:731 rc.cpp:94
 msgid "threshold"
 msgstr "soglia"
 
-#: PreferencesDialogBase.cpp:681 PreferencesDialogBase.cpp:692 rc.cpp:95
-#: rc.cpp:106
-msgid "Misc"
-msgstr "Miscellanea"
-
-#: PreferencesDialogBase.cpp:682 PreferencesDialogBase.cpp:684 rc.cpp:96
-#: rc.cpp:98
-msgid "This device is used (with mpg123) to send songs to your headphone."
-msgstr ""
-"Questo dispositivo è usato per mandare la canzone alle cuffie "
-"(utile per i DJ)"
-
-#: PreferencesDialogBase.cpp:683 rc.cpp:97
-msgid "second sound device (eg. /dev/dsp1)"
-msgstr "secondo dispositivo audio (esempio: /dev/dsp1)"
-
-#: PreferencesDialogBase.cpp:685 rc.cpp:83
+#: PreferencesDialogBase.cpp:733 rc.cpp:83
 msgid "General"
 msgstr "Generale"
 
-#: PreferencesDialogBase.cpp:686 rc.cpp:100
+#: PreferencesDialogBase.cpp:734 rc.cpp:97
 msgid "Path to files"
 msgstr "Percorso del file"
 
-#: PreferencesDialogBase.cpp:687 PreferencesDialogBase.cpp:798
-#: PreferencesDialogBase.cpp:806 rc.cpp:101 rc.cpp:198 rc.cpp:206 rc.cpp:243
-#: rc.cpp:256 UpdateDatabaseDialogBase.cpp:114
+#: PreferencesDialogBase.cpp:735 PreferencesDialogBase.cpp:868
+#: PreferencesDialogBase.cpp:876 rc.cpp:98 rc.cpp:214 rc.cpp:222 rc.cpp:259
+#: rc.cpp:272 UpdateDatabaseDialogBase.cpp:114
 #: UpdateDatabaseMediaDialogBase.cpp:127
 msgid "..."
 msgstr "..."
 
-#: PreferencesDialogBase.cpp:688 PreferencesDialogBase.cpp:799
-#: PreferencesDialogBase.cpp:807 rc.cpp:102 rc.cpp:199 rc.cpp:207 rc.cpp:244
-#: rc.cpp:257 UpdateDatabaseDialogBase.cpp:115
+#: PreferencesDialogBase.cpp:736 PreferencesDialogBase.cpp:869
+#: PreferencesDialogBase.cpp:877 rc.cpp:99 rc.cpp:215 rc.cpp:223 rc.cpp:260
+#: rc.cpp:273 UpdateDatabaseDialogBase.cpp:115
 #: UpdateDatabaseMediaDialogBase.cpp:128
 msgid "choose directory"
 msgstr "scegli cartella"
 
-#: PreferencesDialogBase.cpp:689 rc.cpp:103
+#: PreferencesDialogBase.cpp:737 rc.cpp:100
 msgid "trash directory for deleted song files"
 msgstr "cartella cestino per le canzoni eliminate"
 
-#: PreferencesDialogBase.cpp:690 PreferencesDialogBase.cpp:691 rc.cpp:104
-#: rc.cpp:105
+#: PreferencesDialogBase.cpp:738 PreferencesDialogBase.cpp:739 rc.cpp:101
+#: rc.cpp:102
 msgid ""
 "songs deleted in yammi will be moved to this directory and this directory "
 "will be skipped when scanning"
@@ -590,20 +589,24 @@ msgstr ""
 "le canzoni eliminate con yammi vengono spostate in questa cartella e questa "
 "cartella viene saltata dalla ricerca"
 
-#: PreferencesDialogBase.cpp:693 rc.cpp:107
+#: PreferencesDialogBase.cpp:740 rc.cpp:103
+msgid "Misc"
+msgstr "Miscellanea"
+
+#: PreferencesDialogBase.cpp:741 rc.cpp:104
 msgid "logging of played songs"
 msgstr "log delle canzoni suonate"
 
-#: PreferencesDialogBase.cpp:694 rc.cpp:108
+#: PreferencesDialogBase.cpp:742 rc.cpp:105
 msgid "logs all played songs with a timestamp to a file"
 msgstr "Mantiene un registro di tutte le canzoni suonate"
 
-#: PreferencesDialogBase.cpp:695 rc.cpp:109
+#: PreferencesDialogBase.cpp:743 rc.cpp:106
 msgid "group threshold"
 msgstr "limite per il raggruppamento"
 
-#: PreferencesDialogBase.cpp:696 PreferencesDialogBase.cpp:701 rc.cpp:110
-#: rc.cpp:115
+#: PreferencesDialogBase.cpp:744 PreferencesDialogBase.cpp:749 rc.cpp:107
+#: rc.cpp:112
 msgid ""
 "the minimum number for a subfolder to be created (Folder Albums, Artists and "
 "Genres)"
@@ -611,11 +614,11 @@ msgstr ""
 "il numero minimo perché venga creata una sottocartella (Album, Artista, "
 "Genere)"
 
-#: PreferencesDialogBase.cpp:697 rc.cpp:111
+#: PreferencesDialogBase.cpp:745 rc.cpp:108
 msgid "lazy grouping"
 msgstr "raggruppamento intelligente"
 
-#: PreferencesDialogBase.cpp:698 rc.cpp:112
+#: PreferencesDialogBase.cpp:746 rc.cpp:109
 msgid ""
 "if enabled, considers eg. \"The_Doors\" the same as \"THE DOORS\" for "
 "grouping"
@@ -623,11 +626,11 @@ msgstr ""
 "se abilitato, considera ad esempio  \"The_Doors\" lo stesso di \"THE DOORS\" "
 "per il raggruppamento"
 
-#: PreferencesDialogBase.cpp:699 rc.cpp:113
+#: PreferencesDialogBase.cpp:747 rc.cpp:110
 msgid "child safe mode"
 msgstr "Modalità sicura"
 
-#: PreferencesDialogBase.cpp:700 rc.cpp:114
+#: PreferencesDialogBase.cpp:748 rc.cpp:111
 msgid ""
 "if activated, some potentially dangerous actions are not allowed (eg. "
 "deleting a song). To disable this, you need a password..."
@@ -636,39 +639,41 @@ msgstr ""
 "esempio l'eliminazione di una canzone). Per disabilitarla, necessiti di una "
 "password..."
 
-#: PreferencesDialogBase.cpp:702 rc.cpp:116
+#: PreferencesDialogBase.cpp:750 rc.cpp:113
 msgid "Tag Handling"
 msgstr "Gestione tag"
 
-#: PreferencesDialogBase.cpp:703 rc.cpp:117
+#: PreferencesDialogBase.cpp:751 rc.cpp:114
 msgid "capitalize tags on new songs"
 msgstr ""
 "Rendi maiuscole le lettere seguite\n"
 "da spazio nelle nuove canzoni"
 
-#: PreferencesDialogBase.cpp:704 rc.cpp:118
+#: PreferencesDialogBase.cpp:752 rc.cpp:115
 msgid "Capitalizes artist, title and album of a newly added Song"
 msgstr ""
 "Rendi maiuscole le lettere seguite da spazio di Artista, Titolo e Album di "
 "ogni canzone aggiunta"
 
-#: PreferencesDialogBase.cpp:705 rc.cpp:119
+#: PreferencesDialogBase.cpp:753 rc.cpp:116
 msgid "save tags immediately"
 msgstr "salva subito le tag"
 
-#: PreferencesDialogBase.cpp:706 rc.cpp:120
+#: PreferencesDialogBase.cpp:754 rc.cpp:117
 msgid "save all changes in yammi database to the file tags immediately"
-msgstr "salva immediatamente tutti i cambiamenti del database di yammi nelle tag del file"
+msgstr ""
+"salva immediatamente tutti i cambiamenti del database di yammi nelle tag del "
+"file"
 
-#: PreferencesDialogBase.cpp:708 rc.cpp:122
+#: PreferencesDialogBase.cpp:756 rc.cpp:119
 msgid "artist - title"
 msgstr "artista - titolo"
 
-#: PreferencesDialogBase.cpp:709 rc.cpp:123
+#: PreferencesDialogBase.cpp:757 rc.cpp:120
 msgid "/artist/album/trackNr - title"
 msgstr "/artista/titolo/numeroTraccia - Titolo"
 
-#: PreferencesDialogBase.cpp:710 rc.cpp:124
+#: PreferencesDialogBase.cpp:758 rc.cpp:121
 msgid ""
 "guessing pattern\n"
 "(if no tags available)"
@@ -676,29 +681,29 @@ msgstr ""
 "indovina schema\n"
 "(se le tag non sono disponibili)"
 
-#: PreferencesDialogBase.cpp:712 rc.cpp:125
+#: PreferencesDialogBase.cpp:760 rc.cpp:122
 msgid "guessing pattern used when adding new songs and no tags available"
 msgstr ""
 "indovina lo schema usato quando le tag della canzone aggiunta non sono "
 "disponibili"
 
-#: PreferencesDialogBase.cpp:713 rc.cpp:126
+#: PreferencesDialogBase.cpp:761 rc.cpp:123
 msgid "keep directories consistent:"
 msgstr "mantieni consistenti le cartelle"
 
-#: PreferencesDialogBase.cpp:714 rc.cpp:127
+#: PreferencesDialogBase.cpp:762 rc.cpp:124
 msgid ""
 "Synchronizes the directories of the files according to the information in "
 "the yammi database. If activated, yammi moves your files!"
 msgstr ""
-"Sincronizza i nomi delle cartelle con le informazioni contenute nel database di "
-"Yammi. Se attivato, yammi rinomina i file!"
+"Sincronizza i nomi delle cartelle con le informazioni contenute nel database "
+"di Yammi. Se attivato, yammi rinomina i file!"
 
-#: PreferencesDialogBase.cpp:715 rc.cpp:128
+#: PreferencesDialogBase.cpp:763 rc.cpp:125
 msgid "keep filenames consistent:"
 msgstr "mantieni consistenti i nomi dei file"
 
-#: PreferencesDialogBase.cpp:716 rc.cpp:129
+#: PreferencesDialogBase.cpp:764 rc.cpp:126
 msgid ""
 "Synchronizes the filenames of the files according to the information in the "
 "yammi database. If activated, yammi renames your files!"
@@ -706,52 +711,52 @@ msgstr ""
 "Sincronizza i nomi dei file con le informazioni contenute nel database di "
 "Yammi. Se attivato, yammi rinomina i file!"
 
-#: PreferencesDialogBase.cpp:718 rc.cpp:131
+#: PreferencesDialogBase.cpp:766 rc.cpp:128
 msgid "The directory pattern to use for moving files."
 msgstr "Lo schema del nome della cartella da usare per rinominare i file."
 
-#: PreferencesDialogBase.cpp:719 rc.cpp:3 rc.cpp:99
+#: PreferencesDialogBase.cpp:767 rc.cpp:3 rc.cpp:96
 msgid "Database"
 msgstr "Database"
 
-#: PreferencesDialogBase.cpp:720 rc.cpp:7 rc.cpp:133
+#: PreferencesDialogBase.cpp:768 rc.cpp:7 rc.cpp:130
 msgid "Media Player"
 msgstr "Media Player"
 
-#: PreferencesDialogBase.cpp:721 rc.cpp:134
+#: PreferencesDialogBase.cpp:769 rc.cpp:131
 msgid "XMMS"
 msgstr "XMMS"
 
-#: PreferencesDialogBase.cpp:722 rc.cpp:135
+#: PreferencesDialogBase.cpp:770 rc.cpp:132
 msgid "Noatun"
 msgstr "Noatun"
 
-#: PreferencesDialogBase.cpp:723 rc.cpp:136
+#: PreferencesDialogBase.cpp:771 rc.cpp:133
 msgid "GstreamerPlayer"
 msgstr "GstreamerPlayer"
 
-#: PreferencesDialogBase.cpp:724 rc.cpp:137
+#: PreferencesDialogBase.cpp:772 rc.cpp:134
 msgid "ArtsPlayer"
 msgstr "ArtsPlayer"
 
-#: PreferencesDialogBase.cpp:725 rc.cpp:138
+#: PreferencesDialogBase.cpp:773 rc.cpp:135
 msgid "Noatun settings"
 msgstr "Configurazione di Noatun"
 
-#: PreferencesDialogBase.cpp:726 rc.cpp:139
+#: PreferencesDialogBase.cpp:774 rc.cpp:136
 msgid "Crossfading"
 msgstr "Sfumatura"
 
-#: PreferencesDialogBase.cpp:727 rc.cpp:140
+#: PreferencesDialogBase.cpp:775 rc.cpp:137
 msgid "fade out end %"
 msgstr "sfuma alla fine %"
 
-#: PreferencesDialogBase.cpp:728 PreferencesDialogBase.cpp:735 rc.cpp:141
-#: rc.cpp:147
+#: PreferencesDialogBase.cpp:776 PreferencesDialogBase.cpp:783 rc.cpp:138
+#: rc.cpp:144
 msgid "Volume in percentage to fade out to"
 msgstr "Volume in percentuale da fumare alla fine"
 
-#: PreferencesDialogBase.cpp:729 rc.cpp:142
+#: PreferencesDialogBase.cpp:777 rc.cpp:139
 msgid ""
 "fading time (ms),\n"
 "set to 0 to disable"
@@ -759,21 +764,21 @@ msgstr ""
 "tempo di sfumatura (ms),\n"
 "imposta a 0 per disabilitare"
 
-#: PreferencesDialogBase.cpp:731 PreferencesDialogBase.cpp:734 rc.cpp:143
-#: rc.cpp:146
+#: PreferencesDialogBase.cpp:779 PreferencesDialogBase.cpp:782 rc.cpp:140
+#: rc.cpp:143
 msgid "The total time of crossfading (in seconds)"
 msgstr "Il tempo totale per sfumare (in secondi)"
 
-#: PreferencesDialogBase.cpp:732 rc.cpp:144
+#: PreferencesDialogBase.cpp:780 rc.cpp:141
 msgid "fade in start %"
 msgstr "sfuma all'inizio %"
 
-#: PreferencesDialogBase.cpp:733 PreferencesDialogBase.cpp:736 rc.cpp:145
-#: rc.cpp:148
+#: PreferencesDialogBase.cpp:781 PreferencesDialogBase.cpp:784 rc.cpp:142
+#: rc.cpp:145
 msgid "Volume in percentage to fade in from"
 msgstr "Volume in percentuale da sfumare all'inizio"
 
-#: PreferencesDialogBase.cpp:737 rc.cpp:149
+#: PreferencesDialogBase.cpp:785 rc.cpp:146
 msgid ""
 "You MUST disable\n"
 "\"Allow Only One Instance of Noatun\"\n"
@@ -785,111 +790,169 @@ msgstr ""
 "and \"Process Playlist Items for Display\"\n"
 "nelle configurazioni di Noatun!"
 
-#: PreferencesDialogBase.cpp:741 rc.cpp:150
+#: PreferencesDialogBase.cpp:789 rc.cpp:147
 msgid "XMMS settings"
 msgstr "Configurazione XMMS"
 
-#: PreferencesDialogBase.cpp:742 PreferencesDialogBase.cpp:744 rc.cpp:151
-#: rc.cpp:153
+#: PreferencesDialogBase.cpp:790 PreferencesDialogBase.cpp:792 rc.cpp:148
+#: rc.cpp:150
 msgid "the number of songs to keep in Xmms playlist"
 msgstr "il numero di canzoni da tenere nella lista di esecuzione di XMMS"
 
-#: PreferencesDialogBase.cpp:743 rc.cpp:152
+#: PreferencesDialogBase.cpp:791 rc.cpp:149
 msgid "songs in playlist"
 msgstr "canzoni nella lista di esecuzione"
 
-#: PreferencesDialogBase.cpp:745 rc.cpp:154
-msgid "ArtsPlayer settings"
-msgstr "Configurazioni di ArtsPlayer"
-
-#: PreferencesDialogBase.cpp:746 rc.cpp:155
-msgid "- no settings yet -"
-msgstr "- non ancora impostato -"
-
-#: PreferencesDialogBase.cpp:747 rc.cpp:156
+#: PreferencesDialogBase.cpp:793 rc.cpp:151
 msgid "GstreamerPlayer settings"
 msgstr "Configurazioni di GstreamerPlayer"
 
-#: PreferencesDialogBase.cpp:748 rc.cpp:157
-msgid "AudioSink"
-msgstr "AudioSink"
-
-#: PreferencesDialogBase.cpp:749 PreferencesDialogBase.cpp:751 rc.cpp:158
-#: rc.cpp:160
+#: PreferencesDialogBase.cpp:795 PreferencesDialogBase.cpp:797 rc.cpp:153
+#: rc.cpp:155
 msgid "e.g. osssink, artsdsink, alsasink"
 msgstr "es. osssink, artsdsink, alsasink"
 
-#: PreferencesDialogBase.cpp:753 rc.cpp:162
+#: PreferencesDialogBase.cpp:796 rc.cpp:154
+msgid "AudioSink"
+msgstr "AudioSink"
+
+#: PreferencesDialogBase.cpp:798 rc.cpp:156
+msgid ""
+"(osssink works well for both ALSA and OSS, see docs for other audio backends)"
+msgstr ""
+
+#: PreferencesDialogBase.cpp:799 rc.cpp:157
+msgid "ArtsPlayer settings"
+msgstr "Configurazioni di ArtsPlayer"
+
+#: PreferencesDialogBase.cpp:800 rc.cpp:158
+msgid "- no settings yet -"
+msgstr "- non ancora impostato -"
+
+#: PreferencesDialogBase.cpp:802 rc.cpp:160
+msgid "Command line tool configuration"
+msgstr ""
+
+#: PreferencesDialogBase.cpp:803 rc.cpp:161
+msgid ".mp3 files"
+msgstr ""
+
+#: PreferencesDialogBase.cpp:804 PreferencesDialogBase.cpp:805
+#: PreferencesDialogBase.cpp:807 PreferencesDialogBase.cpp:809
+#: PreferencesDialogBase.cpp:811 PreferencesDialogBase.cpp:813
+#: PreferencesDialogBase.cpp:814 PreferencesDialogBase.cpp:815
+#: PreferencesDialogBase.cpp:816 PreferencesDialogBase.cpp:817 rc.cpp:162
+#: rc.cpp:163 rc.cpp:165 rc.cpp:167 rc.cpp:169 rc.cpp:171 rc.cpp:172
+#: rc.cpp:173 rc.cpp:174 rc.cpp:175
+msgid "Configuration of command line tool used for prelistening."
+msgstr ""
+
+#: PreferencesDialogBase.cpp:806 rc.cpp:164
+#, fuzzy
+msgid ".ogg files"
+msgstr "Percorso del file"
+
+#: PreferencesDialogBase.cpp:808 rc.cpp:166
+#, fuzzy
+msgid ".wav files"
+msgstr "Percorso del file"
+
+#: PreferencesDialogBase.cpp:810 rc.cpp:168
+msgid ".flac files"
+msgstr ""
+
+#: PreferencesDialogBase.cpp:812 rc.cpp:170
+#, fuzzy
+msgid "other files"
+msgstr "Sposta file"
+
+#: PreferencesDialogBase.cpp:818 rc.cpp:176
+msgid ""
+"The prelisten functionality of Yammi allows to listen to songs on a "
+"headphone (requires a second sound device) while the normal playback of your "
+"playlist continues (very handy on a party...).\n"
+"For each file type listed below, Yammi can use a different command.\n"
+"Configure each tool here, separating parameters with \"|\".\n"
+"Additionally to the usual placeholders (see the plugins tab) you can use "
+"{skipSeconds}, {skipMilliSeconds} and {skipFrames}."
+msgstr ""
+
+#: PreferencesDialogBase.cpp:822 rc.cpp:159
+#, fuzzy
+msgid "Prelistening"
+msgstr "Preascolto"
+
+#: PreferencesDialogBase.cpp:823 rc.cpp:178
 msgid "grab and encode script"
 msgstr "script per rippare cd"
 
-#: PreferencesDialogBase.cpp:754 PreferencesDialogBase.cpp:757 rc.cpp:163
-#: rc.cpp:166
+#: PreferencesDialogBase.cpp:824 PreferencesDialogBase.cpp:827 rc.cpp:179
+#: rc.cpp:182
 msgid "a script to grab a track from cd and encode to mp3"
 msgstr "uno script per estrarre una traccia da un cd e per codificarla in mp3"
 
-#: PreferencesDialogBase.cpp:755 rc.cpp:164
+#: PreferencesDialogBase.cpp:825 rc.cpp:180
 msgid "shutdown script"
 msgstr "script per l'arresto del sistema"
 
-#: PreferencesDialogBase.cpp:756 PreferencesDialogBase.cpp:758 rc.cpp:165
-#: rc.cpp:167
+#: PreferencesDialogBase.cpp:826 PreferencesDialogBase.cpp:828 rc.cpp:181
+#: rc.cpp:183
 msgid "a script that is invoked on sleep mode"
 msgstr "lo script che viene eseguito in modalità Spegnimento automatico"
 
-#: PreferencesDialogBase.cpp:759 PreferencesDialogBase.cpp:784 rc.cpp:161
-#: rc.cpp:168
+#: PreferencesDialogBase.cpp:829 PreferencesDialogBase.cpp:854 rc.cpp:177
+#: rc.cpp:184
 msgid "Plugins"
 msgstr "Plugins"
 
-#: PreferencesDialogBase.cpp:760 rc.cpp:169
+#: PreferencesDialogBase.cpp:830 rc.cpp:185
 msgid "Plugin Mode"
 msgstr "Tipo di plugin"
 
-#: PreferencesDialogBase.cpp:761 rc.cpp:170
+#: PreferencesDialogBase.cpp:831 rc.cpp:186
 msgid "New Entry"
 msgstr "Nuovo plugin"
 
-#: PreferencesDialogBase.cpp:762 rc.cpp:171
+#: PreferencesDialogBase.cpp:832 rc.cpp:187
 msgid "Delete Entry"
 msgstr "Elimina plugin"
 
-#: PreferencesDialogBase.cpp:763 rc.cpp:172
+#: PreferencesDialogBase.cpp:833 rc.cpp:188
 msgid "Add Standard Plugins"
 msgstr "Aggiungi i plugin standard"
 
-#: PreferencesDialogBase.cpp:764 rc.cpp:173
+#: PreferencesDialogBase.cpp:834 rc.cpp:189
 msgid "Adds all standard plugins (if not already existing)"
 msgstr "Aggiunge tutti i plugin standard (se non ci sono già)"
 
-#: PreferencesDialogBase.cpp:765 rc.cpp:174
+#: PreferencesDialogBase.cpp:835 rc.cpp:190
 msgid "menu entry"
 msgstr "voce di menu"
 
-#: PreferencesDialogBase.cpp:766 PreferencesDialogBase.cpp:770 rc.cpp:175
-#: rc.cpp:179
+#: PreferencesDialogBase.cpp:836 PreferencesDialogBase.cpp:840 rc.cpp:191
+#: rc.cpp:195
 msgid "the entry to appear in the context menu"
 msgstr "la voce che appare nel menu contestuale"
 
-#: PreferencesDialogBase.cpp:767 rc.cpp:176
+#: PreferencesDialogBase.cpp:837 rc.cpp:192
 msgid "command"
 msgstr "comando"
 
-#: PreferencesDialogBase.cpp:768 PreferencesDialogBase.cpp:771 rc.cpp:177
-#: rc.cpp:180
+#: PreferencesDialogBase.cpp:838 PreferencesDialogBase.cpp:841 rc.cpp:193
+#: rc.cpp:196
 msgid "the script that is invoked when this plugin is chosen"
 msgstr "lo script che viene eseguito quando viene chiuso il plugin"
 
-#: PreferencesDialogBase.cpp:769 rc.cpp:178
+#: PreferencesDialogBase.cpp:839 rc.cpp:194
 msgid "Placeholders..."
 msgstr "Segnaposto..."
 
-#: PreferencesDialogBase.cpp:772 PreferencesDialogBase.cpp:781 rc.cpp:181
-#: rc.cpp:187
+#: PreferencesDialogBase.cpp:842 PreferencesDialogBase.cpp:851 rc.cpp:197
+#: rc.cpp:203
 msgid "defines the content of the {customList} placeholders"
 msgstr "definisce il contenuto dei {customList} Segnaposto..."
 
-#: PreferencesDialogBase.cpp:773 rc.cpp:182
+#: PreferencesDialogBase.cpp:843 rc.cpp:198
 msgid ""
 "Plugins can be invoked on a selection of songs from the context menu.\n"
 "\n"
@@ -902,28 +965,28 @@ msgstr ""
 "Modalità singola = eseguito una volta per ogni canzone\n"
 "Modalità di gruppo = eseguito una volta per la selezione"
 
-#: PreferencesDialogBase.cpp:777 rc.cpp:183
+#: PreferencesDialogBase.cpp:847 rc.cpp:199
 msgid "See Yammi's homepage for useful plugin configurations:"
 msgstr "Vedi la homepage di Yammi per utili plugin"
 
-#: PreferencesDialogBase.cpp:778 PreferencesDialogBase.cpp:779 rc.cpp:184
-#: rc.cpp:185
+#: PreferencesDialogBase.cpp:848 PreferencesDialogBase.cpp:849 rc.cpp:200
+#: rc.cpp:201
 msgid "http://yammi.sourceforge.net/plugins.html"
 msgstr "http://yammi.sourceforge.net/plugins.html"
 
-#: PreferencesDialogBase.cpp:780 rc.cpp:186
+#: PreferencesDialogBase.cpp:850 rc.cpp:202
 msgid "custom list"
 msgstr "lista personalizzata"
 
-#: PreferencesDialogBase.cpp:782 rc.cpp:188
+#: PreferencesDialogBase.cpp:852 rc.cpp:204
 msgid "ask for confirmation"
 msgstr "chiedi conferma"
 
-#: PreferencesDialogBase.cpp:783 rc.cpp:189
+#: PreferencesDialogBase.cpp:853 rc.cpp:205
 msgid "popup a message box before executing the command"
 msgstr "chiedi conferma prima di eseguire il plugin"
 
-#: PreferencesDialogBase.cpp:785 rc.cpp:191
+#: PreferencesDialogBase.cpp:855 rc.cpp:207
 msgid ""
 "These settings configure the \"Jukebox\" capabilities of Yammi,\n"
 "that is loading songs that are not available on the harddisk\n"
@@ -941,35 +1004,36 @@ msgstr ""
 "dei CD/DVD necessari per la lista di esecuzione attuale, a le canzoni\n"
 "possono essere caricate in una memoria temporanea."
 
-#: PreferencesDialogBase.cpp:792 rc.cpp:192
+#: PreferencesDialogBase.cpp:862 rc.cpp:208
 msgid "Removable Media Management"
 msgstr "Gestore dei supporti rimovibili"
 
-#: PreferencesDialogBase.cpp:793 rc.cpp:193
+#: PreferencesDialogBase.cpp:863 rc.cpp:209
 msgid "max size of media for burning (MB)"
 msgstr "dimensione massima del cd per la scrittura"
 
-#: PreferencesDialogBase.cpp:794 PreferencesDialogBase.cpp:795 rc.cpp:194
-#: rc.cpp:195
+#: PreferencesDialogBase.cpp:864 PreferencesDialogBase.cpp:865 rc.cpp:210
+#: rc.cpp:211
 msgid "indicates maximum size in MB for one media (eg. 700 for a CD-R)"
 msgstr ""
 "indica la dimensione massima in MB disponibile nel CD/DVD (ad esempio 700 "
 "per i CD-R)"
 
-#: PreferencesDialogBase.cpp:796 rc.cpp:196
+#: PreferencesDialogBase.cpp:866 rc.cpp:212
 msgid "swap directory"
 msgstr "cartella temporanea"
 
-#: PreferencesDialogBase.cpp:797 PreferencesDialogBase.cpp:810 rc.cpp:197
-#: rc.cpp:210
+#: PreferencesDialogBase.cpp:867 PreferencesDialogBase.cpp:880 rc.cpp:213
+#: rc.cpp:226
 msgid "directory where songs from removable media will be swapped"
-msgstr "cartella in cui vengono caricate le canzoni presenti nei supporti rimovibili"
+msgstr ""
+"cartella in cui vengono caricate le canzoni presenti nei supporti rimovibili"
 
-#: PreferencesDialogBase.cpp:800 rc.cpp:200
+#: PreferencesDialogBase.cpp:870 rc.cpp:216
 msgid "mount and umount the media directory"
 msgstr "monta e smonta la cartella del CD/DVD"
 
-#: PreferencesDialogBase.cpp:801 rc.cpp:201
+#: PreferencesDialogBase.cpp:871 rc.cpp:217
 msgid ""
 "try to mount and umount the swap directory before and after loading songs "
 "from removable media"
@@ -977,17 +1041,17 @@ msgstr ""
 "cerca di montare e smontare la cartella temporanea prima e dopo il "
 "caricamento delle canzoni dal supporto rimovibile"
 
-#: PreferencesDialogBase.cpp:802 PreferencesDialogBase.cpp:804 rc.cpp:202
-#: rc.cpp:204
+#: PreferencesDialogBase.cpp:872 PreferencesDialogBase.cpp:874 rc.cpp:218
+#: rc.cpp:220
 msgid "directory where removable media will be mounted"
 msgstr "cartella in cui il supporto rimovibile viene montato"
 
-#: PreferencesDialogBase.cpp:803 rc.cpp:203
+#: PreferencesDialogBase.cpp:873 rc.cpp:219
 msgid "media directory (mount point)"
 msgstr "punto di montaggio dei supporti rimovibili"
 
-#: PreferencesDialogBase.cpp:805 PreferencesDialogBase.cpp:809 rc.cpp:205
-#: rc.cpp:209
+#: PreferencesDialogBase.cpp:875 PreferencesDialogBase.cpp:879 rc.cpp:221
+#: rc.cpp:225
 msgid ""
 "when the swapped songs use more than this value, the least recently used "
 "(LRU) are deleted"
@@ -995,51 +1059,51 @@ msgstr ""
 "quando le canzone salvate nella cartella temporanea superano questo valore, "
 "quelle che non vengono piú suonate da molto tempo vengono cancellate"
 
-#: PreferencesDialogBase.cpp:808 rc.cpp:208
+#: PreferencesDialogBase.cpp:878 rc.cpp:224
 msgid "maximum swap size (MB)"
 msgstr "dimensione massima della cartella temporanea"
 
-#: PreferencesDialogBase.cpp:811 rc.cpp:12 rc.cpp:190
+#: PreferencesDialogBase.cpp:881 rc.cpp:12 rc.cpp:206
 msgid "Removable Media"
 msgstr "Supporto Rimovibile"
 
-#: preferencesdialog.cpp:249
+#: preferencesdialog.cpp:259
 msgid "choose trash directory"
 msgstr "scegli la cartella cestino"
 
-#: preferencesdialog.cpp:257 updatedatabasemediadialog.cpp:46
+#: preferencesdialog.cpp:267 updatedatabasemediadialog.cpp:46
 msgid "choose media directory"
 msgstr "scegli la cartella del supporto"
 
-#: preferencesdialog.cpp:265
+#: preferencesdialog.cpp:275
 msgid "choose swap directory"
 msgstr "scegli la cartella temporanea"
 
-#: preferencesdialog.cpp:387
+#: preferencesdialog.cpp:397
 msgid "Replacements for command (single mode)\n"
 msgstr "Sostituzione del comando (modalità singola)\n"
 
-#: preferencesdialog.cpp:388
+#: preferencesdialog.cpp:398
 msgid "or custom list (group mode):\n"
 msgstr "o lista personalizzata (modalità di gruppo)\n"
 
-#: preferencesdialog.cpp:390
+#: preferencesdialog.cpp:400
 msgid "{newline} (newline)\n"
 msgstr "{newline} (nuova riga)\n"
 
-#: preferencesdialog.cpp:391
+#: preferencesdialog.cpp:401
 msgid "{index} (index of a song within a selection)\n"
 msgstr "{index} (posizione della canzone all'interno della selezione)\n"
 
-#: preferencesdialog.cpp:392
+#: preferencesdialog.cpp:402
 msgid "{directoryDialog} (directory dialog, returns chosen directory)\n"
 msgstr "{directoryDialog} (finestra di dialogo per directory)\n"
 
-#: preferencesdialog.cpp:393
+#: preferencesdialog.cpp:403
 msgid "{fileDialog} (file dialog, returns chosen file)\n"
 msgstr "{fileDialog} (finestra di dialogo per file)\n"
 
-#: preferencesdialog.cpp:394
+#: preferencesdialog.cpp:404
 msgid ""
 "{inputString} (input string dialog, returns entered string)\n"
 "\n"
@@ -1047,19 +1111,19 @@ msgstr ""
 "{inputString} (finestra di dialogo per stringa di input)\n"
 "\n"
 
-#: preferencesdialog.cpp:396
+#: preferencesdialog.cpp:406
 msgid "Replacements for command (group mode):\n"
 msgstr "Sostituzioni dei comandi (modalità di gruppo)\n"
 
-#: preferencesdialog.cpp:397
+#: preferencesdialog.cpp:407
 msgid "{customList} (custom list, directly)\n"
 msgstr "{customList} (lista personalizzata, direttamente)\n"
 
-#: preferencesdialog.cpp:398
+#: preferencesdialog.cpp:408
 msgid "{customListFile} (filename of custom list)\n"
 msgstr "{customListFile} (nomi dei file nella lista)\n"
 
-#: preferencesdialog.cpp:399
+#: preferencesdialog.cpp:409
 msgid "{customListViaFile} (custom list, via file / cat command)\n"
 msgstr "{customListViaFile} (lista personalizzata, via file / cat )\n"
 
@@ -1071,7 +1135,7 @@ msgstr "PreferencesDialog"
 msgid "Player"
 msgstr "Player"
 
-#: rc.cpp:2 yammigui.cpp:3385
+#: rc.cpp:2 yammigui.cpp:3383
 msgid "Playlist"
 msgstr "Playlist"
 
@@ -1115,107 +1179,107 @@ msgstr "Cerca simili..."
 msgid "Advanced..."
 msgstr "Avanzate..."
 
-#: rc.cpp:211 SongInfoDialog.cpp:288
+#: rc.cpp:227 SongInfoDialog.cpp:288
 msgid "show and edit song info"
 msgstr "mostra e modifica le info"
 
-#: rc.cpp:212 SongInfoDialog.cpp:289
+#: rc.cpp:228 SongInfoDialog.cpp:289
 msgid "tag information"
 msgstr "informazioni delle tag"
 
-#: rc.cpp:213 SongInfoDialog.cpp:290 yammigui.cpp:106
+#: rc.cpp:229 SongInfoDialog.cpp:290 yammigui.cpp:107
 msgid "Album"
 msgstr "Album"
 
-#: rc.cpp:214 SongInfoDialog.cpp:291 yammigui.cpp:108
+#: rc.cpp:230 SongInfoDialog.cpp:291 yammigui.cpp:109
 msgid "Comment"
 msgstr "Commento"
 
-#: rc.cpp:215 SongInfoDialog.cpp:292 yammigui.cpp:107 yammigui.cpp:3373
+#: rc.cpp:231 SongInfoDialog.cpp:292 yammigui.cpp:108 yammigui.cpp:3371
 msgid "Year"
 msgstr "Anno"
 
-#: rc.cpp:216 SongInfoDialog.cpp:293 yammigui.cpp:106
+#: rc.cpp:232 SongInfoDialog.cpp:293 yammigui.cpp:107
 msgid "Title"
 msgstr "Titolo"
 
-#: rc.cpp:217 SongInfoDialog.cpp:294
+#: rc.cpp:233 SongInfoDialog.cpp:294
 msgid "Track"
 msgstr "Traccia"
 
-#: rc.cpp:218 SongInfoDialog.cpp:295 yammigui.cpp:107 yammigui.cpp:3369
+#: rc.cpp:234 SongInfoDialog.cpp:295 yammigui.cpp:108 yammigui.cpp:3367
 msgid "Genre"
 msgstr "Genere"
 
-#: rc.cpp:219 SongInfoDialog.cpp:296 yammigui.cpp:106
+#: rc.cpp:235 SongInfoDialog.cpp:296 yammigui.cpp:107
 msgid "Artist"
 msgstr "Artista"
 
-#: rc.cpp:221 SongInfoDialog.cpp:298
+#: rc.cpp:237 SongInfoDialog.cpp:298
 msgid "database info"
 msgstr "database info"
 
-#: rc.cpp:222 SongInfoDialog.cpp:299
+#: rc.cpp:238 SongInfoDialog.cpp:299
 msgid "Added"
 msgstr "Aggiunto"
 
-#: rc.cpp:223 SongInfoDialog.cpp:300
+#: rc.cpp:239 SongInfoDialog.cpp:300
 msgid "Indicates the date when this song was added to the database"
 msgstr "Indica la data in cui la canzone è stata aggiunta al database"
 
-#: rc.cpp:224 SongInfoDialog.cpp:301
+#: rc.cpp:240 SongInfoDialog.cpp:301
 msgid "not implemented yet..."
 msgstr "non ancora implementato..."
 
-#: rc.cpp:225 SongInfoDialog.cpp:302
+#: rc.cpp:241 SongInfoDialog.cpp:302
 msgid "Last played"
 msgstr "Ultima volta"
 
-#: rc.cpp:228 SongInfoDialog.cpp:305
+#: rc.cpp:244 SongInfoDialog.cpp:305
 msgid "song info..."
 msgstr "Info"
 
-#: rc.cpp:229 SongInfoDialog.cpp:306
+#: rc.cpp:245 SongInfoDialog.cpp:306
 msgid "read only"
 msgstr "sola lettura"
 
-#: rc.cpp:230 SongInfoDialog.cpp:307
+#: rc.cpp:246 SongInfoDialog.cpp:307
 msgid "Size"
 msgstr "Dimensione"
 
-#: rc.cpp:231 SongInfoDialog.cpp:308 yammigui.cpp:108
+#: rc.cpp:247 SongInfoDialog.cpp:308 yammigui.cpp:109
 msgid "Path"
 msgstr "Percorso"
 
-#: rc.cpp:232 SongInfoDialog.cpp:309 yammigui.cpp:106
+#: rc.cpp:248 SongInfoDialog.cpp:309 yammigui.cpp:107
 msgid "Length"
 msgstr "Lunghezza"
 
-#: rc.cpp:233 rc.cpp:235 SongInfoDialog.cpp:310 SongInfoDialog.cpp:312
+#: rc.cpp:249 rc.cpp:251 SongInfoDialog.cpp:310 SongInfoDialog.cpp:312
 msgid "lists all media containing this song"
 msgstr "mostra tutti i supporti contenenti questa canzone"
 
-#: rc.cpp:234 SongInfoDialog.cpp:311 yammigui.cpp:3381
+#: rc.cpp:250 SongInfoDialog.cpp:311 yammigui.cpp:3379
 msgid "Media"
 msgstr "Supporto"
 
-#: rc.cpp:236 SongInfoDialog.cpp:313 yammigui.cpp:107
+#: rc.cpp:252 SongInfoDialog.cpp:313 yammigui.cpp:108
 msgid "Bitrate"
 msgstr "Bitrate"
 
-#: rc.cpp:237 SongInfoDialog.cpp:314 yammigui.cpp:108
+#: rc.cpp:253 SongInfoDialog.cpp:314 yammigui.cpp:109
 msgid "Filename"
 msgstr "Nome File"
 
-#: rc.cpp:238 SongInfoDialog.cpp:315
+#: rc.cpp:254 SongInfoDialog.cpp:315
 msgid "proposed Path"
 msgstr "Cartella proposta"
 
-#: rc.cpp:239 SongInfoDialog.cpp:316
+#: rc.cpp:255 SongInfoDialog.cpp:316
 msgid "proposed Filename"
 msgstr "Nome File proposto"
 
-#: rc.cpp:240 SongInfoDialog.cpp:317
+#: rc.cpp:256 SongInfoDialog.cpp:317
 msgid ""
 "Shows the filename that Yammi would propose using the defined filename "
 "pattern."
@@ -1223,22 +1287,22 @@ msgstr ""
 "Mostra il nome del file che Yammi propone usando lo schema definito di "
 "\"nome file\""
 
-#: rc.cpp:241 UpdateDatabaseDialogBase.cpp:112
+#: rc.cpp:257 UpdateDatabaseDialogBase.cpp:112
 msgid "Update Database - Scan Harddisk"
 msgstr "Aggiorna database - Cerca nel disco"
 
-#: rc.cpp:242 rc.cpp:260 UpdateDatabaseDialogBase.cpp:113
+#: rc.cpp:258 rc.cpp:276 UpdateDatabaseDialogBase.cpp:113
 #: UpdateDatabaseMediaDialogBase.cpp:131
 msgid "Start Scan..."
 msgstr "Comincia scansione..."
 
-#: rc.cpp:245 rc.cpp:251 rc.cpp:268 rc.cpp:269
+#: rc.cpp:261 rc.cpp:267 rc.cpp:284 rc.cpp:285
 #: UpdateDatabaseDialogBase.cpp:116 UpdateDatabaseDialogBase.cpp:122
 #: UpdateDatabaseMediaDialogBase.cpp:139 UpdateDatabaseMediaDialogBase.cpp:140
 msgid "filename pattern (eg. \"*.mp3 *.ogg\")"
 msgstr "schema dei nomi dei file (es. \"*.mp3 *.ogg\")"
 
-#: rc.cpp:246 rc.cpp:248 rc.cpp:259 rc.cpp:261
+#: rc.cpp:262 rc.cpp:264 rc.cpp:275 rc.cpp:277
 #: UpdateDatabaseDialogBase.cpp:117 UpdateDatabaseDialogBase.cpp:119
 #: UpdateDatabaseMediaDialogBase.cpp:130 UpdateDatabaseMediaDialogBase.cpp:132
 msgid ""
@@ -1248,25 +1312,25 @@ msgstr ""
 "yammi cerca le nuove canzoni in questa cartella (e ricorsivamente nelle "
 "sottocartelle)"
 
-#: rc.cpp:247 UpdateDatabaseDialogBase.cpp:118
+#: rc.cpp:263 UpdateDatabaseDialogBase.cpp:118
 msgid "base directory for scanning"
 msgstr "cartella di base per la scansione"
 
-#: rc.cpp:249 UpdateDatabaseDialogBase.cpp:120
+#: rc.cpp:265 UpdateDatabaseDialogBase.cpp:120
 msgid "Options for scanning your harddisk"
 msgstr "Opzioni per la scansione del disco fisso"
 
-#: rc.cpp:250 rc.cpp:267 UpdateDatabaseDialogBase.cpp:121
+#: rc.cpp:266 rc.cpp:283 UpdateDatabaseDialogBase.cpp:121
 #: UpdateDatabaseMediaDialogBase.cpp:138
 msgid "pattern of files to import"
 msgstr "schema dei file da importare"
 
-#: rc.cpp:253 rc.cpp:271 UpdateDatabaseDialogBase.cpp:124
+#: rc.cpp:269 rc.cpp:287 UpdateDatabaseDialogBase.cpp:124
 #: UpdateDatabaseMediaDialogBase.cpp:142
 msgid "follow symbolic links"
 msgstr "segui collegamenti simbolici"
 
-#: rc.cpp:254 rc.cpp:272 UpdateDatabaseDialogBase.cpp:125
+#: rc.cpp:270 rc.cpp:288 UpdateDatabaseDialogBase.cpp:125
 #: UpdateDatabaseMediaDialogBase.cpp:143
 msgid ""
 "Choose whether yammi should follow symbolic links when traversing the "
@@ -1275,28 +1339,28 @@ msgstr ""
 "Scegli se yammi deve seguire i collegamenti simbolici quando attraversa la "
 "struttura delle cartelle"
 
-#: rc.cpp:255 UpdateDatabaseMediaDialogBase.cpp:126
+#: rc.cpp:271 UpdateDatabaseMediaDialogBase.cpp:126
 msgid "Update Database - Scan Media"
 msgstr "Aggiorna database - Scansione Supporti"
 
-#: rc.cpp:258 UpdateDatabaseMediaDialogBase.cpp:129
+#: rc.cpp:274 UpdateDatabaseMediaDialogBase.cpp:129
 msgid "media directory"
 msgstr "Cartella Supporti"
 
-#: rc.cpp:262 UpdateDatabaseMediaDialogBase.cpp:133
+#: rc.cpp:278 UpdateDatabaseMediaDialogBase.cpp:133
 msgid "Options for scanning a media (e.g. CD)"
 msgstr "Opzioni per la scansione di un supporto CD/DVD"
 
-#: rc.cpp:264 UpdateDatabaseMediaDialogBase.cpp:135
+#: rc.cpp:280 UpdateDatabaseMediaDialogBase.cpp:135
 msgid "name of medium"
 msgstr "nome del supporto"
 
-#: rc.cpp:265 rc.cpp:266 UpdateDatabaseMediaDialogBase.cpp:136
+#: rc.cpp:281 rc.cpp:282 UpdateDatabaseMediaDialogBase.cpp:136
 #: UpdateDatabaseMediaDialogBase.cpp:137
 msgid "identifies the medium by name"
 msgstr "identifica il supporto dal nome"
 
-#: rc.cpp:270 UpdateDatabaseMediaDialogBase.cpp:141
+#: rc.cpp:286 UpdateDatabaseMediaDialogBase.cpp:141
 msgid "mount directory"
 msgstr "cartella di montaggio"
 
@@ -1324,7 +1388,8 @@ msgstr "{path} (percorso cartella, senza nome file)\n"
 
 #: song.cpp:854
 msgid "{artist}, {title}, {album}, {comment} (corresponding to the tags)\n"
-msgstr "{artist}, {title}, {album}, {comment} (artista, titolo, album, commento)\n"
+msgstr ""
+"{artist}, {title}, {album}, {comment} (artista, titolo, album, commento)\n"
 
 #: song.cpp:855
 msgid "{bitrate} (in kbps)\n"
@@ -1394,27 +1459,27 @@ msgstr "UpdateDatabaseMediaDialog"
 msgid "XmmsPlayer"
 msgstr "XmmsPlayer"
 
-#: yammigui.cpp:107
+#: yammigui.cpp:108
 msgid "TrackNr"
 msgstr "Traccia"
 
-#: yammigui.cpp:107
+#: yammigui.cpp:108
 msgid "AddedTo"
 msgstr "Aggiunto il"
 
-#: yammigui.cpp:108
+#: yammigui.cpp:109
 msgid "Last Played"
 msgstr "Suonato"
 
-#: yammigui.cpp:364 yammigui.cpp:3358
+#: yammigui.cpp:365 yammigui.cpp:3356
 msgid "All Music"
 msgstr "All Music"
 
-#: yammigui.cpp:365 yammigui.cpp:2426
+#: yammigui.cpp:366 yammigui.cpp:2450
 msgid "Folder: "
 msgstr "Cartella: "
 
-#: yammigui.cpp:403
+#: yammigui.cpp:404
 msgid ""
 "The Song Database has been modified.\n"
 "Do you want to save the changes?"
@@ -1422,51 +1487,51 @@ msgstr ""
 "Il database delle canzoni è stato modificato.\n"
 "Vuoi salvare i cambiamenti?"
 
-#: yammigui.cpp:404
+#: yammigui.cpp:405
 msgid "Database modified"
 msgstr "Database modificato"
 
-#: yammigui.cpp:430
+#: yammigui.cpp:431
 msgid "Shutting down in %1 seconds"
 msgstr "Spegnimento automatico fra %1 secondi"
 
-#: yammigui.cpp:431
+#: yammigui.cpp:432
 msgid "Shutting down..."
 msgstr "Spegnimento automatico..."
 
-#: yammigui.cpp:564
+#: yammigui.cpp:565
 msgid "Yammi - not playing"
 msgstr "Yammi - Non in riproduzione"
 
-#: yammigui.cpp:596
+#: yammigui.cpp:597
 msgid "Pause"
 msgstr "Pausa"
 
-#: yammigui.cpp:599 yammigui.cpp:3426
+#: yammigui.cpp:600 yammigui.cpp:3424
 msgid "Play"
 msgstr "Riproduci"
 
-#: yammigui.cpp:784 yammigui.cpp:800
+#: yammigui.cpp:785 yammigui.cpp:801
 msgid "Pos"
 msgstr "Pos"
 
-#: yammigui.cpp:788
+#: yammigui.cpp:789
 msgid "Played on"
 msgstr "Suonato"
 
-#: yammigui.cpp:792
+#: yammigui.cpp:793
 msgid "Match"
 msgstr "Corrispondenza"
 
-#: yammigui.cpp:796
+#: yammigui.cpp:797
 msgid "Reason"
 msgstr "Ragione"
 
-#: yammigui.cpp:963
+#: yammigui.cpp:964
 msgid "New Category..."
 msgstr "Nuova Categoria..."
 
-#: yammigui.cpp:1077
+#: yammigui.cpp:1078
 msgid ""
 "Two identical songs: \n"
 "s1: %1\n"
@@ -1478,51 +1543,51 @@ msgstr ""
 "s2:%2\n"
 "Vuoi cancellare una delle due?"
 
-#: yammigui.cpp:1078
+#: yammigui.cpp:1079
 msgid "Delete s1"
 msgstr "Cancella s1"
 
-#: yammigui.cpp:1078
+#: yammigui.cpp:1079
 msgid "Delete s2"
 msgstr "Cancella s2"
 
-#: yammigui.cpp:1387
+#: yammigui.cpp:1389
 msgid "%1 songs selected"
 msgstr "%1 canzoni selezionate"
 
-#: yammigui.cpp:1399
+#: yammigui.cpp:1401
 msgid "Artist: "
 msgstr "Artista: "
 
-#: yammigui.cpp:1412
+#: yammigui.cpp:1414
 msgid "Album: "
 msgstr "Album: "
 
-#: yammigui.cpp:1420
+#: yammigui.cpp:1422
 msgid "Genre: "
 msgstr "Genere: "
 
-#: yammigui.cpp:1429
+#: yammigui.cpp:1431
 msgid "Year: "
 msgstr "Anno"
 
-#: yammigui.cpp:1498
+#: yammigui.cpp:1500
 msgid "choose directory for plugin"
 msgstr "scegli la cartella per il plugin"
 
-#: yammigui.cpp:1504
+#: yammigui.cpp:1506
 msgid "choose file for plugin"
 msgstr "scegli il file per il plugin"
 
-#: yammigui.cpp:1521
+#: yammigui.cpp:1523
 msgid "Type in plugin parameter"
 msgstr "Metti i parametri di plugin"
 
-#: yammigui.cpp:1536
+#: yammigui.cpp:1538
 msgid "Execute the following command on each selected song?\n"
 msgstr "Esegui il seguente comando per ogni canzone selezionata?\n"
 
-#: yammigui.cpp:1537
+#: yammigui.cpp:1539
 msgid ""
 "(here shown: values for first song)\n"
 "\n"
@@ -1530,15 +1595,15 @@ msgstr ""
 "(qui mostrati: i valori per la prima canzone)\n"
 "\n"
 
-#: yammigui.cpp:1546
+#: yammigui.cpp:1548
 msgid "Executing song plugin cmd..."
 msgstr "Comando del plugin in esecuzione..."
 
-#: yammigui.cpp:1578
+#: yammigui.cpp:1580
 msgid "Execute the following command:\n"
 msgstr "Esegui il seguente comando:\n"
 
-#: yammigui.cpp:1582
+#: yammigui.cpp:1584
 msgid ""
 "\n"
 "...\n"
@@ -1548,39 +1613,39 @@ msgstr ""
 "...\n"
 "(comando troncato)"
 
-#: yammigui.cpp:1606
+#: yammigui.cpp:1608
 msgid "Select destination directory"
 msgstr "Seleziona la cartella di destinazione"
 
-#: yammigui.cpp:1629 yammigui.cpp:2374
+#: yammigui.cpp:1631 yammigui.cpp:2398
 msgid "collection name"
 msgstr "nome della collezione"
 
-#: yammigui.cpp:1629
+#: yammigui.cpp:1631
 msgid "Please enter collection name:"
 msgstr "Inserisci il nome della collezione"
 
-#: yammigui.cpp:1629
+#: yammigui.cpp:1631
 msgid "my mp3 collection"
 msgstr "la mia collezione di mp3"
 
-#: yammigui.cpp:1633
+#: yammigui.cpp:1635
 msgid "collection start number"
 msgstr "numero d'inizio della collezione"
 
-#: yammigui.cpp:1633
+#: yammigui.cpp:1635
 msgid "Please enter start index:"
 msgstr "Inserisci l'indice di inizio"
 
-#: yammigui.cpp:1637
+#: yammigui.cpp:1639
 msgid "Preparing media..."
 msgstr "Preparazione del supporto..."
 
-#: yammigui.cpp:1661
+#: yammigui.cpp:1663
 msgid "Preparing media "
 msgstr "Preparazione del supporto"
 
-#: yammigui.cpp:1703
+#: yammigui.cpp:1705
 msgid ""
 "Result of \"Burn to media\" process:\n"
 "\n"
@@ -1629,53 +1694,58 @@ msgstr ""
 "avere l'opzione\n"
 "                             \"segui collegamenti simbolici\" da selezionare."
 
-#: yammigui.cpp:1853
+#: yammigui.cpp:1863
 msgid "%1 Songs equeued at end of playlist"
 msgstr "%1 Canzoni accodate alla fine della lista di esecuzione"
 
-#: yammigui.cpp:2094
+#: yammigui.cpp:2104
 msgid "Mass editing: %1 songs"
 msgstr "Modifica di massa: %1 canzoni"
 
-#: yammigui.cpp:2095
+#: yammigui.cpp:2105
 msgid "Size (total)"
 msgstr "Dimensione (totale)"
 
-#: yammigui.cpp:2096
+#: yammigui.cpp:2106
 msgid "Length (total)"
 msgstr "Lunghezza (totale)"
 
-#: yammigui.cpp:2098
+#: yammigui.cpp:2108
 #, c-format
 msgid "%d:%02d:%02d (hh:mm:ss)"
 msgstr "%d:%02d:%02d (hh:mm:ss)"
 
-#: yammigui.cpp:2102
+#: yammigui.cpp:2112
 #, c-format
 msgid "%2d:%02d (mm:ss)"
 msgstr "%2d:%02d (mm:ss)"
 
-#: yammigui.cpp:2104
+#: yammigui.cpp:2115
+#, fuzzy
+msgid "%1 KB"
+msgstr "%1 MB"
+
+#: yammigui.cpp:2118
 msgid "%1 MB"
 msgstr "%1 MB"
 
-#: yammigui.cpp:2201
+#: yammigui.cpp:2225
 msgid "Delete %1 songs"
 msgstr "Cancella %1 canzoni"
 
-#: yammigui.cpp:2340
+#: yammigui.cpp:2364
 msgid "Enter name for category"
 msgstr "Inserisci il nome per la categoria"
 
-#: yammigui.cpp:2341
+#: yammigui.cpp:2365
 msgid "Please enter name of category"
 msgstr "Inserisci il nome per la categoria"
 
-#: yammigui.cpp:2342
+#: yammigui.cpp:2366
 msgid "new category"
 msgstr "nuova categoria"
 
-#: yammigui.cpp:2359
+#: yammigui.cpp:2383
 msgid ""
 "Delete category %1 ?\n"
 " (will be deleted immediately!)"
@@ -1683,15 +1753,15 @@ msgstr ""
 "Elimina categoria  %1?\n"
 "(verrà eliminata immediatamente!)"
 
-#: yammigui.cpp:2374 yammigui.cpp:2459
+#: yammigui.cpp:2398 yammigui.cpp:2483
 msgid "Please enter new name:"
 msgstr "Inserisci il nuovo nome:"
 
-#: yammigui.cpp:2392
+#: yammigui.cpp:2416
 msgid "Choose a Playlist to insert"
 msgstr "Scegli una lista di esecuzione da inserire"
 
-#: yammigui.cpp:2446
+#: yammigui.cpp:2470
 msgid ""
 "Remove media %1 and the corresponding directory?\n"
 "                               (which contains the symbolic links to the "
@@ -1701,11 +1771,11 @@ msgstr ""
 "                               (che contiene il collegamento simbolico alle "
 "canzoni)"
 
-#: yammigui.cpp:2459
+#: yammigui.cpp:2483
 msgid "Rename Media"
 msgstr "Rinomina Supporto"
 
-#: yammigui.cpp:2514
+#: yammigui.cpp:2538
 msgid ""
 "Clear complete playlist?\n"
 "(%1 entries)"
@@ -1713,48 +1783,48 @@ msgstr ""
 "Pulisci completamente la lista di esecuzione?\n"
 "(%1 voci)"
 
-#: yammigui.cpp:2516
+#: yammigui.cpp:2540
 msgid "including current song"
 msgstr "includi la canzone corrente"
 
-#: yammigui.cpp:2637
+#: yammigui.cpp:2661
 msgid "Enter track number"
 msgstr "Inserisci il numero di traccia"
 
-#: yammigui.cpp:2638
+#: yammigui.cpp:2662
 msgid "Please enter track number"
 msgstr "Inserisci il numero di traccia"
 
-#: yammigui.cpp:2646
+#: yammigui.cpp:2670
 msgid "Enter artist"
 msgstr "Inserisci l'artista"
 
-#: yammigui.cpp:2647
+#: yammigui.cpp:2671
 msgid "Please enter artist"
 msgstr "Inserisci l'artista"
 
-#: yammigui.cpp:2648
+#: yammigui.cpp:2672
 msgid "MyArtist"
 msgstr "MyArtist"
 
-#: yammigui.cpp:2652
+#: yammigui.cpp:2676
 msgid "Enter title"
 msgstr "Inserisci il titolo"
 
-#: yammigui.cpp:2653
+#: yammigui.cpp:2677
 msgid "Please enter title"
 msgstr "Inserisci il titolo"
 
-#: yammigui.cpp:2654
+#: yammigui.cpp:2678
 msgid "Fantastic Song"
 msgstr "Canzone fantastica"
 
-#: yammigui.cpp:2658
+#: yammigui.cpp:2682
 #, c-format
 msgid "%1%2 - %3.mp3"
 msgstr "%1%2 - %3.mp3"
 
-#: yammigui.cpp:2661
+#: yammigui.cpp:2685
 msgid ""
 "The file\n"
 "%1\n"
@@ -1768,15 +1838,15 @@ msgstr ""
 "\n"
 "Scegli una combinazione artista/titolo diversa."
 
-#: yammigui.cpp:2669
+#: yammigui.cpp:2693
 msgid "grabbing track, will be available shortly..."
 msgstr "estrazione traccia, sarà disponibile tra poco..."
 
-#: yammigui.cpp:2690
+#: yammigui.cpp:2714
 msgid "grabbed song available"
 msgstr "canzoni estratte disponibili"
 
-#: yammigui.cpp:2699
+#: yammigui.cpp:2723
 msgid ""
 "Yammi tried to add the grabbed song to the database.\n"
 "\n"
@@ -1788,23 +1858,23 @@ msgstr ""
 "Alcune statistiche:\n"
 "\n"
 
-#: yammigui.cpp:2700 yammigui.cpp:2996 yammigui.cpp:3041
+#: yammigui.cpp:2724 yammigui.cpp:2989 yammigui.cpp:3034
 msgid "%1 songs added to database\n"
 msgstr "%1 canzoni aggiunte al database\n"
 
-#: yammigui.cpp:2701 yammigui.cpp:2997 yammigui.cpp:3042
+#: yammigui.cpp:2725 yammigui.cpp:2990 yammigui.cpp:3035
 msgid "%1 songs corrupt (=not added)\n"
 msgstr "%1 canzoni corrotte(=non aggiunte)\n"
 
-#: yammigui.cpp:2702
+#: yammigui.cpp:2726
 msgid "%1 problematic issues(check in folder Problematic Songs)"
 msgstr "%1 problemi (vedi la cartella Canzoni Problematiche)"
 
-#: yammigui.cpp:2715
+#: yammigui.cpp:2739
 msgid "Re-Reading all genres from your files..."
 msgstr "Rilegge tutti i generi dai tuoi files..."
 
-#: yammigui.cpp:2887
+#: yammigui.cpp:2864
 msgid ""
 "The Database has been modified. Save changes?\n"
 "(answering no will cancel sleep mode)"
@@ -1812,19 +1882,19 @@ msgstr ""
 "Il database è stato modificato. Salvare le modifiche?\n"
 "(se rispondi no verrà disabilitato la modalità di spegnimento automatico)"
 
-#: yammigui.cpp:2897
+#: yammigui.cpp:2874
 msgid "shutdown"
 msgstr "arresto"
 
-#: yammigui.cpp:2897 yammigui.cpp:3531
+#: yammigui.cpp:2874 yammigui.cpp:3529
 msgid "(disabled)"
 msgstr "(disabilitato)"
 
-#: yammigui.cpp:2984
+#: yammigui.cpp:2977
 msgid "Open file(s) to import"
 msgstr "Apri file da importare "
 
-#: yammigui.cpp:2995 yammigui.cpp:3040
+#: yammigui.cpp:2988 yammigui.cpp:3033
 msgid ""
 "Updated your database.\n"
 "\n"
@@ -1836,263 +1906,263 @@ msgstr ""
 "Statistiche\n"
 "\n"
 
-#: yammigui.cpp:2998 yammigui.cpp:3043
+#: yammigui.cpp:2991 yammigui.cpp:3036
 msgid "%1 songs problematic (check in folder Problematic Songs)\n"
 msgstr "%1 canzoni problematiche (vedi la cartella Canzoni Problematiche)\n"
 
-#: yammigui.cpp:3012
+#: yammigui.cpp:3005
 msgid "You have to enter a name for the media!"
 msgstr "Devi inserire in nome per il supporto!"
 
-#: yammigui.cpp:3025
+#: yammigui.cpp:3018
 msgid "Scanning..."
 msgstr "Scansione..."
 
-#: yammigui.cpp:3103
+#: yammigui.cpp:3096
 msgid "Loading song files..."
 msgstr "Caricamento file..."
 
-#: yammigui.cpp:3129
+#: yammigui.cpp:3122
 msgid "loading song: "
 msgstr "caricamento canzoni..."
 
-#: yammigui.cpp:3129
+#: yammigui.cpp:3122
 msgid ". in playlist)"
 msgstr ". nella lista di esecuzione) "
 
-#: yammigui.cpp:3191
+#: yammigui.cpp:3184
 msgid "<none>"
 msgstr "<none>"
 
-#: yammigui.cpp:3328
+#: yammigui.cpp:3326
 msgid "Quick Browser"
 msgstr "Elenco veloce"
 
-#: yammigui.cpp:3361
+#: yammigui.cpp:3359
 msgid "Artists"
 msgstr "Artisti"
 
-#: yammigui.cpp:3365
+#: yammigui.cpp:3363
 msgid "Albums"
 msgstr "Album"
 
-#: yammigui.cpp:3377
+#: yammigui.cpp:3375
 msgid "Categories"
 msgstr "Categorie"
 
-#: yammigui.cpp:3388
+#: yammigui.cpp:3386
 msgid "Songs Played"
 msgstr "Canzoni suonate"
 
-#: yammigui.cpp:3392
+#: yammigui.cpp:3390
 msgid "History"
 msgstr "Cronologia"
 
-#: yammigui.cpp:3396
+#: yammigui.cpp:3394
 msgid "Unclassified"
 msgstr "Non classificati"
 
-#: yammigui.cpp:3399
+#: yammigui.cpp:3397
 msgid "Search Results"
 msgstr "Risultati della ricerca"
 
-#: yammigui.cpp:3402
+#: yammigui.cpp:3400
 msgid "Problematic Songs"
 msgstr "Canzoni Problematiche"
 
-#: yammigui.cpp:3405
+#: yammigui.cpp:3403
 msgid "Recent Additions"
 msgstr "Aggiunte recenti"
 
-#: yammigui.cpp:3423
+#: yammigui.cpp:3421
 msgid "Invert selection"
 msgstr "Inverti selezione"
 
-#: yammigui.cpp:3428
+#: yammigui.cpp:3426
 msgid "Skip Backward"
 msgstr "Salta indietro"
 
-#: yammigui.cpp:3429
+#: yammigui.cpp:3427
 msgid "Skip Forward"
 msgstr "Salta avanti"
 
-#: yammigui.cpp:3433
+#: yammigui.cpp:3431
 msgid "Track position"
 msgstr "Posizione traccia"
 
-#: yammigui.cpp:3439
+#: yammigui.cpp:3437
 msgid "Save Database"
 msgstr "Salva database"
 
-#: yammigui.cpp:3440
+#: yammigui.cpp:3438
 msgid "Scan Harddisk..."
 msgstr "Cerca nel disco fisso..."
 
-#: yammigui.cpp:3441
+#: yammigui.cpp:3439
 msgid "Scan Removable Media..."
 msgstr "Cerca nei supporti rimovibili"
 
-#: yammigui.cpp:3442
+#: yammigui.cpp:3440
 msgid "Import Selected File(s)..."
 msgstr "Importa file selezionati..."
 
-#: yammigui.cpp:3443 yammigui.cpp:3463
+#: yammigui.cpp:3441 yammigui.cpp:3461
 msgid "Check Consistency..."
 msgstr "Controlla consistenza..."
 
-#: yammigui.cpp:3444
+#: yammigui.cpp:3442
 msgid "Fix genres..."
 msgstr "Sistema i generi"
 
-#: yammigui.cpp:3445
+#: yammigui.cpp:3443
 msgid "Grab And Encode CD-Track..."
 msgstr "Estrai e codifica tracce CD"
 
-#: yammigui.cpp:3448
+#: yammigui.cpp:3446
 msgid "Shuffle Playlist..."
 msgstr "Lista casuale"
 
-#: yammigui.cpp:3449
+#: yammigui.cpp:3447
 msgid "Clear Playlist"
 msgstr "Pulisci lista"
 
-#: yammigui.cpp:3450
+#: yammigui.cpp:3448
 msgid "Switch to/from Playlist"
 msgstr "Passa alla lista"
 
-#: yammigui.cpp:3453
+#: yammigui.cpp:3451
 msgid "Enqueue as next (prepend)"
 msgstr "Accoda come successivo"
 
-#: yammigui.cpp:3454
+#: yammigui.cpp:3452
 msgid "Enqueue at end (append)"
 msgstr "Accoda alla fine"
 
-#: yammigui.cpp:3455
+#: yammigui.cpp:3453
 msgid "Play Now!"
 msgstr "Riproduci immediatamente!"
 
-#: yammigui.cpp:3456
+#: yammigui.cpp:3454
 msgid "Dequeue Songs"
 msgstr "Togli dalla lista"
 
-#: yammigui.cpp:3457
+#: yammigui.cpp:3455
 msgid "Prelisten start"
 msgstr "Preascolto: inizio"
 
-#: yammigui.cpp:3458
+#: yammigui.cpp:3456
 msgid "Prelisten middle"
 msgstr "Preascolto: metà"
 
-#: yammigui.cpp:3459
+#: yammigui.cpp:3457
 msgid "Prelisten end"
 msgstr "Preascolto: fine"
 
-#: yammigui.cpp:3460
+#: yammigui.cpp:3458
 msgid "Song Info..."
 msgstr "Info canzone..."
 
-#: yammigui.cpp:3461
+#: yammigui.cpp:3459
 msgid "Delete Song..."
 msgstr "Elimina canzone..."
 
-#: yammigui.cpp:3462
+#: yammigui.cpp:3460
 msgid "Burn To Media"
 msgstr "Scrivi su CD"
 
-#: yammigui.cpp:3464
+#: yammigui.cpp:3462
 msgid "Move Files"
 msgstr "Sposta file"
 
-#: yammigui.cpp:3465
+#: yammigui.cpp:3463
 msgid "Search for similar entry"
 msgstr "Cerca canzoni simili"
 
-#: yammigui.cpp:3466
+#: yammigui.cpp:3464
 msgid "Search for similar artist"
 msgstr "Cerca lo stessi artista"
 
-#: yammigui.cpp:3467
+#: yammigui.cpp:3465
 msgid "Search for similar title"
 msgstr "Cerca lo stesso titolo"
 
-#: yammigui.cpp:3468
+#: yammigui.cpp:3466
 msgid "Search for similar album"
 msgstr "Cerca lo stesso album"
 
-#: yammigui.cpp:3469
+#: yammigui.cpp:3467
 msgid "Goto artist"
 msgstr "Vai all'artista"
 
-#: yammigui.cpp:3470
+#: yammigui.cpp:3468
 msgid "Goto album"
 msgstr "Vai all'album"
 
-#: yammigui.cpp:3471
+#: yammigui.cpp:3469
 msgid "Goto genre"
 msgstr "Vai al genere"
 
-#: yammigui.cpp:3472
+#: yammigui.cpp:3470
 msgid "Goto year"
 msgstr "Vai all'anno"
 
-#: yammigui.cpp:3474
+#: yammigui.cpp:3472
 msgid "Stop prelisten"
 msgstr "Stop preascolto"
 
-#: yammigui.cpp:3480
+#: yammigui.cpp:3478
 msgid "Longest not played"
 msgstr "Meno ascoltate"
 
-#: yammigui.cpp:3482
+#: yammigui.cpp:3480
 msgid "Random"
 msgstr "Casuale"
 
-#: yammigui.cpp:3484
+#: yammigui.cpp:3482
 msgid "Unknown"
 msgstr "Sconosciuto"
 
-#: yammigui.cpp:3495
+#: yammigui.cpp:3493
 msgid "Update Automatic Folder Structure"
 msgstr "Aggiorna automaticamente la struttura cartelle"
 
-#: yammigui.cpp:3504
+#: yammigui.cpp:3502
 msgid "Search:"
 msgstr "Cerca:"
 
-#: yammigui.cpp:3508
+#: yammigui.cpp:3506
 msgid "Fuzzy search (Ctrl-F)"
 msgstr "Ricerca intelligente(Ctrl+F)"
 
-#: yammigui.cpp:3521
+#: yammigui.cpp:3519
 msgid "Needed media:"
 msgstr "Supporto necessario:"
 
-#: yammigui.cpp:3524
+#: yammigui.cpp:3522
 msgid "load"
 msgstr "carica"
 
-#: yammigui.cpp:3530
+#: yammigui.cpp:3528
 msgid "Sleep mode:"
 msgstr "Autospegnimento:"
 
-#: yammigui.cpp:3533
+#: yammigui.cpp:3531
 msgid "toggle sleep mode"
 msgstr "cambia autospegnimento"
 
-#: yammigui.cpp:3537
+#: yammigui.cpp:3535
 msgid "number songs until shutdown"
 msgstr "canzoni prima di spegnere"
 
-#: yammigui.cpp:3564
+#: yammigui.cpp:3562
 msgid "Columns"
 msgstr "Colonne"
 
-#: yammigui.cpp:3591
+#: yammigui.cpp:3589
 msgid "Insert Into/Remove From..."
 msgstr "Inserisci nella / rimuovi dalla categoria"
 
-#: yammigui.cpp:3593
+#: yammigui.cpp:3591
 msgid "Plugins..."
 msgstr "Plugins..."
 
@@ -2126,7 +2196,7 @@ msgstr "Caricamento cronologia"
 msgid "Reading song history..."
 msgstr "Lettura cronologia..."
 
-#: yammimodel.cpp:344
+#: yammimodel.cpp:351
 msgid ""
 "Error reading database file:\n"
 "%1\n"
@@ -2136,11 +2206,11 @@ msgstr ""
 "%1\n"
 "(Errore: %2, linea %2, colonna %4)"
 
-#: yammimodel.cpp:345
+#: yammimodel.cpp:352
 msgid "Error reading database"
 msgstr "Errore nella lettura del database"
 
-#: yammimodel.cpp:352
+#: yammimodel.cpp:359
 msgid ""
 "Your Song Database seems to be very old.\n"
 " You might need to create                           a new Database and scan "
@@ -2150,19 +2220,19 @@ msgstr ""
 "Dovresti aver bisogno di creare un nuovo database e fare una scansione del "
 "disco fisso"
 
-#: yammimodel.cpp:354
+#: yammimodel.cpp:361
 msgid "Unknown Song Database version"
 msgstr "Versione del database sconosciuta"
 
-#: yammimodel.cpp:361
+#: yammimodel.cpp:368
 msgid "Loading database"
 msgstr "Caricamento database"
 
-#: yammimodel.cpp:361
+#: yammimodel.cpp:368
 msgid "Reading Song Database file"
 msgstr "Lettura del file di database"
 
-#: yammimodel.cpp:520
+#: yammimodel.cpp:527
 msgid ""
 "The base directory for scanning does not exist!\n"
 "                              Set value \"scanDir\" to an existing directory!"
@@ -2170,7 +2240,7 @@ msgstr ""
 "La cartella base per la scansione non esiste!\n"
 "Imposta una nuova cartella base nelle opzioni!"
 
-#: yammimodel.cpp:542
+#: yammimodel.cpp:549
 msgid ""
 "The specified directory for removable media:\n"
 " %1 \n"
@@ -2186,7 +2256,7 @@ msgstr ""
 "\"!                              Se necessario, attiva l'opzione \"Monta il "
 "supporto\" nella configurazione)"
 
-#: yammimodel.cpp:595
+#: yammimodel.cpp:602
 msgid "scanning directory %1 ..."
 msgstr "scansione cartella %1 ..."
 
@@ -2194,3 +2264,10 @@ msgstr "scansione cartella %1 ..."
 msgid "YammiModel"
 msgstr "YammiModel"
 
+#~ msgid "This device is used (with mpg123) to send songs to your headphone."
+#~ msgstr ""
+#~ "Questo dispositivo è usato per mandare la canzone alle cuffie (utile per "
+#~ "i DJ)"
+
+#~ msgid "second sound device (eg. /dev/dsp1)"
+#~ msgstr "secondo dispositivo audio (esempio: /dev/dsp1)"
