@@ -10,7 +10,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-//#include <sys/timeb.h>
 #include <math.h>
 
 #include "fuzzsrch.h"
@@ -216,7 +215,7 @@ int FuzzySearch::prepareString(char* convStr, const char* originStr)
 			break;
 		case ',': *tmpPtr = ' '; break; // so, diese Sonderzeichen kommen alle vor, alle in spaces umwandeln...
 		case '-': *tmpPtr = ' '; break;
-		case '.': *tmpPtr = ' '; break;
+		case '.': *tmpPtr--    ; break; // for yammi: discard them (R.E.M = REM)
 		case '(': *tmpPtr = ' '; break;
 		case ')': *tmpPtr = ' '; break;
 		case '*': *tmpPtr = ' '; break;

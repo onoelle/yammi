@@ -25,7 +25,7 @@ using namespace std;
 #include "icons/yammiicon.xpm"
 #include "icons/in.xpm"
 #include "icons/notin.xpm"
-//#include "icons/filesave.xpm"
+#include "icons/newCategory.xpm"
 
 // media player actions
 // now using the icons from multimedia chrome from mediabuilder.com:
@@ -647,8 +647,9 @@ void YammiGui::updateSongPopup()
 {
 	// submenu containing all categories
 	playListPopup = new QPopupMenu();
+	playListPopup->insertItem(QIconSet( QPixmap(newCategory_xpm)), "new category...", this, SLOT(toCategory(int)), 0, 9999);
 	for(unsigned int i=0; i<model->categoryNames.count(); i++) {
-		playListPopup->insertItem(QIconSet( QPixmap(in_xpm)), model->categoryNames[i], this, SLOT(toPlayList(int)), 0, 10000+i);
+		playListPopup->insertItem(QIconSet( QPixmap(in_xpm)), model->categoryNames[i], this, SLOT(toCategory(int)), 0, 10000+i);
 	}
 		
 	// define popup menu for songs
@@ -735,9 +736,16 @@ void YammiGui::addToWishList()
  * adds all selected songs to the category (specified by index)
  * if current song is already in category => removes all selected from that category (if they are in)
  */
-void YammiGui::toPlayList(int index)
+void YammiGui::toCategory(int index)
 {
 	index-=10000;
+  if(index==-1) {
+    // create new category
+    if(!newCategory()) {
+      return;
+    }
+    index=model->allCategories.count()-1;
+  }
 	// choose the desired category
 	MyList* category=model->allCategories.first();
 	for(int i=0; i<index; i++) {
@@ -1095,18 +1103,24 @@ void YammiGui::forSelectionPlugin(int pluginIndex)
   QString cmd=(*model->config.pluginCommand)[pluginIndex];
 
   if(cmd.contains("%X")>0) {
-    // let user choose directory (TODO: we should provide a starting directory)
     QString dir=QFileDialog::getExistingDirectory(QString(""), this, QString("yammi"), QString("choose directory for plugin"), true);
     if(dir.isNull())
       return;
     cmd.replace(QRegExp("%X"), dir);
   }
   if(cmd.contains("%Y")>0) {
-    // let user choose a file (TODO: we should provide a starting directory)
     QString file=QFileDialog::getSaveFileName(QString(""), 0, this, QString("yammi"), QString("choose file for plugin"));
     if(file.isNull())
       return;
     cmd.replace(QRegExp("%Y"), file);
+  }
+  if(cmd.contains("%Z")>0) {
+    bool ok;
+    QString inputString=QString(QInputDialog::getText( "Get input parameter", "Type in argument for plugin:", QLineEdit::Normal, QString(""), &ok, this ));
+    if(!ok) {
+      return;
+    }
+    cmd.replace(QRegExp("%Z"), inputString);
   }
 
 
@@ -1176,26 +1190,34 @@ void YammiGui::forSelectionPlugin(int pluginIndex)
 
 QString YammiGui::makeReplacements(QString input, Song* s, int index)
 {
+  // 1. prepare strings
+  // length
+  QString lengthStr=QString("%1").arg(s->length % 60);
+	if (lengthStr.length()==1)
+	 	lengthStr="0"+lengthStr;
+  // medialist
+  QString mediaList="";
+	for(unsigned int i=0; i<s->mediaName.count(); i++) {
+		if(i!=0)
+			mediaList+=", ";
+		mediaList+=s->mediaName[i];
+	}
+  // filename without suffix
+  int suffixPos = s->filename.findRev('.');
+  QString filenameWithoutSuffix=s->filename.left(suffixPos);
+
+  // replace
   input.replace(QRegExp("%f"), s->location());
-//  QString escapedFilename=s->filename.replace(QRegExp(" "), "\\x20");
 	input.replace(QRegExp("%F"), s->filename);
+	input.replace(QRegExp("%W"), filenameWithoutSuffix);  
 	input.replace(QRegExp("%p"), s->path);
 	input.replace(QRegExp("%a"), s->artist);
 	input.replace(QRegExp("%t"), s->title);
 	input.replace(QRegExp("%u"), s->album);
 	input.replace(QRegExp("%b"), QString("%1").arg(s->bitrate));
 	input.replace(QRegExp("%i"), QString("%1").arg(index));
-	QString lengthStr=QString("%1").arg(s->length % 60);
-	if (lengthStr.length()==1)
-	 	lengthStr="0"+lengthStr;
 	input.replace(QRegExp("%l"), QString("%1:%2").arg((s->length) / 60).arg(lengthStr));
   input.replace(QRegExp("%n"), "\n");
-	QString mediaList="";
-	for(unsigned int i=0; i<s->mediaName.count(); i++) {
-		if(i!=0)
-			mediaList+=", ";
-		mediaList+=s->mediaName[i];
-	}
 	input.replace(QRegExp("%m"), mediaList);
   return input;  
 }
@@ -1953,16 +1975,18 @@ void YammiGui::aboutDialog()
 
 
 /** creates a new category */
-void YammiGui::newCategory(){
+bool YammiGui::newCategory(){
 	bool ok = false;
 	QString caption("Enter name for category");
 	QString message("Please enter name of category");
 	QString newName=QString(QInputDialog::getText( caption, message, QLineEdit::Normal, QString("new category"), &ok, this ));
-	if(ok) {
-		model->newCategory(newName);
-		folderCategories->update(model->allCategories, model->categoryNames);
-		updateSongPopup();		
-	}
+	if(!ok) {
+    return false;
+  }
+	model->newCategory(newName);
+	folderCategories->update(model->allCategories, model->categoryNames);
+	updateSongPopup();		
+  return true;
 }
 
 
@@ -2415,32 +2439,34 @@ void YammiGui::keyPressEvent(QKeyEvent* e)
 				sleepModeSpinBox->setValue(songsUntilShutdown);
 			}
 			break;
-		case Key_Up: {
-			QListViewItem* i=songListView->firstChild();
-			for(; i; i=i->itemBelow()) {
+      
+		case Key_Up:
+			for(QListViewItem* i=songListView->firstChild(); i; i=i->itemBelow()) {
 				if(i->isSelected()) {
 					if(i->itemAbove()) {
 						i=i->itemAbove();
 						songListView->clearSelection();
 						songListView->setSelected(i, true);
+            songListView->ensureItemVisible(i);
 					}
 					break;
 				}
 			}
-			} break;
-		case Key_Down: {
-			QListViewItem* i=songListView->firstChild();
-			for(; i; i=i->itemBelow()) {
+      break;
+      
+		case Key_Down:			
+			for(QListViewItem* i=songListView->firstChild(); i; i=i->itemBelow()) {
 				if(i->isSelected()) {
 					if(i->itemBelow()) {
 						i=i->itemBelow();
 						songListView->clearSelection();
 						songListView->setSelected(i, true);
+            songListView->ensureItemVisible(i);
 					}
 					break;
 				}
 			}
-			} break;
+      break;
 		
 		case Key_F:		// Ctrl-F
 			if(e->state()!=ControlButton)

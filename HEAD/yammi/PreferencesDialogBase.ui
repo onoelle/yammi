@@ -1009,16 +1009,16 @@ Group mode = executed once for the selection</string>
                                             <cstring>TextLabel2</cstring>
                                         </property>
                                         <property name="text">
-                                            <string>Placeholders for
-command (single mode) or
-custom list (group mode):
-%f = absolute filename
-%F = filename (without path)
-%p = path (without filename)
-%a = artist, %t = title
-%u = album, %b = bitrate
-%i = index, %l = length
-%m = media list, %n = newline</string>
+                                            <string>Placeholders for command (single mode)
+or custom list (group mode):
+%f = Filename, %W filename Without suffix
+%p = Path, %F = Filename (without path)
+%a = Artist, %t = Title
+%u = albUm, %b = Bitrate
+%i = Index, %l = Length
+%m = Media list, %n = Newline
+%X directory dialog, %Y file dialog
+%Z input string dialog</string>
                                         </property>
                                     </widget>
                                     <widget class="QLabel" row="1" column="0">

@@ -312,7 +312,7 @@ protected slots:
   void          skipBackward();
   void          skipForward();
 	void 					addToWishList();
-	void					toPlayList(int index);
+	void					toCategory(int index);
 
   void 					onTimer();
 	// removable media management
@@ -320,7 +320,7 @@ protected slots:
 	void					loadSongsFromMedia(QString mediaName);
 	void					loadMedia();
 		
-  void 					newCategory();	  					/** create new category */
+  bool 					newCategory();	  					/** create new category */
 	void 					removeCategory();
 	void					renameCategory();
 	void					autoplayCategory();

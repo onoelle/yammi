@@ -1,4 +1,4 @@
-# KDE tags expanded automatically by am_edit - $Revision: 1.7 $ 
+# KDE tags expanded automatically by am_edit - $Revision: 1.8 $ 
 # Makefile.in generated automatically by automake 1.5 from Makefile.am.
 
 # Copyright 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001
@@ -228,7 +228,7 @@ qt_libraries = @qt_libraries@
 x_includes = @x_includes@
 x_libraries = @x_libraries@
 
-EXTRA_DIST = clearPlaylist.xpm defaultControlClick.xpm defaultDoubleClick.xpm defaultMiddleClick.xpm defaultShiftClick.xpm dequeueAll.xpm dequeueSong.xpm enqueue.xpm enqueueasnext.xpm filesave.xpm in.xpm notin.xpm prelisten.xpm songinfo.xpm stopPrelisten.xpm yammiicon.xpm pause.xpm play.xpm skipbackward.xpm skipforward.xpm stop.xpm playnow.xpm 
+EXTRA_DIST = clearPlaylist.xpm defaultControlClick.xpm defaultDoubleClick.xpm defaultMiddleClick.xpm defaultShiftClick.xpm dequeueAll.xpm dequeueSong.xpm enqueue.xpm enqueueasnext.xpm filesave.xpm in.xpm notin.xpm prelisten.xpm songinfo.xpm stopPrelisten.xpm yammiicon.xpm pause.xpm play.xpm skipbackward.xpm skipforward.xpm stop.xpm playnow.xpm newCategory.xpm 
 subdir = yammi/icons
 mkinstalldirs = $(SHELL) $(top_srcdir)/admin/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/config.h

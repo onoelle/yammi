@@ -1,6 +1,6 @@
 TODO
 ----
-last update 17.12.2002
+last update 21.12.2002
 
 
 KNOWN BUGS
@@ -15,18 +15,20 @@ KNOWN BUGS
 
 for release 0.7.1
 -----------------
-- replacements: check file+directory dialog, make replacement for input string
-- replacement: %D / %F popup directory dialog and let user choose directory/file: document
-- replacement: filename without suffix
-- menu entry for inserting a song into a new category (tom)
+- plugin: publish a sample plugin (echo...) with all replacements
 
 - on deleting a song: delete in *all* lists (history, categories, ...)
 - check consistency check (and consistencyModes!)
-- alternative to mp3burn? => test and document Tom's script
+- alternative to mp3burn? => test Tom's script
 
 - add to consistency check: update option for re-reading layer/tag info from existing songs
+- updating genre tag from outside of Yammi => update info in Yammi
+
+- extend the autoplay functionality
+
 - test jukebox functionality
 - check: failing to load a media => crash? (tom)
+
 - folder for recent additions to database?
 - cleanup
   - update documentation
@@ -34,11 +36,10 @@ for release 0.7.1
   - clean up other classes (eg. folder)...
 - adding to media: don't add entries already existing
 - speed up loading of categories? (binary search)
-- updating genre tag from outside of Yammi => update info in Yammi
 - wrongly calculated song length for some songs, VBR? (tom, 8.12., )
 - evaluate TCON TTIT1 frame (tom, 8.12.)
 - remove/replace "current" button?
-
+- removing a song from playlist: only remove this one (idea: function "removeDuplicates" for playlist?)
 - => reach stable status!!!
 
 0.7.2

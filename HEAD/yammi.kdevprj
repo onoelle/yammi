@@ -33,7 +33,7 @@ email=oli.noelle@web.de
 kdevprj_version=1.3
 lfv_open_groups=
 make_options=\s-j1
-makefiles=Makefile.am,yammi/Makefile.am,yammi/docs/Makefile.am,yammi/docs/en/Makefile.am,yammi/icons/Makefile.am,yammi/mp3info/Makefile.am,yammi/cmp3info/Makefile.am
+makefiles=Makefile.am,yammi/Makefile.am,yammi/docs/Makefile.am,yammi/docs/en/Makefile.am,yammi/icons/Makefile.am,yammi/mp3info/Makefile.am
 modifyMakefiles=true
 project_name=Yammi
 project_type=normal_qt2
@@ -134,7 +134,7 @@ type=SOURCE
 
 [yammi/Makefile.am]
 files=yammi/lo32-app-yammi.png,yammi/lo16-app-yammi.png,yammi/folder.cpp,yammi/folder.h,yammi/foldercategories.cpp,yammi/foldercategories.h,yammi/foldergroups.cpp,yammi/foldergroups.h,yammi/foldermedia.cpp,yammi/foldermedia.h,yammi/foldersorted.cpp,yammi/foldersorted.h,yammi/fuzzsrch.cpp,yammi/fuzzsrch.h,yammi/main.cpp,yammi/mydatetime.cpp,yammi/mydatetime.h,yammi/mylist.cpp,yammi/mylist.h,yammi/mylistview.cpp,yammi/mylistview.h,yammi/preferencesdialog.cpp,yammi/preferencesdialog.h,yammi/prefs.cpp,yammi/prefs.h,yammi/song.cpp,yammi/song.h,yammi/songentry.cpp,yammi/songentry.h,yammi/songentryint.cpp,yammi/songentryint.h,yammi/songentryint2.cpp,yammi/songentryint2.h,yammi/songentrystring.cpp,yammi/songentrystring.h,yammi/songentrytimestamp.cpp,yammi/songentrytimestamp.h,yammi/songinfo.cpp,yammi/songinfo.h,yammi/songlistitem.cpp,yammi/songlistitem.h,yammi/yammigui.cpp,yammi/yammigui.h,yammi/yammimodel.cpp,yammi/yammimodel.h,yammi/glib.h,yammi/glibconfig.h,yammi/xmmsctrl.h,yammi/updatedatabasedialog.cpp,yammi/updatedatabasedialog.h,yammi/options.h,yammi/updatedatabasemediadialog.cpp,yammi/updatedatabasemediadialog.h,yammi/lineeditshift.cpp,yammi/lineeditshift.h,yammi/mediaplayer.cpp,yammi/mediaplayer.h,yammi/xmmsplayer.cpp,yammi/xmmsplayer.h,yammi/yammiapplication.cpp,yammi/yammiapplication.h,yammi/vcedit.c,yammi/vcedit.h,yammi/acconfig.h,yammi/ConsistencyCheckDialog.cpp,yammi/ConsistencyCheckDialog.h,yammi/ConsistencyCheckParameter.h,yammi/ConsistencyCheckDialogBase.ui,yammi/DeleteDialog.ui,yammi/PreferencesDialogBase.ui,yammi/SongInfoDialog.ui,yammi/UpdateDatabaseDialogBase.ui,yammi/UpdateDatabaseMediaDialogBase.ui,yammi/i18n.h
-sub_dirs=docs,icons,mp3info,cmp3info
+sub_dirs=docs,icons,mp3info
 type=prog_main
 
 [yammi/PreferencesDialogBase.ui]
@@ -166,13 +166,6 @@ dist=true
 install=false
 install_location=
 type=HEADER
-
-[yammi/cmp3info/Makefile.am]
-files=
-sharedlib_LDFLAGS=-version-info 0:0:0
-sharedlib_rootname=cmp3info
-sub_dirs=
-type=static_library
 
 [yammi/docs/Makefile.am]
 sub_dirs=en
@@ -328,7 +321,7 @@ install_location=
 type=HEADER
 
 [yammi/icons/Makefile.am]
-files=yammi/icons/clearPlaylist.xpm,yammi/icons/defaultControlClick.xpm,yammi/icons/defaultDoubleClick.xpm,yammi/icons/defaultMiddleClick.xpm,yammi/icons/defaultShiftClick.xpm,yammi/icons/dequeueAll.xpm,yammi/icons/dequeueSong.xpm,yammi/icons/enqueue.xpm,yammi/icons/enqueueasnext.xpm,yammi/icons/filesave.xpm,yammi/icons/in.xpm,yammi/icons/notin.xpm,yammi/icons/prelisten.xpm,yammi/icons/songinfo.xpm,yammi/icons/stopPrelisten.xpm,yammi/icons/yammiicon.xpm,yammi/icons/pause.xpm,yammi/icons/play.xpm,yammi/icons/skipbackward.xpm,yammi/icons/skipforward.xpm,yammi/icons/stop.xpm,yammi/icons/playnow.xpm
+files=yammi/icons/clearPlaylist.xpm,yammi/icons/defaultControlClick.xpm,yammi/icons/defaultDoubleClick.xpm,yammi/icons/defaultMiddleClick.xpm,yammi/icons/defaultShiftClick.xpm,yammi/icons/dequeueAll.xpm,yammi/icons/dequeueSong.xpm,yammi/icons/enqueue.xpm,yammi/icons/enqueueasnext.xpm,yammi/icons/filesave.xpm,yammi/icons/in.xpm,yammi/icons/notin.xpm,yammi/icons/prelisten.xpm,yammi/icons/songinfo.xpm,yammi/icons/stopPrelisten.xpm,yammi/icons/yammiicon.xpm,yammi/icons/pause.xpm,yammi/icons/play.xpm,yammi/icons/skipbackward.xpm,yammi/icons/skipforward.xpm,yammi/icons/stop.xpm,yammi/icons/playnow.xpm,yammi/icons/newCategory.xpm
 sub_dirs=
 type=normal
 
@@ -393,6 +386,12 @@ install_location=
 type=DATA
 
 [yammi/icons/in.xpm]
+dist=true
+install=false
+install_location=
+type=DATA
+
+[yammi/icons/newCategory.xpm]
 dist=true
 install=false
 install_location=
