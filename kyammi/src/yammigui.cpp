@@ -216,7 +216,7 @@ void YammiGui::loadDatabase(QString databaseDir) {
 	model->readSongDatabase();
 	// finish initialization of player
 	//player->syncPlayer2Yammi(&(model->songsToPlay));
-	model->readFolder(&(model->songsToPlay), m_config.databaseDir + "/" + "playqueue.xml");
+	model->readList(&(model->songsToPlay), m_config.databaseDir + "/" + "playqueue.xml");
 	folderActual->update(folderActual->songlist());
 	player->syncYammi2Player(false);
 	checkPlaylistAvailability();
@@ -465,8 +465,8 @@ void YammiGui::toolbarToggled( const QString& name ) {
 YammiGui::~YammiGui() {
 //    player->syncYammi2Player(true);
 	// save playlist
-	model->saveFolder(folderActual, m_config.databaseDir, "playqueue");
-    delete player;
+	model->saveList(&(model->songsToPlay), m_config.databaseDir, "playqueue");
+	delete player;
 	searchThread->stopThread();
 	searchFieldChangedIndicator.wakeOne();
 }

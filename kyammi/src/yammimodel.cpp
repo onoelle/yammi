@@ -23,33 +23,26 @@
 #include <kstandarddirs.h>
 #include <kmessagebox.h>
 #include <klocale.h>
-
 #include <kdebug.h>
+
+#include <qdom.h>
+//FIXME -<clean
+// the following 2 are includes I wanted to avoid in yammimodel (gui-stuff)
+#include <qcheckbox.h>
+#include <qeventloop.h>
+
+
 
 #include "yammigui.h"
 #include "applytoalldialog.h"
 #include "options.h"
 #include "mediaplayer.h"
 #include "ConsistencyCheckParameter.h"
-#include "folder.h"
-#include "foldergroups.h"
-#include "foldercategories.h"
-#include "foldermedia.h"
-#include "foldersorted.h"
-
-//FIXME -<clean
-// // these are the includes I wanted to avoid (gui-stuff)
-#include <qcheckbox.h>
-#include <qeventloop.h>
-#include <qdom.h>
-
 #include "song.h"
 #include "songentry.h"
 #include "songentryint.h"
 #include "songentrystring.h"
 #include "songentrytimestamp.h"
-
-
 #include "songinfo.h"
 #include "fuzzsrch.h"
 #include "prefs.h"
@@ -75,7 +68,7 @@ Prefs YammiModel::config( ) {
  * Not existing songs will be forgotten.
  * Creates a new category, if no folder given.
  */
-bool YammiModel::readFolder(MyList* list, QString filename)
+bool YammiModel::readList(MyList* list, QString filename)
 {
     QFile f(filename);
     if ( !f.open( IO_ReadOnly ) ) {
@@ -162,7 +155,7 @@ void YammiModel::readCategories() {
         kapp->eventLoop()->processEvents(QEventLoop::ExcludeUserInput);
 		QString filename(d.absPath()+ "/" + (*it));
         kdDebug() << "category found: " << filename << endl;
-		if(readFolder(0, filename)) {
+		if(readList(0, filename)) {
 			count++;
 		}
     }
@@ -286,35 +279,33 @@ void YammiModel::saveCategories() {
     kdDebug() << "saving dirty categories to directory " << path << endl;
 
     // save all categories marked as dirty
-	// TODO: not nice: we depend on the folder structure of the gui to iterate over categories...
-    QString categoryName;
-    for( QListViewItem* f=m_yammi->folderCategories->firstChild(); f; f=f->nextSibling() ) {
-        Folder* folder=(Folder*)f;
-        categoryName = folder->folderName();
+    QString categoryName;    
+    int index=0;
+    for(MyList* category=allCategories.first(); category; category=allCategories.next(), index++) {
+        categoryName = categoryNames[index];
         kdDebug() << "category " << categoryName << endl;
-        if(!folder->songlist().dirty) {
-            kdDebug() << "...clean\n";
-			continue;
-		}
+        if(!category->dirty) {
+        	kdDebug() << "...clean\n";
+		continue;
+	}
         kdDebug() << "...dirty, saving..." << endl;        
-		saveFolder(folder, path, categoryName);
-        folder->songlist().dirty=false;
+	saveList(category, path, categoryName);
+        category->dirty=false;
     }
-
     categoriesChanged(false);
 }
 
 
-bool YammiModel::saveFolder(Folder* folder, QString path, QString folderName)
+bool YammiModel::saveList(MyList* list, QString path, QString filename)
 {
-	QFile f(path + "/" + folderName + ".xml");
+	QFile f(path + "/" + filename + ".xml");
 
     QDomDocument doc;
     QDomElement root = doc.createElement("category");
-    root.setAttribute("name", folderName);
+    root.setAttribute("name", filename);
     doc.appendChild(root);
 
-    for(Song* s = folder->firstSong(); s; s=folder->nextSong()) {
+    for(Song* s = list->firstSong(); s; s=list->nextSong()) {
         QDomElement elem = doc.createElement( "song" );
         elem.setAttribute( "artist", s->artist );
         elem.setAttribute( "title", s->title );
@@ -324,7 +315,7 @@ bool YammiModel::saveFolder(Folder* folder, QString path, QString folderName)
     // save to file...
     QString contents = doc.toString();
     if ( !f.open( IO_WriteOnly  ) ) {
-        kdError() << "Could not save folder " << folderName << endl;
+        kdError() << "Could not save folder " << filename << endl;
         return false;
     }
     f.writeBlock ( contents, contents.length() );
@@ -1238,14 +1229,14 @@ void YammiModel::renameMedia(QString oldMediaName, QString newMediaName) {
     allSongsChanged(true);
 }
 
-/** marks those playlists as dirty that contain the given song
+/**
+ * Marks those playlists as dirty that contain the given song
  */
 void YammiModel::markPlaylists(Song* s) {
-    // for all categories, check whether they contain the song, if yes => mark as dirty
-    for( QListViewItem* f=m_yammi->folderCategories->firstChild(); f; f=f->nextSibling() ) {
-        Folder* folder=(Folder*)f;
-        if(folder->songlist().containsSong(s))
-            folder->songlist().dirty=true;
+    for(MyList* category=allCategories.first(); category; category=allCategories.next()) {
+        if(category->containsSong(s)) {
+            category->dirty=true;
+	}
     }
 }
 
