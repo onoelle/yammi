@@ -1,6 +1,6 @@
 TODO
 ----
-last update 21.12.2002
+last update 30.1.2003
 
 
 KNOWN BUGS
@@ -20,7 +20,7 @@ for release 0.7.1
 - F1 does not work, if stopped?
 
 - on deleting a song: delete in *all* lists (history, categories, ...)
-- check consistency check (and consistencyModes!)
+- check consistency check (and consistencyModes!), add warning window when renaming/overwriting tags
 - alternative to mp3burn? => test Tom's script
 
 - add to consistency check: update option for re-reading layer/tag info from existing songs

@@ -68,7 +68,7 @@ extern YammiGui* gYammiGui;
 
 
 /**
- * constructor, sets up the whole application.
+ * Constructor, sets up the whole application.
  * (maybe not nice??)
  */
 YammiGui::YammiGui( QWidget *parent, const char *name )
@@ -77,14 +77,15 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
 	gYammiGui=this;
   this->setIcon(QPixmap(yammiicon_xpm));
 	
-//  this->tbSaveDatabase=0;
-  
   // set up model
 	model=new YammiModel();
 	cout << "starting Yammi, version " << model->config.yammiVersion << "\n";
 
   model->readPreferences();						// read preferences
 
+  // set up media player
+  //********************
+  player=0;
 #ifdef XMMS_SUPPORT
   if(model->config.player==0) {
     cout << "media player: XMMS\n";
@@ -93,13 +94,20 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
   }
 #endif
 
+#ifdef NOATUN_SUPPORT
   if(model->config.player==1) {
     cout << "media player: Noatun\n";
-    player = new NoatunPlayer(model);         // use noatun as media player
-    
+    player = new NoatunPlayer(model);         // use noatun as media player    
+  }
+#endif
+  if(player==0) {
+    cout << "ERROR: no media player configured, shutting down...\n";
+    exit(2);
   }
 
-	model->readSongDatabase();					// read song database
+
+
+  model->readSongDatabase();					// read song database
 	model->readCategories();						// read categories
 	model->readHistory();								// read history
 	folderAutoplay=0;
@@ -382,8 +390,10 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
 	currentSong=0;
 	
 
-	player->syncPlayer2Yammi(folderActual);
-	checkPlaylistAvailability();
+  // TODO: check...
+  player->syncPlayer2Yammi(&(model->songsToPlay));
+
+  checkPlaylistAvailability();
   if(folderActual->songList->count()>0) {
     // check whether player is playing, if not: start playing!
     if(player->getStatus()!=PLAYING) {
@@ -400,15 +410,13 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
 	// connect all timers
   connect( &regularTimer, SIGNAL(timeout()), SLOT(onTimer()) );
   regularTimer.start( 1000, FALSE );	// call onTimer once a second
-	connect( &typeTimer, SIGNAL(timeout()), this, SLOT(searchFieldChanged()) );
+	connect( &typeTimer, SIGNAL(timeout()), SLOT(searchFieldChanged()) );
 
-  // TODO: this should be a thread owned by the media player
-  // (use signals/slots to connect media player and yammi)
-  if(model->config.player==1) {
-    connect( &checkTimer, SIGNAL(timeout()), SLOT(onCheck()) );
-    checkTimer.start( 5000, FALSE );
-  }
-	// finish!
+  // TODO: this should be probably done by a thread owned by the media player
+  connect( &checkTimer, SIGNAL(timeout()), player, SLOT(check()) );
+  checkTimer.start( 500, FALSE );
+
+  // finish!
   cout << "initialisation successfully completed!\n";
 
   mainStatusBar->message("Welcome to Yammi "+model->config.yammiVersion, 20000);
@@ -2133,10 +2141,6 @@ void YammiGui::songSliderMoved()
 }
 
 
-void YammiGui::onCheck()
-{
-  ((NoatunPlayer*)player)->check("/mm/mp3/inbox/wonderwall - just more.mp3");
-}
 
 
 /**
@@ -2156,7 +2160,7 @@ void YammiGui::onTimer()
   	
 		// check whether currently played song has changed
     QString file=player->getCurrentFile();
-        		
+
     // adjust songSlider (if user is not currently dragging it around)
 		int outputTime=player->getCurrentTime();
 		if(!isSongSliderGrabbed && player->getStatus() != PAUSED)
@@ -2183,7 +2187,8 @@ void YammiGui::onTimer()
     }
 
                 
-		if(currentFile!=file) {
+    // TODO: remove this, and only react to playlistChanged signal from media player?
+    if(currentFile!=file) {
       songChange(currentSong, file);
     }
 	}
@@ -2255,6 +2260,7 @@ void YammiGui::songChange(Song* lastSong, QString newFile)
       setCaption("Yammi: "+currentSong->displayName());
     }
     else {				// song not found in database
+      cout << "title not found: " << newFile << ";\n";
       setCaption("Yammi - song not in database");
     }
     // setup songSlider
@@ -2269,9 +2275,10 @@ void YammiGui::songChange(Song* lastSong, QString newFile)
   }
 
 
+// TODO: okay to remove?
 	// remove played song(s) from player's and yammi's playlist
-  player->removePlayed();
-	folderActual->correctOrder();
+//  player->removePlayed();
+//	folderActual->correctOrder();
 
 	// should just check and fill up, not change anything:
 	player->syncYammi2Player(false);
@@ -2283,6 +2290,64 @@ void YammiGui::songChange(Song* lastSong, QString newFile)
 		songListView->triggerUpdate();
 }
 
+
+/** (new version)
+ * Called on a playlist change initiated by player (last song finished).
+ */
+void YammiGui::songChange()
+{
+  // prepare: stop user dragging action
+  if(songListView->dragging)
+    stopDragging();
+
+	// check, whether we should put last song in folder songsPlayed
+	if(currentSong!=0) {
+		MyDateTime now;
+		SongEntryTimestamp* entry=new SongEntryTimestamp(currentSong, &currentSongStarted);
+		currentSong->lastPlayed=entry->timestamp;
+		folderSongsPlayed->addEntry(entry);		// append to songsPlayed
+  }
+
+  currentSong=model->songsToPlay.at(0)->song();
+  currentFile=currentSong->location();
+  
+  if(songsUntilShutdown>0) {
+    songsUntilShutdown--;
+    sleepModeSpinBox->setValue(songsUntilShutdown);
+		if(songsUntilShutdown==0) {
+			cout << "shutting down now...\n";
+			shutDown();
+		}
+  }
+
+  if(currentFile!="") {
+    currentSongStarted=currentSongStarted.currentDateTime();
+
+    // song entry found
+    if(currentSong!=0) {
+      // set title to currently played song
+      setCaption("Yammi: "+currentSong->displayName());
+    }
+    else {				// song not found in database
+      setCaption("Yammi - song not in database");
+    }
+    // setup songSlider
+    int totalTime=player->getTotalTime();
+    songSlider->setRange(0, totalTime);
+    songSlider->setTickInterval(1000*60);
+  }
+  else {
+    setCaption("Yammi - not playing");
+    currentSong=0;
+    songSlider->setValue(0);
+  }
+
+	// update view, if folderActual is currently shown folder
+	if(chosenFolder==folderActual)
+		slotFolderChanged();
+	else
+		songListView->triggerUpdate();
+}
 
 
 
@@ -2726,13 +2791,6 @@ void YammiGui::stopDragging()
 	}
 }
 
-
-void YammiGui::myWait(int msecs)
-{
-	QTime t;
-	t.start();
-	while(t.elapsed()<msecs);
-}
 
 
 /** selects all in songListView */

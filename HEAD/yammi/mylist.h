@@ -19,20 +19,18 @@
 #define MYLIST_H
 
 #include <qptrlist.h>
-//#include <qptrvector.h>
 #include <song.h>
 #include <songentry.h>
 
 
 /**
-  * This class extends QPtrList (with fixed type <SongEntry>)
-  * enables sorting
-  * enables adding/removing/searching SongEntry or Song types...
-  * otherwise, use exactly as QPtrList<SongEntry>
-  */
+ * This class extends QPtrList (with fixed type <SongEntry>)
+ * enables sorting
+ * enables adding/removing/searching SongEntry or Song types...
+ * otherwise, use exactly as QPtrList<SongEntry>
+*/
+class MyList : public QPtrList<SongEntry> {
 
-class MyList : public QPtrList<SongEntry>  {
-//class MyList : public QPtrVector<SongEntry>  {
 public: 
 	MyList();
 	~MyList();

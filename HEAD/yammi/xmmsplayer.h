@@ -19,9 +19,8 @@
 #define XMMSPLAYER_H
 
 #include "mediaplayer.h"
-#include "yammimodel.h"
 
-/** The MediaPlayer class tailored to Xmms.
+/** The MediaPlayer class tailored to XMMS.
  * Work in progress!!!
  */
 
@@ -33,31 +32,32 @@ public:
 	XmmsPlayer(int session, YammiModel* model);
 	~XmmsPlayer();
 
+protected:
   bool ensureXmmsIsRunning();
+  int           session;      // xmms session id
+	bool			    xmmsShuffleWasActivated;
+	void			    myWait(int msecs);
 
 public slots:
   // overriden methods
-  bool playPause();
+  void check();
+  PlayerStatus getStatus();
   bool play();
   bool pause();
   bool stop();
+  bool playPause();
   bool skipForward(bool withoutCrossfading);
   bool skipBackward(bool withoutCrossfading);
-  PlayerStatus getStatus();
-  void syncPlayer2Yammi(Folder* folder);
+  void syncPlayer2Yammi(MyList* playlist);
   void syncYammi2Player(bool syncAll);
   bool jumpTo(int value);
   QString getCurrentFile();
   int getCurrentTime();
   int getTotalTime();
-  void removePlayed();
   void quit();
 
-
-protected:
-  int           session;      // xmms session id
-  YammiModel*   model;   // this should be removed to make it cleaner!!!
-	bool			    xmmsShuffleWasActivated;
+signals:
+  void playlistChanged();
 };
 
 #endif

@@ -22,11 +22,8 @@ using namespace std;
 // xmms control
 #include <xmmsctrl.h>
 
+// TODO: remove?
 #include "yammigui.h"
-
-
-
-// should also be removed to make it cleaner!!!
 extern YammiGui* gYammiGui;
 
 
@@ -34,6 +31,8 @@ XmmsPlayer::XmmsPlayer(int session, YammiModel* model)
 {
   this->session=session;
   this->model=model;
+  this->playlist=&(model->songsToPlay);
+  
   bool alreadyRunning=ensureXmmsIsRunning();
   if(alreadyRunning) {
     cout << "xmms is already running\n";
@@ -60,8 +59,10 @@ XmmsPlayer::~XmmsPlayer()
 }
 
 
-// check whether xmms is running, if not: start it!
-// returns, whether xmms was already running
+/** Checks whether xmms is running, if not, starts it.
+ * This call blocks until xmms is up.
+ * Returns, whether xmms was already running.
+ */
 bool XmmsPlayer::ensureXmmsIsRunning()
 {
   if(xmms_remote_is_running(session)) {
@@ -72,34 +73,35 @@ bool XmmsPlayer::ensureXmmsIsRunning()
 	system("xmms &");
 
   while(!xmms_remote_is_running(session)) {
-    gYammiGui->myWait(100);
+    myWait(100);
   }
   // to be sure, we wait another 100ms before starting interaction with Xmms
-  gYammiGui->myWait(100);
+  myWait(100);
   cout << "...xmms is up!\n";
   return false;
 }
 
 
 /**
- * writes all songs found in xmms playlist to yammi's playlist
- * also, clears xmms playlist except for the first config.keepInXmms
+ * Writes all songs found in xmms playlist to Yammi's playlist.
+ * Clears xmms playlist except for the first config.keepInXmms songs.
  */
-void XmmsPlayer::syncPlayer2Yammi(Folder* folder)
+void XmmsPlayer::syncPlayer2Yammi(MyList* playlist)
 {
 	// 1. delete all songs already played
 	for(int i=xmms_remote_get_playlist_pos(session)-1; i>=0; i--) {
 		xmms_remote_playlist_delete(session, i);
 	}
 	// 2. insert all (including currently played) songs into yammi playlist
-	folder->clearSongs();
+  playlist->clear();
 	for(int i=0; i<xmms_remote_get_playlist_length(session); i++) {
  		char buf[200];
 		strcpy(buf, xmms_remote_get_playlist_file(session, i));
 		Song* check=model->getSongFromFilename(QString(buf));
 		if(!check)	// song not found in database
 			continue;
-		folder->addSong(check);
+    // TODO: we have to append a SongEntryInt!!!
+		playlist->appendSong(check);
 	}
 	// 3. delete all but the keepInXmms first songs
 	for(int i=xmms_remote_get_playlist_length(session)-1; i>=model->config.keepInXmms; i--) {
@@ -109,16 +111,16 @@ void XmmsPlayer::syncPlayer2Yammi(Folder* folder)
 
 
 /**
- * tries to sync the xmms playlist with the yammi playlist
- * ie. writes all entries from yammi playlist into xmms playlist
+ * Tries to sync the xmms playlist with the Yammi playlist,
+ * ie. writes all entries from Yammi's playlist into xmms' playlist.
  */
 void XmmsPlayer::syncYammi2Player(bool syncAll)
 {
 	// check whether xmms playlist is empty
 	if(xmms_remote_get_playlist_length(session)==0) {
-		for(int i=0; i<(int)model->songsToPlay.count() && (i<model->config.keepInXmms || syncAll); i++) {
+		for(int i=0; i<(int)playlist->count() && (i<model->config.keepInXmms || syncAll); i++) {
 			gchar url[300];
-			strcpy(url, model->songsToPlay.at(i)->song()->location());
+			strcpy(url, playlist->at(i)->song()->location());
 //			cout << QString("xmms_remote_playlist_add_url_string %1").arg(url) << "\n";
 			xmms_remote_playlist_add_url_string(session, url);
 //			cout << "..done\n";
@@ -132,7 +134,7 @@ void XmmsPlayer::syncYammi2Player(bool syncAll)
 	// if playlist too short => insert yammi entries
 	int iXmms=0;
 	int iYammi=0;
-	for(; iXmms<model->config.keepInXmms || ( syncAll && iYammi<(int)model->songsToPlay.count() ); iXmms++, iYammi++) {
+	for(; iXmms<model->config.keepInXmms || ( syncAll && iYammi<(int)playlist->count() ); iXmms++, iYammi++) {
 
 		// check whether xmms playlist entry existing
 		if(iXmms<(int)xmms_remote_get_playlist_length(session)) {
@@ -144,8 +146,8 @@ void XmmsPlayer::syncYammi2Player(bool syncAll)
 			Song* check=model->getSongFromFilename(QString(buf));
 
 			// corresponding yammi entry existing?
-			if(iYammi<(int)model->songsToPlay.count()) {
-				Song* s=model->songsToPlay.at(iYammi)->song();
+			if(iYammi<(int)playlist->count()) {
+				Song* s=playlist->at(iYammi)->song();
 				if(check==s)
 					continue;		// okay, both are the same
 
@@ -160,7 +162,7 @@ void XmmsPlayer::syncYammi2Player(bool syncAll)
 
 				// case 2: xmms song is yammi+1 (some song moved in front of it)
 				// => insert the song that was inserted
-				if(iYammi+1<(int)model->songsToPlay.count() && check==model->songsToPlay.at(iYammi+1)->song()) {
+				if(iYammi+1<(int)playlist->count() && check==playlist->at(iYammi+1)->song()) {
 					// check if songfile is available...
 					QString loc=model->checkAvailability(s);
 					if(loc=="" || loc=="never") {
@@ -190,16 +192,15 @@ void XmmsPlayer::syncYammi2Player(bool syncAll)
 				else {
 //					cout << "xmms playlist longer than yammi playlist, deleting\n";
 					xmms_remote_playlist_delete(session, iXmms);
-//TODO:?					myWait(50);
 					iXmms--;
 					continue;
 				}
 			}
 		}
 		else {			// xmms playlist too short => check whether songs in songsToPlay
-			if(iYammi<(int)model->songsToPlay.count()) {
+			if(iYammi<(int)playlist->count()) {
 //				cout << "trying to fill up xmms playlist with song from yammi\n";
-				Song* s=model->songsToPlay.at(iYammi)->song();
+				Song* s=playlist->at(iYammi)->song();
 				// check if songfile is available...
 				QString loc=model->checkAvailability(s);
 				if(loc=="" || loc=="never") {
@@ -211,7 +212,6 @@ void XmmsPlayer::syncYammi2Player(bool syncAll)
 //				cout << QString("xmms_remote_playlist_add_url %1").arg(url) << "\n";
 				xmms_remote_playlist_add_url_string(session, url);
 //				cout << "..done\n";
-// TODO:?				myWait(50);
 			}
 		}
 	} // end of for
@@ -228,7 +228,6 @@ void XmmsPlayer::syncYammi2Player(bool syncAll)
 //		cout << QString("xmms_remote_playlist_delete %1").arg(iXmms) << "\n";
 		xmms_remote_playlist_delete(session, iXmms);
 //		cout << "..done\n";
-// TODO:?		myWait(50);
 	}
 
 	// if xmms is not playing, we might have inserted songs before the active one
@@ -268,7 +267,7 @@ bool XmmsPlayer::playPause()
 }
 
 
-/// skip forward in playlist (if controlPressed without crossfading)
+/// skip forward in playlist (if desired without crossfading)
 bool XmmsPlayer::skipForward(bool withoutCrossfading)
 {
   ensureXmmsIsRunning();
@@ -284,7 +283,7 @@ bool XmmsPlayer::skipForward(bool withoutCrossfading)
 }
 
 
-/// skip backward in playlist (if controlPressed without crossfading)
+/// skip backward in playlist (if desired without crossfading)
 /// TODO: clean up, make independent of Yammi?
 bool XmmsPlayer::skipBackward(bool withoutCrossfading)
 {
@@ -292,13 +291,13 @@ bool XmmsPlayer::skipBackward(bool withoutCrossfading)
   if(withoutCrossfading) {
     xmms_remote_pause(session);
   }
-  int count=model->songsPlayed.count();
-	if(count==0)			// empty folder songsPlayed => can's skip backwards
+  int count=playlist->count();
+	if(count==0)			// empty folder songsPlayed => can't skip backwards
 		return false;
 
 	// 1. get and remove last song from songsPlayed
-	Song* last=model->songsPlayed.at(count-1)->song();
-	model->songsPlayed.remove(count-1);
+	Song* last=playlist->at(count-1)->song();
+	playlist->remove(count-1);
 	gYammiGui->folderSongsPlayed->updateTitle();
 //	cout << "last: " << last->displayName() << "\n";
 
@@ -334,56 +333,54 @@ bool XmmsPlayer::stop()
 PlayerStatus XmmsPlayer::getStatus()
 {
   if(xmms_remote_is_playing(session)) {
-    // xmms playing or playing but paused
-    if(!xmms_remote_is_paused(session)) {
-      // case 1: xmms is playing
+    // xmms playing or paused
+    if(!xmms_remote_is_paused(session))
       return PLAYING;
-    }
-    else {
-      // case 2: xmms is paused
+    else
       return PAUSED;
-    }
   }
-  else {
-    // case 3: xmms is stopped
+  else
     return STOPPED;
-  }
 }
 
-bool XmmsPlayer::jumpTo(int value)
-{
-  xmms_remote_jump_to_time(session, value);
-  return true;
-}
-
-QString XmmsPlayer::getCurrentFile()
-{
-  int pos=xmms_remote_get_playlist_pos(session);
-  return QString(xmms_remote_get_playlist_file(session, pos));
-}
-
+/// get current position in song
 int XmmsPlayer::getCurrentTime()
 {
   return xmms_remote_get_output_time(session);
 }
 
-
+/// get total time of current song
 int XmmsPlayer::getTotalTime()
 {
   int pos=xmms_remote_get_playlist_pos(session);
   return xmms_remote_get_playlist_time(session, pos);
 }
 
+/// jump to position in song
+bool XmmsPlayer::jumpTo(int value)
+{
+  xmms_remote_jump_to_time(session, value);
+  return true;
+}
 
-void XmmsPlayer::removePlayed()
+/// return current filename
+QString XmmsPlayer::getCurrentFile()
+{
+  int pos=xmms_remote_get_playlist_pos(session);
+  return QString(xmms_remote_get_playlist_file(session, pos));
+}
+
+
+
+void XmmsPlayer::check()
 {
   if(!xmms_remote_is_playing(session)) {
     // if player stopped and only one song left in playlist, we should probably(?) remove it
     // not too nice and clean, I know...
     if(xmms_remote_get_playlist_length(session)==1) {
  	    xmms_remote_playlist_delete(session, 0);
-      if(model->songsToPlay.count()>=1) {
-        model->songsToPlay.removeFirst();
+      if(playlist->count()>=1) {
+        playlist->removeFirst();
       }
     }
   }
@@ -405,18 +402,27 @@ void XmmsPlayer::removePlayed()
  	    xmms_remote_playlist_delete(session, 0);
 //	myWait(100);
 //				cout << "..done\n";
-      if(model->songsToPlay.count()>=1) {
-        if(model->songsToPlay.at(0)->song()==firstXmmsSong) {
-          model->songsToPlay.removeFirst();
+      if(playlist->count()>=1) {
+        if(playlist->at(0)->song()==firstXmmsSong) {
+          playlist->removeFirst();
         }
       }
     }
   }
 }
 
+
+/// quit player
 void XmmsPlayer::quit()
 {
   xmms_remote_quit(session);
+}
+
+void XmmsPlayer::myWait(int msecs)
+{
+	QTime t;
+	t.start();
+	while(t.elapsed()<msecs);
 }
 
 

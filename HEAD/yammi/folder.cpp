@@ -20,6 +20,7 @@
 
 extern YammiGui* gYammiGui;
 
+
 // constructs a top-level folder
 Folder::Folder( QListView *parent, const QString &name )
 			: QListViewItem( parent )

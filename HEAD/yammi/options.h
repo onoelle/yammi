@@ -41,6 +41,6 @@
 
 
 
-// defines XMMS as the media player to be used
-// (sorry, no alternatives yet)
+// defines support for media players to be used
 #define XMMS_SUPPORT
+#define NOATUN_SUPPORT

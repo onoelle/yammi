@@ -1,9 +1,8 @@
-
 <!doctype linuxdoc system>
 <article>
 <title>The Yammi Handbook
 <author>Brian O.Nölle <tt>oli.noelle@web.de</tt>
-<date>Version 0.7 , Wed November 13 16:00:00 MET 2002
+<date>Version 0.7 , Mon January 6 16:00:00 MET 2003
 <abstract>
 This Handbook describes Yammi Version 0.7
 </abstract>
@@ -11,32 +10,32 @@ This Handbook describes Yammi Version 0.7
 <toc>
 
 <sect>Introduction<p>
-Yammi ("Yet Another Music Manager I...") is a tool to manage your song collection on your computer
+Yammi ("Yet Another Music Manager I...") is a tool to manage and search your song collection on your computer
 (eg. mp3, ogg and wav files).
 It is centered around an intuitive graphical user interface and a song database,
 which allows convenient and fast access to any songs.
 For playing songs the program uses XMMS
 (<htmlurl url="http://www.xmms.org" name = "X MultiMedia System">).
-(I am working on supporting <htmlurl url="http://www.noatun.kde.org" name = "Noatun"> as well.)<p>
+(Future versions might support <htmlurl url="http://www.noatun.kde.org" name = "Noatun"> and/or Winamp as well.)<p>
 
 Yammi enables you to
 
-- conveniently search for songs (fuzzy search)
+- conveniently search for songs within seconds (fuzzy search)
 
 - organize your songs into playlists/categories
 
-- keep statistics (when/how many times was song x played?)
-
 - easily keep your song info (id3 and ogg tags) and filenames consistent
 
-- burn your song collection on CDs
+- keep statistics (when/how many times was song x played?)
 
-- act as a jukebox, loading song files on demand from removable media
+- assist in burning your song collection to CDs (distributing your songs over multiple media)
 
-- prelisten to songs on headphone to DJ your own party (needs a second sound card)
+- act as a jukebox, loading song files on demand from removable media/CDs
 
-- invoke other programs such as mp3burn or cdlabelgen to burn CDs or generate labels using the
-information from Yammi's song database
+- prelisten to songs on headphone while normal playback to DJ your own party (needs a second sound card)
+
+- invoke other programs or custom scripts such as mp3burn, cdlabelgen, ... to burn CDs, generate CD labels or execute
+other commands, using the information from Yammi's song database
 
 <p>
 The feature that distinguishes this tool from others is probably the extremely powerful fuzzy (tolerant)
@@ -46,10 +45,12 @@ will provide a list of "best matches", using a clever fuzzy search algorithm.
 Not knowing the exact spelling of titles or artists is not a problem any more, as Yammi will find them
 anyway - even if you are horribly misspelling them in the search.
 This fuzzy search works just as you would expect it, even with a couple of thousand songs in the database.
+Therefore you never ever have to dig through your directory structure to find a particular song.
 <p>
 
-With Yammi you don't need to dig through your directory structure to find a particular song.
-Yammi also offers to create playlists/categories of songs, and sort songs after
+Yammi also offers a folder structure to organize your songs. Songs can be inserted automatically
+into artist, album and genre folders, and the user can create custom folders (=playlists).
+In each folder, songs can be sorted after
 just every available information, eg. title, artist, length, most recently added songs,
 most recently played, bitrate...
 <p>
@@ -69,7 +70,7 @@ with a remote control, even enabling you to turn off your computer via remote co
 
 
 Although I tried my best, I can take no liability that Yammi is not causing any damage
-to your song collection, to your speakers or your neighbour...
+to your song collection, your speakers or your neighbour...
 
 
 <sect1>Changes
@@ -81,18 +82,19 @@ For changes, see the file CHANGELOG included in the distribution.
 <p>
 <sect1>How to obtain Yammi
 <p>
-Give it a try at <htmlurl url="yammi.sourceforge.net" name = "The Yammi Homepage">
-or email me at <htmlurl url="mailto:oli.noelle@web.de" name="oli.noelle@web.de">
+Give it a try at <htmlurl url="http://yammi.sourceforge.net" name = "The Yammi Homepage">.
 
 <sect1>Requirements
 <p>
 Yammi needs Qt 3.x and Xmms >= 1.2.6.
+For reading id3 tags, id3lib is required (can be switched off, see below).
+For reading ogg tags and layer information, libvorbis and libvorbisfile are required (can be switched off, see below).
 
-If you want to listen to songs on a second soundcard
+If you want to listen to songs on a second soundcard during playback on your primary soundcard
 you need mpg123 (for mp3 files), ogg123 (for ogg files) or play (for wav files).
 
 If you want to use the ripping and encoding function performed by the script "yammiGrabAndEncode"
-you need cdparanoia and (not)lame, for details have a look at the script.
+you need cdparanoia and (not)lame, for details have a look at the script included in the distribution.
 
 <sect1>Compilation and installation
 <p>
@@ -106,19 +108,23 @@ the base directory of the Yammi distribution:
 % make install
 </verb></tscreen>
 
-This should install the executable "yammi" and two additional scripts
-("yammiGrabAndEncode" and "yammiShutdownScript") in /usr/local/bin/.
+Pass the switches "--disable-id3lib" or "--disable-ogglibs" to the configure script,
+if you don't have the required libraries.
+As a result, tag reading will not be possible for the corresponding files.
+For example, if you don't use ogg files, and don't have libvorbis and libvorbisfile installed
+on your system, you have to use
 
-If you experience problems compiling Yammi due to missing libraries (id3lib or ogg/vorbis libraries),
-have a look at the file README for options to disable linking against id3lib or ogg libs
-(in short: use the --disable-id3lib and --disable-ogglibs switches for the configure script).
+% ./configure --disable-ogglibs
 
+If compilation is successful, the executable "yammi" and an additional script
+"yammiGrabAndEncode" will be installed in /usr/local/bin/.
+(If this path does not exist, create this directory before installation, and move the executables to
+any directory which is in your path afterwards.)
 
 <p>
-Since Yammi uses <verb>autoconf</verb> you should have not trouble
-compiling it.
-Should you run into problems please report them to the the author at 
-<htmlurl url="mailto:oli.noelle@web.de" name = "oli.noelle@web.de">
+Should you run into problems while compiling, please report them to the the author at
+<htmlurl url="mailto:oli.noelle@web.de" name = "oli.noelle@web.de"> (please include
+the output of the configure/make command in the email).
 <p>
 
 <sect1> Deinstallation <p>
@@ -131,6 +137,7 @@ remove all files related to yammi from your harddisk,
 you can also delete the directory .yammi in your home directory.
 (This deletes your preferences, categories and the complete database!)
 
+
 <sect1> Starting the first time <p>
 After successful installation, you can start yammi by typing "yammi" in a shell
 (if you encounter any problems or want to know what's going on it helps to have
@@ -138,18 +145,21 @@ a look at the terminal output that yammi creates on the console).
 On the first start, yammi will create a directory ".yammi" in your home directory,
 where it will store the song database, preferences settings and logfiles.
 Before you start scanning your harddisk for songs, you should edit the preferences
-(File -> Preferences) and set the paths to the location of your song collection.
+(Configure -> Settings...) and set the paths to the location of your song collection.
+
+
+
+
 
 <sect> Usage <p>
 <sect1> General Usage <p>
-The general usage of the program should be pretty intuitive:
+The general usage of Yammi is intuitive:
 
-On the left, you have a list of folders, each containing a list of songs or subfolders.
+On the left, the "quick browser" provides a list of folders, each containing a list of songs (or subfolders).
 
-On the right, you have a list of songs, with different attributes shown in different
-columns.
+On the right, the "songlist" lists all songs contained in the selected folder.
 
-Use the left folder list to pick a selection of (or all) songs, then the right list to
+Normally you would use the quick browser to pick a selection of (or all) songs, then the songlist to
 pick one (or more) songs to play, edit, categorise, ...
 
 The most important actions are available in the toolbar, the others are available from
@@ -159,44 +169,36 @@ the menu or context menu (right-click on a song or a folder).
 
 <sect1> Scanning harddisk
 <p>
-The first step is to get your songs into Yammis database by having your harddisk scanned.
+The first step for using Yammi is to get your songs into Yammi's database by having your harddisk scanned.
 
-For this to work, you should check the configuration (File->Preferences) and make sure
+For this to work correctly, you should first check your configuration (Configuration->Settings) and make sure
 that the directory "base directory for scanning" is pointing to the base directory of your song collection.
 Also, give a path for "trash directory for deleted song files", as this directory is needed when
-you want to delete songs within yammi (yammi does not delete any files, but moves them
+you want to delete songs within Yammi (Yammi does not delete any files, but moves them
 to this directory and skips this directory when scanning for new songs).
 
-After setting the preferences, you can perform a database update (Database->Update),
-which will insert all found songs into the yammi database.
-Also see "Updating Database" in "Advanced Topics".
+Now start your database update (Database->Update), which should insert all found songs into Yammi's database.
+After the update you are ready to use Yammi, for example search for songs, categorize them or enqueue them
+to your media player.
+For more information about scanning your harddisk, or for information about scanning CDs,
+see "Updating Database" in "Advanced Topics".
 
-
-Yammi distinguishes between songs on your harddisk (which are always available) and songs on
-removable media such as CDs (which are not always available and need to be loaded on demand).
-For scanning a removable media therefore use the menu entry "Scan Removable Media"
-(Database->Scan Removable Media) instead.
-In contrast to songs on harddisk, Yammi's database won't contain path + filename information
-for these songs. Instead, these songs need to be loaded
-into a swap directory to play them. Also see "Removable Media Managements" in
-"Advanced Topics".
 
 <sect1> Searching
 <p>
-Type in anything into the search field, Yammi immediately shows you the nearest matches, rated with
-a percentage. (You can configure the threshold for the shown matches in the preferences.)
+Type in anything into the search field, Yammi immediately shows you the best matches, rated with
+a percentage (you can configure the threshold for the shown matches in the settings).
+That's basically it, simple but effective, just give it a try!
 
-That's basically it, simple but effective, just give it a try
-(e.g. horribly misspelling songs your looking for...)
 Yammi looks into title, artist, album and comment for similarities.
 
 Yammi will automatically switch to the folder "Search Results" whenever you type
 in anything into the search field. Ctrl-F or ESC set the focus to the search field
 and clear it.
 
+
 <sect1> Song information <p>
-In the songlist there is one row per song, containing various information
-about the song.
+In the songlist there is one row per song, containing various information about the song.
 The following columns are available:
 
 (* = corresponds to id3/ogg tag info, + = extracted from mp3/ogg layer info)
@@ -228,13 +230,13 @@ comment*
 last played
 
 
-Depending on the chosen folder, there may be additional columns. So far these are:
+Depending on the chosen folder, there may be additional columns, for example:
 
 Match (folder "Search Results")
 
 Pos (folder "Playlist" and "Categories")
 
-Played on(folder "SongsPlayed" and "History")
+Played on (folder "SongsPlayed" and "History")
 
 Reason (folder "Problematic Songs")
 
@@ -249,40 +251,41 @@ song enqueued in playlist (blue)
 
 song already played in this session (green)
 
-song not available on local harddisk (grey) (=> needs to be loaded before playing)
+song not available on local harddisk (grey) (=> probably needs to be loaded before playing)
 
 song available in swap dir (dark grey) (=> song is already loaded, will be only
 checked for folder "Playlist")
+
 
 <sect1> Folder structure <p>
 The following folder structure is provided automatically:
 
 <sect2> Folder "All Music" <p>
-Contains all songs in the Yammi database
+Contains all songs in Yammi's database.
 
 <sect2> Folder "Playlist" <p>
-Contains all songs that are still to play, plus the currently played song.
+Contains all songs that are still to play (including the currently played song).
 
-This is the only folder (besides the categories) where you can move songs around
-to change the order of the songs to play.
-(You can't drag a song to the top, which is the currently played song.)
+In this folder you can move songs around to change the order of songs to play.
+However, you are not allowed to drag a song to the top position, as this is the currently played song.
 Please note that you can only drag songs if the folder is ordered
-ascending after the first column ("Pos", this is the default when you click on
-this folder)
+ascending after the first column ("Pos"), which is the default ordering when you click on
+this folder.
 
 <sect2> Folder Albums (Artists, Genre) <p>
-Contains a subfolder for every album (artist, genre) for which there are more than 5
-songs in the database.
+Contains a subfolder for every album (artist, genre) for which there are more than x
+songs in the database, with x=group threshold. The group threshold defaults to 5, but
+can be configured in the settings.
 
 <sect2> Folder Categories <p>
 This folder contains "categories" (or "playlists") of songs,
 that can be created and filled by the user.
 You can add a song to a category by right-clicking on it and choosing "Insert into..." and the
 desired category.
-The subfolders itself can be ordered by dragging the songs to the desired
-location. Please note that you can only drag songs if the folder is ordered
-ascending after the first column ("Pos", this is the default when you click on
-this folder).
+The songs in each category can be ordered by dragging the songs to the desired
+position. Please note that you can only drag songs if the folder is ordered
+ascending after the first column ("Pos"), which is the default ordering when you click on
+this folder.
 
 <sect2> Folder History <p>
 This folder contains the history of played songs, each song shown with the
@@ -298,13 +301,16 @@ file, appearing in the folder "History" the next time Yammi starts.
 
 <sect2> Folder Media <p>
 Contains a subfolder for every media (eg. CD) that you prepared with Yammi.
-When burning song files to a CD with the help of Yammi, the program records the
-location of songs to its database.
-This enables you to quickly find on which media you have backup copies of songs.
+
+When burning song files to a CD with the assistance of Yammi, the program adds
+information to its database about on which media under which path each song is available.
+This enables you to quickly find on which media you have song files,
+and it enables Yammi to request the required media to load songs into a "cache".
 
 <sect2> Folder Problematic Songs <p>
 This Folder contains songs that were found problematic when performing a
-consistency check (eg. songs contained twice).
+consistency check or database update (eg. songs contained twice).
+This folder will not be saved to Yammi's database.
 
 <sect2> Folder Search Results <p>
 This folder contains the result of the last search process.
@@ -318,35 +324,34 @@ This folder contains all songs that are not appearing in either
 
 - the folder "Albums"
 
-This folder can help you organizing your songs into categories.
+This folder can assist you in organizing your songs into categories.
+
+
 
 <sect2> Directory structure <p>
 Song files can still be organized in a directory structure according to your own needs.
 Yammi keeps its own database of songs with all necessary information
 (artist, title, album, filename, ...). This song databse is saved as a simple xml
 file in the user's home directory under $HOME/.yammi/songdb.xml.
-You should take care not to move your songfiles around from outside Yammi,
-because Yammi might not find the files any more (although it tries to detect files that have
-been moved).
+You should not move your songfiles from outside Yammi,
+because Yammi might not find the files any more
+(although Yammi tries to detect files that have been moved on a database update).
 Yammi provides a function to move song files,
-where at the same time the information in Yammi's database is updated.
-Please make use of that function when you need to reorganize your songs on your
-harddisk.
-When you moved songs from outside Yammi, you can also perform an "Update Database",
-then Yammi tries to figure out those songs that have been moved and updates the
-corresponding information in its database.
+which at the same time updates the information in Yammi's database.
+Please make use of that function when you reorganize your songs on your harddisk.
 
 
 <sect1> Song Actions <p>
-Clicking on a song with the right mouse button, the context menu allows you the
-following actions (most of them are available on the toolbar, too):
+All song actions are available from the context menu
+(i.e. clicking on a song with the right mouse button).
+The most important ones are also available in the toolbar.
 
 <sect2>Play...<p>
 ...Enqueue - Enqueues a song to the end of Yammi's playlist.
 
 ...Enqueue as next - Enqueues a song as the next song to play in Yammi's playlist.
 
-...Play immediately - First enqueues the song as the very next to play, then causes a song change, so the song
+...Play immediately - First enqueues the song as the next to play, then causes a song change, so the song
 is immediately played.
 
 ...Dequeue - Dequeues a song from Yammi's playlist, ie. removes all occurrences of this song
@@ -362,27 +367,27 @@ in Yammi's playlist.
 ...end - Immediately starts playing the song via the second sound device, starting close to the end.
 
 <sect2>Info...<p>
-Opens a dialog with info and edit possibility for the selected song(s).
+Opens a dialog with information and edit possibility for the selected song(s).
 The dialog shows the different fields that Yammi saves in its database.<p>
-If more than one song is selected, Yammi shows not only the total size and length of the
-selection, but also enables convenient mass-editing of songs:
 <p>
-Mass Editing<p>
-For multiple selected songs the song info dialog is a little different:
+Multiple selected songs / mass editing<p>
+If more than one song is selected, the song info dialog is slightly different:
+
+- Yammi shows the total size and length of the selection
 
 - entries that are not exactly the same for all selected songs are shown as "!".
-  As long, as this is not changed, these entries are not touched.
-  When you change this entry, you can conveniently set that entry for all selected
-  songs to the new value (ie. unifying that value for the whole collection).
+  As long, as this is not changed, these entries are not touched.
+  When you change this entry, you can conveniently set that entry for all selected
+  songs to the new value (ie. unifying that value for the whole selection).
 
 - entries that are exactly the same can be conveniently changed for all selected
-  songs by changing the value shown.
+  songs by changing the value shown.
 
 
 <sect2>Insert into...<p>
-Here you can insert one or more songs into an existing category or remove them.
-The icon in front of the category name shows whether the song(s) will be added or
-removed from the category. A check means that the song(s) is already contained.
+Allows to insert one or more songs into an existing category or remove them from a category.
+The icon in front of the category name indicates whether the song(s) will be added or
+removed from the category. A check mark means that the song(s) is already contained.
 Selecting a category with a check will remove the song(s) from it.
 
 
@@ -396,30 +401,28 @@ and performs the usual fuzzy search with it.
 Delete -
 Deleting can be done in two ways:
 
-Deleting the database entry in Yammi's database (does not touch the song file).
+1. Deleting the database entry in Yammi's database (does not touch the song file).
 
-Deleting the song file, which is done by moving the song file to the trash directory.
+2. Deleting the song file, which is done by moving the song file to the trash directory.
 Yammi still keeps the database entry (the song may be present on some media, and
 copied to the harddisk before playing).
-
-Copy file to... - Asks for a directory and copies the song file to it.
 
 Move file to... - Moves a file to another directory. The path information in Yammi's database will
 be updated with the new location of that file.
 
 Check consistency - Performs a consistency check on the selected song(s).
-See consistency modes.
+See "Checking consistency" in "Advanced topics".
 
-Burn to media... - assists in burning the selected songs to a media
-(see "Burning files" in "Advanced Topics")
+Burn to media... - assists in burning the selected songs to a media.
+See "Burning files" in "Advanced Topics".
 
 
-<sect1> Preferences<p>
+<sect1>Settings<p>
 
-You can set the preferences via the menu: File -> Preferences
+You can set the settings via the menu: Configuration -> Settings.
 
 Most items should be self-explanatory if you read the tool tips provided
-(stay over an item with mouse cursor for a while).
+(stay over an item with the mouse for a while).
 
 Consistency Mode
 
@@ -447,52 +450,64 @@ See also "Checking consistency" in "Advanced topics".
 Group Threshold
 
 This value determines, how many items of one group must be present for a
-subfolder within the folder Artist/Albums/Genre to be created. If you set this
+subfolder within the folder Artists/Albums/Genre to be created. If you set this
 value to 1, every artist/album/genre will appear as a subfolder, a value of 10
 only will create subfolders for artists/albums/genres which contain at least 10
-songs.
+entries.
 
 <sect1> Key bindings <p>
+
+
 The following key bindings exist:
 
-ESC:	clear search field and focus it (CTRL-F should also work)
+ESC/CTRL-F:     Set focus to search field and clear it
 
-F1:	Play / Pause
+F1:     Play / Pause
 
-F2:	Skip backward				(SHIFT-F2 skips without crossfading)
+F2:     Skip backward                           (SHIFT-F2 skips without crossfading)
 
-F3:	Skip forward				(SHIFT-F3 skips without crossfading)
+F3:     Skip forward                            (SHIFT-F3 skips without crossfading)
 
-F4:	Stop playing
+F4:     Stop playing
 
-F5:	Add song to end of playlist
+F5:     Add song to end of playlist
 
-F6:	Play song as next
+F6:     Play song as next
 
-F7:	Play song immediately  (SHIFT + F7: play immediately without crossfading)
+F7:     Play song immediately                   (SHIFT + F7: play immediately without crossfading)
 
-F8:	Dequeue selected		(SHIFT + F8: Dequeue all)
+F8:     Dequeue selected                        (SHIFT + F8: Dequeue all)
 
-F9:	Prelisten to start
+F9:     Prelisten to start
 
-F10:	Prelisten to middle
+F10:    Prelisten to middle
 
-F11:	Prelisten to end
+F11:    Prelisten to end
 
-F12:	Stop prelistening
+F12:    Stop prelistening
 
-PAUSE:	Enable/disable sleep mode, see "Sleep mode" under "Advanced topics"
+PAUSE:  Enable/disable sleep mode, see "Sleep mode" under "Advanced topics"
 
 Page Up and Page Down: increase or decrease the number of songs for Yammi sleep mode
 (only takes effect, if Yammi is in sleep mode)
 
-Ctrl-S:	Save song database
+Ctrl-S: Save song database
+
+
+Note concerning crossfading:
+If you use the crossfading plugin from XMMS, it sometimes comes in handy to change to the next
+song without crossfading (e.g. to quickly listen to the next song).
+For these cases press the SHIFT key in combination with the requested action.
+
+
+
+
 
 
 <sect> Advanced topics <p>
 
 <sect1> Checking consistency <p>
-Note: This functionality changed slightly since version 0.7!
+Note: This functionality changed slightly since version 0.7.
 
 The menu offers the possibility to check your complete database for consistency.
 You can as well apply this consistency check to a selection of songs.
@@ -510,12 +525,17 @@ or deleted (if the file is not existing on any media).
 - check tags: consistent with Yammi's database?
 
 If tags are not consistent, they can be corrected in the corresponding files
-(only possible for mp3 and ogg files).
+to the values in Yammi's database (only possible for mp3 and ogg files).
+
+Be careful using this function, as it might overwrite all the tags in your files!
 
 - check filename: consistent with the naming scheme "artist - title"?
 (no other naming schemes supported yet, sorry...)
 
 If Filenames are not consistent, they can be corrected after the naming scheme.
+
+Be careful using this function, as it might rename all your files!
+
 
 - no song contained twice in the database?
 
@@ -790,7 +810,7 @@ the Free Software Foundation; either version 2 of the License, or
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
