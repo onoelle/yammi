@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<TITLE>The Yammi Handbook: Installation</TITLE>
+<META HTTP-EQUIV="content-type" CONTENT="text/html; charset=iso-8859-1">
+<META NAME="keywords" CONTENT="">
+<META NAME="description" CONTENT="">
+</HEAD>
+<BODY BGCOLOR="#ffffff" LINK="#aa0000" TEXT="#000000" > 
+<FONT FACE="Helvetica">
+<A HREF="http://www.kde.org/"><IMG SRC="logotp3.png" BORDER="0" ALT="The K Desktop Environment"></A>
+<HR WIDTH="100%" SIZE=2 ALIGN="CENTER" NOSHADE>
+
+ 
+<P ALIGN="RIGHT">
+
+<A HREF="index-3.html">Next</A>
+ <A HREF="index-1.html">Previous</A>
+ <A HREF="index.html#toc2">Table of Contents</A>
+</P>
+<H3><A NAME="s2">2. Installation</A></H3>
+
+<P>
+<H3><A NAME="ss2.1">2.1 How to obtain Yammi</A>
+</H3>
+
+<P>Give it a try at 
+<A HREF="yammi.sourceforge.net">The Yammi Homepage</A>
+or email me at 
+<A HREF="mailto:oli.noelle@web.de">oli.noelle@web.de</A><P>
+<H3><A NAME="ss2.2">2.2 Requirements</A>
+</H3>
+
+<P>The program was developed under Linux with qt2.3 and kde2.2.1,
+but it does not use any KDE classes (so far).
+<P>So what you definitely need should be only qt 2.x and Xmms 1.2.6 or later (X Multimedia System).
+<P>This version is probably the last version based on qt2.x, the next version
+will require qt3.x.
+<P>If you want to decode mp3s to wav files or listen to songs on a second soundcard
+you need mpg123.
+<P>If you want to use the ripping and encoding function performed by the script "grabAndEncode"
+you need cdparanoia and (not)lame, for details have a look at the script.
+<P>
+<H3><A NAME="ss2.3">2.3 Compilation and installation</A>
+</H3>
+
+<P>
+<P>In order to compile and install Yammi on your system, type the following in
+the base directory of the Yammi distribution:
+<P>
+<BLOCKQUOTE><CODE>
+<PRE>
+% ./configure
+% make
+% make install
+</PRE>
+</CODE></BLOCKQUOTE>
+<P>This should install the executable "yammi" and two additional scripts
+("yammiGrabAndEncode" and "yammiShutdownScript") in /usr/local/bin/.
+<P>
+<P>Since Yammi uses 
+<PRE>
+autoconf
+</PRE>
+ you should have not trouble
+compiling it.
+Should you run into problems please report them to the the author at 
+<A HREF="mailto:oli.noelle@web.de">oli.noelle@web.de</A><P>
+<P>
+<H3><A NAME="ss2.4">2.4 Deinstallation </A>
+</H3>
+
+<P>In the base directory of the yammi distribution, type
+<P>% make uninstall
+<P>If you are not upgrading to a new version of yammi, but want to completely
+remove all files related to yammi from your harddisk,
+you can also delete the directory .yammi in your home directory.
+(This deletes your preferences, categories and the complete database!)
+<P>
+<H3><A NAME="ss2.5">2.5 Starting the first time </A>
+</H3>
+
+<P>After successful installation, you can start yammi by typing "yammi" in a shell
+(if you encounter any problems or want to know what's going on it helps to have
+a look at the terminal output that yammi creates on the console).
+On the first start, yammi will create a directory ".yammi" in your home directory,
+where it will store the song database, preferences settings and logfiles.
+Before you start scanning your harddisk for songs, you should edit the preferences
+(File -> Preferences) and set the paths to the location of your mp3 collection.
+<P>
+<P ALIGN="RIGHT">
+
+<A HREF="index-3.html">Next</A>
+ <A HREF="index-1.html">Previous</A>
+ <A HREF="index.html#toc2">Table of Contents</A>
+</P>
+<CENTER>
+<HR WIDTH="100%" SIZE=3 ALIGN=CENTER NOSHADE>
+</CENTER>    
+</FONT>
+
+ 
+</BODY>
+</HTML>

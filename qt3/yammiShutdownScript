@@ -1,0 +1,8 @@
+#!/bin/bash
+# script shutting down the computer, if yammi is in
+# shutdown(computer) mode
+# example script provided for yammi (see yammi.sourceforge.net)
+# 3-2002 by Oliver Noelle
+# usage: shutdown (no parameters)
+#
+/sbin/shutdown -t 3 -h now &

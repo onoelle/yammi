@@ -1,0 +1,177 @@
+<!DOCTYPE UI><UI version="3.0" stdsetdef="1">
+<class>DeleteDialog</class>
+<widget class="QDialog">
+    <property name="name">
+        <cstring>DeleteDialog</cstring>
+    </property>
+    <property name="geometry">
+        <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>373</width>
+            <height>203</height>
+        </rect>
+    </property>
+    <property name="caption">
+        <string>DeleteDialog</string>
+    </property>
+    <widget class="QLabel">
+        <property name="name">
+            <cstring>TextLabel1</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>10</x>
+                <y>10</y>
+                <width>300</width>
+                <height>20</height>
+            </rect>
+        </property>
+        <property name="font">
+            <font>
+                <pointsize>14</pointsize>
+                <bold>1</bold>
+            </font>
+        </property>
+        <property name="text">
+            <string>Delete a song entry and/or its file</string>
+        </property>
+    </widget>
+    <widget class="QPushButton">
+        <property name="name">
+            <cstring>PushButtonOK</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>60</x>
+                <y>160</y>
+                <width>101</width>
+                <height>31</height>
+            </rect>
+        </property>
+        <property name="text">
+            <string>OK</string>
+        </property>
+    </widget>
+    <widget class="QPushButton">
+        <property name="name">
+            <cstring>PushButtonCancel</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>200</x>
+                <y>160</y>
+                <width>101</width>
+                <height>31</height>
+            </rect>
+        </property>
+        <property name="text">
+            <string>Cancel</string>
+        </property>
+    </widget>
+    <widget class="QCheckBox">
+        <property name="name">
+            <cstring>CheckBoxDeleteFile</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>10</x>
+                <y>100</y>
+                <width>270</width>
+                <height>20</height>
+            </rect>
+        </property>
+        <property name="text">
+            <string>delete file (on harddisk)</string>
+        </property>
+        <property name="toolTip" stdset="0">
+            <string>deletes the file on harddisk (if you keep the database entry, this song needs to be loaded for playing)</string>
+        </property>
+    </widget>
+    <widget class="QLabel">
+        <property name="name">
+            <cstring>TextLabel1_2</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>20</x>
+                <y>130</y>
+                <width>180</width>
+                <height>20</height>
+            </rect>
+        </property>
+        <property name="text">
+            <string>Song is contained on media:</string>
+        </property>
+        <property name="toolTip" stdset="0">
+            <string>shows a list of media, on which the song(s) to delete can be found</string>
+        </property>
+    </widget>
+    <widget class="QComboBox">
+        <property name="name">
+            <cstring>ComboBoxOnMedia</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>220</x>
+                <y>130</y>
+                <width>141</width>
+                <height>20</height>
+            </rect>
+        </property>
+        <property name="toolTip" stdset="0">
+            <string>shows a list of media, on which the song(s) to delete can be found</string>
+        </property>
+    </widget>
+    <widget class="QCheckBox">
+        <property name="name">
+            <cstring>CheckBoxDeleteDbEntry</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>10</x>
+                <y>70</y>
+                <width>290</width>
+                <height>20</height>
+            </rect>
+        </property>
+        <property name="text">
+            <string>delete database entry (in Yammi's database)</string>
+        </property>
+        <property name="toolTip" stdset="0">
+            <string>deletes the database entry in Yammi's database (does not affect the file)</string>
+        </property>
+    </widget>
+    <widget class="QLabel">
+        <property name="name">
+            <cstring>LabelSongname</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>10</x>
+                <y>40</y>
+                <width>350</width>
+                <height>20</height>
+            </rect>
+        </property>
+        <property name="text">
+            <string>song to delete...</string>
+        </property>
+    </widget>
+</widget>
+<connections>
+    <connection>
+        <sender>PushButtonOK</sender>
+        <signal>clicked()</signal>
+        <receiver>DeleteDialog</receiver>
+        <slot>accept()</slot>
+    </connection>
+    <connection>
+        <sender>PushButtonCancel</sender>
+        <signal>clicked()</signal>
+        <receiver>DeleteDialog</receiver>
+        <slot>reject()</slot>
+    </connection>
+</connections>
+<layoutdefaults spacing="6" margin="11"/>
+</UI>

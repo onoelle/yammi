@@ -1,0 +1,114 @@
+#######################
+    version 0.6 !!!
+
+- ported to Qt3
+-
+
+#######################
+19.5.   version 0.5.3 !!!
+
+- changed database format: primary key now is artist + title + album!!!
+	(The necessary updates to your categories and history file will be done automatically
+	on first start.)
+- corrected the format of the database XML file (was not 100% correct XML)
+  (Will be corrected automatically on first start, too.)
+
+=> future versions of Yammi will not be able to read a song database saved with
+a Yammi version 0.5.2 or earlier!
+
+- probably last version based on qt2.x, next version will require qt3.x
+
+- changed format of history file to XML
+- history file will be updated on database changes (to keep consistency)
+- improved "update song database" function, should behave more consistent now
+- replaced most of the system calls with the corresponding QT calls
+- added skip backward functionality (moves songs from folder SongsPlayed to Playlist)
+- adding songs to folder "Songs Played" is now done after they have been played, not before
+- changed shift/ctrl+left click to shift/ctrl+middle click
+  (as shift/ctrl+left is needed for standard listbox operations)
+- added progress dialog to "burning media"
+- fixed a few bugs
+
+
+#######################
+28.4.   version 0.5.2 !!!
+
+- a few bug fixes related to jukebox functionality
+- added progress dialogs+cancel possibility to operations that might take longer
+- added shift/ctrl + left click for configurable actions, all actions configurable now
+
+#######################
+17.4.   version 0.5.1 !!!
+
+- added jukebox functionality:
+  - additional toolbar with needed media / load button
+  - "Scan removable media" entry in file menu
+  - a lot of rewriting of internal structures to cope with songs that are not
+    available on local harddisk
+- rewritten "Update Database" function, should better react to
+  - moved songfiles
+  - songs added twice at different locations
+  - problematic songs
+- multiple plugin commands can be configured now
+- implemented replacements for song plugin
+
+#######################
+7.4. 		version 0.5 !!!
+
+- added version to preferences and songdatabase
+- only changed categories will be saved
+- moved "new category" from main menu to context menu on categories
+- added a basic song and songlist plugin possibility (eg. for mp3burn, cdlabelgen)
+  to invoke a program with parameters from selected songs (filename, title, length, ...)
+- improved internal folder structure
+- improved update actions on database changes
+- changed communication with xmms a bit, now requires xmms 1.2.6 or later!
+- changed categories into ordered lists (=> now can be used as true playlists)
+- added folder for genres
+- completed docs
+
+
+#########################
+16.3.			version 0.4 !!!
+- 16. 3. updated documentation, should be a good basis now
+- 15. 3. new checkConsistency diagnosis
+					tags/filename will only be checked if enabled in prefs
+- 14. 3. added basic support for id3 genres (sorted list would be nice)
+- 14. 3. added "search for similar" to context menu
+
+- 18. 2. added slider for song position
+- 17. 2. logging of songs is now done at every songchange, not when ending program
+- 17. 2. added lastPlayed attribute to songs, computed when reading history
+- 15. 2. bugfix: scanning from non existing directory
+
+###########################
+11.2.			version 0.3.1 !!!
+- 11. 2. cleaned up distribution
+- 11. 2. little bugfix
+
+###########################
+10.2.			version 0.3 !!!
+- 9. 2. added extended song info (timestamp, string, int) to certain song entry lists
+- 6. 2.	added number of songs to folder name in several folders
+
+###########################
+18.1.			version 0.2 !!!
+- 18.1. took over playlist management (adding, deleting, moving songs)
+- 18.1. completed toolbar with quite ugly buttons
+- 13.1. a more reasonable option to grab(paranoia) & encode(notlame) songs from cd
+- 13.1. snappy filling up of lists
+- 12.1.	first step to take over playlist management (dragging songs around)
+- 12.1.	restructered context menu
+
+############################
+10.12.		version 0.1 !!!
+- 5.12. got sourceforge project page, preparing for first release
+- 17.9.	showing currently played + last n songs in a folder
+- 14.9.	search & play only mode
+	(eg. for partys, so nobody can by accident damage your database and files)
+- 10.9.	new configure dialog, make more things configurable
+- 8.9.	support for removable media (CDs and DVDs) containing mp3s (initial)
+- 8.9.	support for burning mp3s on CD? (initial)
+- 4.9.	check consistency (songs contained twice)
+- 1.9 	logging of played songs (initial)
+- 31.8. implemented "enqueue as next"
