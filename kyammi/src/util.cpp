@@ -29,17 +29,16 @@
  * @param path Directory to check (without trailing slash)
  * @param noDeleteDir (with trailing slash)
  */
-void Util::deleteDirectoryIfEmpty(QString path, QString noDeleteDir)
-{
-	if(path.length()<2 || path == noDeleteDir.left(noDeleteDir.length()-1)) {
-		return;
-	}
-	QDir d;
-	if(d.rmdir(path)) {
-		int lastSlashIndex=path.findRev('/');
-		QString frontPath=path.left(lastSlashIndex);
-		deleteDirectoryIfEmpty(frontPath, noDeleteDir);
-	}
+void Util::deleteDirectoryIfEmpty(QString path, QString noDeleteDir) {
+    if(path.length()<2 || path == noDeleteDir.left(noDeleteDir.length()-1)) {
+        return;
+    }
+    QDir d;
+    if(d.rmdir(path)) {
+        int lastSlashIndex=path.findRev('/');
+        QString frontPath=path.left(lastSlashIndex);
+        deleteDirectoryIfEmpty(frontPath, noDeleteDir);
+    }
 }
 
 /**
@@ -47,32 +46,33 @@ void Util::deleteDirectoryIfEmpty(QString path, QString noDeleteDir)
  * Creates directories if needed.
  * Returns false if the path does not exist and could not be created.
  */
-bool Util::ensurePathExists(QString path)
-{
-  if(path.length()<=1) {
-    return true;
-  }
-  int lastSlashIndex=path.findRev('/');
-  QString frontPath=path.left(lastSlashIndex);
-  QDir frontPathDir;
-  if(frontPath.length()>0) {
-    if(!ensurePathExists(frontPath)) {
-      return false;
+bool Util::ensurePathExists(QString path) {
+    if(path.length()<=1) {
+        return true;
     }
-    frontPathDir=QDir(frontPath);
-  }
-  else {
-    frontPathDir=QDir("/");
-  }
-  QString endDir=path.mid(lastSlashIndex+1);
-  if(frontPathDir.exists(endDir)) {
+    int lastSlashIndex=path.findRev('/');
+    if(lastSlashIndex==-1) {
+        return false;
+    }
+    QString frontPath=path.left(lastSlashIndex);
+    QDir frontPathDir;
+    if(frontPath.length()>0) {
+        if(!ensurePathExists(frontPath)) {
+            return false;
+        }
+        frontPathDir=QDir(frontPath);
+    } else {
+        frontPathDir=QDir("/");
+    }
+    QString endDir=path.mid(lastSlashIndex+1);
+    if(frontPathDir.exists(endDir)) {
+        return true;
+    }
+    if(!frontPathDir.mkdir(endDir)) {
+        kdWarning() << "failed creating dir " << endDir << " in dir " << frontPath << endl;
+        return false;
+    }
     return true;
-  }
-  if(!frontPathDir.mkdir(endDir)) {
-    kdWarning() << "failed creating dir " << endDir << " in dir " << frontPath << endl;
-    return false;
-  }
-  return true;  
 }
 
 

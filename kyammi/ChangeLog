@@ -1,9 +1,10 @@
 ??.??.2004 version 1.2-beta2
 ############################
-- added italian translation (thanks to Alessandro)
-- added spanish translation (thanks to Miguel)
-- added GStreamer support (experimental, thanks to Martin)
+- added: italian translation (thanks to Alessandro)
+- added: spanish translation (thanks to Miguel)
+- added: GStreamer support (experimental, thanks to Martin)
 
+- added: reading ogg vorbis or id3 tags in *.flac files (no layer info(length, bitrate) yet)
 - added: option to follow symlinks on scanning
 - added: trying to read ogg vorbis tags in flac files
 
@@ -20,6 +21,8 @@
 - fixed: conflict on findSignal() for XmmsPlayer / NoatunPlayer
 - fixed: correct default value + saving of filename pattern (for scanning)
 - fixed: crash after deleting songs (when in folder "All Songs")
+- fixed: crash on checking consistency (correcting directory, but no leading slash in pattern)
+- fixed: goto Artist/Album/... via keyboard shortcut: correct selection of songs
   ...and some more minor issues
 
 14.09.2004 version 1.2-beta

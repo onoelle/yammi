@@ -1116,6 +1116,7 @@ void YammiGui::searchSimilar(int what) {
  * Go to a specific folder (album/artist) of selected song.
  */
 void YammiGui::goToFolder(int what) {
+    getSelectedSongs();    
     Song* s=selectedSongs.firstSong();
     QString folderName;
 
@@ -1427,6 +1428,7 @@ void YammiGui::slotFolderPopup( QListViewItem*, const QPoint & point, int ) {
     if(selectedSongs.count()==0) {
         // no songs in this folder
         chosenFolder->popup( point, 0);
+        setSelectionMode(SELECTION_MODE_USER_SELECTED);
         return;
     }
     adjustSongPopup();
