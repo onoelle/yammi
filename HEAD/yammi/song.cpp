@@ -321,7 +321,7 @@ bool Song::checkFilename(bool ignoreCase)
   }
 	else {
     if(ignoreCase) {
-      return (constructFilename().upper()==filename.upper());
+      return ((constructFilename().upper())==(filename.upper()));
     }
     else {
       return (constructFilename()==filename);

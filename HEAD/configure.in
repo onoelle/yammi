@@ -162,10 +162,11 @@ if test "x$configure_enable_KDE" = "xyes"; then
 fi
 
 dnl test for QT
-AC_PATH_KDE
-
 if test "x$configure_enable_KDE" = "xyes"; then
+    AC_PATH_KDE
     KDE_CREATE_SUBDIRSLIST
+else
+    AC_PATH_QT
 fi
 
 dnl -------------------------------

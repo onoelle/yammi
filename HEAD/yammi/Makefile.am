@@ -6,7 +6,7 @@ bin_PROGRAMS = yammi
 yammi_SOURCES = CVBitRate.cpp CMP3Info.cpp CFrameHeader.cpp ApplyToAllBase.ui noatunplayer.cpp UpdateDatabaseMediaDialogBase.ui UpdateDatabaseDialogBase.ui SongInfoDialog.ui PreferencesDialogBase.ui DeleteDialog.ui ConsistencyCheckDialogBase.ui ConsistencyCheckDialog.cpp vcedit.c yammiapplication.cpp xmmsplayer.cpp mediaplayer.cpp lineeditshift.cpp updatedatabasemediadialog.cpp updatedatabasedialog.cpp yammimodel.cpp yammigui.cpp songlistitem.cpp songinfo.cpp songentrytimestamp.cpp songentrystring.cpp songentryint2.cpp songentryint.cpp songentry.cpp song.cpp prefs.cpp preferencesdialog.cpp mylistview.cpp mylist.cpp mydatetime.cpp main.cpp fuzzsrch.cpp foldersorted.cpp foldermedia.cpp foldergroups.cpp foldercategories.cpp folder.cpp 
 SOURCES = CVBitRate.cpp CMP3Info.cpp CFrameHeader.cpp noatunplayer.cpp ConsistencyCheckDialog.cpp vcedit.c yammiapplication.cpp xmmsplayer.cpp mediaplayer.cpp lineeditshift.cpp updatedatabasemediadialog.cpp updatedatabasedialog.cpp yammimodel.cpp yammigui.cpp songlistitem.cpp songinfo.cpp songentrytimestamp.cpp songentrystring.cpp songentryint2.cpp songentryint.cpp songentry.cpp song.cpp prefs.cpp preferencesdialog.cpp mylistview.cpp mylist.cpp mydatetime.cpp main.cpp fuzzsrch.cpp foldersorted.cpp foldermedia.cpp foldergroups.cpp foldercategories.cpp folder.cpp 
 INTERFACES = ApplyToAllBase.ui UpdateDatabaseMediaDialogBase.ui UpdateDatabaseDialogBase.ui SongInfoDialog.ui PreferencesDialogBase.ui DeleteDialog.ui ConsistencyCheckDialogBase.ui 
-TRANSLATIONS = 
+TRANSLATIONS = yammi_de.ts yammi.hu.ts yammi_xx.ts
 KDE_OPTIONS = qtonly
 yammi_LDADD   =  $(LIB_QT) $(LIBSOCKET)
 
