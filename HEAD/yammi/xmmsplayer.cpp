@@ -318,30 +318,16 @@ bool XmmsPlayer::skipBackward(bool withoutCrossfading)
   if(withoutCrossfading) {
     xmms_remote_pause(session);
   }
-  int count=playlist->count();
-	if(count==0)			// empty folder songsPlayed => can't skip backwards
-		return false;
 
-	// 1. get and remove last song from songsPlayed
-	Song* last=playlist->at(count-1)->song();
-	playlist->remove(count-1);
-	gYammiGui->folderSongsPlayed->updateTitle();
-//	cout << "last: " << last->displayName() << "\n";
-
-	int pos=xmms_remote_get_playlist_pos(session);
+  int pos=xmms_remote_get_playlist_pos(session);
 	gchar url[500];
-	strcpy(url, last->location());
+  Song* last=playlist->at(0)->song();
+  
+  strcpy(url, last->location());
 	xmms_remote_playlist_ins_url_string(session, url, pos);
 	xmms_remote_set_playlist_pos(session, pos);
-	gYammiGui->currentSong=0;
-	gYammiGui->folderActual->insertSong(last, 0);
-
-	// update necessary?
-	if(gYammiGui->chosenFolder==gYammiGui->folderActual || gYammiGui->chosenFolder==gYammiGui->folderSongsPlayed)
-		gYammiGui->slotFolderChanged();
-	else
-		gYammiGui->songListView->triggerUpdate();
-
+  playlistChanged();
+  
   if(withoutCrossfading) {
     xmms_remote_play(session);
   }
@@ -428,7 +414,8 @@ void XmmsPlayer::check()
     if(newStatus==STOPPED) {
       // heuristic: if player stopped and only one song left in playlist
       // => we should remove it
-      if(playlist->count()==1 && timeLeft<2000) {
+      cout << "timeleft: " << timeLeft << "\n";
+      if(playlist->count()==1 && timeLeft<15000) {
         xmms_remote_playlist_delete(session, 0);
         playlist->removeFirst();
         playlistChanged();

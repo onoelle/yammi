@@ -76,8 +76,6 @@ public:
 	QStringList	categoryNames;							// names of categories
 	
 	int				entriesAdded;
-  int       entriesDeleted;
-  int       entriesUpdated;
 	int				corruptSongs;
 	bool			_allSongsChanged;
   bool			_categoriesChanged;

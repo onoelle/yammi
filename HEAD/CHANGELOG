@@ -1,8 +1,10 @@
 ########################
 ??.??.2003 version 0.8.0
+- finished noatun support (skip backward, restarting instances???)
 - set default sort order for albums: trackNr
 - fixed: genre grouping bug
 - fixed: table headers not restoring to saved value on first appearance
+- last open folder will be remembered for next session
 - a lot of minor cleanups
 
 

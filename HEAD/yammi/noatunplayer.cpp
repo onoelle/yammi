@@ -319,9 +319,10 @@ bool NoatunPlayer::skipForward(bool withoutCrossfading)
 /// skip backward in playlist
 bool NoatunPlayer::skipBackward(bool withoutCrossfading)
 {
-  // TODO:
-  cout << "sorry, not implemented yet...\n";
-//  sendDcopCommand("back()");
+  Song* last=playlist->at(0)->song();
+  // insert pseudo-song to be removed
+  playlist->insert(0, new SongEntryInt(last, 0));
+  startSongChange(withoutCrossfading);
   return true;
 }
 

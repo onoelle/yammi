@@ -16,14 +16,20 @@ KNOWN BUGS
 for noatun support
 ------------------
 - restart player after killed
-- implement skip backward
 - playing songs not contained in Yammi's database might confuse yammi
-- use QProcess for XMMS? (noatun?)
-- xmms: remove last song on stop???
+- both players:
+  - start (but song changed in between): update current
+  - use QProcess for XMMS? (noatun?)
+  - skip forward/backward when stopped
 
 for release 0.8.0
 -----------------
 - plugin: publish a sample plugin (echo...) with all replacements
+- add default plugins on first start (if not already contained)
+- move rpms to sourceforge download server/system
+
+- update credits
+- update homepage: move requirements and install into handbook?
 - on deleting a song: delete in *all* lists (history, categories, ...)
 
 - use QProcess instead of system() calls? (prelisten, xmms, noatun, shutdownscript, ...)
@@ -31,7 +37,7 @@ for release 0.8.0
 - add to consistency check: update option for re-reading layer/tag info from existing songs
 - updating genre tag from outside of Yammi => update info in Yammi
 
-- alternative to mp3burn? => document and recommend Tom's script
+- alternative to mp3burn? => document Tom's script / document using k3b
 - extend the autoplay functionality
 - check: failing to load a media => crash? (tom)
 - folder for recent additions to database?
@@ -41,7 +47,8 @@ for release 0.8.0
 - remove/replace "current" button?
 - removing a song from playlist: only remove this one (idea: function "removeDuplicates" for playlist?)
 - Yammi running without valid player: create DummyPlayer class instead of all if(player!=0)
-- load m3u files into a category/save a category to m3u file (import into k3b possible?)
+- load m3u files into a category
+- page up and down keys dont work after searching
 
 0.8.1
 -----
@@ -49,11 +56,12 @@ for release 0.8.0
 - cleanup
   - clean up yammigui.h (protected/public) !!! (oh oh...)
   - clean up other classes (eg. folder)...
+- polish GUI... (esp. the "butt ugly" icons?)
+- optimize startup time and behaviour
 - swap management: in song: method getFilename() vs. getRealFilename() (fast)???
 - speed up loading of categories? (binary search)
 - xmms lock file?  => not easy to determine whether xmms is running or just lock file present
   maybe start xmms with QProcess?
-- dequeue not working??? when I tested, it worked for me...? (tom)
 - incorrect track numbers if track number not present (tom) => maybe problem of old id3lib?
 - update database: more information+statistics at the end
 - update database: select a single file
@@ -63,6 +71,7 @@ for release 0.8.0
 for future releases
 -------------------
 - new icon set for song actions (enqueue, playnow, ...)
+- split left tree into two lists: automatic folders and user folders?
 - stopping prelistening: cleaner approach with QProcess???
 - restoring window geometry issue
 - save more session settings?

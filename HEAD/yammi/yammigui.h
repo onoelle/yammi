@@ -230,6 +230,7 @@ protected:
 	void			    keyPressEvent(QKeyEvent* e);
 	void			    keyReleaseEvent(QKeyEvent* e);
 
+  void          handleNewSong(Song* newSong);
 	void			    getCurrentSong();
 	void			    getCurrentlyPlayedSong();
 	void			    getSelectedSongs();

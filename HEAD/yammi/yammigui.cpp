@@ -380,8 +380,9 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
 	// some preparations for startup
 	//******************************
 	folderListView->firstChild()->setOpen( TRUE );
-	folderListView->setCurrentItem( folderListView->firstChild()->firstChild() );
-	folderListView->setSelected( folderListView->firstChild(), TRUE );
+//	folderListView->setCurrentItem( folderListView->firstChild()->firstChild() );
+//	folderListView->setSelected( folderListView->firstChild(), TRUE );
+// todo?
 
 	songListView->setSelected( songListView->firstChild(), TRUE );
 	songListView->setCurrentItem( songListView->firstChild() );
@@ -429,9 +430,9 @@ void YammiGui::finishInitialization()
   // finish initialization (move to single-shot timer for faster startup?)
   // restore session settings
   mainStatusBar->message("Welcome to Yammi "+model->config.yammiVersion, 10000);
-  chosenFolder=folderAll;
-  updateListViewColumns();
+  folderListView->ensureItemVisible((QListViewItem*)chosenFolder);
 	slotFolderChanged();
+  updateListViewColumns();
 
 	if(model->noPrefsFound && model->noDatabaseFound) {
 		QMessageBox::information( this, "Yammi",	QString("Yammi - Yet Another Music Manager I...\n\n\n")+
@@ -497,53 +498,63 @@ void YammiGui::updatePlaylist()
     stopDragging();
   }
 
-  folderActual->correctOrder();
-
-	// check, whether we should put last song in folder songsPlayed
+  // handle last song
 	if(currentSong!=0) {
+    // we put last song in folder songsPlayed
 		MyDateTime now;
 		SongEntryTimestamp* entry=new SongEntryTimestamp(currentSong, &currentSongStarted);
 		currentSong->lastPlayed=entry->timestamp;
 		folderSongsPlayed->addEntry(entry);		// append to songsPlayed
   }
 
-  // do the following only if there is a new current song
+  // handle new song
   if(model->songsToPlay.count()>0) {
-    currentSong=model->songsToPlay.at(0)->song();
-    // TODO: take swapped file?
-    currentFile=currentSong->location();
-    currentSongStarted=currentSongStarted.currentDateTime();
-
-    if(songsUntilShutdown>0) {
-      songsUntilShutdown--;
-      sleepModeSpinBox->setValue(songsUntilShutdown);
-      if(songsUntilShutdown==0) {
-        cout << "shutting down now...\n";
-        shutDown();
-      }
-    }
-
-    // set title to currently played song
-    setCaption("Yammi: "+currentSong->displayName());
-
-    // setup songSlider
-//    songSlider->setRange(0, player->getTotalTime());
-    songSlider->setRange(0, currentSong->length*1000);
-    songSlider->setTickInterval(1000*60);
+    handleNewSong(model->songsToPlay.at(0)->song());
   }
   else {
-    setCaption("Yammi - not playing");
-    currentSong=0;
-    currentFile="";
-    songSlider->setValue(0);
-    songSlider->setRange(0, 0);
+    handleNewSong(0);
   }
+
+  // update gui
+  folderActual->correctOrder();
   player->syncYammi2Player(false);
 	// update view, if folderActual is currently shown folder
 	if(chosenFolder==folderActual)
 		slotFolderChanged();
 	else
 		songListView->triggerUpdate();
+}
+
+void YammiGui::handleNewSong(Song* newSong)
+{
+  currentSong=newSong;
+  if(newSong==0) {
+    setCaption("Yammi - not playing");
+    currentFile="";
+    songSlider->setValue(0);
+    songSlider->setRange(0, 0);
+    return;
+  }
+  // TODO: take swapped file?
+  currentFile=newSong->location();
+  currentSongStarted=currentSongStarted.currentDateTime();
+
+  if(songsUntilShutdown>0) {
+    songsUntilShutdown--;
+    sleepModeSpinBox->setValue(songsUntilShutdown);
+    if(songsUntilShutdown==0) {
+      cout << "shutting down now...\n";
+      shutDown();
+    }
+  }
+
+  // set title to currently played song
+  setCaption("Yammi: "+currentSong->displayName());
+
+  // setup songSlider
+//    songSlider->setRange(0, player->getTotalTime());
+  songSlider->setRange(0, currentSong->length*1000);
+  songSlider->setTickInterval(1000*60);
 }
 
 /**
@@ -557,8 +568,8 @@ void YammiGui::updatePlayerStatus()
   }
   if(player->getStatus()==PLAYING) {
     tbPlayPause->setIconSet(QIconSet(QPixmap((const char**)pause_xpm)));
-    if(currentSong==0) {
-      currentSong=model->getSongFromFilename(player->getCurrentFile());
+    if(currentSong==0 || currentFile!=player->getCurrentFile()) {
+      handleNewSong(model->getSongFromFilename(player->getCurrentFile()));
     }
   }
   else {
@@ -590,7 +601,10 @@ void YammiGui::writeSettings()
   settings.writeEntry( "/Yammi/folder/current", chosenFolder->folderName());
 }
 
-/// restores session settings
+/**
+ * Restores session settings.
+ * Initializes chosenFolder to the last open folder.
+ */
 void YammiGui::readSettings()
 {
   QSettings settings;
@@ -606,8 +620,30 @@ void YammiGui::readSettings()
   for(int i=0; i<MAX_COLUMN_NO; i++) {
     columnWidth[i]=settings.readNumEntry("/Yammi/songlistview/column"+QString("%1").arg(i)+"Width");
   }
+
+  chosenFolder=0;
+  QString folderName = settings.readEntry( "/Yammi/folder/current", "All Music");
+  for(QListViewItem* i=folderListView->firstChild(); i; i=i->itemBelow()) {
+    Folder* f=(Folder*)i;
+    if(f->folderName()==folderName) {
+      chosenFolder=f;
+      break;
+    }
+    for(QListViewItem* i2=i->firstChild(); i2; i2=i2->itemBelow()) {
+      Folder* f2=(Folder*)i2;
+      if(f2->folderName()==folderName) {
+        chosenFolder=f2;
+        break;
+      }    
+    }
+  }
+  if(chosenFolder==0) {
+    chosenFolder=folderAll;
+  }
+  folderListView->setCurrentItem( (QListViewItem*)chosenFolder );
+  folderListView->setSelected( (QListViewItem*)chosenFolder , TRUE );
+  folderListView->ensureItemVisible((QListViewItem*)chosenFolder);
   // todo: anything else we want to restore?
-  // (currently opened folder, ...)
 }
 
 
@@ -2753,7 +2789,10 @@ void YammiGui::updateSongDatabaseMedia()
 
 void YammiGui::updateSongDatabase(QString scanDir, QString filePattern, QString media)	
 {
-	QProgressDialog progress( "Scanning...", "Cancel", 100, this, "progress", TRUE );
+  if(model->config.childSafe) {
+    return;
+  }
+  QProgressDialog progress( "Scanning...", "Cancel", 100, this, "progress", TRUE );
 	progress.setMinimumDuration(0);
 	progress.setAutoReset(false);
   progress.setProgress(0);
@@ -2772,8 +2811,6 @@ void YammiGui::updateSongDatabase(QString scanDir, QString filePattern, QString 
   msg+=QString("%1 songs added to database\n").arg(model->entriesAdded);
   msg+=QString("%1 songs corrupt (=not added)\n").arg(model->corruptSongs);
   msg+=QString("%1 songs problematic (check in folder Problematic Songs)\n").arg(model->problematicSongs.count());
-  msg+=QString("%1 entries updated\n").arg(model->entriesUpdated);
-  msg+=QString("%1 entries deleted\n").arg(model->entriesDeleted);
 	QMessageBox::information( this, "Yammi", msg, "Fine." );
 
   // TODO: check update actions after scanning...without danger? (=> don't need to stop xmms?)
@@ -2985,9 +3022,32 @@ void YammiGui::skipForward()
 
 void YammiGui::skipBackward()
 {
-  if(player!=0) {
-    player->skipBackward(shiftPressed);
+  if(player==0) {
+    return;
   }
+
+  int count=model->songsPlayed.count();
+	if(count==0)			// empty folder songsPlayed => can't skip backwards
+		return;
+
+	// 1. get and remove last song from songsPlayed
+	Song* last=model->songsPlayed.at(count-1)->song();
+	model->songsPlayed.remove(count-1);
+//  model->songsToPlay->insert(0, new SongEntry(0, last);
+//	currentSong=0;
+	folderActual->insertSong(last, 0);
+
+  player->skipBackward(shiftPressed);
+
+  // skipping backward creates a new entry in songsPlayed that we don't want
+  // => remove it again
+	model->songsPlayed.remove(model->songsPlayed.count()-1);
+  folderSongsPlayed->updateTitle();
+	// update necessary?
+	if(chosenFolder==folderActual || chosenFolder==folderSongsPlayed)
+		slotFolderChanged();
+	else
+		songListView->triggerUpdate();
 }
 
 

@@ -764,14 +764,11 @@ bool YammiModel::categoriesChanged()
  */
 void YammiModel::updateSongDatabase(QString scanDir, QString filePattern, QString mediaName, QProgressDialog* progress)
 {
-	if(config.childSafe)
-		return;
-	problematicSongs.clear();
-  entriesDeleted=0;
-  entriesUpdated=0;
 	entriesAdded=0;
 	corruptSongs=0;
-
+	if(config.childSafe)
+		return;
+  problematicSongs.clear();
 	if(mediaName==0) {
 		cout << "scanning harddisk for new songs... \n";
 		// check that scanDir is an existing directory
