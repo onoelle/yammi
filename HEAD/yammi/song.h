@@ -70,7 +70,7 @@ public:
   bool getTags(QString filename);
   bool setTags(QString filename);
   bool getId3Tag(ID3_Tag* tag, ID3_FrameID frame, ID3_FieldID field, QString* content);
-  bool setId3Tag(ID3_Tag* tag, ID3_FrameID frame, ID3_FieldID field, QString content);
+  bool setId3Tag(ID3_Tag* tag, ID3_FrameID frame, ID3_FieldID field, QString content, ID3_Frame* newFrame);
   void guessTagsFromFilename(QString filename, QString* artist, QString* title);
 
   // mp3 layer info

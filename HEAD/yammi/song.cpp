@@ -347,19 +347,54 @@ bool Song::setTags(QString filename)
   tag.Link(filename, ID3TT_ALL);
 
   // title
-  if(!setId3Tag(&tag, ID3FID_TITLE, ID3FN_TEXT, this->title))
-    cout << "could not set tag (title)\n";
+  if(title!="") {
+    ID3_Frame titleFrame;
+    if(!setId3Tag(&tag, ID3FID_TITLE, ID3FN_TEXT, this->title, &titleFrame))
+      cout << "could not set tag (title)\n";
+  }
+  
   // artist
-  if(!setId3Tag(&tag, ID3FID_TITLE, ID3FN_TEXT, this->title))
-    cout << "could not set tag (title)\n";
+  if(artist!="") {
+    ID3_Frame artistFrame;
+    if(!setId3Tag(&tag, ID3FID_LEADARTIST, ID3FN_TEXT, this->artist, &artistFrame))
+      cout << "could not set tag (title)\n";
+  }
+  
   // album
-  if(!setId3Tag(&tag, ID3FID_TITLE, ID3FN_TEXT, this->title))
-    cout << "could not set tag (title)\n";
+  if(album!="") {
+    ID3_Frame albumFrame;
+    if(!setId3Tag(&tag, ID3FID_ALBUM, ID3FN_TEXT, this->album, &albumFrame))
+      cout << "could not set tag (title)\n";
+  }
+  
   // comment
-  if(!setId3Tag(&tag, ID3FID_TITLE, ID3FN_TEXT, this->title))
-    cout << "could not set tag (title)\n";
-
-    // todoXXX
+  if(comment!="") {
+    ID3_Frame commentFrame;
+    if(!setId3Tag(&tag, ID3FID_COMMENT, ID3FN_TEXT, this->comment, &commentFrame))
+      cout << "could not set tag (title)\n";
+  }
+  
+  // year
+  if(year!=0) {
+    ID3_Frame yearFrame;
+    if(!setId3Tag(&tag, ID3FID_YEAR, ID3FN_TEXT, QString("%1").arg(this->year), &yearFrame))
+      cout << "could not set tag (year)\n";
+  }
+  
+  // trackNr
+  if(trackNr!=0) {
+    ID3_Frame trackNrFrame;
+    if(!setId3Tag(&tag, ID3FID_TRACKNUM, ID3FN_TEXT, QString("%1").arg(this->trackNr), &trackNrFrame))
+      cout << "could not set tag (year)\n";
+  }
+  
+  // genreNr
+  if(genreNr!=-1) {
+    ID3_Frame genreNrFrame;
+    if(!setId3Tag(&tag, ID3FID_CONTENTTYPE, ID3FN_TEXT, QString("%1").arg(this->genreNr), &genreNrFrame))
+      cout << "could not set tag (year)\n";
+  }
+  
   tag.Update();
   return true;
 }
@@ -369,14 +404,16 @@ bool Song::setTags(QString filename)
 
 /** sets a particular frame content using id3lib.
  */
-bool Song::setId3Tag(ID3_Tag* tag, ID3_FrameID frame, ID3_FieldID field, QString content)
+bool Song::setId3Tag(ID3_Tag* tag, ID3_FrameID frame, ID3_FieldID field, QString content, ID3_Frame* newFrame)
 {
   // get frame
   ID3_Frame* theFrame = tag->Find(frame);
   if (theFrame == NULL) {
-    cout << "could not find frame " << frame << "\n";
-    // todo: create the frame here!
-    return false;
+    cout << "could not find frame " << frame << ", creating it...\n";
+    newFrame->SetID(frame);
+    newFrame->GetField(field)->Set(content.latin1());
+    tag->AddFrame(newFrame);
+    return true;
   }
 
   // get field
@@ -385,9 +422,6 @@ bool Song::setId3Tag(ID3_Tag* tag, ID3_FrameID frame, ID3_FieldID field, QString
     cout << "could not find field " << field << "\n";
     return false;
   }
-
-//  char temp[1024];
-//  strcpy(temp, content);
 
   cout << "trying to set field to: " << content.latin1() << "\n";
   theField->Set(content.latin1());
@@ -506,40 +540,8 @@ bool Song::saveTags()
 	
   setTags(location());
 
-  // set ID3 tags according to info in song
-  /*
-  MP3Tag tag;
-	tag.spacecopy(tag.artist, this->artist.latin1(), 30);
-	tag.spacecopy(tag.title, this->title.latin1(), 30);
-	tag.spacecopy(tag.album, this->album.latin1(), 30);
-	QCString tmpYear;
-	if(this->year!=-1) {
-		tmpYear.sprintf("%i", this->year);
-	}
-	else {
-		tmpYear="";
-	}
-	tag.spacecopy(tag.year, tmpYear.data(), 4);
-	tag.spacecopy(tag.comment, this->comment.latin1(), 30);
-	tag.trackNr=this->trackNr;
-	tag.gennum=this->genreNr;
-	
-	// open file
-	QString location=this->path+"/"+this->filename;
-	QFile f(location);
-	if (! f.open(IO_ReadWrite) ) {
-		cout << "ERROR: error opening file " << location << "\n";
-		return false;
-	}
-	bool success=tag.saveTags(&f);
-	f.close();
-	if(!success) {
-		cout << "ERROR: could not save mp3 tags to file " << location << "\n";
-		return false;
-	}
 	cout << "id3 tags corrected in file " << this->filename << "\n";
 	tagsDirty=false;
-  */
 	return true;
 }
 
