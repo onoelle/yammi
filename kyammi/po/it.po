@@ -1,20 +1,21 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
-#, fuzzy
+# translation of it.po to 
+# translation of de.po to
+# translation of kyammi.po to
+# translation of kyammi.po to german
+# Oliver Noelle <oli.noelle@web.de>, 2004.
+# Oliver Nölle <oliver@linux>, 2004.
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: it\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2004-09-25 13:04+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2004-09-21 23:24+0200\n"
+"Last-Translator: Oliver Nölle <oliver@linux>\n"
+"Language-Team:  <en@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.3.1\n"
 
 #: ApplyToAllBase.cpp:82 rc.cpp:18
 msgid "confirm"
@@ -179,7 +180,7 @@ msgstr ""
 
 #: ConsistencyCheckDialog.cpp:26
 msgid "Check consistency - settings"
-msgstr ""
+msgstr "Configurazione controllo consistenza"
 
 #: ConsistencyCheckDialog.cpp:32
 msgid "Checking %1 songs"
@@ -199,8 +200,9 @@ msgid "Step 1: checking all songs in database..."
 msgstr ""
 
 #: ConsistencyCheckDialog.cpp:97
+#, fuzzy
 msgid "Checking consistency of %1 songs..."
-msgstr ""
+msgstr "Configurazione controllo consistenza"
 
 #: ConsistencyCheckDialog.cpp:121
 msgid "file not existing or readable: %1\n"
@@ -403,7 +405,7 @@ msgstr ""
 
 #: foldermedia.cpp:43
 msgid "Not on media"
-msgstr ""
+msgstr "Nicht auf Medium"
 
 #: foldermedia.moc.cpp:34 foldermedia.moc.cpp:42
 msgid "FolderMedia"
@@ -419,23 +421,23 @@ msgstr ""
 
 #: main.cpp:24
 msgid "Specifies the database directory"
-msgstr ""
+msgstr "Gibt das Datenbank-Verzeichnis an"
 
 #: main.cpp:26
 msgid "Yammi - Yet Another Music Manager I..."
-msgstr ""
+msgstr "Yammi - Yet Another Music Manager I..."
 
 #: main.cpp:38
 msgid "- Arts  support: yes\n"
-msgstr ""
+msgstr "- Arts  Unterstützung: ja\n"
 
 #: main.cpp:39
 msgid "- Noatun support: yes\n"
-msgstr ""
+msgstr "- supporto Noatun: yes\n"
 
 #: main.cpp:41
 msgid "- XMMS support: yes\n"
-msgstr ""
+msgstr "- supporto XMMS: yes\n"
 
 #: main.cpp:43
 msgid "- XMMS support: no\n"
@@ -1992,3 +1994,6 @@ msgstr ""
 #: yammimodel.moc.cpp:34 yammimodel.moc.cpp:42
 msgid "YammiModel"
 msgstr ""
+
+#~ msgid "to wishlist"
+#~ msgstr "als Wunsch vormerken"
