@@ -28,8 +28,12 @@
 class SongInfo : public SongInfoDialog  {
    Q_OBJECT
 public: 
-	SongInfo(QWidget *parent=0, const char *name=0, bool modal=true);
+	SongInfo(QWidget *parent);
 	~SongInfo();
+
+protected:
+//    int songCount;
+//	Song editSong;
 };
 
 #endif

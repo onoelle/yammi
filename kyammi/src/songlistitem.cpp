@@ -229,7 +229,7 @@ int SongListItem::compare( QListViewItem *i, int visibleColumn, bool ascending )
  * (needed for sorting the listview)
  * tries to sort as reasonable as possible
  */
-QString SongListItem::key(int visibleColumn, bool ascending) const
+QString SongListItem::key(int visibleColumn, bool) const
 {
 	int base=songEntry->getBase();
 	if(visibleColumn<base) {
@@ -253,5 +253,7 @@ QString SongListItem::key(int visibleColumn, bool ascending) const
 			return s->album+QString("%1").arg(s->trackNr, 2);
 	if(column==gYammiGui->COLUMN_GENRE)
 		return QString("%1").arg(CMP3Info::getGenre(s->genreNr));
+	if(column==gYammiGui->COLUMN_PATH)
+		return s->path+s->filename;
 	return text(column);
 }

@@ -22,6 +22,7 @@
 #include <kconfig.h>
 
 #include "options.h"
+#include "config.h"
 
 #include <kdebug.h>
 
@@ -37,21 +38,16 @@ Prefs::~Prefs(){
 
 void Prefs::setDefaultValues(void) {
 	// general	
-	// media player: 0=XMMS, 1=Noatun, 2=Arts
-	player = MEDIA_PLAYER_ARTSPLAYER;
+	mediaPlayer = MEDIA_PLAYER_ARTSPLAYER;
 
-	yammiVersion = "1.2";
-	dbFile = KGlobal::dirs()->findResource("appdata","songdb.xml");
+	yammiVersion = VERSION;
+	databaseDir = KGlobal::dirs()->findResourceDir("appdata","songdb.xml");
 	trashDir = QDir::homeDirPath() + "/Desktop/Trash";
 	scanDir = "/mp3/inbox/";
-	filenamePattern = "{artist} - {title}.{suffix}";
-	directoryPattern = "{artist}/{album}";
 	guessingMode = GUESSING_MODE_SIMPLE;
   
 	doubleClickAction = Song::None;
 	middleClickAction = Song::None;
-	controlClickAction = Song::None;
-	shiftClickAction = Song::None;
 	logging = false;
 	childSafe = false;
 	tagsConsistent = false;
@@ -63,7 +59,6 @@ void Prefs::setDefaultValues(void) {
 	groupThreshold = 5;
 	lazyGrouping = false;
 	searchThreshold = 20;
-	searchMaximumNoResults = 200;
 
 	keepInXmms = 3;
 
@@ -80,6 +75,7 @@ void Prefs::setDefaultValues(void) {
 	swapDir = "/tmp/";
 	swapSize = 200;
 	mountMediaDir = true;
+	consistencyPara.setDefaults();
 }
 
 
@@ -97,11 +93,9 @@ bool Prefs::loadConfig( )
 	scanDir                      = cfg->readEntry("scanDir", scanDir);
 	filenamePattern              = cfg->readEntry("filenamePattern", filenamePattern);
 	directoryPattern             = cfg->readEntry("directoryPattern", directoryPattern);
-	guessingMode                 = cfg->readNumEntry("guessingMode", player);
+	guessingMode                 = cfg->readNumEntry("guessingMode", guessingMode);
 	doubleClickAction            = (Song::action) cfg->readNumEntry("doubleClickAction", doubleClickAction);
 	middleClickAction            = (Song::action) cfg->readNumEntry("middleClickAction", middleClickAction);
-	controlClickAction           = (Song::action) cfg->readNumEntry("controlClickAction", controlClickAction);
-	shiftClickAction             = (Song::action) cfg->readNumEntry("shiftClickAction", shiftClickAction);
 	logging                      = cfg->readBoolEntry("logging", logging);
 	childSafe                    = cfg->readBoolEntry("childSafe", childSafe);
 	tagsConsistent               = cfg->readBoolEntry("tagsConsistent", tagsConsistent);
@@ -116,13 +110,8 @@ bool Prefs::loadConfig( )
 	}
 	lazyGrouping                 = cfg->readBoolEntry("lazyGrouping", lazyGrouping);
 	searchThreshold              = cfg->readNumEntry("searchThreshold", searchThreshold);
-	searchMaximumNoResults       = cfg->readNumEntry("searchMaximumNoResults", searchMaximumNoResults);
-	player = cfg->readNumEntry("mediaPlayer", MEDIA_PLAYER_ARTSPLAYER );
+	mediaPlayer = cfg->readNumEntry("mediaPlayer", mediaPlayer);
 	
-	cfg->setGroup("Database");
-	dbFile = cfg->readEntry( "dbFile", dbFile );
-	kdDebug()<<"dbFile set to "<<dbFile<<endl;
-  
 	cfg->setGroup("Xmms");
 	keepInXmms                   = cfg->readNumEntry("keepInXmms", keepInXmms);
 
@@ -146,11 +135,23 @@ bool Prefs::loadConfig( )
 	swapDir                      = cfg->readEntry("swapDir", swapDir);
 	swapSize                     = cfg->readNumEntry("swapSize", swapSize);
 
-// 	if(prefsVersion != yammiVersion) {
-// 		addStandardPlugins();
-// 		saveConfig();
-// 	}
-	kdDebug()<<"Config loaded"<<endl;
+	cfg->setGroup("ConsistencyCheck");
+	consistencyPara.checkDirectories	= cfg->readBoolEntry("checkDirectories", consistencyPara.checkDirectories);
+	consistencyPara.checkDoubles		= cfg->readBoolEntry("checkDoubles", consistencyPara.checkDoubles);
+	consistencyPara.checkFilenames		= cfg->readBoolEntry("checkFilenames", consistencyPara.checkFilenames);
+	consistencyPara.checkForExistence	= cfg->readBoolEntry("checkForExistence", consistencyPara.checkForExistence);
+	consistencyPara.checkTags			= cfg->readBoolEntry("checkTags", consistencyPara.checkTags);
+	consistencyPara.correctDirectories	= cfg->readBoolEntry("correctDirectories", consistencyPara.correctDirectories);
+	consistencyPara.correctFilenames	= cfg->readBoolEntry("correctFilenames", consistencyPara.correctFilenames);
+	consistencyPara.correctTags			= cfg->readBoolEntry("correctTags", consistencyPara.correctTags);
+	consistencyPara.correctTagsDirection= cfg->readBoolEntry("correctTagsDirection", consistencyPara.correctTagsDirection);
+	consistencyPara.deleteEmptyDirectories= cfg->readBoolEntry("deleteEmptyDirectories", consistencyPara.deleteEmptyDirectories);
+	consistencyPara.directoryPattern	= cfg->readEntry("directoryPattern", consistencyPara.directoryPattern);
+	consistencyPara.filenamePattern		= cfg->readEntry("filenamePattern", consistencyPara.filenamePattern);
+	consistencyPara.ignoreCaseInFilenames= cfg->readBoolEntry("ignoreCaseInFilenames", consistencyPara.ignoreCaseInFilenames);
+	consistencyPara.updateNonExisting= cfg->readBoolEntry("updateNonExisting", consistencyPara.updateNonExisting);
+	
+	kdDebug() << "Config loaded" << endl;
 	return true;
 }
 
@@ -159,38 +160,29 @@ bool Prefs::loadConfig( )
  */
 bool Prefs::saveConfig( )
 {
-	kdDebug()<<"saving Configuration..."<<endl;
+	kdDebug() << "saving Configuration..." << endl;
 	
 	KConfig *cfg = kapp->config();
 	
 	cfg->setGroup("General Options");
 	
-	cfg->writeEntry("trashDir", trashDir );
 	cfg->writeEntry("scanDir", scanDir);
-	cfg->writeEntry("filenamePattern", filenamePattern);
-	cfg->writeEntry("directoryPattern", directoryPattern);
-	cfg->writeEntry("guessingMode", player);
+	cfg->writeEntry("guessingMode", mediaPlayer);
+	
+	
+	cfg->writeEntry("trashDir", trashDir );
 	cfg->writeEntry("doubleClickAction", (int)doubleClickAction);
 	cfg->writeEntry("middleClickAction", (int)middleClickAction);
-	cfg->writeEntry("controlClickAction", (int)controlClickAction);
-	cfg->writeEntry("shiftClickAction", (int)shiftClickAction);
 	cfg->writeEntry("logging", logging);
 	cfg->writeEntry("childSafe", childSafe);
-	cfg->writeEntry("tagsConsistent", tagsConsistent);
-	cfg->writeEntry("filenamesConsistent", filenamesConsistent);
-	cfg->writeEntry("ignoreCaseInFilenames", ignoreCaseInFilenames);
 	cfg->writeEntry("capitalizeTags", capitalizeTags);
 	cfg->writeEntry("criticalSize", criticalSize);
 	cfg->writeEntry("secondSoundDevice", secondSoundDevice);
 	cfg->writeEntry("groupThreshold", groupThreshold);
 	cfg->writeEntry("lazyGrouping", lazyGrouping);
 	cfg->writeEntry("searchThreshold", searchThreshold);
-	cfg->writeEntry("searchMaximumNoResults", searchMaximumNoResults);
-	cfg->writeEntry("mediaPlayer", MEDIA_PLAYER_ARTSPLAYER );
+	cfg->writeEntry("mediaPlayer", mediaPlayer );
   
-	cfg->setGroup("Database");
-	cfg->writeEntry( "dbFile", dbFile );
-	
 	cfg->setGroup("Xmms");
 	cfg->writeEntry("keepInXmms", keepInXmms);
 
@@ -214,6 +206,25 @@ bool Prefs::saveConfig( )
 	cfg->writeEntry("swapDir", swapDir);
 	cfg->writeEntry("swriteize", swapSize);
 
+	
+	cfg->setGroup("ConsistencyCheck");
+	cfg->writeEntry("tagsConsistent", tagsConsistent);
+	cfg->writeEntry("filenamesConsistent", filenamesConsistent);
+	
+	cfg->writeEntry("checkDirectories", consistencyPara.checkDirectories);
+	cfg->writeEntry("checkDoubles", consistencyPara.checkDoubles);
+	cfg->writeEntry("checkFilenames", consistencyPara.checkFilenames);
+	cfg->writeEntry("checkForExistence", consistencyPara.checkForExistence);
+	cfg->writeEntry("checkTags", consistencyPara.checkTags);
+	cfg->writeEntry("correctDirectories", consistencyPara.correctDirectories);
+	cfg->writeEntry("correctFilenames", consistencyPara.correctFilenames);
+	cfg->writeEntry("correctTags", consistencyPara.correctTags);
+	cfg->writeEntry("correctTagsDirection", consistencyPara.correctTagsDirection);
+	cfg->writeEntry("deleteEmptyDirectories", consistencyPara.deleteEmptyDirectories);
+	cfg->writeEntry("directoryPattern", consistencyPara.directoryPattern);
+	cfg->writeEntry("filenamePattern", consistencyPara.filenamePattern);
+	cfg->writeEntry("ignoreCaseInFilenames", consistencyPara.ignoreCaseInFilenames);
+	cfg->writeEntry("updateNonExisting", consistencyPara.updateNonExisting);
 	kdDebug() << "Config saved" << endl;
 	return true;
 }
@@ -223,7 +234,7 @@ bool Prefs::saveConfig( )
  */
 void Prefs::addStandardPlugins()
 {
-	kdDebug()<<"Prefs::addStandardPlugins() adding Yammi's standard plugins to the plugin list"<<endl;;
+	kdDebug() << "Prefs::addStandardPlugins() adding Yammi's standard plugins to the plugin list\n";
 
 	if(!pluginMenuEntry.contains("Create CD Label")) {
 		pluginMenuEntry.append("Create CD Label");
@@ -255,7 +266,7 @@ void Prefs::addStandardPlugins()
 		pluginConfirm.append("true");
 		pluginMode.append("group");
 	}
-	kdDebug()<<"Prefs::addStandardPlugins() done"<<endl;	
+	kdDebug() << "Prefs::addStandardPlugins() done" << endl;	
 }
 
 

@@ -63,7 +63,7 @@ Folder::Folder( QListViewItem* parent, const QString &name, MyList* songList)
 void Folder::update( MyList& songList)
 {
 	this->songList=&songList;
-  owner = false;
+	owner = false;
 	updateTitle();
 }
 

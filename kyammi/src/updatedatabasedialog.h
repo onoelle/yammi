@@ -20,6 +20,7 @@
 
 #include <qwidget.h>
 #include <UpdateDatabaseDialogBase.h>
+#include "prefs.h"
 
 /**
   *@author Oliver Nölle
@@ -28,11 +29,15 @@ class UpdateDatabaseDialog : public UpdateDatabaseDialogBase
 {
   Q_OBJECT
 public: 
-	UpdateDatabaseDialog(QWidget *parent=0, const char *name=0);
+	UpdateDatabaseDialog(QWidget *parent, Prefs* config);
 	~UpdateDatabaseDialog();
 
 public slots:
   void chooseScanDir();  
+  void myAccept();
+  
+protected:
+	Prefs* config;
 };
 
 #endif

@@ -23,6 +23,7 @@
 #include <kmainwindow.h>
 
 #include <qtimer.h>
+#include <qwaitcondition.h>
 #include "options.h"
 #include "prefs.h"
 #include "mylist.h"
@@ -46,17 +47,17 @@ class FolderSorted;
 class FolderCategories;
 class FolderMedia;
 class Song;
-
+class KToggleAction;
+class SearchThread;
 
 // -----------------------------------------------------------------
 
 
 
 /**
- * This is the main class: horribly huge... a total mess ... sorry...
- * I am working on cleaning it up...honestly...
+ * This is the main class.
  *
- * -> clean-up in progress..... (luis)
+ * ...still way to big and unordered...cleaning in progress (luis and oliver)
  */
 class YammiGui : public KMainWindow
 {
@@ -87,13 +88,13 @@ public:
   SELECTION_MODE_CUSTOM = 4};
 
 public:
-	YammiGui( );
+	YammiGui();
 	virtual ~YammiGui();
 	
 	/** Load the Song database.
 	  * @param db Database file. If empty the file set in yammi's config file, or 
 	  *           the default will be used */
-	void loadDatabase( const QString &db = QString::null );
+	void loadDatabase(QString databaseDir);
 	
 	/** Start a count-down and then shut down yammi unless the user decides to cancel */
 	void shutdownSequence( );
@@ -103,9 +104,10 @@ public:
 public slots:
 	/** Seeks in the current song (if any) to position pos */
 	void seek( int pos );
+	void seekWithWheel(int rotation);
 	
-	/** Execute a fuzzy search in the song database, and switch to the search-results view */
-	void searchSong( const QString &fuzzy );
+	/** Request a fuzzy search in the song database, and switch to the search-results view */
+	void searchFieldChanged( const QString &fuzzy );
 	
  protected:
 	/** creates the internal MediaPlayer */
@@ -148,12 +150,15 @@ protected slots:
 	void changeSleepMode();
 private:
 	/** Setup UI-actions*/
-	void setupActions( );
+	bool setupActions( );
 	
 private:
 	Prefs m_config;
+	bool validState;
 	QSlider *m_seekSlider;
 	LineEditShift *m_searchField;
+	bool searchResultsUpdateNeeded;
+	bool m_acceptSearchResults;
 	bool m_sleepMode;
 	QSpinBox *m_sleepModeSpinBox;
 	QPushButton *m_sleepModeButton;
@@ -165,7 +170,9 @@ public:
 	// checks whether the swapped songs take more space than the given limit
 	void checkSwapSize();
 	void stopDragging();
+	void requestSearchResultsUpdate(MyList* results);
 	YammiModel* getModel() { return model; };
+	bool isValidState() { return validState; };
 	
 	bool columnIsVisible(int column);
 	int mapToRealColumn(int column);
@@ -173,6 +180,7 @@ public:
 	QString getColumnName(int column);
 	
 public slots:
+	void songListPopup(QListViewItem*, const QPoint&, int);
 	void deleteEntry(Song* s);
 	void checkForGrabbedTrack();
 	void slotFolderChanged();
@@ -197,10 +205,10 @@ public slots:
 
   /** Enqueue the selected songs at the end of the Playlist.
 	  * If the Shift key is pressed, the songs are shuffled before being appended */
-	void forSelectionAppend( );
+	void forSelectionEnqueue( );
 	/** Enqueue the selected songs at the beginning of the Playlist
 	  * If the Shift key is pressed, the songs are shuffled before being prepended */
-	void forSelectionPrepend( );
+	void forSelectionEnqueueAsNext( );
 	/** Put the selected songs at the beginning of the playlist and start the player */
 	void forSelectionPlay( );
 	/** Remove all selected songs from the Playlist */
@@ -224,8 +232,6 @@ public slots:
 
 	/** Remove all songs from the playlist */
 	void clearPlaylist();
-  /** Show Dialog to display/edit the song info */
-	void songInfo( Song *s );
 	
 	void autoplayFolder();
 
@@ -233,7 +239,7 @@ public:
 	MediaPlayer*  player;
 	MyListView* songListView;
 	Folder* chosenFolder;
-	
+	QWaitCondition searchFieldChangedIndicator;
 	
 	
 	// song that is currently played or 0 if not in database
@@ -266,10 +272,10 @@ public:
 
 protected:
 	void createMenuBar( );
-  void createSongPopup( );
+	void createSongPopup( );
 	void createFolders( );
 	void createMainWidget( );
-	
+	static int randomNum(int numbers = RAND_MAX);
 	
 	// gui
 	//***************
@@ -302,6 +308,8 @@ protected:
 	QString currentFile;
 	// filename of new track being grabbed
 	QString grabbedTrackFilename;
+	// the thread doing the fuzzy search in background
+	SearchThread* searchThread;
 	
 	
 
@@ -316,6 +324,7 @@ protected:
   SelectionMode selectionMode;
 
 	QTimer regularTimer;
+	QTimer searchResultsTimer;
 	QTimer checkTimer;
 
 	// folders
@@ -326,6 +335,8 @@ protected:
 // protected methods
 //******************
 protected:
+//	QIconSet 	getPopupIcon(Song::action whichAction);
+	void		forSelection(int action);
   void          gotoFuzzyFolder(bool backward);
   void          changeToFolder(Folder* newFolder, bool changeAnyway=false);
   void          folderContentChanged();
@@ -357,6 +368,14 @@ protected:
 	int						alreadyAdded;
 	void					addFolderContent(Folder* folder);
   int           autoplayMode;
+	
+	// UI - actions
+	//need to keep track of this so that we can change the icon/text
+	KAction* m_playPauseAction;
+	KAction* m_currentAutoPlay;
+	KToggleAction* m_autoplayActionOff;
+	KToggleAction* m_autoplayActionLnp;
+	KToggleAction* m_autoplayActionRandom;
 
 		
 
@@ -364,14 +383,15 @@ protected:
 // protected slots
 //****************
 protected slots:
-  void toggleColumnVisibility(int column);
-  void preListen(Song* s, int skipTo);  ///< sends the song to headphones
-  void stopPrelisten();
-  void shufflePlaylist();
+	void toggleColumnVisibility(int column);
+	void preListen(Song* s, int skipTo);  ///< sends the song to headphones
+	void stopPrelisten();
+	void shufflePlaylist();
+	void updateSearchResults();
   
     
-  void toFromPlaylist();
-  void saveColumnSettings();
+	void toFromPlaylist();
+	void saveColumnSettings();
 	
 	void setPreferences();	
 	void searchSimilar(int what);
@@ -380,12 +400,9 @@ protected slots:
 	void autoplayOff();
 	void autoplayLNP();
 	void autoplayRandom();
-//	void currentlyPlayedSongPopup();
-	void songListPopup( QListViewItem*, const QPoint &, int );
 	void doSongPopup(QPoint point);
 	void slotFolderPopup( QListViewItem*, const QPoint &, int );
 	void adjustSongPopup();
-	QIconSet getPopupIcon(Song::action whichAction);
 
 	void doubleClick();
 	void middleClick(int button);
@@ -418,13 +435,6 @@ protected slots:
 	void renameMedia();
 	void grabAndEncode();
 	void addFolderContentSnappy();
-	
-	// UI - actions
-	//need to keep track of this so that we can change the icon/text
-	KAction *m_playPauseAction;
-	//FIXME - hack.. ugly?
-	KAction *m_currentAutoPlay;
 };
 
 #endif
-

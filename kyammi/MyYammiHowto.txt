@@ -1,53 +1,16 @@
 yammi - Howto
 -------------
 
-i18n
-----
-call manually in project dir:
-make -f admin/Makefile.common package-messages
-=> generates yammi.pot in the po directory
-
-old: (QT only)
-
-nach autoconf/automake:
-im Verzeichnis yammi/yammi (mit den ganzen sourcen) Makefile.am editieren:
-TRANSLATIONS = yammi_de.ts yammi.hu.ts yammi_xx.ts
-
-
-im Verzeichnis yammi/yammi (mit den ganzen sourcen): lupdate Makefile.am
-=> erzeugt/aktualisiert "yammi_de.ts" (+ yammi_xx.ts)
-(weil im Makefile.am eingetragen ist: TRANSLATIONS = yammi_de.ts)
-
-im gleichen Verzeichnis lrelease Makefile.am
-=> erzeugt yammi_de.qm (+ yammi_xx.qm)
-
-
 CVS-Howto
 ---------
 dies kreiert lediglich den account auf cvs.sourceforge
 ssh -l onoelle cvs.yammi.sourceforge.net
 
 import: bob -> cvs@sourceforge
-cvs -d:ext:onoelle@cvs.yammi.sourceforge.net:/cvsroot/yammi import mycvsroot vendor start
+cvs -d:ext:onoelle@cvs.sourceforge.net:/cvsroot/yammi import kyammi vendor start
 
 checkout: cvs@sourceforge -> bob
-cvs -d:ext:onoelle@cvs.yammi.sourceforge.net:/cvsroot/yammi co mycvsroot
-
-checkin (=commit): bob -> cvs@sourceforge
-cvs commit -m "comments for this commit" uic_command.txt
-
-
-Compile Farm benutzen
----------------------
-auf compile farm einloggen:
-ssh -lonoelle cf.sourceforge.net
-
-dann erstmal:
-cvs -d:pserver:anonymous@cvs.yammi.sourceforge.net:/cvsroot/yammi login
-(und bei Frage nach Passwort einfach Return)
-
-und schliesslich yammi vom cvs getten:
-cvs -z3 -d:pserver:anonymous@cvs.yammi.sourceforge.net:/cvsroot/yammi co HEAD
+cvs -d:ext:onoelle@cvs.sourceforge.net:/cvsroot/yammi co kyammi
 
 
 VI essentials
@@ -56,32 +19,42 @@ ESC + :w    save file
 ESC + :q    quit vi
 
 
-Logo einbinden
---------------
-Group ID: 40376
+SmokeTest
+---------
+1. delete all installed files (rm -r /opt/kde/share/apps/yammi, rm -r /home/oliver/.kde/share/config/yammirc)
+2. fresh install of yammi
+3. check that files get installed in correct places
+4. startup without any existing configuration files or database
+5. scan harddisk, save database
+   - create an empty category, create a category and insert 2 songs
+6. exit yammi
 
-<A href="http://sourceforge.net"> <IMG src="http://sourceforge.net/sflogo.php?group_id=40376" width="88" height="31" border="0" alt="SourceForge Logo"></A>
-
-
+7. start again
+8. verify that database+categories were correctly saved
+9. with all media players:
+   - empty playlist
+   - enqueue song
+   - start playing
+   - enqueue song
+   - enqueue as next
+   - play now
+   - stop, start
+   - pause
+   - ...
+   
 
 
 prepare Release
 ---------------
 check:
+- check yammi version in configure.in(.in)
 - AUTHORS/CREDITS
 - README
 - TODO/CHANGELOG
-- any couts that should be deleted?
-- update aboutDialog() in yammigui.cpp
+- start program and check output: any couts/kdDebugs() that should be deleted?
 
 In kdevelop
-1. distclean
-2. autoconf and automake
-3. configure
-4. make distribution
-5. die cpp-Dateien der .ui-files aus dem package löschen!!!
-6. evtl. configure patchen für non-KDE user?
-
-Test on compile farm (probably does not work any more due to dependency on kde libs)
-1. package auf den webserver von yammi kopieren
-2. scp onoelle@yammi.sourceforge.net:/home/groups/y/ya/yammi/htdocs/yammi-1.0.tar.gz .
+1. Build -> distclean
+2. Build -> Run automake & friends
+3. Build -> Run configure
+4. Tools -> Project Distribution & Publishing -> make distribution

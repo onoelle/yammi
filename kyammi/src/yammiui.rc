@@ -3,9 +3,9 @@
 <MenuBar>
   <Menu name="player"><text>Player</text>
     <Action name="play_pause"/>
-    <Action name="stop"/>
     <Action name="skip_backward"/>
     <Action name="skip_forward"/>
+    <Action name="stop"/>
   </Menu>
   <Menu name="playlist"><text>Playlist</text>
     <Action name="to_from_playlist"/>

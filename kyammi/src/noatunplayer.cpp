@@ -62,28 +62,11 @@ NoatunPlayer::~NoatunPlayer()
 
 /**
  * Clear playlist of active player.
- * A bit complicated because the dcop interface for noatun's playlist is very limited.
  */
 void NoatunPlayer::clearActivePlayerPlaylist()
 {
-  // this seems to be a new dcop command for clearing playlist
-  // present since which version of noatun???
   sendDcopCommand(QString("clear()"));
   return;
-/*  
-  // go back as long as the result of currentFile() changes...
-  // TODO: a song queued twice?
-  QString prev=getCurrentFile();
-  sendDcopCommand(QString("back()"));
-  for(int tries=0; prev!=getCurrentFile() && tries<100; tries++) {
-    prev=getCurrentFile();
-    sendDcopCommand(QString("back()"));
-  }
-
-  // now delete entries as long as currentFile()!=""
-  for(QString file=getCurrentFile(); file!=""; file=getCurrentFile()) {
-    sendDcopCommand(QString("removeCurrent()"));
-  }*/
 }
 
 
@@ -271,7 +254,7 @@ void NoatunPlayer::playlistAdd(QString filename, bool autoStart)
   arg << filename;
   arg << autoStart;
   
-  if (!client->send(str.latin1(), "Noatun", "addFile(QString, bool)", data)) {
+  if (!client->send(str.local8Bit(), "Noatun", "addFile(QString, bool)", data)) {
     cout << "nop\n";
   }
 }

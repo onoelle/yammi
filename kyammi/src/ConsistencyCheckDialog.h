@@ -4,16 +4,25 @@
 #include <qwidget.h>
 #include <ConsistencyCheckDialogBase.h>
 
+class ConsistencyCheckParameter;
+
 class CheckConsistencyDialog : public CheckConsistencyDialogBase
 { 
     Q_OBJECT
 
 public:
-    CheckConsistencyDialog( QWidget* parent = 0, const char* name = 0);
-    ~CheckConsistencyDialog();
+	CheckConsistencyDialog( QWidget* parent, ConsistencyCheckParameter* para);
+	~CheckConsistencyDialog();
 
+	
 public slots:
-  void changeSetting();
+	void myAccept();
+	void changeSetting();
+	void showReplacements();
+  
+private:
+	ConsistencyCheckParameter* p;
+	void setParameter();
 };
 
 

@@ -3,7 +3,7 @@
   <general>
     <author>Oliver Nölle</author>
     <email>oli.noelle@web.de</email>
-    <version>0.1</version>
+    <version>1.2-alpha-3</version>
     <projectmanagement>KDevKDEAutoProject</projectmanagement>
     <primarylanguage>C++</primarylanguage>
     <keywords>
@@ -14,7 +14,10 @@
     </keywords>
     <projectdirectory>.</projectdirectory>
     <absoluteprojectpath>false</absoluteprojectpath>
-    <description/>
+    <description>Yammi (&quot;Yet Another Music Manager I...&quot;) is a tool to manage and search your music collection
+on your computer (eg. mp3, ogg and wav files).
+It is centered around an intuitive graphical user interface and a song database,
+which allows convenient and fast access to any songs.</description>
     <ignoreparts>
       <part>KDevClearCase</part>
       <part>KDevPerforce</part>
@@ -27,12 +30,13 @@
     <general>
       <activetarget>src/yammi</activetarget>
       <useconfiguration>default</useconfiguration>
+      <useactivetarget>true</useactivetarget>
     </general>
     <run>
       <mainprogram>src/yammi</mainprogram>
       <directoryradio>executable</directoryradio>
       <customdirectory>/</customdirectory>
-      <programargs/>
+      <programargs></programargs>
       <terminal>false</terminal>
       <autocompile>true</autocompile>
       <envvars/>
@@ -73,7 +77,7 @@
       <abortonerror>false</abortonerror>
       <numberofjobs>1</numberofjobs>
       <dontact>false</dontact>
-      <makebin/>
+      <makebin></makebin>
     </make>
   </kdevautoproject>
   <kdevfileview>
@@ -83,11 +87,9 @@
       <group pattern="*.png" name="Icons" />
       <group pattern="*.po;*.ts" name="Translations" />
       <group pattern="*" name="Others" />
-      <hidenonprojectfiles>true</hidenonprojectfiles>
-      <hidenonlocation>false</hidenonlocation>
     </groups>
     <tree>
-      <hidepatterns>*.o,*.lo,CVS</hidepatterns>
+      <hidepatterns/>
       <hidenonprojectfiles>false</hidenonprojectfiles>
     </tree>
   </kdevfileview>
@@ -122,13 +124,15 @@
       <toc>sw</toc>
       <toc>w3c-uaag10</toc>
       <toc>wxwindows_bugs</toc>
+      <toc>opengl</toc>
+      <toc>stl</toc>
     </ignoretocs>
     <ignoreqt_xml>
       <toc>qmake User Guide</toc>
     </ignoreqt_xml>
     <projectdoc>
-      <userdocDir>html/</userdocDir>
-      <apidocDir>html/</apidocDir>
+      <userdocDir>doc/en/</userdocDir>
+      <apidocDir>apidocs/</apidocDir>
     </projectdoc>
     <ignoredoxygen/>
     <ignorekdocs/>
@@ -137,11 +141,11 @@
   <kdevdebugger>
     <general>
       <dbgshell>libtool</dbgshell>
-      <programargs/>
-      <gdbpath/>
-      <configGdbScript/>
-      <runShellScript/>
-      <runGdbScript/>
+      <programargs></programargs>
+      <gdbpath></gdbpath>
+      <configGdbScript></configGdbScript>
+      <runShellScript></runShellScript>
+      <runGdbScript></runGdbScript>
       <breakonloadinglibs>true</breakonloadinglibs>
       <separatetty>false</separatetty>
       <floatingtoolbar>false</floatingtoolbar>
@@ -183,4 +187,28 @@
       <implementationsuffix>.cpp</implementationsuffix>
     </filetemplates>
   </cppsupportpart>
+  <dist>
+    <custom>false</custom>
+    <bzip>false</bzip>
+    <archname/>
+    <appname>yammi</appname>
+    <version>1.2-alpha-2</version>
+    <release>1.2-alpha-2</release>
+    <vendor>oliver.noelle</vendor>
+    <licence>GPL</licence>
+    <summary>Yet Another Music Manager I...</summary>
+    <group>Multimedia</group>
+    <packager>Oliver Noelle</packager>
+    <description>Yet Another Music Manager I...</description>
+    <changelog>kde-ified Yammi</changelog>
+    <devpackage>false</devpackage>
+    <docspackage>false</docspackage>
+    <appicon>false</appicon>
+    <arch>0</arch>
+    <genHTML>false</genHTML>
+    <useRPM>false</useRPM>
+    <ftpkde>false</ftpkde>
+    <appskde>false</appskde>
+    <url/>
+  </dist>
 </kdevelop>

@@ -18,12 +18,20 @@
 #ifndef CONSISTENCYCHECKPARAMETER_H
 #define CONSISTENCYCHECKPARAMETER_H
 
+#include <qstring.h>
+
 class ConsistencyCheckParameter
 {
 public:
   static const int YAMMI2TAGS = 0;
   static const int TAGS2YAMMI = 1;
 
+  ConsistencyCheckParameter();
+  void setDefaults();
+  void resetStatistics();
+  
+  
+  
   bool checkForExistence;
   bool updateNonExisting;
   bool checkTags;
@@ -31,12 +39,15 @@ public:
   int correctTagsConfirmed;
   int correctTagsDirection;          // 0 = yammi => file tags, 1 = file tags => yammi
   bool checkFilenames;
+  QString filenamePattern;
   bool ignoreCaseInFilenames;
   int correctFilenamesConfirmed;
   bool correctFilenames;
   bool checkDirectories;
+  QString directoryPattern;
   int correctDirectoriesConfirmed;
   bool correctDirectories;
+  bool deleteEmptyDirectories;
   bool checkDoubles;
 
   int nonExisting;

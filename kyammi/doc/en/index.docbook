@@ -1,8 +1,8 @@
 <?xml version="1.0" ?>
 <!DOCTYPE book PUBLIC "-//KDE//DTD DocBook XML V4.1.2-Based Variant V1.1//EN" "dtd/kdex.dtd" [
-  <!ENTITY kyammi "<application>kyammi 0&#46;1</application>">
-  <!ENTITY kappname "&kyammi;"><!-- Do *not* replace kappname-->
-  <!ENTITY package "kde-module"><!-- kdebase, kdeadmin, etc -->
+  <!ENTITY yammi "<application>yammi 0&#46;1</application>">
+  <!ENTITY kappname "&yammi;"><!-- Do *not* replace kappname-->
+  <!ENTITY package "kde-multimedia"><!-- kdebase, kdeadmin, etc -->
   <!ENTITY % addindex "IGNORE">
   <!ENTITY % English "INCLUDE"><!-- change language only here -->
   
@@ -44,15 +44,15 @@ thanks ;-).
 as Authors, publish date, the abstract, and Keywords -->
 
 <bookinfo>
-<title>The &kyammi; Handbook</title>
+<title>The &yammi; Handbook</title>
 
 <authorgroup>
 <author>
 <firstname></firstname>
 <othername></othername>
-<surname>Oliver N&#195;&#182;lle</surname>
+<surname>Oliver Noelle</surname>
 <affiliation>
-<address><email>oli&#46;noelle&#64;web&#46;de</email></address>
+<address><email>oli.noelle@web.de</email></address>
 </affiliation>
 </author>
 </authorgroup>
@@ -62,7 +62,7 @@ as Authors, publish date, the abstract, and Keywords -->
 <copyright>
 <year>1999</year>
 <year>2004</year>
-<holder>Oliver N&#195;&#182;lle</holder>
+<holder>Oliver Noelle</holder>
 </copyright>
 <!-- Translators: put here the copyright notice of the translation -->
 <!-- Put here the FDL notice.  Read the explanation in fdl-notice.docbook
@@ -76,27 +76,37 @@ Please respect the format of the date (YYYY-MM-DD) and of the version
 (V.MM.LL), it could be used by automation scripts.
 Do NOT change these in the translation. -->
 
-<date>2001-10-18</date>
+<date>2004-06-06</date>
 <releaseinfo>0&#46;1</releaseinfo>
 
 <!-- Abstract about this handbook -->
 
 <abstract>
 <para>
-&kyammi; is an application specially designed to do nothing you would
-ever want.
+Yammi ("Yet Another Music Manager I...") is a tool to manage and search your song collection
+on your computer (eg. mp3, ogg and wav files).
+It is centered around an intuitive graphical user interface and a song database,
+which allows convenient and fast access to any songs.
+For playing songs Yammi currently supports two media players, namely XMMS
+(<ulink url="http://www.xmms.org">X MultiMedia System</ulink>).
+and
+<ulink url="http://www.noatun.kde.org">Noatun</ulink>
+
 </para>
 </abstract>
 
 <!-- This is a set of Keywords for indexing by search engines.
 Please at least include KDE, the KDE package it is in, the name
  of your application, and a few relevant keywords. -->
-
 <keywordset>
 <keyword>KDE</keyword>
-<keyword>kyammi</keyword>
-<keyword>nothing</keyword>
-<keyword>nothing else</keyword>
+<keyword>yammi</keyword>
+<keyword>mp3</keyword>
+<keyword>organization</keyword>
+<keyword>fuzzy search</keyword>
+<keyword>ogg</keyword>
+<keyword>music</keyword>
+<keyword>collection</keyword>
 </keywordset>
 
 </bookinfo>
@@ -119,25 +129,92 @@ problems. Basically a long version of the abstract.  Don't include a
 revision history. (see installation appendix comment) -->
 
 <para>
-&kyammi; is a program that lets you do absolutely nothing. Please report
-any problems or feature requests to the &kde; mailing lists.
+Yammi ("Yet Another Music Manager I...") is a tool to manage and search your song collection
+on your computer (eg. mp3, ogg and wav files).
+It is centered around an intuitive graphical user interface and a song database,
+which allows convenient and fast access to any songs.
+For playing songs Yammi currently supports two media players, namely XMMS
+(<ulink url="http://www.xmms.org">X MultiMedia System</ulink>).
+and
+<ulink url="http://www.noatun.kde.org">Noatun</ulink>.
 </para>
+
+<para>
+Yammi enables you to
+
+- conveniently search for songs within seconds (fuzzy search)
+
+- organize your songs into playlists (called "categories")
+
+- read/write id3 and ogg tags, and easily keep tags and filenames consistent
+
+- keep statistics by logging when a song was played (when/how many times was song x played?)
+
+- assist in burning a selection of songs to a single audio CD or
+your whole song collection to multiple data CDs (distributing your songs over multiple media)
+
+- act as a jukebox, loading song files which are not on your harddisk on demand from removable media/CDs
+
+- prelisten to songs on headphone while normal playback to DJ your own party (needs a second sound card)
+
+- invoke other programs or custom scripts such as k3b, cdlabelgen, ... to burn CDs, generate CD labels or execute
+other commands, using the information from Yammi's song database
+</para>
+
+<para>
+The feature that distinguishes this tool from others is probably the extremely powerful fuzzy (tolerant)
+search function, that is still as intuitive and easy as it can get:
+Type in anything that you are looking for (eg. artist, title, album, comment) and within a second Yammi
+will provide a list of "best matches", using a clever fuzzy search algorithm.
+Not knowing the exact spelling of titles or artists is no longer a problem, as Yammi will find them
+anyway - even if you are horribly misspelling them in the search.
+This fuzzy search works just as you would expect it, even with a couple of thousand songs in the database.
+Therefore you never ever have to dig through your directory structure to find a particular song.
+</para>
+
+<para>
+Yammi also offers a folder structure to organize your songs. Songs are inserted automatically
+into artist, album and genre folders, and custom folders (=playlists) can be created by the user.
+In each folder, songs can be sorted after
+just every available information, eg. title, artist, length, most recently added songs,
+most recently played, bitrate...
+</para>
+
+<para>
+Yammi does as an excellent job on a party. In connection with XMMS'
+<ulink url="http://www.netcologne.de/~nc-eisenlpe2/xmms-crossfade/">crossfading plugin</ulink>
+(<ulink url="http://volnorm.sourceforge.net/">volume normalization</ulink> might be useful, too)
+and a second sound card (to prelisten to songs on a headphone) it almost replaces the DJ,
+and is still extremely easy to use even for people with little computer experience.
+</para>
+
+<para>
+Yammi does also a good job in replacing your CD-player. In connection with a infrared receiver and
+<ulink url="http://sourceforge.net/projects/lirc/">LIRC</ulink> its basic functions can be accessed
+with a remote control, even enabling you to turn off your computer via remote control
+(or let it play five more songs before shutting down).
+</para>
+
+<para>
+Although I tried my best, I can take no liability that Yammi is not causing any damage
+to your song collection, your speakers or your neighbour...
+</para>
+
 </chapter>
 
-<chapter id="using-kyammi">
-<title>Using &kyammi;</title>
+<chapter id="using-yammi">
+<title>Using &yammi;</title>
 
 <!-- This chapter should tell the user how to use your app. You should use as
 many sections (Chapter, Sect1, Sect3, etc...) as is necessary to fully document
 your application. -->
-
 <para>
 
 <!-- Note that all graphics should be in .png format. Use no gifs because of
 patent issues. -->
 
 <screenshot>
-<screeninfo>Here's a screenshot of &kyammi;</screeninfo>
+<screeninfo>Here's a screenshot of &yammi;</screeninfo>
 	<mediaobject>
 	  <imageobject>
 	    <imagedata fileref="screenshot.png" format="PNG"/>
@@ -153,8 +230,8 @@ patent issues. -->
 </para>
 
 
-<sect1 id="kyammi-features">
-<title>More &kyammi; features</title>
+<sect1 id="yammi-features">
+<title>More &yammi; features</title>
 
 <para>It slices! It dices! and it comes with a free toaster!</para>
 <para>
@@ -169,7 +246,7 @@ The Squiggle Tool <guiicon><inlinemediaobject>
 	    <phrase>Squiggle</phrase>
 	  </textobject>
 </inlinemediaobject></guiicon> is used to draw squiggly lines all over
-the &kyammi; main window. It's not a bug, it's a feature!
+the &yammi; main window. It's not a bug, it's a feature!
 </para>
 
 </sect1>
@@ -184,8 +261,8 @@ Also include any keys that have a special function but have no equivalent in the
 menus or toolbars. This may not be necessary for small apps or apps with no tool
 or menu bars. -->
 
-<sect1 id="kyammi-mainwindow">
-<title>The main &kyammi; window</title>
+<sect1 id="yammi-mainwindow">
+<title>The main &yammi; window</title>
 
 <sect2>
 <title>The File Menu</title>
@@ -219,7 +296,7 @@ or menu bars. -->
 <guimenu>File</guimenu>
 <guimenuitem>Quit</guimenuitem>
 </menuchoice></term>
-<listitem><para><action>Quits</action> &kyammi;</para></listitem>
+<listitem><para><action>Quits</action> &yammi;</para></listitem>
 </varlistentry>
 </variablelist>
 </para>
@@ -230,7 +307,7 @@ or menu bars. -->
 <title>The <guimenu>Help</guimenu> Menu</title>
 
 <!-- Assuming you have a standard help menu (help, what's this, about -->
-<!-- &kyammi;, about KDE) then the documentation is already written. -->
+<!-- &yammi;, about KDE) then the documentation is already written. -->
 <!-- The following entity is valid anywhere that a variablelist is -->
 <!-- valid.  -->
 
@@ -242,14 +319,14 @@ or menu bars. -->
 </chapter>
 
 <chapter id="developers">
-<title>Developer's Guide to &kyammi;</title>
+<title>Developer's Guide to &yammi;</title>
 
 <!-- (OPTIONAL) A Programming/Scripting reference chapter should be
 used for apps that use plugins or that provide their own scripting hooks
 and/or development libraries. -->
 
 <para>
-Programming &kyammi; plugins is a joy to behold. Just read through the next
+Programming &yammi; plugins is a joy to behold. Just read through the next
 66 pages of API's to learn how!
 </para>
 
@@ -404,7 +481,7 @@ application work. -->
 <qandaset id="faqlist">
 <qandaentry>
 <question>
-<para>My Mouse doesn't work. How do I quit &kyammi;?</para>
+<para>My Mouse doesn't work. How do I quit &yammi;?</para>
 </question>
 <answer>
 <para>You silly goose! Check out the <link linkend="commands">Commands
@@ -433,7 +510,7 @@ distribution. -->
 <title>Credits and License</title>
 
 <para>
-&kyammi;
+&yammi;
 </para>
 <para>
 Program copyright 2004 Oliver N&#195;&#182;lle <email>oli&#46;noelle&#64;web&#46;de</email>
@@ -472,8 +549,8 @@ Documentation copyright 2004 Oliver N&#195;&#182;lle <email>oli&#46;noelle&#64;w
 <appendix id="installation">
 <title>Installation</title>
 
-<sect1 id="getting-kyammi">
-<title>How to obtain &kyammi;</title>
+<sect1 id="getting-yammi">
+<title>How to obtain &yammi;</title>
 
 <!-- This first entity contains boiler plate for applications that are
 part of KDE CVS.  You should remove it if you are releasing your
@@ -498,22 +575,22 @@ information here.
 -->
 
 <para>
-In order to successfully use &kyammi;, you need &kde; 1.1. Foobar.lib is
-required in order to support the advanced &kyammi; features. &kyammi; uses
+In order to successfully use &yammi;, you need &kde; 1.1. Foobar.lib is
+required in order to support the advanced &yammi; features. &yammi; uses
 about 5 megs of memory to run, but this may vary depending on your
 platform and configuration.
 </para>
 
 <para>
-All required libraries as well as &kyammi; itself can be found
-on <ulink url="ftp://ftp.kyammi.org">The &kyammi; home page</ulink>.
+All required libraries as well as &yammi; itself can be found
+on <ulink url="ftp://ftp.yammi.org">The &yammi; home page</ulink>.
 </para>
 
 <!-- For a list of updates, you may refer to the application web site
 or the ChangeLog file, or ... -->
 <para>
 You can find a list of changes at <ulink
-url="http://apps.kde.org/kyammi">http://apps.kde.org/kyammi</ulink>.
+url="http://apps.kde.org/yammi">http://apps.kde.org/yammi</ulink>.
 </para>
 </sect1>
 
@@ -532,7 +609,7 @@ url="http://apps.kde.org/kyammi">http://apps.kde.org/kyammi</ulink>.
 <title>Configuration</title>
 
 <para>Don't forget to tell your system to start the <filename>dtd</filename>
-dicer-toaster daemon first, or &kyammi; won't work !</para>
+dicer-toaster daemon first, or &yammi; won't work !</para>
 
 </sect1>
 

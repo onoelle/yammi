@@ -1,11 +1,11 @@
 Begin3
 Title:          Yammi 
-Version:        1.2-beta
+Version:        1.2-alpha
 Entered-date:   
-Description:    Yet Another Music Manager I... - Fastest and easiest access to your whole song collection.
+Description:    Yet Another Music Manager I... - Fastest and easiest access to your whole music collection.
 Keywords:       mp3, ogg, jukebox, multimedia, xmms, noatun, fuzzy search
-Author:         Oliver Nölle <yammi-developer@lists.sourceforge.net>
-Maintained-by:  Oliver Nölle <yammi-developer@lists.sourceforge.net> 
+Author:         Oliver Noelle <yammi-developer@lists.sourceforge.net>
+Maintained-by:  Oliver Noelle <yammi-developer@lists.sourceforge.net> 
 Primary-site:
 Home-page:      http://yammi.sourceforge.net
 Original-site:  

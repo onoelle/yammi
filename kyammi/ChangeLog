@@ -1,30 +1,61 @@
-??.??.2004 version 1.2-alpha
+02.07.2004 version 1.2-alpha-3
+##############################
+Fixed some major bugs:
+- fixed: importing old database
+  (if you already used another 1.2-alpha version of yammi and have an empty song database now:
+   if you delete the directory ~/.kde/share/apps/yammi, then yammi will automatically import your old
+   database from ~/.yammi)
+- fixed: updating id3 tags did not work if no tags were present in the file
+- fixed: loading database from a given dir (using a command line parameter, try "yammi -h")
+- fixed: connecting to xmms
+- fixed: yammiui.rc not installed => aborting with correct error message
+  (you have to have the yammiui.rc file correctly installed at (eg.) /opt/kde3/share/apps/yammi/yammiui.rc,
+  please set KDEDIR to (eg.) /opt/kde3 before calling configure: "export KDEDIR=/opt/kde3")
+- fixed: qt versions of .ui files (now QT >= 3.2 should be sufficient for compiling)
+- fixed: fixed-size (g)char arrays: now using QString classes whenever possible
+
+
+07.06.2004 version 1.2-alpha-2
+##############################
+- fixed: a bug that caused a crash when yammi was started without any existing song database
+
+06.06.2004 version 1.2-alpha
 ############################
 MAJOR CHANGES:
-- first version developed and tested on new development environment (Suse 9.0)
-  - kde 3.1.4, gcc 3.3.1, qt 3.2.1, kdevelop 2.1.5
-  - autoconf 2.5.7, automake 1.7.6
-  - noatun 2.2.1, xmms 1.2.8
-  - ...
-- yammi is a proper KDE application now!
-  - new translation scheme (i18n kde default scheme)
+- new: yammi is a proper KDE application now!
+  => new translation scheme (i18n kde default scheme)
   => requires kde libs
-  => --disable-KDE and --disable-noatun switches removed from configure script
-- repaired broken noatun communication behavior (apparently due to newer version of noatun)
-- applied patch from Luis (thanks!!!):
-  - support for arts media player
-  - changes towards making yammi a proper kde application
-- added consistency check which checks location of a file (not correcting yet)
+  => --disable-KDE and --disable-noatun switches removed from configure script, both are enabled by default now
+  => making use of KDE's xml GUI framework
+  => first version developed and tested on new development environment (Suse 9.0)
+     - kde 3.2.1, gcc 3.3.1, qt 3.2.1, kdevelop 3.0.2
+     - autoconf 2.5.7, automake 1.7.6
+     - noatun 2.4.1, xmms 1.2.10 (not working on my system yet)
+  
+- added: arts media player (thanks to Luis)
+- added: consistency check which checks location of a file, moving it if necessary
+- added: progress dialogs on startup for reading database, categories and history 
+- improved: fuzzy search now gets done in a background thread
+
 
 MINOR CHANGES:
+- added: button to add standard plugins
+- added: option to delete empty directories on consistency check 
+- added: automatic folder "by year"
+- added: (ugly) application icons in 16x16, 32x32, 48x48, 64x64
+- added: cancel button for consistency check confirm dialog 
+- improved: placeholder usage in plugins ({artist} instead of %a)
+- improved: converted xpm icons to png icons that get installed properly
+- improved: random song selection (applied random number patch, thanks to Patrik)
+- improved: replaced custom icons with existing ones 
+- fixed: broken noatun communication (apparently due to API changes in a newer version of noatun)
 - fixed: recent folder now works again
 - fixed: symlinks are not followed when scanning directories
 - fixed: interpreting ogg vorbis comments as utf-8
-- added a button to add standard plugins
-- added an automatic folder "by year"
-- simplified placeholder usage in plugins ({artist} instead of %a)
-- changed the xpm icons to png icons that get installed
-- added (ugly) application icons in 16x16, 32x32, 48x48, 64x64
+- fixed: clicking with left mouse button or using wheel on track slider works now as expected
+- fixed: removed configure option for "number of best matches" for fuzzy search (not necessary, possibly - - fixed: implemented skip backward functionality in artsplayer
+caused a bug)
+
 
 ######################
 24.10.2003 version 1.0

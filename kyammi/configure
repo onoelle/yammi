@@ -1889,7 +1889,7 @@ fi
 
 # Define the identity of the package.
  PACKAGE=yammi
- VERSION=0.1
+ VERSION=1.2-alpha-3
 
 
 cat >>confdefs.h <<_ACEOF
@@ -30320,6 +30320,7 @@ fi
 { echo "$as_me:$LINENO:
 Configuration for $PACKAGE $VERSION :
 --------------------------------
+ ##############################################
  Source code location .: $srcdir
  Host System Type .....: $host
  Preprocessor .........: $CC $CPPFLAGS
@@ -30340,6 +30341,7 @@ Configuration for $PACKAGE $VERSION :
 echo "$as_me:
 Configuration for $PACKAGE $VERSION :
 --------------------------------
+ ##############################################
  Source code location .: $srcdir
  Host System Type .....: $host
  Preprocessor .........: $CC $CPPFLAGS
