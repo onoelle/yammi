@@ -2632,13 +2632,16 @@ void YammiGui::changeShutdownValue(int value)
 void YammiGui::stopPrelisten()
 {
 	// kill any previous prelisten process
+  // todo: would be better to remember the pid and kill more selectively... for now this must do...
   if(lastPrelistened=="MP3") {
     QString cmd1=QString("kill `ps h -o \"%p\" -C mpg123` 2&> /dev/null");
     system(cmd1);
+    lastPrelistened="";
   }
   if(lastPrelistened=="OGG") {
     QString cmd2=QString("kill `ps h -o \"%p\" -C ogg123` 2&> /dev/null");
     system(cmd2);
+    lastPrelistened="";
   }
   if(lastPrelistened=="WAV") {
     // how do we stop "play"? killing all sox processes is probably not always desired...
@@ -2646,6 +2649,7 @@ void YammiGui::stopPrelisten()
     system(cmd3);
     QString cmd4=QString("kill `ps h -o \"%p\" -C sox` 2&> /dev/null");
     system(cmd4);
+    lastPrelistened="";
   }
 }
 
@@ -2673,8 +2677,10 @@ void YammiGui::preListen(Song* s, int skipTo)
 		system(cmd);
     lastPrelistened="OGG";
   }
-	if(s->filename.right(3)=="wav") {
-		QString cmd=QString("play -d %1 \"%2\" trim %3s &").arg(model->config.secondSoundDevice).arg(s->location()).arg(seconds*44100);
+	if(s->filename.right(3).upper()=="WAV") {
+		QString skip=QString(" trim %1s").arg(seconds*skipTo*44100/100);
+		QString cmd=QString("play -d %1 \"%2\" %3 &").arg(model->config.secondSoundDevice).arg(s->location()).arg(skip);
+    cout << cmd << "\n";
 		system(cmd);
     lastPrelistened="WAV";
 	}

@@ -21,6 +21,7 @@ for release 0.7beta
 - support for prelistening to wav?
 - update database: select a single file
 - -l lib issue??? configure script???
+- for plugins: if %D / %F occurs: popup directory dialog and let user choose directory/file: document
 
 
 for release 0.7
@@ -29,7 +30,7 @@ for release 0.7
 - chose a autoenqueue-folder
 - update documentation
 - new icon set for song actions
-- for plugins: if %D / %F occurs: popup directory dialog and let user choose directory/file
+- stopping prelisten: somehow cleaner???
 
 for future releases
 -------------------

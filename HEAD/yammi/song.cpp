@@ -880,7 +880,7 @@ QString Song::capitalize(QString str)
  */
 QString Song::constructFilename()
 {
-	QString s=this->artist+" - "+this->title+".mp3";
+	QString s=this->artist+" - "+this->title+this->filename.right(4);
 //	QCString s2=QFile::encodeName(s);
 //	QString s3=QFile::decodeName(s2);
 //	cout << "raw name: " << s << ", encodedName: " << s2 << ", decodedName: " << s3 << "\n";
