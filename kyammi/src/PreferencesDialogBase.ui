@@ -474,6 +474,9 @@
                                 <property name="name">
                                     <cstring>CheckBoxChildSafe</cstring>
                                 </property>
+                                <property name="enabled">
+                                    <bool>false</bool>
+                                </property>
                                 <property name="text">
                                     <string>child safe mode</string>
                                 </property>
@@ -544,6 +547,9 @@
                             <widget class="QCheckBox" row="0" column="0" rowspan="1" colspan="3">
                                 <property name="name">
                                     <cstring>CheckBoxTagsConsistent</cstring>
+                                </property>
+                                <property name="enabled">
+                                    <bool>false</bool>
                                 </property>
                                 <property name="sizePolicy">
                                     <sizepolicy>
@@ -669,6 +675,9 @@
                             <widget class="QCheckBox" row="1" column="0" rowspan="1" colspan="3">
                                 <property name="name">
                                     <cstring>CheckBoxFilenamesConsistent</cstring>
+                                </property>
+                                <property name="enabled">
+                                    <bool>false</bool>
                                 </property>
                                 <property name="sizePolicy">
                                     <sizepolicy>

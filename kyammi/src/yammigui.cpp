@@ -1068,7 +1068,6 @@ void YammiGui::goToFolder(int what) {
  */
 void YammiGui::searchFieldChanged( const QString &fuzzy ) {
 	searchResultsUpdateNeeded=false;
-	kdDebug() << "setting new search term...\n";
 	searchThread->setSearchTerm(fuzzy);
 	searchFieldChangedIndicator.wakeOne();
 	m_acceptSearchResults=true;
@@ -1081,7 +1080,6 @@ void YammiGui::searchFieldChanged( const QString &fuzzy ) {
  */
 void YammiGui::requestSearchResultsUpdate(MyList* results)
 {
-	kdDebug() << "updating search results\n";
 	searchResults.clear();
 	searchResults.appendList(results);
 	searchResultsUpdateNeeded=true;
@@ -1092,7 +1090,6 @@ void YammiGui::updateSearchResults()
 	if(!searchResultsUpdateNeeded) {
 		return;
 	}
-	kdDebug() << "updating folder content\n";
 	folderSearchResults->updateTitle();
 	folderContentChanged(folderSearchResults);
 	if(!m_acceptSearchResults) {
@@ -1106,9 +1103,7 @@ void YammiGui::updateSearchResults()
 		folderSearchResults->saveScrollPos(0, 0);
 		folderSearchResults->saveSorting(0);
 		changeToFolder(folderSearchResults);
-	}
-	kdDebug() << "updating selection\n";
-	
+	}	
     songListView->setContentsPos( 0, 0);			// set scroll position to top
 	// TODO: mark more than one entry?
 	int noSelected=1;
@@ -1468,7 +1463,8 @@ void YammiGui::forSelectionMove() {
     }
     // let user choose destination directory
     QString startPath=selectedSongs.firstSong()->path;
-    QString dir=KFileDialog::getOpenFileName(QString("/mm"), QString("*.mp3"), this, QString("yammi"));
+	// TODO: fix starting path
+    QString dir=KFileDialog::getExistingDirectory(startPath, this, i18n("Select destination directory"));
     if(dir.isNull()) {
         return;
     }
@@ -1711,14 +1707,14 @@ void YammiGui::forSelectionCheckConsistency() {
                          (that folder won't be saved)\n\
                          %2 songs not existing, of these:\n\
                          %3 entries updated (filename cleared)\n\
-                         %4 entries deleted (because not existing on any media)\n\
+                         \t%4 entries deleted (because not existing on any media)\n\
                          %5 songs with inconsistent tags, of these:\n\
-                         %6 tags corrected\n\
+                         \t%6 tags corrected\n\
                          %7 songs with inconsistent filename, of these:\n\
-                         %8 filenames corrected\n")).arg(model->problematicSongs.count()).arg(p->nonExisting).arg(p->nonExistingUpdated)\
+                         \t%8 filenames corrected\n")).arg(model->problematicSongs.count()).arg(p->nonExisting).arg(p->nonExistingUpdated)\
                 .arg(p->nonExistingDeleted).arg(p->dirtyTags).arg(p->tagsCorrected).arg(p->dirtyFilenames).arg(p->filenamesCorrected);
     msg+=QString(i18n("%1 songs with inconsistent path, of these:\n\
-                      %2 paths corrected\n\
+                      \t%2 paths corrected\n\
                       %3 double entries found\n")).arg(p->dirtyDirectories).arg(p->directoriesCorrected).arg(p->doublesFound);
     KMessageBox::information( this, msg );
 }

@@ -3,16 +3,12 @@ TODO
 last update 06.06.2004
 
 
-for version 1.2-alpha
----------------------
-main purpose: clean up, so other people can more easily contribute to the project
-- check/resolve bugs on sf
-- check all TODOs / FIXMEs
-- check dialog spacing & co (eg. guessing pattern!)
-- icons for enqueing: add big "plus"
-
 for version 1.2-beta
 --------------------
+- check/resolve bugs on sf
+- check all TODOs / FIXMEs
+- child safe mode?
+- keep tags consistent mode?
 - update and publish yammi handbook (switch from sgml to docbook format)
 - file a yammi entry on kde-apps successor
 - handle unplayable files (wishes, text files) => 1. dequeue on second position or 2. introduce file types and different behaviour
@@ -43,6 +39,8 @@ check kde conformance:
 - consistency check:
   - better dialog texts (which song is moved?, better explanations what happens/examples?)
 - comment in replacements?
+- check dialog spacing & co (eg. guessing pattern!)
+- fix i18n strings to be ready for internationalization
 
 for version 1.2
 ---------------

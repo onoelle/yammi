@@ -20,7 +20,8 @@
 #include <qlineedit.h>
 #include <qobject.h>
 #include <qpushbutton.h>
-#include <qfiledialog.h>
+#include <kfiledialog.h>
+#include <klocale.h>
 
 
 
@@ -38,7 +39,7 @@ UpdateDatabaseMediaDialog::~UpdateDatabaseMediaDialog(){
 // file dialog for media dir
 void UpdateDatabaseMediaDialog::chooseMediaDir()
 {
-	QString dir=QFileDialog::getExistingDirectory(LineEditMediaDir->text(), this, QString("yammi"), QString("choose media directory"), true);
+	QString dir=KFileDialog::getExistingDirectory(LineEditMediaDir->text(), this, i18n("choose media directory"));
 	if(!dir.isNull()) {
 		LineEditMediaDir->setText(dir);
 	}

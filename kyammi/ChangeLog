@@ -1,38 +1,39 @@
-??.??.2004 version 1.2-alpha
+06.06.2004 version 1.2-alpha
 ############################
 MAJOR CHANGES:
-- yammi is a proper KDE application now!
-  - new translation scheme (i18n kde default scheme)
+- new: yammi is a proper KDE application now!
+  => new translation scheme (i18n kde default scheme)
   => requires kde libs
   => --disable-KDE and --disable-noatun switches removed from configure script, both are enabled by default now
-  - making use of KDE's xml GUI framework
+  => making use of KDE's xml GUI framework
+  => first version developed and tested on new development environment (Suse 9.0)
+     - kde 3.2.1, gcc 3.3.1, qt 3.2.1, kdevelop 3.0.2
+     - autoconf 2.5.7, automake 1.7.6
+     - noatun 2.4.1, xmms 1.2.10 (not working on my system yet)
+  
 - added: arts media player (thanks to Luis)
-- added: consistency check which checks location of a file (moving it if necessary)
+- added: consistency check which checks location of a file, moving it if necessary
 - added: progress dialogs on startup for reading database, categories and history 
 - improved: fuzzy search now gets done in a background thread
 
 
 MINOR CHANGES:
-- first version developed and tested on new development environment (Suse 9.0)
-  - kde 3.1.4 (later updated to 3.2.1), gcc 3.3.1, qt 3.2.1, kdevelop 2.1.5
-  - autoconf 2.5.7, automake 1.7.6
-  - noatun 2.2.1, xmms 1.2.8
+- added: button to add standard plugins
+- added: option to delete empty directories on consistency check 
+- added: automatic folder "by year"
+- added: (ugly) application icons in 16x16, 32x32, 48x48, 64x64
+- added: cancel button for consistency check confirm dialog 
+- improved: placeholder usage in plugins ({artist} instead of %a)
+- improved: converted xpm icons to png icons that get installed properly
+- improved: random song selection (applied random number patch, thanks to Patrik)
+- improved: replaced custom icons with existing ones 
 - fixed: broken noatun communication (apparently due to API changes in a newer version of noatun)
 - fixed: recent folder now works again
 - fixed: symlinks are not followed when scanning directories
 - fixed: interpreting ogg vorbis comments as utf-8
 - fixed: clicking with left mouse button or using wheel on track slider works now as expected
-- added: a button to add standard plugins
-- added: deleting empty directories on consistency check 
-- added: an automatic folder "by year"
-- clarified placeholder usage in plugins ({artist} instead of %a)
-- changed the xpm icons to png icons that get installed properly
-- added (ugly) application icons in 16x16, 32x32, 48x48, 64x64
-- removed configure option for "number of best matches" for fuzzy search
-- added cancel button to consistency check confirm dialog 
-- applied random number patch (thanks to)
-- fixed: artsplayer: skip backward
-- replaced custom icons with existing ones 
+- fixed: removed configure option for "number of best matches" for fuzzy search (not necessary, possibly - - fixed: implemented skip backward functionality in artsplayer
+caused a bug)
 
 
 ######################

@@ -9,7 +9,7 @@
   </Doc0>
   <Doc1 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/src/yammigui.h" >
    <View0 line="16" Type="???" >
-    <AdditionalSettings Top="1" Width="1203" Attach="1" Height="795" Left="1" MinMaxMode="0" />
+    <AdditionalSettings Top="1" Width="1202" Attach="1" Height="804" Left="1" MinMaxMode="0" />
    </View0>
   </Doc1>
   <Doc2 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/src/ConsistencyCheckDialog.h" >
@@ -49,7 +49,7 @@
   </Doc8>
   <Doc9 context="ctx_qt" NumberOfViews="1" URL="file:/usr/lib/qt3/doc/html/qdialog.html#accept" >
    <View0 Type="???" >
-    <AdditionalSettings/>
+    <AdditionalSettings Top="-10000" Width="1" Attach="1" Height="1" Left="-10000" MinMaxMode="0" />
    </View0>
   </Doc9>
   <Doc10 NumberOfViews="1" URL="file:/usr/lib/qt3/include/qdialog.h" >
@@ -79,7 +79,7 @@
   </Doc14>
   <Doc15 NumberOfViews="1" URL="file:/home/brian/work/programming/kyammi/ChangeLog" >
    <View0 line="11" Type="???" >
-    <AdditionalSettings Top="1" Width="1203" Attach="1" Height="795" Left="1" MinMaxMode="0" />
+    <AdditionalSettings Top="1" Width="1202" Attach="1" Height="795" Left="1" MinMaxMode="0" />
    </View0>
   </Doc15>
  </DocsAndViews>
