@@ -172,23 +172,55 @@ YammiGui::YammiGui() : KMainWindow( ) {
     createMenuBar( );
 }
 
-void YammiGui::loadDatabase(QString databaseDir ) {
+void YammiGui::loadDatabase(QString databaseDir) {
 	if(databaseDir.isEmpty()) {
 		databaseDir = KGlobal::dirs()->findResourceDir("appdata", "songdb.xml");
-		kdDebug() << "empty, using default: " << databaseDir << "\n";
+		if(databaseDir.isNull()) {
+			databaseDir=(KGlobal::dirs()->saveLocation("appdata"));
+		}
 	}
-	if(databaseDir.isNull()) {
-		kdDebug() << "null\n";
-	}
+	kdDebug() << "trying to load database from directory " << databaseDir << endl;
+	QDir d(databaseDir);
+	bool importOld=false;
     m_config.databaseDir = databaseDir;
+	QString oldYammiDir(QDir::homeDirPath()+"/.yammi/");
+	if(!d.exists("songdb.xml")) {
+		QDir oldDir(oldYammiDir);
+		if(oldDir.exists() && oldDir.exists("songdb.xml")) {
+			kdDebug() << "no database existing yet, database from previous yammi versions found\n";
+			kdDebug() << "importing your old song database from " << oldYammiDir << endl;
+			/*
+			TODO: KMessageBox crashes after any button pressed... event loop problem???
+			
+			QString msg("No yammi database has been found at\n");
+			msg+="\t" + databaseDir + "\n";
+			msg+="However, an old yammi database\n";
+			msg+="(from a previous version of yammi)\n";
+			msg+="has been found at\n";
+			msg+="\t" + oldYammiDir +"\n\n";
+			msg+="Do you wish to import this database?\n";
+			int result=KMessageBox::questionYesNoCancel(this, msg, "import existing database");
+			if(result==KMessageBox::Yes) {
+			*/
+				importOld=true;
+				m_config.databaseDir=oldYammiDir;
+			//}
+		}
+	}
 	model->readSongDatabase();
     model->readCategories();
     model->readHistory();
-    //update dynamic folders based on database contents
+	// update dynamic folders based on database contents
     updateView(true);
+    
+	if(importOld) {
+		m_config.databaseDir=databaseDir;
+		model->saveAll();
+		model->saveHistory();
+	}
+	
     KConfig *cfg = kapp->config();
     cfg->setGroup("General Options");
-
 	Folder* f=getFolderByName(cfg->readEntry("CurrentFolder"));
     if(f == 0) {
         f=folderAll;
@@ -216,22 +248,14 @@ void YammiGui::saveOptions() {
     cfg->writeEntry("RemovableMediaToolbar Pos", (int) toolBar("RemovableMediaToolbar")->barPos());
     cfg->writeEntry("Show SleepModeToolbar", static_cast<KToggleAction*>(ac->action("SleepModeToolbar"))->isChecked());
     cfg->writeEntry("SleepModeToolbar Pos", (int) toolBar("SleepModeToolbar")->barPos());
-    //Statsbar
-    // 	cfg->writeEntry("Show Statusbar",viewStatusBar->isChecked());
 
     cfg->writeEntry("CurrentFolder", chosenFolder->folderName());
-    for(int i=0;
-            i<MAX_COLUMN_NO;
-            i++) {
-        cfg->writeEntry(QString("Column%1Visible").arg(i), columnIsVisible(i))
-        ;
+    for(int i=0; i<MAX_COLUMN_NO; i++) {
+        cfg->writeEntry(QString("Column%1Visible").arg(i), columnIsVisible(i));
     }
     cfg->writeEntry( "columnOrder" , columnOrder);
-    for(int i=0;
-            i<MAX_COLUMN_NO;
-            i++) {
-        cfg->writeEntry( QString("column%1Width").arg(i), columnWidth[i])
-        ;
+    for(int i=0; i<MAX_COLUMN_NO; i++) {
+        cfg->writeEntry( QString("column%1Width").arg(i), columnWidth[i]);
     }
     cfg->writeEntry("AutoplayFolder", autoplayFoldername);
     cfg->writeEntry("AutoplayMode", autoplayMode);
@@ -2810,18 +2834,14 @@ void YammiGui::preListen(Song* s, int skipTo) {
 }
 
 void YammiGui::updateSongDatabaseHarddisk() {
-    UpdateDatabaseDialog d(this, i18n("Update Database (harddisk) Dialog"));
-
-    d.LineEditScanDir->setText(m_config.scanDir);
-    d.LineEditFilePattern->setText("*.mp3 *.ogg *.wav");
+    UpdateDatabaseDialog d(this, &m_config);
     // show dialog
     int result=d.exec();
-    if(result!=QDialog::Accepted)
+    if(result!=QDialog::Accepted) {
         return;
-
-    QString scanDir=d.LineEditScanDir->text();
-    QString filePattern=d.LineEditFilePattern->text();
-    updateSongDatabase(scanDir, filePattern, 0);
+	}
+	m_config.saveConfig();
+    updateSongDatabase(config().scanDir, config().filenamePattern, 0);
 }
 
 void YammiGui::updateSongDatabaseSingleFile() {

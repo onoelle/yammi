@@ -4,10 +4,7 @@
     begin                : Sun Oct 7 2001
     copyright            : (C) 2001 by Brian O.Nlle
     email                : yammi-developer@lists.sourceforge.net
-
-    04/10/2003 Stefan Gmeiner (riddlebox@freesurf.ch)
-               load and save function for preferences removed (they are now
-               in class prefs)
+ 
  ***************************************************************************/
 
 /***************************************************************************
@@ -38,86 +35,86 @@ class KProgressDialog;
  * this is the model of Yammi
  *	@author Brian O.Nlle
  */
- //This is actually Yammi's Database....
+//This is actually Yammi's Database....
 class YammiModel : public QObject {
     Q_OBJECT
 public:
-	/**
-	 * Constructor
-	 */
-	YammiModel( YammiGui *y );
-	/**
-	 * Destructor
-	 */
-	~YammiModel();
-	
-	// FIXME: config should be in yammimodel, not yammigui?
-	Prefs config( );
+    /**
+     * Constructor
+     */
+    YammiModel( YammiGui *y );
+    /**
+     * Destructor
+     */
+    ~YammiModel();
 
-	// data representation
-	QString currentSongFilenameAtStartPlay;
-	MyList allSongs; // all songs in database
-	MyList problematicSongs; // problematic songs (in consistency check)
-	MyList songHistory; // saved history of played songs
-	MyList songsToPlay; // yammi playlist
-	MyList songsPlayed; // songs played in this session
-	MyList unclassifiedSongs; // songs not in any category/album/group
-	MyList recentSongs; // songs recently added
+    // FIXME: config should be in yammimodel, not yammigui?
+    Prefs config( );
 
-	QPtrList<MyList> allCategories; // categories
-	QStringList	categoryNames; // names of categories
-	
-	int entriesAdded;
-	int corruptSongs;
-	bool _allSongsChanged;
-	bool _categoriesChanged;
+    // data representation
+    QString currentSongFilenameAtStartPlay;
+    MyList allSongs; // all songs in database
+    MyList problematicSongs; // problematic songs (in consistency check)
+    MyList songHistory; // saved history of played songs
+    MyList songsToPlay; // yammi playlist
+    MyList songsPlayed; // songs played in this session
+    MyList unclassifiedSongs; // songs not in any category/album/group
+    MyList recentSongs; // songs recently added
+
+    QPtrList<MyList> allCategories; // categories
+    QStringList	categoryNames; // names of categories
+
+    int entriesAdded;
+    int corruptSongs;
+    bool _allSongsChanged;
+    bool _categoriesChanged;
 
 
-	bool traverse(QString path, QString filePattern, KProgressDialog* progress, QString mediaName=0);
-	Song* getSongFromFilename(QString filename);
-	QString checkAvailability(Song* s, bool touch=false);
+    bool traverse(QString path, QString filePattern, KProgressDialog* progress, QString mediaName=0);
+    Song* getSongFromFilename(QString filename);
+    QString checkAvailability(Song* s, bool touch=false);
 
-	bool allSongsChanged();
-	void allSongsChanged(bool changed);
+    bool allSongsChanged();
+    void allSongsChanged(bool changed);
 
-	void readCategories();
-	void saveCategories();
-	void newCategory(QString categoryName);
-	void removeCategory(QString categoryName);
-	void renameCategory(QString oldCategoryName, QString newCategoryName);
-	
-	bool categoriesChanged();
-	void categoriesChanged(bool changed);
+    void readCategories();
+    void saveCategories();
+    void newCategory(QString categoryName);
+    void removeCategory(QString categoryName);
+    void renameCategory(QString oldCategoryName, QString newCategoryName);
 
-	void removeMedia(QString mediaToDelete);
-	void renameMedia(QString oldMediaName, QString newMediaName);
-		
-	void readSongDatabase(  );
-	void saveSongDatabase();
-	
-	void readHistory();
-	void saveHistory();
+    bool categoriesChanged();
+    void categoriesChanged(bool changed);
 
-  void markPlaylists(Song* s);
-  QStringList* readM3uFile(QString filename);
-	
-	
+    void removeMedia(QString mediaToDelete);
+    void renameMedia(QString oldMediaName, QString newMediaName);
+
+    void readSongDatabase(  );
+    void saveSongDatabase();
+
+    void readHistory();
+    void saveHistory();
+
+    void markPlaylists(Song* s);
+    QStringList* readM3uFile(QString filename);
+
+
 public slots:
-	void save();
-	void saveAll();
-	/**
-	* Updates the database by scanning harddisk
-	*  - if specified, checks existence of files in databse and updates/deletes entries
-	*  - scans recursively, starting from specified scanDir
-	*  - constructs song objects from all files matching the filePattern
-	*  - checks whether already existing, whether modified, if not => inserts into database */
-	void updateSongDatabase(QString scanDir, QString filePattern, QString mediaName, KProgressDialog* progress);
-  void updateSongDatabase(QStringList list);
-	void addSongToDatabase(QString filename, QString mediaName);
-	bool checkConsistency(KProgressDialog* progress, MyList* selection, ConsistencyCheckParameter* p);
+    void save();
+    void saveAll();
+    /**
+    * Updates the database by scanning harddisk
+    *  - if specified, checks existence of files in databse and updates/deletes entries
+    *  - scans recursively, starting from specified scanDir
+    *  - constructs song objects from all files matching the filePattern
+    *  - checks whether already existing, whether modified, if not => inserts into database */
+    void updateSongDatabase(QString scanDir, QString filePattern, QString mediaName, KProgressDialog* progress);
+    void updateSongDatabase(QStringList list);
+    void addSongToDatabase(QString filename, QString mediaName);
+    bool checkConsistency(KProgressDialog* progress, MyList* selection, ConsistencyCheckParameter* p);
 
 protected:
-	YammiGui *m_yammi;
+    YammiGui *m_yammi;
 };
 
 #endif

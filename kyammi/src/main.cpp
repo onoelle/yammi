@@ -20,8 +20,9 @@
 
 
 static KCmdLineOptions options[] = { 
-//{ "d <dir>", I18N_NOOP("specifies location of .yammi dir (defaults to user home)"), 0 },
-			{ "databasedir <dir>", I18N_NOOP("Specifies the directory of yammi data (defaults to ~/.yammi/)"), 0 } };
+			{ "d", 0, 0 },
+			{ "databasedir <dir>", I18N_NOOP("Specifies the database directory"), 0 } };
+
 static const char description[] =   I18N_NOOP("Yammi - Yet Another Music Manager I...");
 static const char version[] = VERSION;
 
@@ -72,21 +73,6 @@ int main( int argc, char **argv )
 	{
 		QString databaseDir( args->getOption("databasedir") );
 		yammi->loadDatabase(databaseDir);
-	}
-	else {
-		//the configuration file could not be opened, most likely we are starting for the first time
-		QString msg( i18n( "Yammi - Yet Another Music Manager I...\n\n\n \
-It looks like you are starting Yammi for the first time...\n\n\
-Welcome to convenient music organization!\n\n\
-Please edit the settings (Settings -> Configure Yammi...)\n\
-to adjust your personal configuration and options\
-(especially the path to your media files).\n\
-Then perform a database update (Database -> Scan Harddisk...)\n\
-to scan your harddisk for media files.\n\n\
-Have fun using Yammi...\n\n\
-Check out Yammi's website for new versions and other info:\n\
-http://yammi.sourceforge.net " ) );
-		KMessageBox::information( 0L, msg );
 	}
 	args->clear();  
 	// gYammiGui has WDestructiveClose flag by default, so it will delete itself.

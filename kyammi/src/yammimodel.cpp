@@ -74,27 +74,28 @@ Prefs YammiModel::config( ) {
  * Each xml file should represent one category.
  */
 void YammiModel::readCategories() {
-    kdDebug() << "Reading categories..." << endl;
+	QString categoryDir(config().databaseDir + "categories");
+    kdDebug() << "Reading categories from " << categoryDir << endl;
 
-    QDomDocument doc;
     int count=0;
 
-	QDir d(config().databaseDir + "categories");
+	QDir d(categoryDir);
 	if(!d.exists()) {
-    	kdDebug() << "could not read categories: directory categories not existing in directory " << config().databaseDir << endl;
+    	kdDebug() << "could not read categories: directory not existing: " << categoryDir << endl;
 		categoriesChanged(false);
 		return;
 	}
 	QString filter("*.xml");
 	QStringList cats = d.entryList(filter, QDir::Files, QDir::DirsFirst);
-	
-   	int total=cats.count();
+
+	int total=cats.count();
     KProgressDialog dia(0,0,i18n("Loading categories"),i18n("Reading categories..."), true);
     dia.setAllowCancel(false);
     dia.setMinimumDuration(0);
     KProgress *p = dia.progressBar();
     p->setTotalSteps( total );
     int progressCount=0;
+    QDomDocument doc;
     for( QStringList::Iterator it = cats.begin(); it!=cats.end(); ++it, progressCount++ ) {
         p->setProgress( progressCount );
         kapp->eventLoop()->processEvents(QEventLoop::ExcludeUserInput);
@@ -155,20 +156,17 @@ void YammiModel::readCategories() {
 
 // Reads song history
 void YammiModel::readHistory() {
-    kdDebug() << "reading song history..." << endl;
+    QString filename = config().databaseDir + "history.xml";
+    kdDebug() << "reading song history from " << filename << endl;
 
-    // new version, history as xml-file
-    QDomDocument doc;
-    QString file = config().databaseDir+"history.xml";
-    kdDebug() << "appdata hist" << file << endl;
-
-    QFile f( file );
+    QFile f( filename );
     if ( !f.open( IO_ReadOnly ) ) {
-        kdError() << "could not open history file : " << file << endl;
+        kdError() << "could not open history file : " << filename << endl;
         return;
     }
+    QDomDocument doc;
     if ( !doc.setContent( &f ) ) {
-        kdError() << "could not parse history file, incorrect xml format? " << file << endl;
+        kdError() << "could not parse history file, incorrect xml format? " << filename << endl;
         f.close();
         return;
     }
@@ -213,7 +211,8 @@ void YammiModel::readHistory() {
 
 /// saves the song history
 void YammiModel::saveHistory() {
-    kdDebug()<<"saving history..."<<endl;
+    QString path = config().databaseDir;
+    kdDebug() << "Saving history file in directory" << path << endl;
 
     QDomDocument doc;
     QDomElement root = doc.createElement("history");
@@ -243,10 +242,8 @@ void YammiModel::saveHistory() {
     root.setAttribute("count",count);
 
     // save history to file... (but first we make a backup of old file)
-    QString path = config().databaseDir;
-    kdDebug() << "Saving history file in directory" << path << endl;
-    QDir dir;
-    if(dir.rename( path + "history.xml", path +"history_backup.xml")) {
+    QDir dir(path);
+    if(dir.exists("history.xml") && dir.rename( path + "history.xml", path +"history_backup.xml")) {
         kdDebug() << "backup of history saved in \"history_backup.xml\"" << endl;
 	}
     QString contents = doc.toString();
@@ -263,18 +260,26 @@ void YammiModel::saveHistory() {
 
 /// save categories (if changed) to xml-files
 void YammiModel::saveCategories() {
-    kdDebug() << "Saving categories..." << endl;
     QString path = config().databaseDir + "categories/";
-    QString name;
-    kdDebug() << "Saving categories in directory " << path << endl;
+	QDir dir(path);
+	if(!dir.exists()) {
+		kdDebug() << "creating directory " << path << endl;
+		dir.mkdir(path, true);
+	}
+    kdDebug() << "saving dirty categories to directory " << path << endl;
 
-    // save all categoreis marked as dirty
+    // save all categories marked as dirty
+	// TODO: not nice: we depend on the folder structure of the gui to iterate over categories...
+    QString name;
     for( QListViewItem* f=m_yammi->folderCategories->firstChild(); f; f=f->nextSibling() ) {
         Folder* folder=(Folder*)f;
-        if(!folder->songlist().dirty)
-            continue;
+        kdDebug() << "category " << folder->folderName() << endl;
+        if(!folder->songlist().dirty) {
+            kdDebug() << "...clean\n";
+			continue;
+		}
         name = folder->folderName();
-        kdDebug() << "Saving category: " << name << endl;
+        kdDebug() << "...dirty, saving..." << endl;
 
         QDomDocument doc;
         QDomElement root = doc.createElement("category");
@@ -311,19 +316,8 @@ void YammiModel::readSongDatabase(  ) {
 	kdDebug() << "reading song database from: " << filename << endl;
     QFile f(filename);
     if( !f.open(IO_ReadOnly) ) {
-        f.setName( QDir::homeDirPath() + "/.yammi/songdb.xml" );
-        kdDebug() << "Could not open database file, checking at old location: " << f.name() << endl;
-		// TODO: import old data!!!
-        if( f.exists( ) && f.open(IO_ReadOnly) ) {
-            kdDebug() << "reading database from old location (" << f.name() << ")\n";
-        } else {
-			// TODO: appropriate info message, the following makes yammi crash...
-/*            QString msg( i18n( "The Song Database file could not be opened.\n\
-                               Please edit the settings (Settings -> Configure Yammi ...) and set the path to your Song Database\
-                               or perform a harddisk scan to create a new Database") ); 
-            KMessageBox::sorry( 0, i18n("No Song database found, please scan your harddisk"), i18n("Error opening Song Database") ); */
-            return;
-        }
+		kdWarning() << "could not read song database from " << filename << endl;
+        return;
     }
 
     QDomDocument doc;
@@ -396,7 +390,7 @@ void YammiModel::readSongDatabase(  ) {
         e = e.nextSibling().toElement();
         count++;
     }
-    kdDebug() << "Read " << count << " songs from database. ( allSongs = " << allSongs.count() << " )" << endl;
+    kdDebug() << "Read " << count << " songs from database" << endl;
     allSongsChanged( false );
 }
 
@@ -482,8 +476,8 @@ void YammiModel::saveSongDatabase() {
     // save songdb to file... (but first we make a backup of old file)
 	QString filename = config().databaseDir + "songdb.xml";
     kdDebug() << "Saving song database to file " << filename << endl;
-    QDir dir;
-    if(!dir.rename(filename, filename + "_backup")) {
+    QDir dir(config().databaseDir);
+    if(dir.exists("songdb.xml") && !dir.rename(filename, filename + "_backup")) {
         kdDebug() << "could not make backup of file " << filename << endl;
     }
 
@@ -1169,7 +1163,7 @@ void YammiModel::saveAll() {
  * saves changed information (categories + songDatabase)
  */
 void YammiModel::save() {
-    kdDebug()<<"model save()"<<endl;
+    kdDebug() << "model save()" << endl;
     KApplication::setOverrideCursor( Qt::waitCursor );
     // save dirty categories
     saveCategories();
@@ -1179,7 +1173,6 @@ void YammiModel::save() {
     if(allSongsChanged() || m_yammi->config( ).logging) {
         saveHistory();
     }
-
     KApplication::restoreOverrideCursor();
 }
 

@@ -1,3 +1,7 @@
+2004-06-29 Oliver Nölle <oli.noelle@web.de>
+	- fixed loading database from different directory / importing old one 
+	- improved debug messages on loading/saving 
+
 2004-06-27 Oliver Nölle <oli.noelle@web.de>
 	- fixed fixed-size (g)char arrays/string handling 
 	- fixed (to be completed): loading database from a given dir 

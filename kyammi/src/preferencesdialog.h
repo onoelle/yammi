@@ -37,7 +37,6 @@ public:
 public slots:
 	void myAccept();
 	
-	void chooseScanDir();
 	void chooseTrashDir();
 	void chooseMediaDir();
 	void chooseSwapDir();

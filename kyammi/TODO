@@ -2,9 +2,16 @@ TODO
 ----
 last update 07.06.2004
 
+for alpha-3
+-----------
+- connecting to xmms
+- add %K parameter
+- BUG? update id3 tags
+
 
 for version 1.2-beta
 --------------------
+- BUG? sort files according to path => cannot reproduce
 - define and execute smoke tests
 - check/resolve bugs on sf
 - check all TODOs / FIXMEs

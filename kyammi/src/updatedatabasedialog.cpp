@@ -23,14 +23,18 @@
 
 #include <qlineedit.h>
 #include <qpushbutton.h>
+#include "prefs.h"
 
 
 
-
-UpdateDatabaseDialog::UpdateDatabaseDialog(QWidget *parent, const char *name )
-  : UpdateDatabaseDialogBase(parent, name, true)
+UpdateDatabaseDialog::UpdateDatabaseDialog(QWidget *parent, Prefs* config )
+  : UpdateDatabaseDialogBase(parent, i18n("Update Database (harddisk)"), true)
 {
+    this->config=config;
+	LineEditScanDir->setText(config->scanDir);
+	LineEditFilePattern->setText(config->filenamePattern);
  	connect( ButtonChooseScanDir, SIGNAL( clicked() ), this, SLOT( chooseScanDir() ) );
+    connect( PushButtonOk, SIGNAL( clicked() ), this, SLOT( myAccept() ) );
 }
 
 
@@ -38,6 +42,12 @@ UpdateDatabaseDialog::~UpdateDatabaseDialog()
 {
 }
 
+void UpdateDatabaseDialog::myAccept()
+{
+    config->scanDir=LineEditScanDir->text();
+    config->filenamePattern=LineEditFilePattern->text();
+    accept();
+}
 
 
 // file dialog for scan dir
