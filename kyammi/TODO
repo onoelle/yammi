@@ -1,14 +1,12 @@
 TODO
 ----
-last update 12.12.2004
+last update 13.12.2004
 
-user-reported bugs:
--------------------
-
-
-for version 1.2
----------------
+for version 1.2-final
+---------------------
 MUST-HAVE
+- finish: consistency check with flac files
+- finish: translations (italian, spanish)
 - fix: noatun stops playback sometimes
 - fix: page up and down keys don't work after searching
 - add: publish plugin for html-export
@@ -31,7 +29,6 @@ NICE-TO-HAVE
 - on deleting a song: delete in *all* lists (history, categories, ...)
 - speedup startup by starting media players in background (noatun, xmms)
 tag-related: (switch to Scott Wheelers taglib for reading metadata)
-- fix: 0-length ogg file makes yammi crash?
 media-player-related:
 - fix: skipForward in noatun while still crossfading: take current volume as start of crossfading
 - fix: xmms stopped, enqueue as next: does not work
@@ -57,13 +54,15 @@ usual steps before release
 non-reproducable bugs
 #####################
 (given the date, when I could not reproduce the bug anymore)
-- (15.08.2004) crash on clearing playlist including currently played song (which media player?)
-- (14.09.2004) cannot sort files according to path
+most recent first:
+- (12.12.2004) zero-length ogg file makes yammi crash
+- (12.12.2004) If you "Play now" a song that is already playing, Yammi crashes. 
+  => cannot reproduce with xmms or noatun => only with artsplayer???
 - (12.12.2004) I confirm too the crash when exiting yammi, it happens before yammi writes
  the config file, no matter what the player backend is.
   => cannot reproduce, maybe fixed with correctly terminating searchthread?
-- If you "Play now" a song that is already playing, Yammi crashes. 
-  => cannot reproduce with xmms or noatun => only with artsplayer???
+- (14.09.2004) cannot sort files according to path
+- (15.08.2004) crash on clearing playlist including currently played song (which media player?)
 
 
 

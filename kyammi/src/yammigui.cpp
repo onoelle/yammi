@@ -2732,6 +2732,21 @@ void YammiGui::keyPressEvent(QKeyEvent* e) {
             if(left > 0 )
                 m_sleepModeSpinBox->setValue(left);
         }
+/* TODO: implement page-up/down behaviour???
+        else {
+            QListViewItem* current=songListView->currentItem();
+            if(current != 0) {
+                QListViewItem* possiblyLast = current;
+                for(int skip = 0; skip < 20 && current; current=current->itemBelow(), skip++) {
+                    possiblyLast = current;
+                }
+                songListView->clearSelection();
+                songListView->setSelected(possiblyLast, true);
+                songListView->setCurrentItem(possiblyLast);
+                songListView->ensureItemVisible(current);
+            }
+        }
+        */
         break;
 
         // key up/down: we manually implement some behaviour in the songlistview here,
@@ -3035,15 +3050,13 @@ void YammiGui::updateSongDatabase(QString scanDir, QString filePattern, QString 
     updateView();
     folderProblematic->update(model->problematicSongs);
     folderAll->updateTitle();
-    changeToFolder(folderRecentAdditions);
     QString msg=i18n("Updated your database.\n\nStatistics: \n\n");
     msg+=QString(i18n("%1 songs added to database\n")).arg(model->entriesAdded);
     msg+=QString(i18n("%1 songs corrupt (=not added)\n")).arg(model->corruptSongs);
     msg+=QString(i18n("%1 songs problematic (check in folder Problematic Songs)\n")).arg(model->problematicSongs.count());
     KMessageBox::information( this,msg);
+    changeToFolder(folderRecentAdditions);
 
-    // TODO: check update actions after scanning...without danger? (=> don't need to stop xmms?)
-    //  player->syncPlayer2Yammi(folderActual);
     isScanning=false;
 }
 

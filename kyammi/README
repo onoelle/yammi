@@ -87,12 +87,12 @@ Maybe others need x86_64bit compile opts:
 
 "Import selected files" crashes while in KFileDialog
 ----------------------------------------------------
-=> disable Preview funktionality (bug in KDE 3.2.1?)
+=> disable Preview functionality (bug in KDE 3.2.1?)
 
 Cannot delete files from within Yammi
 -------------------------------------
 on my system deleting songs (=moving their files to the trash dir) did not work when the trash dir
-was configured to ~/Desktop/Trash
+was configured to ~/Desktop/Trash (I did not find out why...)
 => set it to another directory
 
 QT libs not found

@@ -3,7 +3,7 @@
   <general>
     <author>Oliver Nölle</author>
     <email>oli.noelle@web.de</email>
-    <version>1.2-beta2</version>
+    <version>1.2-rc</version>
     <projectmanagement>KDevKDEAutoProject</projectmanagement>
     <primarylanguage>C++</primarylanguage>
     <keywords>
@@ -103,7 +103,7 @@ which allows convenient and fast access to any songs.
       <abortonerror>false</abortonerror>
       <numberofjobs>1</numberofjobs>
       <dontact>false</dontact>
-      <makebin/>
+      <makebin></makebin>
     </make>
   </kdevautoproject>
   <kdevfileview>
@@ -170,10 +170,10 @@ which allows convenient and fast access to any songs.
     <general>
       <dbgshell>libtool</dbgshell>
       <programargs>--nofork</programargs>
-      <gdbpath/>
-      <configGdbScript/>
-      <runShellScript/>
-      <runGdbScript/>
+      <gdbpath></gdbpath>
+      <configGdbScript></configGdbScript>
+      <runShellScript></runShellScript>
+      <runGdbScript></runGdbScript>
       <breakonloadinglibs>true</breakonloadinglibs>
       <separatetty>false</separatetty>
       <floatingtoolbar>false</floatingtoolbar>
