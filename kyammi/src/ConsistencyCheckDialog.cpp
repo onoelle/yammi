@@ -119,7 +119,7 @@ void CheckConsistencyDialog::showReplacements()
   msg+="{filenameWithoutSuffix} (without path, without suffix)\n";
   msg+="{suffix} (without leading dot)\n";
   msg+="{path} (without filename)\n";
-  msg+="{artist}, {title}, {album} (corresponding to the tags)\n";
+  msg+="{artist}, {title}, {album}, {comment} (corresponding to the tags)\n";
   msg+="{bitrate} (in kbps)\n";
   msg+="{length} (length in format mm:ss)\n";
   msg+="{lengthInSeconds} (length in seconds)\n";

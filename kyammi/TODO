@@ -1,40 +1,25 @@
 TODO
 ----
-last update 27.07.2004
+last update 13.08.2004
 
 
 for version 1.2-beta
 --------------------
 in progress:
-- update and publish yammi handbook (switch from sgml to docbook format, document requirements for compiling)
-- verify functionality: change media player on the fly
-- verify functionality: save + restore playlist (+ song position) on shutdown/startup
+- define and execute smoke tests (write little script with all configure options)
 
 planned:
-- BUG: cannot sort files according to path => cannot reproduce this bug on my system
-- improve: wishlist items
-- define and execute smoke tests (write little script with all configure options)
-- check all TODOs / FIXMEs
-- child safe mode?
-- keep tags consistent mode?
-- create a yammi entry on www.kde-apps.org
 - handle unplayable files (wishes, text files) => 1. dequeue on second position or 2. introduce file types and different behaviour
 check kde conformance:  
   - standard kde i18n schema: add a translation and test it
   - replace all couts with kdDebug/kdWarn/kdError
   - check lsm file
-  - check icons: fix transparency or use standard ones
+  - check icons: fix transparency or use standard ones, new application icon, check that it gets used
 - clean up: song info for multiple songs
-- make follow symlinks a configurable option?
-- make mpg123 and ogg123 configurable?
 - saveFilename/renaming of file in song.cpp (there was something I can't remember)
 - make proposed filename change while you type in songinfo dialog
-- implement onPlayed and afterPlayed plugin types
-- on deleting a song: delete in *all* lists (history, categories, ...)
-- plugin: publish a sample plugin (echo...) with all replacements
 - consistency check:
   - better dialog texts (which song is moved?, better explanations what happens/examples?)
-- comment in replacements?
 - check dialog spacing & co (eg. guessing pattern!)
 - fix i18n strings to be ready for internationalization
 - fix: appropriate info messages on first startup/on importing old database
@@ -48,13 +33,31 @@ media-player-related:
 - check skip backward functionality & filling up songPlayed list!!!
 - if you start yammi, while xmms has a song in its play list and then enqueue
   and play a song in yammi, the song previously played in xmms is played instead.
+before release:
+- check all TODOs / FIXMEs
+- create a yammi entry on www.kde-apps.org
+- update website
+  - publish a sample plugin (echo...) with all replacements
+  - publish sample plugin for html-export
+
 
 
 for version 1.2
 ---------------
+- implement onPlayed and afterPlayed plugin types
+- on deleting a song: delete in *all* lists (history, categories, ...)
+- make follow symlinks a configurable option?
+- make replace playlist + position a configurable option?
+- make mpg123 and ogg123 configurable?
+- improve: yammi handbook (beautify, update)
+- verify functionality: change media player on the fly, restore song position:
+  - fix: seek to song position when song stopped (artsplayer, xmms?)
 - fix: integrate columns menu into view menu as a submenu
 - reformat all files with kdevelop?
 - simplify {wish} system: (make every entry with empty filename (no media) a wish?
+- child safe mode?
+- keep tags consistent mode?
+- BUG: cannot sort files according to path => cannot reproduce this bug on my system
 - fix all outstanding known bugs
 - polish user interface
 - add translation(s)?

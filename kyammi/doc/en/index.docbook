@@ -60,7 +60,7 @@ as Authors, publish date, the abstract, and Keywords -->
 <!-- TRANS:ROLES_OF_TRANSLATORS -->
 
 <copyright>
-<year>1999</year>
+<year>2001</year>
 <year>2004</year>
 <holder>Oliver Noelle</holder>
 </copyright>
@@ -217,7 +217,7 @@ Give it a try at <ulink url="http://yammi.sourceforge.net">The Yammi Homepage</u
 </sect1>
 
 
-<sect1>
+<sect1 id="requirements">
 <title>Requirements</title>
 <sect2>
 <title>Mandatory</title>
@@ -284,7 +284,7 @@ xmms-devel
 
 
 
-<sect1>
+<sect1 id="compileAndInstall">
 <title>Compilation and installation</title>
 <para>
 Before compilation, verify that an environment variable named "KDEDIR" points to your KDE installation
@@ -303,7 +303,7 @@ If compilation is successful, the executable "yammi" and some other files will b
 </para>
 </sect1>
 
-<sect1>
+<sect1 id="problems">
 <title>Problems</title>
 <para>
 If you experience problems with compiling or installing, please consult the README file
@@ -316,7 +316,7 @@ console log of configure and make.
 </para>
 </sect1>
 
-<sect1>
+<sect1 id="deinstallation">
 <title>Deinstallation</title>
 <para>
 In the base directory of the yammi distribution, type
@@ -325,7 +325,7 @@ In the base directory of the yammi distribution, type
 </para>
 </sect1>
 
-<sect1>
+<sect1 id="startFirstTime">
 <title>Starting the first time</title>
 <para>
 After successful installation, you can start yammi by typing "yammi" in a shell
@@ -363,7 +363,7 @@ This is how yammi looks like in action:
 
 
 
-<sect1>
+<sect1 id="generalUsage">
 <title>General Usage</title>
 <para>
 The general usage of Yammi is intuitive:
@@ -380,7 +380,7 @@ The most important actions are available in the toolbar, others in the menu or t
 </para>
 </sect1>
 
-<sect1>
+<sect1 id="scanHarddisk">
 <title>Scanning harddisk</title>
 <para>
 The first step for using Yammi is to get your songs into Yammi's database by having your harddisk scanned.
@@ -399,7 +399,7 @@ see "Updating Database" in "Advanced Topics".
 </para>
 </sect1>
 
-<sect1>
+<sect1 id="searching">
 <title>Searching</title>
 <para>
 Type in anything into the search field, Yammi immediately shows you the best matches, rated with
@@ -415,7 +415,7 @@ and clear it.
 </sect1>
 
 
-<sect1>
+<sect1 id="songInformation">
 <title>Song information</title>
 <para>
 In the songlist there is one row per song, containing various information about the song.
@@ -463,7 +463,7 @@ Reason (folder "Problematic Songs")
 </sect1>
 
 
-<sect1>
+<sect1 id="songColoring">
 <title>Song coloring</title>
 <para>
 The songs entries in the songlist are normally written in black, except:
@@ -481,7 +481,7 @@ checked for folder "Playlist")
 </para>
 </sect1>
 
-<sect1>
+<sect1 id="folderStructure">
 <title>Folder structure</title>
 <para>
 The following folder structure is provided automatically:
@@ -626,7 +626,7 @@ Please make use of that function when you reorganize your songs on your harddisk
 </sect1>
 
 
-<sect1>
+<sect1 id="songActions">
 <title>Song Actions</title>
 <para>
 All song actions are available from the context menu
@@ -725,7 +725,7 @@ See "Burning files" in "Advanced Topics".
 
 </sect1>
 
-<sect1>
+<sect1 id="settings">
 <title>Settings</title>
 <para>
 
@@ -767,7 +767,7 @@ entries.
 </para>
 </sect1>
 
-<sect1>
+<sect1 id="keyBindings">
 <title>Key bindings</title>
 <para>
 The following key bindings exist: ESC or CTRL-F: Set focus to search field and clear it 
@@ -818,7 +818,7 @@ For these cases press the SHIFT key in combination with the requested action.
 </sect1>
 
 
-<sect1>
+<sect1 id="advancedTopics">
 <title>Advanced topics</title>
 
 
@@ -1198,7 +1198,7 @@ For other plugin examples, have a look at Yammi's website.
 </sect2>
 </sect1>
 
-<sect1>
+<sect1 id="tipsAndTricks">
 <title>Tips and tricks...</title>
 <para>
 Avoid having two songs with the same artist, title and album!
@@ -1210,8 +1210,8 @@ you might need to disable "Allow multiple instances" in Xmms (Preferences->Optio
 </sect1>
 
 
-<sect1>
-<title>Questions and Answers</title>
+<sect1 id="FAQ">
+<title>FAQ</title>
 
 <sect2>
 <title>Why does Yammi delete all played songs from the XMMS playlist?</title>

@@ -14,8 +14,9 @@ Minor:
 - fixed: behaviour of shift+up/down after search (when focus still in search field)
 - fixed: proper replacements of placeholders in group mode
 - fixed: progress dialog disappearing on scanning harddisk
-- fixed: restore autoplay mode on startup
+- fixed: restore on startup: autoplay mode, playlist, song position
 - fixed: check consistency for whole song database: only one song selected
+- improved: no restart of yammi necessary for change of media player
 
 
 

@@ -1,8 +1,13 @@
 [Desktop Entry]
 Type=Application
+Version=1.2-beta
+Encoding=UTF-8
 Name=Yammi
+GenericName=Audio Player
 Exec=yammi -caption "%c" %i %m %u
 Comment=Yet Another Music Manager I...
-Icon=yammi
+Icon=yammi.png
+DocPath=yammi/index.html
 MimeTypes=
 Terminal=true
+Categories=Qt;KDE;AudioVideo

@@ -1388,6 +1388,7 @@ QString Song::replacePlaceholders(QString input, int index) {
     input.replace(QRegExp("\\{artist\\}"), artist);
     input.replace(QRegExp("\\{title\\}"), title);
     input.replace(QRegExp("\\{album\\}"), album);
+    input.replace(QRegExp("\\{comment\\}"), comment);
     input.replace(QRegExp("\\{bitrate\\}"), QString("%1").arg(bitrate));
     input.replace(QRegExp("\\{index\\}"), QString("%1").arg(index));
     input.replace(QRegExp("\\{length\\}"), lengthStr.sprintf("%2d:%02d", length/60, length % 60));

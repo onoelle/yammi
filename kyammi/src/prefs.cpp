@@ -39,7 +39,6 @@ Prefs::~Prefs(){
 void Prefs::setDefaultValues(void) {
 	// general	
 	mediaPlayer = MEDIA_PLAYER_ARTSPLAYER;
-
 	yammiVersion = VERSION;
 	databaseDir = KGlobal::dirs()->findResourceDir("appdata","songdb.xml");
 	trashDir = QDir::homeDirPath() + "/Desktop/Trash";

@@ -1,3 +1,3 @@
-KDE_DOCS = kyammi
+KDE_DOCS = yammi
 KDE_LANG = en
-kde_docs_KDEDOCS =  index.docbook
+# rem kde_docs_KDEDOCS =  index.docbook
