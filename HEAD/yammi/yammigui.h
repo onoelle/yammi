@@ -222,11 +222,13 @@ protected slots:
 	// (can be different than currently selected songs!)
 	void				forSelection(action act);																	// perform <action> on <selectedSongs>
 	void				forSelection(int act) {forSelection((action) act);}				// just needed for menu receivers with ints
-	// special treatment needed?
+
+  // special treatment needed for the following cases
 	void				forSelectionSongInfo();
-//	void				forSelectionPluginPlaylist(int pluginIndex);
 	void				forSelectionPlugin(int pluginIndex);
 	void				forSelectionBurnToMedia();
+  void        forSelectionCheckConsistency();
+  
 
 public:		
 	void				forSong(Song* s, action act, QString dir=0);

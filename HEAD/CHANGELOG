@@ -7,6 +7,8 @@
 - added a (experimental and primitive) autoplay function for categories
 - added experimental writing of ogg tags
   (only the tags corresponding to id3v1 tags will be written, other tags will get lost)
+- improved system for checking consistency of database or a selection of songs
+- added a dialog box for configuring the consistency check
 - some minor improvements and bugfixes
 
 

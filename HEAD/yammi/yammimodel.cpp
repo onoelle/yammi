@@ -951,7 +951,7 @@ void YammiModel::addSongToDatabase(QString filename, QString mediaName=0)
  * checks consistency of all songs
  * @returns true, if consistent, false, if problematic songs were found
  */
-bool YammiModel::checkConsistency(QProgressDialog* progress)
+bool YammiModel::checkConsistency(QProgressDialog* progress, MyList* selection, ConsistencyCheckParameter* p)
 {
 	if(config.childSafe) {
     cout << "sorry, not allowed in child-safe mode...\n";
@@ -961,29 +961,26 @@ bool YammiModel::checkConsistency(QProgressDialog* progress)
 	cout << "checking consistency of database... \n";
 	problematicSongs.clear();
 
-  // flags to control consistency check
-  // TODO: control by dialog
-  bool checkExistence=true;
-  bool updateNonExisting=true;
-  bool checkTags=true;
-  bool repairTags=false;
-  bool checkFilenames=true;
-  bool repairFilenames=false;
-  bool checkDoubles=true;
-  
 
 	// 1. iterate through all songs in database
-  if(checkExistence || checkTags || checkFilenames) {
+  if(p->checkForExistence || p->checkTags || p->checkFilenames) {
       
     progress->setLabelText("Step 1: checking all songs in database...");
-    progress->setTotalSteps(allSongs.count());
+    progress->setTotalSteps(selection->count());
     progress->setProgress(0);
     qApp->processEvents();
 	
-    int sumDirtyTags=0;
-    int sumDirtyFilenames=0;
+    p->dirtyTags=0;
+    p->dirtyFilenames=0;
+    p->doublesFound=0;
+    p->filenamesCorrected=0;
+    p->nonExisting=0;
+    p->nonExistingDeleted=0;
+    p->nonExistingUpdated=0;
+    p->tagsCorrected=0;
+    
     int i=0;
-    for(Song* s=allSongs.firstSong(); s; s=allSongs.nextSong(), i++) {
+    for(Song* s=selection->firstSong(); s; s=selection->nextSong(), i++) {
       if(i%10==0) {
         progress->setProgress(i);
       }
@@ -995,46 +992,60 @@ bool YammiModel::checkConsistency(QProgressDialog* progress)
       }
 
       // okay, some kind of problem...
-      problematicSongs.append(new SongEntryString(s, diagnosis));
-      if(diagnosis=="file not readable" && checkExistence) {
+
+      if(diagnosis=="file not readable" && p->checkForExistence) {
+        p->nonExisting++;
         cout << "file not existing or readable: " << s->displayName();
         bool onMedia=s->mediaName.count()>0;
         cout << "(contained on " << s->mediaName.count() << " media: )\n";
-        if(updateNonExisting) {
+        if(p->updateNonExisting) {
           // if we update, there are two cases:
           if(onMedia) {
             // 1. update entry: set filename+path to ""
             s->filename="";
             s->path="";
-            entriesUpdated++;
+            p->nonExistingUpdated++;
+            problematicSongs.append(new SongEntryString(s, "file not existing on harddisk any more, filename cleared"));
           }
           else {
             // 2. delete entry in database
             gYammiGui->forSong(s, DeleteEntry);
-            entriesDeleted++;
+            p->nonExistingDeleted++;
+          }
+        }
+        else {
+          problematicSongs.append(new SongEntryString(s, diagnosis));
+        }
+      }
+
+      if(diagnosis.contains("tags not correct") && p->checkTags) {
+        p->dirtyTags++;
+        if(p->correctTags) {
+          if(s->saveTags()) {
+            p->tagsCorrected++;
+            diagnosis.replace(QRegExp("tags not correct"), "tags corrected");
           }
         }
       }
-
-      if(diagnosis.contains("tags not correct") && checkTags) {
-        sumDirtyTags++;
-        if(repairTags) {
-          // TODO: save Tags
+      if(diagnosis.contains("filename not consistent") && p->checkFilenames) {
+        problematicSongs.append(new SongEntryString(s, diagnosis));
+        p->dirtyFilenames++;
+        if(p->correctFilenames) {
+          if(s->saveFilename()) {
+            diagnosis.replace(QRegExp("filename not consistent"), "filename corrected");
+            p->filenamesCorrected++;
+          }
         }
       }
-
-      if(diagnosis.contains("filename not consistent") && checkFilenames) {
-        sumDirtyFilenames++;
-        if(repairFilenames) {
-          // TODO: set filename
-        }
+      if(diagnosis.contains("tags not correct") || diagnosis.contains("filename not consistent")) {
+        problematicSongs.append(new SongEntryString(s, diagnosis));        
       }
     }
 	}
 
   
 	// 2. check for songs contained twice
-  if(!progress->wasCancelled() && checkDoubles) {
+  if(!progress->wasCancelled() && p->checkDoubles) {
     progress->setLabelText("Step 2: check for song entries pointing to same file");
     progress->setTotalSteps(allSongs.count());
     progress->setProgress(0);
@@ -1043,6 +1054,7 @@ bool YammiModel::checkConsistency(QProgressDialog* progress)
     allSongs.setSortOrderAndSort(MyList::ByFilename + 16*(MyList::ByPath));
     Song* last=allSongs.firstSong();
     int i=0;
+    // TODO: perform this check also only on the selected songs?
     for(Song* s=allSongs.nextSong(); s; s=allSongs.nextSong(), i++) {
       if(i % 20==0)
         progress->setProgress(i);
@@ -1058,6 +1070,7 @@ bool YammiModel::checkConsistency(QProgressDialog* progress)
         cout << "two database entries pointing to same song/file: " << s->filename << ", deleting one\n";
         allSongs.remove();		// problem, coz we are iterating through this list???
         allSongsChanged(true);
+        p->doublesFound++;
         continue;
       }
 		
@@ -1070,7 +1083,6 @@ bool YammiModel::checkConsistency(QProgressDialog* progress)
     progress->setProgress(0);
     qApp->processEvents();
 	
-//	allSongs.setSortOrder(MyList::ByArtist + 16*(MyList::ByTitle) + 256*(MyList::ByAlbum));
     allSongs.setSortOrderAndSort(MyList::ByKey);
     last=allSongs.firstSong();
     i=0;
@@ -1086,6 +1098,7 @@ bool YammiModel::checkConsistency(QProgressDialog* progress)
         cout << "!!!   song contained twice: " << s->filename << ", check in problematic songs!\n";
         problematicSongs.append(new SongEntryString(last, "contained twice(1)"));
         problematicSongs.append(new SongEntryString(s, "contained twice(2)"));
+        p->doublesFound++;
       }
     }
   }
@@ -1104,12 +1117,6 @@ bool YammiModel::checkConsistency(QProgressDialog* progress)
 		return true;
 	}
 	else {
-/*
-		if(config.tagsConsistent)
-			cout << sumDirtyTags				<< " dirty tags\n";
-		if(config.filenamesConsistent)
-			cout << sumDirtyFilenames		<< " dirty filenames\n";
-*/
 		allSongsChanged(true);
 		return false;
 	}

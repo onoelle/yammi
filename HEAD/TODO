@@ -18,6 +18,7 @@ QGList::locate: Index 0 out of range
 
 for release 0.7.1
 -----------------
+- check consistency check (and consistencyModes!)
 - on deleting a song: delete in all lists (history, categories, ...)
 - dialog box for checking consistency options
   => make available for a selection of songs, too?

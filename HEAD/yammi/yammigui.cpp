@@ -57,9 +57,10 @@ using namespace std;
 #include "WorkDialogBase.h"
 #include "updatedatabasedialog.h"
 #include "updatedatabasemediadialog.h"
-#include "ConsistencyCheckDialogBase.h"
+#include "ConsistencyCheckDialog.h"
 
 #include "mp3info/CMP3Info.h"
+#include "ConsistencyCheckParameter.h"
 
 
 extern YammiGui* gYammiGui;
@@ -1493,28 +1494,58 @@ void YammiGui::forAll(action act)
 /// check consistency, fill up list of problematic songs
 void YammiGui::forAllCheckConsistency()
 {
-	CheckConsistencyDialogBase d(this, "Check consistency - settings");
+  getAllSongs();
+  forSelectionCheckConsistency();
+}
 
-//  d.LineEditScanDir->setText(model->config.scanDir);
-//  d.LineEditFilePattern->setText("*.mp3 *.ogg *.wav");
+void YammiGui::forSelectionCheckConsistency()
+{
+  cout << this->selectedSongs.count() << " songs selected to check\n";
+  
+	CheckConsistencyDialog d(this, "Check consistency - settings");
+  d.TextLabel1->setText(QString("checking %1 songs").arg(selectedSongs.count()));
+  
 	// show dialog
 	int result=d.exec();
 	if(result!=QDialog::Accepted)
     return;
 
-//  bool checkExistence=d.CheckBoxExistenceCheck->isChecked();
-
+  ConsistencyCheckParameter p;  
+  p.checkForExistence=d.CheckBoxCheckForExistence->isChecked();
+  p.updateNonExisting=d.CheckBoxUpdateNonExisting->isChecked();
+  p.checkTags=d.CheckBoxCheckTags->isChecked();
+  p.correctTags=d.CheckBoxCorrectTags->isChecked();
+  p.checkFilenames=d.CheckBoxCheckFilenames->isChecked();
+  p.correctFilenames=d.CheckBoxCorrectFilenames->isChecked();
+  p.checkDoubles=d.CheckBoxCheckDoubles->isChecked();
 
   QProgressDialog progress( "Checking consistency...", "Cancel", 100, this, "progress", TRUE );
 	progress.setMinimumDuration(0);
 	progress.setAutoReset(false);
   progress.setProgress(0);
-	qApp->processEvents();	
-	model->checkConsistency(&progress);
-	folderProblematic->update(&model->problematicSongs);
-	QMessageBox::information( this, "Yammi",
-	QString("Result of consistency check:\n\n %1 songs were found problematic (check in folder Problematic Songs)\n (Folder Problematic Songs won't be saved)")
-		.arg(model->problematicSongs.count()), "Fine." );	
+	qApp->processEvents();
+  
+	model->checkConsistency(&progress, &selectedSongs, &p);
+
+  folderProblematic->update(&model->problematicSongs);
+	slotFolderChanged();
+
+	QString msg=QString(
+  "Result of consistency check:\n\n\
+  %1 songs were found problematic (check folder \"Problematic Songs\")\n\
+      (that folder won't be saved)\n\
+  %2 songs not existing, of these:\n\
+      %3 entries updated (filename cleared)\n\
+      %4 entries deleted (because not existing on any media)\n\
+  %5 songs with inconsistent tags, of these:\n\
+      %6 tags corrected\n\
+  %7 songs with inconsistent filename, of these:\n\
+      %8 filenames corrected\n\
+  %9 double entries found\
+  ").arg(model->problematicSongs.count()).arg(p.nonExisting).arg(p.nonExistingUpdated)
+  .arg(p.nonExistingDeleted).arg(p.dirtyTags).arg(p.tagsCorrected)
+  .arg(p.dirtyFilenames).arg(p.filenamesCorrected).arg(p.doublesFound);  
+	QMessageBox::information( this, "Yammi", msg, "Fine." );
 }
 
 /**
@@ -1531,6 +1562,10 @@ void YammiGui::forSelection(action act)
 		forSelectionBurnToMedia();
 		return;
 	}
+  if(act==CheckConsistency) {
+    forSelectionCheckConsistency();
+    return;
+  }
 	// end of special treatment
 	
 	// 1. destination directory
@@ -1593,7 +1628,7 @@ void YammiGui::forSelection(action act)
 	}
 	
 	
-	// some OPs need view update
+	// some operations need view update
 	if(deleteEntry) {
 		updateView();
 	}
@@ -1607,14 +1642,6 @@ void YammiGui::forSelection(action act)
 		else
 			songListView->triggerUpdate();
 		checkPlaylistAvailability();
-	}
-
-	if(act==SongInfo) {
-		slotFolderChanged();
-	}
-	if(act==CheckConsistency) {
-		folderProblematic->update(&(model->problematicSongs));
-		slotFolderChanged();
 	}
 }
 

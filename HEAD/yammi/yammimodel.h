@@ -55,6 +55,7 @@ using namespace std;
 #include "prefs.h"
 #include "mylist.h"
 #include "mydatetime.h"
+#include "ConsistencyCheckParameter.h"
 
 
 class YammiModel : public QObject {
@@ -122,7 +123,7 @@ public slots:
 	void			saveAll();
 	void			updateSongDatabase(QString scanDir, QString filePattern, QString mediaName, QProgressDialog* progress);
 	void			addSongToDatabase(QString filename, QString mediaName);
-	bool			checkConsistency(QProgressDialog* progress);
+	bool			checkConsistency(QProgressDialog* progress, MyList* selection, ConsistencyCheckParameter* p);
 
 protected:
 	QString		getProperty(const QDomDocument* doc, const QString propName, const QString propDefault);

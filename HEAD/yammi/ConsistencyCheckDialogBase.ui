@@ -8,8 +8,8 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>349</width>
-            <height>267</height>
+            <width>284</width>
+            <height>278</height>
         </rect>
     </property>
     <property name="caption">
@@ -28,9 +28,82 @@
         <property name="spacing">
             <number>6</number>
         </property>
-        <widget class="QLayoutWidget" row="0" column="0">
+        <widget class="QLabel" row="0" column="0" rowspan="1" colspan="3">
             <property name="name">
-                <cstring>Layout1</cstring>
+                <cstring>TextLabel1</cstring>
+            </property>
+            <property name="sizePolicy">
+                <sizepolicy>
+                    <hsizetype>5</hsizetype>
+                    <vsizetype>4</vsizetype>
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                </sizepolicy>
+            </property>
+            <property name="font">
+                <font>
+                    <family>Nimbus Sans l [Urw]</family>
+                    <pointsize>12</pointsize>
+                    <bold>1</bold>
+                    <italic>1</italic>
+                </font>
+            </property>
+            <property name="text">
+                <string>Options for consistency check</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="2" column="2">
+            <property name="name">
+                <cstring>PushButtonCancel</cstring>
+            </property>
+            <property name="sizePolicy">
+                <sizepolicy>
+                    <hsizetype>7</hsizetype>
+                    <vsizetype>0</vsizetype>
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                </sizepolicy>
+            </property>
+            <property name="text">
+                <string>Cancel</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="2" column="0">
+            <property name="name">
+                <cstring>PushButtonOk</cstring>
+            </property>
+            <property name="sizePolicy">
+                <sizepolicy>
+                    <hsizetype>7</hsizetype>
+                    <vsizetype>0</vsizetype>
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                </sizepolicy>
+            </property>
+            <property name="text">
+                <string>Start Check...</string>
+            </property>
+        </widget>
+        <spacer row="2" column="1">
+            <property name="name">
+                <cstring>Spacer1_3_2</cstring>
+            </property>
+            <property name="orientation">
+                <enum>Horizontal</enum>
+            </property>
+            <property name="sizeType">
+                <enum>Expanding</enum>
+            </property>
+            <property name="sizeHint">
+                <size>
+                    <width>90</width>
+                    <height>0</height>
+                </size>
+            </property>
+        </spacer>
+        <widget class="QLayoutWidget" row="1" column="0" rowspan="1" colspan="3">
+            <property name="name">
+                <cstring>Layout2</cstring>
             </property>
             <grid>
                 <property name="name">
@@ -42,116 +115,132 @@
                 <property name="spacing">
                     <number>6</number>
                 </property>
-                <widget class="QLabel" row="0" column="0" rowspan="1" colspan="2">
+                <spacer row="5" column="0">
                     <property name="name">
-                        <cstring>TextLabel1</cstring>
+                        <cstring>Spacer1_3</cstring>
                     </property>
-                    <property name="sizePolicy">
-                        <sizepolicy>
-                            <hsizetype>5</hsizetype>
-                            <vsizetype>4</vsizetype>
-                            <horstretch>0</horstretch>
-                            <verstretch>0</verstretch>
-                        </sizepolicy>
+                    <property name="orientation">
+                        <enum>Horizontal</enum>
                     </property>
-                    <property name="font">
-                        <font>
-                            <family>Nimbus Sans l [Urw]</family>
-                            <pointsize>12</pointsize>
-                            <bold>1</bold>
-                            <italic>1</italic>
-                        </font>
+                    <property name="sizeType">
+                        <enum>Expanding</enum>
                     </property>
-                    <property name="text">
-                        <string>Options for consistency check</string>
+                    <property name="sizeHint">
+                        <size>
+                            <width>50</width>
+                            <height>0</height>
+                        </size>
                     </property>
-                </widget>
-                <widget class="QCheckBox" row="5" column="0" rowspan="1" colspan="2">
-                    <property name="name">
-                        <cstring>CheckBoxCheckFilenames</cstring>
-                    </property>
-                    <property name="text">
-                        <string>check filenames</string>
-                    </property>
-                </widget>
-                <widget class="QCheckBox" row="7" column="0" rowspan="1" colspan="2">
-                    <property name="name">
-                        <cstring>CheckBoxCheckDoubles</cstring>
-                    </property>
-                    <property name="text">
-                        <string>check for doubles</string>
-                    </property>
-                </widget>
-                <widget class="QPushButton" row="8" column="1">
-                    <property name="name">
-                        <cstring>PushButtonCancel</cstring>
-                    </property>
-                    <property name="sizePolicy">
-                        <sizepolicy>
-                            <hsizetype>7</hsizetype>
-                            <vsizetype>0</vsizetype>
-                            <horstretch>0</horstretch>
-                            <verstretch>0</verstretch>
-                        </sizepolicy>
-                    </property>
-                    <property name="text">
-                        <string>Cancel</string>
-                    </property>
-                </widget>
-                <widget class="QCheckBox" row="4" column="0" rowspan="1" colspan="2">
-                    <property name="name">
-                        <cstring>CheckBoxRepairTags</cstring>
-                    </property>
-                    <property name="text">
-                        <string>repair tags</string>
-                    </property>
-                </widget>
-                <widget class="QCheckBox" row="6" column="0" rowspan="1" colspan="2">
-                    <property name="name">
-                        <cstring>CheckBoxRepairFilenames</cstring>
-                    </property>
-                    <property name="text">
-                        <string>repair filenames</string>
-                    </property>
-                </widget>
-                <widget class="QCheckBox" row="1" column="0" rowspan="1" colspan="2">
+                </spacer>
+                <widget class="QCheckBox" row="0" column="0" rowspan="1" colspan="2">
                     <property name="name">
                         <cstring>CheckBoxCheckForExistence</cstring>
                     </property>
                     <property name="text">
                         <string>check for existence of files</string>
                     </property>
+                    <property name="toolTip" stdset="0">
+                        <string>Checks, whether the file is existing and readable</string>
+                    </property>
                 </widget>
-                <widget class="QCheckBox" row="2" column="0" rowspan="1" colspan="2">
+                <spacer row="3" column="0">
+                    <property name="name">
+                        <cstring>Spacer1_2</cstring>
+                    </property>
+                    <property name="orientation">
+                        <enum>Horizontal</enum>
+                    </property>
+                    <property name="sizeType">
+                        <enum>Expanding</enum>
+                    </property>
+                    <property name="sizeHint">
+                        <size>
+                            <width>50</width>
+                            <height>0</height>
+                        </size>
+                    </property>
+                </spacer>
+                <widget class="QCheckBox" row="1" column="1">
                     <property name="name">
                         <cstring>CheckBoxUpdateNonExisting</cstring>
                     </property>
                     <property name="text">
-                        <string>update non existing entries (delete/update)</string>
+                        <string>update/delete non existing entries</string>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>Entries not existing at their saved location are updated (existing on media) or deleted (not existing on any media)</string>
                     </property>
                 </widget>
-                <widget class="QCheckBox" row="3" column="0" rowspan="1" colspan="2">
+                <spacer row="1" column="0">
+                    <property name="name">
+                        <cstring>Spacer1</cstring>
+                    </property>
+                    <property name="orientation">
+                        <enum>Horizontal</enum>
+                    </property>
+                    <property name="sizeType">
+                        <enum>Expanding</enum>
+                    </property>
+                    <property name="sizeHint">
+                        <size>
+                            <width>50</width>
+                            <height>0</height>
+                        </size>
+                    </property>
+                </spacer>
+                <widget class="QCheckBox" row="2" column="0" rowspan="1" colspan="2">
                     <property name="name">
                         <cstring>CheckBoxCheckTags</cstring>
                     </property>
                     <property name="text">
                         <string>check tags</string>
                     </property>
-                </widget>
-                <widget class="QPushButton" row="8" column="0">
-                    <property name="name">
-                        <cstring>PushButtonOk</cstring>
+                    <property name="toolTip" stdset="0">
+                        <string>Checks, whether the (mp3/ogg) tags are consistent with Yammi's database</string>
                     </property>
-                    <property name="sizePolicy">
-                        <sizepolicy>
-                            <hsizetype>7</hsizetype>
-                            <vsizetype>0</vsizetype>
-                            <horstretch>0</horstretch>
-                            <verstretch>0</verstretch>
-                        </sizepolicy>
+                </widget>
+                <widget class="QCheckBox" row="5" column="1">
+                    <property name="name">
+                        <cstring>CheckBoxCorrectFilenames</cstring>
                     </property>
                     <property name="text">
-                        <string>Start Check...</string>
+                        <string>correct inconsistent filenames</string>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>If filenames differ from the "artist - title" schema, they will be corrected</string>
+                    </property>
+                </widget>
+                <widget class="QCheckBox" row="4" column="0" rowspan="1" colspan="2">
+                    <property name="name">
+                        <cstring>CheckBoxCheckFilenames</cstring>
+                    </property>
+                    <property name="text">
+                        <string>check filenames</string>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>Checks, whether the filenames correspond to the "artist - title" schema</string>
+                    </property>
+                </widget>
+                <widget class="QCheckBox" row="6" column="0" rowspan="1" colspan="2">
+                    <property name="name">
+                        <cstring>CheckBoxCheckDoubles</cstring>
+                    </property>
+                    <property name="text">
+                        <string>check for doubles</string>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>checks for entries that are contained twice in Yammi's database</string>
+                    </property>
+                </widget>
+                <widget class="QCheckBox" row="3" column="1">
+                    <property name="name">
+                        <cstring>CheckBoxCorrectTags</cstring>
+                    </property>
+                    <property name="text">
+                        <string>correct inconsistent tags</string>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>If tags do not correspond to the information in Yammi's database, they wil be corrected.</string>
                     </property>
                 </widget>
             </grid>
