@@ -39,6 +39,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, const char *name, bool mod
 	LineEditCriticalSize->setText(QString("%1").arg(config->criticalSize));
 	LineEditSecondSoundDevice->setText(config->secondSoundDevice);
 	LineEditGroupThreshold->setText(QString("%1").arg(config->groupThreshold));
+	CheckBoxLazyGrouping->setChecked(config->lazyGrouping);
 	LineEditSearchThreshold->setText(QString("%1").arg(config->searchThreshold));
 	LineEditSearchMaximumNoResults->setText(QString("%1").arg(config->searchMaximumNoResults));
 	LineEditKeepInXmms->setText(QString("%1").arg(config->keepInXmms));
@@ -131,6 +132,7 @@ void PreferencesDialog::myAccept()
  	config->criticalSize=atoi(LineEditCriticalSize->text());
  	config->secondSoundDevice=LineEditSecondSoundDevice->text();
  	config->groupThreshold=atoi(LineEditGroupThreshold->text());
+ 	config->lazyGrouping=CheckBoxLazyGrouping->isChecked();
  	config->searchThreshold=atoi(LineEditSearchThreshold->text());
  	config->searchMaximumNoResults=atoi(LineEditSearchMaximumNoResults->text());
  	config->keepInXmms=atoi(LineEditKeepInXmms->text());

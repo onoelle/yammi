@@ -43,13 +43,26 @@ void FolderGroups::update(MyList* allSongs, int sortBy)
 	int groupCount=0;
 	bool same=false;
 	for(Song* s=allSongs->firstSong(); s; s=allSongs->nextSong()) {
+    QString next;
 		if(sortBy==MyList::ByArtist)
-			same=(last==s->artist);
+      next=s->artist;
 		if(sortBy==MyList::ByAlbum)
-			same=(last==s->album);
+			next=s->album;
 		if(sortBy==MyList::ByGenre)
-			same=(last==QString("%1").arg(s->genreNr));
+			next=QString("%1").arg(s->genreNr);
 		
+    if(gYammiGui->getModel()->config.lazyGrouping) {
+      // lazy grouping is not guaranteed to work, as the sorting might be different
+      // (we sort once, and scan in linear time)
+      QString last2=last.upper();
+      last2=last2.replace(QRegExp(" "), "_");
+      QString next2=next.upper();
+      next2=next2.replace(QRegExp(" "), "_");
+      same=(last2==next2);
+    }
+    else
+      same=(last==next);
+
 		if(same) {
 		  count++;
 		} else {

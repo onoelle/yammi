@@ -35,6 +35,7 @@ Prefs::Prefs(){
 	secondSoundDevice="";
 	keepInXmms=3;
 	groupThreshold=5;
+  lazyGrouping=false;
 	searchThreshold=20;
 	searchMaximumNoResults=200;
 	

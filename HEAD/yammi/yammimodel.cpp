@@ -74,6 +74,7 @@ void YammiModel::readPreferences()
 	config.criticalSize			=	getProperty(&doc, "criticalSize", config.criticalSize);
 	config.secondSoundDevice=	getProperty(&doc, "secondSoundDevice", config.secondSoundDevice);
 	config.groupThreshold	=		getProperty(&doc, "groupThreshold", config.groupThreshold);
+	config.lazyGrouping			=	getProperty(&doc, "lazyGrouping", config.lazyGrouping);
 	config.searchThreshold	=	getProperty(&doc, "searchThreshold", config.searchThreshold);
 	config.searchMaximumNoResults	=	getProperty(&doc, "searchMaximumNoResults", config.searchMaximumNoResults);
 	config.keepInXmms				=	getProperty(&doc, "keepInXmms", config.keepInXmms);
@@ -127,6 +128,7 @@ void YammiModel::savePreferences()
 	setProperty(&doc, "criticalSize", 			config.criticalSize);
 	setProperty(&doc, "secondSoundDevice",	config.secondSoundDevice);
 	setProperty(&doc, "groupThreshold", 		config.groupThreshold);
+	setProperty(&doc, "lazyGrouping", 			config.lazyGrouping);
 	setProperty(&doc, "searchThreshold", 		config.searchThreshold);
 	setProperty(&doc, "searchMaximumNoResults",		config.searchMaximumNoResults);
 	setProperty(&doc, "keepInXmms", 				config.keepInXmms);
@@ -354,7 +356,7 @@ void YammiModel::readHistory()
 	QDomDocument doc( "history" );
 	QFile f( config.yammiBaseDir+"/history.xml" );
 	if ( !f.open( IO_ReadOnly ) ) {
-		cout << "\ncould not open history file (first time started?)... => no songs in history\n";
+		cout << "\ncould not open history file... => no songs in history\n";
 		return;
 	}
 	if ( !doc.setContent( &f ) ) {

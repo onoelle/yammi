@@ -8,8 +8,8 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>597</width>
-            <height>520</height>
+            <width>599</width>
+            <height>526</height>
         </rect>
     </property>
     <property name="caption">
@@ -80,534 +80,526 @@
                     <property name="spacing">
                         <number>6</number>
                     </property>
-                    <widget class="QLayoutWidget" row="0" column="0">
+                    <widget class="QGroupBox" row="2" column="0">
                         <property name="name">
-                            <cstring>Layout14</cstring>
+                            <cstring>ConsistencyMode</cstring>
+                        </property>
+                        <property name="title">
+                            <string>Consistency Mode</string>
                         </property>
                         <grid>
                             <property name="name">
                                 <cstring>unnamed</cstring>
                             </property>
                             <property name="margin">
-                                <number>0</number>
+                                <number>11</number>
                             </property>
                             <property name="spacing">
                                 <number>6</number>
                             </property>
-                            <widget class="QGroupBox" row="2" column="0">
+                            <widget class="QLayoutWidget" row="0" column="0">
                                 <property name="name">
-                                    <cstring>ConsistencyMode</cstring>
+                                    <cstring>Layout9</cstring>
                                 </property>
-                                <property name="title">
-                                    <string>Consistency Mode</string>
+                                <vbox>
+                                    <property name="name">
+                                        <cstring>unnamed</cstring>
+                                    </property>
+                                    <property name="margin">
+                                        <number>0</number>
+                                    </property>
+                                    <property name="spacing">
+                                        <number>6</number>
+                                    </property>
+                                    <widget class="QCheckBox">
+                                        <property name="name">
+                                            <cstring>CheckBoxTagsConsistent</cstring>
+                                        </property>
+                                        <property name="text">
+                                            <string>keep tags consistent</string>
+                                        </property>
+                                        <property name="toolTip" stdset="0">
+                                            <string>synchronizes the id3-tags of the mp3 files with the yammi database information. If activated, yammi modifies the tags of your mp3 files!</string>
+                                        </property>
+                                    </widget>
+                                    <widget class="QCheckBox">
+                                        <property name="name">
+                                            <cstring>CheckBoxFilenamesConsistent</cstring>
+                                        </property>
+                                        <property name="text">
+                                            <string>keep filenames consistent</string>
+                                        </property>
+                                        <property name="toolTip" stdset="0">
+                                            <string>Synchronizes the filenames of the mp3 files according to the information in the yammi database. If activated, yammi renames your mp3 files!</string>
+                                        </property>
+                                    </widget>
+                                </vbox>
+                            </widget>
+                        </grid>
+                    </widget>
+                    <widget class="QGroupBox" row="0" column="0" rowspan="1" colspan="2">
+                        <property name="name">
+                            <cstring>GroupBox2</cstring>
+                        </property>
+                        <property name="title">
+                            <string>Path to files</string>
+                        </property>
+                        <hbox>
+                            <property name="name">
+                                <cstring>unnamed</cstring>
+                            </property>
+                            <property name="margin">
+                                <number>11</number>
+                            </property>
+                            <property name="spacing">
+                                <number>6</number>
+                            </property>
+                            <widget class="QLayoutWidget">
+                                <property name="name">
+                                    <cstring>Layout8</cstring>
                                 </property>
                                 <grid>
                                     <property name="name">
                                         <cstring>unnamed</cstring>
                                     </property>
                                     <property name="margin">
-                                        <number>11</number>
+                                        <number>0</number>
                                     </property>
                                     <property name="spacing">
                                         <number>6</number>
                                     </property>
-                                    <widget class="QLayoutWidget" row="0" column="0">
+                                    <widget class="QPushButton" row="1" column="2">
                                         <property name="name">
-                                            <cstring>Layout9</cstring>
+                                            <cstring>ButtonChooseTrashDir</cstring>
                                         </property>
-                                        <vbox>
-                                            <property name="name">
-                                                <cstring>unnamed</cstring>
-                                            </property>
-                                            <property name="margin">
-                                                <number>0</number>
-                                            </property>
-                                            <property name="spacing">
-                                                <number>6</number>
-                                            </property>
-                                            <widget class="QCheckBox">
-                                                <property name="name">
-                                                    <cstring>CheckBoxTagsConsistent</cstring>
-                                                </property>
-                                                <property name="text">
-                                                    <string>keep tags consistent</string>
-                                                </property>
-                                                <property name="toolTip" stdset="0">
-                                                    <string>synchronizes the id3-tags of the mp3 files with the yammi database information. If activated, yammi modifies the tags of your mp3 files!</string>
-                                                </property>
-                                            </widget>
-                                            <widget class="QCheckBox">
-                                                <property name="name">
-                                                    <cstring>CheckBoxFilenamesConsistent</cstring>
-                                                </property>
-                                                <property name="text">
-                                                    <string>keep filenames consistent</string>
-                                                </property>
-                                                <property name="toolTip" stdset="0">
-                                                    <string>Synchronizes the filenames of the mp3 files according to the information in the yammi database. If activated, yammi renames your mp3 files!</string>
-                                                </property>
-                                            </widget>
-                                        </vbox>
+                                        <property name="text">
+                                            <string>...</string>
+                                        </property>
+                                        <property name="toolTip" stdset="0">
+                                            <string>choose directory</string>
+                                        </property>
+                                    </widget>
+                                    <widget class="QPushButton" row="0" column="2">
+                                        <property name="name">
+                                            <cstring>ButtonChooseScanDir</cstring>
+                                        </property>
+                                        <property name="text">
+                                            <string>...</string>
+                                        </property>
+                                        <property name="toolTip" stdset="0">
+                                            <string>choose directory</string>
+                                        </property>
+                                    </widget>
+                                    <widget class="QLineEdit" row="0" column="1">
+                                        <property name="name">
+                                            <cstring>LineEditScanDir</cstring>
+                                        </property>
+                                        <property name="toolTip" stdset="0">
+                                            <string>yammi will search in this directory (and recursive in all subdirectories) for new song files</string>
+                                        </property>
+                                    </widget>
+                                    <widget class="QLabel" row="0" column="0">
+                                        <property name="name">
+                                            <cstring>LabelScanDir</cstring>
+                                        </property>
+                                        <property name="text">
+                                            <string>base directory for scanning</string>
+                                        </property>
+                                        <property name="toolTip" stdset="0">
+                                            <string>yammi will search in this directory (and recursive in all subdirectories) for new song files</string>
+                                        </property>
+                                    </widget>
+                                    <widget class="QLabel" row="1" column="0">
+                                        <property name="name">
+                                            <cstring>LabelTrashDir</cstring>
+                                        </property>
+                                        <property name="text">
+                                            <string>trash directory for deleted song files</string>
+                                        </property>
+                                        <property name="toolTip" stdset="0">
+                                            <string>songs deleted in yammi will be moved to this directory and this directory will be skipped when scanning</string>
+                                        </property>
+                                    </widget>
+                                    <widget class="QLineEdit" row="1" column="1">
+                                        <property name="name">
+                                            <cstring>LineEditTrashDir</cstring>
+                                        </property>
+                                        <property name="toolTip" stdset="0">
+                                            <string>base directory for all mp3 files managed by yammi</string>
+                                        </property>
                                     </widget>
                                 </grid>
                             </widget>
-                            <widget class="QGroupBox" row="0" column="0" rowspan="1" colspan="2">
+                        </hbox>
+                    </widget>
+                    <widget class="QGroupBox" row="3" column="0">
+                        <property name="name">
+                            <cstring>GroupBox6</cstring>
+                        </property>
+                        <property name="title">
+                            <string>General</string>
+                        </property>
+                        <widget class="QLayoutWidget">
+                            <property name="name">
+                                <cstring>Layout13</cstring>
+                            </property>
+                            <property name="geometry">
+                                <rect>
+                                    <x>12</x>
+                                    <y>19</y>
+                                    <width>241</width>
+                                    <height>100</height>
+                                </rect>
+                            </property>
+                            <grid>
                                 <property name="name">
-                                    <cstring>GroupBox2</cstring>
+                                    <cstring>unnamed</cstring>
                                 </property>
-                                <property name="title">
-                                    <string>Path to files</string>
+                                <property name="margin">
+                                    <number>0</number>
+                                </property>
+                                <property name="spacing">
+                                    <number>6</number>
+                                </property>
+                                <widget class="QLabel" row="3" column="0">
+                                    <property name="name">
+                                        <cstring>LabelKeepInXmms</cstring>
+                                    </property>
+                                    <property name="text">
+                                        <string>songs in xmms playlist</string>
+                                    </property>
+                                    <property name="toolTip" stdset="0">
+                                        <string>the number of songs to keep in Xmms playlist</string>
+                                    </property>
+                                </widget>
+                                <widget class="QCheckBox" row="1" column="1">
+                                    <property name="name">
+                                        <cstring>CheckBoxLazyGrouping</cstring>
+                                    </property>
+                                    <property name="text">
+                                        <string>lazy grouping</string>
+                                    </property>
+                                    <property name="toolTip" stdset="0">
+                                        <string>if enabled, considers "The_Doors" the same as "THE DOORS" for grouping</string>
+                                    </property>
+                                </widget>
+                                <widget class="QLabel" row="2" column="0">
+                                    <property name="name">
+                                        <cstring>LabelGroupThreshold</cstring>
+                                    </property>
+                                    <property name="text">
+                                        <string>group threshold</string>
+                                    </property>
+                                    <property name="toolTip" stdset="0">
+                                        <string>the minimum number for a subfolder to be created (Folder Albums, Artists and Genres)</string>
+                                    </property>
+                                </widget>
+                                <widget class="QLineEdit" row="3" column="1">
+                                    <property name="name">
+                                        <cstring>LineEditKeepInXmms</cstring>
+                                    </property>
+                                    <property name="toolTip" stdset="0">
+                                        <string>the number of songs to keep in Xmms playlist</string>
+                                    </property>
+                                </widget>
+                                <widget class="QCheckBox" row="1" column="0">
+                                    <property name="name">
+                                        <cstring>CheckBoxChildSafe</cstring>
+                                    </property>
+                                    <property name="text">
+                                        <string>child safe mode</string>
+                                    </property>
+                                    <property name="toolTip" stdset="0">
+                                        <string>if activated, some potentially dangerous actions are not allowed (eg. deleting a song). To disable this, you need a password...</string>
+                                    </property>
+                                </widget>
+                                <widget class="QCheckBox" row="0" column="0" rowspan="1" colspan="2">
+                                    <property name="name">
+                                        <cstring>CheckBoxLogging</cstring>
+                                    </property>
+                                    <property name="text">
+                                        <string>logging of played songs</string>
+                                    </property>
+                                    <property name="toolTip" stdset="0">
+                                        <string>logs all played songs with a timestamp to a file</string>
+                                    </property>
+                                </widget>
+                                <widget class="QLineEdit" row="2" column="1">
+                                    <property name="name">
+                                        <cstring>LineEditGroupThreshold</cstring>
+                                    </property>
+                                    <property name="toolTip" stdset="0">
+                                        <string>the minimum number for a subfolder to be created (Folder Albums, Artists and Genres)</string>
+                                    </property>
+                                </widget>
+                            </grid>
+                        </widget>
+                    </widget>
+                    <widget class="QGroupBox" row="3" column="1">
+                        <property name="name">
+                            <cstring>secondSoundDevice</cstring>
+                        </property>
+                        <property name="title">
+                            <string>second sound device (for headphones)</string>
+                        </property>
+                        <grid>
+                            <property name="name">
+                                <cstring>unnamed</cstring>
+                            </property>
+                            <property name="margin">
+                                <number>11</number>
+                            </property>
+                            <property name="spacing">
+                                <number>6</number>
+                            </property>
+                            <widget class="QLayoutWidget" row="0" column="0">
+                                <property name="name">
+                                    <cstring>Layout13</cstring>
                                 </property>
                                 <hbox>
                                     <property name="name">
                                         <cstring>unnamed</cstring>
                                     </property>
                                     <property name="margin">
-                                        <number>11</number>
+                                        <number>0</number>
                                     </property>
                                     <property name="spacing">
                                         <number>6</number>
                                     </property>
-                                    <widget class="QLayoutWidget">
+                                    <widget class="QLabel">
                                         <property name="name">
-                                            <cstring>Layout8</cstring>
+                                            <cstring>LabelSecondSoundDevice</cstring>
                                         </property>
-                                        <grid>
-                                            <property name="name">
-                                                <cstring>unnamed</cstring>
-                                            </property>
-                                            <property name="margin">
-                                                <number>0</number>
-                                            </property>
-                                            <property name="spacing">
-                                                <number>6</number>
-                                            </property>
-                                            <widget class="QPushButton" row="1" column="2">
-                                                <property name="name">
-                                                    <cstring>ButtonChooseTrashDir</cstring>
-                                                </property>
-                                                <property name="text">
-                                                    <string>...</string>
-                                                </property>
-                                                <property name="toolTip" stdset="0">
-                                                    <string>choose directory</string>
-                                                </property>
-                                            </widget>
-                                            <widget class="QPushButton" row="0" column="2">
-                                                <property name="name">
-                                                    <cstring>ButtonChooseScanDir</cstring>
-                                                </property>
-                                                <property name="text">
-                                                    <string>...</string>
-                                                </property>
-                                                <property name="toolTip" stdset="0">
-                                                    <string>choose directory</string>
-                                                </property>
-                                            </widget>
-                                            <widget class="QLineEdit" row="0" column="1">
-                                                <property name="name">
-                                                    <cstring>LineEditScanDir</cstring>
-                                                </property>
-                                                <property name="toolTip" stdset="0">
-                                                    <string>yammi will search in this directory (and recursive in all subdirectories) for new song files</string>
-                                                </property>
-                                            </widget>
-                                            <widget class="QLabel" row="0" column="0">
-                                                <property name="name">
-                                                    <cstring>LabelScanDir</cstring>
-                                                </property>
-                                                <property name="text">
-                                                    <string>base directory for scanning</string>
-                                                </property>
-                                                <property name="toolTip" stdset="0">
-                                                    <string>yammi will search in this directory (and recursive in all subdirectories) for new song files</string>
-                                                </property>
-                                            </widget>
-                                            <widget class="QLabel" row="1" column="0">
-                                                <property name="name">
-                                                    <cstring>LabelTrashDir</cstring>
-                                                </property>
-                                                <property name="text">
-                                                    <string>trash directory for deleted song files</string>
-                                                </property>
-                                                <property name="toolTip" stdset="0">
-                                                    <string>songs deleted in yammi will be moved to this directory and this directory will be skipped when scanning</string>
-                                                </property>
-                                            </widget>
-                                            <widget class="QLineEdit" row="1" column="1">
-                                                <property name="name">
-                                                    <cstring>LineEditTrashDir</cstring>
-                                                </property>
-                                                <property name="toolTip" stdset="0">
-                                                    <string>base directory for all mp3 files managed by yammi</string>
-                                                </property>
-                                            </widget>
-                                        </grid>
+                                        <property name="text">
+                                            <string>device (eg. /dev/dsp1)</string>
+                                        </property>
+                                        <property name="toolTip" stdset="0">
+                                            <string>This device is used (with mpg123) to send songs to your headphone.</string>
+                                        </property>
+                                    </widget>
+                                    <widget class="QLineEdit">
+                                        <property name="name">
+                                            <cstring>LineEditSecondSoundDevice</cstring>
+                                        </property>
+                                        <property name="toolTip" stdset="0">
+                                            <string>This device is used (with mpg123) to send songs to your headphone.</string>
+                                        </property>
                                     </widget>
                                 </hbox>
                             </widget>
-                            <widget class="QGroupBox" row="3" column="0">
+                        </grid>
+                    </widget>
+                    <widget class="QGroupBox" row="1" column="0" rowspan="1" colspan="2">
+                        <property name="name">
+                            <cstring>GroupBox3</cstring>
+                        </property>
+                        <property name="title">
+                            <string>Mouse configuration / Default actions for...</string>
+                        </property>
+                        <grid>
+                            <property name="name">
+                                <cstring>unnamed</cstring>
+                            </property>
+                            <property name="margin">
+                                <number>11</number>
+                            </property>
+                            <property name="spacing">
+                                <number>6</number>
+                            </property>
+                            <widget class="QLayoutWidget" row="0" column="0">
                                 <property name="name">
-                                    <cstring>GroupBox6</cstring>
-                                </property>
-                                <property name="title">
-                                    <string>General</string>
+                                    <cstring>Layout7</cstring>
                                 </property>
                                 <grid>
                                     <property name="name">
                                         <cstring>unnamed</cstring>
                                     </property>
                                     <property name="margin">
-                                        <number>11</number>
+                                        <number>0</number>
                                     </property>
                                     <property name="spacing">
                                         <number>6</number>
                                     </property>
-                                    <widget class="QLayoutWidget" row="0" column="0">
+                                    <widget class="QComboBox" row="0" column="1">
                                         <property name="name">
-                                            <cstring>Layout12</cstring>
+                                            <cstring>ComboBoxDoubleClickAction</cstring>
                                         </property>
-                                        <grid>
-                                            <property name="name">
-                                                <cstring>unnamed</cstring>
-                                            </property>
-                                            <property name="margin">
-                                                <number>0</number>
-                                            </property>
-                                            <property name="spacing">
-                                                <number>6</number>
-                                            </property>
-                                            <widget class="QLineEdit" row="2" column="1">
-                                                <property name="name">
-                                                    <cstring>LineEditGroupThreshold</cstring>
-                                                </property>
-                                                <property name="toolTip" stdset="0">
-                                                    <string>the minimum number for a subfolder to be created (Folder Albums, Artists and Genres)</string>
-                                                </property>
-                                            </widget>
-                                            <widget class="QLabel" row="2" column="0">
-                                                <property name="name">
-                                                    <cstring>LabelGroupThreshold</cstring>
-                                                </property>
-                                                <property name="text">
-                                                    <string>group threshold</string>
-                                                </property>
-                                                <property name="toolTip" stdset="0">
-                                                    <string>the minimum number for a subfolder to be created (Folder Albums, Artists and Genres)</string>
-                                                </property>
-                                            </widget>
-                                            <widget class="QLabel" row="3" column="0">
-                                                <property name="name">
-                                                    <cstring>LabelKeepInXmms</cstring>
-                                                </property>
-                                                <property name="text">
-                                                    <string>songs in xmms playlist</string>
-                                                </property>
-                                                <property name="toolTip" stdset="0">
-                                                    <string>the number of songs to keep in Xmms playlist</string>
-                                                </property>
-                                            </widget>
-                                            <widget class="QLineEdit" row="3" column="1">
-                                                <property name="name">
-                                                    <cstring>LineEditKeepInXmms</cstring>
-                                                </property>
-                                                <property name="toolTip" stdset="0">
-                                                    <string>the number of songs to keep in Xmms playlist</string>
-                                                </property>
-                                            </widget>
-                                            <widget class="QCheckBox" row="1" column="0">
-                                                <property name="name">
-                                                    <cstring>CheckBoxChildSafe</cstring>
-                                                </property>
-                                                <property name="text">
-                                                    <string>child safe mode</string>
-                                                </property>
-                                                <property name="toolTip" stdset="0">
-                                                    <string>if activated, some potentially dangerous actions are not allowed (eg. deleting a song). To disable this, you need a password...</string>
-                                                </property>
-                                            </widget>
-                                            <widget class="QCheckBox" row="0" column="0" rowspan="1" colspan="2">
-                                                <property name="name">
-                                                    <cstring>CheckBoxLogging</cstring>
-                                                </property>
-                                                <property name="text">
-                                                    <string>logging of played songs</string>
-                                                </property>
-                                                <property name="toolTip" stdset="0">
-                                                    <string>logs all played songs with a timestamp to a file</string>
-                                                </property>
-                                            </widget>
-                                        </grid>
+                                        <property name="sizePolicy">
+                                            <sizepolicy>
+                                                <hsizetype>7</hsizetype>
+                                                <vsizetype>0</vsizetype>
+                                                <horstretch>0</horstretch>
+                                                <verstretch>0</verstretch>
+                                            </sizepolicy>
+                                        </property>
+                                        <property name="toolTip" stdset="0">
+                                            <string>the action that is performed when double-clicking on a song in the song list</string>
+                                        </property>
+                                    </widget>
+                                    <widget class="QComboBox" row="1" column="3">
+                                        <property name="name">
+                                            <cstring>ComboBoxControlClickAction</cstring>
+                                        </property>
+                                        <property name="sizePolicy">
+                                            <sizepolicy>
+                                                <hsizetype>7</hsizetype>
+                                                <vsizetype>0</vsizetype>
+                                                <horstretch>0</horstretch>
+                                                <verstretch>0</verstretch>
+                                            </sizepolicy>
+                                        </property>
+                                        <property name="toolTip" stdset="0">
+                                            <string>the action that is performed when double-clicking on a song in the song list</string>
+                                        </property>
+                                    </widget>
+                                    <widget class="QLabel" row="1" column="2">
+                                        <property name="name">
+                                            <cstring>LabelControlClickAction</cstring>
+                                        </property>
+                                        <property name="text">
+                                            <string>CTRL+middle click</string>
+                                        </property>
+                                        <property name="toolTip" stdset="0">
+                                            <string>the action that is performed when double-clicking on a song in the song list</string>
+                                        </property>
+                                    </widget>
+                                    <widget class="QLabel" row="0" column="2">
+                                        <property name="name">
+                                            <cstring>LabelShiftClickAction</cstring>
+                                        </property>
+                                        <property name="text">
+                                            <string>SHIFT+middle click</string>
+                                        </property>
+                                        <property name="toolTip" stdset="0">
+                                            <string>the action that is performed when clicking with middle mouse button on a song in the song list</string>
+                                        </property>
+                                    </widget>
+                                    <widget class="QLabel" row="0" column="0">
+                                        <property name="name">
+                                            <cstring>LabelDoubleClickAction</cstring>
+                                        </property>
+                                        <property name="text">
+                                            <string>doubleclick</string>
+                                        </property>
+                                        <property name="toolTip" stdset="0">
+                                            <string>the action that is performed when double-clicking on a song in the song list</string>
+                                        </property>
+                                    </widget>
+                                    <widget class="QComboBox" row="1" column="1">
+                                        <property name="name">
+                                            <cstring>ComboBoxMiddleClickAction</cstring>
+                                        </property>
+                                        <property name="sizePolicy">
+                                            <sizepolicy>
+                                                <hsizetype>7</hsizetype>
+                                                <vsizetype>0</vsizetype>
+                                                <horstretch>0</horstretch>
+                                                <verstretch>0</verstretch>
+                                            </sizepolicy>
+                                        </property>
+                                        <property name="toolTip" stdset="0">
+                                            <string>the action that is performed when clicking with middle mouse button on a song in the song list</string>
+                                        </property>
+                                    </widget>
+                                    <widget class="QLabel" row="1" column="0">
+                                        <property name="name">
+                                            <cstring>LabelMiddleClickAction</cstring>
+                                        </property>
+                                        <property name="text">
+                                            <string>middle click</string>
+                                        </property>
+                                        <property name="toolTip" stdset="0">
+                                            <string>the action that is performed when clicking with middle mouse button on a song in the song list</string>
+                                        </property>
+                                    </widget>
+                                    <widget class="QComboBox" row="0" column="3">
+                                        <property name="name">
+                                            <cstring>ComboBoxShiftClickAction</cstring>
+                                        </property>
+                                        <property name="sizePolicy">
+                                            <sizepolicy>
+                                                <hsizetype>7</hsizetype>
+                                                <vsizetype>0</vsizetype>
+                                                <horstretch>0</horstretch>
+                                                <verstretch>0</verstretch>
+                                            </sizepolicy>
+                                        </property>
+                                        <property name="toolTip" stdset="0">
+                                            <string>the action that is performed when clicking with middle mouse button on a song in the song list</string>
+                                        </property>
                                     </widget>
                                 </grid>
                             </widget>
-                            <widget class="QGroupBox" row="3" column="1">
+                        </grid>
+                    </widget>
+                    <widget class="QGroupBox" row="2" column="1">
+                        <property name="name">
+                            <cstring>GroupBoxSearching</cstring>
+                        </property>
+                        <property name="title">
+                            <string>Searching</string>
+                        </property>
+                        <grid>
+                            <property name="name">
+                                <cstring>unnamed</cstring>
+                            </property>
+                            <property name="margin">
+                                <number>11</number>
+                            </property>
+                            <property name="spacing">
+                                <number>6</number>
+                            </property>
+                            <widget class="QLayoutWidget" row="0" column="0">
                                 <property name="name">
-                                    <cstring>secondSoundDevice</cstring>
-                                </property>
-                                <property name="title">
-                                    <string>second sound device (for headphones)</string>
+                                    <cstring>Layout10</cstring>
                                 </property>
                                 <grid>
                                     <property name="name">
                                         <cstring>unnamed</cstring>
                                     </property>
                                     <property name="margin">
-                                        <number>11</number>
+                                        <number>0</number>
                                     </property>
                                     <property name="spacing">
                                         <number>6</number>
                                     </property>
-                                    <widget class="QLayoutWidget" row="0" column="0">
+                                    <widget class="QLineEdit" row="1" column="1">
                                         <property name="name">
-                                            <cstring>Layout13</cstring>
+                                            <cstring>LineEditSearchMaximumNoResults</cstring>
                                         </property>
-                                        <hbox>
-                                            <property name="name">
-                                                <cstring>unnamed</cstring>
-                                            </property>
-                                            <property name="margin">
-                                                <number>0</number>
-                                            </property>
-                                            <property name="spacing">
-                                                <number>6</number>
-                                            </property>
-                                            <widget class="QLabel">
-                                                <property name="name">
-                                                    <cstring>LabelSecondSoundDevice</cstring>
-                                                </property>
-                                                <property name="text">
-                                                    <string>device (eg. /dev/dsp1)</string>
-                                                </property>
-                                                <property name="toolTip" stdset="0">
-                                                    <string>This device is used (with mpg123) to send songs to your headphone.</string>
-                                                </property>
-                                            </widget>
-                                            <widget class="QLineEdit">
-                                                <property name="name">
-                                                    <cstring>LineEditSecondSoundDevice</cstring>
-                                                </property>
-                                                <property name="toolTip" stdset="0">
-                                                    <string>This device is used (with mpg123) to send songs to your headphone.</string>
-                                                </property>
-                                            </widget>
-                                        </hbox>
+                                        <property name="toolTip" stdset="0">
+                                            <string>Limits the maximum number of entries listed when searching. Must be between 0 and 200, reasonable: 100</string>
+                                        </property>
                                     </widget>
-                                </grid>
-                            </widget>
-                            <widget class="QGroupBox" row="1" column="0" rowspan="1" colspan="2">
-                                <property name="name">
-                                    <cstring>GroupBox3</cstring>
-                                </property>
-                                <property name="title">
-                                    <string>Mouse configuration / Default actions for...</string>
-                                </property>
-                                <grid>
-                                    <property name="name">
-                                        <cstring>unnamed</cstring>
-                                    </property>
-                                    <property name="margin">
-                                        <number>11</number>
-                                    </property>
-                                    <property name="spacing">
-                                        <number>6</number>
-                                    </property>
-                                    <widget class="QLayoutWidget" row="0" column="0">
+                                    <widget class="QLineEdit" row="0" column="1">
                                         <property name="name">
-                                            <cstring>Layout7</cstring>
+                                            <cstring>LineEditSearchThreshold</cstring>
                                         </property>
-                                        <grid>
-                                            <property name="name">
-                                                <cstring>unnamed</cstring>
-                                            </property>
-                                            <property name="margin">
-                                                <number>0</number>
-                                            </property>
-                                            <property name="spacing">
-                                                <number>6</number>
-                                            </property>
-                                            <widget class="QComboBox" row="0" column="1">
-                                                <property name="name">
-                                                    <cstring>ComboBoxDoubleClickAction</cstring>
-                                                </property>
-                                                <property name="sizePolicy">
-                                                    <sizepolicy>
-                                                        <hsizetype>7</hsizetype>
-                                                        <vsizetype>0</vsizetype>
-                                                        <horstretch>0</horstretch>
-                                                        <verstretch>0</verstretch>
-                                                    </sizepolicy>
-                                                </property>
-                                                <property name="toolTip" stdset="0">
-                                                    <string>the action that is performed when double-clicking on a song in the song list</string>
-                                                </property>
-                                            </widget>
-                                            <widget class="QComboBox" row="1" column="3">
-                                                <property name="name">
-                                                    <cstring>ComboBoxControlClickAction</cstring>
-                                                </property>
-                                                <property name="sizePolicy">
-                                                    <sizepolicy>
-                                                        <hsizetype>7</hsizetype>
-                                                        <vsizetype>0</vsizetype>
-                                                        <horstretch>0</horstretch>
-                                                        <verstretch>0</verstretch>
-                                                    </sizepolicy>
-                                                </property>
-                                                <property name="toolTip" stdset="0">
-                                                    <string>the action that is performed when double-clicking on a song in the song list</string>
-                                                </property>
-                                            </widget>
-                                            <widget class="QLabel" row="1" column="2">
-                                                <property name="name">
-                                                    <cstring>LabelControlClickAction</cstring>
-                                                </property>
-                                                <property name="text">
-                                                    <string>CTRL+middle click</string>
-                                                </property>
-                                                <property name="toolTip" stdset="0">
-                                                    <string>the action that is performed when double-clicking on a song in the song list</string>
-                                                </property>
-                                            </widget>
-                                            <widget class="QLabel" row="0" column="2">
-                                                <property name="name">
-                                                    <cstring>LabelShiftClickAction</cstring>
-                                                </property>
-                                                <property name="text">
-                                                    <string>SHIFT+middle click</string>
-                                                </property>
-                                                <property name="toolTip" stdset="0">
-                                                    <string>the action that is performed when clicking with middle mouse button on a song in the song list</string>
-                                                </property>
-                                            </widget>
-                                            <widget class="QLabel" row="0" column="0">
-                                                <property name="name">
-                                                    <cstring>LabelDoubleClickAction</cstring>
-                                                </property>
-                                                <property name="text">
-                                                    <string>doubleclick</string>
-                                                </property>
-                                                <property name="toolTip" stdset="0">
-                                                    <string>the action that is performed when double-clicking on a song in the song list</string>
-                                                </property>
-                                            </widget>
-                                            <widget class="QComboBox" row="1" column="1">
-                                                <property name="name">
-                                                    <cstring>ComboBoxMiddleClickAction</cstring>
-                                                </property>
-                                                <property name="sizePolicy">
-                                                    <sizepolicy>
-                                                        <hsizetype>7</hsizetype>
-                                                        <vsizetype>0</vsizetype>
-                                                        <horstretch>0</horstretch>
-                                                        <verstretch>0</verstretch>
-                                                    </sizepolicy>
-                                                </property>
-                                                <property name="toolTip" stdset="0">
-                                                    <string>the action that is performed when clicking with middle mouse button on a song in the song list</string>
-                                                </property>
-                                            </widget>
-                                            <widget class="QLabel" row="1" column="0">
-                                                <property name="name">
-                                                    <cstring>LabelMiddleClickAction</cstring>
-                                                </property>
-                                                <property name="text">
-                                                    <string>middle click</string>
-                                                </property>
-                                                <property name="toolTip" stdset="0">
-                                                    <string>the action that is performed when clicking with middle mouse button on a song in the song list</string>
-                                                </property>
-                                            </widget>
-                                            <widget class="QComboBox" row="0" column="3">
-                                                <property name="name">
-                                                    <cstring>ComboBoxShiftClickAction</cstring>
-                                                </property>
-                                                <property name="sizePolicy">
-                                                    <sizepolicy>
-                                                        <hsizetype>7</hsizetype>
-                                                        <vsizetype>0</vsizetype>
-                                                        <horstretch>0</horstretch>
-                                                        <verstretch>0</verstretch>
-                                                    </sizepolicy>
-                                                </property>
-                                                <property name="toolTip" stdset="0">
-                                                    <string>the action that is performed when clicking with middle mouse button on a song in the song list</string>
-                                                </property>
-                                            </widget>
-                                        </grid>
+                                        <property name="toolTip" stdset="0">
+                                            <string>determines how many hits will be shown when searching. Must be between 0 and 100, reasonable values are around 25.</string>
+                                        </property>
                                     </widget>
-                                </grid>
-                            </widget>
-                            <widget class="QGroupBox" row="2" column="1">
-                                <property name="name">
-                                    <cstring>GroupBoxSearching</cstring>
-                                </property>
-                                <property name="title">
-                                    <string>Searching</string>
-                                </property>
-                                <grid>
-                                    <property name="name">
-                                        <cstring>unnamed</cstring>
-                                    </property>
-                                    <property name="margin">
-                                        <number>11</number>
-                                    </property>
-                                    <property name="spacing">
-                                        <number>6</number>
-                                    </property>
-                                    <widget class="QLayoutWidget" row="0" column="0">
+                                    <widget class="QLabel" row="1" column="0">
                                         <property name="name">
-                                            <cstring>Layout10</cstring>
+                                            <cstring>LabelSearchMaximumNoResults</cstring>
                                         </property>
-                                        <grid>
-                                            <property name="name">
-                                                <cstring>unnamed</cstring>
-                                            </property>
-                                            <property name="margin">
-                                                <number>0</number>
-                                            </property>
-                                            <property name="spacing">
-                                                <number>6</number>
-                                            </property>
-                                            <widget class="QLineEdit" row="1" column="1">
-                                                <property name="name">
-                                                    <cstring>LineEditSearchMaximumNoResults</cstring>
-                                                </property>
-                                                <property name="toolTip" stdset="0">
-                                                    <string>Limits the maximum number of entries listed when searching. Must be between 0 and 200, reasonable: 100</string>
-                                                </property>
-                                            </widget>
-                                            <widget class="QLineEdit" row="0" column="1">
-                                                <property name="name">
-                                                    <cstring>LineEditSearchThreshold</cstring>
-                                                </property>
-                                                <property name="toolTip" stdset="0">
-                                                    <string>determines how many hits will be shown when searching. Must be between 0 and 100, reasonable values are around 25.</string>
-                                                </property>
-                                            </widget>
-                                            <widget class="QLabel" row="1" column="0">
-                                                <property name="name">
-                                                    <cstring>LabelSearchMaximumNoResults</cstring>
-                                                </property>
-                                                <property name="text">
-                                                    <string>maximum no. results</string>
-                                                </property>
-                                                <property name="toolTip" stdset="0">
-                                                    <string>Limits the maximum number of entries listed when searching. Must be between 0 and 200, reasonable: 100</string>
-                                                </property>
-                                            </widget>
-                                            <widget class="QLabel" row="0" column="0">
-                                                <property name="name">
-                                                    <cstring>LabelSearchThreshold</cstring>
-                                                </property>
-                                                <property name="text">
-                                                    <string>threshold</string>
-                                                </property>
-                                                <property name="toolTip" stdset="0">
-                                                    <string>determines how many hits will be shown when searching. Must be between 0 and 100, reasonable values are around 25.</string>
-                                                </property>
-                                            </widget>
-                                        </grid>
+                                        <property name="text">
+                                            <string>maximum no. results</string>
+                                        </property>
+                                        <property name="toolTip" stdset="0">
+                                            <string>Limits the maximum number of entries listed when searching. Must be between 0 and 200, reasonable: 100</string>
+                                        </property>
+                                    </widget>
+                                    <widget class="QLabel" row="0" column="0">
+                                        <property name="name">
+                                            <cstring>LabelSearchThreshold</cstring>
+                                        </property>
+                                        <property name="text">
+                                            <string>threshold</string>
+                                        </property>
+                                        <property name="toolTip" stdset="0">
+                                            <string>determines how many hits will be shown when searching. Must be between 0 and 100, reasonable values are around 25.</string>
+                                        </property>
                                     </widget>
                                 </grid>
                             </widget>
@@ -764,6 +756,14 @@
                                             <widget class="QPushButton" row="1" column="0">
                                                 <property name="name">
                                                     <cstring>PushButtonNewSongPlugin</cstring>
+                                                </property>
+                                                <property name="sizePolicy">
+                                                    <sizepolicy>
+                                                        <hsizetype>7</hsizetype>
+                                                        <vsizetype>0</vsizetype>
+                                                        <horstretch>0</horstretch>
+                                                        <verstretch>0</verstretch>
+                                                    </sizepolicy>
                                                 </property>
                                                 <property name="text">
                                                     <string>New Entry</string>
@@ -991,7 +991,7 @@ execute the command on it.</string>
                                                     <cstring>LineEditPluginPlaylistCustomList</cstring>
                                                 </property>
                                                 <property name="toolTip" stdset="0">
-                                                    <string>a script that is invoked for a list of songs</string>
+                                                    <string>defines the list format (if %l replacement is used in command)</string>
                                                 </property>
                                             </widget>
                                             <widget class="QLabel" row="4" column="0">
@@ -1008,6 +1008,14 @@ execute the command on it.</string>
                                             <widget class="QPushButton" row="1" column="0">
                                                 <property name="name">
                                                     <cstring>PushButtonNewPlaylistPlugin</cstring>
+                                                </property>
+                                                <property name="sizePolicy">
+                                                    <sizepolicy>
+                                                        <hsizetype>7</hsizetype>
+                                                        <vsizetype>0</vsizetype>
+                                                        <horstretch>0</horstretch>
+                                                        <verstretch>0</verstretch>
+                                                    </sizepolicy>
                                                 </property>
                                                 <property name="text">
                                                     <string>New Entry</string>

@@ -50,6 +50,7 @@ public:
 	QString secondSoundDevice;
 	int keepInXmms;
 	int groupThreshold;
+  bool lazyGrouping;
 	int searchThreshold;
 	int searchMaximumNoResults;
 
@@ -66,6 +67,7 @@ public:
 // jukebox functions
 	int swapSize;
 	bool mountMediaDir;
+
 	QString mediaDir;
 	QString swapDir;
 

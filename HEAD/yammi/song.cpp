@@ -15,11 +15,14 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <id3/tag.h>
 
 #include "song.h"
 #include "mp3tag.h"
 #include "mp3_layer.h"
 #include "yammigui.h"
+
+
 
 extern YammiGui* gYammiGui;
 
@@ -237,12 +240,41 @@ bool Song::checkTags()
 		return false;
 	}
 	bool same=false;
+
+  // id3lib (experimental)
+  //**********************
+  ID3_Tag myTag;
+  myTag.Link(this->location());
+
+  ID3_Frame* myFrame = myTag.Find(ID3FID_TITLE);
+  if (NULL != myFrame)
+  {
+    ID3_Field* myField = myFrame->GetField(ID3FN_TEXT);
+    if (NULL != myField)
+    {
+      // do something with myField
+      // for ascii strings
+      char title[1024];
+      myField->Get(title, 1024); // copies up to 1024 bytes of the field data into str1
+      cout << "title tag found: " << title << "|\n";
+    }
+    else {
+      cout << "could not find field\n";
+    }
+  }
+  else {
+    cout << "could not find frame\n";
+  }
+
+
+
 	MP3Tag tag;
 	if(tag.scan(&f)) {										// tags exist => compare to our fields
 		same=true;
 		// beware that artist/title can exceed 30 characters (by extra info in filename)
 		if(strcmp(this->artist.left(30).stripWhiteSpace().latin1(),  tag.artist) !=0) {same=false; cout << "(artist)"; }
 		if(strcmp(this->title.left(30).stripWhiteSpace().latin1(),   tag.title)  !=0) {same=false; cout << "(title)"; }
+    cout << "old title tag: " << tag.title << "|\n";
 		if(strcmp(this->album.latin1(),   tag.album)  !=0)
 		  {same=false; cout << "(album)"; }
 		// häh??? why does application of left (on an empty string) change the string???

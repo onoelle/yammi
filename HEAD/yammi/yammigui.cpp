@@ -784,7 +784,7 @@ void YammiGui::searchFieldChanged()
  */
 void YammiGui::slotFolderChanged()
 {
-	QApplication::setOverrideCursor( Qt::waitCursor );
+  QApplication::setOverrideCursor( Qt::waitCursor );
 	QListViewItem *i = folderListView->currentItem();
 	if ( !i )
 		return;
