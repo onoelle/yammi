@@ -40,17 +40,8 @@
 //FIXME -<clean
 // // these are the includes I wanted to avoid (gui-stuff)
 #include <qcheckbox.h>
-// #include <qregexp.h>
-// #include <qdir.h>
+#include <qeventloop.h>
 #include <qdom.h>
-// #include <stdlib.h>
-// #include <qstring.h>
-// #include <qobject.h>
-// #include <qdatetime.h>
-// #include <qlist.h>
-// #include <qvector.h>
-// #include <qtimer.h>
-// #include <qevent.h>
 
 #include "song.h"
 #include "songentry.h"
@@ -91,8 +82,18 @@ void YammiModel::readCategories()
 	int count=0;
 
 	QStringList cats = KGlobal::dirs()->findAllResources( "appdata","categories/*.xml", true );
-	for( QStringList::Iterator it = cats.begin(); it!=cats.end(); ++it )
+	int total=cats.count();
+	//FIXME - change this to a progress in the status bar instead...
+	KProgressDialog dia(0,0,i18n("Loading categories"),i18n("Reading categories..."), true);
+	dia.setAllowCancel(false);
+	dia.setMinimumDuration(0);
+	KProgress *p = dia.progressBar();
+	p->setTotalSteps( total );
+	int progressCount=0;
+	for( QStringList::Iterator it = cats.begin(); it!=cats.end(); ++it, progressCount++ )
 	{
+		p->setProgress( progressCount );
+		kapp->eventLoop()->processEvents(QEventLoop::ExcludeUserInput);
 		kdDebug()<<"cat resource found: "<<*it<<endl;
 		QFile f( *it );
 		if ( !f.open( IO_ReadOnly ) )
@@ -142,7 +143,6 @@ void YammiModel::readCategories()
 			e = e.nextSibling().toElement();
 		}
 	}
-	kdDebug()<<"done (" << count << " categories)"<<endl;
 }
 
 
@@ -170,13 +170,24 @@ void YammiModel::readHistory()
 	}
 	f.close();
 
-	QDomElement docElem = doc.documentElement();
-	QDomElement e = docElem.firstChild().toElement();
-	int i = 0; //FIXME replace for progress bar indicator?
-	while(!e.isNull())
+	QDomElement root = doc.documentElement();
+	int total = root.attribute("count", "0").toInt( );
+	QDomElement e = root.firstChild().toElement();
+	
+	//FIXME - change this to a progress in the status bar instead...
+	KProgressDialog dia(0,0,i18n("Loading song history"),i18n("Reading song history..."), true);
+	dia.setAllowCancel(false);
+	dia.setMinimumDuration(0);
+	KProgress *p = dia.progressBar();
+	p->setTotalSteps( total );
+	for(int i=0; !e.isNull(); i++)
 	{
-		if(i % 100==0)
-			cout<< "." <<flush;
+		if(i % 100==0) {
+			//FIXME replace for progress bar indicator?
+			cout << "." << flush;
+			p->setProgress( i );
+			kapp->eventLoop()->processEvents(QEventLoop::ExcludeUserInput);
+		}		
 		QString artist = e.attribute("artist", "unknown");
 		QString title  = e.attribute("title", "unknown");
 		QString album  = e.attribute("album", "");
@@ -198,7 +209,6 @@ void YammiModel::readHistory()
 		}
  		
  		e = e.nextSibling().toElement();
-		i++;
  	}
 	kdDebug()<<"done (" << songHistory.count() << " songs in history)"<<endl;
 }
@@ -214,6 +224,7 @@ void YammiModel::saveHistory()
 	
 	// iterate through songs in history AND songsPlayed folder
 	// => save each song as a xml song element
+	int count=0;
 	for(SongEntry* entry=songHistory.first(); entry; entry=songHistory.next()) 
 	{
 		QDomElement elem = doc.createElement( "song" );
@@ -222,6 +233,7 @@ void YammiModel::saveHistory()
 		elem.setAttribute( "album", entry->song()->album );
 		elem.setAttribute( "timestamp", ((SongEntryTimestamp*)entry)->timestamp.writeToString() );
 		root.appendChild( elem );
+		count++;
 	}
 	for(SongEntry* entry=songsPlayed.first(); entry; entry=songsPlayed.next()) 
 	{
@@ -231,7 +243,9 @@ void YammiModel::saveHistory()
 		elem.setAttribute( "album", entry->song()->album );
 		elem.setAttribute( "timestamp", ((SongEntryTimestamp*)entry)->timestamp.writeToString() );
 		root.appendChild( elem );
+		count++;
 	}
+	root.setAttribute("count",count);
 
 	// save history to file... (but first we make a backup of old file)
 	QString path = KGlobal::dirs()->saveLocation("appdata");
@@ -255,10 +269,10 @@ void YammiModel::saveHistory()
 /// save categories (if changed) to xml-files
 void YammiModel::saveCategories()
 {
-	kdDebug()<<"Saving categories..."<<endl;
+	kdDebug() << "Saving categories..." << endl;
 	QString path = KGlobal::dirs()->saveLocation("appdata","categories/",true);
 	QString name;
-	kdDebug()<<"Saving categories in directory "<<path;
+	kdDebug() << "Saving categories in directory " << path << endl;
 
 	// save all categoreis marked as dirty
 	for( QListViewItem* f=m_yammi->folderCategories->firstChild(); f; f=f->nextSibling() ) 
@@ -267,7 +281,7 @@ void YammiModel::saveCategories()
 		if(!folder->songlist().dirty)
 			continue;
 		name = folder->folderName();
-		kdDebug()<<"Saving category: "<<name<<endl;
+		kdDebug() << "Saving category: " << name << endl;
 
 		QDomDocument doc( "category" );
 		QDomElement root = doc.createElement("category");
@@ -287,7 +301,7 @@ void YammiModel::saveCategories()
 		QFile f( path + name + ".xml" );
 		if ( !f.open( IO_WriteOnly  ) )
 		{
-			kdError()<<"Could not save category to file: "<<path<<name<<".xml"<<endl;
+			kdError() << "Could not save category to file: " << path << name << ".xml" << endl;
 			continue;
 		}
 		f.writeBlock ( contents, contents.length() );
@@ -351,14 +365,16 @@ a new Database and scan your harddisk for songs") );
 	QDomElement e = root.firstChild().toElement();
 	
 	//FIXME - change this to a progress in the status bar instead...
-	KProgressDialog dia(0,0,i18n("Loading database"),i18n("Reading Song Database file"));
+	KProgressDialog dia(0,0,i18n("Loading database"),i18n("Reading Song Database file"), true);
 	dia.setAllowCancel(false);
+	dia.setMinimumDuration(0);
 	KProgress *p = dia.progressBar();
 	p->setTotalSteps( total );
 	int count = 0;
 	while( !e.isNull( ) )
 	{
 		p->setProgress( count );
+		kapp->eventLoop()->processEvents(QEventLoop::ExcludeUserInput);
 		
 		QString artist   = e.attribute("artist", "unknown");
 		QString title    = e.attribute("title", "unknown");
@@ -397,7 +413,7 @@ a new Database and scan your harddisk for songs") );
 		count++;
 	}
 	kdDebug()<<"Read "<<count<<" songs from DB. ( allSongs = "<<allSongs.count()<<" )"<<endl;
-	allSongsChanged( true );
+	allSongsChanged( false );
 }
 
 /// saves the songs in allSongs into an xml-file
@@ -1251,10 +1267,12 @@ void YammiModel::save()
 	KApplication::setOverrideCursor( Qt::waitCursor );
 	// save dirty categories
 	saveCategories();
-	if(allSongsChanged())
+	if(allSongsChanged()) {
 		saveSongDatabase();
-	if(allSongsChanged() || m_yammi->config( ).logging)
+	}
+	if(allSongsChanged() || m_yammi->config( ).logging) {
 		saveHistory();
+	}
 
 	KApplication::restoreOverrideCursor();
 }
@@ -1294,8 +1312,9 @@ void YammiModel::renameMedia(QString oldMediaName, QString newMediaName)
 	// now move the directory (if existing)
 	QDir dir;
 	QString path = KGlobal::dirs()->saveLocation("appdata","media/",false);
-	if(!dir.rename(path+oldMediaName, path+newMediaName))
+	if(!dir.rename(path+oldMediaName, path+newMediaName)) {
 		kdDebug()<<"could not rename media dir!:"<<path+oldMediaName<<endl;
+	}
 	allSongsChanged(true);
 }
 

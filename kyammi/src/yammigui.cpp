@@ -58,40 +58,14 @@
 
 #include <qslider.h>
 
-
-// qt includes (non gui)
-// #include <qregexp.h>
-// #include <qdir.h>
-// #include <qtextstream.h>
-// #include <qstring.h>
-// #include <qdatetime.h>
-// #include <qlist.h>
-// #include <qevent.h>
-
-// qt includes (gui-stuff)
-// #include <qtooltip.h>
 #include <qheader.h>
 #include <qspinbox.h>
 #include <qcheckbox.h>
 #include <qhbox.h>
-// #include <qlabel.h>
 #include <qpushbutton.h>
-// #include <qhbox.h>
-// #include <qvbox.h>
-// #include <qpainter.h>
-// #include <qpalette.h>
 #include <qpopupmenu.h>
-// #include <qinputdialog.h>
-// #include <qmenudata.h>
-// #include <qmenubar.h>
 #include <qlistview.h>
 #include <qtooltip.h>
-// #include <qlineedit.h>
-// #include <qmultilineedit.h>
-// #include <qlayout.h>
-// #include <qsplitter.h>
-// #include <qstatusbar.h>
-// 
 
 #include "yammimodel.h"
 #include "song.h"
@@ -315,7 +289,8 @@ void YammiGui::readProperties(KConfig *config)
 
 
 bool YammiGui::queryClose()
-{kdDebug()<<"queryClose()"<<endl;
+{
+	kdDebug()<<"queryClose()"<<endl;
 	if(model->allSongsChanged() || model->categoriesChanged()) 
 	{
 		QString msg=i18n("The Song Database has been modified.\nDo you want to save the changes?");
@@ -335,11 +310,12 @@ bool YammiGui::queryClose()
 		if(m_config.logging && model->songsPlayed.count()>2)
 			model->saveHistory();
 	}
-return true;
+	return true;
 }
 
 bool YammiGui::queryExit()
-{kdDebug()<<"queryExit()"<<endl;
+{
+	kdDebug() << "queryExit() " << endl;
 	player->quit( );
 	saveOptions();
 	return true;
@@ -357,8 +333,7 @@ bool YammiGui::queryExit()
 // }
 
 void YammiGui::shutdownSequence( )
-{
-	
+{	
 	QString msg(i18n("Shutting down in %1 seconds"));
 	KProgressDialog d(this,0,i18n("Shutting down..."));
 	
@@ -386,10 +361,12 @@ void YammiGui::shutdownSequence( )
 		}
 	}
 	model->save( );
-	if(m_config.shutdownScript.isEmpty())
+	if(m_config.shutdownScript.isEmpty()) {
 		this->close();
-	else
+	}
+	else {
 		system(m_config.shutdownScript+" &");
+	}
 }
 
 void YammiGui::toolbarToggled( const QString& name )
@@ -3317,15 +3294,14 @@ void YammiGui::createFolders( )
 
 void YammiGui::setupActions( )
 {
-	KStdAction::quit(this, SLOT(endProgram()), actionCollection());
+	KStdAction::quit(this, SLOT(close()), actionCollection());
 
 	//Selection actions
 	KStdAction::selectAll(this,SLOT(selectAll()),actionCollection());
 	new KAction(i18n("Invert selection"),0,0,this,SLOT(invertSelection()), actionCollection(),"invert_selection");
 
 	//Media player actions
-	m_playPauseAction =
-		new KAction(i18n("Play"),"player_play",KShortcut(Key_F1),player,SLOT(playPause()), actionCollection(),"play_pause");
+	m_playPauseAction = new KAction(i18n("Play"),"player_play",KShortcut(Key_F1),player,SLOT(playPause()), actionCollection(),"play_pause");
 	new KAction(i18n("Stop"),"player_stop",KShortcut(Key_F4),player,SLOT(stop()),actionCollection(),"stop");
 	new KAction(i18n("Skip Backward"),"player_rew",KShortcut(Key_F2),this,SLOT(skipBackward()), actionCollection(),"skip_backward");
 	new KAction(i18n("Skip Forward"),"player_fwd",KShortcut(Key_F3),this,SLOT(skipForward()), actionCollection(),"skip_forward");
