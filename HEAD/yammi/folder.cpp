@@ -27,8 +27,9 @@ Folder::Folder( QListView *parent, const QString &name )
 				owner(true)
 {
 	init(name);
-	this->songList=new MyList();
+	songList=new MyList();
 	owner=true;
+  sortedBy=-1;
 }
 
 // construct a top-level folder
@@ -45,8 +46,7 @@ Folder::Folder( QListViewItem* parent, const QString &name )
 			: QListViewItem( parent )				
 {
 	init(name);
-	this->songList=new MyList();
-	owner=true;
+	songList=new MyList();
 }
 
 // construct a folder (not top-level)
@@ -86,6 +86,7 @@ void Folder::init(QString name)
 	songList=0;
 	owner=false;
 	sorted=false;
+  sortedBy=0;
 }
 
 // clean up
@@ -183,3 +184,18 @@ void Folder::autoplayFolder()
   gYammiGui->autoplayFolder();
 }
 
+/**
+ * Saves the view settings (ordering, which song is at top).
+ */
+void Folder::saveSorting(int sortedBy)
+{
+  this->sortedBy=sortedBy;
+}
+
+/**
+ * Restores the saved view settings.
+ */
+int Folder::getSavedSorting()
+{
+  return sortedBy;
+}

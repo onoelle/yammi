@@ -68,6 +68,8 @@ public:
 	QPopupMenu*			folderPopup;
 	QPopupMenu*			allPopup;	
   bool            isSorted()                  { return sorted; }
+  void            saveSorting(int sortedBy);
+  int             getSavedSorting();
 public slots:
   void            autoplayFolder();
 
@@ -75,6 +77,7 @@ public slots:
 protected:
 	QString					fName;
 	bool						sorted;
+  int             sortedBy;
 	bool            owner;
 
 	MyList*					songList;

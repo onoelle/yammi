@@ -38,15 +38,17 @@ MyListView::~MyListView()
 }
 
 /**
- * TODO: check!!!
+ * Updates the sortedBy attribute when user changes sort column or order in listview.
  */
 void MyListView::sortColumnChanged(int column)
 {
   int newColumn=column+1;
-	if(sortedBy==newColumn)
-		sortedBy=-sortedBy;
-	else
+  if(sortOrder()==Qt::Descending) {
+		sortedBy=-newColumn;
+  }
+	else {
 		sortedBy=newColumn;
+  }
 }
 
 void MyListView::simulateMouseMove()

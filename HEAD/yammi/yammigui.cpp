@@ -616,7 +616,6 @@ void YammiGui::updateView(bool startup)
   int timeDelta=0;  // time delta between two additions in seconds
   Song* last=0;
 	for(Song* s=model->allSongs.firstSong(); s; s=model->allSongs.nextSong()) {
-    cout << "looking at: " << s->displayName() << "\n";
     count++;
     if(last!=0) {
       timeDelta=s->addedTo.secsTo(last->addedTo);
@@ -820,56 +819,44 @@ void YammiGui::setPreferences()
  */
 void YammiGui::updateSongPopup()
 {
-  // new version
   songPopup = (QPopupMenu *)factory()->container("song_popup", this);
-  return;
-  // pop->popup(aPoint);
 
-  // submenu containing all categories
-	playListPopup = new QPopupMenu();
+  playListPopup = new QPopupMenu();
 	playListPopup->insertItem(QIconSet( QPixmap(newCategory_xpm)), tr("New Category..."), this, SLOT(toCategory(int)), 0, 9999);
 	for(unsigned int i=0; i<model->categoryNames.count(); i++) {
 		playListPopup->insertItem(QIconSet( QPixmap(in_xpm)), model->categoryNames[i], this, SLOT(toCategory(int)), 0, 10000+i);
 	}
-		
-	// define popup menu for songs
-	songPopup = new QPopupMenu( songListView );
-	songPopup->insertItem( tr("Song Name"), 113 );
-	songPopup->insertSeparator();
-	
-	songPlayPopup = new QPopupMenu(songPopup);
-	
-	songPopup->insertItem( tr("Insert Into/Remove From..."), playListPopup);
+	songPopup->insertItem( i18n("Insert Into/Remove From..."), playListPopup, -1, 3);
 
-	songGoToPopup = new QPopupMenu(songPopup);
-	songGoToPopup->insertItem( tr("...Artist"), this, SLOT(goToFolder(int)), 0, 2001);
-	songGoToPopup->insertItem( tr("...Album"), this, SLOT(goToFolder(int)), 0, 2002);
-	songGoToPopup->insertItem( tr("...Genre"), this, SLOT(goToFolder(int)), 0, 2003);
-	songPopup->insertItem( tr("Go to folder..."), songGoToPopup);
+	pluginPopup = new QPopupMenu(songPopup);
+	for(unsigned int i=0; i<model->config.pluginMenuEntry.count(); i++) {
+		pluginPopup->insertItem( model->config.pluginMenuEntry[i], this, SLOT(forSelectionPlugin(int)), 0, 2000+i);
+	}
+	songPopup->insertItem( i18n("Plugins..."), pluginPopup);
 
-  songSearchPopup = new QPopupMenu(songPopup);
-	songSearchPopup->insertItem( tr("Entry"), this, SLOT(searchSimilar(int)), 0, 1000);
-	songSearchPopup->insertItem( tr("Artist"), this, SLOT(searchSimilar(int)), 0, 1001);
-	songSearchPopup->insertItem( tr("Title"), this, SLOT(searchSimilar(int)), 0, 1002);
-	songSearchPopup->insertItem( tr("Album"), this, SLOT(searchSimilar(int)), 0, 1003);
-	songPopup->insertItem( tr("Search for similar..."), songSearchPopup);
+//	songGoToPopup = new QPopupMenu(songPopup);
+//	songGoToPopup->insertItem( tr("...Artist"), this, SLOT(goToFolder(int)), 0, 2001);
+//	songGoToPopup->insertItem( tr("...Album"), this, SLOT(goToFolder(int)), 0, 2002);
+//	songGoToPopup->insertItem( tr("...Genre"), this, SLOT(goToFolder(int)), 0, 2003);
+//	songPopup->insertItem( i18n("Go to folder..."), songGoToPopup);
+  return;
+  
+//  songSearchPopup = new QPopupMenu(songPopup);
+//	songSearchPopup->insertItem( tr("Entry"), this, SLOT(searchSimilar(int)), 0, 1000);
+//	songSearchPopup->insertItem( tr("Artist"), this, SLOT(searchSimilar(int)), 0, 1001);
+//	songSearchPopup->insertItem( tr("Title"), this, SLOT(searchSimilar(int)), 0, 1002);
+//	songSearchPopup->insertItem( tr("Album"), this, SLOT(searchSimilar(int)), 0, 1003);
+//	songPopup->insertItem( tr("Search for similar..."), songSearchPopup);
 	
 	if(model->config.childSafe)
 		return;
 	
 	songAdvancedPopup = new QPopupMenu(songPopup);
-	songAdvancedPopup->insertItem(getPopupIcon(Song::Delete), tr("Delete..."), this, SLOT(forSelection(int)), 0, Song::Delete);
+//	songAdvancedPopup->insertItem(getPopupIcon(Song::Delete), tr("Delete..."), this, SLOT(forSelection(int)), 0, Song::Delete);
 	songAdvancedPopup->insertItem(getPopupIcon(Song::MoveTo), tr("Move file to..."), this, SLOT(forSelection(int)), 0, Song::MoveTo);
-	songAdvancedPopup->insertItem(getPopupIcon(Song::CheckConsistency), tr("Check Consistency"), this, SLOT(forSelection(int)), 0, Song::CheckConsistency);
+//	songAdvancedPopup->insertItem(getPopupIcon(Song::CheckConsistency), tr("Check Consistency"), this, SLOT(forSelection(int)), 0, Song::CheckConsistency);
 	songAdvancedPopup->insertItem(getPopupIcon(Song::BurnToMedia), tr("Burn to Media..."), this, SLOT(forSelection(int)), 0, Song::BurnToMedia);
 	songPopup->insertItem( tr("Advanced..."), songAdvancedPopup);
-	
-	
-	pluginPopup = new QPopupMenu(songPopup);
-	for(unsigned int i=0; i<model->config.pluginMenuEntry.count(); i++) {
-		pluginPopup->insertItem( model->config.pluginMenuEntry[i], this, SLOT(forSelectionPlugin(int)), 0, 2000+i);
-	}
-	songPopup->insertItem( tr("Plugins..."), pluginPopup);
 }
 
 
@@ -1148,25 +1135,33 @@ void YammiGui::changeToFolder(Folder* newFolder, bool changeAnyway)
   QApplication::setOverrideCursor( Qt::waitCursor );
   // TODO: history of visited folders, something like:
   //visitedFoldersHistory->add(chosenFolder);
-  // TODO: remember sort order when changing folders?
-  //int oldSortOrder=chosenFolder->songList->getSortOrder();
+
+  QPoint p(10,10);
+  SongListItem* item=(SongListItem*)songListView->itemAt(p);
+  if(item != 0) {
+    cout << item->song()->displayName() << "\n";
+    // contentsX
+    // ensureVisisble (QScrollView)
+  }
+  chosenFolder->saveSorting(songListView->sortedBy);
 
   chosenFolder = newFolder;
   
-  if(chosenFolder==folderActual)
+  if(chosenFolder==folderActual) {
 		songListView->dontTouchFirst=true;				// don't allow moving the first
-	else
+  }
+	else {
 		songListView->dontTouchFirst=false;
-	
+  }
+
   updateListViewColumns();
-  songListView->sortedBy=1;
 
   folderListView->setCurrentItem( (QListViewItem*)chosenFolder );
   folderListView->setSelected( (QListViewItem*)chosenFolder , TRUE );
   folderListView->ensureItemVisible((QListViewItem*)chosenFolder);
-
   folderContentChanged();
 }
+
 
 void YammiGui::folderContentChanged()
 {
@@ -1191,16 +1186,15 @@ void YammiGui::folderContentChanged(Folder* folder)
 }
 
 
-/// recursively add the content of folder and all subfolders
-/// for now: folder contains songs OR subfolders, but not both!
+/**
+ * recursively add the content of folder and all subfolders
+ * for now: folder contains songs OR subfolders, but not both!
+ */
 void YammiGui::addFolderContent(Folder* folder)
 {	
   folderToAdd=folder;
 	alreadyAdded=0;
 	
-	// filling the listview is much slower than with qt2.3...
-	// what do we do about it?
-	// maybe disable sorting while filling, and then enable when we are ready???
 	if(folder->songlist().count()!=0) {
 		songListView->setSorting(-1);
 		songListView->setUpdatesEnabled(false);
@@ -1227,7 +1221,8 @@ void YammiGui::addFolderContentSnappy()
 	}
 	alreadyAdded=i;
   // any songs left to add?
-  if(entry) {		  // yes, add them after processing events
+  if(entry) {
+    // yes, add them after processing events
 		QTimer* timer=new QTimer(this);
 		connect(timer, SIGNAL(timeout()), this, SLOT(addFolderContentSnappy()) );
 		timer->start(0, TRUE);
@@ -1235,16 +1230,36 @@ void YammiGui::addFolderContentSnappy()
 	else {		// no, we are finished
 		QApplication::restoreOverrideCursor();
 		songListView->setUpdatesEnabled(true);
-    // special sorting for certain folders
-    if(((QListViewItem*)chosenFolder)->parent()==folderAlbums) {
-      songListView->setSorting(COLUMN_TRACKNR);
-    }
-    else if(chosenFolder==folderRecentAdditions) {
-      songListView->setSorting(COLUMN_ADDED_TO);
+
+    int saved=chosenFolder->getSavedSorting();
+    if(saved!=0) {
+      bool asc=true;
+      int column;
+      if(saved<0) {
+        column=-saved-1;
+        asc=false;
+      }
+      else {
+        column=saved-1;
+      }
+      songListView->sortedBy=saved;
+      songListView->setSorting(column, asc);
     }
     else {
-      // default sort order: first column
-      songListView->setSorting(0);
+      // special default sorting for certain folders
+      if(((QListViewItem*)chosenFolder)->parent()==folderAlbums) {
+        songListView->sortedBy=COLUMN_TRACKNR+1;
+        songListView->setSorting(COLUMN_TRACKNR, true);
+      }
+      else if(chosenFolder==folderRecentAdditions) {
+        songListView->sortedBy=COLUMN_ADDED_TO+1;
+        songListView->setSorting(COLUMN_ADDED_TO, true);
+      }
+      else {
+        // default sort order: first column
+        songListView->sortedBy=1;
+        songListView->setSorting(0);
+      }
     }
 	}
 }
@@ -1278,22 +1293,31 @@ void YammiGui::doSongPopup(QPoint point)
 /// adjust SongPopup corresponding to <selectedSongs>
 void YammiGui::adjustSongPopup()
 {
-  return;
+  // TODO: do we really want to take this item for showing the title?
+  KAction* songTitel = actionCollection()->action("info_selected");
+  
 	int selected=selectedSongs.count();	
-	QString label;
-	Song* first=selectedSongs.firstSong();
-	if (selected>1) 							// more than one song selected
+  QString label;
+ 	Song* first=selectedSongs.firstSong();
+	if (selected>1) { 							// more than one song selected
 		label=QString(tr("%1 songs selected")).arg(selected);
-	else
+  }
+	else {
 		label=first->displayName();
-	songPopup->changeItem ( 113, label);
+  }
+  if(songTitel!=0) {
+    songTitel->setText(label);
+  }
+//  songPopup->changeItem ( 113, label);
 
+/*
   songGoToPopup->changeItem( 2001, first->artist);
   songGoToPopup->setItemEnabled(2001, getFolderByName(first->artist)!=0);
   songGoToPopup->changeItem( 2002, first->artist+" - "+first->album);
   songGoToPopup->setItemEnabled(2002, getFolderByName(first->artist+" - "+first->album)!=0);
   songGoToPopup->changeItem( 2003, CMP3Info::getGenre(first->genreNr));
   songGoToPopup->setItemEnabled(2003, getFolderByName(CMP3Info::getGenre(first->genreNr))!=0);
+*/
   	
 	// for each category: determine whether first song contained or not
 	// we don't check whether all selected songs are contained, just first
@@ -1789,7 +1813,52 @@ void YammiGui::playSelected( )
 
 void YammiGui::dequeueSelected( )
 {
-	kdWarning()<<"dequeueSelected( ) not implemented"<<endl;
+  int sortedByBefore=songListView->sortedBy;
+	getSelectedSongs();
+	for(Song* s=selectedSongs.firstSong(); s; s=selectedSongs.nextSong()) {
+    if(chosenFolder==folderActual) {
+      // song chosen from playlist => dequeue only the selected song entry (not all songs with that id)
+      QListViewItem* i=songListView->firstChild();
+      for(; i; i=i->itemBelow()) {						// go through list of songs
+        if(i->isSelected() && ((SongListItem*) i)->song()==s) {
+          SongEntry* entry=((SongListItem*) i)->songEntry;
+          int pos=((SongEntryInt*)entry)->intInfo-1;
+          if(pos!=0 || player->getStatus()==STOPPED) {
+            // only dequeue if not currently played song (or player stopped)
+            model->songsToPlay.remove(pos);
+            statusBar( )->message(QString(tr("song %1 dequeued")).arg(s->displayName()), 3000);
+          }
+          break;
+        }
+      }
+    }
+    else {
+      // song chosen from other folder => dequeue ALL occurrences with that id
+      int i=1;
+      if(player->getStatus()==STOPPED) {
+        i=0;
+      }
+      for(; i<(int)model->songsToPlay.count(); i++) {
+        Song* check=model->songsToPlay.at(i)->song();
+        if(check==s) {
+          model->songsToPlay.remove(i);
+          statusBar( )->message(QString(tr("song %1 dequeued")).arg(s->displayName()), 3000);
+          i--;
+        }
+      }
+    }
+	}
+	folderActual->correctOrder();
+  player->syncYammi2Player(false);
+  folderContentChanged(folderActual);
+  bool ascending = (sortedByBefore>0);
+  if(!ascending) {
+    sortedByBefore = -sortedByBefore;
+    cout << "descending...\n";
+  }
+  int column=sortedByBefore-1;
+  songListView->setSorting(column, ascending);
+  checkPlaylistAvailability();  
 }
 
 

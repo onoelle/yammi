@@ -77,22 +77,35 @@
 </ToolBar>
 
 <Menu name="song_popup">
-  <Menu name="song_popup"><text>Play/Enqueue</text>
+  <Action name="info_selected"/>
+  <Separator/>
+  <Menu name="play_enqueue"><text>Play/Enqueue</text>
     <Action name="append_selected"/>
     <Action name="prepend_selected"/>
     <Action name="play_selected"/>
     <Action name="dequeue_selected"/>
   </Menu>
-  <Menu name="song_popup"><text>Prelisten</text>
+  <Menu name="prelisten"><text>Prelisten</text>
     <Action name="prelisten_start"/>
     <Action name="prelisten_middle"/>
     <Action name="prelisten_end"/>
   </Menu>
-  <Menu name="song_popup"><text>Advanced</text>
+  <Menu name="advanced"><text>Advanced...</text>
     <Action name="check_consistency"/>
     <Action name="delete_selected"/>
   </Menu>
-  <Action name="info_selected"/>
+  </Menu>
+  <Menu name="goto"><text>Go to folder...</text>
+    <Action name="goto_artist_folder"/>
+    <Action name="goto_album_folder"/>
+    <Action name="goto_genre_folder"/>
+  </Menu>
+  <Menu name="search_similar"><text>Search for similar...</text>
+    <Action name="search_similar_entry"/>
+    <Action name="search_similar_artist"/>
+    <Action name="search_similar_title"/>
+    <Action name="search_similar_album"/>
+  </Menu>
 </Menu>
 
 </kpartgui>
