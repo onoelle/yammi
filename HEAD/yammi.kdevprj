@@ -285,7 +285,7 @@ install_location=
 type=HEADER
 
 [yammi/icons/Makefile.am]
-files=yammi/icons/clearPlaylist.xpm,yammi/icons/defaultControlClick.xpm,yammi/icons/defaultDoubleClick.xpm,yammi/icons/defaultMiddleClick.xpm,yammi/icons/defaultShiftClick.xpm,yammi/icons/dequeueAll.xpm,yammi/icons/dequeueSong.xpm,yammi/icons/enqueue.xpm,yammi/icons/enqueueasnext.xpm,yammi/icons/filesave.xpm,yammi/icons/in.xpm,yammi/icons/notin.xpm,yammi/icons/prelisten.xpm,yammi/icons/songinfo.xpm,yammi/icons/stopPrelisten.xpm,yammi/icons/yammiicon.xpm,yammi/icons/pause.xpm,yammi/icons/play.xpm,yammi/icons/skipbackward.xpm,yammi/icons/skipforward.xpm,yammi/icons/skipbackwardim.xpm,yammi/icons/skipforwardim.xpm,yammi/icons/stop.xpm,yammi/icons/playnow.xpm,yammi/icons/playnowim.xpm
+files=yammi/icons/clearPlaylist.xpm,yammi/icons/defaultControlClick.xpm,yammi/icons/defaultDoubleClick.xpm,yammi/icons/defaultMiddleClick.xpm,yammi/icons/defaultShiftClick.xpm,yammi/icons/dequeueAll.xpm,yammi/icons/dequeueSong.xpm,yammi/icons/enqueue.xpm,yammi/icons/enqueueasnext.xpm,yammi/icons/filesave.xpm,yammi/icons/in.xpm,yammi/icons/notin.xpm,yammi/icons/prelisten.xpm,yammi/icons/songinfo.xpm,yammi/icons/stopPrelisten.xpm,yammi/icons/yammiicon.xpm,yammi/icons/pause.xpm,yammi/icons/play.xpm,yammi/icons/skipbackward.xpm,yammi/icons/skipforward.xpm,yammi/icons/stop.xpm,yammi/icons/playnow.xpm
 sub_dirs=
 type=normal
 
@@ -379,12 +379,6 @@ install=false
 install_location=
 type=DATA
 
-[yammi/icons/playnowim.xpm]
-dist=true
-install=false
-install_location=
-type=DATA
-
 [yammi/icons/prelisten.xpm]
 dist=true
 install=false
@@ -397,19 +391,7 @@ install=false
 install_location=
 type=DATA
 
-[yammi/icons/skipbackwardim.xpm]
-dist=true
-install=false
-install_location=
-type=DATA
-
 [yammi/icons/skipforward.xpm]
-dist=true
-install=false
-install_location=
-type=DATA
-
-[yammi/icons/skipforwardim.xpm]
 dist=true
 install=false
 install_location=

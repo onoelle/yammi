@@ -32,9 +32,7 @@
 #include "icons/pause.xpm"
 #include "icons/stop.xpm"
 #include "icons/skipforward.xpm"
-#include "icons/skipforwardim.xpm"
 #include "icons/skipbackward.xpm"
-#include "icons/skipbackwardim.xpm"
 
 // song actions
 #include "icons/defaultDoubleClick.xpm"
@@ -43,7 +41,6 @@
 #include "icons/defaultShiftClick.xpm"
 #include "icons/prelisten.xpm"
 #include "icons/playnow.xpm"
-#include "icons/playnowim.xpm"
 #include "icons/enqueue.xpm"
 #include "icons/enqueueasnext.xpm"
 #include "icons/dequeueSong.xpm"
@@ -73,18 +70,34 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
 	gYammiGui=this;
   this->setIcon(QPixmap(yammiicon_xpm));
 	
-  ensureXmmsIsRunning();
-
   this->tbSaveDatabase=0;
   
   // set up model
 	model=new YammiModel();
 	cout << "starting Yammi, version " << model->config.yammiVersion << "\n";
+
+  ensureXmmsIsRunning();
+  
 	model->readPreferences();						// read preferences
 	model->readSongDatabase();					// read song database
 	model->readCategories();						// read categories
 	model->readHistory();								// read history
 	
+
+  // restore session settings
+  //*************************
+  
+  QSettings settings;
+  settings.insertSearchPath( QSettings::Unix, model->config.yammiBaseDir );
+  int width = settings.readNumEntry( "/Yammi/geometry/width", 1024 );
+  int height = settings.readNumEntry( "/Yammi/geometry/height", 468 );
+  int posx = settings.readNumEntry( "/Yammi/geometry/posx", 0 );
+  int posy = settings.readNumEntry( "/Yammi/geometry/posy", 0 );
+  this->resize( width, height );        // restore size
+  this->move( posx, posy );             // restore position
+  // anything else we want to restore?
+  // (currently opened folder, ...)
+
 	// set up gui
 	//****************************
 	cout << "setting up gui...\n";
@@ -140,14 +153,10 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
                            this, SLOT(xmms_playPause()), toolBar);
 	new QToolButton( QPixmap((const char**)stop_xpm), "Stop", QString::null,
                            this, SLOT(xmms_stop()), toolBar);
-	new QToolButton( QPixmap((const char**)skipbackwardim_xpm), "Skip backward without crossfading (SHIFT-F2)", QString::null,
-                           this, SLOT(xmms_skipBackwardIm()), toolBar);
-	new QToolButton( QPixmap((const char**)skipbackward_xpm), "Skip backward (F2)", QString::null,
+	new QToolButton( QPixmap((const char**)skipbackward_xpm), "Skip backward (F2 or CTRL-F2)", QString::null,
  														this, SLOT(xmms_skipBackward()), toolBar);
-	new QToolButton( QPixmap((const char**)skipforward_xpm), "Skip forward (F3)", QString::null,
+	new QToolButton( QPixmap((const char**)skipforward_xpm), "Skip forward (F3 or CTRL-F3)", QString::null,
                            this, SLOT(xmms_skipForward()), toolBar);
-	new QToolButton( QPixmap((const char**)skipforwardim_xpm), "Skip forward without crossfading (SHIFT-F3)", QString::null,
-                           this, SLOT(xmms_skipForwardIm()), toolBar);
 		
 	QLabel *searchLabel = new QLabel(toolBar);
 	searchLabel->setText( "Search:" );
@@ -180,13 +189,11 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
                            this, SLOT(forAllSelectedEnqueue()), toolBar2);
 	new QToolButton (QPixmap(enqueueasnext_xpm), "Enqueue as next (F6)", QString::null,
                            this, SLOT(forAllSelectedEnqueueAsNext()), toolBar2);
-	new QToolButton (QPixmap(playnow_xpm), "Play now (F7)", QString::null,
+	new QToolButton (QPixmap(playnow_xpm), "Play now (F7 or CTRL-F7)", QString::null,
                            this, SLOT(forAllSelectedPlayNow()), toolBar2);
-	new QToolButton (QPixmap(playnowim_xpm), "Play now without crossfading (SHIFT-F7)", QString::null,
-                           this, SLOT(forAllSelectedPlayNowIm()), toolBar2);
 	new QToolButton (QPixmap(dequeueSong_xpm), "Dequeue Song (F8)", QString::null,
                            this, SLOT(forAllSelectedDequeue()), toolBar2);
-	new QToolButton (QPixmap(dequeueAll_xpm), "Clear playlist (SHIFT-F8)", QString::null,
+	new QToolButton (QPixmap(dequeueAll_xpm), "Clear playlist (CTRL-F8)", QString::null,
                            this, SLOT(xmms_clearPlaylist()), toolBar2);
 	new QToolButton (QPixmap(prelisten_xpm), "Prelisten (start) (F9)", QString::null,
                            this, SLOT(forAllSelectedPrelistenStart()), toolBar2);
@@ -382,18 +389,6 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
   regularTimer.start( 1000, FALSE );	// call onTimer once a second
 	connect( &typeTimer, SIGNAL(timeout()), this, SLOT(searchFieldChanged()) );
 
-  // restore session settings
-  QSettings settings;
-  settings.insertSearchPath( QSettings::Unix, model->config.yammiBaseDir );
-  int width = settings.readNumEntry( "/Yammi/geometry/width", 1024 );
-  int height = settings.readNumEntry( "/Yammi/geometry/height", 468 );
-  int posx = settings.readNumEntry( "/Yammi/geometry/posx", 0 );
-  int posy = settings.readNumEntry( "/Yammi/geometry/posy", 0 );
-  this->resize( width, height );        // restore size
-  this->move( posx, posy );             // restore position
-  // anything else we want to restore?
-  // (currently opened folder, ...)
-
 	// finish!
   cout << "initialisation successfully completed!\n";
 
@@ -428,11 +423,14 @@ YammiGui::~YammiGui()
   QSettings settings;
   settings.insertSearchPath( QSettings::Unix, model->config.yammiBaseDir );
   QSize s = this->size();   // get size
-  QPoint p = this->pos();   // get position
+//  QPoint p = this->pos();   // get position
+  QRect r=this->frameGeometry();
   settings.writeEntry( "/Yammi/geometry/width",  s.width());
   settings.writeEntry( "/Yammi/geometry/height", s.height());
-  settings.writeEntry( "/Yammi/geometry/posx", p.x() );
-  settings.writeEntry( "/Yammi/geometry/posy", p.y() );
+//  settings.writeEntry( "/Yammi/geometry/posx", p.x() );
+//  settings.writeEntry( "/Yammi/geometry/posy", p.y() );
+  settings.writeEntry( "/Yammi/geometry/posx", r.left() );
+  settings.writeEntry( "/Yammi/geometry/posy", r.top() );
 
 	syncYammi2Xmms(true);
 	if(xmmsShuffleWasActivated)
@@ -1958,50 +1956,28 @@ void YammiGui::xmms_playPause()
 }
 
 
-/// skip forward in playlist
+/// skip forward in playlist (if controlPressed without crossfading)
 void YammiGui::xmms_skipForward()
 {
-  if(controlPressed) {
-    xmms_skipForwardIm();
-    return;
-  }
   ensureXmmsIsRunning();
+  if(controlPressed) {
+    xmms_remote_pause(0);
+  }
   int x= xmms_remote_get_playlist_pos(0);
 	xmms_remote_set_playlist_pos(0, x+1);
+  if(controlPressed) {
+    xmms_remote_play(0);
+  }
 }
 
 
-void YammiGui::xmms_skipForwardIm()
-{
-  ensureXmmsIsRunning();
-	xmms_remote_pause(0);
-  bool save=controlPressed;
-  controlPressed=false;
-	xmms_skipForward();
-  controlPressed=save;
-	xmms_remote_play(0);
-}	
-
-void YammiGui::xmms_skipBackwardIm()
-{
-  ensureXmmsIsRunning();
-	xmms_remote_pause(0);
-  bool save=controlPressed;
-  controlPressed=false;
-	xmms_skipBackward();
-  controlPressed=save;
-	xmms_remote_play(0);
-}
-
-
-// skip backward in playlist
+/// skip backward in playlist (if controlPressed without crossfading)
 void YammiGui::xmms_skipBackward()
 {
-  if(controlPressed) {
-    xmms_skipBackwardIm();
-    return;
-  }
   ensureXmmsIsRunning();
+  if(controlPressed) {
+    xmms_remote_pause(0);
+  }
   int count=model->songsPlayed.count();
 	if(count==0)			// empty folder songsPlayed => can's skip backwards
 		return;
@@ -2025,6 +2001,10 @@ void YammiGui::xmms_skipBackward()
 		slotFolderChanged();
 	else
 		songListView->triggerUpdate();
+
+  if(controlPressed) {
+    xmms_remote_play(0);
+  }
 }
 
 /// stop playback
@@ -2367,16 +2347,10 @@ void YammiGui::keyPressEvent(QKeyEvent* e)
 			xmms_playPause();
 			break;
 		case Key_F2:
-			if(controlPressed) //e->state()==ShiftButton)
-				xmms_skipBackwardIm();
-			else
-				xmms_skipBackward();
+			xmms_skipBackward();
 			break;
 		case Key_F3:
-			if(controlPressed) //e->state()==ShiftButton)
-				xmms_skipForwardIm();
-			else
-				xmms_skipForward();
+			xmms_skipForward();
 			break;
 		case Key_F4:
 			xmms_stop();

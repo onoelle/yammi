@@ -280,9 +280,7 @@ protected slots:
 	void					xmms_playPause();
 	void					xmms_stop();
 	void					xmms_skipForward();
-	void					xmms_skipForwardIm();
 	void					xmms_skipBackward();
-	void					xmms_skipBackwardIm();
 	void					xmms_clearPlaylist();
 		
 	void 					onTimer();
