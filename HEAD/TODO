@@ -1,6 +1,6 @@
 TODO
 ----
-last update 16.9.2002
+last update 28.9.2002
 
 KNOWN BUGS
 ----------
@@ -14,18 +14,13 @@ KNOWN BUGS
 - window geometry: sometimes window position gets shifted by the window decoration towards right lower corner
 
 
-for release 0.7beta
--------------------
-- lineedit: double key events???
-- session management: commitData: finish!
+for release 0.7
+---------------
 - test jukebox functionality
 - update database: more information+statistics at the end
 - update database: select a single file
 - for plugins: if %D / %F occurs: popup directory dialog and let user choose directory/file: document
-
-
-for release 0.7
----------------
+- clean up yammigui.h (protected/public) !!! (oh oh...)
 - dialog box for checking consistency options
 - -l lib issue??? configure script???
 - saving ogg tags

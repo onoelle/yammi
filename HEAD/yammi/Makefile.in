@@ -1,4 +1,4 @@
-# KDE tags expanded automatically by am_edit - $Revision: 1.19 $ 
+# KDE tags expanded automatically by am_edit - $Revision: 1.20 $ 
 # Makefile.in generated automatically by automake 1.5 from Makefile.am.
 
 # Copyright 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001
@@ -556,7 +556,7 @@ distclean-tags:
 
 #>- DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 #>+ 4
-KDE_DIST=WorkDialogBase.h DeleteDialog.h PreferencesDialogBase.h UpdateDatabaseMediaDialogBase.h YammiGuiBase.h UpdateDatabaseDialogBase.h yammi SongInfoDialog.h 
+KDE_DIST=WorkDialogBase.h DeleteDialog.h PreferencesDialogBase.h UpdateDatabaseMediaDialogBase.h YammiGuiBase.h UpdateDatabaseDialogBase.h SongInfoDialog.h 
 
 DISTFILES= $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST) $(KDE_DIST)
 
@@ -688,6 +688,7 @@ uninstall-info: uninstall-info-recursive
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:
+
 
 #>+ 71
 UpdateDatabaseMediaDialogBase.cpp: $(srcdir)/UpdateDatabaseMediaDialogBase.ui UpdateDatabaseMediaDialogBase.h UpdateDatabaseMediaDialogBase.moc

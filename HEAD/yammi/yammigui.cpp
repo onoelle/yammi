@@ -88,9 +88,6 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
 	model->readHistory();								// read history
 	
 
-  // restore session settings
-  readSettings();
-  
 	// set up gui
 	//****************************
 	cout << "setting up gui...\n";
@@ -397,6 +394,8 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
 																					"Check out Yammi's website for new versions and other info:\n"+
 																					"http://yammi.sourceforge.net");																					
 	}
+  // restore session settings
+  readSettings();  
 }
 
 
@@ -412,22 +411,24 @@ void YammiGui::endProgram()
 YammiGui::~YammiGui()
 {
 	cout << "trying to exit gracefully...\n";
-  updateGeometrySettings();
-  writeSettings();
-	player->syncYammi2Player(true);
-  delete(player);
 	if(model->allSongsChanged() || model->categoriesChanged()) {
 		QString msg="Save changes?\n\n";
 		msg+="If you don't save, all changes will be lost\n";
 		msg+="and the database might become inconsistent...\n";
-		if( QMessageBox::warning( this, "Yammi", msg, "Yes", "No")==0)
+		if(QMessageBox::warning( this, "Yammi", msg, "Yes", "No")==0) {
 			model->save();
+    }
 	}
 	else {
 		// we only save history if there are more than 2 songs to add
-		if(model->config.logging && model->songsPlayed.count()>2)
+		if(model->config.logging && model->songsPlayed.count()>2) {
 			model->saveHistory();
+    }
 	}
+  updateGeometrySettings();
+  writeSettings();
+	player->syncYammi2Player(true);
+  delete(player);
 	cout << "goodbye!\n";
 }
 
@@ -483,7 +484,7 @@ void YammiGui::readSettings()
 /// Update the internal geometry settings.
 void YammiGui::updateGeometrySettings()
 {
-  cout << "updating geomertry: x(): " << x() << ", y(): " << y() << ", width(): " << width() << ", height(): " << height() << "\n";
+//  cout << "updating geometry: x(): " << x() << ", y(): " << y() << ", width(): " << width() << ", height(): " << height() << "\n";
   geometryX=x();
   geometryY=y();
   geometryWidth=width();
@@ -918,7 +919,6 @@ void YammiGui::slotFolderChanged()
 	chosenFolder = newFolder;
 	songListView->clear();
 	songListView->sortedBy=1;
-//	songListView->setSorting(0);
 	updateListViewColumns(oldFolder, newFolder);
 	addFolderContent(chosenFolder);
 }
@@ -1779,7 +1779,7 @@ void YammiGui::openHelp()
 void YammiGui::aboutDialog()
 {
 	QMessageBox::information( this, "Yammi",	QString("Yammi - Yet Another Music Manager I...\n\n\n")+
-																					"Version "+model->config.yammiVersion+", 12-2001 - 8-2002 by Oliver Nölle\n\n"+
+																					"Version "+model->config.yammiVersion+", 12-2001 - 9-2002 by Oliver Nölle\n\n"+
 																					"Project home page: yammi.sourceforge.net\n\n\n"+
 																					"Contact: oli.noelle@web.de\n\n"+
 																					"have fun...\n");
@@ -1946,7 +1946,6 @@ void YammiGui::onTimer()
 	else {				// player stopped
     if(songSlider->value()!=0) {
       // player has just stopped
-      cout << "player stopped!\n";
       songChange(currentSong, "");
       tbPlayPause->setIconSet(QIconSet(QPixmap((const char**)play_xpm)));            
     }
@@ -2108,7 +2107,7 @@ void YammiGui::checkForGrabbedTrack(){
 
 void YammiGui::shutDown()
 {
-	if(shuttingDown==0)				// canceled
+  if(shuttingDown==0)				// canceled
 		return;
 	if(shuttingDown==1) {
     QProgressDialog progress( "shuttind down now...", "Cancel", 10, this, "progress", TRUE );
@@ -2292,7 +2291,7 @@ void YammiGui::changeSleepMode()
 		sleepModeButton->setText("shutdown");
     sleepModeSpinBox->setValue(3);
  		sleepModeSpinBox->setEnabled(true);
-		cout << "shutting down, press Pause again to cancel...\n";
+		cout << "sleep mode, press again to cancel...\n";
  		if(model->allSongsChanged() || model->categoriesChanged()) {
  			if( QMessageBox::warning( this, "Yammi", "Save changes?\n(answering no will cancel sleep mode)", "Yes", "No")==0)
  				model->save();
@@ -2301,7 +2300,7 @@ void YammiGui::changeSleepMode()
  				songsUntilShutdown=-3;
 				sleepModeButton->setText("(disabled)");
         sleepModeSpinBox->setEnabled(false);
- 				cout << "shutting down aborted!\n";
+ 				cout << "sleep mode cancelled!\n";
  			}
  		}
  	}
@@ -2312,7 +2311,7 @@ void YammiGui::changeSleepMode()
 		sleepModeButton->setText("(disabled)");
 		sleepModeSpinBox->setEnabled(false);
  		shuttingDown=0;
- 		cout << "shutting down cancelled!\n";
+ 		cout << "sleep mode cancelled!\n";
  	}
 }
 
@@ -2444,6 +2443,16 @@ void YammiGui::updateSongDatabase(bool checkExistence, QString scanDir, QString 
   msg+=QString("%1 entries updated\n").arg(model->entriesUpdated);
   msg+=QString("%1 entries deleted\n").arg(model->entriesDeleted);
 	QMessageBox::information( this, "Yammi", msg, "Fine." );
+
+/*
+TODO: show most recently added songs in songlist
+  (does not work with the following lines)
+  folderListView->setCurrentItem( folderListView->firstChild()->firstChild() );
+	folderListView->setSelected( folderListView->firstChild(), TRUE );
+  slotFolderChanged();
+	songListView->sortedBy=7;
+  songListView->setSorting(7);
+*/
 }
 
 
@@ -2659,22 +2668,36 @@ void YammiGui::commitData(QSessionManager& sm )
 {
   cout << "commitData() called\n";
   if ( sm.allowsInteraction() ) {
-    switch ( QMessageBox::warning(this, "Yammi", "Save changes?", "&Yes", "&No", "Cancel", 0, 2) ) {
-      case 0: // yes
-        sm.release();
-        // save document here; if saving fails, call sm.cancel()
-        break;
-      case 1: // continue without saving
-        break;
-      default: // cancel
-        sm.cancel();
-        break;
+    if(model->allSongsChanged() || model->categoriesChanged()) {
+      QString msg="Save changes?\n\n";
+      msg+="If you don't save, all changes will be lost\n";
+      msg+="and the database might become inconsistent...\n";
+      switch( QMessageBox::warning(this, "Yammi", msg, "&Yes", "&No", "Cancel", 0, 2) ) {
+        case 0: // yes
+          sm.release();
+          // save document here; if saving fails, call sm.cancel()
+          model->save();
+          break;
+        case 1: // continue without saving
+          break;
+        default: // cancel
+          sm.cancel();
+          break;
+      }
+    }
+    else {
+      // we only save history if there are more than 2 songs to add
+      if(model->config.logging && model->songsPlayed.count()>2) {
+        model->saveHistory();
+      }
     }
   }
   else {
-    cout << "no interaction allowed\n";
+    cout << "no interaction allowed by session manager...\n";
     // we did not get permission to interact, then
     // do something reasonable instead.
+    // we save our changes
+    model->save();
   }
 }
 

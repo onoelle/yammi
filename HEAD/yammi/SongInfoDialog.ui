@@ -78,7 +78,7 @@
                         <cstring>GroupBox1</cstring>
                     </property>
                     <property name="title">
-                        <string>id3 tag info (v1.1)</string>
+                        <string>id3 tag info</string>
                     </property>
                     <grid>
                         <property name="name">

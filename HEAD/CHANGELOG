@@ -1,5 +1,9 @@
-13.9. 2002 version 0.7
-######################
+
+
+##########################
+28.9. 2002 version 0.7beta
+- improved playlist management: last played song now also gets deleted from playlist when xmms stops
+- started supporting session management (saving database before shutdown)
 - started using an abstract "MediaPlayer" class to prepare support for other media players than xmms
 - cleaned up menu structure
 - added support to extract header from ".wav" files to extract length and bitrate from wave files
@@ -22,8 +26,8 @@
 
 
 
-13.8.2002   version 0.6.1
 #########################
+13.8.2002   version 0.6.1
 - bugfix: removed the #include "id3/tag.h", to make Yammi compile without id3lib installed
 
 #######################
@@ -106,8 +110,8 @@ a Yammi version 0.5.2 or earlier!
 - completed docs
 
 
-#########################
-16.3.			version 0.4 !!!
+#####################
+16.3.			version 0.4
 - 16. 3. updated documentation, should be a good basis now
 - 15. 3. new checkConsistency diagnosis
 					tags/filename will only be checked if enabled in prefs

@@ -133,12 +133,14 @@ int Song::create(const QString location, const QString mediaName)
   // mp3 object
   if(location.right(4).upper()==".MP3") {
     // get mp3 layer info
-    if(!getMp3LayerInfo(location))
+    if(!getMp3LayerInfo(location)) {
       cout << "could not read layer information from mp3 file \"" << location << "\"\n";
+    }
 
     // get id3 tags
-    if(!getMp3Tags(location))
+    if(!getMp3Tags(location)) {
       cout << "could not read tag information from mp3 file \"" << location << "\"\n";
+    }
 
     // now perform some consistency checks on the read tags...
 
@@ -179,9 +181,10 @@ int Song::create(const QString location, const QString mediaName)
   // ogg object
   if(location.right(4).upper()==".OGG") {
     // get ogg info
-    if(!getOggInfo(location))
+    if(!getOggInfo(location)) {
       cout << "could not read tag information from ogg file \"" << location << "\"\n";
-
+    }
+    
 		// in case the ogg tags are empty => better trust filename info
 		if(title=="" && artist=="") {
       cout << "ogg tags empty, taking guessed info from filename...\n";
@@ -189,8 +192,9 @@ int Song::create(const QString location, const QString mediaName)
 			artist=ffArtist;
 		}
     // just in case: remove trailing ogg in title
-    if(title.right(4).upper()==".OGG")
+    if(title.right(4).upper()==".OGG") {
       title=title.left(title.length()-4);
+    }
 
     treated=true;
   }
@@ -204,8 +208,9 @@ int Song::create(const QString location, const QString mediaName)
   if(location.right(4).upper()==".WAV") {
     char loc[200];
     strcpy(loc, location);
-    if(!getWavInfo(loc))
+    if(!getWavInfo(loc)) {
       cout << "could not read wav header information from wav file \"" << location << "\"\n";
+    }
     artist=ffArtist;
     title=ffTitle;
     treated=true;
@@ -218,7 +223,7 @@ int Song::create(const QString location, const QString mediaName)
   if(!treated) {
     cout << location << ": no special handling (such as for mp3 or ogg files) available (or disabled)...\n";
     cout << "  => cannot read information such as bitrate, length and tags\n";
-    cout << "  => Yammi tries to guess artist and title from filename (using the \"artist - title\" pattern\n";
+    cout << "  => Yammi tries to guess artist and title from filename (using a simple \"artist - title\" pattern\n";
     bitrate=0;
     length=0;
     artist=ffArtist;
@@ -277,7 +282,7 @@ void Song::guessTagsFromFilename(QString filename, QString* artist, QString* tit
 		*title=guessBase;
 		*title=title->simplifyWhiteSpace();
 	}
-  cout << "guessed artist: " << *artist << ", title: " << *title << "\n";
+//  cout << "guessed artist: " << *artist << ", title: " << *title << "\n";
 }
 
 
@@ -341,7 +346,7 @@ bool Song::getMp3Tags(QString filename)
   // title
   this->title="";
   if(getId3Tag(&tag, ID3FID_TITLE, ID3FN_TEXT, &str)) {
-    cout << "found tag: (title)" << str << "\n";
+//    cout << "found tag: (title)" << str << "\n";
     this->title=str;
     foundSomething=true;
   }
@@ -349,7 +354,7 @@ bool Song::getMp3Tags(QString filename)
   // artist
   this->artist="";
   if(getId3Tag(&tag, ID3FID_LEADARTIST, ID3FN_TEXT, &str)) {
-    cout << "found tag: (artist)" << str << "\n";
+//    cout << "found tag: (artist)" << str << "\n";
     this->artist=str;
     foundSomething=true;
   }
@@ -357,7 +362,7 @@ bool Song::getMp3Tags(QString filename)
   // album
   this->album="";
   if(getId3Tag(&tag, ID3FID_ALBUM, ID3FN_TEXT, &str)) {
-    cout << "found tag: (album)" << str << "\n";
+//    cout << "found tag: (album)" << str << "\n";
     this->album=str;
     foundSomething=true;
   }
@@ -365,7 +370,7 @@ bool Song::getMp3Tags(QString filename)
   // year
   this->year=0;
   if(getId3Tag(&tag, ID3FID_YEAR, ID3FN_TEXT, &str)) {
-    cout << "found tag: (year)" << str << "\n";
+//    cout << "found tag: (year)" << str << "\n";
 		sscanf(str, "%d", &(this->year));
     foundSomething=true;
   }
@@ -373,7 +378,7 @@ bool Song::getMp3Tags(QString filename)
   // comment
   this->comment="";
   if(getId3Tag(&tag, ID3FID_COMMENT, ID3FN_TEXT, &str)) {
-    cout << "found tag: (comment)" << str << "\n";
+//    cout << "found tag: (comment)" << str << "\n";
     this->comment=str;
     foundSomething=true;
   }
@@ -381,7 +386,7 @@ bool Song::getMp3Tags(QString filename)
   // tracknum
   this->trackNr=0;
   if(getId3Tag(&tag, ID3FID_TRACKNUM, ID3FN_TEXT, &str)) {
-    cout << "found tag: (tracknum)" << str << "\n";
+//    cout << "found tag: (tracknum)" << str << "\n";
 		sscanf(str, "%d", &(this->trackNr));
     foundSomething=true;
   }
@@ -389,12 +394,12 @@ bool Song::getMp3Tags(QString filename)
   // genre
   this->genreNr=-1;
   if(getId3Tag(&tag, ID3FID_CONTENTTYPE, ID3FN_TEXT, &str)) {
-    cout << "found tag: (genre)" << str << "\n";
+//    cout << "found tag: (genre)" << str << "\n";
     if(str.left(1)=="(")
       str=str.right(str.length()-1);
     if(str.right(1)==")")
       str=str.left(str.length()-1);
-    cout << "stripped: " << str << "|\n";
+//    cout << "stripped: " << str << "|\n";
 		sscanf(str, "%d", &(this->genreNr));
     foundSomething=true;
   }
@@ -413,7 +418,7 @@ bool Song::getId3Tag(ID3_Tag* tag, ID3_FrameID frame, ID3_FieldID field, QString
   // get frame
   ID3_Frame* theFrame = tag->Find(frame);
   if (theFrame == NULL) {
-    cout << "could not find frame " << frame << "\n";
+//    cout << "could not find frame " << frame << "\n";
     return false;
   }
 
@@ -422,7 +427,7 @@ bool Song::getId3Tag(ID3_Tag* tag, ID3_FrameID frame, ID3_FieldID field, QString
 //  ID3_Field* theField = theFrame->GetField(field);
   ID3_Field* theField = &(theFrame->Field(field));
   if (theField == NULL) {
-    cout << "could not find field " << field << "\n";
+//    cout << "could not find field " << field << "\n";
     return false;
   }
 
@@ -524,7 +529,7 @@ bool Song::setId3Tag(ID3_Tag* tag, ID3_FrameID frame, ID3_FieldID field, QString
     return false;
   }
 
-  cout << "trying to set field to: " << content.latin1() << "\n";
+//  cout << "trying to set field to: " << content.latin1() << "\n";
   theField->Set(content.latin1());
   return true;
 }
@@ -579,8 +584,8 @@ bool Song::getOggInfo(QString filename)
   if(ourfile==0)
     return false;
 	int succ=ov_open(ourfile, &oggfile, NULL, 0);
-  // TODO:
-  cout << "return value of ov_open: " << succ << "\n";
+  //TODO:
+//  cout << "return value of ov_open: " << succ << "\n";
   
   this->title   = getOggComment(&oggfile, "title");
   this->artist  = getOggComment(&oggfile, "artist");
@@ -602,13 +607,13 @@ bool Song::getOggInfo(QString filename)
 QString Song::getOggComment(OggVorbis_File* oggfile, QString commentName)
 {
 	vorbis_comment* ourComment = ov_comment(oggfile, -1);
-  cout << "looking for: " << commentName << "\n";
+//  cout << "looking for: " << commentName << "\n";
   
 	for(int i=0; i < (*ourComment).comments; i++)	{
     cout << "i: " << i << "\n";
 		QString curstr((*ourComment).user_comments[i]);
 		if( curstr.left(commentName.length()) == commentName) {
-      cout << "match found for name: " << commentName << ", string: " << curstr << "name.length(): " << commentName.length() << ", curstr.length(): " << curstr.length() << "\n";
+//      cout << "match found for name: " << commentName << ", string: " << curstr << "name.length(): " << commentName.length() << ", curstr.length(): " << curstr.length() << "\n";
 			return curstr.right(curstr.length() - commentName.length() - 1);
 		}
 	}

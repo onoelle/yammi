@@ -20,7 +20,7 @@
 /// sets preferences to the default values
 Prefs::Prefs(){
 // general	
-	yammiVersion="0.7";
+	yammiVersion="0.7beta";
 	trashDir="/mp3/trash/";
 	scanDir="/mp3/inbox/";
 	doubleClickAction=None;
@@ -49,19 +49,32 @@ Prefs::Prefs(){
 	pluginConfirm = new QStringList();
 	pluginMode = new QStringList();
 
-// define default song plugins
-//	pluginSongMenuEntry->append("copy to");
-//	pluginSongCmd->append("cp \"%f\" \"/tmp/delme_%F\"");
-	
-/*
-// define default playlist plugins
-	pluginPlaylistMenuEntry->append("burn audio cd");
-	pluginPlaylistCmd->append("mp3burn -c ATIP %f &");
-	pluginPlaylistCustomList->append("");
-	pluginPlaylistMenuEntry->append("create cd label");
-	pluginPlaylistCmd->append("cdlabelgen -c \"Title\" -s \"Subtitle\" -b -w -i \"%l\" > /tmp/cover.ps");
-	pluginPlaylistCustomList->append("%i. %a - %t (%l)%");
-*/
+
+// define default plugins
+	pluginMenuEntry->append("Noatun: Enqueue");
+	pluginCommand->append("dcop noatun Noatun addFile \"%f\" 0");
+	pluginCustomList->append("");
+  pluginConfirm->append("false");
+  pluginMode->append("single");
+
+	pluginMenuEntry->append("Noatun: Play");
+	pluginCommand->append("dcop noatun Noatun addFile \"%f\" 1");
+	pluginCustomList->append("");
+  pluginConfirm->append("false");
+  pluginMode->append("single");
+
+  pluginMenuEntry->append("create cd label");
+	pluginCommand->append("cdlabelgen -c \"Title\" -s \"Subtitle\" -b -w -i \"%l\" > /tmp/cover.ps");
+	pluginCustomList->append("%i. %a - %t (%l)%");
+  pluginConfirm->append("true");
+  pluginMode->append("group");
+
+  pluginMenuEntry->append("export to playlist (m3u)");
+	pluginCommand->append("echo -e \"%l\" > /tmp/playlist.m3u");
+	pluginCustomList->append("%F%n");
+  pluginConfirm->append("true");
+  pluginMode->append("group");
+
 
 // jukebox functions
 	mediaDir="/dev/cdrom/";

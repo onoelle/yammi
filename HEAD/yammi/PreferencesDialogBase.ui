@@ -681,25 +681,6 @@
                 <attribute name="title">
                     <string>Burning folder</string>
                 </attribute>
-                <widget class="QLabel">
-                    <property name="name">
-                        <cstring>LabelCriticalSize</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>20</x>
-                            <y>30</y>
-                            <width>110</width>
-                            <height>20</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>size of media</string>
-                    </property>
-                    <property name="toolTip" stdset="0">
-                        <string>indicates maximum size in MB for one media (eg. 700 for a CD-R)</string>
-                    </property>
-                </widget>
                 <widget class="QLineEdit">
                     <property name="name">
                         <cstring>LineEditCriticalSize</cstring>
@@ -736,6 +717,25 @@
                     </property>
                     <property name="toolTip" stdset="0">
                         <string>(not implemented yet)</string>
+                    </property>
+                </widget>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>LabelCriticalSize</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>20</x>
+                            <y>30</y>
+                            <width>110</width>
+                            <height>20</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>size of media (MB)</string>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>indicates maximum size in MB for one media (eg. 700 for a CD-R)</string>
                     </property>
                 </widget>
             </widget>
@@ -1023,8 +1023,8 @@ custom list (group mode):
                                             <cstring>TextLabel2_2</cstring>
                                         </property>
                                         <property name="text">
-                                            <string>Placeholders for
-custom list (only applies to group mode):
+                                            <string>Placeholders for command
+(only applies to group mode):
 %l = custom list</string>
                                         </property>
                                     </widget>
