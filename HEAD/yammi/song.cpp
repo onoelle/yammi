@@ -197,9 +197,11 @@ int Song::create(const QString location, const QString mediaName)
 
 #ifdef WAV_SUPPORT
   // wav object
+
   if(filename.right(4).upper()==".WAV") {
-    bitrate=1411;
-    length=this->filesize/178000;
+    char loc[200];
+    strcpy(loc, location);
+    getWavInfo(loc);
     artist=ffArtist;
     title=ffTitle;
     treated=true;
@@ -207,6 +209,7 @@ int Song::create(const QString location, const QString mediaName)
   
 #endif WAV_SUPPORT
   
+
 
   if(!treated) {
     cout << filename << "no special handling (such as for mp3 or ogg files) available (or disabled)...\n";
@@ -570,7 +573,9 @@ bool Song::getOggInfo(QString filename)
   if(ourfile==0)
     return false;
 	int succ=ov_open(ourfile, &oggfile, NULL, 0);
-
+  // TODO:
+  cout << "return value of ov_open: " << succ << "\n";
+  
   this->title   = getOggComment(&oggfile, "title");
   this->artist  = getOggComment(&oggfile, "artist");
 	this->album   = getOggComment(&oggfile, "album");
@@ -610,6 +615,43 @@ QString Song::getOggComment(OggVorbis_File* oggfile, QString commentName)
 
 // end of special handling of ogg files
 //////////////////////////////////
+
+
+
+
+////////////////////////////////
+// special handling of wav files
+
+#ifdef WAV_SUPPORT
+
+
+bool Song::getWavInfo(const char *filename)
+{
+  FILE *wfile;
+  WaveHeader header;
+
+  if( ( wfile=fopen(filename, "rb") )!=NULL ) {
+    fread( &header, sizeof(WaveHeader), 1, wfile);
+    fclose(wfile);
+//    cout << "header data: nChannels: " << header.nChannels << ", wBitsPerSample: " << header.wBitsPerSample << "\n";
+//    cout << "nSamplesPerSec: " << header.nSamplesPerSec << ", filesize: " << header.filesize << ", avgBytesPerSec: " << header.nAvgBytesPerSec << "\n";
+//    cout << "formatChunkSize: " << header.formatChunkSize << ", dataChunkSize: " << header.dataChunkSize << "\n";
+    this->length=header.dataChunkSize / header.nChannels / header.nSamplesPerSec / (header.wBitsPerSample/8);
+    this->bitrate=header.nAvgBytesPerSec * 8 / 1000;
+    this->comment=QString("%1, %2 KHz, %3 bit").arg(header.nChannels==2 ? "stereo" : "mono").arg(header.nSamplesPerSec).arg(header.wBitsPerSample);
+    return true;
+  }
+  else {
+    cout << "Error in opening wav file for reading!\n";
+    return false;
+  }
+}
+
+#endif WAV_SUPPORT
+
+// end of special handling of wav files
+//////////////////////////////////
+
 
 
 

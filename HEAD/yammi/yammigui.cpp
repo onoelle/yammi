@@ -23,7 +23,7 @@
 #include "icons/yammiicon.xpm"
 #include "icons/in.xpm"
 #include "icons/notin.xpm"
-#include "icons/filesave.xpm"
+//#include "icons/filesave.xpm"
 
 // media player actions
 // now using the icons from multimedia chrome from mediabuilder.com:
@@ -146,6 +146,8 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
 	songSlider = new QSlider( QSlider::Horizontal, mediaPlayerToolBar, "songLength" );
 	songSlider->setTickmarks(QSlider::Below);
 	songSlider->setFixedWidth(180);
+  songSlider->setPaletteBackgroundColor(QColor(179, 218, 226));
+  songSlider->
 	isSongSliderGrabbed=false;
 	connect( songSlider, SIGNAL(sliderReleased()), SLOT(songSliderMoved()) );
 	connect( songSlider, SIGNAL(sliderPressed()), SLOT(songSliderGrabbed()) );
@@ -707,6 +709,7 @@ void YammiGui::addToWishList()
 	MyDateTime wishDate=wishDate.currentDateTime();
 	Song* newSong=new Song("{wish}", toAdd, "", "", "", 0, 0, wishDate, 0, "", 0, 0);
 	folderAll->addSong(newSong);
+  forSong(newSong, SongInfo, NULL);
 	model->allSongsChanged(true);
 	searchField->setText("{wish}");
 	slotFolderChanged();

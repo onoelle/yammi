@@ -51,6 +51,36 @@ enum action {	None, Enqueue, EnqueueAsNext, PlayNow, SongInfo,
 
 #define MAX_SONG_ACTION 17
 
+
+
+
+
+
+/* Wave File header structure */
+typedef struct {
+  char riff[4];
+  long filesize;
+  char rifftype[4];
+  char formatChunkId[4];
+  long formatChunkSize;
+  short wFormatTag;
+  short nChannels;
+  long nSamplesPerSec;
+  long nAvgBytesPerSec;
+  short nBlockAlign;
+  short wBitsPerSample;
+  char dataChunkId[4];
+  long dataChunkSize;
+  // Data follows here.
+} WaveHeader;
+
+
+
+
+
+
+
+
 /**
  * This class represents all information related to a single song.
  * Stores all info, including location and tags...
@@ -60,6 +90,7 @@ enum action {	None, Enqueue, EnqueueAsNext, PlayNow, SongInfo,
 class Song
 {
 public:
+  bool getWavInfo(const char *filename);
 
   /// default constructor, just assigns default values
   Song();
@@ -95,6 +126,14 @@ public:
   bool getOggInfo(QString filename);
   QString getOggComment(OggVorbis_File* oggfile, QString name);
 #endif
+
+
+  // specific to wav objects
+  //************************
+#ifdef WAV_SUPPORT
+  bool getWavInfo(QString filename);
+#endif
+
 
   // general info (not specific to file format)
   //*************

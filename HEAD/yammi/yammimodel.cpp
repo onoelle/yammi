@@ -175,7 +175,7 @@ bool YammiModel::getProperty(const QDomDocument* doc, const QString propName, co
 }
 
 /// read a property from the given xml document or set it to the default value
-QString YammiModel::getProperty(const QDomDocument* doc, const QString propName, const QString propDefault="")
+QString YammiModel::getProperty(const QDomDocument* doc, const QString propName, const QString propDefault)
 {	
 	QDomNodeList list=doc->elementsByTagName ( propName );
 	QDomNode node=list.item(0);					// we only retrieve first item
