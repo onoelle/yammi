@@ -34,4 +34,7 @@
 // - no reading of layer info
 #define OGG_SUPPORT
 
-
+// defines special treatment for wav files, such as
+// - estimating length from filesize (assuming 44.1KHz, 16 bit Stereo)
+// - setting bitrate to some value
+#define WAV_SUPPORT

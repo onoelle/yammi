@@ -195,7 +195,19 @@ int Song::create(const QString location, const QString mediaName)
 #endif OGG_SUPPORT
 
 
+#ifdef WAV_SUPPORT
+  // wav object
+  if(filename.right(4).upper()==".WAV") {
+    bitrate=1411;
+    length=this->filesize/178000;
+    artist=ffArtist;
+    title=ffTitle;
+    treated=true;
+  }
   
+#endif WAV_SUPPORT
+  
+
   if(!treated) {
     cout << filename << "no special handling (such as for mp3 or ogg files) available (or disabled)...\n";
     cout << "  => cannot read information such as bitrate, length and tags\n";

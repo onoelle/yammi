@@ -2678,7 +2678,7 @@ void YammiGui::preListen(Song* s, int skipTo)
     lastPrelistened="OGG";
   }
 	if(s->filename.right(3).upper()=="WAV") {
-		QString skip=QString(" trim %1s").arg(seconds*skipTo*44100/100);
+		QString skip=QString(" trim %1s").arg(seconds*skipTo*441);
 		QString cmd=QString("play -d %1 \"%2\" %3 &").arg(model->config.secondSoundDevice).arg(s->location()).arg(skip);
     cout << cmd << "\n";
 		system(cmd);
