@@ -603,6 +603,10 @@ bool YammiModel::traverse(QString path, bool followSymLinks, QString filePattern
     d.setNameFilter(filePattern);
     d.setSorting( QDir::Name );
     const QFileInfoList* list = d.entryInfoList();
+    if (!list) {
+        kdWarning() << "Warning: Skipping unreadable directory: " << path << "\n";
+        return true;
+    }
     int filesToScan=list->count();
     progress->progressBar()->setTotalSteps(filesToScan);
     QFileInfoListIterator it( *list );
@@ -622,8 +626,11 @@ bool YammiModel::traverse(QString path, bool followSymLinks, QString filePattern
     d2.setFilter(QDir::Dirs | QDir::Readable);
     d2.setSorting( QDir::Name );
     const QFileInfoList* list2 = d2.entryInfoList();
+    if (!list2) {
+        kdWarning() << "Warning: Skipping unreadable child directory: " << path << "\n";
+        return true;
+    }
     QFileInfoListIterator it2( *list2 );
-
     for(QFileInfo *fi2; (fi2=it2.current()); ++it2 ) {
         if(fi2->fileName()=="." || fi2->fileName()=="..") {
             continue;

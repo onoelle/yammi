@@ -1731,6 +1731,10 @@ long double YammiGui::diskUsage(QString path, long double sizeLimit) {
 
     d.setFilter(QDir::Files);
     const QFileInfoList* list = d.entryInfoList();
+    if (!list) {
+        kdError() << "Error: cannot read access swap directory: " << path << "\n";
+        return 0;
+    }
     QFileInfoListIterator it( *list );								      // create list iterator
 
     long double size=0;
@@ -1747,6 +1751,10 @@ long double YammiGui::diskUsage(QString path, long double sizeLimit) {
     QDir d2(path);
     d2.setFilter(QDir::Dirs);
     const QFileInfoList* list2 = d2.entryInfoList();
+    if (!list2) {
+        kdWarning() << "Error: Skipping unreadable directory under swap directory: " << path << "\n";
+        return 0;
+    }
     QFileInfoListIterator it2( *list2 );								      // create list iterator
 
     for(QFileInfo *fi2; (fi2=it2.current()); ++it2 ) {						// for each file/dir
@@ -2745,6 +2753,9 @@ void YammiGui::keyPressEvent(QKeyEvent* e) {
             int left = m_sleepModeSpinBox->value() + 1;
             m_sleepModeSpinBox->setValue(left);
         }
+        else {
+            songListView->simulateKeyPressEvent(e);
+        }
         break;
     case Key_PageDown:
         if(m_sleepMode) {
@@ -2752,77 +2763,27 @@ void YammiGui::keyPressEvent(QKeyEvent* e) {
             if(left > 0 )
                 m_sleepModeSpinBox->setValue(left);
         }
-        /* TODO: implement page-up/down behaviour???
-                else {
-                    QListViewItem* current=songListView->currentItem();
-                    if(current != 0) {
-                        QListViewItem* possiblyLast = current;
-                        for(int skip = 0; skip < 20 && current; current=current->itemBelow(), skip++) {
-                            possiblyLast = current;
-                        }
-                        songListView->clearSelection();
-                        songListView->setSelected(possiblyLast, true);
-                        songListView->setCurrentItem(possiblyLast);
-                        songListView->ensureItemVisible(current);
-                    }
-                }
-                */
+        else {
+            songListView->simulateKeyPressEvent(e);
+        }
         break;
 
-        // key up/down: we manually implement some behaviour in the songlistview here,
-        // as the focus might still be in the search field => very handy for power users
     case Key_Up:
-        for(QListViewItem* i=songListView->firstChild(); i; i=i->itemBelow()) {
-            if(songListView->currentItem() == i) {
-                if(i->itemAbove()) {
-                    i=i->itemAbove();
-                    if(!shiftPressed) {
-                        songListView->clearSelection();
-                        songListView->setSelected(i, true);
-                    } else {
-                        if(i->isSelected()) {
-                            i->itemBelow()->setSelected(false);
-                        } else {
-                            i->setSelected(true);
-                        }
-                    }
-                    songListView->setCurrentItem(i);
-                    songListView->ensureItemVisible(i);
-                }
-                break;
-            }
-        }
+        songListView->simulateKeyPressEvent(e);
         break;
 
     case Key_Down:
-        for(QListViewItem* i=songListView->firstChild(); i; i=i->itemBelow()) {
-            if(songListView->currentItem() == i) {
-                //            if(i->isSelected()) {
-                if(i->itemBelow()) {
-                    i=i->itemBelow();
-                    if(!shiftPressed) {
-                        songListView->clearSelection();
-                        songListView->setSelected(i, true);
-                    } else {
-                        if(i->isSelected()) {
-                            i->itemAbove()->setSelected(false);
-                        } else {
-                            i->setSelected(true);
-                        }
-                    }
-                    songListView->setCurrentItem(i);
-                    songListView->ensureItemVisible(i);
-                }
-                break;
-            }
-        }
+        songListView->simulateKeyPressEvent(e);
         break;
-
+    
     case Key_F:		// Ctrl-F
         if(e->state()!=ControlButton) {
             break;
         }
-        // intentional fall-through
+        m_searchField->setText("");
+        m_searchField->setFocus();
+        break;
+        
     case Key_Escape: // ESC
         m_searchField->setText("");
         m_searchField->setFocus();
@@ -3216,6 +3177,11 @@ void YammiGui::checkSwapSize() {
     d.setFilter(QDir::Files);
     d.setSorting(QDir::Time);			// most recent first
     const QFileInfoList *list = d.entryInfoList();
+    if (!list) {
+        kdError() << "Error: cannot access swap directory: " << path << "\n";
+        return;
+    }
+
     QFileInfoListIterator it( *list );
 
     for(QFileInfo *fi; (fi=it.current()); ++it ) {

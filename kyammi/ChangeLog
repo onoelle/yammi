@@ -1,3 +1,9 @@
+??.??.2005 version 1.2
+######################
+- fixed: crash when scanning unreadable directories (eg. over samba shares)
+- improved: updated italian translation
+
+
 18.01.2005 version 1.2-rc2
 ##########################
 - improved: finally switched to taglib
@@ -6,9 +12,9 @@
   - custom genres are allowed now
     (changed representation from int to string and added menu entry to fix an existing database)
 - improved: consistency mode:
-  - save tags immediately (after changing song meta info in song info dialog)
-  - keep filenames consistent (also after changing meta info)
-  - keep directories consistent (also after changing meta info)
+  - save tags immediately (after changing song attributes in song info dialog)
+  - keep filenames consistent (also after changing song attributes in song info dialog)
+  - keep directories consistent (also after changing song attributes in song info dialog)
 - improved: application icon (thanks to Alessandro)
 - improved: context menu -> go to Folder (menu shows available folders, samplers correctly treated)
 - fixed: artsplayer crash (sorry for that one...)

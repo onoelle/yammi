@@ -1,25 +1,40 @@
 TODO
 ----
-last update 18.01.2004
+last update 24.01.2004
 
 for version 1.2-final
 ---------------------
+IN PROGRESS
+- finish: translations (italian, spanish) (add portuguese?)
+
 MUST-HAVE
 - properly document tags consistent, filenames consistent and directories consistent mode
-- finish: translations (italian, spanish) (add portuguese?)
+- confirm dialog when mass tagging
 - fix: noatun stops playback sometimes
 - add: publish plugin for html-export
 - add: info message on first startup/on importing old database (or menu entry for importing?)
 - add: make mpg123 and ogg123 configurable
 - simplify {wish} system: (make every entry with empty filename (no media) a wish?
 - child safe mode?
+- proper screenshots for website / freshmeat
+
+Idea: Database -> Statistics... dialog:
+- no songs
+- total time (days)
+- average time per song
+- total space
+- no of media
+- average bitrate
+- no of songs per artist
+- no of artists
+- no of albums
+- ...history file: songs listened to?
 
 
 NICE-TO-HAVE
 - review kde conformance:  
   - replace all couts with kdDebug/kdWarn/kdError
   - check lsm file
-- fix: page up and down keys don't work after searching
 - saveFilename/renaming of file in song.cpp (there was something I can't remember)
 - implement onPlayed and afterPlayed plugin types
 - on deleting a song: delete in *all* lists (history, categories, ...)
@@ -34,12 +49,6 @@ for version 1.4
 - use a player thread for mediaplayer
 - rating of songs
 
-
-usual steps before release
---------------------------
-- QT version 3.3 => 3.2 in .ui files
-- try to check and fix i18n strings
-- execute smoke tests
 
 
 non-reproducable bugs

@@ -54,6 +54,11 @@ check:
 - TODO/CHANGELOG
 - start program and check output: any couts/kdDebugs() that should be deleted?
 - remove all ~ and .orig / .rej files (from applying patches)
+- change QT version 3.3 => 3.2 in .ui files
+- try to check and fix i18n strings as far as possible
+- execute smoke tests
+
+
 
 In kdevelop
 1. Build -> distclean
@@ -62,3 +67,11 @@ In kdevelop
 4. Tools -> Project Distribution & Publishing -> make distribution
 
 anschlieﬂend CVS taggen!
+
+publish handbook
+----------------
+cp /home/oliver/work/programming/kyammi/docs/index.docbook /home/oliver/work/programming/yammi_website/docs
+im 2. Verzeichnis:
+meinproc --check index.docbook
+./myreplace
+...und anschlieﬂend mit Quanta hochladen

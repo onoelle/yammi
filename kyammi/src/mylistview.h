@@ -22,7 +22,7 @@
 #include <qcursor.h>
 
 class Song;
-
+class QKeyEvent;
 
 
 /**extends the QListView class, esp. for dragging songs...
@@ -39,6 +39,7 @@ public:
 	int sortedBy;
   int oldSortOrder;
 	bool dontTouchFirst;
+    void simulateKeyPressEvent(QKeyEvent* e);
 
 protected:
 	Song* dragSong;

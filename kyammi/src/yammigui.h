@@ -59,7 +59,7 @@ class Prefs;
 /**
  * This is the main class.
  *
- * ...still way to big and unordered...cleaning in progress (luis and oliver)
+ * ...still way to big and unordered...
  */
 class YammiGui : public KMainWindow, virtual public YammiDcopIface {
     Q_OBJECT

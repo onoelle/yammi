@@ -212,3 +212,8 @@ void MyListView::contentsMouseReleaseEvent ( QMouseEvent * e) {
     QListView::contentsMouseReleaseEvent(e);
 }
 
+void MyListView::simulateKeyPressEvent(QKeyEvent* e)
+{
+    keyPressEvent(e);
+}
+

@@ -11,19 +11,19 @@
 # Oliver Noelle <oli.noelle@web.de>, 2004.
 # Oliver Nölle <oliver@linux>, 2004.
 # R@>0~ <radonz@3mw.org>, 2004.
-# R@>0~86 <radon86@3mw.org>, 2004.
+# R@>0~86 <radon86@3mw.org>, 2004, 2005.
 msgid ""
 msgstr ""
 "Project-Id-Version: it\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-01-18 22:18+0100\n"
-"PO-Revision-Date: 2004-12-14 20:45+0100\n"
+"PO-Revision-Date: 2005-01-25 19:32+0100\n"
 "Last-Translator: R@>0~86 <radon86@3mw.org>\n"
 "Language-Team: italiano\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.3.1\n"
+"X-Generator: KBabel 1.9.1\n"
 "Plural-Forms:  nplurals=2; plural=(n != 1);\n"
 
 #: ApplyToAllBase.cpp:82 rc.cpp:18
@@ -71,8 +71,7 @@ msgid "check directories"
 msgstr "controlla cartelle"
 
 #: ConsistencyCheckDialogBase.cpp:265 rc.cpp:31
-msgid ""
-"Checks, whether the directories correspond to the configured directory scheme"
+msgid "Checks, whether the directories correspond to the configured directory scheme"
 msgstr "Controlla se le cartelle corrispondono allo schema configurato"
 
 #: ConsistencyCheckDialogBase.cpp:266 rc.cpp:32
@@ -83,8 +82,7 @@ msgstr "correggi cartelle inconsistenti"
 msgid ""
 "If directories differ from the configured directory scheme, the files will "
 "be moved"
-msgstr ""
-"Se le cartelle sono diverse da quelle configurate, il file verrà spostato"
+msgstr "Se le cartelle sono diverse da quelle configurate, il file verrà spostato"
 
 #: ConsistencyCheckDialogBase.cpp:268 rc.cpp:34
 msgid "delete empty directories"
@@ -92,8 +90,7 @@ msgstr "elimina cartelle vuote"
 
 #: ConsistencyCheckDialogBase.cpp:269 rc.cpp:35
 msgid "If directories are empty after moving files, these will be removed."
-msgstr ""
-"Se le cartelle sono vuote prima di muovere i file, esse saranno rimosse."
+msgstr "Se le cartelle sono vuote prima di muovere i file, esse saranno rimosse."
 
 #: ConsistencyCheckDialogBase.cpp:270 ConsistencyCheckDialogBase.cpp:292
 #: rc.cpp:36 rc.cpp:57
@@ -137,8 +134,7 @@ msgstr "controlla le tag"
 
 #: ConsistencyCheckDialogBase.cpp:281 rc.cpp:47
 msgid "Checks, whether the (mp3/ogg) tags are consistent with Yammi's database"
-msgstr ""
-"Controlla se le tag (mp3/ogg) sono consistenti con il database di yammi"
+msgstr "Controlla se le tag (mp3/ogg) sono consistenti con il database di yammi"
 
 #: ConsistencyCheckDialogBase.cpp:283 rc.cpp:48
 msgid "Yammi database => File Tags"
@@ -165,8 +161,7 @@ msgid "check filenames"
 msgstr "controlla i nomi dei file"
 
 #: ConsistencyCheckDialogBase.cpp:289 rc.cpp:54
-msgid ""
-"Checks, whether the filenames correspond to the configured filename scheme"
+msgid "Checks, whether the filenames correspond to the configured filename scheme"
 msgstr ""
 "Controlla se i nomi dei file corrispondono allo schema del nome di file "
 "configurato"
@@ -385,10 +380,8 @@ msgid "delete database entry (in Yammi's database)"
 msgstr "elimina la voce del database (nel database di Yammi)"
 
 #: DeleteDialog.cpp:128 rc.cpp:68
-msgid ""
-"deletes the database entry in Yammi's database (does not affect the file)"
-msgstr ""
-"elimina la voce nel database di Yammi (non elimina fisicamente il file)"
+msgid "deletes the database entry in Yammi's database (does not affect the file)"
+msgstr "elimina la voce nel database di Yammi (non elimina fisicamente il file)"
 
 #: DeleteDialog.cpp:129 rc.cpp:69
 msgid "Delete a song entry and/or its file"
@@ -473,14 +466,12 @@ msgid "- XMMS support: no\n"
 msgstr "- Supporto XMMS: no\n"
 
 #: main.cpp:47
-#, fuzzy
 msgid "- gstreamer support: yes\n"
-msgstr "- Supporto ogglib: sí\n"
+msgstr "- Supporto gstreamer: sí\n"
 
 #: main.cpp:49
-#, fuzzy
 msgid "- gstreamer support: no\n"
-msgstr "- Supporto ogglib: no\n"
+msgstr "- Supporto gstreamer: no\n"
 
 #: mediaplayer.moc.cpp:34 mediaplayer.moc.cpp:42 PreferencesDialogBase.cpp:752
 #: rc.cpp:132
@@ -513,8 +504,7 @@ msgstr "Configurazione del mouse / Azione predefinita per..."
 
 #: PreferencesDialogBase.cpp:671 PreferencesDialogBase.cpp:673 rc.cpp:85
 #: rc.cpp:87
-msgid ""
-"the action that is performed when double-clicking on a song in the song list"
+msgid "the action that is performed when double-clicking on a song in the song list"
 msgstr "l'azione eseguita con il doppio clic su di una voce"
 
 #: PreferencesDialogBase.cpp:672 rc.cpp:86
@@ -558,7 +548,7 @@ msgstr "Miscellanea"
 #: rc.cpp:98
 msgid "This device is used (with mpg123) to send songs to your headphone."
 msgstr ""
-"Questo dispositivo è usato con mpg123 per mandare la canzone alle cuffie "
+"Questo dispositivo è usato per mandare la canzone alle cuffie "
 "(utile per i DJ)"
 
 #: PreferencesDialogBase.cpp:683 rc.cpp:97
@@ -664,11 +654,11 @@ msgstr ""
 
 #: PreferencesDialogBase.cpp:705 rc.cpp:119
 msgid "save tags immediately"
-msgstr ""
+msgstr "salva subito le tag"
 
 #: PreferencesDialogBase.cpp:706 rc.cpp:120
 msgid "save all changes in yammi database to the file tags immediately"
-msgstr ""
+msgstr "salva immediatamente tutti i cambiamenti del database di yammi nelle tag del file"
 
 #: PreferencesDialogBase.cpp:708 rc.cpp:122
 msgid "artist - title"
@@ -679,11 +669,12 @@ msgid "/artist/album/trackNr - title"
 msgstr "/artista/titolo/numeroTraccia - Titolo"
 
 #: PreferencesDialogBase.cpp:710 rc.cpp:124
-#, fuzzy
 msgid ""
 "guessing pattern\n"
 "(if no tags available)"
-msgstr "indovina schema (se le tag non sono disponibili)"
+msgstr ""
+"indovina schema\n"
+"(se le tag non sono disponibili)"
 
 #: PreferencesDialogBase.cpp:712 rc.cpp:125
 msgid "guessing pattern used when adding new songs and no tags available"
@@ -692,26 +683,22 @@ msgstr ""
 "disponibili"
 
 #: PreferencesDialogBase.cpp:713 rc.cpp:126
-#, fuzzy
 msgid "keep directories consistent:"
-msgstr "mantieni consistenti i nomi dei file"
+msgstr "mantieni consistenti le cartelle"
 
 #: PreferencesDialogBase.cpp:714 rc.cpp:127
-#, fuzzy
 msgid ""
 "Synchronizes the directories of the files according to the information in "
 "the yammi database. If activated, yammi moves your files!"
 msgstr ""
-"Sincronizza i nomi dei file con le informazioni contenute nel database di "
+"Sincronizza i nomi delle cartelle con le informazioni contenute nel database di "
 "Yammi. Se attivato, yammi rinomina i file!"
 
 #: PreferencesDialogBase.cpp:715 rc.cpp:128
-#, fuzzy
 msgid "keep filenames consistent:"
 msgstr "mantieni consistenti i nomi dei file"
 
 #: PreferencesDialogBase.cpp:716 rc.cpp:129
-#, fuzzy
 msgid ""
 "Synchronizes the filenames of the files according to the information in the "
 "yammi database. If activated, yammi renames your files!"
@@ -720,9 +707,8 @@ msgstr ""
 "Yammi. Se attivato, yammi rinomina i file!"
 
 #: PreferencesDialogBase.cpp:718 rc.cpp:131
-#, fuzzy
 msgid "The directory pattern to use for moving files."
-msgstr "Lo schema del nome del file da usare per rinominare i file."
+msgstr "Lo schema del nome della cartella da usare per rinominare i file."
 
 #: PreferencesDialogBase.cpp:719 rc.cpp:3 rc.cpp:99
 msgid "Database"
@@ -835,7 +821,7 @@ msgstr "es. osssink, artsdsink, alsasink"
 
 #: PreferencesDialogBase.cpp:753 rc.cpp:162
 msgid "grab and encode script"
-msgstr "grab and encode script"
+msgstr "script per rippare cd"
 
 #: PreferencesDialogBase.cpp:754 PreferencesDialogBase.cpp:757 rc.cpp:163
 #: rc.cpp:166
@@ -848,9 +834,8 @@ msgstr "script per l'arresto del sistema"
 
 #: PreferencesDialogBase.cpp:756 PreferencesDialogBase.cpp:758 rc.cpp:165
 #: rc.cpp:167
-#, fuzzy
 msgid "a script that is invoked on sleep mode"
-msgstr "lo script che viene eseguito per tutte le canzoni selezionate"
+msgstr "lo script che viene eseguito in modalità Spegnimento automatico"
 
 #: PreferencesDialogBase.cpp:759 PreferencesDialogBase.cpp:784 rc.cpp:161
 #: rc.cpp:168
@@ -892,9 +877,8 @@ msgstr "comando"
 
 #: PreferencesDialogBase.cpp:768 PreferencesDialogBase.cpp:771 rc.cpp:177
 #: rc.cpp:180
-#, fuzzy
 msgid "the script that is invoked when this plugin is chosen"
-msgstr "lo script che viene eseguito per tutte le canzoni selezionate"
+msgstr "lo script che viene eseguito quando viene chiuso il plugin"
 
 #: PreferencesDialogBase.cpp:769 rc.cpp:178
 msgid "Placeholders..."
@@ -903,7 +887,7 @@ msgstr "Segnaposto..."
 #: PreferencesDialogBase.cpp:772 PreferencesDialogBase.cpp:781 rc.cpp:181
 #: rc.cpp:187
 msgid "defines the content of the {customList} placeholders"
-msgstr "definisce il contenuto dei {customList} segnaposti..."
+msgstr "definisce il contenuto dei {customList} Segnaposto..."
 
 #: PreferencesDialogBase.cpp:773 rc.cpp:182
 msgid ""
@@ -979,8 +963,7 @@ msgstr "cartella temporanea"
 #: PreferencesDialogBase.cpp:797 PreferencesDialogBase.cpp:810 rc.cpp:197
 #: rc.cpp:210
 msgid "directory where songs from removable media will be swapped"
-msgstr ""
-"cartella in cui vengono caricate le canzoni presenti nei supporti rimovibili"
+msgstr "cartella in cui vengono caricate le canzoni presenti nei supporti rimovibili"
 
 #: PreferencesDialogBase.cpp:800 rc.cpp:200
 msgid "mount and umount the media directory"
@@ -1001,7 +984,7 @@ msgstr "cartella in cui il supporto rimovibile viene montato"
 
 #: PreferencesDialogBase.cpp:803 rc.cpp:203
 msgid "media directory (mount point)"
-msgstr "media directory (mount point)"
+msgstr "punto di montaggio dei supporti rimovibili"
 
 #: PreferencesDialogBase.cpp:805 PreferencesDialogBase.cpp:809 rc.cpp:205
 #: rc.cpp:209
@@ -1225,12 +1208,10 @@ msgid "Filename"
 msgstr "Nome File"
 
 #: rc.cpp:238 SongInfoDialog.cpp:315
-#, fuzzy
 msgid "proposed Path"
-msgstr "Nome File proposto"
+msgstr "Cartella proposta"
 
 #: rc.cpp:239 SongInfoDialog.cpp:316
-#, fuzzy
 msgid "proposed Filename"
 msgstr "Nome File proposto"
 
@@ -1255,7 +1236,7 @@ msgstr "Comincia scansione..."
 #: UpdateDatabaseDialogBase.cpp:116 UpdateDatabaseDialogBase.cpp:122
 #: UpdateDatabaseMediaDialogBase.cpp:139 UpdateDatabaseMediaDialogBase.cpp:140
 msgid "filename pattern (eg. \"*.mp3 *.ogg\")"
-msgstr ""
+msgstr "schema dei nomi dei file (es. \"*.mp3 *.ogg\")"
 
 #: rc.cpp:246 rc.cpp:248 rc.cpp:259 rc.cpp:261
 #: UpdateDatabaseDialogBase.cpp:117 UpdateDatabaseDialogBase.cpp:119
@@ -1313,7 +1294,7 @@ msgstr "nome del supporto"
 #: rc.cpp:265 rc.cpp:266 UpdateDatabaseMediaDialogBase.cpp:136
 #: UpdateDatabaseMediaDialogBase.cpp:137
 msgid "identifies the medium by name"
-msgstr ""
+msgstr "identifica il supporto dal nome"
 
 #: rc.cpp:270 UpdateDatabaseMediaDialogBase.cpp:141
 msgid "mount directory"
@@ -1343,8 +1324,7 @@ msgstr "{path} (percorso cartella, senza nome file)\n"
 
 #: song.cpp:854
 msgid "{artist}, {title}, {album}, {comment} (corresponding to the tags)\n"
-msgstr ""
-"{artist}, {title}, {album}, {comment} (artista, titolo, album, commento)\n"
+msgstr "{artist}, {title}, {album}, {comment} (artista, titolo, album, commento)\n"
 
 #: song.cpp:855
 msgid "{bitrate} (in kbps)\n"
@@ -1508,25 +1488,21 @@ msgstr "Cancella s2"
 
 #: yammigui.cpp:1387
 msgid "%1 songs selected"
-msgstr "%1 canzoni cancellate"
+msgstr "%1 canzoni selezionate"
 
 #: yammigui.cpp:1399
-#, fuzzy
 msgid "Artist: "
-msgstr "Artista"
+msgstr "Artista: "
 
 #: yammigui.cpp:1412
-#, fuzzy
 msgid "Album: "
-msgstr "Album"
+msgstr "Album: "
 
 #: yammigui.cpp:1420
-#, fuzzy
 msgid "Genre: "
-msgstr "Genere"
+msgstr "Genere: "
 
 #: yammigui.cpp:1429
-#, fuzzy
 msgid "Year: "
 msgstr "Anno"
 
@@ -1826,7 +1802,7 @@ msgstr "%1 problemi (vedi la cartella Canzoni Problematiche)"
 
 #: yammigui.cpp:2715
 msgid "Re-Reading all genres from your files..."
-msgstr ""
+msgstr "Rilegge tutti i generi dai tuoi files..."
 
 #: yammigui.cpp:2887
 msgid ""
@@ -1966,7 +1942,7 @@ msgstr "Controlla consistenza..."
 
 #: yammigui.cpp:3444
 msgid "Fix genres..."
-msgstr ""
+msgstr "Sistema i generi"
 
 #: yammigui.cpp:3445
 msgid "Grab And Encode CD-Track..."
@@ -2057,9 +2033,8 @@ msgid "Goto genre"
 msgstr "Vai al genere"
 
 #: yammigui.cpp:3472
-#, fuzzy
 msgid "Goto year"
-msgstr "Vai al genere"
+msgstr "Vai all'anno"
 
 #: yammigui.cpp:3474
 msgid "Stop prelisten"
@@ -2219,24 +2194,3 @@ msgstr "scansione cartella %1 ..."
 msgid "YammiModel"
 msgstr "YammiModel"
 
-#~ msgid "- Arts  support: yes\n"
-#~ msgstr "- Supporto Arts: sí\n"
-
-#~ msgid "- Noatun support: yes\n"
-#~ msgstr "- Supporto Noatun: yes\n"
-
-#~ msgid "- id3lib support: yes\n"
-#~ msgstr "- Supporto id3lib: sí\n"
-
-#~ msgid "- id3lib support: no\n"
-#~ msgstr "- Supporto id3lib: no\n"
-
-#~ msgid "keep tags consistent"
-#~ msgstr "mantieni le tag consistenti"
-
-#~ msgid ""
-#~ "synchronizes the id3-tags of the mp3 files with the yammi database "
-#~ "information. If activated, yammi modifies the tags of your mp3 files!"
-#~ msgstr ""
-#~ "sincronizza le tag id3 con le informazioni contenute nel database di "
-#~ "Yammi informazione: Se attivato, yammi modifica le tag nei file mp3"
