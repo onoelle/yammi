@@ -13,6 +13,8 @@ CheckConsistencyDialog::CheckConsistencyDialog(QWidget *parent, const char *name
  	CheckBoxCheckTags->setChecked(true);
   connect( CheckBoxCheckFilenames, SIGNAL( clicked() ), this, SLOT( changeSetting() ) );
   CheckBoxCheckFilenames->setChecked(true);
+  connect( CheckBoxCheckDirectories, SIGNAL( clicked() ), this, SLOT( changeSetting() ) );
+  CheckBoxCheckDirectories->setChecked(true);
   CheckBoxCheckDoubles->setChecked(true);
   changeSetting();
 }
@@ -44,6 +46,12 @@ void CheckConsistencyDialog::changeSetting()
   }
   else {
     CheckBoxCorrectFilenames->setEnabled(false);
+  }
+  if(CheckBoxCheckDirectories->isChecked()) {
+    CheckBoxCorrectDirectories->setEnabled(true);
+  }
+  else {
+    CheckBoxCorrectDirectories->setEnabled(false);
   }
   if(!CheckBoxCheckForExistence->isChecked() && !CheckBoxCheckTags->isChecked()
       && !CheckBoxCheckFilenames->isChecked() && !CheckBoxCheckDoubles->isChecked()) {

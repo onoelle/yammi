@@ -61,6 +61,8 @@ protected:
 	QStringList _pluginMode;
 	QStringList _pluginConfirm;
 
+  void insertPluginValues();
+  
 };
 
 #endif

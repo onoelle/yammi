@@ -9,7 +9,7 @@
             <x>0</x>
             <y>0</y>
             <width>567</width>
-            <height>526</height>
+            <height>586</height>
         </rect>
     </property>
     <property name="caption">
@@ -614,12 +614,53 @@
                             <property name="spacing">
                                 <number>6</number>
                             </property>
-                            <widget class="QPushButton" row="2" column="3">
+                            <widget class="QPushButton" row="2" column="4">
                                 <property name="name">
                                     <cstring>PushButtonPatternReplacements</cstring>
                                 </property>
                                 <property name="text">
                                     <string>Replacements...</string>
+                                </property>
+                            </widget>
+                            <widget class="QLineEdit" row="2" column="1" rowspan="1" colspan="3">
+                                <property name="name">
+                                    <cstring>LineEditFilenamePattern</cstring>
+                                </property>
+                                <property name="toolTip" stdset="0">
+                                    <string>The filename pattern to use for renaming files.</string>
+                                </property>
+                            </widget>
+                            <widget class="QCheckBox" row="0" column="0" rowspan="1" colspan="3">
+                                <property name="name">
+                                    <cstring>CheckBoxTagsConsistent</cstring>
+                                </property>
+                                <property name="text">
+                                    <string>keep tags consistent</string>
+                                </property>
+                                <property name="toolTip" stdset="0">
+                                    <string>synchronizes the id3-tags of the mp3 files with the yammi database information. If activated, yammi modifies the tags of your mp3 files!</string>
+                                </property>
+                            </widget>
+                            <widget class="QCheckBox" row="1" column="3" rowspan="1" colspan="2">
+                                <property name="name">
+                                    <cstring>CheckBoxIgnoreCaseInFilenames</cstring>
+                                </property>
+                                <property name="text">
+                                    <string>ignore case on filename check</string>
+                                </property>
+                                <property name="toolTip" stdset="0">
+                                    <string></string>
+                                </property>
+                            </widget>
+                            <widget class="QCheckBox" row="0" column="3" rowspan="1" colspan="2">
+                                <property name="name">
+                                    <cstring>CheckBoxCapitalizeTags</cstring>
+                                </property>
+                                <property name="text">
+                                    <string>capitalize tags on new songs</string>
+                                </property>
+                                <property name="toolTip" stdset="0">
+                                    <string>Capitalizes artist, title and album of a newly added Song</string>
                                 </property>
                             </widget>
                             <widget class="QLabel" row="2" column="0">
@@ -634,15 +675,27 @@
                                     <string>The filename pattern to use for renaming files.</string>
                                 </property>
                             </widget>
-                            <widget class="QLineEdit" row="2" column="1" rowspan="1" colspan="2">
+                            <widget class="QLabel" row="3" column="0">
                                 <property name="name">
-                                    <cstring>LineEditFilenamePattern</cstring>
+                                    <cstring>LabelDirectoryPattern</cstring>
+                                </property>
+                                <property name="text">
+                                    <string>directory pattern
+(for moving files)</string>
                                 </property>
                                 <property name="toolTip" stdset="0">
                                     <string>The filename pattern to use for renaming files.</string>
                                 </property>
                             </widget>
-                            <widget class="QLabel" row="3" column="0">
+                            <widget class="QLineEdit" row="3" column="1" rowspan="1" colspan="3">
+                                <property name="name">
+                                    <cstring>LineEditDirectoryPattern</cstring>
+                                </property>
+                                <property name="toolTip" stdset="0">
+                                    <string>The filename pattern to use for renaming files.</string>
+                                </property>
+                            </widget>
+                            <widget class="QLabel" row="4" column="0" rowspan="1" colspan="2">
                                 <property name="name">
                                     <cstring>LabelGuessingPattern</cstring>
                                 </property>
@@ -654,7 +707,41 @@
                                     <string>The filename pattern to use for renaming files.</string>
                                 </property>
                             </widget>
-                            <widget class="QButtonGroup" row="3" column="1" rowspan="1" colspan="3">
+                            <spacer row="3" column="4">
+                                <property name="name">
+                                    <cstring>spacer4</cstring>
+                                </property>
+                                <property name="orientation">
+                                    <enum>Horizontal</enum>
+                                </property>
+                                <property name="sizeType">
+                                    <enum>Expanding</enum>
+                                </property>
+                                <property name="sizeHint">
+                                    <size>
+                                        <width>110</width>
+                                        <height>20</height>
+                                    </size>
+                                </property>
+                            </spacer>
+                            <spacer row="4" column="4">
+                                <property name="name">
+                                    <cstring>spacer5</cstring>
+                                </property>
+                                <property name="orientation">
+                                    <enum>Horizontal</enum>
+                                </property>
+                                <property name="sizeType">
+                                    <enum>Expanding</enum>
+                                </property>
+                                <property name="sizeHint">
+                                    <size>
+                                        <width>110</width>
+                                        <height>20</height>
+                                    </size>
+                                </property>
+                            </spacer>
+                            <widget class="QButtonGroup" row="4" column="2" rowspan="1" colspan="2">
                                 <property name="name">
                                     <cstring>GuessingPatternButtonGroup</cstring>
                                 </property>
@@ -667,16 +754,36 @@
                                 <property name="title">
                                     <string></string>
                                 </property>
+                                <widget class="QLabel">
+                                    <property name="name">
+                                        <cstring>LabelFilenamePattern_2</cstring>
+                                    </property>
+                                    <property name="geometry">
+                                        <rect>
+                                            <x>-123</x>
+                                            <y>-20</y>
+                                            <width>120</width>
+                                            <height>33</height>
+                                        </rect>
+                                    </property>
+                                    <property name="text">
+                                        <string>filename pattern
+(for renaming files)</string>
+                                    </property>
+                                    <property name="toolTip" stdset="0">
+                                        <string>The filename pattern to use for renaming files.</string>
+                                    </property>
+                                </widget>
                                 <widget class="QRadioButton">
                                     <property name="name">
                                         <cstring>RadioButtonSimpleGuessmode</cstring>
                                     </property>
                                     <property name="geometry">
                                         <rect>
-                                            <x>10</x>
-                                            <y>10</y>
-                                            <width>330</width>
-                                            <height>20</height>
+                                            <x>20</x>
+                                            <y>30</y>
+                                            <width>297</width>
+                                            <height>21</height>
                                         </rect>
                                     </property>
                                     <property name="text">
@@ -685,9 +792,6 @@
                                     <property name="checked">
                                         <bool>true</bool>
                                     </property>
-                                    <property name="buttonGroupId">
-                                        <number>2</number>
-                                    </property>
                                 </widget>
                                 <widget class="QRadioButton">
                                     <property name="name">
@@ -695,10 +799,10 @@
                                     </property>
                                     <property name="geometry">
                                         <rect>
-                                            <x>10</x>
-                                            <y>40</y>
-                                            <width>340</width>
-                                            <height>20</height>
+                                            <x>20</x>
+                                            <y>10</y>
+                                            <width>297</width>
+                                            <height>21</height>
                                         </rect>
                                     </property>
                                     <property name="text">
@@ -709,7 +813,7 @@
                                     </property>
                                 </widget>
                             </widget>
-                            <widget class="QCheckBox" row="1" column="0" rowspan="1" colspan="2">
+                            <widget class="QCheckBox" row="1" column="0" rowspan="1" colspan="3">
                                 <property name="name">
                                     <cstring>CheckBoxFilenamesConsistent</cstring>
                                 </property>
@@ -718,39 +822,6 @@
                                 </property>
                                 <property name="toolTip" stdset="0">
                                     <string>Synchronizes the filenames of the mp3 files according to the information in the yammi database. If activated, yammi renames your mp3 files!</string>
-                                </property>
-                            </widget>
-                            <widget class="QCheckBox" row="0" column="0" rowspan="1" colspan="2">
-                                <property name="name">
-                                    <cstring>CheckBoxTagsConsistent</cstring>
-                                </property>
-                                <property name="text">
-                                    <string>keep tags consistent</string>
-                                </property>
-                                <property name="toolTip" stdset="0">
-                                    <string>synchronizes the id3-tags of the mp3 files with the yammi database information. If activated, yammi modifies the tags of your mp3 files!</string>
-                                </property>
-                            </widget>
-                            <widget class="QCheckBox" row="1" column="2" rowspan="1" colspan="2">
-                                <property name="name">
-                                    <cstring>CheckBoxIgnoreCaseInFilenames</cstring>
-                                </property>
-                                <property name="text">
-                                    <string>ignore case on filename check</string>
-                                </property>
-                                <property name="toolTip" stdset="0">
-                                    <string></string>
-                                </property>
-                            </widget>
-                            <widget class="QCheckBox" row="0" column="2" rowspan="1" colspan="2">
-                                <property name="name">
-                                    <cstring>CheckBoxCapitalizeTags</cstring>
-                                </property>
-                                <property name="text">
-                                    <string>capitalize tags on new songs</string>
-                                </property>
-                                <property name="toolTip" stdset="0">
-                                    <string>Capitalizes artist, title and album of a newly added Song</string>
                                 </property>
                             </widget>
                         </grid>

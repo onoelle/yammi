@@ -432,7 +432,7 @@ void YammiModel::saveSongDatabase()
 			s->saveTags();
     }
 		if(s->filenameDirty && config.filenamesConsistent) {
-			s->saveFilename();
+			s->correctFilename();
       if(songsToPlay.containsSong(s)) {
         haveToReloadPlaylist=true;
         if(songsToPlay.firstSong()==s) {
@@ -836,10 +836,13 @@ bool YammiModel::checkConsistency(QProgressDialog* progress, MyList* selection, 
     progress->setProgress(0);
     qApp->processEvents();
 	
+    // TODO: move this to constructor of p?
     p->dirtyTags=0;
     p->dirtyFilenames=0;
+    p->dirtyDirectories=0;
     p->doublesFound=0;
     p->filenamesCorrected=0;
+    p->directoriesCorrected=0;
     p->nonExisting=0;
     p->nonExistingDeleted=0;
     p->nonExistingUpdated=0;
@@ -847,6 +850,7 @@ bool YammiModel::checkConsistency(QProgressDialog* progress, MyList* selection, 
 
     p->correctTagsConfirmed=-1;
     p->correctFilenamesConfirmed=-1;
+    p->correctDirectoriesConfirmed=-1;
     
     int i=0;
     for(Song* s=selection->firstSong(); s; s=selection->nextSong(), i++) {
@@ -855,7 +859,7 @@ bool YammiModel::checkConsistency(QProgressDialog* progress, MyList* selection, 
       }
       if(progress->wasCancelled())
         break;		
-      QString diagnosis=s->checkConsistency(true, true, p->ignoreCaseInFilenames);
+      QString diagnosis=s->checkConsistency(true, true, p->ignoreCaseInFilenames, true);
       if(diagnosis=="") {
         continue;
       }
@@ -979,7 +983,7 @@ bool YammiModel::checkConsistency(QProgressDialog* progress, MyList* selection, 
             reallyCorrect=(p->correctFilenamesConfirmed==1);
           }
           if(reallyCorrect) {
-            if(s->saveFilename()) {
+            if(s->correctFilename()) {
               p->filenamesCorrected++;
               problematicSongs.append(new SongEntryString(s, "Filename corrected"));
             }
@@ -992,6 +996,50 @@ bool YammiModel::checkConsistency(QProgressDialog* progress, MyList* selection, 
           problematicSongs.append(new SongEntryString(s, "Filename not consistent with Yammi info"));
         }
       }
+
+      if(diagnosis.contains("directory not consistent") && p->checkDirectories) {
+        p->dirtyDirectories++;
+        if(p->correctDirectories) {
+          bool reallyCorrect;
+          if(p->correctDirectoriesConfirmed==-1) {
+            // warning dialog!
+            ApplyToAllBase confirm(progress, "confirmDialog", true);
+            QString msg=QString("Correct path from\n\t%1\n").arg(s->path);
+            msg+=QString("to\n\t%1?").arg(s->constructPath());
+            confirm.TextLabel->setText(msg);
+            // show dialog
+            int result=confirm.exec();
+            if(result==QDialog::Accepted) {
+              reallyCorrect=true;
+              if(confirm.CheckBoxApply->isChecked()) {
+                p->correctDirectoriesConfirmed=1;
+              }
+            }
+            else {
+              reallyCorrect=false;
+              if(confirm.CheckBoxApply->isChecked()) {
+                p->correctDirectoriesConfirmed=0;
+              }
+            }
+          }
+          else {
+            reallyCorrect=(p->correctDirectoriesConfirmed==1);
+          }
+          if(reallyCorrect) {
+            if(s->correctPath()) {
+              p->directoriesCorrected++;
+              problematicSongs.append(new SongEntryString(s, "Directory corrected"));
+            }
+          }
+          else {
+            problematicSongs.append(new SongEntryString(s, "Directory not consistent with Yammi info"));
+          }
+        }
+        else {
+          problematicSongs.append(new SongEntryString(s, "Directory not consistent with Yammi info"));
+        }
+      }
+                  
     }
 	}
 

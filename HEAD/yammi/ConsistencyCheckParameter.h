@@ -34,6 +34,9 @@ public:
   bool ignoreCaseInFilenames;
   int correctFilenamesConfirmed;
   bool correctFilenames;
+  bool checkDirectories;
+  int correctDirectoriesConfirmed;
+  bool correctDirectories;
   bool checkDoubles;
 
   int nonExisting;
@@ -43,6 +46,8 @@ public:
   int tagsCorrected;
   int dirtyFilenames;
   int filenamesCorrected;
+  int dirtyDirectories;
+  int directoriesCorrected;
   int doublesFound;
 };
 

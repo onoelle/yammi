@@ -39,6 +39,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, const char *name, bool mod
 	LineEditTrashDir->setText(config->trashDir);
 	LineEditScanDir->setText(config->scanDir);
 	LineEditFilenamePattern->setText(config->filenamePattern);
+	LineEditDirectoryPattern->setText(config->directoryPattern);
   RadioButtonSimpleGuessmode->setChecked(config->guessingMode==config->GUESSING_MODE_SIMPLE);
   RadioButtonAdvancedGuessmode->setChecked(config->guessingMode==config->GUESSING_MODE_ADVANCED);
 	CheckBoxLogging->setChecked(config->logging);
@@ -99,20 +100,8 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, const char *name, bool mod
   //////////
 	LineEditGrabAndEncodeCmd->setText(QString("%1").arg(config->grabAndEncodeCmd));
 	LineEditShutdownScript->setText(QString("%1").arg(config->shutdownScript));
-	
-	_pluginMenuEntry=config->pluginMenuEntry;
-	_pluginCommand= config->pluginCommand;
-	_pluginCustomList= config->pluginCustomList;
-	_pluginMode= config->pluginMode;
-	_pluginConfirm= config->pluginConfirm;
-	
-	ComboBoxPlugins->insertItem("choose entry");
-	ComboBoxPlugins->insertStringList(_pluginMenuEntry);
-  ComboBoxPluginMode->insertItem("single");
-  ComboBoxPluginMode->insertItem("group");
-	updatePlugin(0);
-  
 
+  insertPluginValues();
 
   // connections
 	connect( ButtonChooseScanDir, SIGNAL( clicked() ), this, SLOT( chooseScanDir() ) );
@@ -137,7 +126,23 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, const char *name, bool mod
 	connect( ButtonOK, SIGNAL( clicked() ), this, SLOT( myAccept() ) );
 }
 
-PreferencesDialog::~PreferencesDialog(){
+
+PreferencesDialog::~PreferencesDialog() {
+}
+
+
+void PreferencesDialog::insertPluginValues() {
+  _pluginMenuEntry=config->pluginMenuEntry;
+	_pluginCommand= config->pluginCommand;
+	_pluginCustomList= config->pluginCustomList;
+	_pluginMode= config->pluginMode;
+	_pluginConfirm= config->pluginConfirm;
+
+	ComboBoxPlugins->insertItem("choose entry");
+	ComboBoxPlugins->insertStringList(_pluginMenuEntry);
+  ComboBoxPluginMode->insertItem("single");
+  ComboBoxPluginMode->insertItem("group");
+	updatePlugin(0);
 }
 
 void PreferencesDialog::myAccept()
@@ -147,6 +152,7 @@ void PreferencesDialog::myAccept()
  	config->scanDir=LineEditScanDir->text();
  	config->mediaDir=LineEditMediaDir->text();
  	config->filenamePattern=LineEditFilenamePattern->text();
+ 	config->directoryPattern=LineEditDirectoryPattern->text();
   if(RadioButtonSimpleGuessmode->isChecked())
     config->guessingMode=config->GUESSING_MODE_SIMPLE;
   if(RadioButtonAdvancedGuessmode->isChecked())
@@ -368,7 +374,7 @@ void PreferencesDialog::deletePlugin()
 void PreferencesDialog::addStandardPlugins()
 {
   config->addStandardPlugins();
-  updatePlugin(0);
+  insertPluginValues();
 }
 
 void PreferencesDialog::showReplacements()
@@ -379,6 +385,7 @@ void PreferencesDialog::showReplacements()
   msg+="{filename} (without path)\n";
   msg+="{absoluteFilename} (including path)\n";
   msg+="{filenameWithoutSuffix} (without path, without suffix)\n";
+  msg+="{suffix} (without leading dot)\n";
   msg+="{path} (without filename)\n";
   msg+="{artist}, {title}, {album} (corresponding to the tags)\n";
   msg+="{bitrate} (in kbps)\n";

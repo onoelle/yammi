@@ -270,9 +270,6 @@ int Song::create(const QString location, const QString mediaName, bool capitaliz
   }
   
 	corrupted=false;
-
-  // TODO: maybe perform this check only if not scanning song from media?
-  checkConsistency(gYammiGui->getModel()->config.tagsConsistent, gYammiGui->getModel()->config.filenamesConsistent, gYammiGui->getModel()->config.ignoreCaseInFilenames);
   return 0;
 }
 
@@ -313,7 +310,10 @@ bool Song::rereadTags()
 
 
 
-// check filename (if given)
+/**
+ * check filename (if given)
+ * returns true if it is consistent with the configured pattern
+ */
 bool Song::checkFilename(bool ignoreCase)
 {
 	if(filename=="") {
@@ -328,6 +328,26 @@ bool Song::checkFilename(bool ignoreCase)
     }
   }
 }
+
+/**
+ * check directory (if given)
+ * returns true if it is consistent with the configured pattern
+ */
+bool Song::checkDirectory(bool ignoreCase)
+{
+	if(path=="") {
+    return true;
+  }
+	else {
+    if(ignoreCase) {
+      return ((constructPath().upper())==(path.upper()));
+    }
+    else {
+      return (constructPath()==path);
+    }
+  }
+}
+
 
 /** Tries to guess artist and title from filename.
  * So far, only a simple and an advanced pattern available for guessing
@@ -1006,7 +1026,7 @@ bool Song::saveTags()
 
 /* correct filename to convention (ie. "artist - title")
  */
-bool Song::saveFilename()
+bool Song::correctFilename()
 {
 	if(filename=="") {
 		filenameDirty=false;
@@ -1067,6 +1087,16 @@ bool Song::saveFilename()
 }
 
 
+/**
+ * Correct location of file
+ */
+bool Song::correctPath()
+{
+  return true;
+}
+
+
+
 /** returns true if primary key (artist, title, album) is the same
  */
 bool Song::sameAs(Song* s)
@@ -1120,7 +1150,7 @@ bool Song::checkReadability()
  * @returns "" on song okay (or wish or filename==""), or on error:
  * "file not readable", "tags not set correctly", "filename not consistent"
  */
-QString Song::checkConsistency(bool requireConsistentTags, bool requireConsistentFilename, bool ignoreCaseInFilenames)
+QString Song::checkConsistency(bool requireConsistentTags, bool requireConsistentFilename, bool ignoreCaseInFilenames, bool requireConsistentDirectory)
 {
 	QString diagnosis="";
 	
@@ -1152,6 +1182,16 @@ QString Song::checkConsistency(bool requireConsistentTags, bool requireConsisten
 			diagnosis+="filename not consistent ";
 		}
 	}
+
+  directoryDirty=false;
+	if(requireConsistentDirectory && path!="") {
+		// checking directory
+		if(!checkDirectory(ignoreCaseInFilenames)) {
+			cout << "file " << this->filename << " is not in correct directory\n";
+			directoryDirty=true;
+			diagnosis+="directory not consistent ";
+		}
+	}
 	return diagnosis;
 }
 
@@ -1171,44 +1211,89 @@ QString Song::capitalize(QString str)
 
 	
 /**
- * Constructs a filename following the "artist - title.suffix" pattern.
- * Should take care of special characters not allowed in filenames.
+ * Constructs a filename according to the configured filename pattern.
+ * Takes care of special characters not allowed in filenames.
  */
 QString Song::constructFilename()
 {
-  QString suffix=this->filename.right(4);
-  if(suffix=="") {
-    // this is the case for swapping songs: they don't have a filename!
+  QString pattern=gYammiGui->getModel()->config.filenamePattern;
+  QString filename=replacePlaceholders(pattern, 0);
+  return makeValidFilename(filename, true);
+}
+
+/**
+ * Constructs a path according to the configured directory pattern.
+ * Takes care of special characters not allowed in filenames.
+ */
+QString Song::constructPath()
+{
+  QString pattern=gYammiGui->getModel()->config.directoryPattern;
+  QString path=replacePlaceholders(pattern, 0);
+  // now remove "empty navigation steps" such as "Madonna//Holiday.mp3" (because no album given)
+  path.replace("//", "/");
+  if(path.endsWith("/")) {
+    path=path.left(path.length()-1);
+  }
+  return makeValidFilename(path, false);
+}
+	
+
+/**
+ * Returns the suffix of the filename of this song
+ */
+QString Song::getSuffix()
+{
+  QString base;
+  if(filename=="") {
+    // this is the case for swapped songs: filename is empty
+    // => we have to look it up in the stored media location
     if(mediaLocation.count()==0) {
-//      cout << "assuming suffix \".mp3\"...\n";  // TODO
-      suffix=".mp3";
+      cout << "warning: no suffix found, assuming \".mp3\"...\n";  // TODO
+      return ".mp3";
     }
     else {
-      suffix=mediaLocation[0].right(4);
+      base=mediaLocation[0];
     }
   }
-  QString pattern=gYammiGui->getModel()->config.filenamePattern;
-  QString s=replacePlaceholders(pattern, 0) + suffix;
-  
-	
-	// replace all forbidden characters for filenames with nothing
-	// for windows and linux filesystems!
-  // TODO: make configurable (depending on filesystem?)
-	s.replace(QRegExp("\""), "");													// "
-	s.replace(QRegExp("'"), "");													// '
-	s.replace(QRegExp("/"), "");													// /
-	s.replace(QRegExp("&"), "");													// &
-	s.replace(QRegExp("[?]"), "");												// ?
-	s.replace(QRegExp(":"), "");													// :
+  else {
+    base=filename;
+  }
 
-	s.replace(QRegExp("ü"), "ue");													// umlaute
-	s.replace(QRegExp("Ü"), "Ue");													//
-	s.replace(QRegExp("ö"), "oe");													//
-	s.replace(QRegExp("Ö"), "Oe");													//
-	s.replace(QRegExp("ä"), "ae");													//
-	s.replace(QRegExp("Ä"), "Ae");													//
+  int suffixLength=base.findRev('.');
+  if(suffixLength==-1) {
+    return "";
+  }
+  QString suffix=base.mid(suffixLength+1);
+  if(base==0) {
+    return "";
+  }
+  return suffix;
+}
 
-	return s;
+
+/**
+ * replace all forbidden characters for filenames with nothing
+ * for windows and linux filesystems!
+ * TODO: make configurable (depending on filesystem?)
+ */
+QString Song::makeValidFilename(QString filename, bool file)
+{
+  filename.replace(QRegExp("\""), "");												// "
+	filename.replace(QRegExp("'"), "");													// '
+  if(file) {
+    filename.replace(QRegExp("/"), "");													// /
+  }
+	filename.replace(QRegExp("&"), "");													// &
+	filename.replace(QRegExp("[?]"), "");												// ?
+	filename.replace(QRegExp(":"), "");													// :
+
+	filename.replace(QRegExp("ü"), "ue");													// umlaute
+	filename.replace(QRegExp("Ü"), "Ue");													//
+	filename.replace(QRegExp("ö"), "oe");													//
+	filename.replace(QRegExp("Ö"), "Oe");													//
+	filename.replace(QRegExp("ä"), "ae");													//
+	filename.replace(QRegExp("Ä"), "Ae");													//
+	return filename;
 }
 
 
@@ -1279,10 +1364,11 @@ QString Song::getSongAction(int index)
 QString Song::replacePlaceholders(QString input, int index)
 {
   // 1. prepare strings
-  // length
-  QString lengthStr=QString("%1").arg(length % 60);
-	if (lengthStr.length()==1)
-	 	lengthStr="0"+lengthStr;
+  // length (mm:ss)  TODO: (hh:mm:ss if necessary)
+  QString secondsStr=QString("%1").arg(length % 60);
+  secondsStr.rightJustify(2,'0');
+  QString lengthStr=QString("%1:%2").arg((length) / 60).arg(secondsStr);
+
   // medialist
   QString mediaList="";
 	for(unsigned int i=0; i<mediaName.count(); i++) {
@@ -1291,9 +1377,11 @@ QString Song::replacePlaceholders(QString input, int index)
     }
 		mediaList+=mediaName[i];
 	}
+
   // filename without suffix
   int suffixPos = filename.findRev('.');
   QString filenameWithoutSuffix = filename.left(suffixPos);
+
   // trackNr
   QString trackNrStr;
   if(trackNr==0) {
@@ -1304,21 +1392,22 @@ QString Song::replacePlaceholders(QString input, int index)
   }
 
   // replace
-  input.replace(QRegExp("%absoluteFilename%"), location());
-	input.replace(QRegExp("%filename%"), filename);
-	input.replace(QRegExp("%filenameWithoutSuffix%"), filenameWithoutSuffix);
-	input.replace(QRegExp("%path%"), path);
-	input.replace(QRegExp("%artist%"), artist);
-	input.replace(QRegExp("%title%"), title);
-	input.replace(QRegExp("%album%"), album);
-	input.replace(QRegExp("%bitrate%"), QString("%1").arg(bitrate));
-	input.replace(QRegExp("%index%"), QString("%1").arg(index));
-	input.replace(QRegExp("%length%"), QString("%1:%2").arg((length) / 60).arg(lengthStr));
-	input.replace(QRegExp("%lengthInSeconds%"), QString("%1").arg(length));
-  input.replace(QRegExp("%newline%"), "\n");
-	input.replace(QRegExp("%mediaList%"), mediaList);
-  input.replace(QRegExp("%trackNr%"), trackNrStr);
-  input.replace(QRegExp("%trackNr2Digit%"), trackNrStr.rightJustify(2,'0'));
+  input.replace(QRegExp("\\{absoluteFilename\\}"), location());
+	input.replace(QRegExp("\\{filename\\}"), filename);
+	input.replace(QRegExp("\\{filenameWithoutSuffix\\}"), filenameWithoutSuffix);
+  input.replace(QRegExp("\\{suffix\\}"), getSuffix());
+	input.replace(QRegExp("\\{path\\}"), path);
+	input.replace(QRegExp("\\{artist\\}"), artist);
+	input.replace(QRegExp("\\{title\\}"), title);
+	input.replace(QRegExp("\\{album\\}"), album);
+	input.replace(QRegExp("\\{bitrate\\}"), QString("%1").arg(bitrate));
+	input.replace(QRegExp("\\{index\\}"), QString("%1").arg(index));
+	input.replace(QRegExp("\\{length\\}"), lengthStr);
+	input.replace(QRegExp("\\{lengthInSeconds\\}"), QString("%1").arg(length));
+  input.replace(QRegExp("\\{newline\\}"), "\n");
+	input.replace(QRegExp("\\{mediaList\\}"), mediaList);
+  input.replace(QRegExp("\\{trackNr\\}"), trackNrStr);
+  input.replace(QRegExp("\\{trackNr2Digit\\}"), trackNrStr.rightJustify(2,'0'));
   return input;
 }
 

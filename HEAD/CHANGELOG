@@ -1,23 +1,27 @@
-??.??.2003 version 1.1
+??.??.2003 version 1.2
 ######################
-MAJOR CHANGE:
+MAJOR CHANGES:
 - first version developed and tested on new development environment (Suse 9.0)
   - kde 3.1.4, gcc 3.3.1, qt 3.2.1, kdevelop 2.1.5
   - autoconf 2.5.7, automake 1.7.6
   - noatun 2.2.1, xmms 1.2.8
   - ...
-- requires KDE now
+- yammi is a proper KDE application now!
+  - new translation scheme (i18n kde default scheme)
+  => requires kde libs
   => --disable-KDE and --disable-noatun switches removed from configure script
 - repaired broken noatun communication behavior (apparently due to newer version of noatun)
 - applied patch from Luis (thanks!!!):
   - support for arts media player
   - changes towards making yammi a proper kde application
-- added (ugly) application icons in 16x16, 32x32, 48x48, 64x64
-- changed the xpm icons to png icons that get installed
-MINOR CHANGE
+- added consistency check which checks location of a file (not correcting yet)
+
+MINOR CHANGES:
 - added a button to add standard plugins
 - added an automatic folder "by year"
-- simplified plugin replacements
+- simplified placeholder usage in plugins ({artist} instead of %a)
+- changed the xpm icons to png icons that get installed
+- added (ugly) application icons in 16x16, 32x32, 48x48, 64x64
 
 ######################
 24.10.2003 version 1.0

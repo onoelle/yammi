@@ -42,10 +42,11 @@ void Prefs::setDefaultValues(void) {
 	player = MEDIA_PLAYER_XMMS;
 #endif
 
-	yammiVersion = "1.1";
+	yammiVersion = "1.2";
 	trashDir = "/mp3/trash/";
 	scanDir = "/mp3/inbox/";
-	filenamePattern = "%a - %t";
+	filenamePattern = "{artist} - {title}.{suffix}";
+	directoryPattern = "{artist}/{album}";
 	guessingMode = GUESSING_MODE_SIMPLE;
   
 	doubleClickAction = Song::None;
@@ -158,6 +159,7 @@ bool Prefs::loadConfig(QString baseDir)
 	trashDir                     = getProperty(doc, "trashDir", trashDir);
 	scanDir                      = getProperty(doc, "scanDir", scanDir);
 	filenamePattern              = getProperty(doc, "filenamePattern", filenamePattern);
+	directoryPattern             = getProperty(doc, "directoryPattern", directoryPattern);
 	guessingMode                 = getProperty(doc, "guessingMode", player);
 	doubleClickAction            = (Song::action) getProperty(doc, "doubleClickAction", doubleClickAction);
 	middleClickAction            = (Song::action) getProperty(doc, "middleClickAction", middleClickAction);
@@ -242,6 +244,7 @@ bool Prefs::saveConfig(void)
 	setProperty(doc, "trashDir", trashDir);
 	setProperty(doc, "scanDir", scanDir);
 	setProperty(doc, "filenamePattern", filenamePattern);
+	setProperty(doc, "directoryPattern", directoryPattern);
 	setProperty(doc, "guessingMode", guessingMode);
 	setProperty(doc, "doubleClickAction", doubleClickAction);
 	setProperty(doc, "middleClickAction", middleClickAction);

@@ -1694,6 +1694,8 @@ void YammiGui::forSelectionCheckConsistency()
   p.checkFilenames=d.CheckBoxCheckFilenames->isChecked();
   p.ignoreCaseInFilenames=model->config.ignoreCaseInFilenames;
   p.correctFilenames=d.CheckBoxCorrectFilenames->isChecked();
+  p.checkDirectories=d.CheckBoxCheckDirectories->isChecked();
+  p.correctDirectories=d.CheckBoxCorrectDirectories->isChecked();
   p.checkDoubles=d.CheckBoxCheckDoubles->isChecked();
 
   QProgressDialog progress( tr("Checking consistency..."), tr("Cancel"), 100, this, tr("progress"), TRUE );
@@ -1718,11 +1720,11 @@ void YammiGui::forSelectionCheckConsistency()
   %5 songs with inconsistent tags, of these:\n\
       %6 tags corrected\n\
   %7 songs with inconsistent filename, of these:\n\
-      %8 filenames corrected\n\
-  %9 double entries found\
-  ")).arg(model->problematicSongs.count()).arg(p.nonExisting).arg(p.nonExistingUpdated)
-  .arg(p.nonExistingDeleted).arg(p.dirtyTags).arg(p.tagsCorrected)
-  .arg(p.dirtyFilenames).arg(p.filenamesCorrected).arg(p.doublesFound);  
+      %8 filenames corrected\n")).arg(model->problematicSongs.count()).arg(p.nonExisting).arg(p.nonExistingUpdated)\
+  .arg(p.nonExistingDeleted).arg(p.dirtyTags).arg(p.tagsCorrected).arg(p.dirtyFilenames).arg(p.filenamesCorrected);
+  msg+=QString(tr("%1 songs with inconsistent path, of these:\n\
+      %2 paths corrected\n\
+  %3 double entries found\n")).arg(p.dirtyDirectories).arg(p.directoriesCorrected).arg(p.doublesFound);
 	QMessageBox::information( this, tr("Yammi"), msg, tr("Fine.") );
 }
 
@@ -2215,7 +2217,7 @@ void YammiGui::forSong(Song* s, Song::action act, QString dir)
 		if(s->filename=="") {
 			return;
     }
-    QString diagnosis=s->checkConsistency(model->config.tagsConsistent, model->config.filenamesConsistent, model->config.ignoreCaseInFilenames);
+    QString diagnosis=s->checkConsistency(model->config.tagsConsistent, model->config.filenamesConsistent, model->config.ignoreCaseInFilenames, false); //TODO replace false???
 		if(diagnosis!="") {
 			model->problematicSongs.append(new SongEntryString(s, diagnosis));
 		}
@@ -3547,7 +3549,7 @@ void YammiGui::setupActions( )
 	new KAction(i18n("Clear Playlist..."),0,0,this,SLOT(clearPlaylist()),actionCollection(),"clear_playlist");
 	new KAction(i18n("Shuffle Playlist..."),0,0,this,SLOT(shufflePlaylist()),actionCollection(),"shuffle_playlists");
 	new KAction(i18n("Enqueue as next (prepend)"),"enqueue_asnext",KShortcut(Key_F6),this,SLOT(prependSelected()),actionCollection(),"prepend_selected");
-	new KAction(i18n("Enqueue as end (append)"),"enqueue",KShortcut(Key_F5),this,SLOT(appendSelected()),actionCollection(),"append_selected");
+	new KAction(i18n("Enqueue at end (append)"),"enqueue",KShortcut(Key_F5),this,SLOT(appendSelected()),actionCollection(),"append_selected");
 	new KAction(i18n("Play Now!"),"play_now",KShortcut(Key_F7),this,SLOT(playSelected()),actionCollection(),"play_selected");
 	new KAction(i18n("Dequeue Songs"),"dequeue_song",KShortcut(Key_F8),this,SLOT(dequeueSelected()),actionCollection(),"dequeue_selected");
 	new KAction(i18n("Clear Playlist"),"dequeue_all",KShortcut(QKeySequence(Key_Shift,Key_F8)),this,SLOT(clearPlaylist()),actionCollection(),"clear_playlist");
@@ -3593,13 +3595,14 @@ void YammiGui::setupActions( )
 	
 	//other actions
 	new KAction(i18n("Update Automatic Folder Structure"),0,0,this,SLOT(updateView()),actionCollection(),"update_view");
-	new KAction(i18n("Song Info..."),"info",KShortcut(Key_I),this,SLOT(infoSelected()),actionCollection(),"info_selected");
+	new KAction(i18n("Song Info..."),"song_info",KShortcut(Key_I),this,SLOT(infoSelected()),actionCollection(),"info_selected");
 	
 	//Setup
 	KStdAction::preferences(this,SLOT(setPreferences()),actionCollection());
 
-	//FIXME - why is yammi not finding the file by itself?!?!
-	createGUI( ); //"/home/oliver/.kde/share/apps/yammi/yammiui.rc");
+  // if the rc file is properly installed yammi finds it automatically
+  // (eg. /opt/kde3/share/apps/yammi/yammiui.rc)
+  createGUI();
 }
 //////////////////
 

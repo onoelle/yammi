@@ -98,7 +98,7 @@ public:
 	int create(const QString filename, const QString mediaName, bool capitalizeTags);
 
 	/// check consistency
-	QString checkConsistency(bool requireConsistentTags, bool requireConsistentFilename, bool ignoreCaseInFilename);
+	QString checkConsistency(bool requireConsistentTags, bool requireConsistentFilename, bool ignoreCaseInFilename, bool requireConsistentDirectory);
 
   /// rereads the id3 or ogg tags from the file
   bool rereadTags();
@@ -141,13 +141,17 @@ public:
   // checking methods
 	bool checkTags();
 	bool checkFilename(bool ignoreCase);
+  bool checkDirectory(bool ignoreCase);
 	bool checkReadability();
 	
 	// saving methods
 	bool saveTags();
-	bool saveFilename();
+	bool correctFilename();
+  bool correctPath();
 	
-	/// compare primary key
+
+
+  /// compare primary key
 	bool sameAs(Song* s);
 	bool sameAs(QString _artist, QString _title, QString _album);
 	
@@ -159,18 +163,30 @@ public:
 	QString displayName() { return this->artist+" - "+this->title; }
 	QString location() 		{ return this->path+"/"+this->filename; }
 
-	/* Constructs a filename following the "artist-title.mp3" pattern.
-	 * (Should) Take care of special characters not allowed in filenames.
+	/**
+   * Constructs a filename according to the configured filename pattern.
+	 * Takes care of special characters not allowed in filenames.
 	 */
 	QString constructFilename();
-	
+
+	/**
+   * Constructs a path according to the configured directory pattern.
+	 * Takes care of special characters not allowed in filenames.
+	 */
+  QString constructPath();
+
+  QString getSuffix();
+
+  /** 
+   * Replaces invalid characters (for a filesystem) in a string.
+   */
+  QString makeValidFilename(QString filename, bool file);
+  	
 
 	void addMediaLocation(QString mediaName, QString locationOnMedia);  ///< adds the location on a media to song info
 	void renameMedia(QString oldMediaName, QString newMediaName);
 	void deleteFile(QString trashDir);
 	void moveTo(QString dir);
-//	void copyTo(QString dir);
-//	void copyAsWavTo(QString dir);
 	
 
 	// this is all info that we want to save belonging to a song object:
@@ -201,6 +217,7 @@ public:
 	bool corrupted;
 	bool tagsDirty;
 	bool filenameDirty;
+	bool directoryDirty;
 
 	static QString getSongAction(int index);
 	static int getMaxSongAction()     { return MAX_SONG_ACTION; }	

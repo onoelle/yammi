@@ -1,7 +1,7 @@
 ####### kdevelop will overwrite this part!!! (begin)##########
 
 
-EXTRA_DIST = clearPlaylist.xpm defaultControlClick.xpm defaultDoubleClick.xpm defaultMiddleClick.xpm defaultShiftClick.xpm in.xpm notin.xpm songinfo.xpm pause.xpm skipbackward.xpm skipforward.xpm stop.xpm newCategory.xpm some_in.xpm toggle_playlist.png yammi16x16.png yammi32x32.png yammi48x48.png yammi64x64.png stop_prelisten.png prelisten_start.png prelisten_middle.png prelisten_end.png play_now.png play.png enqueue_asnext.png dequeue_all.png dequeue_song.png enqueue.png 
+EXTRA_DIST = clearPlaylist.xpm defaultControlClick.xpm defaultDoubleClick.xpm defaultMiddleClick.xpm defaultShiftClick.xpm in.xpm notin.xpm pause.xpm skipbackward.xpm skipforward.xpm stop.xpm newCategory.xpm some_in.xpm toggle_playlist.png yammi16x16.png yammi32x32.png yammi48x48.png yammi64x64.png stop_prelisten.png prelisten_start.png prelisten_middle.png prelisten_end.png play_now.png play.png enqueue_asnext.png dequeue_all.png dequeue_song.png enqueue.png song_info.png 
 
 install-data-local:
 	$(mkinstalldirs) $(kde_datadir)/yammi/
@@ -32,6 +32,10 @@ install-data-local:
 	$(INSTALL_DATA) $(srcdir)/dequeue_all.png $(kde_datadir)/yammi/icons/hicolor/16x16/actions/dequeue_all.png
 	$(mkinstalldirs) $(kde_datadir)/yammi/icons/hicolor/16x16/actions/
 	$(INSTALL_DATA) $(srcdir)/dequeue_song.png $(kde_datadir)/yammi/icons/hicolor/16x16/actions/dequeue_song.png
+	$(mkinstalldirs) $(kde_datadir)/yammi/icons/hicolor/16x16/actions/
+	$(INSTALL_DATA) $(srcdir)/enqueue.png $(kde_datadir)/yammi/icons/hicolor/16x16/actions/enqueue.png
+	$(mkinstalldirs) $(kde_datadir)/yammi/icons/hicolor/16x16/actions/
+	$(INSTALL_DATA) $(srcdir)/song_info.png $(kde_datadir)/yammi/icons/hicolor/16x16/actions/song_info.png
 
 uninstall-local:
 	-rm -f $(kde_datadir)/yammi/toggle_playlist.png
@@ -48,5 +52,7 @@ uninstall-local:
 	-rm -f $(kde_datadir)/yammi/icons/hicolor/16x16/actions/enqueue_asnext.png
 	-rm -f $(kde_datadir)/yammi/icons/hicolor/16x16/actions/dequeue_all.png
 	-rm -f $(kde_datadir)/yammi/icons/hicolor/16x16/actions/dequeue_song.png
+	-rm -f $(kde_datadir)/yammi/icons/hicolor/16x16/actions/enqueue.png
+	-rm -f $(kde_datadir)/yammi/icons/hicolor/16x16/actions/song_info.png
 
 ####### kdevelop will overwrite this part!!! (end)############

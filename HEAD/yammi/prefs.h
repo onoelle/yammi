@@ -65,6 +65,8 @@ public:
 	QString yammiBaseDir;
 	/** Filename pattern for renaming files */
 	QString filenamePattern;
+	/** Filename pattern for renaming files */
+	QString directoryPattern;
 	/** Guessing pattern if no tag is available */
 	int guessingMode;
 	

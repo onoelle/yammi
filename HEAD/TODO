@@ -8,12 +8,17 @@ last update 6.1.2004
 for version 1.2
 ---------------
 main purpose: clean up, so other people can more easily contribute to the project
+
+- check KActions (eg: context menu: song info)
+- implement moving files
+
 - check conformance to kde standards, such as:
   - conforming to standard kde i18n schema
   - check icons: transparency, remove old ones
   - check lsm file
   - replace tr() with i18n()
   - replace qDebug / cout with kdDebug?
+
 - clean up CVS repo
 - check bugs on sf
 - check all TODOs
