@@ -1,0 +1,78 @@
+<!DOCTYPE kpartgui>
+<kpartgui name="yammi">
+<MenuBar>
+  <Menu name="player"><text>Player</text>
+    <Action name="play_pause"/>
+    <Action name="stop"/>
+    <Action name="skip_backward"/>
+    <Action name="skip_forward"/>
+  </Menu>
+  <Menu name="playlist"><text>Playlist</text>
+    <Action name="to_from_playlist"/>
+    <Action name="clear_playlist"/>
+    <Action name="shuffle_playlist"/>
+  </Menu>
+  <Menu name="edit">
+    <Action name="invert_selection"/>
+  </Menu>
+  <Menu name="database"><text>Database</text>
+    <Action name="save_db"/>
+    <Action name="scan_hd"/>
+    <Action name="scan_media"/>
+    <Action name="import_file"/>
+    <Action name="check_consistency"/>
+    <Action name="grab"/>
+  </Menu>
+  <Menu name="ap"><text>Autoplay</text>
+    <Action name="autoplay_off"/>
+    <Action name="autoplay_longest"/>
+    <Action name="autoplay_random"/>
+    <Separator/>
+    <Action name="autoplay_folder"/>
+  </Menu>
+  <Menu name="view"><text>View</text>
+    <Action name="update_view"/>
+    <Menu name="toolbars"><text>Toolbars</text>
+      <Action name="main_toolbar"/>
+      <Action name="media_player"/>
+      <Action name="songactions_toolbar"/>
+      <Action name="removablemedia_toolbar" />
+      <Action name="sleep_toolbar"/>
+      <Action name="prelisten_player"/>
+    </Menu>
+  </Menu>
+</MenuBar>
+<ToolBar name="media_player">
+ <text>Media Player</text>
+ <Action name="play_pause"/>
+ <Action name="skip_backward"/>
+ <Action name="skip_forward"/>
+ <Action name="stop"/>
+</ToolBar>
+<ToolBar name="main_toolbar">
+ <text>Main ToolBar</text>
+</ToolBar>
+<ToolBar name="prelisten_toolbar">
+ <text>Prelisten</text>
+ <Action name="prelisten_start"/>
+ <Action name="prelisten_middle"/>
+ <Action name="prelisten_end"/>
+ <Action name="stop_prelisten"/>
+</ToolBar>
+<ToolBar name="sleep_toolbar">
+ <text>Sleep</text>
+</ToolBar>
+<ToolBar name="songactions_toolbar">
+ <text>Song Actions</text>
+   <Action name="prepend_selected"/>
+   <Action name="append_selected"/>
+   <Action name="play_selected"/>
+   <Action name="dequeue_selected"/>
+   <Action name="clear_playlist"/>
+   <Action name="info_selected"/>
+   <Action name="tofrom_playlist"/>
+</ToolBar>
+<ToolBar name="removablemedia_toolbar">
+ <text>Removable Media</text>
+</ToolBar>
+</kpartgui>

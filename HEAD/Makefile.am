@@ -1,6 +1,6 @@
 ####### kdevelop will overwrite this part!!! (begin)##########
 
-SUBDIRS = yammi 
+SUBDIRS = yammi po 
 
 EXTRA_DIST = yammi.kdevprj admin CHANGELOG yammiGrabAndEncode AUTHORS INSTALL README TODO CREDITS yammiMp3Edit yammi.lsm 
 

@@ -23,16 +23,9 @@ dnl Perform program name transformation
 AC_ARG_PROGRAM
 
 dnl Automake doc recommends to do this only here. (Janos)
-AM_INIT_AUTOMAKE(yammi,1.1)
+AM_INIT_AUTOMAKE(yammi,1.2)
 
 KDE_SET_PREFIX
-
-dnl for non KDE applications
-dnl AC_PREFIX_DEFAULT(/usr/local)
-dnl if test "x$prefix" = "xNONE"; then
-dnl   prefix=$ac_default_prefix
-dnl   ac_configure_args="$ac_configure_args --prefix $prefix"
-dnl fi
 
 dnl generate a header that will have all the
 dnl #defines for conditional compilation
@@ -200,6 +193,7 @@ AC_CONFIG_FILES(yammi/Makefile)
 AC_CONFIG_FILES(yammi/docs/Makefile)
 AC_CONFIG_FILES(yammi/docs/en/Makefile)
 AC_CONFIG_FILES(yammi/icons/Makefile)
+AC_CONFIG_FILES(po/Makefile)
 AC_OUTPUT
 
 AC_MSG_NOTICE( [

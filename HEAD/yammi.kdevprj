@@ -26,21 +26,21 @@ ldadd=-lartskde -lkparts -lkdeui -lkdecore $(LIB_QT)
 ldflags=\s                                                          \s
 
 [General]
-AMChanged=false
+AMChanged=true
 author=Oliver Nölle
 configure_args=\s--build=i386-linux --host=i386-linux --target=i386-linux\s
 email=yammi-developer@lists.sourceforge.net
 kdevprj_version=1.3
 lfv_open_groups=User Interface
 make_options=\s-j1
-makefiles=Makefile.am,yammi/Makefile.am,yammi/docs/Makefile.am,yammi/docs/en/Makefile.am,yammi/icons/Makefile.am
+makefiles=Makefile.am,yammi/Makefile.am,yammi/docs/Makefile.am,yammi/docs/en/Makefile.am,yammi/icons/Makefile.am,po/Makefile.am
 modifyMakefiles=true
 project_name=Yammi
-project_type=normal_qt2
+project_type=normal_kde2
 sgml_file=/home/oliver/work/programming/yammi/yammi/docs/en/index.sgml
 short_info=Yet Another Music Manager I...,Fastest and easiest access to your whole song collection!
 sub_dir=yammi/
-version=1.1
+version=1.2
 version_control=CVS
 workspace=1
 
@@ -63,13 +63,13 @@ kpp_version=control=CVS
 Headers=*.h,*.hh,*.hxx,*.hpp,*.H
 Others=*
 Sources=*.cpp,*.c,*.cc,*.C,*.cxx,*.ec,*.ecpp,*.lxx,*.l++,*.ll,*.l
-Translations=*.ts
+Translations=*.po
 User Interface=*.kdevdlg,*.ui,*.rc,*.dlg
 groups=Headers,Sources,User Interface,Translations,Others
 
 [Makefile.am]
 files=yammi.kdevprj,admin,CHANGELOG,yammiGrabAndEncode,yammi.spec,AUTHORS,INSTALL,README,TODO,CREDITS,yammiMp3Edit,yammi.lsm
-sub_dirs=yammi
+sub_dirs=yammi,po
 type=normal
 
 [README]
@@ -89,6 +89,17 @@ dist=true
 install=false
 install_location=
 type=DATA
+
+[po/Makefile.am]
+files=po/de.po
+sub_dirs=
+type=po
+
+[po/de.po]
+dist=false
+install=false
+install_location=
+type=PO
 
 [yammi.kdevprj]
 dist=true
@@ -181,7 +192,7 @@ install_location=
 type=SOURCE
 
 [yammi/Makefile.am]
-files=yammi/lo32-app-yammi.png,yammi/lo16-app-yammi.png,yammi/folder.cpp,yammi/folder.h,yammi/foldercategories.cpp,yammi/foldercategories.h,yammi/foldergroups.cpp,yammi/foldergroups.h,yammi/foldermedia.cpp,yammi/foldermedia.h,yammi/foldersorted.cpp,yammi/foldersorted.h,yammi/fuzzsrch.cpp,yammi/fuzzsrch.h,yammi/main.cpp,yammi/mydatetime.cpp,yammi/mydatetime.h,yammi/mylist.cpp,yammi/mylist.h,yammi/mylistview.cpp,yammi/mylistview.h,yammi/preferencesdialog.cpp,yammi/preferencesdialog.h,yammi/prefs.cpp,yammi/prefs.h,yammi/song.cpp,yammi/song.h,yammi/songentry.cpp,yammi/songentry.h,yammi/songentryint.cpp,yammi/songentryint.h,yammi/songentryint2.cpp,yammi/songentryint2.h,yammi/songentrystring.cpp,yammi/songentrystring.h,yammi/songentrytimestamp.cpp,yammi/songentrytimestamp.h,yammi/songinfo.cpp,yammi/songinfo.h,yammi/songlistitem.cpp,yammi/songlistitem.h,yammi/yammigui.cpp,yammi/yammigui.h,yammi/yammimodel.cpp,yammi/yammimodel.h,yammi/glib.h,yammi/glibconfig.h,yammi/xmmsctrl.h,yammi/updatedatabasedialog.cpp,yammi/updatedatabasedialog.h,yammi/options.h,yammi/updatedatabasemediadialog.cpp,yammi/updatedatabasemediadialog.h,yammi/lineeditshift.cpp,yammi/lineeditshift.h,yammi/mediaplayer.cpp,yammi/mediaplayer.h,yammi/xmmsplayer.cpp,yammi/xmmsplayer.h,yammi/yammiapplication.cpp,yammi/yammiapplication.h,yammi/vcedit.c,yammi/vcedit.h,yammi/acconfig.h,yammi/ConsistencyCheckDialog.cpp,yammi/ConsistencyCheckDialog.h,yammi/ConsistencyCheckParameter.h,yammi/ConsistencyCheckDialogBase.ui,yammi/DeleteDialog.ui,yammi/PreferencesDialogBase.ui,yammi/SongInfoDialog.ui,yammi/UpdateDatabaseDialogBase.ui,yammi/UpdateDatabaseMediaDialogBase.ui,yammi/i18n.h,yammi/noatunplayer.cpp,yammi/noatunplayer.h,yammi/ApplyToAllBase.ui,yammi/dummyplayer.h,yammi/CFrameHeader.cpp,yammi/CFrameHeader.h,yammi/CMP3Info.cpp,yammi/CMP3Info.h,yammi/CVBitRate.cpp,yammi/CVBitRate.h,yammi/artsplayer.cpp,yammi/artsplayer.h,yammi/yammiicons.h,yammi/yammi.desktop
+files=yammi/folder.cpp,yammi/folder.h,yammi/foldercategories.cpp,yammi/foldercategories.h,yammi/foldergroups.cpp,yammi/foldergroups.h,yammi/foldermedia.cpp,yammi/foldermedia.h,yammi/foldersorted.cpp,yammi/foldersorted.h,yammi/fuzzsrch.cpp,yammi/fuzzsrch.h,yammi/main.cpp,yammi/mydatetime.cpp,yammi/mydatetime.h,yammi/mylist.cpp,yammi/mylist.h,yammi/mylistview.cpp,yammi/mylistview.h,yammi/preferencesdialog.cpp,yammi/preferencesdialog.h,yammi/prefs.cpp,yammi/prefs.h,yammi/song.cpp,yammi/song.h,yammi/songentry.cpp,yammi/songentry.h,yammi/songentryint.cpp,yammi/songentryint.h,yammi/songentryint2.cpp,yammi/songentryint2.h,yammi/songentrystring.cpp,yammi/songentrystring.h,yammi/songentrytimestamp.cpp,yammi/songentrytimestamp.h,yammi/songinfo.cpp,yammi/songinfo.h,yammi/songlistitem.cpp,yammi/songlistitem.h,yammi/yammigui.cpp,yammi/yammigui.h,yammi/yammimodel.cpp,yammi/yammimodel.h,yammi/glib.h,yammi/glibconfig.h,yammi/xmmsctrl.h,yammi/updatedatabasedialog.cpp,yammi/updatedatabasedialog.h,yammi/options.h,yammi/updatedatabasemediadialog.cpp,yammi/updatedatabasemediadialog.h,yammi/lineeditshift.cpp,yammi/lineeditshift.h,yammi/mediaplayer.cpp,yammi/mediaplayer.h,yammi/xmmsplayer.cpp,yammi/xmmsplayer.h,yammi/yammiapplication.cpp,yammi/yammiapplication.h,yammi/vcedit.c,yammi/vcedit.h,yammi/acconfig.h,yammi/ConsistencyCheckDialog.cpp,yammi/ConsistencyCheckDialog.h,yammi/ConsistencyCheckParameter.h,yammi/ConsistencyCheckDialogBase.ui,yammi/DeleteDialog.ui,yammi/PreferencesDialogBase.ui,yammi/SongInfoDialog.ui,yammi/UpdateDatabaseDialogBase.ui,yammi/UpdateDatabaseMediaDialogBase.ui,yammi/i18n.h,yammi/noatunplayer.cpp,yammi/noatunplayer.h,yammi/ApplyToAllBase.ui,yammi/dummyplayer.h,yammi/CFrameHeader.cpp,yammi/CFrameHeader.h,yammi/CMP3Info.cpp,yammi/CMP3Info.h,yammi/CVBitRate.cpp,yammi/CVBitRate.h,yammi/artsplayer.cpp,yammi/artsplayer.h,yammi/yammiicons.h,yammi/yammi.desktop,yammi/yammiui.rc,yammi/yammi.de.ts,yammi/yammi.de.qm
 sub_dirs=docs,icons
 type=prog_main
 
@@ -387,7 +398,7 @@ install_location=
 type=HEADER
 
 [yammi/icons/Makefile.am]
-files=yammi/icons/clearPlaylist.xpm,yammi/icons/defaultControlClick.xpm,yammi/icons/defaultDoubleClick.xpm,yammi/icons/defaultMiddleClick.xpm,yammi/icons/defaultShiftClick.xpm,yammi/icons/dequeueAll.xpm,yammi/icons/dequeueSong.xpm,yammi/icons/enqueue.xpm,yammi/icons/enqueueasnext.xpm,yammi/icons/filesave.xpm,yammi/icons/in.xpm,yammi/icons/notin.xpm,yammi/icons/songinfo.xpm,yammi/icons/stopPrelisten.xpm,yammi/icons/yammiicon.xpm,yammi/icons/pause.xpm,yammi/icons/play.xpm,yammi/icons/skipbackward.xpm,yammi/icons/skipforward.xpm,yammi/icons/stop.xpm,yammi/icons/playnow.xpm,yammi/icons/newCategory.xpm,yammi/icons/toFromPlaylist.xpm,yammi/icons/some_in.xpm,yammi/icons/prelistenEnd.xpm,yammi/icons/prelistenMiddle.xpm,yammi/icons/prelistenStart.xpm,yammi/icons/toggle_playlist.png,yammi/icons/yammi16x16.png,yammi/icons/yammi32x32.png,yammi/icons/yammi48x48.png,yammi/icons/yammi64x64.png,yammi/icons/stop_prelisten.png,yammi/icons/prelisten_start.png,yammi/icons/prelisten_middle.png,yammi/icons/prelisten_end.png,yammi/icons/play_now.png,yammi/icons/play.png,yammi/icons/enqueue.png,yammi/icons/enqueue_asnext.png,yammi/icons/dequeue_all.png,yammi/icons/dequeue_song.png
+files=yammi/icons/clearPlaylist.xpm,yammi/icons/defaultControlClick.xpm,yammi/icons/defaultDoubleClick.xpm,yammi/icons/defaultMiddleClick.xpm,yammi/icons/defaultShiftClick.xpm,yammi/icons/in.xpm,yammi/icons/notin.xpm,yammi/icons/songinfo.xpm,yammi/icons/pause.xpm,yammi/icons/skipbackward.xpm,yammi/icons/skipforward.xpm,yammi/icons/stop.xpm,yammi/icons/newCategory.xpm,yammi/icons/some_in.xpm,yammi/icons/toggle_playlist.png,yammi/icons/yammi16x16.png,yammi/icons/yammi32x32.png,yammi/icons/yammi48x48.png,yammi/icons/yammi64x64.png,yammi/icons/stop_prelisten.png,yammi/icons/prelisten_start.png,yammi/icons/prelisten_middle.png,yammi/icons/prelisten_end.png,yammi/icons/play_now.png,yammi/icons/play.png,yammi/icons/enqueue_asnext.png,yammi/icons/dequeue_all.png,yammi/icons/dequeue_song.png,yammi/icons/enqueue.png
 sub_dirs=
 type=normal
 
@@ -421,18 +432,6 @@ install=false
 install_location=
 type=DATA
 
-[yammi/icons/dequeueAll.xpm]
-dist=true
-install=false
-install_location=
-type=DATA
-
-[yammi/icons/dequeueSong.xpm]
-dist=true
-install=false
-install_location=
-type=DATA
-
 [yammi/icons/dequeue_all.png]
 dist=true
 install=true
@@ -447,12 +446,6 @@ type=DATA
 
 [yammi/icons/enqueue.png]
 dist=true
-install=true
-install_location=$$(kde_datadir)/yammi/icons/hicolor/16x16/actions/enqueue.png
-type=DATA
-
-[yammi/icons/enqueue.xpm]
-dist=true
 install=false
 install_location=
 type=DATA
@@ -461,18 +454,6 @@ type=DATA
 dist=true
 install=true
 install_location=$$(kde_datadir)/yammi/icons/hicolor/16x16/actions/enqueue_asnext.png
-type=DATA
-
-[yammi/icons/enqueueasnext.xpm]
-dist=true
-install=false
-install_location=
-type=DATA
-
-[yammi/icons/filesave.xpm]
-dist=true
-install=false
-install_location=
 type=DATA
 
 [yammi/icons/in.xpm]
@@ -505,40 +486,10 @@ install=true
 install_location=$$(kde_datadir)/yammi/icons/hicolor/16x16/actions/play.png
 type=DATA
 
-[yammi/icons/play.xpm]
-dist=true
-install=false
-install_location=
-type=DATA
-
 [yammi/icons/play_now.png]
 dist=true
 install=true
 install_location=$$(kde_datadir)/yammi/icons/hicolor/16x16/actions/play_now.png
-type=DATA
-
-[yammi/icons/playnow.xpm]
-dist=true
-install=false
-install_location=
-type=DATA
-
-[yammi/icons/prelistenEnd.xpm]
-dist=true
-install=false
-install_location=
-type=DATA
-
-[yammi/icons/prelistenMiddle.xpm]
-dist=true
-install=false
-install_location=
-type=DATA
-
-[yammi/icons/prelistenStart.xpm]
-dist=true
-install=false
-install_location=
 type=DATA
 
 [yammi/icons/prelisten_end.png]
@@ -589,22 +540,10 @@ install=false
 install_location=
 type=DATA
 
-[yammi/icons/stopPrelisten.xpm]
-dist=true
-install=false
-install_location=
-type=DATA
-
 [yammi/icons/stop_prelisten.png]
 dist=true
 install=true
 install_location=$$(kde_datadir)/yammi/icons/hicolor/16x16/actions/stop_prelisten.png
-type=DATA
-
-[yammi/icons/toFromPlaylist.xpm]
-dist=true
-install=false
-install_location=
 type=DATA
 
 [yammi/icons/toggle_playlist.png]
@@ -637,12 +576,6 @@ install=true
 install_location=$$(kde_icondir)/hicolor/64x64/apps/yammi.png
 type=DATA
 
-[yammi/icons/yammiicon.xpm]
-dist=true
-install=false
-install_location=
-type=DATA
-
 [yammi/lineeditshift.cpp]
 dist=true
 install=false
@@ -654,18 +587,6 @@ dist=true
 install=false
 install_location=
 type=HEADER
-
-[yammi/lo16-app-yammi.png]
-dist=true
-install=false
-install_location=
-type=DATA
-
-[yammi/lo32-app-yammi.png]
-dist=true
-install=false
-install_location=
-type=DATA
 
 [yammi/main.cpp]
 dist=true
@@ -913,6 +834,18 @@ install=false
 install_location=
 type=HEADER
 
+[yammi/yammi.de.qm]
+dist=true
+install=false
+install_location=
+type=DATA
+
+[yammi/yammi.de.ts]
+dist=true
+install=false
+install_location=
+type=QT_TS
+
 [yammi/yammi.desktop]
 dist=true
 install=true
@@ -960,6 +893,12 @@ dist=true
 install=false
 install_location=
 type=HEADER
+
+[yammi/yammiui.rc]
+dist=true
+install=true
+install_location=$$(kde_datadir)/yammi/yammiui.rc
+type=DATA
 
 [yammiGrabAndEncode]
 dist=true

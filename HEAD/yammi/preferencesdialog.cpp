@@ -130,6 +130,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, const char *name, bool mod
 	connect( PushButtonDeletePlugin, SIGNAL( clicked() ), this, SLOT( deletePlugin() ) );
 
 	connect( PushButtonPatternReplacements, SIGNAL( clicked() ), this, SLOT( showReplacements() ) );
+	connect( PushButtonAddStandardPlugins, SIGNAL( clicked() ), this, SLOT( addStandardPlugins() ) );
 	connect( PushButtonPluginReplacements, SIGNAL( clicked() ), this, SLOT( showReplacements() ) );
   
 	
@@ -364,22 +365,36 @@ void PreferencesDialog::deletePlugin()
 	updatePlugin(0);
 }
 
+void PreferencesDialog::addStandardPlugins()
+{
+  config->addStandardPlugins();
+  updatePlugin(0);
+}
+
 void PreferencesDialog::showReplacements()
 {
   QString msg("");
   msg+="Replacements for filename pattern, command (single mode)\n";
   msg+="or custom list (group mode):\n";
-  msg+="%f = Filename, %W filename Without suffix\n";
-  msg+="%p = Path, %F = Filename (without path)\n";
-  msg+="%a = Artist, %t = Title\n";
-  msg+="%u = albUm, %b = Bitrate\n";
-  msg+="%i = Index, %s = Length (seconds), %l = Length(mm:ss)\n";
-  msg+="%m = Media list, %n = Newline\n";
-  msg+="%r = Track number, %0r = Track number, two-digit length (padded with 0)\n";
-  msg+="%X directory dialog, %Y file dialog\n";
-  msg+="%Z input string dialog\n\n";
+  msg+="{filename} (without path)\n";
+  msg+="{absoluteFilename} (including path)\n";
+  msg+="{filenameWithoutSuffix} (without path, without suffix)\n";
+  msg+="{path} (without filename)\n";
+  msg+="{artist}, {title}, {album} (corresponding to the tags)\n";
+  msg+="{bitrate} (in kbps)\n";
+  msg+="{index} (index of a song within a selection)\n";
+  msg+="{length} (length in format mm:ss)\n";
+  msg+="{lengthInSeconds} (length in seconds)\n";
+  msg+="{mediaList (list of media on which song is contained)\n";
+  msg+="{newline} (newline)\n";
+  msg+="{trackNr} (Track number)\n";
+  msg+="{trackNr2Digit} (as above, but padded with zero if necessary)\n";
+  msg+="{directoryDialog} (directory dialog, returns chosen directory)\n";
+  msg+="{fileDialog} (file dialog, returns chosen file)\n";
+  msg+="{inputString} (input string dialog, returns entered string)\n\n";
 
   msg+="Replacements for command (group mode):\n";
-  msg+="%l = custom list (via cat command) %L = custom list (directly)\n";
+  msg+="{customListViaFile} (custom list, via file / cat command)\n";
+  msg+="{customList} (custom list, directly)\n";
   QMessageBox::information( this, "Yammi",msg);
 }

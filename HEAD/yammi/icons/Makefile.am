@@ -1,7 +1,7 @@
 ####### kdevelop will overwrite this part!!! (begin)##########
 
 
-EXTRA_DIST = clearPlaylist.xpm defaultControlClick.xpm defaultDoubleClick.xpm defaultMiddleClick.xpm defaultShiftClick.xpm enqueue.xpm in.xpm notin.xpm songinfo.xpm pause.xpm skipbackward.xpm skipforward.xpm stop.xpm newCategory.xpm some_in.xpm toggle_playlist.png yammi16x16.png yammi32x32.png yammi48x48.png yammi64x64.png stop_prelisten.png prelisten_start.png prelisten_middle.png prelisten_end.png play_now.png play.png enqueue_asnext.png dequeue_all.png dequeue_song.png enqueue.png 
+EXTRA_DIST = clearPlaylist.xpm defaultControlClick.xpm defaultDoubleClick.xpm defaultMiddleClick.xpm defaultShiftClick.xpm in.xpm notin.xpm songinfo.xpm pause.xpm skipbackward.xpm skipforward.xpm stop.xpm newCategory.xpm some_in.xpm toggle_playlist.png yammi16x16.png yammi32x32.png yammi48x48.png yammi64x64.png stop_prelisten.png prelisten_start.png prelisten_middle.png prelisten_end.png play_now.png play.png enqueue_asnext.png dequeue_all.png dequeue_song.png enqueue.png 
 
 install-data-local:
 	$(mkinstalldirs) $(kde_datadir)/yammi/

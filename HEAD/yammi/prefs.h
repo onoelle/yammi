@@ -159,6 +159,11 @@ public:
 	 */
 	bool getPrefsFound(void) {		return prefsFound;	}
 
+	/**
+	 * Add yammi's standard plugins
+	 */
+	void addStandardPlugins(void);
+
 private:
 	QString baseDir; /**< Base directory for yammi's configuration files */
 	bool prefsFound; /**< set if preferences were found after \c loadConfig */
@@ -167,11 +172,6 @@ private:
 	 * Set configuration to default values
 	 */
 	void setDefaultValues(void);
-
-	/**
-	 * Add yammi's standard plugins
-	 */
-	void addStandardPlugins(void);
 
 	/**
 	 * Creates yammi's directories

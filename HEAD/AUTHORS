@@ -3,10 +3,13 @@ For contacting the authors of Yammi, please use the following mailing list:
       yammi-developer@lists.sourceforge.net
 
 The authors are mainly:
-- Oliver Nölle    (main author)
-- Stefan Gmeiner  (some patches/cleanups)
-- Bob Lockie      (makefile and configure scripts)
-- Sandra Taufer   (redesign of many icons)
+- Oliver Nölle     (main author)
+- Stefan Gmeiner   (some patches/cleanups)
+- Bob Lockie       (makefile and configure scripts)
+- Sandra Taufer    (redesign of many icons)
+- Luis De la Parra (initiated and helped making Yammi a proper KDE application)
+
+Many other people sent in comments, bug reports and other useful feedback.
 
 For further info, see Yammi's homepage on sourceforge:
 

@@ -3,16 +3,13 @@
 <KDevPrjSession>
  <LastCompileConfig>(Default)</LastCompileConfig>
  <Mainframe MaximizeMode="1" />
- <DocsAndViews NumberOfDocuments="3" >
-  <Doc0 CursorPosLine="6" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="0" FileName="/home/brian/work/programming/yammi/yammi/yammi.desktop" >
+ <DocsAndViews NumberOfDocuments="2" >
+  <Doc0 CursorPosLine="8" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="21" FileName="/home/brian/work/programming/yammi/yammi/Makefile.am" >
    <View0 Top="25" Width="400" Attach="1" Height="300" Left="3" Focus="0" Type="KWriteView" MinMaxMode="0" />
   </Doc0>
-  <Doc1 CursorPosLine="7" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="33" FileName="/home/brian/work/programming/yammi/yammi/yammiui.rc" >
-   <View0 Top="48" Width="779" Attach="1" Height="340" Left="26" Focus="0" Type="KWriteView" MinMaxMode="0" />
+  <Doc1 CursorPosLine="195" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="0" FileName="/home/brian/work/programming/yammi/configure.in" >
+   <View0 Top="23" Width="754" Attach="1" Height="435" Left="23" Focus="1" Type="KWriteView" MinMaxMode="2" />
   </Doc1>
-  <Doc2 CursorPosLine="3639" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="66" FileName="/home/brian/work/programming/yammi/yammi/yammigui.cpp" >
-   <View0 Top="46" Width="785" Attach="1" Height="368" Left="46" Focus="1" Type="KWriteView" MinMaxMode="2" />
-  </Doc2>
  </DocsAndViews>
  <CompileConfigs>
   <Release>

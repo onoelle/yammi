@@ -100,6 +100,7 @@ public:
 	/// check consistency
 	QString checkConsistency(bool requireConsistentTags, bool requireConsistentFilename, bool ignoreCaseInFilename);
 
+  /// rereads the id3 or ogg tags from the file
   bool rereadTags();
 
   // specific to mp3 objects
@@ -150,7 +151,10 @@ public:
 	bool sameAs(Song* s);
 	bool sameAs(QString _artist, QString _title, QString _album);
 	
-	void setTo(Song* s);					///< set values to other song object
+  /// replace placeholders in a string with info from this song
+  QString replacePlaceholders(QString input, int index);
+
+  void setTo(Song* s);					///< set values to other song object
 
 	QString displayName() { return this->artist+" - "+this->title; }
 	QString location() 		{ return this->path+"/"+this->filename; }

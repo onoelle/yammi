@@ -1188,7 +1188,7 @@ QString Song::constructFilename()
     }
   }
   QString pattern=gYammiGui->getModel()->config.filenamePattern;
-  QString s=(gYammiGui->makeReplacements(pattern, this, 0))+suffix;
+  QString s=replacePlaceholders(pattern, 0) + suffix;
   
 	
 	// replace all forbidden characters for filenames with nothing
@@ -1271,3 +1271,54 @@ QString Song::getSongAction(int index)
   else
     return QString("no such action");
 }
+
+/**
+ * replace placeholders in a string with info from this song
+ *
+ */
+QString Song::replacePlaceholders(QString input, int index)
+{
+  // 1. prepare strings
+  // length
+  QString lengthStr=QString("%1").arg(length % 60);
+	if (lengthStr.length()==1)
+	 	lengthStr="0"+lengthStr;
+  // medialist
+  QString mediaList="";
+	for(unsigned int i=0; i<mediaName.count(); i++) {
+		if(i!=0) {
+			mediaList+=", ";
+    }
+		mediaList+=mediaName[i];
+	}
+  // filename without suffix
+  int suffixPos = filename.findRev('.');
+  QString filenameWithoutSuffix = filename.left(suffixPos);
+  // trackNr
+  QString trackNrStr;
+  if(trackNr==0) {
+    trackNrStr="";
+  }
+  else {
+    trackNrStr=QString("%1").arg(trackNr);
+  }
+
+  // replace
+  input.replace(QRegExp("%absoluteFilename%"), location());
+	input.replace(QRegExp("%filename%"), filename);
+	input.replace(QRegExp("%filenameWithoutSuffix%"), filenameWithoutSuffix);
+	input.replace(QRegExp("%path%"), path);
+	input.replace(QRegExp("%artist%"), artist);
+	input.replace(QRegExp("%title%"), title);
+	input.replace(QRegExp("%album%"), album);
+	input.replace(QRegExp("%bitrate%"), QString("%1").arg(bitrate));
+	input.replace(QRegExp("%index%"), QString("%1").arg(index));
+	input.replace(QRegExp("%length%"), QString("%1:%2").arg((length) / 60).arg(lengthStr));
+	input.replace(QRegExp("%lengthInSeconds%"), QString("%1").arg(length));
+  input.replace(QRegExp("%newline%"), "\n");
+	input.replace(QRegExp("%mediaList%"), mediaList);
+  input.replace(QRegExp("%trackNr%"), trackNrStr);
+  input.replace(QRegExp("%trackNr2Digit%"), trackNrStr.rightJustify(2,'0'));
+  return input;
+}
+

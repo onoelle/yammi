@@ -119,13 +119,12 @@ public:
 	YammiModel* getModel() { return model; };
 	void commitData(QSessionManager& sm);
 	void saveState(QSessionManager& sm);
-	QString makeReplacements(QString input, Song* s, int index);
 	bool columnIsVisible(int column);
 	int mapToRealColumn(int column);
 	void mapVisibleColumnsToOriginals();
 	QString getColumnName(int column);
 	
-	public slots:
+public slots:
 	void forSong(Song* s, Song::action act, QString dir=0);
 	void checkForGrabbedTrack();
 	void slotFolderChanged();
@@ -154,7 +153,7 @@ public:
 	
 	void autoplayFolder();
 
-
+public: // TODO
 	MediaPlayer*  player;
 	MyListView* songListView;
 	Folder* chosenFolder;

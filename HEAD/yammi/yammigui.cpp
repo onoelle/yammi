@@ -87,7 +87,7 @@ YammiGui::YammiGui(QString baseDir) : KMainWindow( )
 // that rely on the variable pointing to the yammi instance.. since the variable in main gets assigned
 // after the constructor has finished, we need to do this here, until the code is cleaned up
 	gYammiGui = this;
-	setIcon(QPixmap(yammiicon_xpm));
+//	setIcon(QPixmap(yammiicon_xpm));
 	
 	currentSong=0;
 	chosenFolder=0;
@@ -1392,7 +1392,7 @@ void YammiGui::forSelectionPlugin(int pluginIndex)
 
     int index=1;
     for(Song* s=selectedSongs.firstSong(); s; s=selectedSongs.nextSong(), index++) {
-      QString cmd2=makeReplacements(cmd, s, index);
+      QString cmd2=s->replacePlaceholders(cmd, index);
       
       if(index==1 && confirm) {
         // before  executing cmd on first song, ask user
@@ -1418,16 +1418,16 @@ void YammiGui::forSelectionPlugin(int pluginIndex)
     QString customList="";
     for(Song* s=selectedSongs.firstSong(); s; s=selectedSongs.nextSong(), index++) {
       QString entry = model->config.pluginCustomList[pluginIndex];
-      customList+=makeReplacements(entry, s, index);
+      customList+=s->replacePlaceholders(entry, index);
     }
 
-    // custom list can be long => better put it into a file...
+    // custom list can be long => we put it into a file...
     QFile customListFile(model->config.yammiBaseDir+"/customlist.txt");
     customListFile.open(IO_WriteOnly);
     customListFile.writeBlock( customList, qstrlen(customList) );
     customListFile.close();
-    cmd.replace(QRegExp("%l"), "`cat "+model->config.yammiBaseDir+"/customlist.txt`");
-    cmd.replace(QRegExp("%L"), customList);
+    cmd.replace(QRegExp("{customListViaFile}"), "`cat "+model->config.yammiBaseDir+"/customlist.txt`");
+    cmd.replace(QRegExp("{customList}"), customList);
 
     if(confirm) {
       cout << "plugin command: " << cmd << "\n";
@@ -1448,49 +1448,6 @@ void YammiGui::forSelectionPlugin(int pluginIndex)
   }
 }
 
-
-QString YammiGui::makeReplacements(QString input, Song* s, int index)
-{
-  // 1. prepare strings
-  // length
-  QString lengthStr=QString("%1").arg(s->length % 60);
-	if (lengthStr.length()==1)
-	 	lengthStr="0"+lengthStr;
-  // medialist
-  QString mediaList="";
-	for(unsigned int i=0; i<s->mediaName.count(); i++) {
-		if(i!=0)
-			mediaList+=", ";
-		mediaList+=s->mediaName[i];
-	}
-  // filename without suffix
-  int suffixPos = s->filename.findRev('.');
-  QString filenameWithoutSuffix=s->filename.left(suffixPos);
-  // trackNr
-  QString trackNrStr;
-  if(s->trackNr==0)
-    trackNrStr="";
-  else
-    trackNrStr=QString("%1").arg(s->trackNr);
-
-  // replace
-  input.replace(QRegExp("%f"), s->location());
-	input.replace(QRegExp("%F"), s->filename);
-	input.replace(QRegExp("%W"), filenameWithoutSuffix);  
-	input.replace(QRegExp("%p"), s->path);
-	input.replace(QRegExp("%a"), s->artist);
-	input.replace(QRegExp("%t"), s->title);
-	input.replace(QRegExp("%u"), s->album);
-	input.replace(QRegExp("%b"), QString("%1").arg(s->bitrate));
-	input.replace(QRegExp("%i"), QString("%1").arg(index));
-	input.replace(QRegExp("%l"), QString("%1:%2").arg((s->length) / 60).arg(lengthStr));
-	input.replace(QRegExp("%s"), QString("%1").arg(s->length));
-  input.replace(QRegExp("%n"), "\n");
-	input.replace(QRegExp("%m"), mediaList);
-  input.replace(QRegExp("%r"), trackNrStr);
-  input.replace(QRegExp("%0r"), trackNrStr.rightJustify(2,'0'));
-  return input;  
-}
 
 
 
