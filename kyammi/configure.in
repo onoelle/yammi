@@ -156,7 +156,7 @@ if test "x$configure_enable_xmms" = "xyes"; then
     AC_DEFINE( [ENABLE_XMMS], [1] )
 fi
 
-#dnl GStreamer Support
+dnl GStreamer Support
 if test "x$configure_enable_gstreamer" = "xyes"; then
    KDE_CHECK_HEADER(kde/gstplay/play.h,configure_enable_gstreamer=yes,configure_enable_gstreamer=no)
 

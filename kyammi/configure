@@ -30327,7 +30327,6 @@ _ACEOF
 
 fi
 
-#dnl GStreamer Support
 if test "x$configure_enable_gstreamer" = "xyes"; then
 
 

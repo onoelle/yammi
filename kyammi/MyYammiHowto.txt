@@ -53,6 +53,7 @@ check:
 - README
 - TODO/CHANGELOG
 - start program and check output: any couts/kdDebugs() that should be deleted?
+- remove all ~ and .orig / .rej files (from applying patches)
 
 In kdevelop
 1. Build -> distclean
