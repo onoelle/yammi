@@ -192,6 +192,8 @@ namespace Yammi {
 
     
     void ArtsPlayer::syncYammi2Player() {
+        kdDebug() << "ArtsPlayer::syncYammi2Player()" << endl;
+        
         bool haveToUpdate=model->skipUnplayableSongs();
         
         if(playlist->count()==0) {
@@ -238,31 +240,18 @@ namespace Yammi {
             return;
         }
         m_currentPlay = m_factory->createPlayObject( url, true );
+        kdDebug() << "ArtsPlayer::PlayObject created" << endl;
+        
         // these 2 lines ensure that totalTime() returns meaningful values
         // (otherwise, totalTime() seems to return 0 as long as song has not started playing yet)
         m_currentPlay->play();
         m_currentPlay->pause();
-/*
-        while( playlist->at(0) ) {
-            location = model->checkAvailability( playlist->at(0)->song() );
-            if( location == "" || location == "never" ) {
-                kdWarning() << "Song " << playlist->at(0)->song() << "not available, skipping\n";
-                playlist->removeFirst();
-            } else {
-                m_currentSong = playlist->at(0)->song();
-                m_currentPlay = m_factory->createPlayObject( location, true );
-                // these 2 lines ensure that totalTime() returns meaningful values
-                // (otherwise, totalTime() seems to return 0 as long as song has not started playing yet)
-                kdDebug() << "applying workaround\n";
-                m_currentPlay->play();
-                m_currentPlay->pause();
-                return;
-            }
-        }
-*/
+        kdDebug() << "ArtsPlayer:: play/pause done (for initializing totalTime())" << endl;
+        
         if(haveToUpdate) {
             emit playlistChanged();
         }
+        kdDebug() << "...ArtsPlayer::syncYammi2Player() done" << endl;
         return;
     }
 

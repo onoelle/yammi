@@ -984,7 +984,6 @@ QString YammiModel::checkAvailability(Song* s, bool touch) {
         if(fi.exists() && fi.isReadable()) {
             return s->location();
         }
-        cout << "warning: song " << s->displayName() << "has location given, but file does not exist or is not readable!\n";
     }
     // no location given, check whether already existing in swap dir
     QString dir=m_yammi->config()->swapDir;

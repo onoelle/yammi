@@ -130,24 +130,30 @@ int NoatunPlayer::getOtherPlayerId() {
 
 // fade: 0 = beginning of fading, 100 = fading complete
 void NoatunPlayer::onFade() {
-    kdDebug() << getCurrentPlayerId() << "onFade()" << endl;
+//    kdDebug() << getCurrentPlayerId() << "onFade()" << endl;
     int currentTime=getCurrentTime();
     int totalTime=getTotalTime();
-    kdDebug() << "currentTime: " << currentTime << "totalTime: " << totalTime << endl;
+//    kdDebug() << "currentTime: " << currentTime << "totalTime: " << totalTime << endl;
     if(totalTime == -1) {
         // this is a workaround for noatun sometimes not starting a song
         sendDcopCommand("play()");
     }
     if(currentTime <= 0) {
         fade++;
-        if(fade>10) {
+        if(fade>6) {
             if(totalTime <= 0) {
-                // song length == 0
-                kdDebug() << "total time of current song <= 0, skipping song" << endl;
-                kdDebug() << "location: " << playlist->at(1)->song()->location() << endl;
-                // TODO: proper song change/skip
-                startSongChange(false);
-                return;
+                kdDebug() << "current song apparently not playable (totalTime <= 0), skipping..." << endl;
+                kdDebug() << "file: " << playlist->at(0)->song()->location() << endl;
+                model->skipUnplayableSongs(true);
+                if(playlist->count() >= 2) {
+                    QString location=model->checkAvailability(playlist->at(1)->song());
+                    if(location!="" && location!="never") {
+                        playlistAdd(location, true);
+                        playlist->removeFirst();
+                    }
+                    playlistChanged();
+                    fade = 0;
+                }
             }
         }
     }
@@ -174,7 +180,6 @@ void NoatunPlayer::onFade() {
  * Checks, whether a song change should take place.
  */
 void NoatunPlayer::check() {
-//    kdDebug() << getCurrentPlayerId() << "check()" << endl;
     // 1. check, whether status has changed
     PlayerStatus newStatus=getStatus();
     if(newStatus!=lastStatus) {
@@ -351,19 +356,16 @@ bool NoatunPlayer::skipBackward(bool withoutCrossfading) {
 bool NoatunPlayer::stop() {
     pause();
     jumpTo(0);
-    return true;
-/*    sendDcopCommand("stop()");
-    if(fade<100) {
+    if(fade < 100) {
         // if we are currently crossfading, we should stop both players
         sendDcopCommand("clear()", getOtherPlayerId());
     }
-    */
+    return true;
 }
 
 
 PlayerStatus NoatunPlayer::getStatus() {
     int state=callGetInt("state()");
-//    kdDebug() << getCurrentPlayerId() << "getStatus(), state()=" << state << endl;
     // case 1: noatun is playing
     if(state==2)
         return PLAYING;
@@ -425,31 +427,8 @@ void NoatunPlayer::syncYammi2Player() {
     QString noatunCurrent=getCurrentFile();
 
     QString location = model->checkAvailability( playlist->at(0)->song() );
-
-/*    
-    // the following is necessary for swapped songs...    
-    QString location;
-    location="";
-    while( playlist->at(0) ) {
-        location = model->checkAvailability( playlist->at(0)->song() );
-        if( location == "" || location == "never" ) {
-            kdDebug() << "Song " << playlist->at(0)->song()->displayName() << "not available, skipping\n";
-            playlist->removeFirst();
-            playlistChanged();            
-        } else {
-            break;
-        }
-    }
-    if(location=="" || location=="never") {
-        sendDcopCommand(QString("clear()"));
-        sendDcopCommand(QString("clear()"), getOtherPlayerId());
-        return;
-    }
-    */
     QString yammiCurrent=location.right(location.length()-location.findRev('/')-1);
     if(noatunCurrent!=yammiCurrent) {
-        //    kdDebug() << "setting Noatun's current to Yammi's current\n";
-        //    kdDebug() << "noatun file: |" << noatunCurrent << "|, yammi current: " << yammiCurrent << "\n";
         clearActivePlayerPlaylist();
         playlistAdd(location, false);
         sendDcopCommandInt("setVolume(int)", 100);

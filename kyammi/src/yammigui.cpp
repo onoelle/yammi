@@ -1302,6 +1302,7 @@ void YammiGui::addFolderContent(Folder* folder) {
 }
 
 void YammiGui::addFolderContentSnappy() {
+    kdDebug() << "addSnappy" << endl;
     int i=0;
     SongEntry* entry;
     SongListItem* lastOne=(SongListItem*)songListView->firstChild();
@@ -1326,7 +1327,7 @@ void YammiGui::addFolderContentSnappy() {
         songListView->setUpdatesEnabled(true);
 
         int saved=chosenFolder->getSavedSorting();
-        if(saved!=0) {
+        if(saved!=0 && chosenFolder != folderRecentAdditions) {
             bool asc=true;
             int column;
             if(saved<0) {
@@ -1340,10 +1341,10 @@ void YammiGui::addFolderContentSnappy() {
         } else {
             // special default sorting for certain folders
             if(((QListViewItem*)chosenFolder)->parent()==folderAlbums) {
-                songListView->sortedBy=COLUMN_TRACKNR+1;
+                songListView->sortedBy=COLUMN_TRACKNR + 1;
                 songListView->setSorting(COLUMN_TRACKNR, true);
             } else if(chosenFolder==folderRecentAdditions) {
-                songListView->sortedBy=COLUMN_ADDED_TO+1;
+                songListView->sortedBy=COLUMN_ADDED_TO + 1;
                 songListView->setSorting(COLUMN_ADDED_TO, true);
             } else {
                 // default sort order: first column

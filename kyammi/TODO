@@ -4,11 +4,16 @@ last update 24.02.2005
 
 for version 1.2-final
 ---------------------
+IDEA
+- add unplayable songs to problematic songs?
+
 IN PROGRESS
 - finish: translations (italian, spanish) (add portuguese?)
-- finish: noatun stops playback sometimes
 
 MUST-HAVE
+- fix transparency in prelisten icons
+- after database update: correct ordering in recent additions???
+
 - properly document tags consistent, filenames consistent and directories consistent mode
 - add: publish plugin for html-export
 - add: info message on first startup/on importing old database (or menu entry for importing?)
