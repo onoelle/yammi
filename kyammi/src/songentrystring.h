@@ -31,8 +31,8 @@ public:
 	
 	virtual int getBase() { return 1; };
 	virtual int compare(int column, SongEntry* other);
-	virtual QString getKey(int column) { return stringInfo; };
-	virtual QString getColumn(int no) { return stringInfo; };
+	virtual QString getKey(int) { return stringInfo; };
+	virtual QString getColumn(int) { return stringInfo; };
 protected:
 	QString stringInfo;
 };

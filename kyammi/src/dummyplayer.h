@@ -41,11 +41,11 @@ public slots:
   bool pause() {return true;}
   bool stop()  {return true;}
   bool playPause()  {return true;}
-  bool skipForward(bool withoutCrossfading)   {return true;}
-  bool skipBackward(bool withoutCrossfading)  {return true;}
-  void syncPlayer2Yammi(MyList* playlist)  {};
-  void syncYammi2Player(bool syncAll) {};
-  bool jumpTo(int value) {return true;}
+  bool skipForward(bool)   {return true;}
+  bool skipBackward(bool)  {return true;}
+  void syncPlayer2Yammi(MyList*)  {};
+  void syncYammi2Player(bool) {};
+  bool jumpTo(int) {return true;}
   QString getCurrentFile() {return "";}
   int getCurrentTime() {return 0;}
   int getTotalTime() {return 0;}

@@ -1,3 +1,39 @@
+2004-05-27 Oliver Nölle <oli.noelle@web.de>
+	fixed some more things: 
+	- artsplayer: skip backward / update notification 
+	- compiler warnings 
+	- ... 
+
+2004-05-27 Oliver Nölle <oli.noelle@web.de>
+	fixed some more things: 
+	- artsplayer: skip backward / update notification 
+	- compiler warnings 
+	- ... 
+
+2004-05-27 Oliver Nölle <oli.noelle@web.de>
+	fixed some more things: 
+	- artsplayer: skip backward / update notification for playlist 
+	- compiler warnings (except vcedit) 
+	- ... 
+
+2004-05-27 Oliver Nölle <oli.noelle@web.de>
+	fixed some more things: 
+	- skip backward in artsplayer / update notification 
+	- compiler warnings 
+	- ... 
+	 
+
+2004-05-18 Oliver Nölle <oli.noelle@web.de>
+	- fixed broken saving of settings 
+
+2004-05-18 Oliver Nölle <oli.noelle@web.de>
+	- fixed some saveOptions settings for autoplay folder, column visibility and size, ... 
+	 
+
+2004-05-18 Oliver Nölle <oli.noelle@web.de>
+	- fixed some "saveOptions" settings like autoplay folder, column ordering and size 
+	- fixed marking of visible columns in menu 
+
 2004-05-16 Oliver Nölle <oli.noelle@web.de>
 	- fixed remembering last opened folder 
 	- replaced custom icons with existing ones 

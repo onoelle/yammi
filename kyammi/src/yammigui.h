@@ -47,17 +47,16 @@ class FolderCategories;
 class FolderMedia;
 class Song;
 class KToggleAction;
-
+class SearchThread;
 
 // -----------------------------------------------------------------
 
 
 
 /**
- * This is the main class: horribly huge... a total mess ... sorry...
- * I am working on cleaning it up...honestly...
+ * This is the main class.
  *
- * -> clean-up in progress..... (luis)
+ * ...still way to big and unordered...cleaning in progress (luis and oliver)
  */
 class YammiGui : public KMainWindow
 {
@@ -303,6 +302,8 @@ protected:
 	QString currentFile;
 	// filename of new track being grabbed
 	QString grabbedTrackFilename;
+	// the thread doing the fuzzy search in background
+	SearchThread* searchThread;
 	
 	
 
@@ -358,6 +359,14 @@ protected:
 	int						alreadyAdded;
 	void					addFolderContent(Folder* folder);
   int           autoplayMode;
+	
+	// UI - actions
+	//need to keep track of this so that we can change the icon/text
+	KAction* m_playPauseAction;
+	KAction* m_currentAutoPlay;
+	KToggleAction* m_autoplayActionOff;
+	KToggleAction* m_autoplayActionLnp;
+	KToggleAction* m_autoplayActionRandom;
 
 		
 
@@ -419,14 +428,6 @@ protected slots:
 	void renameMedia();
 	void grabAndEncode();
 	void addFolderContentSnappy();
-	
-	// UI - actions
-	//need to keep track of this so that we can change the icon/text
-	KAction* m_playPauseAction;
-	KAction* m_currentAutoPlay;
-	KToggleAction* m_autoplayActionOff;
-	KToggleAction* m_autoplayActionLnp;
-	KToggleAction* m_autoplayActionRandom;
 };
 
 #endif

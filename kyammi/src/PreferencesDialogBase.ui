@@ -801,140 +801,6 @@
                     <property name="name">
                         <cstring>unnamed</cstring>
                     </property>
-                    <widget class="QGroupBox" row="1" column="0">
-                        <property name="name">
-                            <cstring>GroupBoxXmms</cstring>
-                        </property>
-                        <property name="title">
-                            <string>XMMS settings</string>
-                        </property>
-                        <grid>
-                            <property name="name">
-                                <cstring>unnamed</cstring>
-                            </property>
-                            <property name="margin">
-                                <number>11</number>
-                            </property>
-                            <property name="spacing">
-                                <number>6</number>
-                            </property>
-                            <widget class="QLineEdit" row="0" column="1">
-                                <property name="name">
-                                    <cstring>LineEditKeepInXmms</cstring>
-                                </property>
-                                <property name="toolTip" stdset="0">
-                                    <string>the number of songs to keep in Xmms playlist</string>
-                                </property>
-                            </widget>
-                            <widget class="QLabel" row="0" column="0">
-                                <property name="name">
-                                    <cstring>LabelKeepInXmms</cstring>
-                                </property>
-                                <property name="text">
-                                    <string>songs in playlist</string>
-                                </property>
-                                <property name="toolTip" stdset="0">
-                                    <string>the number of songs to keep in Xmms playlist</string>
-                                </property>
-                            </widget>
-                        </grid>
-                    </widget>
-                    <widget class="QGroupBox" row="1" column="1">
-                        <property name="name">
-                            <cstring>GroupBoxNoatun</cstring>
-                        </property>
-                        <property name="title">
-                            <string>Noatun settings</string>
-                        </property>
-                        <grid>
-                            <property name="name">
-                                <cstring>unnamed</cstring>
-                            </property>
-                            <property name="margin">
-                                <number>11</number>
-                            </property>
-                            <property name="spacing">
-                                <number>6</number>
-                            </property>
-                            <widget class="QGroupBox" row="0" column="0">
-                                <property name="name">
-                                    <cstring>GroupBoxNoatunCrossfading</cstring>
-                                </property>
-                                <property name="title">
-                                    <string>Crossfading</string>
-                                </property>
-                                <grid>
-                                    <property name="name">
-                                        <cstring>unnamed</cstring>
-                                    </property>
-                                    <property name="margin">
-                                        <number>11</number>
-                                    </property>
-                                    <property name="spacing">
-                                        <number>6</number>
-                                    </property>
-                                    <widget class="QLineEdit" row="0" column="1">
-                                        <property name="name">
-                                            <cstring>LineEditFadeTime</cstring>
-                                        </property>
-                                        <property name="toolTip" stdset="0">
-                                            <string>The total time of crossfading (in seconds)</string>
-                                        </property>
-                                    </widget>
-                                    <widget class="QLabel" row="1" column="0">
-                                        <property name="name">
-                                            <cstring>LabelFadeOutEnd</cstring>
-                                        </property>
-                                        <property name="text">
-                                            <string>fade out end %</string>
-                                        </property>
-                                        <property name="toolTip" stdset="0">
-                                            <string>Volume in percentage to fade out to</string>
-                                        </property>
-                                    </widget>
-                                    <widget class="QLineEdit" row="1" column="1">
-                                        <property name="name">
-                                            <cstring>LineEditFadeOutEnd</cstring>
-                                        </property>
-                                        <property name="toolTip" stdset="0">
-                                            <string>Volume in percentage to fade out to</string>
-                                        </property>
-                                    </widget>
-                                    <widget class="QLineEdit" row="2" column="1">
-                                        <property name="name">
-                                            <cstring>LineEditFadeInStart</cstring>
-                                        </property>
-                                        <property name="toolTip" stdset="0">
-                                            <string>Volume in percentage to fade in from</string>
-                                        </property>
-                                    </widget>
-                                    <widget class="QLabel" row="0" column="0">
-                                        <property name="name">
-                                            <cstring>LabelFadeTime</cstring>
-                                        </property>
-                                        <property name="text">
-                                            <string>fading time (ms),
-set to 0 to disable</string>
-                                        </property>
-                                        <property name="toolTip" stdset="0">
-                                            <string>The total time of crossfading (in seconds)</string>
-                                        </property>
-                                    </widget>
-                                    <widget class="QLabel" row="2" column="0">
-                                        <property name="name">
-                                            <cstring>LabelFadeInStart</cstring>
-                                        </property>
-                                        <property name="text">
-                                            <string>fade in start %</string>
-                                        </property>
-                                        <property name="toolTip" stdset="0">
-                                            <string>Volume in percentage to fade in from</string>
-                                        </property>
-                                    </widget>
-                                </grid>
-                            </widget>
-                        </grid>
-                    </widget>
                     <widget class="QButtonGroup" row="0" column="0" rowspan="1" colspan="2">
                         <property name="name">
                             <cstring>MediaPlayerGroup</cstring>
@@ -950,48 +816,6 @@ set to 0 to disable</string>
                         <property name="title">
                             <string>Media Player</string>
                         </property>
-                        <widget class="QLabel">
-                            <property name="name">
-                                <cstring>TextLabel1_2</cstring>
-                            </property>
-                            <property name="geometry">
-                                <rect>
-                                    <x>210</x>
-                                    <y>20</y>
-                                    <width>326</width>
-                                    <height>100</height>
-                                </rect>
-                            </property>
-                            <property name="text">
-                                <string>You have to restart Yammi after changing the media player!
-
-
-You MUST disable "Allow Only One Instance of Noatun" and
-"Process Playlist Items for Display" in Noatun configuration!</string>
-                            </property>
-                        </widget>
-                        <widget class="QRadioButton">
-                            <property name="name">
-                                <cstring>RadioButtonNoatun</cstring>
-                            </property>
-                            <property name="geometry">
-                                <rect>
-                                    <x>11</x>
-                                    <y>78</y>
-                                    <width>190</width>
-                                    <height>21</height>
-                                </rect>
-                            </property>
-                            <property name="text">
-                                <string>Noatun</string>
-                            </property>
-                            <property name="checked">
-                                <bool>false</bool>
-                            </property>
-                            <property name="buttonGroupId">
-                                <number>1</number>
-                            </property>
-                        </widget>
                         <widget class="QRadioButton">
                             <property name="name">
                                 <cstring>RadioButtonXmms</cstring>
@@ -1036,6 +860,194 @@ You MUST disable "Allow Only One Instance of Noatun" and
                                 <number>1</number>
                             </property>
                         </widget>
+                        <widget class="QRadioButton">
+                            <property name="name">
+                                <cstring>RadioButtonNoatun</cstring>
+                            </property>
+                            <property name="geometry">
+                                <rect>
+                                    <x>11</x>
+                                    <y>78</y>
+                                    <width>190</width>
+                                    <height>21</height>
+                                </rect>
+                            </property>
+                            <property name="text">
+                                <string>Noatun</string>
+                            </property>
+                            <property name="checked">
+                                <bool>false</bool>
+                            </property>
+                            <property name="buttonGroupId">
+                                <number>1</number>
+                            </property>
+                        </widget>
+                        <widget class="QLabel">
+                            <property name="name">
+                                <cstring>TextLabel1_2</cstring>
+                            </property>
+                            <property name="geometry">
+                                <rect>
+                                    <x>210</x>
+                                    <y>20</y>
+                                    <width>548</width>
+                                    <height>120</height>
+                                </rect>
+                            </property>
+                            <property name="text">
+                                <string>You have to restart Yammi after changing the media player!</string>
+                            </property>
+                        </widget>
+                    </widget>
+                    <widget class="QGroupBox" row="1" column="1">
+                        <property name="name">
+                            <cstring>GroupBoxNoatun</cstring>
+                        </property>
+                        <property name="title">
+                            <string>Noatun settings</string>
+                        </property>
+                        <widget class="QGroupBox">
+                            <property name="name">
+                                <cstring>GroupBoxNoatunCrossfading</cstring>
+                            </property>
+                            <property name="geometry">
+                                <rect>
+                                    <x>11</x>
+                                    <y>29</y>
+                                    <width>396</width>
+                                    <height>155</height>
+                                </rect>
+                            </property>
+                            <property name="title">
+                                <string>Crossfading</string>
+                            </property>
+                            <grid>
+                                <property name="name">
+                                    <cstring>unnamed</cstring>
+                                </property>
+                                <property name="margin">
+                                    <number>11</number>
+                                </property>
+                                <property name="spacing">
+                                    <number>6</number>
+                                </property>
+                                <widget class="QLineEdit" row="0" column="1">
+                                    <property name="name">
+                                        <cstring>LineEditFadeTime</cstring>
+                                    </property>
+                                    <property name="toolTip" stdset="0">
+                                        <string>The total time of crossfading (in seconds)</string>
+                                    </property>
+                                </widget>
+                                <widget class="QLabel" row="1" column="0">
+                                    <property name="name">
+                                        <cstring>LabelFadeOutEnd</cstring>
+                                    </property>
+                                    <property name="text">
+                                        <string>fade out end %</string>
+                                    </property>
+                                    <property name="toolTip" stdset="0">
+                                        <string>Volume in percentage to fade out to</string>
+                                    </property>
+                                </widget>
+                                <widget class="QLineEdit" row="1" column="1">
+                                    <property name="name">
+                                        <cstring>LineEditFadeOutEnd</cstring>
+                                    </property>
+                                    <property name="toolTip" stdset="0">
+                                        <string>Volume in percentage to fade out to</string>
+                                    </property>
+                                </widget>
+                                <widget class="QLineEdit" row="2" column="1">
+                                    <property name="name">
+                                        <cstring>LineEditFadeInStart</cstring>
+                                    </property>
+                                    <property name="toolTip" stdset="0">
+                                        <string>Volume in percentage to fade in from</string>
+                                    </property>
+                                </widget>
+                                <widget class="QLabel" row="0" column="0">
+                                    <property name="name">
+                                        <cstring>LabelFadeTime</cstring>
+                                    </property>
+                                    <property name="text">
+                                        <string>fading time (ms),
+set to 0 to disable</string>
+                                    </property>
+                                    <property name="toolTip" stdset="0">
+                                        <string>The total time of crossfading (in seconds)</string>
+                                    </property>
+                                </widget>
+                                <widget class="QLabel" row="2" column="0">
+                                    <property name="name">
+                                        <cstring>LabelFadeInStart</cstring>
+                                    </property>
+                                    <property name="text">
+                                        <string>fade in start %</string>
+                                    </property>
+                                    <property name="toolTip" stdset="0">
+                                        <string>Volume in percentage to fade in from</string>
+                                    </property>
+                                </widget>
+                            </grid>
+                        </widget>
+                        <widget class="QLabel">
+                            <property name="name">
+                                <cstring>textLabel1</cstring>
+                            </property>
+                            <property name="geometry">
+                                <rect>
+                                    <x>20</x>
+                                    <y>190</y>
+                                    <width>541</width>
+                                    <height>110</height>
+                                </rect>
+                            </property>
+                            <property name="text">
+                                <string>You MUST disable
+"Allow Only One Instance of Noatun" and
+"Process Playlist Items for Display"
+in Noatun configuration!</string>
+                            </property>
+                        </widget>
+                    </widget>
+                    <widget class="QGroupBox" row="1" column="0">
+                        <property name="name">
+                            <cstring>GroupBoxXmms</cstring>
+                        </property>
+                        <property name="title">
+                            <string>XMMS settings</string>
+                        </property>
+                        <grid>
+                            <property name="name">
+                                <cstring>unnamed</cstring>
+                            </property>
+                            <property name="margin">
+                                <number>11</number>
+                            </property>
+                            <property name="spacing">
+                                <number>6</number>
+                            </property>
+                            <widget class="QLineEdit" row="0" column="1">
+                                <property name="name">
+                                    <cstring>LineEditKeepInXmms</cstring>
+                                </property>
+                                <property name="toolTip" stdset="0">
+                                    <string>the number of songs to keep in Xmms playlist</string>
+                                </property>
+                            </widget>
+                            <widget class="QLabel" row="0" column="0">
+                                <property name="name">
+                                    <cstring>LabelKeepInXmms</cstring>
+                                </property>
+                                <property name="text">
+                                    <string>songs in playlist</string>
+                                </property>
+                                <property name="toolTip" stdset="0">
+                                    <string>the number of songs to keep in Xmms playlist</string>
+                                </property>
+                            </widget>
+                        </grid>
                     </widget>
                 </grid>
             </widget>

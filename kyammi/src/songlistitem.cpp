@@ -229,7 +229,7 @@ int SongListItem::compare( QListViewItem *i, int visibleColumn, bool ascending )
  * (needed for sorting the listview)
  * tries to sort as reasonable as possible
  */
-QString SongListItem::key(int visibleColumn, bool ascending) const
+QString SongListItem::key(int visibleColumn, bool) const
 {
 	int base=songEntry->getBase();
 	if(visibleColumn<base) {

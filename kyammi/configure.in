@@ -157,6 +157,7 @@ dnl ---------------------
 AC_MSG_NOTICE( [
 Configuration for $PACKAGE $VERSION :
 --------------------------------
+ ##############################################
  Source code location .: $srcdir
  Host System Type .....: $host
  Preprocessor .........: $CC $CPPFLAGS

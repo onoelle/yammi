@@ -25,17 +25,17 @@ SongEntryInt2::SongEntryInt2(Song* s, int intInfo)
 SongEntryInt2::~SongEntryInt2(){
 }
 
-QString SongEntryInt2::getKey(int column)
+QString SongEntryInt2::getKey(int)
 {
 	return QString("%1").arg(1000-intInfo, 4);
 }
 
-int SongEntryInt2::compare(int column, SongEntry* other)
+int SongEntryInt2::compare(int, SongEntry* other)
 {
 	return - intInfo + ((SongEntryInt2*)other)->intInfo;
 }
 
-QString SongEntryInt2::getColumn(int no)
+QString SongEntryInt2::getColumn(int)
 {
 	return QString("%1\%").arg(intInfo/10, 3);
 }

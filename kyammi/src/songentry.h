@@ -31,9 +31,9 @@ public:
 	
 	Song* song() { return songPtr; };
 	virtual int getBase() { return 0; } ;
-	virtual int compare (int column, SongEntry* other) { return 0; } ;
-	virtual QString getKey(int column) { return QString(""); } ;
-	virtual QString getColumn(int no) { return QString(""); };
+	virtual int compare (int, SongEntry*) { return 0; } ;
+	virtual QString getKey(int) { return QString(""); } ;
+	virtual QString getColumn(int) { return QString(""); };
 protected:
 	Song* songPtr;
 };

@@ -33,12 +33,12 @@ SongEntryTimestamp::~SongEntryTimestamp()
 {
 }
 
-int SongEntryTimestamp::compare(int column, SongEntry* other)
+int SongEntryTimestamp::compare(int, SongEntry* other)
 {
 	return timestamp.secsTo(((SongEntryTimestamp*)other)->timestamp);
 }
 
-QString SongEntryTimestamp::getKey(int column)
+QString SongEntryTimestamp::getKey(int)
 {
 	return QString("%1").arg(999999999+ QDateTime( QDate(2222, 1, 1), QTime(0,0,0) ).secsTo(timestamp), 10);
 }

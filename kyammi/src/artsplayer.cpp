@@ -23,6 +23,7 @@
 #include <arts/kartsserver.h>
 
 #include "songentry.h"
+#include "songentryint.h"
 
 #include <kdebug.h>
 
@@ -31,7 +32,7 @@ namespace Yammi {
 ArtsPlayer::ArtsPlayer(YammiModel *yammi)
  : MediaPlayer(yammi)
 {
-	kdDebug()<<"+++ArtsPlayer::ArtsPlayer(YammiModel *yammi)"<<endl;
+	kdDebug() << "ArtsPlayer::ArtsPlayer(YammiModel *yammi)" << endl;
 	m_dispatcher = new KArtsDispatcher( );
 	m_server = new KArtsServer( );
 	m_factory = new KDE::PlayObjectFactory( m_server->server() );
@@ -98,8 +99,9 @@ bool ArtsPlayer::play()
 {
 	if( m_currentPlay )
 	{
-		 if( m_currentPlay->state() != Arts::posPlaying )
+		if( m_currentPlay->state() != Arts::posPlaying ) {
 			m_currentPlay->play( );
+		}
 			
 		status = getStatus();
 		emit statusChanged();
@@ -107,8 +109,9 @@ bool ArtsPlayer::play()
 	}
 	
 	m_currentSong = playlist->at( 0 ); //firstSong( );
-	if(!m_currentSong)
+	if(!m_currentSong) {
 		return false;
+	}
 		
 	QString location = model->checkAvailability( m_currentSong->song() );
 	if( location == "" || location == "never" )
@@ -154,12 +157,14 @@ bool ArtsPlayer::playPause()
 	return true;
 }
 
-bool ArtsPlayer::skipForward(bool withoutCrossfading)
+bool ArtsPlayer::skipForward(bool)
 {
-	if( playlist->count() < 2 )
+	if( playlist->count() < 2 ) {
 		return false;  // there is no "next song"
-	if( m_currentPlay && m_currentPlay->state() != Arts::posIdle )
+	}
+	if( m_currentPlay && m_currentPlay->state() != Arts::posIdle ) {
 		m_currentPlay->halt();
+	}
 	delete m_currentPlay;
 	m_currentPlay = 0;
 	m_currentSong = 0;
@@ -170,26 +175,33 @@ bool ArtsPlayer::skipForward(bool withoutCrossfading)
 	while( playlist->at(0) )
 	{
 		location = model->checkAvailability( playlist->at(0)->song() );
-		if( location == "" || location == "never" )
+		if( location == "" || location == "never" ) {
 			playlist->removeFirst( );
-		else
+		}
+		else {
 			break;
+		}
 	}
-	return play( );
+	bool result=play();
+	emit playlistChanged();
+	return result;
 }
 
 bool ArtsPlayer::skipBackward(bool withoutCrossfading)
 {
-	return false;  // ????????
+	Song* last=playlist->at(0)->song();
+	// insert pseudo-song to be removed
+	playlist->insert(0, new SongEntryInt(last, 0));
+	return skipForward(withoutCrossfading);
 }
 
-void ArtsPlayer::syncPlayer2Yammi(MyList* playlist)
+void ArtsPlayer::syncPlayer2Yammi(MyList*)
 {
 	emit statusChanged( );
 	emit playlistChanged();
 }
 
-void ArtsPlayer::syncYammi2Player(bool syncAll)
+void ArtsPlayer::syncYammi2Player(bool)
 {
 }
 

@@ -27,8 +27,7 @@ enum PlayerStatus { STOPPED, PAUSED, PLAYING};
 
 
 /** This class abstracts away the details of a supported media player.
- * So far, the only supported players are XMMS and Noatun.
- * Support for Winamp might come, if I should ever try to create a Windows-version of Yammi...
+ * The supported players are XMMS, Noatun or a built-in arts player.
  *
  * Most methods should be straight-forward.
  *
@@ -71,8 +70,8 @@ public slots:
   virtual void quit() = 0;
 
 signals:
-         // should be emitted, if the playlist of player changed (eg. song change)
-  	void playlistChanged();
+	// should be emitted, if the playlist of player changed (eg. song change)
+	void playlistChanged();
 	// should be emitted, if status of player changed (eg. play -> pause)
 	void statusChanged();
 	
