@@ -40,18 +40,16 @@ FolderSorted::FolderSorted( QListViewItem* parent, const QString &name )
 
 // construct a folder (top-level)
 FolderSorted::FolderSorted( QListView *parent, const QString &name, MyList* songList)
-			: Folder(parent, name)
+			: Folder(parent, name, songList)
 {
-	sorted=true;
-  this->songList=songList;
+	sorted=true;  
 }
 
 // construct a folder (not top-level)
 FolderSorted::FolderSorted( QListViewItem* parent, const QString &name, MyList* songList)
-			: Folder(parent, name)
+			: Folder(parent, name, songList)
 {
-	sorted=true;
-  this->songList=songList;
+	sorted=true;  
 }
 
 
@@ -61,9 +59,9 @@ FolderSorted::~FolderSorted()
 }
 
 // update the view (after changes in songlist)
-void FolderSorted::update(MyList* songList)
+void FolderSorted::update( MyList& songList)
 {
-	this->songList=songList;
+	Folder::update(songList);	
 	updateTitle();
 }
 

@@ -23,15 +23,17 @@ extern YammiGui* gYammiGui;
 
 // constructs a top-level folder
 Folder::Folder( QListView *parent, const QString &name )
-			: QListViewItem( parent )
+			: QListViewItem( parent ),
+				owner(true)
 {
 	init(name);
 	this->songList=new MyList();
+	owner=true;
 }
 
 // construct a top-level folder
 Folder::Folder( QListView* parent, const QString &name, MyList* songList)
-			: QListViewItem( parent )
+			: QListViewItem( parent )				
 {
 	init(name);
 	this->songList=songList;
@@ -40,15 +42,16 @@ Folder::Folder( QListView* parent, const QString &name, MyList* songList)
 
 // construct a folder (not top-level)
 Folder::Folder( QListViewItem* parent, const QString &name )
-			: QListViewItem( parent )
+			: QListViewItem( parent )				
 {
 	init(name);
 	this->songList=new MyList();
+	owner=true;
 }
 
 // construct a folder (not top-level)
 Folder::Folder( QListViewItem* parent, const QString &name, MyList* songList)
-			: QListViewItem( parent )
+			: QListViewItem( parent )			  
 {
 	init(name);
 	this->songList=songList;
@@ -57,9 +60,10 @@ Folder::Folder( QListViewItem* parent, const QString &name, MyList* songList)
 
 
 // update the view (after changes in songlist)
-void Folder::update(MyList* songList)
+void Folder::update( MyList& songList)
 {
-	this->songList=songList;
+	this->songList->clear();
+	this->songList->appendList(&songList);
 	updateTitle();
 }
 
@@ -80,6 +84,7 @@ void Folder::init(QString name)
 	setText( 0, fName );
 	folderPopup=0;
 	songList=0;
+	owner=false;
 	sorted=false;
 }
 
@@ -87,8 +92,7 @@ void Folder::init(QString name)
 // - songlist (if necessary)
 Folder::~Folder()
 {
-	// following line: causing a crash???
-//	delete(songList);
+	if( owner) delete(songList);
 }
 
 

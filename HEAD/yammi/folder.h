@@ -40,7 +40,7 @@ public:
 	~Folder();
 	
   void						init(QString name);
-	virtual void		update(MyList* songList);
+	virtual void		update( MyList& songList);
 	void 						clearSongs();
 	void						updateTitle();
 
@@ -63,10 +63,10 @@ public:
 
 	virtual void 		popup(QPoint point, QPopupMenu* contentMenu);
 	
+	MyList& songlist() { return *songList; }
 	
 	QPopupMenu*			folderPopup;
-	QPopupMenu*			allPopup;
-	MyList*					songList;
+	QPopupMenu*			allPopup;	
   bool            isSorted()                  { return sorted; }
 public slots:
   void            autoplayFolder();
@@ -75,6 +75,13 @@ public slots:
 protected:
 	QString					fName;
 	bool						sorted;
+	bool            owner;
+
+	MyList*					songList;
+
+	Folder(const Folder&);
+	Folder& operator=(const Folder&);
+	
 };
 
 #endif

@@ -33,7 +33,7 @@ public:
   FolderSorted  (QListViewItem* parent, const QString &name, MyList* songList);
 	~FolderSorted();
 	
-	virtual void		update(MyList* songList);					// common update method
+	virtual void		update( MyList& songList);					// common update method
 	virtual void		addSong(Song* s);
 	virtual void		insertSong(Song* s, int index);
 	virtual void		removeSong(Song* s);

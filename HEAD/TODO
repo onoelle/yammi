@@ -1,21 +1,20 @@
 TODO
 ----
-last update 31.8.2003
+last update 29.9.2003
 
 for version 1.0
 ---------------
-- check: crash on clearing playlist including currently played song?
-- remove newlines from translation strings?
+
+for version 1.0.1
+-----------------
+- check again: crash on clearing playlist including currently played song?
 - check sorting after "added to": incorrect sort order?
 - check skip backward functionality & filling up songPlayed list!!!
-- check installation directory and settings saving... (still using old version?)
-- properly integrate and document translation capability (put translation files into /usr/share/...?)
-- finish icons
+- review translation capability (put translation files into /usr/share/...?)
 - if you start yammi, while xmms has a song in its play list and then enqueue
   and play a song in yammi, the song previously played in xmms is played instead.
 - deal with "unplayable files" (pictures, texts) in playlist (dequeue on 2. position?)
 - finish documenting requirements for compiling in handbook
-- prelisten: check whether sound device set, or do not invoke command at all
 
 
 later...

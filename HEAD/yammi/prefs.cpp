@@ -44,7 +44,7 @@ void Prefs::setDefaultValues(void) {
 	player = MEDIA_PLAYER_XMMS;
 #endif
 
-	yammiVersion = "1.0-rc1";
+	yammiVersion = "1.0";
 	trashDir = "/mp3/trash/";
 	scanDir = "/mp3/inbox/";
 	filenamePattern = "%a - %t";

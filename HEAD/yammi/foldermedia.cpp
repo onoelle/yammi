@@ -37,16 +37,23 @@ void FolderMedia::update(MyList* allSongs)
 	}
 	
 	int noMedia=0;
-	for(Song* s=allSongs->firstSong() ; s; s=allSongs->nextSong()) {
-		
-		for(unsigned int i=0; i<s->mediaName.count(); i++) {
+  int notOnMediaCount=0;
+  
+  Folder* notOnMediaFolder = new Folder( this, tr("Not on media"));
+
+  for(Song* s=allSongs->firstSong() ; s; s=allSongs->nextSong()) {
+    if(s->mediaName.count() == 0) {
+      notOnMediaFolder->addSong(s);
+      notOnMediaCount++;
+    }
+    for(unsigned int i=0; i<s->mediaName.count(); i++) {
 			// try to find an existing folder for that media
 			bool found=false;
 			for(QListViewItem* li=firstChild(); li; li=li->nextSibling()) {
 				Folder* f2=(Folder*) li;
 				if(f2->folderName()==s->mediaName[i]) {
 					f2->addSong(s);
-					f2->setText( 0, s->mediaName[i]+QString(" (%1)").arg(f2->songList->count()) );
+					f2->setText( 0, s->mediaName[i]+QString(" (%1)").arg(f2->songlist().count()) );
 					found=true;
 					break;
 				}
@@ -64,6 +71,7 @@ void FolderMedia::update(MyList* allSongs)
 		}
 	}
 	setText(0, fName+QString(" (%1)").arg(noMedia));
+	notOnMediaFolder->setText(0, QString("Not on media (%1)").arg(notOnMediaCount));
   sortChildItems(0, true);
 }
 

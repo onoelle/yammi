@@ -462,7 +462,7 @@ YammiGui::YammiGui(QString baseDir)
   player->syncYammi2Player(false);
   checkPlaylistAvailability();
   
-  if(folderActual->songList->count()>0) {
+  if(folderActual->songlist().count()>0) {
     // check whether player is playing, if not: start playing!
     if(player->getStatus()!=PLAYING) {
       cout << "media player is not playing, starting it...\n";
@@ -555,7 +555,7 @@ YammiGui::~YammiGui()
  */
 void YammiGui::updatePlaylist()
 {
-  if(folderActual->songList->count()>0) {
+  if(folderActual->songlist().count()>0) {
     model->currentSongFilenameAtStartPlay=folderActual->firstSong()->location();
   }
 
@@ -811,14 +811,81 @@ void YammiGui::readSettings()
 }
 
 
+/**
+ * Switches to the folder best matching the search term.
+ * Uses yammi's fuzzy search capabilities.
+ */
+void YammiGui::gotoFuzzyFolder(bool backward)
+{
+  QString searchStr=searchField->text();
+	if(searchStr.length()<1) {
+    return;
+  }
+
+  if(fuzzyFolderName!=searchStr) {
+    // search term changed => do fuzzy search with new search term
+    backward=false;
+    fuzzyFolderNo=-1;
+    fuzzyFolderName=searchStr;
+
+    searchStr=" "+searchStr+" ";
+    FuzzySearch fs;
+    fs.initialize(searchStr.lower(), 2, 4);			// STEP 1
+
+
+    for(QListViewItem* i=folderListView->firstChild(); i; i=i->nextSibling()) {
+      Folder* f=(Folder*)i;
+      fs.checkNext(f->folderName().lower(), (void*)f);				// STEP 2 (top-level folder)
+      for(QListViewItem* i2=i->firstChild(); i2; i2=i2->nextSibling()) {
+        Folder* f2=(Folder*)i2;
+        fs.checkNext(f2->folderName().lower(), (void*)f2);				// STEP 2 (subfolders)
+      }
+    }
+
+    // step 3 does not work here? => not necessary anyway...
+//	fs.newOrder();											// STEP 3
+    BestMatchEntry** bme;
+    bme=fs.getBestMatchesList();				// STEP 4
+    int noResults=0;
+    for(; noResults<FUZZY_FOLDER_LIST_SIZE && noResults<model->config.searchMaximumNoResults && bme[noResults]; noResults++) {
+      Folder* f=(Folder*)(bme[noResults]->objPtr);
+//      cout << noResults << ".: " << f->folderName() << ", match: " << bme[noResults]->sim << "\n";
+      fuzzyFolderList[noResults]=f;
+    }
+    // clear rest of fzzyFolderList (if not enough matching entries
+    for(; noResults<FUZZY_FOLDER_LIST_SIZE; noResults++) {
+      fuzzyFolderList[noResults]=0;
+    }
+  }
+
+  // switch to first (or on pressing key multiple times n-th) best match folder
+  if(backward) {
+    if(fuzzyFolderNo<=0) {
+      return;
+    }
+    fuzzyFolderNo--;
+  }
+  else {
+    if(fuzzyFolderNo>=FUZZY_FOLDER_LIST_SIZE-1 || fuzzyFolderList[fuzzyFolderNo+1]==0) {
+      return;
+    }
+    fuzzyFolderNo++;
+  }
+  Folder* switchTo=fuzzyFolderList[fuzzyFolderNo];
+  if(switchTo!=0) {
+    changeToFolder(switchTo);
+  }
+}
+
+
 Folder* YammiGui::getFolderByName(QString folderName)
 {
-  for(QListViewItem* i=folderListView->firstChild(); i; i=i->itemBelow()) {
+  for(QListViewItem* i=folderListView->firstChild(); i; i=i->nextSibling()) {
     Folder* f=(Folder*)i;
     if(f->folderName()==folderName) {
       return f;
     }
-    for(QListViewItem* i2=i->firstChild(); i2; i2=i2->itemBelow()) {
+    for(QListViewItem* i2=i->firstChild(); i2; i2=i2->nextSibling()) {
       Folder* f2=(Folder*)i2;
       if(f2->folderName()==folderName) {
         return f2;
@@ -857,11 +924,11 @@ void YammiGui::updateView(bool startup)
 	folderAlbums->update(&(model->allSongs), MyList::ByAlbum);
 	folderGenres->update(&(model->allSongs), MyList::ByGenre);
 	folderMedia->update(&(model->allSongs));
-  folderSearchResults->update(&searchResults);
+  folderSearchResults->update(searchResults);
   
   if(startup) {
     // this might be only necessary on startup?
-    folderActual->update(&(model->songsToPlay));
+    folderActual->update(model->songsToPlay);
     folderCategories->update(model->allCategories, model->categoryNames);
     updateSongPopup();
     folderMedia->update(&(model->allSongs));
@@ -872,7 +939,7 @@ void YammiGui::updateView(bool startup)
 		if(!s->classified)
 			model->unclassifiedSongs.appendSong(s);
 	}
-	folderUnclassified->update(&(model->unclassifiedSongs));
+	folderUnclassified->update(model->unclassifiedSongs);
 
   // recently added songs:
   // at least 20, but if delta is less than 1 hour, add the following one, too
@@ -892,7 +959,7 @@ void YammiGui::updateView(bool startup)
     }
     model->recentSongs.appendSong(s);
 	}
-  folderRecentAdditions->update(&(model->recentSongs));
+  folderRecentAdditions->update(model->recentSongs);
   if(!startup) {
     folderContentChanged();
   }
@@ -1218,7 +1285,7 @@ void YammiGui::toCategory(int index)
 	// go through list of songs
 	for(Song* s=selectedSongs.firstSong(); s; s=selectedSongs.nextSong()) {
 		if(!remove) {
-      if(!categoryFolder->songList->containsSong(s)) {
+      if(!categoryFolder->songlist().containsSong(s)) {
         categoryFolder->addSong(s);
       }
     }
@@ -1339,10 +1406,14 @@ void YammiGui::goToFolder(int what)
   }
 }
 
-/// search field changed => update search results
+/**
+ * search field changed => update search results
+ *
+ */
 void YammiGui::searchFieldChanged()
 {
-	QString searchStr=" "+searchField->text()+" ";
+  fuzzyFolderName="";
+  QString searchStr=" "+searchField->text()+" ";
 	if(searchStr.length()<3) return;
 	
 	FuzzySearch fs;
@@ -1369,20 +1440,22 @@ void YammiGui::searchFieldChanged()
 	for(; noResults<model->config.searchMaximumNoResults && bme[noResults] && bme[noResults]->sim>(model->config.searchThreshold*10); noResults++) {
 		searchResults.append( new SongEntryInt2 ((Song*)bme[noResults]->objPtr, bme[noResults]->sim) );
 	}
-	folderSearchResults->update(&searchResults);
-  if(chosenFolder==folderSearchResults) {
-    folderContentChanged(folderSearchResults);
-  }
-  else {
+  folderContentChanged(folderSearchResults);
+  if(chosenFolder!=folderSearchResults) {
     changeToFolder(folderSearchResults);
   }
 	songListView->setContentsPos( 0, 0);			// set scroll position to top
 	QListViewItem* item=songListView->firstChild();
-	if(item)
+	if(item) {
 		item->setSelected(true);											// select first anyway
+  }
 	int threshold=700;
 	for(int j=0; j<noResults && bme[j] && bme[j]->sim>threshold; j++, item=item->nextSibling()) {
-		item->setSelected(true);
+    if(item==0) {
+      cout << "item==0, this should not happen!\n";
+      break;
+    }
+    item->setSelected(true);
 	}
 }
 
@@ -1464,7 +1537,7 @@ void YammiGui::addFolderContent(Folder* folder)
 	// filling the listview is much slower than with qt2.3...
 	// what do we do about it?
 	// maybe disable sorting while filling, and then enable when we are ready???
-	if(folder->songList!=0) {
+	if(folder->songlist().count()!=0) {
 		songListView->setSorting(-1);
 		songListView->setUpdatesEnabled(false);
 		addFolderContentSnappy();
@@ -2201,7 +2274,7 @@ void YammiGui::forSelectionCheckConsistency()
   
 	model->checkConsistency(&progress, &selectedSongs, &p);
 
-  folderProblematic->update(&model->problematicSongs);
+  folderProblematic->update(model->problematicSongs);
 	folderContentChanged(folderProblematic);
   folderContentChanged(chosenFolder);
 
@@ -2586,7 +2659,7 @@ void YammiGui::openHelp()
 void YammiGui::aboutDialog()
 {
   QString msg=QString(tr("Yammi - Yet Another Music Manager I...\n\n\n"));
-  msg+="Version "+model->config.yammiVersion+", 12-2001 - 8-2003 by Oliver Nölle\n";
+  msg+="Version "+model->config.yammiVersion+", 12-2001 - 10-2003 by Oliver Nölle\n";
   msg+=tr("Media player: ")+player->getName()+"\n";
   #ifdef ENABLE_XMMS
   msg+=tr("- XMMS support: yes\n");
@@ -2792,7 +2865,9 @@ void YammiGui::shufflePlaylist()
 }
 
 
-/// clear all playlist items except currently played song
+/**
+ * clear all playlist items (except currently played song
+ */
 void YammiGui::clearPlaylist()
 {
 	if(model->config.childSafe)
@@ -2810,12 +2885,13 @@ void YammiGui::clearPlaylist()
   if(result!=QDialog::Accepted) {
     return;
   }
-  if(!confirm.CheckBoxApply->isChecked()) {
+  if(!confirm.CheckBoxApply->isChecked() && model->songsToPlay.count()>0) {
     save=model->songsToPlay.firstSong();
   }
   model->songsToPlay.clear();
-  if(!confirm.CheckBoxApply->isChecked())
+  if(save != 0) {
     folderActual->addSong(save);
+  }
   folderActual->updateTitle();
   player->syncYammi2Player(false);
   folderContentChanged(folderActual);
@@ -2854,7 +2930,7 @@ void YammiGui::onTimer()
   }
 
   // check for autplay function: fill up playlist?
-  if(folderActual->songList->count()<5 && autoplayMode!=AUTOPLAY_OFF && this->autoplayFoldername!="") {
+  if(folderActual->songlist().count()<5 && autoplayMode!=AUTOPLAY_OFF && this->autoplayFoldername!="") {
     autoFillPlaylist();
   }
   
@@ -2874,9 +2950,9 @@ void YammiGui::onTimer()
 void YammiGui::autoFillPlaylist()
 {
   Folder* toAddFrom=getFolderByName(autoplayFoldername);
-  if(toAddFrom!=0 && toAddFrom->songList->count()>0) {
+  if(toAddFrom!=0 && toAddFrom->songlist().count()>0) {
     // fill up from chosen autoplay folder
-    int total=toAddFrom->songList->count();
+    int total=toAddFrom->songlist().count();
     Song* songToAdd=0;
     
     if(autoplayMode==AUTOPLAY_RANDOM) {
@@ -2888,8 +2964,8 @@ void YammiGui::autoFillPlaylist()
       if(chosen<0) {
         chosen=-chosen;
       }
-      songToAdd=toAddFrom->songList->at(chosen)->song();
-      if(folderActual->songList->containsSong(songToAdd)) {
+      songToAdd=toAddFrom->songlist().at(chosen)->song();
+      if(folderActual->songlist().containsSong(songToAdd)) {
         // don't add a song that is already in playlist
         songToAdd=0;
       }
@@ -2897,15 +2973,15 @@ void YammiGui::autoFillPlaylist()
 
     if(autoplayMode==AUTOPLAY_LNP) {
       // method 2: try to pick the song we didn't play for longest time
-      int rememberSortOrder=toAddFrom->songList->getSortOrder();
-      toAddFrom->songList->setSortOrderAndSort(MyList::ByLastPlayed, true);
+      int rememberSortOrder=toAddFrom->songlist().getSortOrder();
+      toAddFrom->songlist().setSortOrderAndSort(MyList::ByLastPlayed, true);
 
       // if more than one song have the same timestamp: choose randomly
       QDateTime lnpTimestamp;
       MyList candidateList;
-      for(unsigned int i=0; i<toAddFrom->songList->count(); i++) {
-        Song* check=toAddFrom->songList->at(i)->song();
-        if(folderActual->songList->containsSong(check)) {
+      for(unsigned int i=0; i<toAddFrom->songlist().count(); i++) {
+        Song* check=toAddFrom->songlist().at(i)->song();
+        if(folderActual->songlist().containsSong(check)) {
           continue;
         }
         if(lnpTimestamp.isNull()) {
@@ -2929,7 +3005,7 @@ void YammiGui::autoFillPlaylist()
           songToAdd=candidateList.at(chosen)->song();        
         }
       }
-      toAddFrom->songList->setSortOrderAndSort(rememberSortOrder, true);
+      toAddFrom->songlist().setSortOrderAndSort(rememberSortOrder, true);
     }
 
     if(songToAdd!=0) {
@@ -3011,7 +3087,7 @@ void YammiGui::checkForGrabbedTrack(){
 
   model->addSongToDatabase(grabbedTrackFilename, 0);
 	updateView();
-	folderProblematic->update(&model->problematicSongs);
+	folderProblematic->update(model->problematicSongs);
 	folderAll->updateTitle();
   QString msg=tr("Yammi tried to add the grabbed song to the database.\n\nSome statistics: \n\n");
   msg+=QString(tr("%1 songs added to database\n")).arg(model->entriesAdded);
@@ -3168,12 +3244,27 @@ void YammiGui::keyPressEvent(QKeyEvent* e)
       break;
 		
 		case Key_F:		// Ctrl-F
-			if(e->state()!=ControlButton)
+			if(e->state()!=ControlButton) {
 				break;
+      }
 			searchField->setText("");
 			searchField->setFocus();
 			break;
-			
+
+    case Key_G:  // Ctrl-G
+			if(e->state()!=ControlButton) {
+				break;
+      }
+			gotoFuzzyFolder(false);
+      break;
+
+    case Key_R:  // Ctrl-R
+			if(e->state()!=ControlButton) {
+				break;
+      }
+			gotoFuzzyFolder(true);
+      break;
+      
 		case Key_Escape:
 			searchField->setText("");
 			searchField->setFocus();
@@ -3269,9 +3360,15 @@ void YammiGui::changeShutdownValue(int value)
 
 
 
-// stops playback on headphone
+/**
+ * stops playback on headphone
+ */
 void YammiGui::stopPrelisten()
 {
+  if(model->config.secondSoundDevice=="") {
+    cout << "prelisten feature: no sound device configured\n";
+    return;
+  }
 	// kill any previous prelisten process
   // todo: would be better to remember the pid and kill more selectively... for now this must do...
   if(lastPrelistened=="MP3") {
@@ -3294,13 +3391,18 @@ void YammiGui::stopPrelisten()
   }
 }
 
-/* sends the song to headphones
+/**
+ * sends the song to headphones
  * skipTo: 0 = beginning of song, 100 = end
- * old version: QString cmd=QString("mpg123 -s \"%1\" | aplay -c1 -m &").arg(s->location());
  */
 void YammiGui::preListen(Song* s, int skipTo)
 {
-	int seconds=s->length;
+  if(model->config.secondSoundDevice=="") {
+    cout << "prelisten feature: no sound device configured\n";
+    return;
+  }
+
+  int seconds=s->length;
 
   // first, kill any previous mpg123 prelisten process
   stopPrelisten();
@@ -3354,7 +3456,7 @@ void YammiGui::updateSongDatabaseSingleFile()
   QStringList list = files;
   model->updateSongDatabase(list);
 	updateView();
-	folderProblematic->update(&model->problematicSongs);
+	folderProblematic->update(model->problematicSongs);
 	folderAll->updateTitle();
   changeToFolder(folderRecentAdditions);
   QString msg=tr("Updated your database.\n\nStatistics: \n\n");
@@ -3405,7 +3507,7 @@ void YammiGui::updateSongDatabase(QString scanDir, QString filePattern, QString 
 	model->updateSongDatabase(scanDir, filePattern, media, &progress);
   
 	updateView();
-	folderProblematic->update(&model->problematicSongs);
+	folderProblematic->update(model->problematicSongs);
 	folderAll->updateTitle();
   changeToFolder(folderRecentAdditions);
   QString msg=tr("Updated your database.\n\nStatistics: \n\n");

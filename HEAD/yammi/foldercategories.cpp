@@ -45,7 +45,7 @@ void FolderCategories::update(QPtrList<MyList> allCategories, QStringList catego
 	for(MyList* ptr=allCategories.first(); ptr; ptr=allCategories.next(), count++)
 	{
 		FolderSorted *f = new FolderSorted( this, categoryNames[count] );
-		f->update(ptr);
+		f->update(*ptr);
 		f->folderPopup = new QPopupMenu( 0 );
 		f->folderPopup->insertItem( "Remove Category", this, SLOT(removeCategory()));
 		f->folderPopup->insertItem( "New Category..", this, SLOT(newCategory()));

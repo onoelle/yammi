@@ -41,7 +41,7 @@ dnl Perform program name transformation
 AC_ARG_PROGRAM
 
 dnl Automake doc recommends to do this only here. (Janos)
-AM_INIT_AUTOMAKE(yammi,1.0-rc1)
+AM_INIT_AUTOMAKE(yammi,1.0)
 
 dnl for non KDE applications
 AC_PREFIX_DEFAULT(/usr/local)

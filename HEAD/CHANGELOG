@@ -1,10 +1,19 @@
 ######################
 ??.09.2003 version 1.0
-- finished improving the icons (thanks to Sandra)
+- added a "go to fuzzy folder" functionality using yammi's fuzzy search capabilities for switching to a folder:
+  press Ctrl-G to switch to the folder best matching your search term
+  (press multiple times to iterate over the best matches)
+- added a virtual "Not on media" subfolder to media folder
+  (to quickly access all songs not contained on any media)
+- finished replacing the "butt ugly" icons (thanks to Sandra for her artwork!)
 - put prelisten toolbuttons in a separate toolbar
+- improved german translation (thanks to various contributors)
+- added hungarian translation (thanks to Marcel)
 - fixed: sorting in "Recently Added" folder
 - fixed: scanning removable media: take directory from dialog, not settings
-- last try to fix "cannot move songs in playlist"-bug (apparently successful)
+- fixed: memory leak in folder.cpp (thanks for the patch, David)
+- fixed: crash when applying "clear playlist" to an empty playlist
+- fixed: "cannot move songs in playlist"-bug
 
 
 ########################

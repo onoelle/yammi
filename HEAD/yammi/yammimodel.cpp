@@ -246,7 +246,7 @@ void YammiModel::saveCategories()
 	// for all categories, check whether dirty: if yes => save
 	for( QListViewItem* f=gYammiGui->folderCategories->firstChild(); f; f=f->nextSibling() ) {
 		Folder* folder=(Folder*)f;
-		if(!folder->songList->dirty)
+		if(!folder->songlist().dirty)
 			continue;
 		QString categoryName=folder->folderName();
 		cout << "folder " << categoryName << " (or songs therein) was modified, saving\n";
@@ -279,7 +279,7 @@ void YammiModel::saveCategories()
 			return;
 		file.writeBlock ( save, save.length() );
 		file.close();
-		folder->songList->dirty=false;
+		folder->songlist().dirty=false;
 	}
 	cout << "..done\n";
 	categoriesChanged(false);
@@ -317,7 +317,7 @@ void YammiModel::readSongDatabase()
 		QString msg("");
 		msg+="Your song database is from version "+version+" of Yammi.\n";
 		msg+="This Yammi version: "+config.yammiVersion+"\n\n";
-		if(version=="0.5.3" || version=="0.6" || version=="0.6.1" || version=="0.7" || version=="0.7.1" || version=="0.8.0beta" || version=="0.8.0" || version=="0.8.1" || version=="0.8.2" ) {
+		if(version=="0.5.3" || version=="0.6" || version=="0.6.1" || version=="0.7" || version=="0.7.1" || version=="0.8.0beta" || version=="0.8.0" || version=="0.8.1" || version=="0.8.2" || version=="1.0-rc1") {
 			msg+="However, the database format did not change since then, so no worries!\n\n";
       msg+="(The next time your database will be saved, it will be marked with the new version)";
 		}
@@ -1201,8 +1201,8 @@ void YammiModel::markPlaylists(Song* s)
 	// for all categories, check whether they contain the song, if yes => mark as dirty
 	for( QListViewItem* f=gYammiGui->folderCategories->firstChild(); f; f=f->nextSibling() ) {
 		Folder* folder=(Folder*)f;
-		if(folder->songList->containsSong(s))
-			folder->songList->dirty=true;
+		if(folder->songlist().containsSong(s))
+			folder->songlist().dirty=true;
 	}
 }
 

@@ -23,7 +23,7 @@ cflags=
 cppflags=
 cxxflags=\s-O3 -Wall
 ldadd=\s$(LIB_QT)
-ldflags=\s                                              \s
+ldflags=\s                                               \s
 
 [General]
 AMChanged=false
@@ -40,7 +40,7 @@ project_type=normal_qt2
 sgml_file=/home/oliver/work/programming/yammi/yammi/docs/en/index.sgml
 short_info=Yet Another Music Manager I...,Fastest and easiest access to your whole song collection!
 sub_dir=yammi/
-version=1.0-rc1
+version=1.0
 version_control=CVS
 workspace=1
 

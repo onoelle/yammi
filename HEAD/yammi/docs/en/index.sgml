@@ -2,9 +2,9 @@
 <article>
 <title>The Yammi Handbook
 <author>Oliver Nölle <tt>yammi-developer _AT_ lists.sourceforge.net</tt>
-<date>Version 1.0-rc1 , Sun Aug 31, 23:00:00 MET 2003
+<date>Version 1.0 , Sun Oct 19, 23:00:00 MET 2003
 <abstract>
-This Handbook describes Yammi Version 1.0-rc1
+This Handbook describes Yammi Version 1.0.
 </abstract>
 
 <toc>
@@ -340,6 +340,10 @@ file, appearing in the folder "History" the next time Yammi starts.
 <sect2> Folder Media <p>
 Contains a subfolder for every media (eg. CD) that you prepared with Yammi.
 
+Additionally contains a subfolder containing all those songs that are not contained on any media.
+This allows to easyily manage a backup of your song collection, quickly accessing those songs
+that are not yet contained on a (backup) media.
+
 When burning song files to a CD with the assistance of Yammi, the program adds
 information to its database about on which media under which path each song is available.
 This enables you to quickly find on which media you have song files,
@@ -503,6 +507,10 @@ entries.
 The following key bindings exist:
 
 ESC/CTRL-F:     Set focus to search field and clear it
+
+CTRL-G:         Go to the folder with the name best matching the search term.
+(Uses the fuzzy search of Yammi, press multiple times to iterate over the best matches,
+use CTRL-R to go back one folder when iterating over the best matches).
 
 F1:     Play / Pause
 

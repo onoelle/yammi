@@ -40,7 +40,6 @@ void LineEditShift::keyPressEvent(QKeyEvent* e)
 	int key=e->key();
 	switch(key) {
 		case Qt::Key_Shift:
-//      cout << "shift pressed (in lineedit)\n";
 			gYammiGui->shiftPressed=true;
       // desired fallthrough
     default:
@@ -53,7 +52,6 @@ void LineEditShift::keyReleaseEvent(QKeyEvent* e)
 	int key=e->key();
 	switch(key) {
 		case Qt::Key_Shift:
-//      cout << "shift released (in lineedit)\n";
 			gYammiGui->shiftPressed=false;
       // desired fallthrough
     default:

@@ -120,6 +120,8 @@ protected:
   static const int AUTOPLAY_RANDOM = 2;
   static const int AUTOPLAY_FOLDER = 10;
 
+  static const int FUZZY_FOLDER_LIST_SIZE = 50;
+
 // constructors
 //*************
 public:
@@ -194,6 +196,9 @@ public slots:
 // protected members
 //******************
 protected:
+  Folder*       fuzzyFolderList[FUZZY_FOLDER_LIST_SIZE];
+  QString       fuzzyFolderName;
+  int           fuzzyFolderNo;
   QString       columnName[13];
   bool          columnVisible[MAX_COLUMN_NO];
   int           realColumnMap[MAX_COLUMN_NO];
@@ -276,6 +281,7 @@ protected:
 // protected methods
 //******************
 protected:
+  void          gotoFuzzyFolder(bool backward);
   void          changeToFolder(Folder* newFolder, bool changeAnyway=false);
   void          folderContentChanged();
   void          folderContentChanged(Folder* folder);
