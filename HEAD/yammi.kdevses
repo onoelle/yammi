@@ -3,17 +3,29 @@
 <KDevPrjSession>
 <LastCompileConfig>(Default)</LastCompileConfig>
  <Mainframe MaximizeMode="1" />
- <DocsAndViews NumberOfDocuments="5" >
-<Doc0 CursorPosLine="457" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="0" FileName="/home/oliver/work/programming/yammi/yammi/yammimodel.cpp" >
+ <DocsAndViews NumberOfDocuments="11" >
+<Doc0 CursorPosLine="4" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="38" FileName="/home/oliver/work/programming/yammi/yammi/docs/en/index.sgml" >
 <View0 Top="25" Width="400" Attach="1" Height="300" Left="3" Focus="0" Type="KWriteView" MinMaxMode="0" />  </Doc0>
-  <Doc1 CursorPosLine="54" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="24" FileName="/home/oliver/work/programming/yammi/yammi/noatunplayer.h" >
-<View0 Top="48" Width="728" Attach="1" Height="444" Left="26" Focus="0" Type="KWriteView" MinMaxMode="0" />  </Doc1>
-  <Doc2 CursorPosLine="447" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="0" FileName="/home/oliver/work/programming/yammi/yammi/noatunplayer.cpp" >
-<View0 Top="71" Width="728" Attach="1" Height="444" Left="49" Focus="0" Type="KWriteView" MinMaxMode="0" />  </Doc2>
-  <Doc3 CursorPosLine="569" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="24" FileName="/home/oliver/work/programming/yammi/yammi/yammigui.cpp" >
-<View0 Top="69" Width="734" Attach="1" Height="472" Left="69" Focus="1" Type="KWriteView" MinMaxMode="2" />  </Doc3>
-  <Doc4 CursorPosLine="48" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="25" FileName="/home/oliver/work/programming/yammi/yammi/dummyplayer.h" >
-<View0 Top="117" Width="728" Attach="1" Height="444" Left="95" Focus="0" Type="KWriteView" MinMaxMode="0" />  </Doc4> </DocsAndViews>
+  <Doc1 CursorPosLine="15" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="0" FileName="/home/oliver/work/programming/yammi/TODO" >
+<View0 Top="48" Width="708" Attach="1" Height="461" Left="26" Focus="0" Type="KWriteView" MinMaxMode="0" />  </Doc1>
+  <Doc2 CursorPosLine="1256" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="0" FileName="/home/oliver/work/programming/yammi/yammi/song.cpp" >
+<View0 Top="71" Width="708" Attach="1" Height="461" Left="49" Focus="0" Type="KWriteView" MinMaxMode="0" />  </Doc2>
+  <Doc3 CursorPosLine="30" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="39" FileName="/home/oliver/work/programming/yammi/CHANGELOG" >
+<View0 Top="92" Width="714" Attach="1" Height="472" Left="92" Focus="1" Type="KWriteView" MinMaxMode="2" />  </Doc3>
+  <Doc4 CursorPosLine="0" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="0" FileName="/home/oliver/work/programming/yammi/yammi/mylistview.cpp" >
+<View0 Top="117" Width="708" Attach="1" Height="444" Left="95" Focus="0" Type="KWriteView" MinMaxMode="0" />  </Doc4>
+  <Doc5 CursorPosLine="3740" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="0" FileName="/home/oliver/work/programming/yammi/yammi/yammigui.cpp" >
+<View0 Top="140" Width="708" Attach="1" Height="444" Left="118" Focus="0" Type="KWriteView" MinMaxMode="0" />  </Doc5>
+  <Doc6 CursorPosLine="204" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="2" FileName="/home/oliver/work/programming/yammi/yammi/songlistitem.cpp" >
+<View0 Top="163" Width="708" Attach="1" Height="444" Left="141" Focus="0" Type="KWriteView" MinMaxMode="0" />  </Doc6>
+  <Doc7 CursorPosLine="313" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="37" FileName="/home/oliver/work/programming/yammi/yammi/yammigui.h" >
+<View0 Top="209" Width="708" Attach="1" Height="444" Left="187" Focus="0" Type="KWriteView" MinMaxMode="0" />  </Doc7>
+  <Doc8 CursorPosLine="22" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="22" FileName="/home/oliver/work/programming/yammi/yammi/icons/playnow.xpm" >
+<View0 Top="232" Width="708" Attach="1" Height="444" Left="210" Focus="0" Type="KWriteView" MinMaxMode="0" />  </Doc8>
+  <Doc9 CursorPosLine="0" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="0" FileName="/home/oliver/work/programming/yammi/MyYammiHowto.txt" >
+<View0 Top="255" Width="708" Attach="1" Height="444" Left="233" Focus="0" Type="KWriteView" MinMaxMode="0" />  </Doc9>
+  <Doc10 Type="CDocBrowser" NumberOfViews="1" FileName="/usr/lib/qt3/doc/html//qtoolbar-members.html" >
+<View Top="186" Width="124" Attach="1" Height="114" Left="164" Focus="0" Type="KHTMLView" MinMaxMode="0" />  </Doc10> </DocsAndViews>
  <CompileConfigs>
 <Release>
 <Architecture>i386</Architecture>

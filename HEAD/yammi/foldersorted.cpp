@@ -93,8 +93,10 @@ void FolderSorted::removeSong(Song* s)
 }
 
 
-// corrects the index entries (intInfo) in all the songEntries
-// (= takes the current order)
+/**
+ * corrects the index entries (intInfo) in all the songEntries
+ * (= takes the current order)
+ */
 void FolderSorted::correctOrder()
 {
 	int index=1;

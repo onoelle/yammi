@@ -75,7 +75,7 @@ static char* columnName[13] = {QT_TR_NOOP("Artist"), QT_TR_NOOP("Title"), QT_TR_
 
 /**
  * Constructor, sets up the whole application.
- * (maybe not nice??)
+ * baseDir is expected to be an existing directory (main method checks for that)
  */
 YammiGui::YammiGui(QString baseDir)
     : QMainWindow()
@@ -423,6 +423,12 @@ YammiGui::YammiGui(QString baseDir)
 	connect(folderMedia, SIGNAL( RemoveMedia() ), this, SLOT(removeMedia()));
 	connect(folderMedia, SIGNAL( RenameMedia() ), this, SLOT(renameMedia()));
 
+  // signals of toolbars
+  connect(mainToolBar, SIGNAL( visibilityChanged(bool) ), this, SLOT(toolbarShownOrHidden()));
+  connect(mediaPlayerToolBar, SIGNAL( visibilityChanged(bool) ), this, SLOT(toolbarShownOrHidden()));
+  connect(songActionsToolBar, SIGNAL( visibilityChanged(bool) ), this, SLOT(toolbarShownOrHidden()));
+  connect(removableMediaToolBar, SIGNAL( visibilityChanged(bool) ), this, SLOT(toolbarShownOrHidden()));
+  connect(sleepModeToolBar, SIGNAL( visibilityChanged(bool) ), this, SLOT(toolbarShownOrHidden()));
 	// some preparations for startup
 	//******************************
 	
@@ -459,6 +465,7 @@ YammiGui::YammiGui(QString baseDir)
 	connect(timer, SIGNAL(timeout()), this, SLOT(finishInitialization()) );
 	timer->start(0, TRUE);
 }
+
 
 
 void YammiGui::finishInitialization()
@@ -668,6 +675,7 @@ void YammiGui::writeSettings()
   }
   settings.writeEntry( "/Yammi/folder/current", chosenFolder->folderName());
   settings.writeEntry( "/Yammi/folder/autoplay", autoplayFoldername);
+  settings.writeEntry( "/Yammi/autoplay/mode", autoplayMode);
 
   // toolbar visibility
   settings.writeEntry( "/Yammi/toolbars/mainToolBar", !mainToolBar->isHidden());
@@ -722,6 +730,8 @@ void YammiGui::readSettings()
   // autoplay folder
   autoplayFoldername=settings.readEntry("/Yammi/folder/autoplay", tr("All Music"));
   autoplayMenu->changeItem(AUTOPLAY_FOLDER, tr("Folder: ")+autoplayFoldername);
+  autoplayChanged(settings.readNumEntry( "/Yammi/autoplay/mode", AUTOPLAY_OFF));
+  
 
   // toolbars
   if(settings.readBoolEntry("/Yammi/toolbars/mainToolBar", true)) {
@@ -1457,10 +1467,12 @@ void YammiGui::addFolderContentSnappy()
 	else {		// no, we are finished
 		QApplication::restoreOverrideCursor();
 		songListView->setUpdatesEnabled(true);
+    // special sorting for certain folders
     if(((QListViewItem*)chosenFolder)->parent()==folderAlbums) {
       songListView->setSorting(COLUMN_TRACKNR);
     }
     else if(chosenFolder==folderRecentAdditions) {
+      cout << "setting sorting to added to...\n";
       songListView->setSorting(COLUMN_ADDED_TO);
     }
     else {
@@ -1475,17 +1487,6 @@ void YammiGui::slotSongChanged()
 {
 }
 
-
-/// pushbutton on current song
-/*
-void YammiGui::currentlyPlayedSongPopup()
-{
-	// get currently played song
-	getCurrentlyPlayedSong();
-	// we should get mouse position, but how???
-	doSongPopup(QPoint(500, 50));
-}
-*/
 
 /// rmb on songlist: song popup for selection
 void YammiGui::songListPopup( QListViewItem* Item, const QPoint & point, int )
@@ -2209,6 +2210,11 @@ void YammiGui::forSelection(action act)
     forSelectionCheckConsistency();
     return;
   }
+  int sortedByBefore=0;
+  if(act==Dequeue) {
+    sortedByBefore=songListView->sortedBy;
+    qDebug("songListView->sortedBy: %i", sortedByBefore);
+  }
 	// end of special treatment
 	
 	// 1. destination directory
@@ -2318,6 +2324,13 @@ void YammiGui::forSelection(action act)
 	if(act==Enqueue || act==EnqueueAsNext || act==Dequeue) {
     player->syncYammi2Player(false);
     folderContentChanged(folderActual);
+    if(act==Dequeue) {
+      bool ascending = (sortedByBefore>0);
+      if(!ascending) {
+        sortedByBefore = -sortedByBefore;
+      }
+      songListView->setSorting(sortedByBefore-1, ascending);
+    }
 		checkPlaylistAvailability();
 	}
 }
@@ -2390,6 +2403,7 @@ void YammiGui::forSong(Song* s, action act, QString dir)
           if(pos!=0 || player->getStatus()==STOPPED) {
             // only dequeue if not currently played song (or player stopped)
             model->songsToPlay.remove(pos);
+            mainStatusBar->message(QString(tr("song %1 dequeued")).arg(s->displayName()), 3000);
           }
           break;
         }
@@ -2541,7 +2555,7 @@ void YammiGui::openHelp()
 void YammiGui::aboutDialog()
 {
   QString msg=QString(tr("Yammi - Yet Another Music Manager I...\n\n\n"));
-  msg+="Version "+model->config.yammiVersion+", 12-2001 - 7-2003 by Oliver Nölle\n";
+  msg+="Version "+model->config.yammiVersion+", 12-2001 - 8-2003 by Oliver Nölle\n";
   msg+=tr("Media player: ")+player->getName()+"\n";
   #ifdef ENABLE_XMMS
   msg+=tr("- XMMS support: yes\n");
@@ -2564,7 +2578,7 @@ void YammiGui::aboutDialog()
   msg+=tr("- id3lib support: no\n");
   #endif
   msg+=tr("\nProject home page: yammi.sourceforge.net\n\n\n");
-  msg+=tr("Contact: \nyammi-developer@lists.sourceforge.netn\n");
+  msg+=tr("Contact: \nyammi-developer@lists.sourceforge.net\n");
   msg+=tr("have fun...\n");
   QMessageBox::information( this, tr("Yammi"),msg);
 }
@@ -3635,11 +3649,9 @@ void YammiGui::toggleMainToolbar()
 {
   if(mainToolBar->isHidden()) {
     mainToolBar->show();
-    toolbarsMenu->setItemChecked(1, true);
   }
   else {
     mainToolBar->hide();
-    toolbarsMenu->setItemChecked(1, false);
   }
 }
 /// view/hide media player toolbar
@@ -3647,11 +3659,9 @@ void YammiGui::toggleMediaPlayerToolbar()
 {
   if(mediaPlayerToolBar->isHidden()) {
     mediaPlayerToolBar->show();
-    toolbarsMenu->setItemChecked(2, true);
   }
   else {
     mediaPlayerToolBar->hide();
-    toolbarsMenu->setItemChecked(2, false);
   }
 }
 /// view/hide song actions toolbar
@@ -3659,11 +3669,9 @@ void YammiGui::toggleSongActionsToolbar()
 {
   if(songActionsToolBar->isHidden()) {
     songActionsToolBar->show();
-    toolbarsMenu->setItemChecked(3, true);
   }
   else {
     songActionsToolBar->hide();
-    toolbarsMenu->setItemChecked(3, false);
   }
 }
 /// view/hide removable media toolbar
@@ -3671,11 +3679,9 @@ void YammiGui::toggleRemovableMediaToolbar()
 {
   if(removableMediaToolBar->isHidden()) {
     removableMediaToolBar->show();
-    toolbarsMenu->setItemChecked(4, true);
   }
   else {
     removableMediaToolBar->hide();
-    toolbarsMenu->setItemChecked(4, false);
   }
 }
 /// view/hide sleep mode toolbar
@@ -3683,13 +3689,25 @@ void YammiGui::toggleSleepModeToolbar()
 {
   if(sleepModeToolBar->isHidden()) {
     sleepModeToolBar->show();
-    toolbarsMenu->setItemChecked(5, true);
   }
   else {
     sleepModeToolBar->hide();
-    toolbarsMenu->setItemChecked(5, false);
   }
 }
+
+/**
+ * Updates the check marks of the menu entries for showing/hiding toolbars.
+ */
+void YammiGui::toolbarShownOrHidden()
+{
+  toolbarsMenu->setItemChecked(1, mainToolBar->isVisible());
+  toolbarsMenu->setItemChecked(2, mediaPlayerToolBar->isVisible());
+  toolbarsMenu->setItemChecked(3, songActionsToolBar->isVisible());
+  toolbarsMenu->setItemChecked(4, removableMediaToolBar->isVisible());
+  toolbarsMenu->setItemChecked(5, sleepModeToolBar->isVisible());
+}
+
+
 
 /// view/hide sleep mode toolbar
 void YammiGui::toggleColumnVisibility(int column)
@@ -3718,3 +3736,5 @@ void YammiGui::forAllSelectedEnqueueAsNext()
     forAllSelected(EnqueueAsNext);
   }  
 }
+
+

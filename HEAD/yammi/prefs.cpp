@@ -44,7 +44,6 @@ void Prefs::setDefaultValues(void) {
 	player = MEDIA_PLAYER_XMMS;
 #endif
 
-	yammiBaseDir = "";
 	yammiVersion = "1.0-rc1";
 	trashDir = "/mp3/trash/";
 	scanDir = "/mp3/inbox/";
@@ -87,21 +86,34 @@ void Prefs::setDefaultValues(void) {
 }
 
 
+/**
+ * baseDir must be an existing and readable directory
+ */
 bool Prefs::loadConfig(QString baseDir)
 {
-  qDebug("reading preferences from %s/.yammi/prefs.xml...", baseDir.latin1());
+  qDebug("reading preferences...");
 
-  QDir d(baseDir);
-  if(!d.cd(".yammi")) {
-		if(startFirstTime(baseDir)) { 
-			d.cd(".yammi");
-		} else {
+  QDir dir(baseDir);
+  if(!dir.exists()) {
+    qWarning("ERROR: non-existing directory %s, does your home directory exist?", baseDir.latin1());
+    setDefaultValues();
+    addStandardPlugins();
+	  return false;    
+  }
+
+	// set yammis base directory
+  yammiBaseDir=baseDir+"/.yammi";
+  qDebug("yammiBaseDir: %s", yammiBaseDir.latin1());
+  
+  QDir yammiDir(yammiBaseDir);
+  if(!yammiDir.exists()) {
+		if(!startFirstTime(baseDir)) {
+      qWarning("problems on initializing yammi directory structure, but trying to continue...");
+      setDefaultValues();
+      addStandardPlugins();
 			return false;
 		}
 	}
-
-	// set yammis base directory 
-	yammiBaseDir = d.absPath();
 
 	// create a document
 	QDomDocument doc("prefs");
@@ -111,8 +123,6 @@ bool Prefs::loadConfig(QString baseDir)
 	if (!f.open(IO_ReadOnly)) {
 	  // set default value and save them
     qDebug("configuration file could not be found, taking default values");
-    // oliver: asking the user whether he wants to save configuratioin does not make sense,
-    // if we save it later anyway...
 		setDefaultValues();
 		addStandardPlugins();
 		return saveConfig();
@@ -124,16 +134,17 @@ bool Prefs::loadConfig(QString baseDir)
 			QObject::tr("Error parsing configuration file!"),
 			QMessageBox::Abort, 0, 0);
 
-		// close file
+    setDefaultValues();
+		addStandardPlugins();
 		f.close();
-
 		return false;
 	}
 
 	// close file
 	f.close();
 
-	// 1: get prefs from file
+  qDebug("prefs found in %s/prefs.xml...", yammiBaseDir.latin1());
+  // 1: get prefs from file
 	prefsFound = true;
 
 	// general parameter
@@ -216,11 +227,12 @@ bool Prefs::loadConfig(QString baseDir)
 	}
 
 	qDebug("..done");
-
 	return true;
 }
 
-/// save preferences (if changed) to disk
+/**
+ * save preferences (if changed) to disk
+ */
 bool Prefs::saveConfig(void)
 {
 	qDebug("saving preferences to %s/prefs.xml...", yammiBaseDir.latin1());
@@ -304,10 +316,10 @@ bool Prefs::saveConfig(void)
  */
 bool Prefs::startFirstTime(QString& baseDir)
 {
-	cout << "you seem to start Yammi for the first time!\n";
-	cout << "creating directory .yammi in " << baseDir << "...";
+	qDebug("you seem to start Yammi for the first time!");
+	qDebug("creating directory .yammi in %s...", baseDir.latin1());
 
-	QDir d(baseDir);
+  QDir d(baseDir);
  	if(!d.mkdir(".yammi")) {
 		QMessageBox::critical(gYammiGui, QObject::tr("Yammi"),
 			QObject::tr("Could not create directory .yammi. Maybe you have no "

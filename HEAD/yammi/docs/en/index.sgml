@@ -2,9 +2,9 @@
 <article>
 <title>The Yammi Handbook
 <author>Oliver Nölle <tt>yammi-developer _AT_ lists.sourceforge.net</tt>
-<date>Version 0.8.2 , Wed May 14, 16:00:00 MET 2003
+<date>Version 1.0-rc1 , Sun Aug 31, 23:00:00 MET 2003
 <abstract>
-This Handbook describes Yammi Version 0.8.2
+This Handbook describes Yammi Version 1.0-rc1
 </abstract>
 
 <toc>
@@ -25,13 +25,14 @@ Yammi enables you to
 
 - organize your songs into playlists (called "categories")
 
-- easily keep your song info (id3 and ogg tags) and filenames consistent
+- read/write id3 and ogg tags, and easily keep tags and filenames consistent
 
-- keep statistics (when/how many times was song x played?)
+- keep statistics by logging when a song was played (when/how many times was song x played?)
 
-- assist in burning your song collection to CDs (automatically distributing your songs over multiple media)
+- assist in burning a selection of songs to a single audio CD or
+your whole song collection to multiple data CDs (distributing your songs over multiple media)
 
-- act as a jukebox, loading song files on demand from removable media/CDs
+- act as a jukebox, loading song files which are not on your harddisk on demand from removable media/CDs
 
 - prelisten to songs on headphone while normal playback to DJ your own party (needs a second sound card)
 
@@ -91,7 +92,7 @@ Give it a try at <htmlurl url="http://yammi.sourceforge.net" name = "The Yammi H
 <sect2>Mandatory
 <p>
 Yammi needs <htmlurl url="http://www.trolltech.com/products/qt/" name="QT">, version 3.x
-(including qt-devel for compiling).<p>
+<p>
 <sect2>Optional
 <p>
 For reading id3 tags,
@@ -119,6 +120,21 @@ at the script "yammiGrabAndEncode" included in the distribution.
 
 If you want to use certain plugins you might need other programs
 (such as k3b for the "Burn with K3b" plugins or cdlabelgen for the "Create CD Label" plugin).
+
+<sect2>...for compiling from source
+If you want to compile Yammi from source, you need additionally to the above
+mentioned requirements the following packages:
+
+(This list is not complete nor confirmed yet, anyone knows how to find out exactly what one needs?)
+
+Xfree86-devel
+
+qt3-devel
+
+xmms-devel
+
+libz - sources
+
 
 
 
@@ -164,7 +180,7 @@ you can also delete the directory ".yammi" in your home directory
 After successful installation, you can start yammi by typing "yammi" in a shell
 (if you encounter any problems or want to know what's going on it helps to have
 a look at the terminal output that yammi creates on the console).
-On the first start, yammi will create a directory ".yammi" in your home directory,
+On first startup, yammi will create a directory ".yammi" in your home directory,
 where it will store the song database, preferences settings and logfiles.
 Before you start scanning your harddisk for songs, you should edit the preferences
 (Configure -> Settings...) and set the paths to the location of your song collection.
@@ -337,6 +353,9 @@ This folder will not be saved to Yammi's database.
 <sect2> Folder Search Results <p>
 This folder contains the result of the last search process.
 
+<sect2> Folder Recent Additions <p>
+Yammi automatically groups into this folder the latest additions to your song database.
+
 <sect2> Folder Unclassified <p>
 This folder contains all songs that are not appearing in either
 
@@ -377,7 +396,8 @@ The most important ones are also available in the toolbar.
 is immediately played.
 
 ...Dequeue - Dequeues a song from Yammi's playlist, ie. removes all occurrences of this song
-in Yammi's playlist.
+in Yammi's playlist (if applied on a song in the playlist, only removes that occurrence in
+the playlist).
 
 <sect2>Prelisten to...<p>
 (only available if a second sound device is configured in the preferences)
@@ -529,11 +549,12 @@ For these cases press the SHIFT key in combination with the requested action.
 <sect> Advanced topics <p>
 
 <sect1> Autoplay <p>
-If you are too lazy to manually enqueue the songs to listen to, you can use Yammi's autoplay
-functionality to automatically enqueue songs for you, if the playlist contains less than 5 songs.
+Too lazy to manually enqueue songs all the time?
+Use Yammi's autoplay functionality to let Yammi automatically enqueue songs for you!
 
-To use this, you first choose a folder to use for selecting songs from and choose "Autoplay" from
-the folder's context menu. Then you can set the autoplay mode from Yammi's "Autoplay" menu.
+Choose a folder to enqueue songs from and choose "Autoplay" from
+the folder's context menu.
+Then set the autoplay mode from Yammi's "Autoplay" menu.
 
 Currently, Yammi offers two modes:
 
@@ -543,6 +564,13 @@ Currently, Yammi offers two modes:
 "Longest not played" chooses those songs, that haven't been played for the longest time.
 For this to work correctly, you need to enable the "logging of played songs" feature in the settings
 (If more than one song haven't been played at all, Yammi chooses randomly from those songs).
+
+
+Hint:
+
+You can still manually enqueue songs without having to stop the autoplay mode.
+Yammi just fills up the playlist if there are less than 5 songs in it.
+The selected autoplay mode and folder are also saved for the next session.
 
 
 <sect1> Checking consistency <p>
@@ -563,10 +591,16 @@ or deleted (if the file is not existing on any media).
 
 - check tags: consistent with Yammi's database?
 
-If tags are not consistent, they can be corrected in the corresponding files
-to the values in Yammi's database (only possible for mp3 and ogg files).
+If tags are not consistent, they can be corrected in two ways (only possible for mp3 and ogg files):
+
+1. the tags in the corresponding files can be set to the values in Yammi's database
+(Yammi database => file tags, default mode).
+
+2. Yammi can re-read the tags from the files and update its database content with the new values
+(for example if you edited tags from outside Yammi).
 
 Be careful using this function, as it might overwrite all the tags in your files!
+
 
 - check filename: consistent with the configured naming scheme (such as "artist - title")?
 
@@ -589,6 +623,9 @@ added song's primary key is already existing.
 One of these entries will be deleted.
 
 
+
+Before writing tags or renaming files, Yammi asks you for confirmation before
+performing that operation. You can confirm for a single song or for all songs.
 
 After checking consistency, the folder ProblematicSongs contains all the
 problematic songs that were found. A column "reason" explains why a song was
@@ -664,7 +701,8 @@ from the media player and again takes over the playlist management
 
 <sect1> Updating song database <p>
 The "Database" menu offers the possibility to update your database in two ways:
-By scanning your harddisk or by scanning a removable media (eg. a CD).
+By scanning your harddisk (or selecting single files to add to the database) or
+by scanning a removable media (eg. a CD).
 After choosing the corresponding entry in the "Database" menu a dialog will show up
 which allows to set the directory to scan and the file pattern for scanning.
 
@@ -696,13 +734,18 @@ If a song is already existing in the database, Yammi will just add the media
 to its media list (if not contained already), so scanning a media twice should
 not create any inconsistencies.
 
+<sect1> Selecting single files to add to your database <p>
+Sometimes you don't want to scan your harddisk, but just add one or two files to your database.
+Select the menu entry "Import Selected File(s)".
+
 
 <sect1> Grabbing and encoding new songs <p>
 
 Especially on a party it might come in handy to directly grab and encode
 some songs from an audio CD. Yammi offers a basic support for that, but for grabbing a large
 number of songs I recommend using one of the many tools out there.
-For grabbing and encoding a single song, choose "Grab CD Track".
+For grabbing and encoding a single song, choose "Grab and Encode CD Track" from the
+"Database" menu.
 You will be asked for track number, artist and title.
 Then Yammi executes in the background the script
 "yammiGrabAndEncode" (which is included in the distribution and normally installed
@@ -731,19 +774,25 @@ on:
 - check consistency
 
 Once enabled, you can only disable this feature with a password, which is: "protect".
-Alternatively, you could edit Yammi's preferences file.
+Alternatively, you could edit Yammi's preferences file by hand to disable this mode.
 
 Okay, this is NOT SAFE IN ANY WAY, it's just meant to protect users who have
 very little knowledge of computers to do any harm to your song collection by
 accident.
 
-To go one step further, you could create a new user "dj" on your computer,
-and start Yammi as that user, using the command line option to specify the location of the
-.yammi directory. This directory, as well as the directory with all your songs,
-should of course be read-only to the user "dj".
+For better safety, I recommend creating a new user "dj" on your computer with limited
+access rights, and start Yammi as that user.
+You can then use the command line option to specify the location of the .yammi directory
+and make that directory (and the directory with all your
+songs) read-only for the user "dj".
 
 <sect1>Sleep mode <p>
-If you enable Yammi's sleep mode by pressing the button in the toolbar,
+Want to listen to a few more songs while falling asleep? But how do you turn off the computer
+then?
+
+Enable Yammi's sleep mode by pressing the button in the toolbar, and specify the number
+of songs Yammi should play before initiating a shutdown on your computer.
+
 Yammi will shut down in the following two cases:
 
 - the number of songs to play (visible and editable in the toolbar) has reached 0
@@ -760,9 +809,8 @@ To shutdown your computer as a normal user, you might need to modify permissions
 shutdown command (eg., as root do a "chmod 6755 /sbin/shutdown").
 Be careful with changing permissions, as it may make your computer more vulnerable.
 
-Be also careful with shutting down your computer in that way, as any open documents will not be saved
-and running programs might not be terminated in a very soft way...
-(Anyone knows how to shutdown KDE in a regular way from a script? Please let me know!)
+Be careful with shutting down your computer in that way, as open documents might not be saved
+properly or running programs might not be terminated in a very soft way...
 
 
 <sect1> Removable Media Management <p>

@@ -4,8 +4,9 @@ Thanks to
 ...Tom Roth for substantial feedback on the whole project, and detailed bug reports
 ...Philip Scott for contributing the reading of ogg tags
 ...Scott Wheeler for bug reports and ideas for future versions of Yammi
-...Daniel Pichler, who offered preparing my sources for being internationalized and
-   translated (into German) (hopefully will be done after next release)
+...Daniel Pichler, for preparing my sources for being internationalized and providing
+   a german translation
 ...Stefan Gmeiner for sending a patch, cleaning up my messy sources...
+...Sandra Taufer for providing beautiful new icons for yammi!
 
 ...and many other people for bug reports, building rpms, beta testing and other valuable feedback!

@@ -491,11 +491,31 @@ bool Song::getMp3Tags(QString filename)
   // genre
   this->genreNr=-1;
   if(getId3Tag(&tag, ID3FID_CONTENTTYPE, ID3FN_TEXT, &str)) {
-    if(str.left(1)=="(")
-      str=str.right(str.length()-1);
-    if(str.right(1)==")")
-      str=str.left(str.length()-1);
-		sscanf(str, "%d", &(this->genreNr));
+//    cout << "genre found: " << str << "\n";
+    if(str.left(1)=="(") {
+      // pattern: "(<genreNr>)[genreDesc]"
+      int pos=str.find(')');
+      if(pos==-1) {
+        // genre broken?
+        this->genreNr=CMP3Info::getGenreIndex(str);        
+      }
+      else {
+        QString genreNrStr=str.mid(1, pos-1);
+//        QString genreDesc=str.mid(pos+1);
+//        TODO: support non-standard genres (change datatype from int to string...)
+//      cout << "genreNr: " << genreNr << ", genreDesc: " << genreDesc << "\n";
+        sscanf(genreNrStr, "%d", &(this->genreNr));
+      }
+    }
+    else {
+      // pattern: just a string, no brackets
+      this->genreNr=CMP3Info::getGenreIndex(str);
+      if(this->genreNr==-1) {
+        // description did not match, maybe it's just a number without brackets?
+        sscanf(str, "%d", &(this->genreNr));
+      }
+//      cout << "genreDesc: " << str << ", index: " << this->genreNr << "\n";
+    }
     foundSomething=true;
   }
 
@@ -585,7 +605,7 @@ bool Song::setMp3Tags(QString filename)
   // genreNr
   if(genreNr!=-1) {
     ID3_Frame genreNrFrame;
-    if(!setId3Tag(&tag, ID3FID_CONTENTTYPE, ID3FN_TEXT, QString("%1").arg(this->genreNr), &genreNrFrame))
+    if(!setId3Tag(&tag, ID3FID_CONTENTTYPE, ID3FN_TEXT, QString("(%1)").arg(this->genreNr), &genreNrFrame))
       cout << "could not set tag (year)\n";
   }
 
@@ -1218,12 +1238,19 @@ void Song::deleteFile(QString trashDir)						// move songfile to trash
 // move file to another directory	
 void Song::moveTo(QString dir)
 {
-	if(filename=="")
+	if(filename=="") {
 		return;
-	QString newname=QString("%3/%4").arg(dir).arg(filename);
+  }
+  if(dir.right(1)=="/") {
+    // strip trailing slash
+    dir=dir.left(dir.length()-1);
+  }
+    
+  QString newLocation=QString("%3/%4").arg(dir).arg(filename);
+  qDebug("newLocation: %s", newLocation.latin1());
 	QDir currentDir("/");
-	if(!currentDir.rename(location(), newname)) {
-		cout << "renaming failed! song: " << displayName() << "\n";
+	if(!currentDir.rename(location(), newLocation)) {
+		cout << "renaming failed! song: " << displayName() << ", new location: " << newLocation << "\n";
 	}
 	else {
 		path=dir;

@@ -65,15 +65,15 @@ void MyListView::contentsMousePressEvent ( QMouseEvent * e)
 {
   
   if(gYammiGui->chosenFolder->isSorted() && sortedBy==1 && e->button()==LeftButton) {
-    cout << "conditions for dragging true!\n";
+//    cout << "conditions for dragging true!\n";
     dragPoint=e->globalPos();
 		dragItem=itemAt(viewport()->mapFromGlobal(dragPoint));
 		if(dragItem) {
-      cout << "dragItem found: " << ((SongListItem*)dragItem)->song()->displayName() << "\n";
+//      cout << "dragItem found: " << ((SongListItem*)dragItem)->song()->displayName() << "\n";
 			// check whether we allow dragging of first item
 			if(!dontTouchFirst || dragItem!=firstChild()) {
 				// start dragging
-        cout << "dragging started\n";
+//        cout << "dragging started\n";
 				dragging=true;
 				dragStartedAtIndex=dragItem->itemPos();
 				setCursor(Qt::sizeVerCursor);
@@ -81,7 +81,7 @@ void MyListView::contentsMousePressEvent ( QMouseEvent * e)
 			}
 		}
     else {
-      cout << "no dragItem found\n";
+//      cout << "no dragItem found\n";
     }
 	}
 	QListView::contentsMousePressEvent(e);
@@ -134,7 +134,7 @@ void MyListView::contentsMouseMoveEvent ( QMouseEvent * e)
 	
 	// no valid item, mouse above or below listview?
 	if(item==0)	{
-    cout << "item==0\n";
+//    cout << "item==0\n";
 		bool above=viewport()->mapFromGlobal(point).y()<0;
 		QListViewItem* swapItem;
 		if(above) {
@@ -165,17 +165,17 @@ void MyListView::contentsMouseMoveEvent ( QMouseEvent * e)
 		return;
 		
 
-  cout << "drag requested: \ndragSong: " << dragSong->displayName() << "\ns: " << s->displayName() << "\n";
-  cout << "point.y(): " << point.y() << ", dragPoint.y(): " << dragPoint.y() << "\n";
+//  cout << "drag requested: \ndragSong: " << dragSong->displayName() << "\ns: " << s->displayName() << "\n";
+//  cout << "point.y(): " << point.y() << ", dragPoint.y(): " << dragPoint.y() << "\n";
   bool up=(point.y() < dragPoint.y());
 	if(up) {		// don't allow dragging to top song (is played)
 		if(dontTouchFirst && item==firstChild()) {
-			cout << "dragging to top song not allowed in this folder!\n";
+//			cout << "dragging to top song not allowed in this folder!\n";
 			return;
 		}
 	}
 	
-  cout << "moving item!\n";
+//  cout << "moving item!\n";
   dragItem->moveItem(item);
 	if(up) {
 		dragItem->itemAbove()->moveItem(dragItem);

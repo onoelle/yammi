@@ -78,8 +78,10 @@ public slots:
   virtual void quit() = 0;
 
 signals:
-  virtual void playlistChanged() = 0;         // should be emitted, if the playlist of player changed (eg. song change)
-  virtual void statusChanged() = 0;           // should be emitted, if status of player changed (eg. play -> pause)
+  // the following signals should be implemented
+  // we don't declare them here, as that causes conflicts in findSignal()...
+//  virtual void playlistChanged() = 0;         // should be emitted, if the playlist of player changed (eg. song change)
+//  virtual void statusChanged() = 0;           // should be emitted, if status of player changed (eg. play -> pause)
   
 };
 

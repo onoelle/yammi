@@ -311,6 +311,7 @@ protected:
 // protected slots
 //****************
 protected slots:
+  void          toolbarShownOrHidden();
   void          toggleColumnVisibility(int column);
   void          toggleMainToolbar();
   void          toggleMediaPlayerToolbar();

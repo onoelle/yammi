@@ -1,22 +1,28 @@
 ########################
-28.08.2003?? version 1.0-rc1
+31.08.2003 version 1.0-rc1
 - implemented "reread tags from file" functionality in consistency check
+- started improving the icons, thanks to Sandra (to be finished...)
 - added the possibility to ignore case in filename check (tick the checkbox in the settings)
 - checking for existence of directory "categories" before saving, creating it if necessary
 - added possibility to select files or m3u files to import into database,
-  see Database menu (as an alternative to scanning a directory)
-- added "Recent Additions" folder, switch to that folder after scanning for songs
+  see Database menu (as an alternative to recursively scanning a directory)
+- added "Recent Additions" folder, yammi switches to that folder after scanning for songs
 - moved all classes from mp3info into top-level folder (due to compilation issues)
 - "dequeue" called from playlist now only dequeues the selected entry (if song more than once in playlist)
 - replaced my personal email address with the new mailing list address (yammi-developer@lists.sourceforge.net)
 - added a "Go to folder..." functionality in song context menu to quickly go to corresponding album/artist/genre folder
 - added a "Load .m3u into category" menu entry with the corresponding functionality
+- current autoplay mode now also gets saved for next session
+- hopefully fixed problems with reading/writing genre tags with id3v2
+- fixed problems when renaming files which are currently enqueued in xmms
+- fixed setting baseDir correctly (preferences got read from /written to different locations)
 - fixed the sorting bug when hiding columns, correctly sorting last played "never" to end of list
 - fixed a bug when invoking "Play now" on multiple songs (first songs were not enqueued)
 - fixed renaming files on windows file system when filenames are identical except case
 - fixed compilation issue when configuring with --disable-id3lib and --disable-xmms
   (undefined reference to `g_strconcat' / `g_free')
-- file permissions are now preserved when modifying ogg tags
+- fixed: file permissions are now preserved when modifying ogg tags
+- fixed: deleting or moving a file should work, even if directory ends with slash
 
 
 

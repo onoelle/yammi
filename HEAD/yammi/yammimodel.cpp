@@ -36,7 +36,10 @@ YammiModel::~YammiModel()
 }
 
 
-/// read preferences from xml-file
+/**
+ * read preferences from xml-file
+ * baseDir MUST be an existing and readable directory
+ */
 void YammiModel::readPreferences(QString baseDir)
 {
 	config.loadConfig(baseDir);
