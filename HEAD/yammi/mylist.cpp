@@ -34,28 +34,39 @@ Song* MyList::firstSong()
 {
 	SongEntry* entry=first();
 	if(entry)
-		return current=entry->song();
+		return entry->song();
 	else
-		return current=0;
+		return 0;
 }
 
 Song* MyList::nextSong()
 {
 	SongEntry* entry=next();
 	if(entry)
-		return current=entry->song();
+		return entry->song();
 	else
-		return current=0;
+		return 0;
 }
 
 Song* MyList::prevSong()
 {
 	SongEntry* entry=prev();
 	if(entry)
-		return current=entry->song();
+		return entry->song();
 	else
-		return current=0;
+		return 0;
 }
+
+/*
+Song* MyList::currentSong()
+{
+	SongEntry* entry=current();
+	if(entry)
+		return entry->song();
+	else
+		return 0;
+}
+*/
 
 void MyList::appendSong(Song* s)
 {
@@ -127,13 +138,13 @@ int MyList::compareItems( QCollection::Item item1, QCollection::Item item2)
 	
 // compares on one attribute
 int MyList::myCompare(Song* song1, Song* song2, int sortBy)
-{	
+{
 	if(sortBy==ByTitle)
 		return(QString::compare(song1->title, song2->title));
 	if(sortBy==ByArtist)
-		 return QString::compare(song1->artist, song2->artist);
+    return(QString::compare(song1->artist, song2->artist));
 	if(sortBy==ByAlbum)
-		return(QString::compare(song1->album, song2->album));
+    return(QString::compare(song1->album, song2->album));
 	if(sortBy==ByFilename)
 		return(QString::compare(song1->filename, song2->filename));
 	if(sortBy==ByPath)
@@ -158,3 +169,4 @@ int MyList::myCompare(Song* song1, Song* song2, int sortBy)
 	}
 	return 0;
 }
+

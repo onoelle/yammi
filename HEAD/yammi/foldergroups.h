@@ -31,6 +31,9 @@ public:
 	FolderGroups( QListView* parent, QString title);
 	~FolderGroups();
 	void update(MyList* allSongs, int sortBy);
+private:
+  void createGroupFolder(MyList* group, int sortBy);
+
 };
 
 #endif

@@ -1,6 +1,6 @@
 TODO
 ----
-last update 10.2.2003
+last update 11.2.2003
 
 
 
@@ -15,12 +15,15 @@ KNOWN BUGS
 
 for noatun support
 ------------------
+- write little docu for noatun support:
+  - allow multiple instances
+  - do not process items for display
 - skip backward
 - playing songs not contained in Yammi's database might be problematic
 
 
-for release 0.8beta
--------------------
+for release 0.8.0
+-----------------
 - plugin: publish a sample plugin (echo...) with all replacements
 - on deleting a song: delete in *all* lists (history, categories, ...)
 - check consistency check (and consistencyModes!)
@@ -35,15 +38,15 @@ for release 0.8beta
 - evaluate TCON TTIT1 frame (tom, 8.12.)
 - remove/replace "current" button?
 - removing a song from playlist: only remove this one (idea: function "removeDuplicates" for playlist?)
+- Yammi running without valid player: create DummyPlayer class instead of all if(player!=0)
+- load m3u files into a category/save a category to m3u file (import into k3b possible?)
 
 0.8.1
 -----
-- Yammi running without valid player: create DummyPlayer class instead of all if(player!=0)
 
 - cleanup
   - clean up yammigui.h (protected/public) !!! (oh oh...)
   - clean up other classes (eg. folder)...
-- load m3u files into a category/save a category to m3u file (import into k3b possible?)
 - swap management: in song: method getFilename() vs. getRealFilename() (fast)???
 - speed up loading of categories? (binary search)
 - xmms lock file?  => not easy to determine whether xmms is running or just lock file present

@@ -1,5 +1,5 @@
 ########################
-13.02.2003 version 0.8beta???
+13.02.2003 version 0.8beta
 - support for noatun!!! (controlling two noatun instances via dcop, enabling crossfading!)
   - added configuration for crossfading with noatun
   - cleaned up the abstract media player class and communication between player and Yammi

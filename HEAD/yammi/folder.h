@@ -57,6 +57,7 @@ public:
 	
 
 	QString					folderName()								{ return fName; }
+  void					  setFolderName(QString folderName)	{ fName=folderName; }
 	SongEntry*			firstEntry()								{ return songList->first(); }
 	SongEntry*			nextEntry()									{ return songList->next(); }
 

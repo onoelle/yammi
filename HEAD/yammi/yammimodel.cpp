@@ -575,7 +575,7 @@ void YammiModel::readSongDatabase()
 		QString msg("");
 		msg+="Your song database is from version "+version+" of Yammi.\n";
 		msg+="This Yammi version: "+config.yammiVersion+"\n\n";
-		if(version=="0.5.3" || version=="0.6" || version=="0.6.1" || version=="0.7") {
+		if(version=="0.5.3" || version=="0.6" || version=="0.6.1" || version=="0.7" || version=="0.7.1") {
 			msg+="However, the database format did not change since then, so no worries!\n\n";
       msg+="(The next time your database will be saved, it will be marked with the new version)";
 		}

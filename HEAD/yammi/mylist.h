@@ -38,14 +38,15 @@ public:
 	Song*			firstSong();
 	Song*			nextSong();
 	Song*			prevSong();
-  Song*     currentSong() { return current; }
-	
+//	Song*			currentSong();
+//	uint			atSong();
+//	Song*			atSong( uint );
+
 	void			appendSong(Song* s);					// appends <s> as simple SongEntry
 	void			removeSong(Song* toDelete);		// removes all occurences of SongEntry with pointer to <toDelete>
 	int				containsSong(Song* lookup);		// returns the number of occurences of the song
 	Song*			getSongByKey(QString artist, QString title, QString album);
 
-	
 	int				compareItems( QCollection::Item item1, QCollection::Item item2);
 	int				myCompare(Song* song1, Song* song2, int sortBy);
 	void			setSortOrderAndSort(int newSortOrder, bool sortAnyway=false);
@@ -68,7 +69,6 @@ public:
 	
 protected:
 	int sortOrder;
-  Song* current;
 };
 
 #endif

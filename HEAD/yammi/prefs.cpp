@@ -27,7 +27,7 @@ Prefs::Prefs(){
 #ifdef ENABLE_XMMS
   player=0;
 #endif
-	yammiVersion="0.7.1";
+	yammiVersion="0.8.0beta";
 	trashDir="/mp3/trash/";
 	scanDir="/mp3/inbox/";
   filenamePattern="%a - %t";

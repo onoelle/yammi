@@ -39,15 +39,16 @@ void FolderGroups::update(MyList* allSongs, int sortBy)
 	allSongs->setSortOrderAndSort(sortBy, true);
 	
 	QString last("xxxyyy");
-	int count=0;
+//	int count=0;
 	int groupCount=0;
 	bool same=false;
   int index=0;
+  MyList currentGroup;
+  
 	for(Song* s=allSongs->firstSong(); s; s=allSongs->nextSong(), index++) {
     QString next;
-		if(sortBy==MyList::ByArtist) {
+		if(sortBy==MyList::ByArtist)
       next=s->artist;
-    }
 		if(sortBy==MyList::ByAlbum)
 			next=s->album;
 		if(sortBy==MyList::ByGenre)
@@ -66,43 +67,14 @@ void FolderGroups::update(MyList* allSongs, int sortBy)
       same=(last==next);
 
 		if(same) {
-		  count++;
+      // add to currentGroup
+      currentGroup.appendSong(s);
 		}
     else {
-			if(count>=gYammiGui->getModel()->config.groupThreshold) {
-	   		// go back to first song of that artist/album/genre
-	   		groupCount++;
-	   		bool sameArtist=true;
-	   		s=allSongs->prevSong();
-	   		QString last2=s->artist;
-	   		for(int m=1; m<count; m++) {
-	   			s=allSongs->prevSong();
-	   			if(s->artist!=last2)
-	   				sameArtist=false;
-	   		}
-
-				QString folderName("");
-				if(sortBy==MyList::ByArtist)								// name folder by artist
-					folderName=s->artist;
-				if(sortBy==MyList::ByAlbum) {								// name folder by artist (if only one) + album
-					if(sameArtist)
-						folderName=s->artist+" - "+s->album;
-					else
-						folderName=s->album;					
-				}
-				if(sortBy==MyList::ByGenre) {
-					folderName=CMP3Info::getGenre(s->genreNr);
-				}
-			
-				Folder *f2 = new Folder( this, folderName );
-
-   			for(int m=0; m<count; m++) {
-					f2->addEntry(new SongEntry(s));
-					if(fName!="Genre")
-						s->classified=true;					// do not set on genre???
-	   			s=allSongs->nextSong();
-	   		}
-				f2->setText(0, folderName+QString(" (%1)").arg(count));
+      // check size of list, and create a folder if>threshold
+			if(currentGroup.count()>=(unsigned int)gYammiGui->getModel()->config.groupThreshold) {
+        groupCount++;
+        createGroupFolder(&currentGroup, sortBy);			
 			}
 			if(sortBy==MyList::ByArtist)
 				last=s->artist;
@@ -112,14 +84,57 @@ void FolderGroups::update(MyList* allSongs, int sortBy)
 				last=CMP3Info::getGenre(s->genreNr);
 			if(last=="")
 				last="xxxyyy";
-			count=1;
+      currentGroup.clear();
+      currentGroup.appendSong(s);
 		}
 	}
+  // for last group also:
+	if(currentGroup.count()>=(unsigned int)gYammiGui->getModel()->config.groupThreshold) {
+    groupCount++;
+    createGroupFolder(&currentGroup, sortBy);
+  }
 	setText(0, fName+QString(" (%1)").arg(groupCount));
   sortChildItems(0, true);
 	allSongs->setSortOrderAndSort(MyList::ByArtist);
 }
 
+
+void FolderGroups::createGroupFolder(MyList* group, int sortBy)
+{
+  // create folder
+	Folder *f = new Folder( this, "" );
+
+  // add songs of currentGroup
+  bool sameArtist=true;
+  Song* toAdd=group->firstSong();
+  Song* firstSong=toAdd;
+  QString theArtist=toAdd->artist;
+  for(; toAdd; toAdd=group->nextSong()) {
+    f->addEntry(new SongEntry(toAdd));
+    if(sortBy!=MyList::ByGenre) {
+      toAdd->classified=true;					// do not set on genre???
+    }
+    if(toAdd->artist!=theArtist) {
+      sameArtist=false;
+    }
+  }
+
+  // create folder name
+  QString folderName("");
+  if(sortBy==MyList::ByArtist)								// name folder by artist
+		folderName=firstSong->artist;
+  if(sortBy==MyList::ByAlbum) {								// name folder by artist (if only one) + album
+		if(sameArtist)
+      folderName=firstSong->artist+" - "+firstSong->album;
+		else
+      folderName=firstSong->album;
+  }
+	if(sortBy==MyList::ByGenre) {
+    folderName=CMP3Info::getGenre(firstSong->genreNr);
+	}
+  f->setFolderName(folderName);
+  f->setText(0, folderName+QString(" (%1)").arg(group->count()));
+}
 
 
 FolderGroups::~FolderGroups()
