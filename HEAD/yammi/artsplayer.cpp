@@ -185,8 +185,6 @@ bool ArtsPlayer::skipBackward(bool withoutCrossfading)
 
 void ArtsPlayer::syncPlayer2Yammi(MyList* playlist)
 {
-	//  insert all (including current ) songs into yammi playlist
-	playlist->clear();
 	emit statusChanged( );
 	emit playlistChanged();
 }

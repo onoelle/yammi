@@ -878,7 +878,7 @@ bool YammiModel::checkConsistency(QProgressDialog* progress, MyList* selection, 
           else {
             // 2. delete entry in database
             cout << "deleting entry " << s->displayName();
-            gYammiGui->forSong(s, DeleteEntry);
+            gYammiGui->forSong(s, Song::DeleteEntry);
             p->nonExistingDeleted++;
           }
         }

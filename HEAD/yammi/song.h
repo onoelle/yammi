@@ -41,20 +41,6 @@ using namespace std;
 #include <string>                   // needed by ogg functions?
 #endif
 
-// all possible actions for a single or a selection of songs
-// caution: corresponds to the static songAction field in class Song (song.cpp)
-enum action {	None, Enqueue, EnqueueRandom, EnqueueAsNext, EnqueueAsNextRandom, PlayNow, SongInfo,
-							PrelistenStart, PrelistenMiddle, PrelistenEnd,
-							Delete, DeleteFile, DeleteEntry,
-							CheckConsistency, MoveTo,
-							Dequeue, BurnToMedia
-};
-
-#define MAX_SONG_ACTION 17
-
-
-
-
 
 
 /* Wave File header structure */
@@ -88,9 +74,20 @@ typedef struct {
  * todo: make _some_ more things protected...
  */
 
+ #define MAX_SONG_ACTION 17
+ 
 class Song
 {
 public:
+	// all possible actions for a single or a selection of songs
+	// caution: corresponds to the static songAction field in class Song (song.cpp)
+	enum action {	None, Enqueue, EnqueueRandom, EnqueueAsNext, EnqueueAsNextRandom, PlayNow, SongInfo,
+							PrelistenStart, PrelistenMiddle, PrelistenEnd,
+							Delete, DeleteFile, DeleteEntry,
+							CheckConsistency, MoveTo,
+							Dequeue, BurnToMedia
+	};
+
 	/// default constructor, just assigns default values
 	Song();
 

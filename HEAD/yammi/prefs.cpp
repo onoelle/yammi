@@ -48,10 +48,10 @@ void Prefs::setDefaultValues(void) {
 	filenamePattern = "%a - %t";
 	guessingMode = GUESSING_MODE_SIMPLE;
   
-	doubleClickAction = None;
-	middleClickAction = None;
-	controlClickAction = None;
-	shiftClickAction = None;
+	doubleClickAction = Song::None;
+	middleClickAction = Song::None;
+	controlClickAction = Song::None;
+	shiftClickAction = Song::None;
 	logging = false;
 	childSafe = false;
 	tagsConsistent = false;
@@ -159,10 +159,10 @@ bool Prefs::loadConfig(QString baseDir)
 	scanDir                      = getProperty(doc, "scanDir", scanDir);
 	filenamePattern              = getProperty(doc, "filenamePattern", filenamePattern);
 	guessingMode                 = getProperty(doc, "guessingMode", player);
-	doubleClickAction            = (action) getProperty(doc, "doubleClickAction", doubleClickAction);
-	middleClickAction            = (action) getProperty(doc, "middleClickAction", middleClickAction);
-	controlClickAction           = (action) getProperty(doc, "controlClickAction", controlClickAction);
-	shiftClickAction             = (action) getProperty(doc, "shiftClickAction", shiftClickAction);
+	doubleClickAction            = (Song::action) getProperty(doc, "doubleClickAction", doubleClickAction);
+	middleClickAction            = (Song::action) getProperty(doc, "middleClickAction", middleClickAction);
+	controlClickAction           = (Song::action) getProperty(doc, "controlClickAction", controlClickAction);
+	shiftClickAction             = (Song::action) getProperty(doc, "shiftClickAction", shiftClickAction);
 	logging                      = getProperty(doc, "logging", logging);
 	childSafe                    = getProperty(doc, "childSafe", childSafe);
 	tagsConsistent               = getProperty(doc, "tagsConsistent", tagsConsistent);

@@ -20,13 +20,11 @@
 
 #define MAX_COLUMN_NO 15
 
-#include "options.h"
+#include <kmainwindow.h>
 
-// general includes
-#include <stdlib.h>
-#include <stdio.h>
-#include <iostream>
-using namespace std;
+
+#include "options.h"
+ 
 
 // qt includes (non gui)
 #include <qsessionmanager.h>
@@ -59,7 +57,6 @@ using namespace std;
 #include <qlistview.h>
 #include <qlineedit.h>
 #include <qmultilineedit.h>
-#include <qmainwindow.h>
 #include <qlayout.h>
 #include <qsplitter.h>
 #include <qstatusbar.h>
@@ -92,172 +89,163 @@ using namespace std;
 #include "mylistview.h"
 #include "lineeditshift.h"
 #include "mediaplayer.h"
-//#include "dummyplayer.h"
 
-#ifdef ENABLE_XMMS
-#include "xmmsplayer.h"
-#endif
-
-#include "noatunplayer.h"
-#include <kmainwindow.h>
 // -----------------------------------------------------------------
+
 
 
 /**
  * This is the main class: horribly huge... a total mess ... sorry...
  * I am working on cleaning it up...honestly...
  */
-class YammiGui : public QMainWindow
+class YammiGui : public KMainWindow
 {
 	Q_OBJECT
-
+public:
 // constants
-//**********
-protected:
-  static const int AUTOPLAY_OFF = 0;
-  static const int AUTOPLAY_LNP = 1;
-  static const int AUTOPLAY_RANDOM = 2;
-  static const int AUTOPLAY_FOLDER = 10;
+  enum { AUTOPLAY_OFF = 0, AUTOPLAY_LNP = 1, AUTOPLAY_RANDOM = 2, AUTOPLAY_FOLDER = 10, FUZZY_FOLDER_LIST_SIZE = 50 };
+  enum Columns {COLUMN_ARTIST = 0, COLUMN_TITLE = 1, COLUMN_ALBUM = 2, COLUMN_LENGTH = 3, COLUMN_YEAR = 4,  COLUMN_TRACKNR = 5,
+	COLUMN_GENRE = 6, COLUMN_ADDED_TO = 7, COLUMN_BITRATE = 8, COLUMN_FILENAME = 9, COLUMN_PATH = 10, COLUMN_COMMENT = 11,
+	COLUMN_LAST_PLAYED = 12 };
 
-  static const int FUZZY_FOLDER_LIST_SIZE = 50;
 
-// constructors
-//*************
 public:
-	YammiGui	(QString baseDir);
-	~YammiGui	();
+	YammiGui(QString baseDir);
+	virtual ~YammiGui();
   
-// public members
-//***************
-public:
-  static const int COLUMN_ARTIST = 0;
-  static const int COLUMN_TITLE = 1;
-  static const int COLUMN_ALBUM = 2;
-  static const int COLUMN_LENGTH = 3;
-  static const int COLUMN_YEAR = 4;
-  static const int COLUMN_TRACKNR = 5;
-  static const int COLUMN_GENRE = 6;
-  static const int COLUMN_ADDED_TO = 7;
-  static const int COLUMN_BITRATE = 8;
-  static const int COLUMN_FILENAME = 9;
-  static const int COLUMN_PATH = 10;
-  static const int COLUMN_COMMENT = 11;
-  static const int COLUMN_LAST_PLAYED = 12;
+	// checks whether the swapped songs take more space than the given limit
+	void checkSwapSize();
+	void stopDragging();
+	YammiModel* getModel() { return model; };
+	void commitData(QSessionManager& sm);
+	void saveState(QSessionManager& sm);
+	QString makeReplacements(QString input, Song* s, int index);
+	bool columnIsVisible(int column);
+	int mapToRealColumn(int column);
+	void mapVisibleColumnsToOriginals();
+	QString getColumnName(int column);
+	
+	public slots:
+	void forSong(Song* s, Song::action act, QString dir=0);
+	void checkForGrabbedTrack();
+	void slotFolderChanged();
+	void updatePlaylist();
+	void updatePlayerStatus();
+	void selectAll();
+	void invertSelection();
+	
+	/** Enqueue the selected songs at the end of the Playlist.
+	  * If the Shift key is pressed, the songs are shuffled before being appended */
+	void appendSelected( );
+	/** Enqueue the selected songs at the beginning of the Playlist
+	  * If the Shift key is pressed, the songs are shuffled before being prepended */
+	void prependSelected( );
+	/** Put the selected songs at the beginning of the playlist and start the player */
+	void playSelected( );
+	/** Remove all selected songs from the Playlist */
+	void dequeueSelected( );
+	/** Remove all songs from the playlist */
+	void clearPlaylist();
+	/** Show information about selected songs.
+	  * If there is only one song selected, this function just calls songInfo(s) for the selected song */
+	void infoSelected( );
+	/** Show Dialog to display/edit the song info */
+	void songInfo( Song *s );
+	
+	void autoplayFolder();
 
-  MediaPlayer*  player;
-  MyListView*		songListView;
-	Folder*		    chosenFolder;
-	QToolButton*	tbPlayPause;
-	QToolButton*	tbStop;
-	QToolButton*	tbSkipBackward;
-	QToolButton*	tbSkipForward;
-	Song*					currentSong;					// song that is currently played or 0 if not in database
-	MyDateTime		currentSongStarted;		// timestamp when song was started playing
-	bool					controlPressed;
-	bool					shiftPressed;
-	FolderSorted*	folderActual;
+
+	MediaPlayer*  player;
+	MyListView* songListView;
+	Folder* chosenFolder;
+	
+	
+	// song that is currently played or 0 if not in database
+	Song* currentSong;
+	// timestamp when song was started playing
+	MyDateTime currentSongStarted;
+	bool controlPressed;
+	bool shiftPressed;
+	FolderSorted* folderActual;
 	FolderCategories* folderCategories;
-	Folder*				folderSongsPlayed;		// songs played in this session
-  Folder*       folderRecentAdditions;
-  QString       autoplayFoldername;   // name of chosen autoplay folder, or empty if autoplay off
+	// songs played in this session
+	Folder* folderSongsPlayed;
+	Folder* folderRecentAdditions;
+	// name of chosen autoplay folder, or empty if autoplay off
+	QString autoplayFoldername;   
 
+	Folder* fuzzyFolderList[FUZZY_FOLDER_LIST_SIZE];
+	QString fuzzyFolderName;
+	int fuzzyFolderNo;
+	bool columnVisible[MAX_COLUMN_NO];
+	int realColumnMap[MAX_COLUMN_NO];
+	int shuttingDown;
+	QString lastPrelistened;
+	MyList selectedSongs;
+	MyList searchResults;
+	bool isScanning;
+	void readSettings();
+	void writeSettings();
+	void moveEvent(QMoveEvent* e)         { updateGeometrySettings(); }
+	void resizeEvent(QResizeEvent* e)     { updateGeometrySettings(); }
+	void updateGeometrySettings();
+	void updateSongPopup();
+	void updateListViewColumns();
 
-// public methods
-//***************
-public:
-  /// checks whether the swapped songs take more space than the given limit
-  void          checkSwapSize();
-  void			    stopDragging();
-  YammiModel*   getModel() { return model; };
-  void          commitData(QSessionManager& sm);
-  void          saveState(QSessionManager& sm);
-  QString       makeReplacements(QString input, Song* s, int index);
-  bool          columnIsVisible(int column);
-  int           mapToRealColumn(int column);
-  void          mapVisibleColumnsToOriginals();
-  QString       getColumnName(int column);
-
-
-// public slots
-//*************
-public slots:
-	void				  forSong(Song* s, action act, QString dir=0);
-  void				  checkForGrabbedTrack();
-	void				  slotFolderChanged();
-  void          updatePlaylist();
-  void          updatePlayerStatus();
-  void          selectAll();									  /** selects all in songListView */
-  void          invertSelection();							/** inverts selection in songListView */
-	void					autoplayFolder();
-
-
-
-// protected members
-//******************
 protected:
 
-	/** Load the MediaPlayer according to the current set-up */
-	void loadPlayer( );
-  Folder*       fuzzyFolderList[FUZZY_FOLDER_LIST_SIZE];
-  QString       fuzzyFolderName;
-  int           fuzzyFolderNo;
-  QString       columnName[13];
-  bool          columnVisible[MAX_COLUMN_NO];
-  int           realColumnMap[MAX_COLUMN_NO];
-	int				    shuttingDown;
-  QString       lastPrelistened;
-	MyList		    selectedSongs;
-	MyList		    searchResults;
-  bool          isScanning;
-  void          readSettings();
-  void          writeSettings();
-  void          moveEvent(QMoveEvent* e)         { updateGeometrySettings(); }
-  void          resizeEvent(QResizeEvent* e)     { updateGeometrySettings(); }
-  void          updateGeometrySettings();
-	void			    updateSongPopup();
-	void			    updateListViewColumns();
+	void setupActions( );
 
+	void setupToolBars( );
+	void createMenuBar( );
+
+	
+	void createFolders( );
+	void createMainWidget( );
+	void loadMediaPlayer( );
+	
 	// gui
 	//***************
-	QListView*		folderListView;
-	LineEditShift*	searchField;
+	QListView* folderListView;
+	LineEditShift* searchField;
+
+// 	KToolBar *m_mediaPlayerToolBar;
+// 	KToolBar*     mainToolBar;
+// 	KToolBar*     songActionsToolBar;
+// 	KToolBar*     prelistenToolBar;
+// 	KToolBar*     removableMediaToolBar;
+// 	KToolBar*     sleepModeToolBar;
+	
 //	QPushButton*	currentSongLabel;
-	QComboBox*		mediaListCombo;
-	QPushButton*	loadFromMediaButton;
-	QSpinBox*			sleepModeSpinBox;
-	QLabel*				sleepModeLabel;
-	QPushButton* 	sleepModeButton;
-	QPopupMenu*		playListPopup;
-	QPopupMenu* 	songPopup;
-	QPopupMenu* 	songPlayPopup;
-	QPopupMenu* 	songPrelistenPopup;
-	QPopupMenu* 	songGoToPopup;
-	QPopupMenu* 	songSearchPopup;
-	QPopupMenu* 	songAdvancedPopup;
-	QPopupMenu* 	pluginPopup;
-	QPopupMenu* 	folderPopup;
-  QPopupMenu*   autoplayMenu;
+	QComboBox* mediaListCombo;
+	QPushButton* loadFromMediaButton;
+	QSpinBox* sleepModeSpinBox;
+	QLabel* sleepModeLabel;
+	QPushButton* sleepModeButton;
+	QPopupMenu* playListPopup;
+	QPopupMenu* songPopup;
+	QPopupMenu* songPlayPopup;
+	QPopupMenu* songPrelistenPopup;
+	QPopupMenu* songGoToPopup;
+	QPopupMenu* songSearchPopup;
+	QPopupMenu* songAdvancedPopup;
+	QPopupMenu* pluginPopup;
+	QPopupMenu* folderPopup;
 
-  QPopupMenu*   lastSongPopupMenu;
-  QPopupMenu*   currentSongPopupMenu;
-  QPopupMenu*   nextSongPopupMenu;
+	QPopupMenu*   lastSongPopupMenu;
+	QPopupMenu*   currentSongPopupMenu;
+	QPopupMenu*   nextSongPopupMenu;
   
-  QPopupMenu*   toolbarsMenu;
-  QPopupMenu*   columnsMenu;
-  QToolBar*     mediaPlayerToolBar;
-  QToolBar*     mainToolBar;
-  QToolBar*     songActionsToolBar;
-  QToolBar*     prelistenToolBar;
-  QToolBar*     removableMediaToolBar;
-  QToolBar*     sleepModeToolBar;
+	QPopupMenu*   toolbarsMenu;
+	QPopupMenu*   columnsMenu;
   
-  QStatusBar* 	mainStatusBar;
-	QSlider*			songSlider;
-	bool					isSongSliderGrabbed;
-	YammiModel*		model;								// pointer to our model
-	QString				currentFile;					// file that is currently played by player
-	QString				grabbedTrackFilename;	// filename of new track being grabbed
-
+	QSlider* songSlider;
+	bool isSongSliderGrabbed;
+	YammiModel* model;
+	// file that is currently played by player
+	QString currentFile;
+	// filename of new track being grabbed
+	QString grabbedTrackFilename;
 
 // move the following into a (desktop)settings class?
   int           geometryX;
@@ -268,16 +256,14 @@ protected:
   int           columnWidth[MAX_COLUMN_NO];
 
 
-	QTimer				regularTimer;
-	QTimer				checkTimer;
-	QTimer				typeTimer;
-	int						songsUntilShutdown;
-
-
+	QTimer regularTimer;
+	QTimer checkTimer;
+	QTimer typeTimer;
+	int songsUntilShutdown;
 
 	// folders
-	Folder*				folderAll;
-	Folder*				folderSearchResults;
+	Folder* folderAll;
+	Folder* folderSearchResults;
 
 
 // protected methods
@@ -321,102 +307,102 @@ protected:
 // protected slots
 //****************
 protected slots:
-  void          toolbarShownOrHidden();
   void          toggleColumnVisibility(int column);
-  void          toggleMainToolbar();
-  void          toggleMediaPlayerToolbar();
-  void          toggleSongActionsToolbar();
-  void          togglePrelistenToolbar();
-  void          toggleRemovableMediaToolbar();
-  void          toggleSleepModeToolbar();
+  void toggleToolbar( const QString& name = QString::null );
   void          finishInitialization();
 
-	void				  forAllSelectedEnqueue();
-	void				  forAllSelectedEnqueueAsNext();
-	void				  forAllSelectedPlayNow()            { forAllSelected(PlayNow); }
-	void				  forAllSelectedPrelistenStart()     { forAllSelected(PrelistenStart); }
-	void				  forAllSelectedPrelistenMiddle()    { forAllSelected(PrelistenMiddle); }
-	void				  forAllSelectedPrelistenEnd()       { forAllSelected(PrelistenEnd); }
-	void				  forAllSelectedDequeue()            { forAllSelected(Dequeue); }
-	void				  forAllSelectedSongInfo()           { forAllSelected(SongInfo); }
-  void				  preListen(Song* s, int skipTo);  ///< sends the song to headphones
-  void				  stopPrelisten();
-  void          shufflePlaylist();
-  void          clearPlaylist();
-  void          toFromPlaylist();
-  void          saveColumnSettings();
-	void				  endProgram();
-	void				  shutDown();
-	void				  changeSleepMode();
-  void          changeShutdownValue(int value);
-	void				  setPreferences();
-	void				  openHelp();
-	void				  aboutDialog();
-	void				  userTyped( const QString& searchStr );
-	void				  songSliderMoved();
-	void				  songSliderGrabbed();
-	void				  searchSimilar(int what);
-	void				  goToFolder(int what);
-	void				  searchFieldChanged();
-	void				  slotSongChanged();
-  void          autoplayChanged(int mode);
-//	void				  currentlyPlayedSongPopup();
-	void				  songListPopup( QListViewItem*, const QPoint &, int );
-	void				  doSongPopup(QPoint point);
-	void				  slotFolderPopup( QListViewItem*, const QPoint &, int );
-	void				  adjustSongPopup();
-	QIconSet		  getPopupIcon(action whichAction);
+	void forAllSelectedEnqueue();
+	void forAllSelectedEnqueueAsNext();
+	void forAllSelectedPlayNow()            { forAllSelected(Song::PlayNow); }
+	void forAllSelectedPrelistenStart()     { forAllSelected(Song::PrelistenStart); }
+	void forAllSelectedPrelistenMiddle()    { forAllSelected(Song::PrelistenMiddle); }
+	void forAllSelectedPrelistenEnd()       { forAllSelected(Song::PrelistenEnd); }
+	void forAllSelectedDequeue()            { forAllSelected(Song::Dequeue); }
+  void preListen(Song* s, int skipTo);  ///< sends the song to headphones
+  void stopPrelisten();
+  void shufflePlaylist();
+  
+  void toFromPlaylist();
+  void saveColumnSettings();
+	void endProgram();
+	void shutDown();
+	void changeSleepMode();
+  void changeShutdownValue(int value);
+	void setPreferences();
+	
+	void userTyped( const QString& searchStr );
+	void songSliderMoved();
+	void songSliderGrabbed();
+	void searchSimilar(int what);
+	void goToFolder(int what);
+	void searchFieldChanged();
+	void slotSongChanged();
+	void autoplayOff();
+	void autoplayLNP();
+	void autoplayRandom();
+//	void currentlyPlayedSongPopup();
+	void songListPopup( QListViewItem*, const QPoint &, int );
+	void doSongPopup(QPoint point);
+	void slotFolderPopup( QListViewItem*, const QPoint &, int );
+	void adjustSongPopup();
+	QIconSet getPopupIcon(Song::action whichAction);
 
-	void				  doubleClick();
-	void				  middleClick(int button);
+	void doubleClick();
+	void middleClick(int button);
 
-	void				  updateSongDatabaseHarddisk();
-	void				  updateSongDatabaseMedia();
-	void				  updateSongDatabaseSingleFile();
-	void				  updateSongDatabase(QString scanDir, QString filePattern, QString media);
-	void				  updateView(bool startup=false);
+	void updateSongDatabaseHarddisk();
+	void updateSongDatabaseMedia();
+	void updateSongDatabaseSingleFile();
+	void updateSongDatabase(QString scanDir, QString filePattern, QString media);
+	void updateView(bool startup=false);
 		
 	// song action slots
-	void				  forAllCheckConsistency();
+	void forAllCheckConsistency();
 		
 	// these three methods perform an action for...
-	void				  forCurrent(action act);						// ..current song
-	void				  forAllSelected(action act);				// ..all selected (in songlist)
-	void				  forAll(action act);								// ..all songs
+	void forCurrent(Song::action act);
+	// ..all selected (in songlist)
+	void forAllSelected(Song::action act);
+	void forAll(Song::action act);
 		
 		
 	// this works on the songs in selection
 	// (can be different than currently selected songs!)
-	void				  forSelection(action act);																	// perform <action> on <selectedSongs>
-	void				  forSelection(int act) {forSelection((action) act);}				// just needed for menu receivers with ints
+	void forSelection(Song::action act); // perform <action> on <selectedSongs>
+	void forSelection(int act) {forSelection((Song::action) act);} // just needed for menu receivers with ints
 
   // special treatment needed for the following cases
-	void				  forSelectionSongInfo();
-	void				  forSelectionPlugin(int pluginIndex);
-	void				  forSelectionBurnToMedia();
-  void          forSelectionCheckConsistency();
-  void          skipBackward();
-  void          skipForward();
-	void 					addToWishList();
-	void					toCategory(int index);
+	void forSelectionPlugin(int pluginIndex);
+	void forSelectionBurnToMedia();
+	void forSelectionCheckConsistency();
+	void skipBackward();
+	void skipForward();
+	void addToWishList();
+	void toCategory(int index);
 
-  void 					onTimer();
+  	void onTimer();
 	// removable media management
-	void					checkPlaylistAvailability();
-	void					loadSongsFromMedia(QString mediaName);
-	void					loadMedia();
-		
-  bool 					newCategory();	  					/** create new category */
-	void 					removeCategory();
-	void					renameCategory();
-  void          loadM3uIntoCategory();
+	void checkPlaylistAvailability();
+	void loadSongsFromMedia(QString mediaName);
+	void loadMedia();
 	
-	void					pluginOnFolder();
-	void					removeMedia();
-	void					renameMedia();
-	void					grabAndEncode();
-	void 					addFolderContentSnappy();
-		
+	/** create new category */
+	bool newCategory();
+	void removeCategory();
+	void renameCategory();
+	void loadM3uIntoCategory();
+	
+	void pluginOnFolder();
+	void removeMedia();
+	void renameMedia();
+	void grabAndEncode();
+	void  addFolderContentSnappy();
+	
+	// UI - actions
+	//need to keep track of this so that we can change the icon/text
+	KAction *m_playPauseAction;
+	//FIXME - hack.. ugly?
+	KAction *m_currentAutoPlay;
 };
 
 #endif

@@ -69,13 +69,13 @@ public:
 	int guessingMode;
 	
 	/** Action for double clicks on left button */
-	action doubleClickAction;
+	Song::action doubleClickAction;
 	/** Action for click on middle button */
-	action middleClickAction;
+	Song::action middleClickAction;
 	/** Action for middle button click with control key */
-	action controlClickAction;
+	Song::action controlClickAction;
 	/** Action for middle button click with shift key */
-	action shiftClickAction;
+	Song::action shiftClickAction;
 	/** Max size of media for burning */ 
 	int criticalSize;		
 	/** Logging of played songs activated */

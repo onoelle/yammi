@@ -26,10 +26,6 @@ using namespace std;
 
 NoatunPlayer::NoatunPlayer(YammiModel* model) : MediaPlayer( model )
 {
-//  this->model=model;
-//  playlist=&(model->songsToPlay);
-//  lastStatus=STOPPED;
-
   // register ourselve
   client = new DCOPClient();
   client->attach();

@@ -154,10 +154,10 @@ void PreferencesDialog::myAccept()
  		config->trashDir+="/";
  	if(config->scanDir.right(1)!="/")
  		config->scanDir+="/";
- 	config->doubleClickAction=(action)ComboBoxDoubleClickAction->currentItem();
- 	config->middleClickAction=(action)ComboBoxMiddleClickAction->currentItem();
- 	config->controlClickAction=(action)ComboBoxControlClickAction->currentItem();
- 	config->shiftClickAction=(action)ComboBoxShiftClickAction->currentItem();
+ 	config->doubleClickAction=(Song::action)ComboBoxDoubleClickAction->currentItem();
+ 	config->middleClickAction=(Song::action)ComboBoxMiddleClickAction->currentItem();
+ 	config->controlClickAction=(Song::action)ComboBoxControlClickAction->currentItem();
+ 	config->shiftClickAction=(Song::action)ComboBoxShiftClickAction->currentItem();
  	config->logging=CheckBoxLogging->isChecked();
  	config->tagsConsistent=CheckBoxTagsConsistent->isChecked();
  	config->filenamesConsistent=CheckBoxFilenamesConsistent->isChecked();
