@@ -1,6 +1,6 @@
 TODO
 ----
-last update 12.12.2002
+last update 14.12.2002
 
 
 KNOWN BUGS
@@ -12,13 +12,12 @@ KNOWN BUGS
 - problems with filenames containing "ß"? (problem of qt/linux on fat filesystem?)
 - deleting a song that is currently played, then pressing "current" => crash
 
-for 0.7
-- check consistency check (and consistencyModes!)
-- alternative to mp3burn? => test and document Tom's script
 
 for release 0.7.1
 -----------------
 - on deleting a song: delete in *all* lists (history, categories, ...)
+- check consistency check (and consistencyModes!)
+- alternative to mp3burn? => test and document Tom's script
 
 - add to consistency check: update option for re-reading layer/tag info from existing songs
 - test jukebox functionality

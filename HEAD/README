@@ -8,20 +8,22 @@ Yammi now depends on
 - id3lib (for reading id3 tags)
 - libvorbis / libvorbisfile (and libvorbis-dev) (for reading ogg tags)
 
-...but these dependencies can be switched off!
+...but since yammi-0.7 these dependencies can be switched off!
 
-If you don't have these libraries (and end up with linking errors when trying to compile),
+If you don't have these libraries (and end up with configure or linking errors when compiling),
 use the following switches to the configure script to disable the use of these libraries:
 
---disable-id3lib  (disables the use of id3lib => no id3 tags can be read/written from/to mp3 files)
---disable-ogglibs (disables the use of libvorbis/libvorbisfile => no ogg tags can be read/written from/to ogg files)
+--disable-id3lib  (disables the use of id3lib
+  => no id3 tags can be read/written from/to mp3 files)
+--disable-ogglibs (disables the use of libvorbis/libvorbisfile
+  => no ogg tags can be read/written from/to ogg files, no ogg layer information (bitrate, length) available)
 
 
 For example, use
 ./configure --disable-id3lib --disable-ogglibs
-to disable both options. When finishing
+to disable both options.
 
-Note that in this case, you have to fill in tag information yourself
+Note that in this case, you have to fill in tag information manually
 (although Yammi tries to extract artist and title from the filename).
 
 

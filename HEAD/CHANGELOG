@@ -4,7 +4,7 @@
   - replaced stdlib io functions with the corresponding QT file access methods
   - added "using namespace std" declarations (needed by gcc3.x compiler)
   - conformance to stricter rules of gcc3.2
-  => successfully reported to compile with gcc3.2, QT3.1/KDE3.1rc3
+  => successfully reported to compile with gcc3.2/QT3.1/KDE3.1rc3
   => successfully compiled on sourceforge's compile farm on Linux 2.4/RedHat 7.3
 - added --disable-ogglibs and --disable-id3lib configure switches to disable linking aginst these libs
 - added a (experimental and primitive) autoplay function for categories
