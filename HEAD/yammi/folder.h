@@ -40,7 +40,7 @@ public:
 	Folder					(QListViewItem* parent, const QString &name, MyList* songList);
 	~Folder();
 	
-	void						init(QString name);
+  void						init(QString name);
 	virtual void		update(MyList* songList);
 	void 						clearSongs();
 	void						updateTitle();

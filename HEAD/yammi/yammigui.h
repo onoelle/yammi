@@ -107,6 +107,8 @@ public:
   YammiModel* getModel() { return model; };
 
 protected:
+  void      moveEvent(QMoveEvent* e);
+
   QString   makeReplacements(QString input, Song* s, int index);
 	void			myWait(int msecs);
 	int				shuttingDown;
@@ -125,7 +127,7 @@ public:
 	Folder*		chosenFolder;
 protected:
 	void			updateSongPopup();
-	void			updateListViewColumns();
+	void			updateListViewColumns(Folder* oldFolder, Folder* newFolder);
 
 	void			syncYammi2Xmms(bool syncAll=false);	// yammi -> xmms
 	void			syncXmms2Yammi();		// xmms -> yammi

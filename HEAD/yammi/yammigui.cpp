@@ -86,17 +86,17 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
 
   // restore session settings
   //*************************
-  
+
   QSettings settings;
   settings.insertSearchPath( QSettings::Unix, model->config.yammiBaseDir );
-  int width = settings.readNumEntry( "/Yammi/geometry/width", 1024 );
-  int height = settings.readNumEntry( "/Yammi/geometry/height", 468 );
   int posx = settings.readNumEntry( "/Yammi/geometry/posx", 0 );
   int posy = settings.readNumEntry( "/Yammi/geometry/posy", 0 );
-  this->resize( width, height );        // restore size
-  this->move( posx, posy );             // restore position
+  int width = settings.readNumEntry( "/Yammi/geometry/width", 1024 );
+  int height = settings.readNumEntry( "/Yammi/geometry/height", 468 );
+  this->setGeometry(QRect(posx, posy, width, height));
   // anything else we want to restore?
   // (currently opened folder, ...)
+
 
 	// set up gui
 	//****************************
@@ -420,18 +420,6 @@ void YammiGui::endProgram()
 YammiGui::~YammiGui()
 {
 	cout << "trying to exit gracefully...\n";
-  QSettings settings;
-  settings.insertSearchPath( QSettings::Unix, model->config.yammiBaseDir );
-  QSize s = this->size();   // get size
-//  QPoint p = this->pos();   // get position
-  QRect r=this->frameGeometry();
-  settings.writeEntry( "/Yammi/geometry/width",  s.width());
-  settings.writeEntry( "/Yammi/geometry/height", s.height());
-//  settings.writeEntry( "/Yammi/geometry/posx", p.x() );
-//  settings.writeEntry( "/Yammi/geometry/posy", p.y() );
-  settings.writeEntry( "/Yammi/geometry/posx", r.left() );
-  settings.writeEntry( "/Yammi/geometry/posy", r.top() );
-
 	syncYammi2Xmms(true);
 	if(xmmsShuffleWasActivated)
 		xmms_remote_toggle_shuffle(0);
@@ -450,6 +438,19 @@ YammiGui::~YammiGui()
 	cout << "goodbye!\n";
 }
 
+
+void YammiGui::moveEvent(QMoveEvent* e)
+{
+  QSettings settings;
+  settings.insertSearchPath( QSettings::Unix, model->config.yammiBaseDir );
+  QRect r = this->frameGeometry();      // get geometry including frame
+  cout << x() << ", " << y() << ", " << r.width() << ", " << r.height() << "\n";
+  cout << width() << ", " << height() << "\n";
+  settings.writeEntry( "/Yammi/geometry/posx", x() );
+  settings.writeEntry( "/Yammi/geometry/posy", y() );
+  settings.writeEntry( "/Yammi/geometry/width",  width());
+  settings.writeEntry( "/Yammi/geometry/height", height());
+}
 
 /// updates the automatically calculated folders after changes to song database
 void YammiGui::updateView()
@@ -470,12 +471,31 @@ void YammiGui::updateView()
 }
 
 
-void YammiGui::updateListViewColumns()
+/** Updates listview columns if necessary.
+ * Tries to maintain the size and position of columns (as good as possible, as columns are changing)
+ */
+void YammiGui::updateListViewColumns(Folder* oldFolder, Folder* newFolder)
 {
-	int toDel=songListView->columns();
-	for(int i=0; i<toDel; i++)
+  if(oldFolder==newFolder)
+    return;
+
+  QHeader* header=songListView->header();
+  int width[20];
+  QStringList list;
+
+  int noOldColumns=songListView->columns();
+  for(int i=0; i<noOldColumns; i++) {
+    int section=header->mapToSection(i);
+    cout << header->label(section) << "|";
+    list.append(header->label(section));
+    width[i]=header->sectionSize(section);
+  }
+  cout << "\n";
+	for(int i=0; i<noOldColumns; i++) {
 		songListView->removeColumn(0);
-	if(chosenFolder==folderActual)
+  }
+
+  if(chosenFolder==folderActual)
 		songListView->addColumn( "Pos", 35);
 	if(chosenFolder==folderHistory || chosenFolder==folderSongsPlayed)
 		songListView->addColumn( "Played on", 135);
@@ -511,6 +531,39 @@ void YammiGui::updateListViewColumns()
 	songListView->setShowSortIndicator( TRUE );
 	songListView->setSelectionMode( QListView::Extended );
 	songListView->setAllColumnsShowFocus( TRUE );
+
+
+  int noNewColumns=songListView->columns();
+  header=songListView->header();
+
+  // iterate through old columns, and if found in new, move to the target position
+  bool exists[20];
+  for(int x=0; x<20; x++)
+    exists[x]=false;
+  
+  int target=0;
+  for(int i=0; i<noOldColumns; i++) {
+    QString search=list[i];
+    for(int j=0; j<noNewColumns; j++) {
+      if(songListView->header()->label(j)==search) {
+        header->moveSection(j, target);
+        header->resizeSection(j, width[i]);
+        target++;
+        exists[j]=true;
+      }
+    }
+  }
+  target=0;
+  for(int j=0; j<noNewColumns; j++) {
+    if(!exists[j]) {
+      header->moveSection(j, target);
+      cout << "not existing: " << header->label(j) << "\n";
+      target++;
+    }
+  }
+
+
+
 }
 
 /// opens the preferences dialogue
@@ -811,11 +864,11 @@ void YammiGui::searchFieldChanged()
 void YammiGui::slotFolderChanged()
 {
   QApplication::setOverrideCursor( Qt::waitCursor );
+	Folder* oldFolder=chosenFolder;
 	QListViewItem *i = folderListView->currentItem();
 	if ( !i )
 		return;
 	Folder* newFolder=(Folder*)i;
-	
 	
 	if(newFolder==folderActual)
 		songListView->dontTouchFirst=true;				// don't allow moving the first
@@ -826,7 +879,7 @@ void YammiGui::slotFolderChanged()
 	songListView->clear();
 	songListView->sortedBy=1;
 //	songListView->setSorting(0);
-	updateListViewColumns();
+	updateListViewColumns(oldFolder, newFolder);
 	addFolderContent(chosenFolder);
 }
 
@@ -2333,7 +2386,9 @@ void YammiGui::shutDown()
 
 void YammiGui::keyPressEvent(QKeyEvent* e)
 {
-	cout << "key(): " << e->key() << "text(): " << e->text() << "ascii(): " << e->ascii() << "\n";
+  cout << "x: " << this->x() << "pos.x: " << this->pos().x() << "\n";
+  cout << "geometry.x: " << this->geometry().left() << "frameGeometry.x: " << this->frameGeometry().left() << "\n";
+  cout << "key(): " << e->key() << "text(): " << e->text() << "ascii(): " << e->ascii() << "\n";
 	int key=e->key();
 	switch(key) {
 		case Key_Control:

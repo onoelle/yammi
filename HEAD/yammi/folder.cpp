@@ -54,6 +54,7 @@ Folder::Folder( QListViewItem* parent, const QString &name, MyList* songList)
 	updateTitle();
 }
 
+
 // update the view (after changes in songlist)
 void Folder::update(MyList* songList)
 {
