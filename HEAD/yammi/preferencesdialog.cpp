@@ -26,6 +26,7 @@
 #include <qcheckbox.h>
 #include <qinputdialog.h>
 #include <qmessagebox.h>
+#include <qspinbox.h>
 
 #include "song.h"
 
@@ -44,7 +45,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, const char *name, bool mod
 	CheckBoxFilenamesConsistent->setChecked(config->filenamesConsistent);
 	LineEditCriticalSize->setText(QString("%1").arg(config->criticalSize));
 	LineEditSecondSoundDevice->setText(config->secondSoundDevice);
-	LineEditGroupThreshold->setText(QString("%1").arg(config->groupThreshold));
+	SpinBoxGroupThreshold->setValue(config->groupThreshold);
 	CheckBoxLazyGrouping->setChecked(config->lazyGrouping);
 	LineEditSearchThreshold->setText(QString("%1").arg(config->searchThreshold));
 	LineEditSearchMaximumNoResults->setText(QString("%1").arg(config->searchMaximumNoResults));
@@ -164,7 +165,7 @@ void PreferencesDialog::myAccept()
  	}
  	config->criticalSize=atoi(LineEditCriticalSize->text());
  	config->secondSoundDevice=LineEditSecondSoundDevice->text();
- 	config->groupThreshold=atoi(LineEditGroupThreshold->text());
+ 	config->groupThreshold=SpinBoxGroupThreshold->value();
  	config->lazyGrouping=CheckBoxLazyGrouping->isChecked();
  	config->searchThreshold=atoi(LineEditSearchThreshold->text());
  	config->searchMaximumNoResults=atoi(LineEditSearchMaximumNoResults->text());

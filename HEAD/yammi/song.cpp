@@ -615,22 +615,22 @@ bool Song::getOggInfo(QString filename)
     fclose(ourfile);
   }
 
-  this->title   = getOggComment(&oggfile, "title");
-  this->artist  = getOggComment(&oggfile, "artist");
-	this->album   = getOggComment(&oggfile, "album");
-	this->comment = getOggComment(&oggfile, "comment");
+  title   = getOggComment(&oggfile, "title");
+  artist  = getOggComment(&oggfile, "artist");
+	album   = getOggComment(&oggfile, "album");
+	comment = getOggComment(&oggfile, "comment");
   QString trackNrStr=getOggComment(&oggfile, "tracknumber");
-  this->trackNr = atoi(trackNrStr);
+  trackNr = atoi(trackNrStr);
   QString yearStr=getOggComment(&oggfile, "date");
-  this->year    = atoi(yearStr);
+  year    = atoi(yearStr);
   QString genreStr=getOggComment(&oggfile, "genre");
   if(genreStr!="") {
     cout << "genre found: " << genreStr << "\n";
     // TODO: convert to id3 genre number?
   }
 
-  this->length  = (int)ov_time_total(&oggfile, -1);
-	this->bitrate = ov_bitrate(&oggfile, -1)/1000;
+  length  = (int)ov_time_total(&oggfile, -1);
+	bitrate = ov_bitrate(&oggfile, -1)/1000;
 
   succ=ov_clear(&oggfile);
   if(succ!=0)
@@ -644,12 +644,10 @@ bool Song::getOggInfo(QString filename)
 QString Song::getOggComment(OggVorbis_File* oggfile, QString commentName)
 {
 	vorbis_comment* ourComment = ov_comment(oggfile, -1);
-//  cout << "looking for: " << commentName << "\n";
 
 	for(int i=0; i < (*ourComment).comments; i++)	{
-    cout << "i: " << i << "\n";
 		QString curstr((*ourComment).user_comments[i]);
-		if( curstr.left(commentName.length()) == commentName) {
+		if( curstr.left(commentName.length()).upper() == commentName.upper()) {
 //      cout << "match found for name: " << commentName << ", string: " << curstr << "name.length(): " << commentName.length() << ", curstr.length(): " << curstr.length() << "\n";
 			return curstr.right(curstr.length() - commentName.length() - 1);
 		}

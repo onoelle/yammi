@@ -2305,19 +2305,31 @@ void YammiGui::onTimer()
     }
 
     // check for autplay function: fill up playlist?
-    if(folderActual->songList->count()<5 && this->folderAutoplay!=0) {
+    if(folderActual->songList->count()<5 && this->folderAutoplay!=0 && folderAutoplay->songList->count()>0) {
       cout << "not enough songs in playlist, filling up from Autoplay category\n";
       // fill up from autoplay folder
       // so far, no intelligence in choosing the song here!
       int total=folderAutoplay->songList->count();
+
+      // method 1: randomly pick a song
+      // create random number
       QDateTime dt = QDateTime::currentDateTime();
       QDateTime xmas( QDate(2050,12,24), QTime(17,00) );
       int chosen=(dt.secsTo(xmas) + dt.time().msec()) % total;
-      cout << "chosen: " << chosen << "\n";
       if(chosen<0) {
         chosen=-chosen;
       }
-      folderActual->addSong(folderAutoplay->songList->at(chosen)->song());
+//      folderActual->addSong(folderAutoplay->songList->at(chosen)->song());
+
+      // method 2: try to pick the song we didn't play for longest time
+      folderAutoplay->songList->setSortOrderAndSort(MyList::ByLastPlayed);
+      for(unsigned int i=0; i<folderAutoplay->songList->count() && folderActual->songList->count()<5; i++) {
+        Song* toAdd=folderAutoplay->songList->at(i)->song();
+        if(!(folderActual->songList->containsSong(toAdd))) {
+          folderActual->addSong(toAdd);
+        }
+      }
+      
     }
 	}
 }

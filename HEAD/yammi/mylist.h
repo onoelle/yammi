@@ -61,6 +61,7 @@ public:
 	static const int ByYear=7;
 	static const int ByGenre=8;
 	static const int ByPath=9;
+	static const int ByLastPlayed=10;
 	static const int ByKey=ByArtist + 16*ByTitle + 256*ByAlbum;
 	
 	

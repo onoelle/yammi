@@ -532,73 +532,68 @@
                             <property name="spacing">
                                 <number>6</number>
                             </property>
-                            <widget class="QLayoutWidget" row="0" column="0">
+                            <widget class="QCheckBox" row="1" column="0">
                                 <property name="name">
-                                    <cstring>Layout13_2</cstring>
+                                    <cstring>CheckBoxChildSafe</cstring>
                                 </property>
-                                <grid>
-                                    <property name="name">
-                                        <cstring>unnamed</cstring>
-                                    </property>
-                                    <property name="margin">
-                                        <number>0</number>
-                                    </property>
-                                    <property name="spacing">
-                                        <number>6</number>
-                                    </property>
-                                    <widget class="QCheckBox" row="1" column="1">
-                                        <property name="name">
-                                            <cstring>CheckBoxLazyGrouping</cstring>
-                                        </property>
-                                        <property name="text">
-                                            <string>lazy grouping</string>
-                                        </property>
-                                        <property name="toolTip" stdset="0">
-                                            <string>if enabled, considers "The_Doors" the same as "THE DOORS" for grouping</string>
-                                        </property>
-                                    </widget>
-                                    <widget class="QLabel" row="2" column="0">
-                                        <property name="name">
-                                            <cstring>LabelGroupThreshold</cstring>
-                                        </property>
-                                        <property name="text">
-                                            <string>group threshold</string>
-                                        </property>
-                                        <property name="toolTip" stdset="0">
-                                            <string>the minimum number for a subfolder to be created (Folder Albums, Artists and Genres)</string>
-                                        </property>
-                                    </widget>
-                                    <widget class="QCheckBox" row="1" column="0">
-                                        <property name="name">
-                                            <cstring>CheckBoxChildSafe</cstring>
-                                        </property>
-                                        <property name="text">
-                                            <string>child safe mode</string>
-                                        </property>
-                                        <property name="toolTip" stdset="0">
-                                            <string>if activated, some potentially dangerous actions are not allowed (eg. deleting a song). To disable this, you need a password...</string>
-                                        </property>
-                                    </widget>
-                                    <widget class="QCheckBox" row="0" column="0" rowspan="1" colspan="2">
-                                        <property name="name">
-                                            <cstring>CheckBoxLogging</cstring>
-                                        </property>
-                                        <property name="text">
-                                            <string>logging of played songs</string>
-                                        </property>
-                                        <property name="toolTip" stdset="0">
-                                            <string>logs all played songs with a timestamp to a file</string>
-                                        </property>
-                                    </widget>
-                                    <widget class="QLineEdit" row="2" column="1">
-                                        <property name="name">
-                                            <cstring>LineEditGroupThreshold</cstring>
-                                        </property>
-                                        <property name="toolTip" stdset="0">
-                                            <string>the minimum number for a subfolder to be created (Folder Albums, Artists and Genres)</string>
-                                        </property>
-                                    </widget>
-                                </grid>
+                                <property name="text">
+                                    <string>child safe mode</string>
+                                </property>
+                                <property name="toolTip" stdset="0">
+                                    <string>if activated, some potentially dangerous actions are not allowed (eg. deleting a song). To disable this, you need a password...</string>
+                                </property>
+                            </widget>
+                            <widget class="QCheckBox" row="0" column="0">
+                                <property name="name">
+                                    <cstring>CheckBoxLogging</cstring>
+                                </property>
+                                <property name="text">
+                                    <string>logging of played songs</string>
+                                </property>
+                                <property name="toolTip" stdset="0">
+                                    <string>logs all played songs with a timestamp to a file</string>
+                                </property>
+                            </widget>
+                            <widget class="QCheckBox" row="0" column="1">
+                                <property name="name">
+                                    <cstring>CheckBoxLazyGrouping</cstring>
+                                </property>
+                                <property name="text">
+                                    <string>lazy grouping</string>
+                                </property>
+                                <property name="toolTip" stdset="0">
+                                    <string>if enabled, considers eg. "The_Doors" the same as "THE DOORS" for grouping</string>
+                                </property>
+                            </widget>
+                            <widget class="QLabel" row="0" column="2">
+                                <property name="name">
+                                    <cstring>LabelGroupThreshold</cstring>
+                                </property>
+                                <property name="text">
+                                    <string>group threshold</string>
+                                </property>
+                                <property name="toolTip" stdset="0">
+                                    <string>the minimum number for a subfolder to be created (Folder Albums, Artists and Genres)</string>
+                                </property>
+                            </widget>
+                            <widget class="QSpinBox" row="0" column="3">
+                                <property name="name">
+                                    <cstring>SpinBoxGroupThreshold</cstring>
+                                </property>
+                                <property name="sizePolicy">
+                                    <sizepolicy>
+                                        <hsizetype>0</hsizetype>
+                                        <vsizetype>0</vsizetype>
+                                        <horstretch>0</horstretch>
+                                        <verstretch>0</verstretch>
+                                    </sizepolicy>
+                                </property>
+                                <property name="minValue">
+                                    <number>1</number>
+                                </property>
+                                <property name="toolTip" stdset="0">
+                                    <string>the minimum number for a subfolder to be created (Folder Albums, Artists and Genres)</string>
+                                </property>
                             </widget>
                         </grid>
                     </widget>
@@ -897,10 +892,11 @@ set to 0 to disable</string>
                                     <cstring>TextLabel1_2</cstring>
                                 </property>
                                 <property name="text">
-                                    <string>You have to restart Yammi 
-after changing the media player!
+                                    <string>You have to restart Yammi after changing the media player!
 
-Noatun support is still experimental!</string>
+Noatun support is still experimental!
+Please disable "Allow Only One Instance of Noatun" and
+"Process Playlist Items for Display" in Noatun configuration!</string>
                                 </property>
                             </widget>
                         </grid>

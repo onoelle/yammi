@@ -410,8 +410,11 @@ void NoatunPlayer::syncPlayer2Yammi(MyList* playlist)
 
 void NoatunPlayer::syncYammi2Player(bool syncAll)
 {
-  if(playlist->count()<=0)
+  if(playlist->count()==0) {
+    // playlist empty
+    sendDcopCommand(QString("removeCurrent()"));
     return;
+  }
 
   // 1. sync current song
   QString noatunCurrent=getCurrentFile();

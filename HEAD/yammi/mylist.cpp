@@ -149,6 +149,10 @@ int MyList::myCompare(Song* song1, Song* song2, int sortBy)
 		return(QString::compare(song1->filename, song2->filename));
 	if(sortBy==ByPath)
 		return(QString::compare(song1->path, song2->path));
+  if(sortBy==ByLastPlayed)
+    if(song1->lastPlayed>song2->lastPlayed) return 1;
+		if(song1->lastPlayed<song2->lastPlayed) return -1;
+		return 0;
 	if(sortBy==ByTrack) {
 		if(song1->trackNr>song2->trackNr) return 1;
 		if(song1->trackNr<song2->trackNr) return -1;

@@ -165,7 +165,7 @@ static char* ID3_v1_genre_description[ID3_NR_OF_V1_GENRES] =
   "Trash Metal",           //144
   "Anime",                 //145
   "JPop",                  //146
-  "AAASynthpop"               //147
+  "Synthpop"               //147
 };
 #endif
 
@@ -413,6 +413,7 @@ QString CMP3Info::getGenre(int index)
 {
   if(index>=ID3_NR_OF_V1_GENRES || index<0)
     return QString("not supported");
+
   return QString(ID3_v1_genre_description[index]);
 }
 

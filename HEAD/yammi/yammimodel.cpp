@@ -1078,7 +1078,10 @@ bool YammiModel::checkConsistency(QProgressDialog* progress, MyList* selection, 
           if(p->correctTagsConfirmed==-1) {
             // warning dialog!
             ApplyToAllBase confirm(progress, "confirmDialog", true);
-            QString msg=QString("Correct tags in file\n\n%1?").arg(s->filename);
+            QString msg=QString("Correct tags in file\n\t%1\nto new values:\n").arg(s->filename);
+            msg+=QString("artist: %1, title: %2\n").arg(s->artist).arg(s->title);
+            msg+=QString("album: %1, comment: %2\n").arg(s->album).arg(s->comment);
+            msg+=QString("year: %1, trackNr: %2, genreNr: %3").arg(s->year).arg(s->trackNr).arg(s->genreNr);
             confirm.TextLabel->setText(msg);
             // show dialog
             int result=confirm.exec();
@@ -1114,7 +1117,8 @@ bool YammiModel::checkConsistency(QProgressDialog* progress, MyList* selection, 
           if(p->correctFilenamesConfirmed==-1) {
             // warning dialog!
             ApplyToAllBase confirm(progress, "confirmDialog", true);
-            QString msg=QString("Correct filename in file\n\n%1?").arg(s->filename);
+            QString msg=QString("Correct filename in file\n\t%1\n").arg(s->filename);
+            msg+=QString("to\n\t%1").arg(s->constructFilename());
             confirm.TextLabel->setText(msg);
             // show dialog
             int result=confirm.exec();

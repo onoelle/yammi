@@ -38,14 +38,16 @@ void FolderGroups::update(MyList* allSongs, int sortBy)
 	// set sort order for grouping
 	allSongs->setSortOrderAndSort(sortBy, true);
 	
-	QString last("xxxyyy");
-//	int count=0;
+  unsigned int threshold=(unsigned int)gYammiGui->getModel()->config.groupThreshold;
+  if(threshold<=0) {
+    threshold=1;
+  }
+	QString last("xxxyyyzzz");
 	int groupCount=0;
 	bool same=false;
-  int index=0;
   MyList currentGroup;
   
-	for(Song* s=allSongs->firstSong(); s; s=allSongs->nextSong(), index++) {
+	for(Song* s=allSongs->firstSong(); s; s=allSongs->nextSong()) {
     QString next;
 		if(sortBy==MyList::ByArtist)
       next=s->artist;
@@ -72,7 +74,7 @@ void FolderGroups::update(MyList* allSongs, int sortBy)
 		}
     else {
       // check size of list, and create a folder if>threshold
-			if(currentGroup.count()>=(unsigned int)gYammiGui->getModel()->config.groupThreshold) {
+			if(currentGroup.count()>=threshold) {
         groupCount++;
         createGroupFolder(&currentGroup, sortBy);			
 			}
@@ -83,13 +85,13 @@ void FolderGroups::update(MyList* allSongs, int sortBy)
 			if(sortBy==MyList::ByGenre)
 				last=CMP3Info::getGenre(s->genreNr);
 			if(last=="")
-				last="xxxyyy";
+				last="xxxyyyzzz";
       currentGroup.clear();
       currentGroup.appendSong(s);
 		}
 	}
   // for last group also:
-	if(currentGroup.count()>=(unsigned int)gYammiGui->getModel()->config.groupThreshold) {
+	if(currentGroup.count()>=threshold) {
     groupCount++;
     createGroupFolder(&currentGroup, sortBy);
   }
