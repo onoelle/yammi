@@ -337,32 +337,18 @@ void PreferencesDialog::addStandardPlugins() {
 
 void PreferencesDialog::showReplacements() {
     QString msg("");
-    msg+="Replacements for filename pattern, command (single mode)\n";
-    msg+="or custom list (group mode):\n";
-    // TODO: dry this out (also appears in consistency check dialog
-    //  msg+=Song::singleReplacements;
-    msg+="{filename} (without path)\n";
-    msg+="{absoluteFilename} (including path)\n";
-    msg+="{filenameWithoutSuffix} (without path, without suffix)\n";
-    msg+="{suffix} (without leading dot)\n";
-    msg+="{path} (without filename)\n";
-    msg+="{artist}, {title}, {album} (corresponding to the tags)\n";
-    msg+="{bitrate} (in kbps)\n";
-    msg+="{length} (length in format mm:ss)\n";
-    msg+="{lengthInSeconds} (length in seconds)\n";
-    msg+="{mediaList (list of media on which song is contained)\n";
-    msg+="{trackNr} (Track number)\n";
-    msg+="{trackNr2Digit} (as above, but padded with zero if necessary)\n";
-    // end of wet code
-    msg+="{newline} (newline)\n";
-    msg+="{index} (index of a song within a selection)\n";
-    msg+="{directoryDialog} (directory dialog, returns chosen directory)\n";
-    msg+="{fileDialog} (file dialog, returns chosen file)\n";
-    msg+="{inputString} (input string dialog, returns entered string)\n\n";
+    msg+=i18n("Replacements for command (single mode)\n");
+    msg+=i18n("or custom list (group mode):\n");
+    msg+=Song::getReplacementsDescription();
+    msg+=i18n("{newline} (newline)\n");
+    msg+=i18n("{index} (index of a song within a selection)\n");
+    msg+=i18n("{directoryDialog} (directory dialog, returns chosen directory)\n");
+    msg+=i18n("{fileDialog} (file dialog, returns chosen file)\n");
+    msg+=i18n("{inputString} (input string dialog, returns entered string)\n\n");
 
-    msg+="Replacements for command (group mode):\n";
-    msg+="{customList} (custom list, directly)\n";
-    msg+="{customListFile} (filename of custom list)\n";
-    msg+="{customListViaFile} (custom list, via file / cat command)\n";
+    msg+=i18n("Replacements for command (group mode):\n");
+    msg+=i18n("{customList} (custom list, directly)\n");
+    msg+=i18n("{customListFile} (filename of custom list)\n");
+    msg+=i18n("{customListViaFile} (custom list, via file / cat command)\n");
     QMessageBox::information( this, "Yammi",msg);
 }

@@ -28,7 +28,7 @@ class Song;
 /**
  *@author Oliver Nölle
  * Convenience class, copied from Scott Wheelers "Juk" project
- * TODO: reference to juk homepage
+ * (see http://ktown.kde.org/~wheeler/juk.html)
  */
 class TrackPositionSlider : public QSlider
 {

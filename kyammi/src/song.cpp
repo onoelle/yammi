@@ -15,14 +15,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "song.h"
+
 #include "yammigui.h"
 #include "prefs.h"
 #include "util.h"
-
 #include "CMP3Info.h"
+
 #include <kdebug.h>
+#include <klocale.h>
 
 #ifdef ENABLE_OGGLIBS
 #include "vcedit.h"
@@ -123,11 +124,11 @@ int Song::create(const QString location, const QString mediaName, bool capitaliz
 
     QFileInfo* fi=new QFileInfo(location);
     if(!fi->exists()) {
-        cout << "trying to construct song, but file " << location << " does not exist!\n";
+        kdDebug() << "trying to construct song, but file " << location << " does not exist!\n";
         return 1;
     }
     if(!fi->isReadable()) {
-        cout << "trying to construct song, but file " << location << " is not accessible!\n";
+        kdDebug() << "trying to construct song, but file " << location << " is not accessible!\n";
         return 1;
     }
     if(mediaName==0) {			// song is on harddisk
@@ -136,12 +137,13 @@ int Song::create(const QString location, const QString mediaName, bool capitaliz
     } else {									// scanning removable media
         this->filename="";
         this->path="";
-        QString mountPath=gYammiGui->config().mediaDir;
+        QString mountPath=gYammiGui->config()->mediaDir;
         QString locationOnMedia=location;
-        if(locationOnMedia.left(mountPath.length())!=mountPath)
-            cout << "warning: song file is not on the mount path\n";
+        if(locationOnMedia.left(mountPath.length())!=mountPath) {
+            kdDebug() << "warning: song file is not on the mount path\n";
+        }
         locationOnMedia=locationOnMedia.right(locationOnMedia.length()-mountPath.length());
-        cout << "mediaName: " << mediaName << ", locationOnMedia: " << locationOnMedia << "\n";
+        kdDebug() << "mediaName: " << mediaName << ", locationOnMedia: " << locationOnMedia << "\n";
         addMediaLocation(mediaName, locationOnMedia);
     }
     this->filesize=fi->size();
@@ -165,7 +167,7 @@ int Song::create(const QString location, const QString mediaName, bool capitaliz
     if(location.right(4).upper()==".MP3") {
         // get mp3 layer info
         if(!getMp3LayerInfo(location)) {
-            cout << "could not read layer information from mp3 file \"" << location << "\"\n";
+            kdDebug() << "could not read layer information from mp3 file \"" << location << "\"\n";
         }
 
         #ifdef ENABLE_ID3LIB
@@ -179,13 +181,13 @@ int Song::create(const QString location, const QString mediaName, bool capitaliz
             // if so, we might be able to retrieve the complete artist/title from the filename
             if(ffArtist.upper()!=this->artist.upper()) {
                 if(ffArtist.length()>30 && ffArtist.left(29)==this->artist.left(29) && artist.length()<=30) {
-                    cout << "artist exceeding 30 characters, taking full artist from filename\n";
+                    kdDebug() << "artist exceeding 30 characters, taking full artist from filename\n";
                     artist=ffArtist;
                 }
             }
             if(ffTitle.upper()!=this->title.upper()) {
                 if(ffTitle.length()>30 && ffTitle.left(29)==this->title.left(29) && title.length()<=30) {
-                    cout << "title exceeding 30 characters, taking full title from filename\n";
+                    kdDebug() << "title exceeding 30 characters, taking full title from filename\n";
                     title=ffTitle;
                 }
             }
@@ -195,15 +197,16 @@ int Song::create(const QString location, const QString mediaName, bool capitaliz
                 artist=ffArtist;
             }
         } else {
-            cout << "could not read tag information from mp3 file \"" << location << "\", guessing values from filename\n";
+            kdDebug() << "could not read tag information from mp3 file \"" << location << "\", guessing values from filename\n";
             title=ffTitle;
             artist=ffArtist;
             album=ffAlbum;
         }
 
         // just in case: remove trailing mp3 in title
-        if(title.right(4).upper()==".MP3")
+        if(title.right(4).upper()==".MP3") {
             title=title.left(title.length()-4);
+        }
 
 
         #else
@@ -217,13 +220,6 @@ int Song::create(const QString location, const QString mediaName, bool capitaliz
     }
 
 
-    if(location.right(4).upper()==".TST") {
-        title=ffTitle;
-        artist=ffArtist;
-        album=ffAlbum;
-        treated=true;
-    }
-
     // ogg object
     if(location.right(4).upper()==".OGG") {
         // get ogg info
@@ -231,12 +227,12 @@ int Song::create(const QString location, const QString mediaName, bool capitaliz
         #ifdef ENABLE_OGGLIBS
 
         if(!getOggInfo(location)) {
-            cout << "could not read tag information from ogg file \"" << location << "\"\n";
+            kdDebug() << "could not read tag information from ogg file \"" << location << "\"\n";
         }
 
         // in case the ogg tags are empty => better trust filename info
         if(title=="" && artist=="") {
-            cout << "ogg tags empty, taking guessed info from filename...\n";
+            kdDebug() << "ogg tags empty, taking guessed info from filename...\n";
             title=ffTitle;
             artist=ffArtist;
             album=ffAlbum;
@@ -260,7 +256,7 @@ int Song::create(const QString location, const QString mediaName, bool capitaliz
 
     if(location.right(4).upper()==".WAV") {
         if(!getWavInfo(location)) {
-            cout << "could not read wav header information from wav file \"" << location << "\"\n";
+            kdDebug() << "could not read wav header information from wav file \"" << location << "\"\n";
         }
         artist=ffArtist;
         title=ffTitle;
@@ -270,8 +266,8 @@ int Song::create(const QString location, const QString mediaName, bool capitaliz
 
 
     if(!treated) {
-        cout << location << ": unknown suffix, no special handling available...\n";
-        cout << "  => cannot read information such as bitrate, length and tags\n";
+        kdDebug() << location << ": unknown suffix, no special handling available...\n";
+        kdDebug() << "  => cannot read information such as bitrate, length and tags\n";
         bitrate=0;
         length=0;
         artist="";
@@ -307,7 +303,7 @@ bool Song::rereadTags() {
         #ifdef ENABLE_ID3LIB
         if(!getMp3Tags(location())) {
             kdDebug() << "could not read any id3 tags from mp3 file " << location() << endl;
-			return false;
+            return false;
         } else {
             tagsDirty=true;
             return true;
@@ -320,7 +316,7 @@ bool Song::rereadTags() {
         #ifdef ENABLE_OGGLIBS
         if(!getOggInfo(location())) {
             kdDebug() << "could not read tag information from ogg file " << location() << endl;
-			return false;
+            return false;
         } else {
             tagsDirty=true;
             return true;
@@ -328,7 +324,7 @@ bool Song::rereadTags() {
         #endif // ENABLE_OGGLIBS
 
     }
-	kdDebug() << "unsupported type for reading tags in file " << location() << endl;
+    kdDebug() << "unsupported type for reading tags in file " << location() << endl;
     return false;
 }
 
@@ -381,7 +377,7 @@ void Song::guessTagsFromFilename(QString filename, QString path, QString* artist
     guessBase=guessBase.replace( QRegExp("_"), " " );							// replace "_" with " "
 
 
-    if(gYammiGui->config().guessingMode==0) { //gYammiGui->getModel()->config.GUESSING_MODE_SIMPLE) {
+    if(gYammiGui->config()->guessingMode==0) { //gYammiGui->getModel()->config.GUESSING_MODE_SIMPLE) {
 
         int pos=guessBase.find('-');
         if(pos!=-1) {
@@ -396,7 +392,7 @@ void Song::guessTagsFromFilename(QString filename, QString path, QString* artist
         }
     }
 
-    if(gYammiGui->config().guessingMode==1) { //gYammiGui->getModel()->config.GUESSING_MODE_ADVANCED) {
+    if(gYammiGui->config()->guessingMode==1) { //gYammiGui->getModel()->config.GUESSING_MODE_ADVANCED) {
         // eg "/artist/album/01 - trackname.mp3"
         //    pos1  pos2
 
@@ -478,7 +474,7 @@ bool Song::getMp3Tags(QString filename) {
 
     // genre
     if(getId3Tag(&tag, ID3FID_CONTENTTYPE, ID3FN_TEXT, &str)) {
-        //    cout << "genre found: " << str << "\n";
+        //    kdDebug() << "genre found: " << str << "\n";
         if(str.left(1)=="(") {
             // pattern: "(<genreNr>)[genreDesc]"
             int pos=str.find(')');
@@ -489,7 +485,7 @@ bool Song::getMp3Tags(QString filename) {
                 QString genreNrStr=str.mid(1, pos-1);
                 //        QString genreDesc=str.mid(pos+1);
                 //        TODO: support non-standard genres (change datatype from int to string...)
-                //      cout << "genreNr: " << genreNr << ", genreDesc: " << genreDesc << "\n";
+                //      kdDebug() << "genreNr: " << genreNr << ", genreDesc: " << genreDesc << "\n";
                 sscanf(genreNrStr, "%d", &(this->genreNr));
             }
         } else {
@@ -499,19 +495,18 @@ bool Song::getMp3Tags(QString filename) {
                 // description did not match, maybe it's just a number without brackets?
                 sscanf(str, "%d", &(this->genreNr));
             }
-            //      cout << "genreDesc: " << str << ", index: " << this->genreNr << "\n";
+            //      kdDebug() << "genreDesc: " << str << ", index: " << this->genreNr << "\n";
         }
         foundSomething=true;
     }
 
     if(foundSomething) {
-		kdDebug() << "found at least one id3 tag\n";
+        kdDebug() << "found at least one id3 tag\n";
         return true;
-	}
-    else {
-		kdDebug() << "found NO id3 tag\n";
+    } else {
+        kdDebug() << "found NO id3 tag\n";
         return false;
-	}
+    }
 }
 
 
@@ -551,49 +546,49 @@ bool Song::setMp3Tags(QString filename) {
     if(title!="") {
         ID3_Frame titleFrame;
         if(!setId3Tag(&tag, ID3FID_TITLE, ID3FN_TEXT, this->title, &titleFrame))
-            cout << "could not set tag (title)\n";
+            kdDebug() << "could not set tag (title)\n";
     }
 
     // artist
     if(artist!="") {
         ID3_Frame artistFrame;
         if(!setId3Tag(&tag, ID3FID_LEADARTIST, ID3FN_TEXT, this->artist, &artistFrame))
-            cout << "could not set tag (title)\n";
+            kdDebug() << "could not set tag (title)\n";
     }
 
     // album
     if(album!="") {
         ID3_Frame albumFrame;
         if(!setId3Tag(&tag, ID3FID_ALBUM, ID3FN_TEXT, this->album, &albumFrame))
-            cout << "could not set tag (title)\n";
+            kdDebug() << "could not set tag (title)\n";
     }
 
     // comment
     if(comment!="") {
         ID3_Frame commentFrame;
         if(!setId3Tag(&tag, ID3FID_COMMENT, ID3FN_TEXT, this->comment, &commentFrame))
-            cout << "could not set tag (title)\n";
+            kdDebug() << "could not set tag (title)\n";
     }
 
     // year
     if(year!=0) {
         ID3_Frame yearFrame;
         if(!setId3Tag(&tag, ID3FID_YEAR, ID3FN_TEXT, QString("%1").arg(this->year), &yearFrame))
-            cout << "could not set tag (year)\n";
+            kdDebug() << "could not set tag (year)\n";
     }
 
     // trackNr
     if(trackNr!=0) {
         ID3_Frame trackNrFrame;
         if(!setId3Tag(&tag, ID3FID_TRACKNUM, ID3FN_TEXT, QString("%1").arg(this->trackNr), &trackNrFrame))
-            cout << "could not set tag (year)\n";
+            kdDebug() << "could not set tag (year)\n";
     }
 
     // genreNr
     if(genreNr!=-1) {
         ID3_Frame genreNrFrame;
         if(!setId3Tag(&tag, ID3FID_CONTENTTYPE, ID3FN_TEXT, QString("(%1)").arg(this->genreNr), &genreNrFrame))
-            cout << "could not set tag (year)\n";
+            kdDebug() << "could not set tag (year)\n";
     }
 
     tag.Update();
@@ -609,7 +604,7 @@ bool Song::setId3Tag(ID3_Tag* tag, ID3_FrameID frame, ID3_FieldID field, QString
     // get frame
     ID3_Frame* theFrame = tag->Find(frame);
     if (theFrame == NULL) {
-        cout << "could not find frame " << frame << ", creating it...\n";
+        kdDebug() << "could not find frame " << frame << ", creating it...\n";
         newFrame->SetID(frame);
         newFrame->Field(field).Set(content.local8Bit());
         tag->AddFrame(newFrame);
@@ -619,7 +614,7 @@ bool Song::setId3Tag(ID3_Tag* tag, ID3_FrameID frame, ID3_FieldID field, QString
     // get field
     ID3_Field* theField = &(theFrame->Field(field));
     if (theField == NULL) {
-        cout << "could not find field " << field << "\n";
+        kdDebug() << "could not find field " << field << "\n";
         return false;
     }
 
@@ -637,12 +632,12 @@ bool Song::getMp3LayerInfo(QString filename) {
     CMP3Info* mp3Info = new CMP3Info();
     int loadstate = mp3Info->loadInfo(filename);
     if (loadstate!=0) {
-        cout << "error on reading mp3 layer info: " << loadstate << "\n";
+        kdDebug() << "error on reading mp3 layer info: " << loadstate << "\n";
         return false;
     }
     this->bitrate=mp3Info->getBitrate();
     this->length=mp3Info->getLengthInSeconds();
-    //  cout << "frequency: " << mp3Info->getFrequency() << " Hz\n";
+    //  kdDebug() << "frequency: " << mp3Info->getFrequency() << " Hz\n";
     delete mp3Info;
     return true;
 }
@@ -711,7 +706,7 @@ bool Song::getOggInfo(QString filename) {
     QString genreStr=getOggComment(&oggfile, "genre");
     if(genreStr!="") {
         genreNr=CMP3Info::getGenreIndex(genreStr);
-        cout << "genre found, str: " << genreStr << ", index: " << genreNr << "\n";
+        kdDebug() << "genre found, str: " << genreStr << ", index: " << genreNr << "\n";
     }
 
     length  = (int)ov_time_total(&oggfile, -1);
@@ -719,7 +714,7 @@ bool Song::getOggInfo(QString filename) {
 
     succ=ov_clear(&oggfile);
     if(succ!=0)
-        cout << "error when closing ogg file?\n";
+        kdDebug() << "error when closing ogg file?\n";
     return true;
 }
 
@@ -761,12 +756,12 @@ bool Song::setOggTags(QString filename) {
     // Test to know if we can write into the file
     FILE* file_in;
     if( (file_in=fopen(filename,"rb"))==NULL ) {
-        cout << "ERROR (saving ogg tags) while opening file: " << filename << "\n";
+        kdDebug() << "ERROR (saving ogg tags) while opening file: " << filename << "\n";
         return false;
     }
 
     if( vcedit_open(state, file_in) < 0 ) {
-        cout << "ERROR (saving ogg tags), failed to open file: " << filename << vcedit_error(state) << "\n";
+        kdDebug() << "ERROR (saving ogg tags), failed to open file: " << filename << vcedit_error(state) << "\n";
         fclose(file_in);
         return false;
     }
@@ -804,14 +799,14 @@ bool Song::setOggTags(QString filename) {
     FILE* file_out;
     QString newFilename=filename+".new";
     if ( (file_out=fopen(newFilename,"w"))==NULL ) {
-        cout << "ERROR (saving ogg tags) while opening file " << newFilename << "\n";
+        kdDebug() << "ERROR (saving ogg tags) while opening file " << newFilename << "\n";
         return false;
     }
 
     int succ=vcedit_write(state, file_out);
     fclose(file_out);
     if(succ != 0) {
-        cout << "ERROR writing new ogg-file " << newFilename << "\n";
+        kdDebug() << "ERROR writing new ogg-file " << newFilename << "\n";
     } else {
         QDir dir;
         // linux specific
@@ -845,28 +840,28 @@ bool Song::getWavInfo(QString filename) {
         WaveHeader header;
         stream.readRawBytes((char*)&header, sizeof(WaveHeader));
         wavFile.close();
-        //    cout << "header data: nChannels: " << header.nChannels << ", wBitsPerSample: " << header.wBitsPerSample << "\n";
-        //    cout << "nSamplesPerSec: " << header.nSamplesPerSec << ", filesize: " << header.filesize << ", avgBytesPerSec: " << header.nAvgBytesPerSec << "\n";
-        //    cout << "formatChunkSize: " << header.formatChunkSize << ", dataChunkSize: " << header.dataChunkSize << "\n";
+        //    kdDebug() << "header data: nChannels: " << header.nChannels << ", wBitsPerSample: " << header.wBitsPerSample << "\n";
+        //    kdDebug() << "nSamplesPerSec: " << header.nSamplesPerSec << ", filesize: " << header.filesize << ", avgBytesPerSec: " << header.nAvgBytesPerSec << "\n";
+        //    kdDebug() << "formatChunkSize: " << header.formatChunkSize << ", dataChunkSize: " << header.dataChunkSize << "\n";
 
         if(header.nChannels==0 || header.nSamplesPerSec==0 || header.wBitsPerSample==0) {
-            cout << "length calculation of file " << filename << " would have yielded division by zero, debug info:\n";
-            cout << "header data: nChannels: " << header.nChannels << ", wBitsPerSample: " << header.wBitsPerSample << "\n";
-            cout << "nSamplesPerSec: " << header.nSamplesPerSec << ", filesize: " << header.filesize << ", avgBytesPerSec: " << header.nAvgBytesPerSec << "\n";
-            cout << "formatChunkSize: " << header.formatChunkSize << ", dataChunkSize: " << header.dataChunkSize << "\n";
-            cout << "setting length to 1\n";
+            kdDebug() << "length calculation of file " << filename << " would have yielded division by zero, debug info:\n";
+            kdDebug() << "header data: nChannels: " << header.nChannels << ", wBitsPerSample: " << header.wBitsPerSample << "\n";
+            kdDebug() << "nSamplesPerSec: " << header.nSamplesPerSec << ", filesize: " << header.filesize << ", avgBytesPerSec: " << header.nAvgBytesPerSec << "\n";
+            kdDebug() << "formatChunkSize: " << header.formatChunkSize << ", dataChunkSize: " << header.dataChunkSize << "\n";
+            kdDebug() << "setting length to 1\n";
             length=1;
         } else {
-            cout << "calculating length...\n";
+            kdDebug() << "calculating length...\n";
             this->length=((((header.dataChunkSize * 8) / header.nChannels) / header.nSamplesPerSec) / header.wBitsPerSample);
-            cout << "...and bitrate...\n";
+            kdDebug() << "...and bitrate...\n";
             this->bitrate=header.nAvgBytesPerSec * 8 / 1000;
-            cout << "...done!\n";
+            kdDebug() << "...done!\n";
             this->comment=QString("%1, %2 KHz, %3 bit").arg(header.nChannels==2 ? "stereo" : "mono").arg(header.nSamplesPerSec).arg(header.wBitsPerSample);
         }
         return true;
     } else {
-        cout << "Error in opening wav file for reading!\n";
+        kdDebug() << "Error in opening wav file for reading!\n";
         return false;
     }
 }
@@ -885,9 +880,9 @@ bool Song::getWavInfo(QString filename) {
 bool Song::checkTags() {
     if(filename=="") {		// song not on local harddisk => we can't check
         return true;
-	}
-	kdDebug() << "checking tags of " << displayName() << ", title: " << title << endl;
-	
+    }
+    kdDebug() << "checking tags of " << displayName() << ", title: " << title << endl;
+
     bool same=false;
 
     QString _album=this->album;
@@ -904,9 +899,9 @@ bool Song::checkTags() {
 
     if(filename.right(4).upper()==".MP3") {
         if(!this->getMp3Tags(location())) {
-			kdDebug() << "could not read id3 tags from file " << filename << endl;
+            kdDebug() << "could not read id3 tags from file " << filename << endl;
             return false;
-		}
+        }
         treated=true;
     }
     #endif
@@ -914,9 +909,9 @@ bool Song::checkTags() {
     #ifdef ENABLE_OGGLIBS
     if(filename.right(4).upper()==".OGG") {
         if(!this->getOggInfo(location())) {
-			kdDebug() << "could not read ogg tags from file " << filename << endl;
+            kdDebug() << "could not read ogg tags from file " << filename << endl;
             return false;
-		}
+        }
         treated=true;
     }
     #endif
@@ -959,10 +954,10 @@ bool Song::checkTags() {
 
     if(same) {            // no differences
         return true;
-	}
-	kdDebug() << "checked tags of " << displayName() << ", title: " << title << endl;
+    }
+    kdDebug() << "checked tags of " << displayName() << ", title: " << title << endl;
 
-	// restore original values
+    // restore original values
     this->album=_album;
     this->artist=_artist;
     this->comment=_comment;
@@ -993,7 +988,8 @@ bool Song::saveTags() {
     bool treated=false;
 
     #ifdef ENABLE_ID3LIB
-	kdDebug() << "checking mp3...\n";
+
+    kdDebug() << "checking mp3...\n";
     if(filename.right(4).upper()==".MP3") {
         kdDebug() << "writing tags to file " << this->location() << "\n";
         setMp3Tags(location());
@@ -1003,7 +999,7 @@ bool Song::saveTags() {
     #endif
 
     #ifdef ENABLE_OGGLIBS
-	kdDebug() << "checking ogg...\n";
+    kdDebug() << "checking ogg...\n";
     if(filename.right(4).upper()==".OGG") {
         setOggTags(location());
         kdDebug() << "ogg tags corrected in file " << this->filename << "\n";
@@ -1030,7 +1026,7 @@ bool Song::correctFilename() {
     QString oldname=location();
     QFileInfo fi0(oldname);
     if(!fi0.isWritable()) {
-        cout << "renaming file: file " << oldname << " not writable, skipping\n";
+        kdDebug() << "renaming file: file " << oldname << " not writable, skipping\n";
         filenameDirty=false;
         return true;
     }
@@ -1042,7 +1038,7 @@ bool Song::correctFilename() {
     QDir currentDir=QDir("/");
     if(newname.upper()==oldname.upper()) {
         if(!currentDir.rename(oldname, oldname+".xxx")) {
-            cout << "WARNING: renaming: new filename equals old filename (except case), and renaming failed (" << newFilename << ")\n";
+            kdDebug() << "WARNING: renaming: new filename equals old filename (except case), and renaming failed (" << newFilename << ")\n";
             return false;
         }
         oldname=oldname+".xxx";
@@ -1051,13 +1047,13 @@ bool Song::correctFilename() {
     // we first check whether we can create a file with that name (overwriting anything?)
     QFileInfo fi1(newname);
     if(fi1.exists()) {
-        cout << "WARNING: renaming: new Filename already existing, aborting (" << newFilename << ")\n";
+        kdDebug() << "WARNING: renaming: new Filename already existing, aborting (" << newFilename << ")\n";
         return false;			// return if we don't want to overwrite anything
     }
 
     QFile touchFile(newname);
     if(!touchFile.open(IO_WriteOnly)) {
-        cout << "ERROR renaming: could not touch file\n";
+        kdDebug() << "ERROR renaming: could not touch file\n";
         return false;
     }
     QString dummy="test";
@@ -1066,17 +1062,17 @@ bool Song::correctFilename() {
 
     QFileInfo fi(newname);
     if(!fi.exists()) {
-        cout << "ERROR renaming: Filename not allowed: " << newFilename << "\n";
+        kdDebug() << "ERROR renaming: Filename not allowed: " << newFilename << "\n";
         return false;
     }
     // okay, successful
 
     if(!currentDir.rename(oldname, newname)) {
-        cout << "ERROR: renaming from " << oldname << " to " << newname << "failed!\n";
+        kdDebug() << "ERROR: renaming from " << oldname << " to " << newname << "failed!\n";
         return false;
     }
     this->filename=newFilename;
-    cout << "filename corrected to " << newFilename << "\n";
+    kdDebug() << "filename corrected to " << newFilename << "\n";
     filenameDirty=false;
     return true;
 }
@@ -1088,12 +1084,12 @@ bool Song::correctFilename() {
 bool Song::correctPath() {
     QString newPath=constructPath();
     if(!Util::ensurePathExists(newPath)) {
-        cout << "could not create path " << newPath << "\n";
+        kdDebug() << "could not create path " << newPath << "\n";
         return false;
     }
     QDir d=QDir("/");
     if(!d.rename(location(), newPath + "/" + filename)) {
-        cout << "could not rename file from " << location() << " to " << newPath << "\n";
+        kdDebug() << "could not rename file from " << location() << " to " << newPath << "\n";
         return false;
     }
     path = newPath;
@@ -1135,7 +1131,7 @@ bool Song::checkReadability() {
         return false;
     QFileInfo fileInfo(location());
     if(!fileInfo.exists() || !fileInfo.isReadable()) {
-        cout << "file " << location() << " does not exist or unreadable\n";
+        kdDebug() << "file " << location() << " does not exist or unreadable\n";
         return false;
     }
     return true;
@@ -1155,21 +1151,21 @@ QString Song::checkConsistency(bool requireConsistentTags, bool requireConsisten
 
     if(artist=="{wish}") {							// ignore wishes...
         return "";
-	}
+    }
     if(filename=="") {									// ...and songs not on harddisk
         return "";
-	}
+    }
 
     if(checkReadability()==false) {
         return "file not readable";
-	}
+    }
 
 
     tagsDirty=false;
     if(requireConsistentTags) {
         // checking tags
         if(!checkTags()) {
-            cout << "tags on file " << this->filename << " are not set correctly...\n";
+            kdDebug() << "tags on file " << this->filename << " are not set correctly...\n";
             tagsDirty=true;
             diagnosis+="tags not correct ";
         }
@@ -1179,7 +1175,7 @@ QString Song::checkConsistency(bool requireConsistentTags, bool requireConsisten
     if(requireConsistentFilename && filename!="") {
         // checking filename
         if(!checkFilename(ignoreCaseInFilenames)) {
-            cout << "file " << this->filename << " does not have correct filename\n";
+            kdDebug() << "file " << this->filename << " does not have correct filename\n";
             filenameDirty=true;
             diagnosis+="filename not consistent ";
         }
@@ -1189,7 +1185,7 @@ QString Song::checkConsistency(bool requireConsistentTags, bool requireConsisten
     if(requireConsistentDirectory && path!="") {
         // checking directory
         if(!checkDirectory(ignoreCaseInFilenames)) {
-            cout << "file " << this->filename << " is not in correct directory\n";
+            kdDebug() << "file " << this->filename << " is not in correct directory\n";
             directoryDirty=true;
             diagnosis+="directory not consistent ";
         }
@@ -1216,7 +1212,7 @@ QString Song::capitalize(QString str) {
  * Takes care of special characters not allowed in filenames.
  */
 QString Song::constructFilename() {
-    QString pattern=gYammiGui->config().consistencyPara.filenamePattern;
+    QString pattern=gYammiGui->config()->consistencyPara.filenamePattern;
     QString filename=replacePlaceholders(pattern, 0);
     return makeValidFilename(filename, true);
 }
@@ -1227,7 +1223,7 @@ QString Song::constructFilename() {
  * Returns the path without trailing slash.
  */
 QString Song::constructPath() {
-    QString pattern=gYammiGui->config().consistencyPara.directoryPattern;
+    QString pattern=gYammiGui->config()->consistencyPara.directoryPattern;
     QString path=replacePlaceholders(pattern, 0);
     // now remove "empty navigation steps" such as "Madonna//Holiday.mp3" (because no album given)
     while(path.contains("//")) {
@@ -1249,7 +1245,7 @@ QString Song::getSuffix() {
         // this is the case for swapped songs: filename is empty
         // => we have to look it up in the stored media location
         if(mediaLocation.count()==0) {
-            cout << "warning: no suffix found, assuming \".mp3\"...\n";  // TODO
+            kdDebug() << "warning: no suffix found, assuming \".mp3\"...\n";  // TODO
             return ".mp3";
         } else {
             base=mediaLocation[0];
@@ -1331,7 +1327,7 @@ void Song::moveTo(QString dir) {
     kdDebug() << "newLocation: " << newLocation.local8Bit() << endl;
     QDir currentDir("/");
     if(!currentDir.rename(location(), newLocation)) {
-        cout << "renaming failed! song: " << displayName() << ", new location: " << newLocation << "\n";
+        kdDebug() << "renaming failed! song: " << displayName() << ", new location: " << newLocation << "\n";
     } else {
         path=dir;
     }
@@ -1351,13 +1347,34 @@ QString Song::getSongAction(int index) {
         return QString("no such action");
 }
 
+
+/**
+ * Return a description of available replacements for a song.
+ */
+QString Song::getReplacementsDescription() {
+    QString msg;
+    msg+=i18n("{filename} (without path)\n)");
+    msg+=i18n("{absoluteFilename} (including path)\n");
+    msg+=i18n("{filenameWithoutSuffix} (without path, without suffix)\n");
+    msg+=i18n("{suffix} (without leading dot)\n");
+    msg+=i18n("{path} (without filename)\n");
+    msg+=i18n("{artist}, {title}, {album}, {comment} (corresponding to the tags)\n");
+    msg+=i18n("{bitrate} (in kbps)\n");
+    msg+=i18n("{length} (length in format mm:ss)\n");
+    msg+=i18n("{lengthInSeconds} (length in seconds)\n");
+    msg+=i18n("{mediaList (list of media on which song is contained)\n");
+    msg+=i18n("{trackNr} (Track number)\n");
+    msg+=i18n("{trackNr2Digit} (as above, but padded with zero if necessary)\n");
+    return msg;
+}
+
 /**
  * replace placeholders in a string with info from this song
  *
  */
 QString Song::replacePlaceholders(QString input, int index) {
     // 1. prepare strings
-	QString lengthStr;
+    QString lengthStr;
 
     // medialist
     QString mediaList="";

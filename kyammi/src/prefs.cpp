@@ -83,11 +83,11 @@ void Prefs::setDefaultValues(void) {
  */
 bool Prefs::loadConfig( )
 {
-	kdDebug()<<"loading Configuration..."<<endl;
+	kdDebug() << "loading Configuration..." << endl;
 	
-	KConfig *cfg = kapp->config();
+	KConfig* cfg = kapp->config();
 	
-	cfg->setGroup("General Options");
+    cfg->setGroup("General Options");
 	trashDir                     = cfg->readEntry("trashDir", trashDir );
 	scanDir                      = cfg->readEntry("scanDir", scanDir);
 	guessingMode                 = cfg->readNumEntry("guessingMode", guessingMode);
@@ -107,7 +107,7 @@ bool Prefs::loadConfig( )
 	}
 	lazyGrouping                 = cfg->readBoolEntry("lazyGrouping", lazyGrouping);
 	searchThreshold              = cfg->readNumEntry("searchThreshold", searchThreshold);
-	mediaPlayer = cfg->readNumEntry("mediaPlayer", mediaPlayer);
+	mediaPlayer                  = cfg->readNumEntry("mediaPlayer", mediaPlayer);
 	
 	cfg->setGroup("Xmms");
 	keepInXmms                   = cfg->readNumEntry("keepInXmms", keepInXmms);
@@ -132,7 +132,8 @@ bool Prefs::loadConfig( )
 	swapDir                      = cfg->readEntry("swapDir", swapDir);
 	swapSize                     = cfg->readNumEntry("swapSize", swapSize);
 
-	cfg->setGroup("ConsistencyCheck");
+	
+    cfg->setGroup("ConsistencyCheck");
 	consistencyPara.checkDirectories	= cfg->readBoolEntry("checkDirectories", consistencyPara.checkDirectories);
 	consistencyPara.checkDoubles		= cfg->readBoolEntry("checkDoubles", consistencyPara.checkDoubles);
 	consistencyPara.checkFilenames		= cfg->readBoolEntry("checkFilenames", consistencyPara.checkFilenames);

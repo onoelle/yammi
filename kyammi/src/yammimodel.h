@@ -46,8 +46,7 @@ public:
      */
     ~YammiModel();
 
-    // FIXME: config should be in yammimodel, not yammigui?
-    Prefs config( );
+    Prefs* config();
 
     // data representation
     QString currentSongFilenameAtStartPlay;
@@ -71,7 +70,7 @@ public:
     bool traverse(QString path, QString filePattern, KProgressDialog* progress, QString mediaName=0);
     Song* getSongFromFilename(QString filename);
     QString checkAvailability(Song* s, bool touch=false);
-    bool skipUnplayableSongs();    
+    bool skipUnplayableSongs(bool firstTwo=false);    
 
     bool allSongsChanged();
     void allSongsChanged(bool changed);
@@ -116,6 +115,7 @@ public slots:
 
 protected:
     YammiGui *m_yammi;
+    Prefs m_config;
 };
 
 #endif

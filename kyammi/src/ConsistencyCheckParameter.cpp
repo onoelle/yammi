@@ -43,6 +43,22 @@ void ConsistencyCheckParameter::setDefaults()
 	directoryPattern = "{artist}/{album}";
 }	
 	
+
+void ConsistencyCheckParameter::setAllDisabled()
+{
+	checkDirectories=false;
+	checkDoubles=false;
+	checkFilenames=false;
+	checkForExistence=false;
+	checkTags=false;
+	correctDirectories=false;
+	correctFilenames=false;
+	correctTags=false;
+	deleteEmptyDirectories=false;
+	ignoreCaseInFilenames=false;
+	updateNonExisting=false;
+}	
+	
 void ConsistencyCheckParameter::resetStatistics()
 {
 	dirtyTags=0;

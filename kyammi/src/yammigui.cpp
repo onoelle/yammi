@@ -110,30 +110,23 @@ extern YammiGui* gYammiGui;
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 YammiGui::YammiGui() : DCOPObject("YammiPlayer"), KMainWindow( ) {
-    kdDebug() << "ctor()...\n";
     gYammiGui = this;
     
+    // initialize some fields
     validState = false;
-    
-    kdDebug() << "loading config...\n";
-
-    m_config.loadConfig( );
     currentSong = 0;
     chosenFolder = 0;
     folderToAdd = 0;
     selectionMode = SELECTION_MODE_USER_SELECTED;
-
-    // set up model
+    
     model = new YammiModel( this );
+    config()->loadConfig();
 
-    kdDebug() << "1\n";
     if(!setupActions()) {
         return;
     }
-    kdDebug() << "2\n";
     createMainWidget( );
     createFolders( );
-    kdDebug() << "3\n";
 
     // final touches before start up
     isScanning = false;
@@ -166,7 +159,6 @@ void YammiGui::disconnectMediaPlayer() {
 
 
 void YammiGui::loadDatabase(QString databaseDir) {
-    kdDebug() << "4\n";
     loadMediaPlayer( );
     // TODO: replace this checkTimer with a thread owned by the media player
     connectMediaPlayer( );
@@ -193,7 +185,7 @@ void YammiGui::loadDatabase(QString databaseDir) {
     kdDebug() << "trying to load database from directory " << databaseDir << endl;
     QDir d(databaseDir);
     bool importOld=false;
-    m_config.databaseDir = databaseDir;
+    config()->databaseDir = databaseDir;
     QString oldYammiDir(QDir::homeDirPath()+"/.yammi/");
     if(!d.exists("songdb.xml")) {
         QDir oldDir(oldYammiDir);
@@ -214,7 +206,7 @@ void YammiGui::loadDatabase(QString databaseDir) {
             if(result==KMessageBox::Yes) {
             */
             importOld=true;
-            m_config.databaseDir=oldYammiDir;
+            config()->databaseDir=oldYammiDir;
             //}
         }
     }
@@ -225,7 +217,7 @@ void YammiGui::loadDatabase(QString databaseDir) {
     cfg->setGroup("General Options");
     bool restorePlaylistOnStartup = true;            // TODO: make this configurable
     if(restorePlaylistOnStartup) {
-        model->readList(&(model->songsToPlay), m_config.databaseDir + "/" + "playqueue.xml");
+        model->readList(&(model->songsToPlay), config()->databaseDir + "/" + "playqueue.xml");
         folderActual->update(folderActual->songlist());
         player->syncYammi2Player();
         if(folderActual->songlist().count() > 0) {
@@ -248,7 +240,7 @@ void YammiGui::loadDatabase(QString databaseDir) {
     updateView(true);
 
     if(importOld) {
-        m_config.databaseDir=databaseDir;
+        config()->databaseDir=databaseDir;
         model->saveAll();
         model->saveHistory();
     }
@@ -406,7 +398,7 @@ bool YammiGui::queryClose() {
         QString msg=i18n("The Song Database has been modified.\nDo you want to save the changes?");
         switch( KMessageBox::warningYesNoCancel(this,msg,i18n("Database modified"))) {
         case KMessageBox::Yes:
-            model->save( );
+            saveDatabase();
             break;
         case KMessageBox::No:
             break;
@@ -414,7 +406,7 @@ bool YammiGui::queryClose() {
             return false;
         }
     } else { //the db has not changed, but save history anyways...(only if more than 2 songs to add)
-        if(m_config.logging && model->songsPlayed.count()>2) {
+        if(config()->logging && model->songsPlayed.count()>2) {
             model->saveHistory();
         }
     }
@@ -453,11 +445,13 @@ void YammiGui::shutdownSequence( ) {
             return;
         }
     }
-    model->save( );
-    if(m_config.shutdownScript.isEmpty()) {
+    model->save();
+    //TODO: change to saveDatabase()
+    // (what if the user touched the database in between? => save immediately or cancel sleep mode)
+    if(config()->shutdownScript.isEmpty()) {
         this->close();
     } else {
-        system(m_config.shutdownScript+" &");
+        system(config()->shutdownScript+" &");
     }
 }
 
@@ -486,7 +480,7 @@ void YammiGui::toolbarToggled( const QString& name ) {
 //****************************************************************************************************//
 YammiGui::~YammiGui() {
     // save playlist
-    model->saveList(&(model->songsToPlay), m_config.databaseDir, "playqueue");
+    model->saveList(&(model->songsToPlay), config()->databaseDir, "playqueue");
     delete player;
     searchThread->stopThread();
     searchFieldChangedIndicator.wakeOne();
@@ -645,10 +639,8 @@ void YammiGui::gotoFuzzyFolder(bool backward) {//HERE
         BestMatchEntry** bme;
         bme=fs.getBestMatchesList();				// STEP 4
         int noResults=0;
-        // TODO:xxx
         for(; noResults<FUZZY_FOLDER_LIST_SIZE && noResults<200 && bme[noResults]; noResults++) {
             Folder* f=(Folder*)(bme[noResults]->objPtr);
-            //      cout << noResults << ".: " << f->folderName() << ", match: " << bme[noResults]->sim << "\n";
             fuzzyFolderList[noResults]=f;
         }
         // clear rest of fzzyFolderList (if not enough matching entries
@@ -912,9 +904,9 @@ void YammiGui::saveColumnSettings() {
 
 /// opens the preferences dialogue
 void YammiGui::setPreferences() {
-    int playerBefore=config().mediaPlayer;
+    int playerBefore=config()->mediaPlayer;
 
-    PreferencesDialog d(this, "preferencesDialog", true, &m_config);
+    PreferencesDialog d(this, "preferencesDialog", true, config());
 
     // show dialog
     int result=d.exec();
@@ -923,8 +915,8 @@ void YammiGui::setPreferences() {
         return;
     }
     updateSongPopup();
-    m_config.saveConfig();
-    if(playerBefore != config().mediaPlayer) {
+    config()->saveConfig();
+    if(playerBefore != config()->mediaPlayer) {
         kdDebug() << "trying to switch media player...\n";
         int savedSongPosition = player->getCurrentTime();
         int savedPlayingState = player->getStatus();
@@ -966,8 +958,8 @@ void YammiGui::updateSongPopup() {
         playListPopup->insertItem(QIconSet( QPixmap(in_xpm)), model->categoryNames[i], this, SLOT(toCategory(int)), 0, 10000+i);
     }
     pluginPopup->clear();
-    for(unsigned int i=0; i<m_config.pluginMenuEntry.count(); i++) {
-        pluginPopup->insertItem( m_config.pluginMenuEntry[i], this, SLOT(forSelectionPlugin(int)), 0, 2000+i);
+    for(unsigned int i=0; i<config()->pluginMenuEntry.count(); i++) {
+        pluginPopup->insertItem( config()->pluginMenuEntry[i], this, SLOT(forSelectionPlugin(int)), 0, 2000+i);
     }
 }
 
@@ -979,10 +971,10 @@ void YammiGui::updateSongPopup() {
  */
 /*
 QIconSet YammiGui::getPopupIcon(Song::action whichAction) {
-    if(m_config.doubleClickAction==whichAction) {
+    if(config()->doubleClickAction==whichAction) {
         return QIconSet(QPixmap(defaultDoubleClick_xpm));
     }
-    if((m_config.middleClickAction==whichAction)) {
+    if((config()->middleClickAction==whichAction)) {
         return QIconSet(QPixmap(defaultMiddleClick_xpm));
     }
     return (QIconSet) NULL;
@@ -1079,12 +1071,12 @@ void YammiGui::decide(Song* s1, Song* s2) {
     int what = KMessageBox::warningYesNoCancel( this, msg.arg(str1).arg(str2),QString::null,i18n("Delete s1"), i18n("Delete s2"));
     if(what == KMessageBox::Yes) {
         kdDebug()<< "deleting s1\n";
-        s1->deleteFile(m_config.trashDir);
+        s1->deleteFile(config()->trashDir);
         folderAll->removeSong(s1);
     }
     if(what == KMessageBox::No) {
         kdDebug()<< "deleting s2\n";
-        s2->deleteFile(m_config.trashDir);
+        s2->deleteFile(config()->trashDir);
         folderAll->removeSong(s2);
     }
     model->allSongsChanged(true);
@@ -1159,9 +1151,7 @@ void YammiGui::searchFieldChanged( const QString &fuzzy ) {
 }
 
 /**
- * Update the search results from the background search thread.
- * TODO: we should not do this in the background search thread, but in the UI thread
- * => timer that checks whether search results are available?
+ * Update the search results and request GUI update.
  */
 void YammiGui::requestSearchResultsUpdate(MyList* results) {
     searchResults.clear();
@@ -1445,9 +1435,9 @@ void YammiGui::slotFolderPopup( QListViewItem*, const QPoint & point, int ) {
 void YammiGui::forSelectionPlugin(int pluginIndex) {
     pluginIndex-=2000;
 
-    bool confirm=m_config.pluginConfirm[pluginIndex]=="true";
-    QString mode=m_config.pluginMode[pluginIndex];
-    QString cmd=m_config.pluginCommand[pluginIndex];
+    bool confirm=config()->pluginConfirm[pluginIndex]=="true";
+    QString mode=config()->pluginMode[pluginIndex];
+    QString cmd=config()->pluginCommand[pluginIndex];
 
     if(cmd.contains("{directoryDialog}")>0) {
         QString dir = KFileDialog::getExistingDirectory("", this, i18n("choose directory for plugin"));
@@ -1501,13 +1491,12 @@ void YammiGui::forSelectionPlugin(int pluginIndex) {
         int index=1;
         QString customList="";
         for(Song* s=selectedSongs.firstSong(); s; s=selectedSongs.nextSong(), index++) {
-            QString entry = m_config.pluginCustomList[pluginIndex];
+            QString entry = config()->pluginCustomList[pluginIndex];
             customList+=s->replacePlaceholders(entry, index);
         }
 
-        //TODO: luis, the following lines were commented out, any particular reason?
         // custom list can be long => we put it into a file...
-        QString customListFilename(m_config.databaseDir+"customlist.temp");
+        QString customListFilename(config()->databaseDir+"customlist.temp");
         QFile customListFile(customListFilename);
         customListFile.open(IO_WriteOnly);
         customListFile.writeBlock( customList, qstrlen(customList) );
@@ -1545,7 +1534,6 @@ void YammiGui::forSelectionMove() {
     }
     // let user choose destination directory
     QString startPath=selectedSongs.firstSong()->path;
-    // TODO: fix starting path
     QString dir=KFileDialog::getExistingDirectory(startPath, this, i18n("Select destination directory"));
     if(dir.isNull()) {
         return;
@@ -1587,8 +1575,8 @@ void YammiGui::forSelectionBurnToMedia() {
     int startIndex=atoi(startIndexStr);
     int mediaNo=startIndex-1;
     QString mediaName=QString("%1_%2").arg(collName).arg(mediaNo);
-    QString mediaDir = config().databaseDir + "media/" + mediaName + "/";
-    long double sizeLimit=(long double)m_config.criticalSize*1024.0*1024.0;
+    QString mediaDir = config()->databaseDir + "media/" + mediaName + "/";
+    long double sizeLimit=(long double)config()->criticalSize*1024.0*1024.0;
     int count=0;
     for(Song* s=selectedSongs.firstSong(); s; ) {
         progress.progressBar()->setProgress(count);
@@ -1600,7 +1588,7 @@ void YammiGui::forSelectionBurnToMedia() {
             // medium is full, prepare new one
             mediaNo++;
             mediaName=QString("%1_%2").arg(collName).arg(mediaNo);
-            mediaDir= config().databaseDir + "media/"+ mediaName + "/";
+            mediaDir= config()->databaseDir + "media/"+ mediaName + "/";
             progress.setLabel(i18n("Preparing media ")+mediaName);
             cout << "Preparing media " << mediaName << " (" << count << " files processed so far)...\n";
             QDir dir(mediaDir);
@@ -1636,7 +1624,7 @@ void YammiGui::forSelectionBurnToMedia() {
         s=selectedSongs.nextSong();
     }
 
-    cout << "no of media: " << mediaNo+1-startIndex << " (size limit: " << m_config.criticalSize << " MB, ";
+    cout << "no of media: " << mediaNo+1-startIndex << " (size limit: " << config()->criticalSize << " MB, ";
     cout << "index " << startIndex << " to " << mediaNo << ")\n";
     cout << "no of files: " << count << "\n";
     cout << "size of last media: " << (int)(size/1024.0/1024.0) << " MB\n";
@@ -1658,9 +1646,9 @@ void YammiGui::forSelectionBurnToMedia() {
                              each directory to a seperate CD.\n\
                              (Depending on your burning program, you might have\n\
                              to check an option \"follow symlinks\" or similar)."))
-                .arg(mediaNo+1-startIndex).arg(m_config.criticalSize).arg(startIndex).arg(mediaNo)
+                .arg(mediaNo+1-startIndex).arg(config()->criticalSize).arg(startIndex).arg(mediaNo)
                 .arg(count).arg((int)(size/1024.0/1024.0)).arg((int)(totalSize/1024.0/1024.0))
-                .arg(config().databaseDir + "media/");
+                .arg(config()->databaseDir + "media/");
     KMessageBox::information( this, msg );
 }
 
@@ -1769,9 +1757,9 @@ void YammiGui::forAllCheckConsistency() {
 
 void YammiGui::forSelectionCheckConsistency() {
     getSelectedSongs();
-    ConsistencyCheckDialog d(this, &(m_config.consistencyPara), &selectedSongs, model);
+    ConsistencyCheckDialog d(this, &(config()->consistencyPara), &selectedSongs, model);
     d.exec();
-    m_config.saveConfig();
+    config()->saveConfig();
     folderProblematic->update(model->problematicSongs);
     folderContentChanged(folderProblematic);
     folderContentChanged(chosenFolder);
@@ -1809,12 +1797,14 @@ void YammiGui::forSelectionEnqueueAsNext( ) {
         selectedSongs.shuffle();
     }
     selectedSongs.reverse();
-    //FIXME - If the player is not playing, we can insert the itmes at pos 0
+    //FIXME - If the player is not playing, we can insert the items at pos 0
     for(Song* s = selectedSongs.firstSong(); s; s=selectedSongs.nextSong()) {
         if(model->songsToPlay.count()==0 || currentSong!=model->songsToPlay.at(0)->song() || player->getStatus() != PLAYING) {
+            kdDebug() << "enqueueAsNext: case 1\n";
             model->songsToPlay.insert(0, new SongEntryInt(s, 13));
         }
         else {
+            kdDebug() << "enqueueAsNext: case 2\n";
             model->songsToPlay.insert(1, new SongEntryInt(s, 13));
         }
     }
@@ -1838,15 +1828,15 @@ void YammiGui::forSelectionPrelisten(int where ) {
 }
 
 
-void YammiGui::forSelectionPlay( ) {//FIXME - this does not work too well....
-    kdDebug()<<"playSelected( )"<<endl;
+void YammiGui::forSelectionPlayNow() { //FIXME - this does not work too well....
+    kdDebug() << "playSelected( )" << endl;
     getSelectedSongs();
     int count = selectedSongs.count();
     if(count < 1) {
         return;
     }
     player->stop( );
-    forSelectionEnqueueAsNext( );
+    forSelectionEnqueueAsNext();
     //this is not really clean, but...
     player->skipForward(shiftPressed);
     player->play( );
@@ -2127,7 +2117,7 @@ void YammiGui::forSelectionSongInfo( ) {
         if(change) {
             model->allSongsChanged(true);
             s->tagsDirty=true;						// mark song as dirty(tags)
-            s->filenameDirty=(s->checkFilename(m_config.ignoreCaseInFilenames)==false);
+            s->filenameDirty=(s->checkFilename(config()->ignoreCaseInFilenames)==false);
             // update affected songs in view
             for(SongListItem* i=(SongListItem*)songListView->firstChild(); i; i=(SongListItem*)i->itemBelow()) {
                 if(i->song()!=s) {
@@ -2158,7 +2148,7 @@ void YammiGui::forSelectionSongInfo( ) {
  
 void YammiGui::updateSongInfo(Song s) {
     s->tagsDirty=true;
-    s->filenameDirty=(s->checkFilename(m_config.ignoreCaseInFilenames)==false);
+    s->filenameDirty=(s->checkFilename(config()->ignoreCaseInFilenames)==false);
     // manual update: go through currently shown list of songs and correct, if necessary
     for(SongListItem* i=(SongListItem*)songListView->firstChild(); i; i=(SongListItem*)i->itemBelow()) {
         if(i->song()!=s) {
@@ -2206,7 +2196,7 @@ void YammiGui::forSelectionDelete( ) {
     // go through list of songs
     for(Song* s=selectedSongs.firstSong(); s; s=selectedSongs.nextSong()) {
         if(deleteFileFlag) {
-            s->deleteFile(m_config.trashDir);
+            s->deleteFile(config()->trashDir);
         }
         if(deleteEntryFlag)	{
             deleteEntry(s);
@@ -2243,7 +2233,7 @@ void YammiGui::deleteEntry(Song* s) {
 
 /// doubleClick on song
 void YammiGui::doubleClick() {
-    int action=m_config.doubleClickAction;
+    int action=config()->doubleClickAction;
     forSelection(action);
 }
 
@@ -2254,7 +2244,7 @@ void YammiGui::middleClick(int button) {
     //    }
 
     if(button==4) {				// middle button
-        forSelection(m_config.middleClickAction);
+        forSelection(config()->middleClickAction);
     }
 }
 
@@ -2273,7 +2263,7 @@ void YammiGui::forSelection(int action) {
         forSelectionEnqueueAsNext();
         break;
     case Song::PlayNow:
-        forSelectionPlay();
+        forSelectionPlayNow();
         break;
     case Song::SongInfo:
         forSelectionSongInfo();
@@ -2446,7 +2436,7 @@ void YammiGui::renameMedia() {
 
 /// invoke an externally configured program/script on the content of a folder
 void YammiGui::pluginOnFolder() {
-    QFile f(config().databaseDir + "plugin.temp" );
+    QFile f(config()->databaseDir + "plugin.temp" );
     if ( !f.open( IO_WriteOnly  ) ) {
         return;
     }
@@ -2485,7 +2475,7 @@ void YammiGui::shufflePlaylist() {
  * clear all playlist items (except currently played song
  */
 void YammiGui::clearPlaylist() {
-    if(m_config.childSafe)
+    if(config()->childSafe)
         return;
     Song* save=0;
 
@@ -2635,7 +2625,7 @@ void YammiGui::grabAndEncode() {
     if(!ok)
         return;
 
-    QString filename=QString(i18n("%1%2 - %3.mp3")).arg(m_config.scanDir).arg(artist).arg(title);
+    QString filename=QString(i18n("%1%2 - %3.mp3")).arg(config()->scanDir).arg(artist).arg(title);
     QFileInfo fi(filename);
     if(fi.exists()) {
         QString msg = i18n("The file\n%1\nalready exists!\n\nPlease choose a different artist/title combination.");
@@ -2643,7 +2633,7 @@ void YammiGui::grabAndEncode() {
         return;
     }
     // linux specific
-    QString cmd=QString("%1 %2 \"%3\" \"%4\" \"%5\" &").arg(m_config.grabAndEncodeCmd).arg(trackNr).arg(artist).arg(title).arg(filename);
+    QString cmd=QString("%1 %2 \"%3\" \"%4\" \"%5\" &").arg(config()->grabAndEncodeCmd).arg(trackNr).arg(artist).arg(title).arg(filename);
     system(cmd);
     grabbedTrackFilename=filename;
     statusBar( )->message(i18n("grabbing track, will be available shortly..."), 30000);
@@ -2817,6 +2807,44 @@ void YammiGui::toFromPlaylist() {
     }
 }
 
+void YammiGui::saveDatabase() {
+    model->save();
+    kdDebug() << "not implemented yet: keep tags and filenames consistent\n";
+    return;
+    /*
+    if(!config()->tagsConsistent && (!config()->filenamesConsistent)) { // && (!config()->directoryConsistent))
+        return;
+    }
+    selectedSongs.clear();
+    int tagsDirtyCount = 0;
+    int filenameDirtyCount = 0;
+    int directoryDirtyCount = 0;
+    for(Song* s=model->allSongs.firstSong(); s; s=model->allSongs.nextSong()) {
+        if(config()->tagsConsistent && s->tagsDirty) {
+            tagsDirtyCount++;
+            selectedSongs.appendSong(s);
+        }
+        if(s->filenameDirty) {
+            filenameDirtyCount++;
+            filenamesDirtyCount++;
+            selectedSongs.appendSong(s);
+        }
+        if(s->directoryDirty) {
+            directoryDirtyCount++;
+        }
+    }
+    ConsistencyCheckParameter p;
+    p->setAllDisabled();
+    p->filenamePattern = config()->consistencyPara.filenamePattern;
+    p->directoryPattern = config()->consistencyPara.directoryPattern;
+    p->checkTags = config()->tagsConsistent;
+    p->correctTags = config()->tagsConsistent;
+    p->checkFilenames = config()->filenamesConsistent;
+    p->correctFilenames = config()->filenamesConsistent;
+    */
+}
+
+
 void YammiGui::changeSleepMode() {
     kapp->beep();
     if(!m_sleepMode) {
@@ -2824,10 +2852,12 @@ void YammiGui::changeSleepMode() {
         m_sleepModeSpinBox->setValue(3);
         if(model->allSongsChanged() || model->categoriesChanged()) {
             QString msg = i18n("The Database has been modified. Save changes?\n(answering no will cancel sleep mode)");
-            if( KMessageBox::warningYesNo(this,msg) == KMessageBox::Yes )
-                model->save();
-            else
+            if( KMessageBox::warningYesNo(this,msg) == KMessageBox::Yes ) {
+                saveDatabase();
+            }
+            else {
                 m_sleepMode = false; //leave sleep mode off
+            }
         }
     } else {
         m_sleepMode = false;
@@ -2842,7 +2872,7 @@ void YammiGui::changeSleepMode() {
  * stops playback on headphone
  */
 void YammiGui::stopPrelisten() {
-    if(m_config.secondSoundDevice=="") {
+    if(config()->secondSoundDevice=="") {
         cout << "prelisten feature: no sound device configured\n";
         return;
     }
@@ -2873,7 +2903,7 @@ void YammiGui::stopPrelisten() {
  * skipTo: 0 = beginning of song, 100 = end
  */
 void YammiGui::preListen(Song* s, int skipTo) {
-    if(m_config.secondSoundDevice=="") {
+    if(config()->secondSoundDevice=="") {
         cout << "prelisten feature: no sound device configured\n";
         return;
     }
@@ -2886,20 +2916,20 @@ void YammiGui::preListen(Song* s, int skipTo) {
     // now play song via mpg123, ogg123 or aplay on sound device configured in prefs
     if(s->filename.right(3).upper()=="MP3") {
         QString skip=QString(" --skip %1").arg(seconds*skipTo*38/100);
-        QString cmd=QString("mpg123 -a %1 %2 '%3' &").arg(m_config.secondSoundDevice).arg(skip).arg(s->location());
+        QString cmd=QString("mpg123 -a %1 %2 '%3' &").arg(config()->secondSoundDevice).arg(skip).arg(s->location());
         kdDebug() << "command: " << cmd.local8Bit() << endl;
         system(cmd);
         lastPrelistened="MP3";
     }
     if(s->filename.right(3).upper()=="OGG") {
         QString skip=QString(" --skip %1").arg(seconds*skipTo/100);
-        QString cmd=QString("ogg123 -d oss -odsp:%1 %2 '%3' &").arg(m_config.secondSoundDevice).arg(skip).arg(s->location());
+        QString cmd=QString("ogg123 -d oss -odsp:%1 %2 '%3' &").arg(config()->secondSoundDevice).arg(skip).arg(s->location());
         system(cmd);
         lastPrelistened="OGG";
     }
     if(s->filename.right(3).upper()=="WAV") {
         QString skip=QString(" trim %1s").arg(seconds*skipTo*441);
-        QString cmd=QString("play -d %1 '%2' %3 &").arg(m_config.secondSoundDevice).arg(s->location()).arg(skip);
+        QString cmd=QString("play -d %1 '%2' %3 &").arg(config()->secondSoundDevice).arg(s->location()).arg(skip);
         cout << cmd << "\n";
         system(cmd);
         lastPrelistened="WAV";
@@ -2908,18 +2938,18 @@ void YammiGui::preListen(Song* s, int skipTo) {
 }
 
 void YammiGui::updateSongDatabaseHarddisk() {
-    UpdateDatabaseDialog d(this, &m_config);
+    UpdateDatabaseDialog d(this, config());
     // show dialog
     int result=d.exec();
     if(result!=QDialog::Accepted) {
         return;
     }
-    m_config.saveConfig();
-    updateSongDatabase(config().scanDir, config().scanPattern, 0);
+    config()->saveConfig();
+    updateSongDatabase(config()->scanDir, config()->scanPattern, 0);
 }
 
 void YammiGui::updateSongDatabaseSingleFile() {
-    QStringList files = KFileDialog::getOpenFileNames( m_config.scanDir,QString::null, this, i18n("Open file(s) to import"));
+    QStringList files = KFileDialog::getOpenFileNames( config()->scanDir,QString::null, this, i18n("Open file(s) to import"));
     if(files.count()==0) {
         return;
     }
@@ -2940,9 +2970,9 @@ void YammiGui::updateSongDatabaseSingleFile() {
 void YammiGui::updateSongDatabaseMedia() {
     UpdateDatabaseMediaDialog d(this, i18n("Update Database (media) Dialog"));
 
-    d.LineEditMediaDir->setText(m_config.mediaDir);
+    d.LineEditMediaDir->setText(config()->mediaDir);
     d.LineEditFilePattern->setText("*.mp3 *.ogg *.wav");
-    d.CheckBoxMountMediaDir->setChecked(m_config.mountMediaDir);
+    d.CheckBoxMountMediaDir->setChecked(config()->mountMediaDir);
     // show dialog
     int result=d.exec();
     if(result!=QDialog::Accepted)
@@ -2952,7 +2982,7 @@ void YammiGui::updateSongDatabaseMedia() {
         return;
     }
 
-    m_config.mountMediaDir=d.CheckBoxMountMediaDir->isChecked();
+    config()->mountMediaDir=d.CheckBoxMountMediaDir->isChecked();
     QString mediaName=d.LineEditMediaName->text();
     QString mediaDir=d.LineEditMediaDir->text();
     QString filePattern=d.LineEditFilePattern->text();
@@ -2962,7 +2992,7 @@ void YammiGui::updateSongDatabaseMedia() {
 
 
 void YammiGui::updateSongDatabase(QString scanDir, QString filePattern, QString media) {
-    if(m_config.childSafe) {
+    if(config()->childSafe) {
         return;
     }
     KProgressDialog progress( this, 0, i18n("Yammi"), i18n ("Scanning..."), true);
@@ -3051,12 +3081,12 @@ void YammiGui::loadSongsFromMedia(QString mediaName) {
     progress.progressBar()->setProgress(0);
     kapp->processEvents();
 
-    QString mediaDir=m_config.mediaDir;
-    QString swapDir=m_config.swapDir;
-    if(m_config.mountMediaDir) {
+    QString mediaDir=config()->mediaDir;
+    QString swapDir=config()->swapDir;
+    if(config()->mountMediaDir) {
         // linux specific
         QString cmd;
-        cmd=QString("mount %1").arg(m_config.mediaDir);
+        cmd=QString("mount %1").arg(config()->mediaDir);
         system(cmd);
     }
     // iterate through playlist and load all songs on that media into swap dir
@@ -3094,10 +3124,10 @@ void YammiGui::loadSongsFromMedia(QString mediaName) {
     progress.progressBar()->setProgress(loaded);
     kapp->processEvents();
     // unmount swap dir
-    if(m_config.mountMediaDir) {
+    if(config()->mountMediaDir) {
         // linux specific
         QString cmd;
-        cmd=QString("umount %1").arg(m_config.mediaDir);
+        cmd=QString("umount %1").arg(config()->mediaDir);
         system(cmd);
     }
 
@@ -3152,10 +3182,10 @@ void YammiGui::loadMedia() {
  * the limit again.
  */
 void YammiGui::checkSwapSize() {
-    long double sizeLimit=(long double)m_config.swapSize*1024.0*1024.0;
+    long double sizeLimit=(long double)config()->swapSize*1024.0*1024.0;
     long double size=0.0;
-    QString path=m_config.swapDir;
-    cout << "checking swap size in directory " << path << ", limit: " << m_config.swapSize << " MB\n";
+    QString path=config()->swapDir;
+    cout << "checking swap size in directory " << path << ", limit: " << config()->swapSize << " MB\n";
     QDir d(path);
 
     d.setFilter(QDir::Files);
@@ -3227,7 +3257,7 @@ void YammiGui::toggleColumnVisibility(int column) {
 
 
 void YammiGui::loadMediaPlayer( ) {
-    switch( m_config.mediaPlayer ) {
+    switch( config()->mediaPlayer ) {
         #ifdef ENABLE_XMMS
     case 0:
         player = new XmmsPlayer(0, model);
@@ -3362,7 +3392,7 @@ bool YammiGui::setupActions( ) {
     new KWidgetAction( m_seekSlider ,"text",0, 0, 0,actionCollection(),"seek");
 
     //Database actions
-    new KAction(i18n("Save Database"),"filesave",KShortcut(QKeySequence(Key_Control,Key_S)),model,SLOT(save()), actionCollection(),"save_db");
+    new KAction(i18n("Save Database"),"filesave",KShortcut(QKeySequence(Key_Control,Key_S)),this,SLOT(saveDatabase()), actionCollection(),"save_db");
     new KAction(i18n("Scan Harddisk..."),"fileimport",0,this,SLOT(updateSongDatabaseHarddisk()), actionCollection(),"scan_hd");
     new KAction(i18n("Scan Removable Media..."),"fileimport",0,this,SLOT(updateSongDatabaseMedia()), actionCollection(),"scan_media");
     new KAction(i18n("Import Selected File(s)..."),"edit_add",0,this,SLOT(updateSongDatabaseSingleFile()), actionCollection(),"import_file");
@@ -3377,7 +3407,7 @@ bool YammiGui::setupActions( ) {
     // selection actions
     new KAction(i18n("Enqueue as next (prepend)"), "enqueue_asnext", KShortcut(Key_F6), this, SLOT(forSelectionEnqueueAsNext()), actionCollection(), "prepend_selected");
     new KAction(i18n("Enqueue at end (append)"), "enqueue", KShortcut(Key_F5), this, SLOT(forSelectionEnqueue()), actionCollection(), "append_selected");
-    new KAction(i18n("Play Now!"), "play_now", KShortcut(Key_F7), this, SLOT(forSelectionPlay()), actionCollection(), "play_selected");
+    new KAction(i18n("Play Now!"), "play_now", KShortcut(Key_F7), this, SLOT(forSelectionPlayNow()), actionCollection(), "play_selected");
     new KAction(i18n("Dequeue Songs"), "stop", KShortcut(Key_F8), this, SLOT(forSelectionDequeue()), actionCollection(), "dequeue_selected");
     new KAction(i18n("Prelisten start"), "prelisten_start", KShortcut(Key_F9), this, SLOT(forSelectionPrelistenStart()), actionCollection(), "prelisten_start");
     new KAction(i18n("Prelisten middle"), "prelisten_middle", KShortcut(Key_F10), this, SLOT(forSelectionPrelistenMiddle()), actionCollection(), "prelisten_middle");
@@ -3526,7 +3556,6 @@ void YammiGui::seek( int pos ) {
 }
 
 
-// TODO: do we need this???
 void YammiGui::seekWithWheel(int rotation) {
     kdDebug() << "seekWithWheel() called\n";
     if(rotation<0) {
@@ -3559,6 +3588,13 @@ int YammiGui::randomNum(int numbers) {
     }
     return chosen;
 }
+
+
+Prefs* YammiGui::config()
+{
+    return model->config();
+}
+
 
 /*     DCOP-functions     */
 void YammiGui::play() {

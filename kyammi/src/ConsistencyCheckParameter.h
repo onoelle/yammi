@@ -20,46 +20,47 @@
 
 #include <qstring.h>
 
-class ConsistencyCheckParameter
-{
+class ConsistencyCheckParameter {
 public:
-  static const int YAMMI2TAGS = 0;
-  static const int TAGS2YAMMI = 1;
+    static const int YAMMI2TAGS = 0;
+    static const int TAGS2YAMMI = 1;
 
-  ConsistencyCheckParameter();
-  void setDefaults();
-  void resetStatistics();
-  
-  
-  
-  bool checkForExistence;
-  bool updateNonExisting;
-  bool checkTags;
-  bool correctTags;
-  int correctTagsConfirmed;
-  int correctTagsDirection;          // 0 = yammi => file tags, 1 = file tags => yammi
-  bool checkFilenames;
-  QString filenamePattern;
-  bool ignoreCaseInFilenames;
-  int correctFilenamesConfirmed;
-  bool correctFilenames;
-  bool checkDirectories;
-  QString directoryPattern;
-  int correctDirectoriesConfirmed;
-  bool correctDirectories;
-  bool deleteEmptyDirectories;
-  bool checkDoubles;
+    ConsistencyCheckParameter();
+    void setDefaults();
+    void setAllDisabled();
 
-  int nonExisting;
-  int nonExistingUpdated;
-  int nonExistingDeleted;
-  int dirtyTags;
-  int tagsCorrected;
-  int dirtyFilenames;
-  int filenamesCorrected;
-  int dirtyDirectories;
-  int directoriesCorrected;
-  int doublesFound;
+    void resetStatistics();
+
+
+
+    bool checkForExistence;
+    bool updateNonExisting;
+    bool checkTags;
+    bool correctTags;
+    int correctTagsConfirmed;
+    int correctTagsDirection;          // 0 = yammi => file tags, 1 = file tags => yammi
+    bool checkFilenames;
+    QString filenamePattern;
+    bool ignoreCaseInFilenames;
+    int correctFilenamesConfirmed;
+    bool correctFilenames;
+    bool checkDirectories;
+    QString directoryPattern;
+    int correctDirectoriesConfirmed;
+    bool correctDirectories;
+    bool deleteEmptyDirectories;
+    bool checkDoubles;
+
+    int nonExisting;
+    int nonExistingUpdated;
+    int nonExistingDeleted;
+    int dirtyTags;
+    int tagsCorrected;
+    int dirtyFilenames;
+    int filenamesCorrected;
+    int dirtyDirectories;
+    int directoriesCorrected;
+    int doublesFound;
 };
 
 #endif // CONSISTENCYCHECKPARAMETER_H

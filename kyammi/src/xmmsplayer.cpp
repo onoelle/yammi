@@ -109,7 +109,7 @@ void XmmsPlayer::syncYammi2Player() {
     
     // check whether xmms playlist is empty
     if(xmms_remote_get_playlist_length(session)==0) {
-        for(int i=0; i<(int)playlist->count() && (i<model->config().keepInXmms); i++) {
+        for(int i=0; i<(int)playlist->count() && (i<model->config()->keepInXmms); i++) {
             QCString temp(playlist->at(i)->song()->location().local8Bit());
             xmms_remote_playlist_add_url_string(session, temp.data());
         }
@@ -125,8 +125,7 @@ void XmmsPlayer::syncYammi2Player() {
     // if playlist too short => insert yammi entries
     int iXmms=0;
     int iYammi=0;
-    for(; iXmms<model->config().keepInXmms; iXmms++, iYammi++) {
-
+    for(; iXmms<model->config()->keepInXmms; iXmms++, iYammi++) {
 //        kdDebug() << "iXmms: " << iXmms << ", iYammi: " << iYammi << endl;
         // check whether xmms playlist entry existing
         if(iXmms<(int)xmms_remote_get_playlist_length(session)) {
@@ -146,7 +145,6 @@ void XmmsPlayer::syncYammi2Player() {
                 // case 1: xmms song not in yammi database
                 // => leave unknown song
                 if(check==0) {
-//                    kdDebug() << "case 1\n";
                     iYammi--;
                     continue;
                 }
@@ -154,7 +152,6 @@ void XmmsPlayer::syncYammi2Player() {
                 // case 2: xmms song is yammi+1 (some song moved in front of it)
                 // => insert the song that was inserted
                 if(iYammi+1<(int)playlist->count() && check==playlist->at(iYammi+1)->song()) {
-//                    kdDebug() << "case 2\n";
                     // check if songfile is available...
                     QString loc=model->checkAvailability(s);
                     if(loc=="" || loc=="never") {
@@ -162,20 +159,17 @@ void XmmsPlayer::syncYammi2Player() {
                         continue;
                     }
                     QCString temp(loc.local8Bit());
-                    kdDebug() << "case 2: inserting at iXmms: " << iXmms << "\n";
-                    
+                    kdDebug() << "inserting at iXmms: " << iXmms << endl;
                     xmms_remote_playlist_ins_url_string(session, temp.data(), iXmms);
                     continue;
                 }
 
                 // case 3: xmms+1 song is yammi (song removed from there) => delete
-//                kdDebug() << "case 3\n";
                 xmms_remote_playlist_delete(session, iXmms);
                 iXmms--;
                 iYammi--;
 
             } else {		// yammi playlist too short
-//                kdDebug() << "case 4\n";
                 if(check==0) {
                     kdDebug() << "xmms playlist longer than yammi playlist, but unknown song\n";
                 } else {
@@ -207,22 +201,25 @@ void XmmsPlayer::syncYammi2Player() {
         if(check==0) {
             continue;
         }
-//        kdDebug() << "deleting overlong playlist in xmms, iXmms: " << iXmms << "\n";
+        kdDebug() << "deleting overlong playlist in xmms, iXmms: " << iXmms << "\n";
         xmms_remote_playlist_delete(session, iXmms);
+    }
+
+    // if xmms is not playing, we might have inserted songs before the active one
+    // => set active song to first
+    // (or yammi will delete the inserted song thinking it was already played)
+    
+    // caution! xmms reports as "not playing" sometimes (on song change?)    
+    if( (!xmms_remote_is_playing(session)) || (xmms_remote_is_paused(session)) ) {
+        kdDebug() << "setting pos to 0\n";
+        xmms_remote_set_playlist_pos(session, 0);
     }
 
     if(haveToUpdate) {
         emit playlistChanged();
     }
     
-    // if xmms is not playing, we might have inserted songs before the active one
-    // => set active song to first
-    // caution! xmms reports as "not playing" sometimes (on song change?)
-    /*
-    	if(!xmms_remote_is_playing(0)) {
-    		xmms_remote_set_playlist_pos(0, 0);
-    	}
-    */
+        
     #endif
 }
 
@@ -414,6 +411,7 @@ void XmmsPlayer::check() {
             // the following call sometimes seems to crash xmms
             // (and does not return until xmms is killed => freezes yammi)
             //************************************************************
+            kdDebug() << "check(): deleting first (played) song\n";
             xmms_remote_playlist_delete(session, 0);
             playlist->removeFirst();
             yammiPlaylistChanged=true;

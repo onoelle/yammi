@@ -535,37 +535,7 @@
                                     <string>Synchronizes the filenames of the mp3 files according to the information in the yammi database. If activated, yammi renames your mp3 files!</string>
                                 </property>
                             </widget>
-                            <widget class="QRadioButton" row="4" column="0">
-                                <property name="name">
-                                    <cstring>RadioButtonSimpleGuessmode</cstring>
-                                </property>
-                                <property name="text">
-                                    <string>artist - title</string>
-                                </property>
-                                <property name="checked">
-                                    <bool>true</bool>
-                                </property>
-                            </widget>
-                            <widget class="QLabel" row="2" column="0">
-                                <property name="name">
-                                    <cstring>LabelGuessingPattern</cstring>
-                                </property>
-                                <property name="text">
-                                    <string>guessing pattern (if no tags available)</string>
-                                </property>
-                                <property name="toolTip" stdset="0">
-                                    <string>The filename pattern to use for renaming files.</string>
-                                </property>
-                            </widget>
-                            <widget class="QRadioButton" row="3" column="0">
-                                <property name="name">
-                                    <cstring>RadioButtonAdvancedGuessmode</cstring>
-                                </property>
-                                <property name="text">
-                                    <string>/artist/album/trackNr - title</string>
-                                </property>
-                            </widget>
-                            <spacer row="2" column="1" rowspan="3" colspan="2">
+                            <spacer row="3" column="1" rowspan="1" colspan="2">
                                 <property name="name">
                                     <cstring>spacer10</cstring>
                                 </property>
@@ -582,6 +552,52 @@
                                     </size>
                                 </property>
                             </spacer>
+                            <widget class="QLabel" row="2" column="0">
+                                <property name="name">
+                                    <cstring>LabelGuessingPattern</cstring>
+                                </property>
+                                <property name="text">
+                                    <string>guessing pattern (if no tags available)</string>
+                                </property>
+                                <property name="toolTip" stdset="0">
+                                    <string>The filename pattern to use for renaming files.</string>
+                                </property>
+                            </widget>
+                            <widget class="QButtonGroup" row="3" column="0">
+                                <property name="name">
+                                    <cstring>buttonGroup3</cstring>
+                                </property>
+                                <property name="lineWidth">
+                                    <number>0</number>
+                                </property>
+                                <property name="title">
+                                    <string></string>
+                                </property>
+                                <grid>
+                                    <property name="name">
+                                        <cstring>unnamed</cstring>
+                                    </property>
+                                    <widget class="QRadioButton" row="1" column="0">
+                                        <property name="name">
+                                            <cstring>RadioButtonSimpleGuessmode</cstring>
+                                        </property>
+                                        <property name="text">
+                                            <string>artist - title</string>
+                                        </property>
+                                        <property name="checked">
+                                            <bool>true</bool>
+                                        </property>
+                                    </widget>
+                                    <widget class="QRadioButton" row="0" column="0">
+                                        <property name="name">
+                                            <cstring>RadioButtonAdvancedGuessmode</cstring>
+                                        </property>
+                                        <property name="text">
+                                            <string>/artist/album/trackNr - title</string>
+                                        </property>
+                                    </widget>
+                                </grid>
+                            </widget>
                         </grid>
                     </widget>
                     <widget class="QGroupBox" row="0" column="0">

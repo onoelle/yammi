@@ -25,7 +25,7 @@
 #include <qtimer.h>
 #include <qwaitcondition.h>
 #include "options.h"
-#include "prefs.h"
+//#include "prefs.h"
 #include "mylist.h"
 #include "yammidcopiface.h"
 
@@ -51,6 +51,7 @@ class Song;
 class KToggleAction;
 class SearchThread;
 class TrackPositionSlider;
+class Prefs;
 // -----------------------------------------------------------------
 
 
@@ -100,9 +101,8 @@ public:
     void shutdownSequence( );
 
     /** Yammi config options (preferences) */
-    Prefs config( ) const {
-        return m_config;
-    }
+    Prefs* config();
+    
 public slots:
     /** Seeks in the current song (if any) to position pos */
     void seek( int pos );
@@ -159,7 +159,7 @@ private:
     bool setupActions( );
 
 private:
-    Prefs m_config;
+//    Prefs m_config;
     bool validState;
     TrackPositionSlider* m_seekSlider;
     LineEditShift* m_searchField;
@@ -169,9 +169,6 @@ private:
     QSpinBox* m_sleepModeSpinBox;
     QPushButton* m_sleepModeButton;
 
-    ///////////////////////////////////////////////////////////////////////
-    //TODO: Refactor/clean-up/check the methods/members from here on --in progress--....(luis)
-    ////////////
 public:
     // checks whether the swapped songs take more space than the given limit
     void checkSwapSize();
@@ -227,7 +224,7 @@ public slots:
       * If the Shift key is pressed, the songs are shuffled before being prepended */
     void forSelectionEnqueueAsNext( );
     /** Put the selected songs at the beginning of the playlist and start the player */
-    void forSelectionPlay( );
+    void forSelectionPlayNow( );
     /** Remove all selected songs from the Playlist */
     void forSelectionDequeue( );
     /** Show information about selected songs.
@@ -447,7 +444,7 @@ protected slots:
 
     void setPreferences();
     void configureKeys();
-    
+
     void searchSimilar(int what);
     void goToFolder(int what);
     void slotSongChanged();
@@ -461,6 +458,7 @@ protected slots:
     void doubleClick();
     void middleClick(int button);
 
+    void saveDatabase();
     void updateSongDatabaseHarddisk();
     void updateSongDatabaseMedia();
     void updateSongDatabaseSingleFile();

@@ -36,7 +36,7 @@ void TrackPositionSlider::mousePressEvent(QMouseEvent *e)
     	emit sliderPressed();
 	}
 	else if(e->button() == MidButton) {
-    	QMouseEvent reverse(QEvent::MouseButtonPress, e->pos(), LeftButton, e->state());
+    	QMouseEvent reverse(QEvent::MouseButtonPress, e->pos(), MidButton, e->state());
     	QSlider::mousePressEvent(&reverse); 
 	}
 }

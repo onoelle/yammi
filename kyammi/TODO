@@ -1,30 +1,25 @@
 TODO
 ----
-last update 18.08.2004
+last update 22.08.2004
 
 
 for version 1.2-beta
 --------------------
-in progress:
-- define and execute smoke tests (write little script with all configure options)
-- standard kde i18n schema: add a translation and test it
 
 planned:
-- handle unplayable files (wishes, text files) => 1. dequeue on second position or 2. introduce file types and different behaviour
-- clean up: song info for multiple songs
-- refactor: meta info reading in a dedicated class
-- saveFilename/renaming of file in song.cpp (there was something I can't remember)
-- check dialog spacing & co (eg. guessing pattern!)
+- fix: yammiGrabAndEncode script?
+- fix: ignore case: move from prefs to checkconsistency dialog
 - fix: appropriate info messages on first startup/on importing old database
 - fix: appropriate default size for yammi window on first startup
+- fix: xmms enqueue as first-bug?
 before release:
-- try to fix i18n strings
-- check all TODOs / FIXMEs
+- QT3.3 => 3.2 in .ui files
+- try to check and fix i18n strings
 - create a yammi entry on www.kde-apps.org
 - update website
   - publish a sample plugin (echo...) with all replacements
   - publish sample plugin for html-export
-
+- execute smoke tests (write little script with all configure options)
 
 
 for version 1.2
@@ -33,8 +28,12 @@ review kde conformance:
   - replace all couts with kdDebug/kdWarn/kdError
   - check lsm file
   - check icons: fix transparency or use standard ones, new application icon, check that it gets used
+  - check standard kde i18n schema and add a translation and test it
+- refactor: meta info reading in a dedicated class
+- clean up: song info for multiple songs
+- saveFilename/renaming of file in song.cpp (there was something I can't remember)
 - implement onPlayed and afterPlayed plugin types
-- polish ConsistencyCheck
+- make url klick working in preferences
 - on deleting a song: delete in *all* lists (history, categories, ...)
 - make follow symlinks a configurable option?
 - make replace playlist + position a configurable option?
@@ -61,7 +60,6 @@ media-player-related:
 
 for version 1.4
 ---------------
-- re-add: enqueue/enqueueasnext random
 - replace QListView with KListView
   - but beware of performance issues, see http://bugs.kde.org/show_bug.cgi?id=64608
   - and other QClasses too?
@@ -94,8 +92,7 @@ enhancements
   - skip forward/backward when stopped
 - separate folders into two categories: automatic folders and user-defined folders
 - search for similar: add an option to search for songs played "near" this one
-- integrate musicbrainz
-- integrate: show cover of album
+- integrate: show cover of album (no, amarok does this nicely, point)
 - kde panel applet with search field
 - replace mediaplayer with "KMediaPlayer" interface for easier supporting other kde media players?
 
@@ -107,12 +104,10 @@ refactorings/fixes
 - page up and down keys don't work after searching
 - use QProcess/KProcess? instead of system() calls? (prelisten, xmms, noatun, shutdownscript, ...)
 - swap management: in song: method getFilename() vs. getRealFilename() (fast)???
-- playing songs not contained in Yammi's database might confuse yammi (noatun/xmms)
 
 
 KNOWN BUGS
 ----------
-- a {wish} song causes noatun playback to stop
 - floating point exception when scanning wav file???
 - still problem of freezing xmms => xmms_remote_playlist_delete(0, 0)
 	(seems to be a bug in xmms, posted to bugs@xmms, #855)

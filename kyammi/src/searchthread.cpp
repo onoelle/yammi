@@ -86,7 +86,7 @@ void SearchThread::run() {
 				// insert n best matches into search result list
 				searchResults.clear();
 				int noSelected=0;
-				int showThreshold=gYammiGui->config().searchThreshold*10;
+				int showThreshold=gYammiGui->config()->searchThreshold*10;
 				int selectThreshold=700;
 				for(int noResults=0; noResults<200 && bme[noResults] && (bme[noResults])->sim > showThreshold; noResults++) {
 					searchResults.append( new SongEntryInt2 ((Song*)bme[noResults]->objPtr, bme[noResults]->sim) );
@@ -101,8 +101,6 @@ void SearchThread::run() {
 			}
 		}
 		if(!searchRunning && searchTerm==currentSearchTerm) {
-			// TODO: sleep until searchField changed
-//			this->msleep(100);
 			gYammiGui->searchFieldChangedIndicator.wait();
 		}
 	}

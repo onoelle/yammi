@@ -74,7 +74,7 @@ signals:
 protected:
   PlayerStatus status;
   PlayerStatus lastStatus;
-  YammiModel*   model;        // TODO: can we remove this to make it cleaner?
+  YammiModel*   model;
   MyList* playlist;
 	
   

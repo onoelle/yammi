@@ -295,7 +295,7 @@ void ConsistencyCheckDialog::startCheck() {
                             model->problematicSongs.append(new SongEntryString(s, i18n("Directory corrected")));
                             output->append("=> " + i18n("Directory corrected"));
                             if(p->deleteEmptyDirectories) {
-                                Util::deleteDirectoryIfEmpty(pathBefore, model->config().scanDir);
+                                Util::deleteDirectoryIfEmpty(pathBefore, model->config()->scanDir);
                             }
                         }
                     } else {
@@ -455,22 +455,9 @@ void ConsistencyCheckDialog::changeSetting() {
 }
 
 void ConsistencyCheckDialog::showReplacements() {
-    QString msg("");
-    msg+="Replacements for filename/directory pattern:\n\n";
-    // TODO: dry this out
-    //  msg+=Song::singleReplacements;
-    msg+="{filename} (without path)\n";
-    msg+="{absoluteFilename} (including path)\n";
-    msg+="{filenameWithoutSuffix} (without path, without suffix)\n";
-    msg+="{suffix} (without leading dot)\n";
-    msg+="{path} (without filename)\n";
-    msg+="{artist}, {title}, {album}, {comment} (corresponding to the tags)\n";
-    msg+="{bitrate} (in kbps)\n";
-    msg+="{length} (length in format mm:ss)\n";
-    msg+="{lengthInSeconds} (length in seconds)\n";
-    msg+="{mediaList (list of media on which song is contained)\n";
-    msg+="{trackNr} (Track number)\n";
-    msg+="{trackNr2Digit} (as above, but padded with zero if necessary)\n";
+    QString msg;
+    msg+=i18n("Replacements for filename/directory pattern:\n\n");
+    msg+=Song::getReplacementsDescription();
     QMessageBox::information( this, "Yammi",msg);
 }
 

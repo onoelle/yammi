@@ -27,11 +27,10 @@
 
 
 #include <qdom.h>
-//FIXME -<clean
-// the following 2 are includes I wanted to avoid in yammimodel (gui-stuff)
+
+// TODO: avoid the following includes in yammimodel (because it is gui-stuff)
 #include <qcheckbox.h>
 #include <qeventloop.h>
-#include <ktextedit.h>
 
 
 #include "yammigui.h"
@@ -58,8 +57,9 @@ YammiModel::YammiModel( YammiGui *y ) {
 
 YammiModel::~YammiModel() {}
 
-Prefs YammiModel::config( ) {
-    return m_yammi->config( );
+Prefs* YammiModel::config()
+{
+    return &m_config;
 }
 
 
@@ -130,7 +130,7 @@ bool YammiModel::readList(MyList* list, QString filename)
  * Each xml file should represent one category.
  */
 void YammiModel::readCategories() {
-	QString categoryDir(config().databaseDir + "categories");
+	QString categoryDir(config()->databaseDir + "categories");
     kdDebug() << "Reading categories from " << categoryDir << endl;
 
     int count=0;
@@ -167,7 +167,7 @@ void YammiModel::readCategories() {
 
 // Reads song history
 void YammiModel::readHistory() {
-    QString filename = config().databaseDir + "history.xml";
+    QString filename = config()->databaseDir + "history.xml";
     kdDebug() << "reading song history from " << filename << endl;
 
     QFile f( filename );
@@ -187,7 +187,6 @@ void YammiModel::readHistory() {
     int total = root.attribute("count", "0").toInt( );
     QDomElement e = root.firstChild().toElement();
 
-    //FIXME - change this to a progress in the status bar instead...
     KProgressDialog dia(0,0,i18n("Loading song history"),i18n("Reading song history..."), true);
     dia.setAllowCancel(false);
     dia.setMinimumDuration(0);
@@ -222,7 +221,7 @@ void YammiModel::readHistory() {
 
 /// saves the song history
 void YammiModel::saveHistory() {
-    QString path = config().databaseDir;
+    QString path = config()->databaseDir;
     kdDebug() << "Saving history file in directory" << path << endl;
 
     QDomDocument doc;
@@ -271,7 +270,7 @@ void YammiModel::saveHistory() {
 
 /// save categories (if changed) to xml-files
 void YammiModel::saveCategories() {
-    QString path = config().databaseDir + "categories/";
+    QString path = config()->databaseDir + "categories/";
 	QDir dir(path);
 	if(!dir.exists()) {
 		kdDebug() << "creating directory " << path << endl;
@@ -328,7 +327,7 @@ bool YammiModel::saveList(MyList* list, QString path, QString filename)
 
 // reads the yammi database (an xml-file with all song information)
 void YammiModel::readSongDatabase(  ) {
-    QString filename(config().databaseDir + "songdb.xml");
+    QString filename(config()->databaseDir + "songdb.xml");
 	kdDebug() << "reading song database from: " << filename << endl;
     QFile f(filename);
     if( !f.open(IO_ReadOnly) ) {
@@ -359,7 +358,6 @@ void YammiModel::readSongDatabase(  ) {
     int total = root.attribute("count", "0").toInt( );
     QDomElement e = root.firstChild().toElement();
 
-    //FIXME - change this to a progress in the status bar instead...
     KProgressDialog dia(0,0,i18n("Loading database"),i18n("Reading Song Database file"), true);
     dia.setAllowCancel(false);
     dia.setMinimumDuration(0);
@@ -412,27 +410,29 @@ void YammiModel::readSongDatabase(  ) {
 
 /// saves the songs in allSongs into an xml-file
 void YammiModel::saveSongDatabase() {
-    kdDebug()<<"saving database..."<<endl;
+    kdDebug() << "saving database..." << endl;
     int sumDirtyTags=0;
     int sumDirtyFilenames=0;
     for(Song* s=allSongs.firstSong(); s; s=allSongs.nextSong()) {
-        if(s->tagsDirty)
+        if(s->tagsDirty) {
             sumDirtyTags++;
-        if(s->filenameDirty)
+        }
+        if(s->filenameDirty) {
             sumDirtyFilenames++;
+        }
     }
-    if(m_yammi->config( ).tagsConsistent) {
-        kdDebug()<<sumDirtyTags<< " dirty tags..."<<endl;
+    if(m_yammi->config()->tagsConsistent) {
+        kdDebug() << sumDirtyTags << " dirty tags..." << endl;
     }
-    if(m_yammi->config( ).filenamesConsistent) {
-        kdDebug()<<sumDirtyFilenames<<" dirty filenames..."<<endl;
+    if(m_yammi->config()->filenamesConsistent) {
+        kdDebug() << sumDirtyFilenames << " dirty filenames..." << endl;
     }
 
     QDomDocument doc;
     doc.appendChild( doc.createProcessingInstruction( "xml", "version=\"1.0\" encoding=\"UTF-8\"" ) );
     QDomElement root = doc.createElement("songs");
 
-    root.setAttribute("yammiVersion", m_yammi->config( ).yammiVersion);
+    root.setAttribute("yammiVersion", m_yammi->config()->yammiVersion);
     doc.appendChild(root);
 
     // iterate through songs and save each song as a xml song element
@@ -443,10 +443,10 @@ void YammiModel::saveSongDatabase() {
         count++;
         QDomElement elem = doc.createElement( "song" );
         // consistencyMode: if song dirty, we make it consistent
-        if(s->tagsDirty && m_yammi->config( ).tagsConsistent) {
+        if(s->tagsDirty && m_yammi->config()->tagsConsistent) {
             s->saveTags();
         }
-        if(s->filenameDirty && m_yammi->config( ).filenamesConsistent) {
+        if(s->filenameDirty && m_yammi->config()->filenamesConsistent) {
             s->correctFilename();
             if(songsToPlay.containsSong(s)) {
                 haveToReloadPlaylist=true;
@@ -490,9 +490,9 @@ void YammiModel::saveSongDatabase() {
     root.setAttribute("count",count);
 
     // save songdb to file... (but first we make a backup of old file)
-	QString filename = config().databaseDir + "songdb.xml";
+	QString filename = config()->databaseDir + "songdb.xml";
     kdDebug() << "Saving song database to file " << filename << endl;
-    QDir dir(config().databaseDir);
+    QDir dir(config()->databaseDir);
     if(dir.exists("songdb.xml") && !dir.rename(filename, filename + "_backup")) {
         kdDebug() << "could not make backup of file " << filename << endl;
     }
@@ -507,7 +507,8 @@ void YammiModel::saveSongDatabase() {
     doc.save(str, 2);
     file.close();
 
-    if(haveToReloadPlaylist) {//FIXME!! this is kinda ugly...
+    if(haveToReloadPlaylist) {
+        //TODO: cleanup, this is really ugly...
         kdDebug() << "Reload playlist to player..." << endl;
         m_yammi->player->clearPlaylist();
         Song* save=0;
@@ -555,7 +556,7 @@ bool YammiModel::categoriesChanged() {
 void YammiModel::updateSongDatabase(QString scanDir, QString filePattern, QString mediaName, KProgressDialog* progress) {
     entriesAdded=0;
     corruptSongs=0;
-    if(m_yammi->config( ).childSafe) {
+    if(m_yammi->config()->childSafe) {
         kdWarning()<<"updateSongDatabase : childSafe --> request denied"<<endl;
         return;
     }
@@ -576,7 +577,7 @@ void YammiModel::updateSongDatabase(QString scanDir, QString filePattern, QStrin
         kdDebug() << "scanning removable media for new songs..." << endl;
 
         // mount media dir
-        if(m_yammi->config( ).mountMediaDir) {
+        if(m_yammi->config()->mountMediaDir) {
             // linux specific
             QString cmd;
             cmd=QString("mount %1").arg(scanDir);
@@ -596,7 +597,7 @@ void YammiModel::updateSongDatabase(QString scanDir, QString filePattern, QStrin
             kdDebug() << "finished scanning!" << endl;
         }
         // umount media dir
-        if(m_yammi->config( ).mountMediaDir) {
+        if(m_yammi->config()->mountMediaDir) {
             // linux specific
             QString cmd;
             cmd=QString("umount %1").arg(scanDir);
@@ -608,7 +609,7 @@ void YammiModel::updateSongDatabase(QString scanDir, QString filePattern, QStrin
 void YammiModel::updateSongDatabase(QStringList list) {
     entriesAdded=0;
     corruptSongs=0;
-    if(m_yammi->config( ).childSafe) {
+    if(m_yammi->config()->childSafe) {
         kdWarning()<<"updateSongDatabase : childSafe --> request denied"<<endl;
         return;
     }
@@ -634,7 +635,7 @@ void YammiModel::updateSongDatabase(QStringList list) {
 /// returns false, if scanning was cancelled
 bool YammiModel::traverse(QString path, QString filePattern, KProgressDialog* progress, QString mediaName) {
     // leave out the following directories
-    if(path+"/"==m_yammi->config( ).trashDir || path+"/"==m_yammi->config( ).swapDir) {
+    if(path+"/"==m_yammi->config()->trashDir || path+"/"==m_yammi->config()->swapDir) {
         kdWarning() << "skipping trash or swap directory: " << path << endl;
         return true;
     }
@@ -705,12 +706,13 @@ void YammiModel::addSongToDatabase(QString filename, QString mediaName=0) {
             break;
         }
     }
-    if(found)
+    if(found) {
         return;
+    }
 
     // okay, new song (at least new filename/path) => construct song object
     Song* newSong = new Song();
-    newSong->create(filename, mediaName, m_yammi->config( ).capitalizeTags);
+    newSong->create(filename, mediaName, m_yammi->config()->capitalizeTags);
     if(newSong->corrupted) {
         kdError() << "new song file " << filename << " is corrupt (not readable for yammi), skipping" << endl;
         corruptSongs++;
@@ -757,9 +759,9 @@ void YammiModel::addSongToDatabase(QString filename, QString mediaName=0) {
                 if(!exists) {
                     kdDebug() << "adding media " << mediaName << " to mediaList in song " << s->displayName() << endl;
                     QString locationOnMedia=filename;
-                    if(locationOnMedia.left(m_yammi->config( ).mediaDir.length())!=m_yammi->config( ).mediaDir)
+                    if(locationOnMedia.left(m_yammi->config()->mediaDir.length())!=m_yammi->config()->mediaDir)
                         kdError() << "strange error, scanning media, but file not on media" << endl;
-                    locationOnMedia=locationOnMedia.right(locationOnMedia.length()-m_yammi->config( ).mediaDir.length());
+                    locationOnMedia=locationOnMedia.right(locationOnMedia.length()-m_yammi->config()->mediaDir.length());
                     s->addMediaLocation(mediaName, locationOnMedia);
                     allSongsChanged(true);
                 } else {
@@ -823,7 +825,7 @@ void YammiModel::removeCategory(QString categoryName) {
             kdDebug() << "category found, deleting..." << endl;
             allCategories.remove();
             categoryNames.remove(categoryNames.at(i));
-            QString file = config().databaseDir + "categories/" + name + ".xml";
+            QString file = config()->databaseDir + "categories/" + name + ".xml";
             kdDebug() << "file to delete:" << file << endl;
             QDir d;
 			if(!d.remove(file)) {
@@ -844,7 +846,7 @@ void YammiModel::renameCategory(QString oldCategoryName, QString newCategoryName
             ptr->dirty=true;
             categoriesChanged(true);
             QDir dir;
-            QString path = config().databaseDir + "categories/";
+            QString path = config()->databaseDir + "categories/";
             if(!dir.rename(path+oldCategoryName+".xml", path+newCategoryName+".xml"))
                 kdError() << "could not rename category file:" << path << oldCategoryName << ".xml" << endl;
             break;
@@ -886,7 +888,7 @@ void YammiModel::save() {
     if(allSongsChanged()) {
         saveSongDatabase();
     }
-    if(allSongsChanged() || m_yammi->config( ).logging) {
+    if(allSongsChanged() || m_yammi->config()->logging) {
         saveHistory();
     }
     KApplication::restoreOverrideCursor();
@@ -913,7 +915,7 @@ void YammiModel::removeMedia(QString mediaToDelete) {
     // now delete the directory (if existing)
     // linux specific
     kdWarning()<<"Remove media disabled"<<endl;
-    // 	QString cmd=QString("rm -r \"%1/media/%2\"").arg(m_yammi->config( ).yammiBaseDir).arg(mediaToDelete);
+    // 	QString cmd=QString("rm -r \"%1/media/%2\"").arg(m_yammi->config()->yammiBaseDir).arg(mediaToDelete);
     // 	system(cmd);
     allSongsChanged(true);
 }
@@ -924,7 +926,7 @@ void YammiModel::renameMedia(QString oldMediaName, QString newMediaName) {
     }
     // now move the directory (if existing)
     QDir dir;
-    QString path = config().databaseDir + "media/";
+    QString path = config()->databaseDir + "media/";
     if(!dir.rename(path+oldMediaName, path+newMediaName)) {
         kdDebug() << "could not rename media dir!:" << path + oldMediaName << endl;
     }
@@ -952,7 +954,7 @@ Song* YammiModel::getSongFromFilename(QString filename) {
     QString path=filename.left(pos+1);
     QString lookFor=filename.right(filename.length()-pos-1);
 
-    if(path==m_yammi->config( ).swapDir) {
+    if(path==m_yammi->config()->swapDir) {
         for(SongEntry* entry=allSongs.first(); entry; entry=allSongs.next()) {
             if(entry->song()->filename=="" && entry->song()->constructFilename()==lookFor)
                 return entry->song();
@@ -985,7 +987,7 @@ QString YammiModel::checkAvailability(Song* s, bool touch) {
         cout << "warning: song " << s->displayName() << "has location given, but file does not exist or is not readable!\n";
     }
     // no location given, check whether already existing in swap dir
-    QString dir=m_yammi->config().swapDir;
+    QString dir=m_yammi->config()->swapDir;
     QString filename=s->constructFilename();
     QFileInfo fi(dir+filename);
     if(fi.exists() && fi.isReadable()) {
@@ -1019,9 +1021,9 @@ QString YammiModel::checkAvailability(Song* s, bool touch) {
  * Remove all those thongs from top of playlist that are unplayable:
  * - swapped songs not on harddisk and not loaded from removable media
  * - those that match unplayable file mask ("*.txt")
- * Does NOT emit the playlistChanged() signal! (TODO: is this correct?)
+ * Does NOT emit the playlistChanged() signal!
  */
-bool YammiModel::skipUnplayableSongs() {
+bool YammiModel::skipUnplayableSongs(bool firstTwo) {
     kdDebug() << "skipUnplayableSongs()\n";
     QString location;
     bool songsRemoved = false;
@@ -1035,6 +1037,18 @@ bool YammiModel::skipUnplayableSongs() {
             break;
         }
     }
+    if(firstTwo) {
+        while( songsToPlay.at(1) ) {
+            location = checkAvailability( songsToPlay.at(1)->song() );
+            if( location == "" || location == "never" ) {
+                kdDebug() << "Song " << songsToPlay.at(0)->song()->displayName() << "not available, skipping\n";
+                songsToPlay.remove(1);
+                songsRemoved = true;
+            } else {
+                break;
+            }
+        }
+    }    
     return songsRemoved;
 }
 
