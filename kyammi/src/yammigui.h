@@ -46,6 +46,7 @@ class FolderSorted;
 class FolderCategories;
 class FolderMedia;
 class Song;
+class KToggleAction;
 
 
 // -----------------------------------------------------------------
@@ -421,9 +422,11 @@ protected slots:
 	
 	// UI - actions
 	//need to keep track of this so that we can change the icon/text
-	KAction *m_playPauseAction;
-	//FIXME - hack.. ugly?
-	KAction *m_currentAutoPlay;
+	KAction* m_playPauseAction;
+	KAction* m_currentAutoPlay;
+	KToggleAction* m_autoplayActionOff;
+	KToggleAction* m_autoplayActionLnp;
+	KToggleAction* m_autoplayActionRandom;
 };
 
 #endif

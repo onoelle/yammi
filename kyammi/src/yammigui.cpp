@@ -84,18 +84,17 @@
 #include "foldersorted.h"
 #include "mylistview.h"
 #include "lineeditshift.h"
-#include "mediaplayer.h"
 
+#include "mediaplayer.h"
 #include "dummyplayer.h"
+#include "noatunplayer.h"
+#include "artsplayer.h"
 #ifdef ENABLE_XMMS
 #include "xmmsplayer.h"
 #else
 #define XmmsPlayer DummyPlayer
 #endif 
 
-//Noatun and Arts player always enabled
-#include "noatunplayer.h"
-#include "artsplayer.h"
 
 
 static QString columnName[] = { i18n("Artist"), i18n("Title"), i18n("Album"), i18n("Length"),
@@ -117,7 +116,7 @@ YammiGui::YammiGui( ) : KMainWindow( )
 	m_config.loadConfig( );
 	currentSong = 0;
 	chosenFolder = 0;
-  selectionMode = SELECTION_MODE_USER_SELECTED;
+	selectionMode = SELECTION_MODE_USER_SELECTED;
 	
 	// set up model
 	model = new YammiModel( this );
@@ -128,7 +127,6 @@ YammiGui::YammiGui( ) : KMainWindow( )
 	connect( player, SIGNAL(statusChanged()), this, SLOT(updatePlayerStatus()) );
 	
 	setupActions( );
-	createMenuBar( );
 	createMainWidget( );
 	createFolders( );
 	
@@ -138,14 +136,15 @@ YammiGui::YammiGui( ) : KMainWindow( )
 	shiftPressed = false;
 	toFromRememberFolder=folderAll;
 	
-  // finish initialization of player
+	// finish initialization of player
 	player->syncPlayer2Yammi(&(model->songsToPlay));
 	player->syncYammi2Player(false);
 	checkPlaylistAvailability();
   
 	// check whether player is playing, if not: start playing!
-	if(folderActual->songlist().count() > 0 && player->getStatus()!=PLAYING ) 
+	if(folderActual->songlist().count() > 0 && player->getStatus()!=PLAYING ) {
 		player->play();
+	}
     
 	// TODO: this should be probably done by a thread owned by the media player
 	connect( &checkTimer, SIGNAL(timeout()), player, SLOT(check()) );
@@ -160,6 +159,9 @@ YammiGui::YammiGui( ) : KMainWindow( )
 	//FIXME - why setAutoSaveSettings is not working...it sounds like KDE should do this automatically
 	// but it doesn't
 	readOptions( );
+	
+	// from here: stuff that needs the options to be read already
+	createMenuBar( );	
 }
 
 void YammiGui::loadDatabase( const QString &db )
@@ -183,7 +185,7 @@ void YammiGui::loadDatabase( const QString &db )
 
 void YammiGui::saveOptions()
 {
-	kdDebug()<<"saveOptions()"<<endl;
+	kdDebug() << "saveOptions() " << endl;
 	KConfig *cfg = kapp->config();
 	KActionCollection *ac = actionCollection( );
 	
@@ -205,15 +207,23 @@ void YammiGui::saveOptions()
 	//Statsbar
 // 	cfg->writeEntry("Show Statusbar",viewStatusBar->isChecked());
 
-	//TODO
-	//save: current folder, autoplay mode/folder, column order and visibility
 	cfg->writeEntry("CurrentFolder", chosenFolder->folderName());
+	for(int i=0; i<MAX_COLUMN_NO; i++)
+	{
+		cfg->writeEntry(QString("Column%1Visible").arg(i), columnIsVisible(i));
+	}
+	cfg->writeEntry( "columnOrder" , columnOrder);
+	for(int i=0; i<MAX_COLUMN_NO; i++) {
+		cfg->writeEntry( QString("column%1Width").arg(i), columnWidth[i]);
+	}
+	cfg->writeEntry("AutoplayFolder", autoplayFoldername);
+	cfg->writeEntry("AutoplayMode", autoplayMode);
 }
 
 
 void YammiGui::readOptions()
 {
-	kdDebug()<<"readOptions()"<<endl;
+	kdDebug() << "readOptions()" << endl;
 	KConfig *cfg = kapp->config();
 	KActionCollection *ac = actionCollection( );
 	
@@ -262,14 +272,45 @@ void YammiGui::readOptions()
 	if(!size.isEmpty())
 	{
 		resize(size);
+	}	
+	for(int i=0; i<MAX_COLUMN_NO; i++)
+	{
+		columnVisible[i]=cfg->readBoolEntry(QString("Column%1Visible").arg(i), true);
 	}
-	
-//FIXME 
-	//TODO
-	//save: current folder, autoplay mode/folder, column order and visibility
+	columnOrder=cfg->readListEntry("columnOrder");
+	if(columnOrder.count()==0) {
+		kdDebug() << "no column order found, taking default order\n";
+	}
+	for(int i=0; i<MAX_COLUMN_NO; i++) {
+		columnWidth[i]=cfg->readNumEntry(QString("column%1Width").arg(i));
+	}
+	autoplayFoldername=cfg->readEntry("AutoplayFolder", tr("All Music"));
+	m_currentAutoPlay->setText(i18n("Folder: ")+autoplayFoldername);
+	int autoplayMode=cfg->readNumEntry( "AutoplayMode", AUTOPLAY_OFF);
+	switch(autoplayMode) {
+		case AUTOPLAY_OFF:
+		  m_autoplayActionOff->setChecked(true);
+		  break;
+		case AUTOPLAY_LNP:
+		  m_autoplayActionLnp->setChecked(true);
+		  break;
+		case AUTOPLAY_RANDOM:
+		  m_autoplayActionRandom->setChecked(true);
+		  break;
+	}
 }
 
-
+/**
+ * Called, when the autoplayMode changed.
+ * Updates the autoplayMenu.
+ */
+/*void YammiGui::autoplayChanged(int mode)
+{
+  autoplayMenu->setItemChecked(autoplayMode, false);
+  autoplayMenu->setItemChecked(mode, true);
+  autoplayMode=mode;
+}
+*/
 
 void YammiGui::saveProperties(KConfig *config)
 {
@@ -2302,8 +2343,8 @@ void YammiGui::loadM3uIntoCategory()
 void YammiGui::autoplayFolder()
 {
 	Folder* f = (FolderSorted*)folderListView->currentItem();
-  autoplayFoldername=f->folderName();
-  m_currentAutoPlay->setText(i18n("Folder: ")+autoplayFoldername);
+	autoplayFoldername=f->folderName();
+	m_currentAutoPlay->setText(i18n("Folder: ")+autoplayFoldername);
 }
 
 
@@ -3198,10 +3239,6 @@ void YammiGui::createMainWidget( )
 
   // set up the songlist on the right
 	songListView = new MyListView( centralWidget );
-	for(int i=0; i<MAX_COLUMN_NO; i++)
-	{
-		columnVisible[i]=true;
-	}
 
 	QValueList<int> lst;
 	lst.append( 150 );
@@ -3313,12 +3350,12 @@ void YammiGui::setupActions( )
 	new KWidgetAction( m_seekSlider ,"text",0, 0, 0,actionCollection(),"seek");
 
 	//Database actions
-	new KAction(i18n("Save Database"),"save",KShortcut(QKeySequence(Key_Control,Key_S)),model,SLOT(save()), actionCollection(),"save_db");
-	new KAction(i18n("Scan Harddisk..."),0,0,this,SLOT(updateSongDatabaseHarddisk()), actionCollection(),"scan_hd");
-	new KAction(i18n("Scan Removable Media..."),0,0,this,SLOT(updateSongDatabaseMedia()), actionCollection(),"scan_media");
-	new KAction(i18n("Import Selected File(s)..."),0,0,this,SLOT(updateSongDatabaseSingleFile()), actionCollection(),"import_file");
-	new KAction(i18n("Check Consistency..."),0,0,this,SLOT(forAllCheckConsistency()), actionCollection(),"check_consistency");
-	new KAction(i18n("Grab And Encode CD-Track..."),0,0,this,SLOT(grabAndEncode()), actionCollection(),"grab");
+	new KAction(i18n("Save Database"),"filesave",KShortcut(QKeySequence(Key_Control,Key_S)),model,SLOT(save()), actionCollection(),"save_db");
+	new KAction(i18n("Scan Harddisk..."),"fileimport",0,this,SLOT(updateSongDatabaseHarddisk()), actionCollection(),"scan_hd");
+	new KAction(i18n("Scan Removable Media..."),"fileimport",0,this,SLOT(updateSongDatabaseMedia()), actionCollection(),"scan_media");
+	new KAction(i18n("Import Selected File(s)..."),"edit_add",0,this,SLOT(updateSongDatabaseSingleFile()), actionCollection(),"import_file");
+	new KAction(i18n("Check Consistency..."),"spellcheck",0,this,SLOT(forAllCheckConsistency()), actionCollection(),"check_consistency");
+	new KAction(i18n("Grab And Encode CD-Track..."),"cd",0,this,SLOT(grabAndEncode()), actionCollection(),"grab");
 
 	// playlist actions
 	new KAction(i18n("Switch to/from Playlist"),0,0,this,SLOT(toFromPlaylist()),actionCollection(),"to_from_playlist");
@@ -3350,12 +3387,12 @@ void YammiGui::setupActions( )
 	new KAction(i18n("Stop prelisten"),"stop_prelisten",KShortcut(Key_F12),this,SLOT(stopPrelisten()),actionCollection(),"stop_prelisten");
 	// autoplay actions
 	KToggleAction *ta;
-	ta = new KRadioAction(i18n("Off"),0,0,this,SLOT(autoplayOff()),actionCollection(),"autoplay_off");
-	ta->setExclusiveGroup("autoplay");
-	ta = new KRadioAction(i18n("Longest not played"),0,0,this,SLOT(autoplayLNP()),actionCollection(),"autoplay_longest");
-	ta->setExclusiveGroup("autoplay");
-	ta = new KRadioAction(i18n("Random"),0,0,this,SLOT(autoplayRandom()),actionCollection(),"autoplay_random");
-	ta->setExclusiveGroup("autoplay");
+	m_autoplayActionOff = new KRadioAction(i18n("Off"),0,0,this,SLOT(autoplayOff()),actionCollection(),"autoplay_off");
+	m_autoplayActionOff->setExclusiveGroup("autoplay");
+	m_autoplayActionLnp = new KRadioAction(i18n("Longest not played"),0,0,this,SLOT(autoplayLNP()),actionCollection(),"autoplay_longest");
+	m_autoplayActionLnp->setExclusiveGroup("autoplay");
+	m_autoplayActionRandom = new KRadioAction(i18n("Random"),0,0,this,SLOT(autoplayRandom()),actionCollection(),"autoplay_random");
+	m_autoplayActionRandom->setExclusiveGroup("autoplay");
 	m_currentAutoPlay = new KAction(i18n("Unknown"),0,0,0,0,actionCollection(),"autoplay_folder");
 
 	// toggle toolbar actions
@@ -3406,27 +3443,30 @@ void YammiGui::setupActions( )
 	m_sleepModeSpinBox->setEnabled(m_sleepMode);
 	new KWidgetAction( w ,"Sleep Mode",0, 0, 0,actionCollection(),"sleep_mode");	
 	
-  // if the rc file is properly installed yammi finds it automatically
-  // (eg. /opt/kde3/share/apps/yammi/yammiui.rc)
+  // the rc file should be installed (eg. in /opt/kde3/share/apps/yammi/yammiui.rc)
   createGUI();
 }
 //////////////////
 
 void YammiGui::createMenuBar( )
-{
-	KMenuBar *mainMenu = menuBar( );
-
-	//FIXME Integrate this into the menu generated by the XML-GUI Framework!!!
-  // columns submenu
-	columnsMenu = new QPopupMenu;
+{	
+	// TODO: Integrate this into the menu generated by the XML-GUI Framework
+	// TODO: use states as supported by XML framework
+  	columnsMenu = new QPopupMenu;
 	for(int column=0; column<13; column++) {
-	  columnsMenu->insertItem( columnName[column],  this, SLOT(toggleColumnVisibility(int)), 0, column);
+	  int id=columnsMenu->insertItem( columnName[column],  this, SLOT(toggleColumnVisibility(int)), 0, column);
+	  columnsMenu->setItemChecked(id, columnVisible[column]);
 	}
-  // view menu
-	QPopupMenu* viewMenu = new QPopupMenu;
-	//viewMenu->insertItem( i18n("Toolbars"), toolbarsMenu );
-	viewMenu->insertItem( i18n("Columns"), columnsMenu );
-	mainMenu->insertItem( i18n("&View"), viewMenu );
+	
+	KMenuBar *mainMenu = menuBar( );
+	mainMenu->insertItem( i18n("Columns"), columnsMenu, -1, 3 );
+	// the following does not work...
+//	int id=mainMenu->idAt(3);
+//	kdDebug() << "id: " << id << endl;
+//	if(id == -1) return;
+//	QMenuItem* item=mainMenu->findItem(id);
+//	if(item == 0) {		return;	}
+//	QPopupMenu* subMenu=(QPopupMenu*) item;
 }
 
 /**
