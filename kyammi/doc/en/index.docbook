@@ -240,6 +240,11 @@ Give it a try at <ulink url="http://yammi.sourceforge.net">The Yammi Homepage</u
 </listitem>
 <listitem>
 <para>
+<ulink url="http://developer.kde.org/~wheeler/taglib.html">taglib</ulink>, version 1.3 or higher
+</para>
+</listitem>
+<listitem>
+<para>
 libstdc++
 </para>
 </listitem>
@@ -249,20 +254,6 @@ libstdc++
 <sect2>
 <title>Optional (but recommended)</title>
 <itemizedlist>
-<listitem>
-<para>
-For reading id3 tags: <ulink url="http://www.id3lib.org">id3lib</ulink>, version 3.8.2 or higher
-(recommended: newest version) (-lid3 -lz)
-</para>
-</listitem>
-
-<listitem>
-<para>
-For reading ogg tags and layer information: 
-<ulink url="http://www.vorbis.com/download_unix.psp">libvorbis, libvorbisfile and libogg</ulink>
-(-lvorbisfile -lvorbis -logg)
-</para>
-</listitem>
 
 <listitem>
 <para>
@@ -325,6 +316,12 @@ Xfree86-devel
 
 <listitem>
 <para>
+taglib-devel
+</para>
+</listitem>
+
+<listitem>
+<para>
 qt3-devel
 </para>
 </listitem>
@@ -336,18 +333,6 @@ qt3-devel
 <title>Optional</title>
 
 <itemizedlist>
-<listitem>
-<para>
-For reading id3 tags: libz
-</para>
-</listitem>
-
-<listitem>
-<para>
-For reading ogg tags and layer information: libvorbis-dev
-</para>
-</listitem>
-
 <listitem>
 <para>
 For XMMS support: xmms-devel
