@@ -298,7 +298,7 @@ void Song::guessTagsFromFilename(QString filename, QString path, QString* artist
   guessBase=guessBase.replace( QRegExp("_"), " " );							// replace "_" with " "
 
 
-  if(gYammiGui->getModel()->config.guessingMode==gYammiGui->getModel()->config.GUESSING_MODE_SIMPLE) {
+  if(gYammiGui->getModel()->config.guessingMode==0) { //gYammiGui->getModel()->config.GUESSING_MODE_SIMPLE) {
 
     int pos=guessBase.find('-');
     if(pos!=-1) {
@@ -315,7 +315,7 @@ void Song::guessTagsFromFilename(QString filename, QString path, QString* artist
     }
   }
 
-  if(gYammiGui->getModel()->config.guessingMode==gYammiGui->getModel()->config.GUESSING_MODE_ADVANCED) {
+  if(gYammiGui->getModel()->config.guessingMode==1) { //gYammiGui->getModel()->config.GUESSING_MODE_ADVANCED) {
     // eg "/artist/album/01 - trackname.mp3"
     //    pos1  pos2
 
