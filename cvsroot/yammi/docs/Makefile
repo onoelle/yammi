@@ -1,5 +1,5 @@
 # Generated automatically from Makefile.in by configure.
-# KDE tags expanded automatically by am_edit - $Revision: 1.1 $ 
+# KDE tags expanded automatically by am_edit - $Revision: 1.3 $ 
 # Makefile.in generated automatically by automake 1.4 from Makefile.am
 
 # Copyright (C) 1994, 1995-8, 1999 Free Software Foundation, Inc.
@@ -178,7 +178,7 @@ USER_LDFLAGS =
 USE_EXCEPTIONS = -fexceptions
 USE_RTTI = 
 USE_THREADS = @USE_THREADS@
-VERSION = 0.2
+VERSION = 0.3
 XGETTEXT = /usr/bin/xgettext
 XPMINC = @XPMINC@
 XPMLIB = @XPMLIB@
