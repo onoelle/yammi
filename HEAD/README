@@ -20,16 +20,6 @@ Yammi has some dependencies/requirements that can be switched off:
 
 Attention:
 ----------
-Non-KDE users please use --disable-KDE as a switch to configure!
-(future versions of Yammi might depend on KDE! If you don't like that, let the author know,
-he might change his mind...)
-
-kdecore (http://www.kde.org)
-----------------------------
-Needed for noatun support (via using dcop). Required if you use Noatun as your media player.
-To disable:
---disable-noatun         (=> disables noatun support)
-
 id3lib (http://www.id3lib.org)
 ------------------------------
 Needed for reading id3 tags. Recommended if you use mp3 files.
@@ -55,11 +45,8 @@ To disable:
 
 
 For example, use
-./configure --disable-ogglibs --disable-noatun
-to disable support for ogg files and disable noatun support.
-
-Note:
-If you don't have either XMMS or Noatun support compiled in, Yammi only has limited functionality.
+./configure --disable-ogglibs
+to disable support for ogg files.
 
 
 Install path

@@ -143,7 +143,7 @@ YammiGui::YammiGui( ) : KMainWindow( )
 	m_config.loadConfig( );
 	currentSong = 0;
 	chosenFolder = 0;
-  selectionMode = 0;
+  selectionMode = SELECTION_MODE_USER_SELECTED;
 	
 	// set up model
 	model = new YammiModel( this );
@@ -898,18 +898,6 @@ void YammiGui::updateSongPopup()
   for(unsigned int i=0; i<m_config.pluginMenuEntry.count(); i++) {
 		pluginPopup->insertItem( m_config.pluginMenuEntry[i], this, SLOT(forSelectionPlugin(int)), 0, 2000+i);
 	}
-
-  return;
-
-	if(m_config.childSafe) {
-    // fixme: disable some actions if we are in childSafe mode
-    return;
-  }
-
-	songAdvancedPopup = new QPopupMenu(songPopup);
-	songAdvancedPopup->insertItem(getPopupIcon(Song::MoveTo), i18n("Move file to..."), this, SLOT(forSelection(int)), 0, Song::MoveTo);
-	songAdvancedPopup->insertItem(getPopupIcon(Song::BurnToMedia), i18n("Burn to Media..."), this, SLOT(forSelection(int)), 0, Song::BurnToMedia);
-	songPopup->insertItem( i18n("Advanced..."), songAdvancedPopup);
 }
 
 
@@ -940,7 +928,8 @@ void YammiGui::addToWishList()
 	MyDateTime wishDate=wishDate.currentDateTime();
 	Song* newSong=new Song("{wish}", toAdd, "", "", "", 0, 0, wishDate, 0, "", 0, 0);
 	folderAll->addSong(newSong);
-  forSong(newSong, Song::SongInfo, NULL);
+  // FIXME: selectionMode for custom list?
+  //forSong(newSong, Song::SongInfo, NULL);
 	model->allSongsChanged(true);
 	m_searchField->setText("{wish}");
   folderContentChanged(folderAll);
@@ -1024,15 +1013,13 @@ void YammiGui::decide(Song* s1, Song* s2)
 	if(what == KMessageBox::Yes) 
 	{	
 		kdDebug()<< "deleting s1\n";
-		forSong(s1, Song::DeleteFile);// move it to trash...
-//hh		model->allSongs.removeSong(s2);
+		s1->deleteFile(m_config.trashDir);
 		folderAll->removeSong(s1);
 	}
 	if(what == KMessageBox::No)
 	{
 		kdDebug()<< "deleting s2\n";
-		forSong(s2, Song::DeleteFile);// move it to trash...
-//hh		model->allSongs.removeSong(s1);
+		s2->deleteFile(m_config.trashDir);
 		folderAll->removeSong(s2);
 	}
 	model->allSongsChanged(true);
@@ -1416,7 +1403,7 @@ void YammiGui::slotFolderPopup( QListViewItem* Item, const QPoint & point, int )
 {
 	QListViewItem *i = folderListView->currentItem();
 	Folder* chosenFolder = ( Folder* )i;
-  setSelectionMode(1);
+  setSelectionMode(SELECTION_MODE_FOLDER);
   getSelectedSongs();
 	if(selectedSongs.count()==0) {
 		// no songs in this folder
@@ -1425,7 +1412,7 @@ void YammiGui::slotFolderPopup( QListViewItem* Item, const QPoint & point, int )
 	}
 	adjustSongPopup();
 	chosenFolder->popup( point, songPopup);
-  setSelectionMode(0);
+  setSelectionMode(SELECTION_MODE_USER_SELECTED);
 }
 
 
@@ -1528,6 +1515,30 @@ void YammiGui::forSelectionPlugin(int pluginIndex)
 }
 
 
+/**
+ * move the files of the selected songs to a different location
+ */
+void YammiGui::forSelectionMove()
+{
+	getSelectedSongs();
+	int count = selectedSongs.count();
+	if(count < 1) {
+		return;
+  }
+	// let user choose destination directory
+  QString startPath=selectedSongs.firstSong()->path;
+  QString dir=KFileDialog::getOpenFileName(QString("/mm"), QString("*.mp3"), this, QString("yammi"));
+	if(dir.isNull()) {
+		return;
+  }
+	if(dir.right(1)=="/") { 						// strip trailing slash
+		dir=dir.left(dir.length()-1);
+  }
+	for(Song* s = selectedSongs.firstSong(); s; s=selectedSongs.nextSong())
+	{
+		s->moveTo(dir);
+	}
+}
 
 
 
@@ -1685,18 +1696,6 @@ long double YammiGui::diskUsage(QString path, long double sizeLimit)
 
 
 
-
-
-
-/// makes a list containing only the current song
-void YammiGui::getCurrentSong()
-{
-	selectedSongs.clear();
-	QListViewItem* i=songListView->currentItem();
-	Song* s=((SongListItem*) i)->song();
-	selectedSongs.appendSong(s);
-}
-
 /**
  * Fills the selection list with the songs selected in listview
  */
@@ -1704,7 +1703,7 @@ void YammiGui::getSelectedSongs()
 {
 	selectedSongs.clear();
 
-  if(selectionMode == 0) {
+  if(selectionMode == SELECTION_MODE_USER_SELECTED) {
     // get songs selected in listview
   	QListViewItem* i=songListView->firstChild();
 	  for(; i; i=i->itemBelow()) {						// go through list of songs
@@ -1714,44 +1713,36 @@ void YammiGui::getSelectedSongs()
 	  	}
   	}
   }
-  if(selectionMode == 1) {
+  if(selectionMode == SELECTION_MODE_FOLDER) {
     // get songs from currently selected folder: complete folder content
   	// take the order as shown in the songlist
 	  for(QListViewItem* i=songListView->firstChild(); i; i=i->itemBelow()) {
 		  selectedSongs.appendSong(((SongListItem*) i)->song());
     }
   }
+
+  if(selectionMode == SELECTION_MODE_ALL) {
+    // select all songs in database
+	  for(Song* s=model->allSongs.firstSong(); s; s=model->allSongs.nextSong()) {
+		  selectedSongs.appendSong(s);
+  	}
+  }
+
+  if(selectionMode == SELECTION_MODE_CURRENT) {
+    // select only the currently selected item in the listview
+  	QListViewItem* i=songListView->currentItem();
+	  selectedSongs.appendSong(((SongListItem*) i)->song());
+  }
+
 }
 
-/// makes a list of all songs in database
-void YammiGui::getAllSongs()
-{
-	selectedSongs.clear();
-	for(Song* s=model->allSongs.firstSong(); s; s=model->allSongs.nextSong()) {
-		selectedSongs.appendSong(s);
-	}
-}
-
-/// for current song do <action>
-void YammiGui::forCurrent(Song::action act)
-{
-	getCurrentSong();
-	forSelection(act);
-}
-
-
-/// for all songs do <action>
-void YammiGui::forAll(Song::action act)
-{
-	getAllSongs();
-	forSelection(act);
-}
 
 /// check consistency, fill up list of problematic songs
 void YammiGui::forAllCheckConsistency()
 {
-  getAllSongs();
+  setSelectionMode(SELECTION_MODE_ALL);
   forSelectionCheckConsistency();
+  setSelectionMode(SELECTION_MODE_USER_SELECTED);
 }
 
 void YammiGui::forSelectionCheckConsistency()
@@ -1854,6 +1845,22 @@ void YammiGui::forSelectionPrepend( )
 	statusBar( )->message(QString(i18n("%1 Songs equeued as next")).arg(count), 2000);
 }
 
+
+void YammiGui::forSelectionPrelisten(int where )
+{
+	getSelectedSongs();
+	int count = selectedSongs.count();
+	if(count < 1) {
+		return;
+  }
+	for(Song* s = selectedSongs.firstSong(); s; s=selectedSongs.nextSong())
+	{
+		preListen(s, where);
+    break;
+	}
+}
+
+
 void YammiGui::forSelectionPlay( )
 {//FIXME - this does not work too well....
 	kdDebug()<<"playSelected( )"<<endl;
@@ -1947,8 +1954,6 @@ void YammiGui::forSelectionDelete( )
   }
 
   // determine delete mode
-	bool deleteFile=false;
-	bool deleteEntry=false;
   DeleteDialog dd( this,  "deleteDialog", true);
 	if(selectedSongs.count()==1)
 		dd.LabelSongname->setText(selectedSongs.firstSong()->displayName());
@@ -1969,24 +1974,26 @@ void YammiGui::forSelectionDelete( )
 		}
 	}
 	int result=dd.exec();
-	if(result==QDialog::Accepted) {
-		deleteFile=dd.CheckBoxDeleteFile->isChecked();
-		deleteEntry=dd.CheckBoxDeleteDbEntry->isChecked();
-	}
-	else {
-		return;
-	}
+	if(result!=QDialog::Accepted) {
+    return;
+  }
+	bool deleteFileFlag=dd.CheckBoxDeleteFile->isChecked();
+	bool deleteEntryFlag=dd.CheckBoxDeleteDbEntry->isChecked();
 
-	// OKAY: go through list of songs
+	// go through list of songs
 	for(Song* s=selectedSongs.firstSong(); s; s=selectedSongs.nextSong()) {
-		if(deleteFile)	forSong(s, Song::DeleteFile);
-		if(deleteEntry)	forSong(s, Song::DeleteEntry);
+    if(deleteFileFlag) {
+     	s->deleteFile(m_config.trashDir);
+    }
+		if(deleteEntryFlag)	{
+      deleteEntry(s);
+    }
 	}
 
 	// update view
 	model->allSongsChanged(true);
 	folderContentChanged(folderAll);
-	if(deleteEntry) {
+	if(deleteEntryFlag) {
 		updateView();
     model->categoriesChanged(true);
 	}
@@ -2173,220 +2180,39 @@ void YammiGui::songInfo( Song *s )
 
 
 /**
- * for the songs selected in listview do <action>
+ * Delete a song entry.
+ * TODO: move this (partly) to yammimodel?
  */
-void YammiGui::forSelection(Song::action act)
+void YammiGui::deleteEntry(Song* s)
 {
-  // FIXME: all remaining actions handled in here should get their own
-  // forSelection<Action> slot...
-  
-	// 1. destination directory
-	QString dir;
-	if(act==Song::MoveTo) {
-		// let user choose directory
-    QString startPath=selectedSongs.firstSong()->path;
-    dir=KFileDialog::getOpenFileName(QString("/mm"), QString("*.mp3"), this, QString("yammi"));
-		if(dir.isNull()) {
-			return;
-    }
-		if(dir.right(1)=="/") { 						// strip trailing slash
-			dir=dir.left(dir.length()-1);
-    }
-	}
+  // remove from database
+  folderAll->removeSong(s);
 
-
-	// OKAY: go through list of songs
-	for(Song* s=selectedSongs.firstSong(); s; s=selectedSongs.nextSong()) {
-		forSong(s, act, dir);
-		if(act==Song::PrelistenStart || act==Song::PrelistenMiddle || act==Song::PrelistenEnd) {
-			break;
-    }
-	}
-}
-
-/**
- * performs some action for a song
- */
-void YammiGui::forSong(Song* s, Song::action act, QString dir)
-{
-	switch (act) {
-	case Song::None:
-		return;
-	//Make sure noone is still using this....
-//	case Song::PlayNow: kdError()<<"forSong( ) - PlayNow moved to play selected"<<endl; break;
-//	case Song::Enqueue: kdError()<<"Song::Enqueue: moved to appendSelected() - "<<endl; break;
-//	case Song::EnqueueAsNext: kdError()<<"Song::EnqueueAsNext:  moved to prependSelected()"<<endl; break;
-	case Song::PlayNow:								// enqueue at front and immediately skip to it
-		if(s->filename=="" || !s->checkReadability()) {
-			cout << "song not available (try to first enqueue and load from a media)\n";
-			return;
-		}
-
-		forSong(s, Song::EnqueueAsNext);
-    player->syncYammi2Player(false);
-
-    if(player->getStatus()==STOPPED) {
-      // case 1: player stopped (this is a bit dirty...)
-      player->play();
-    }
-    else if(player->getStatus()==PAUSED) {
-      // case 2: player paused => start playing
-      player->skipForward(shiftPressed);
-      player->play();
-    }
-    else if(player->getStatus()==PLAYING) {
-      // case 3: player is playing
-      player->skipForward(shiftPressed);
-    }
-    // call check() manually so that subsequent enqueue actions are performed
-    // on current playlist and status
-    player->check();
-
-    statusBar()->message(QString(i18n("playing %1")).arg(s->displayName()), 2000);
-		break;
-
-	case Song::Enqueue:								// enqueue at end
-		folderActual->addSong(s);
-		statusBar()->message(QString(i18n("%1 enqueued at end")).arg(s->displayName()), 3000);
-		break;
-
-	case Song::EnqueueAsNext: {				// enqueue as next
-		// songsToPlay is empty, or first song is still to play
-		if(model->songsToPlay.count()==0 || currentSong!=model->songsToPlay.at(0)->song()) {
-			model->songsToPlay.insert(0, new SongEntryInt(s, 13));
-//      cout << "EnqueueAsNext: case a\n";
-    }
-		else {
-			model->songsToPlay.insert(1, new SongEntryInt(s, 13));
-//      cout << "EnqueueAsNext: case b\n";
-    }
-		folderActual->correctOrder();
-		statusBar()->message(QString(i18n("%1 enqueued as next")).arg(s->displayName()), 2000);
-	}
-		break;
-
-	case Song::Dequeue: {
-    if(chosenFolder==folderActual) {
-      // song chosen from playlist => dequeue only the selected song entry (not all songs with that id)
-      QListViewItem* i=songListView->firstChild();
-      for(; i; i=i->itemBelow()) {						// go through list of songs
-        if(i->isSelected() && ((SongListItem*) i)->song()==s) {
-          SongEntry* entry=((SongListItem*) i)->songEntry;
-          int pos=((SongEntryInt*)entry)->intInfo-1;
-          if(pos!=0 || player->getStatus()==STOPPED) {
-            // only dequeue if not currently played song (or player stopped)
-            model->songsToPlay.remove(pos);
-            statusBar( )->message(QString(i18n("song %1 dequeued")).arg(s->displayName()), 3000);
-          }
-          break;
-        }
-      }
-    }
-    else {
-      // song chosen from other folder => dequeue ALL occurrences with that id
-      int i=1;
-      if(player->getStatus()==STOPPED) {
-        i=0;
-      }
-      for(; i<(int)model->songsToPlay.count(); i++) {
-        Song* check=model->songsToPlay.at(i)->song();
-        if(check==s) {
-          model->songsToPlay.remove(i);
-          statusBar( )->message(QString(i18n("song %1 dequeued")).arg(s->displayName()), 3000);
-          i--;
-        }
-      }
-    }
-		folderActual->correctOrder();
-		break;
-	}
-	// these 3 cases send song to headphone, jumping to start/middle/end
-	case Song::PrelistenStart:
-		preListen(s, 0);
-		break;
-	case Song::PrelistenMiddle:
-		preListen(s, 33);
-		break;
-	case Song::PrelistenEnd:
-		preListen(s, 95);
-		break;
-
-
-
-	case Song::CheckConsistency:
-	 {
-		if(s->filename=="") {
-			return;
-    }
-    QString diagnosis=s->checkConsistency(m_config.tagsConsistent, m_config.filenamesConsistent, m_config.ignoreCaseInFilenames, false); //TODO replace false???
-		if(diagnosis!="") {
-			model->problematicSongs.append(new SongEntryString(s, diagnosis));
-		}
-	 }
-		break;
-
-	case Song::Delete: {
-    cout << "debug info: creating delete dialog inside \"forSong\"\n";
-		DeleteDialog dd( this,  "testiii", true);
-		int result=dd.exec();
-		if(result==QDialog::Accepted) {
-			if(dd.CheckBoxDeleteFile->isChecked()) {
-				forSong(s, Song::DeleteFile);				// 1. move songfile to trash
-				statusBar( )->message(QString(i18n("%1 removed (file)")).arg(s->displayName()), 2000);
-			}
-			if(dd.CheckBoxDeleteDbEntry->isChecked()) {
-				forSong(s, Song::DeleteEntry);			// 2. remove from database
-				statusBar( )->message(QString(i18n("%1 removed (db entry)")).arg(s->displayName()), 2000);
-			}
-		}
-	} break;
-
-	case Song::DeleteEntry:	{						// delete db entry
-    // remove from database
-    folderAll->removeSong(s);
-
-    // ...and from categories
-    for( QListViewItem* f=folderCategories->firstChild(); f; f=f->nextSibling() ) {
-      FolderSorted* category=(FolderSorted*)f;
-      category->removeSong(s);
-    }
-    // ...and from playlist
-    folderActual->removeSong(s);
-
-  } break;
-
-	case Song::DeleteFile:						// move songfile to trash
-		s->deleteFile(m_config.trashDir);
-		break;
-
-	case Song::MoveTo: 										// move file to another directory
-		s->moveTo(dir);
-		break;
-
-	case Song::SongInfo:
-		selectedSongs.clear();
-		selectedSongs.appendSong(s);
-//		forSelectionSongInfo();
-	  break;
-
-	default:
-		cout << "undefined song action: " << act << "\n";
-	}
+  // ...and from categories
+  for( QListViewItem* f=folderCategories->firstChild(); f; f=f->nextSibling() ) {
+    FolderSorted* category=(FolderSorted*)f;
+    category->removeSong(s);
+  }
+  // ...and from playlist
+  folderActual->removeSong(s);
 }
 
 
 /// doubleClick on song
 void YammiGui::doubleClick()
 {
-	forCurrent(m_config.doubleClickAction);
+  // TODO: fix
+  //forCurrent(m_config.doubleClickAction);
 }
 
 /// middleClick on song
 void YammiGui::middleClick(int button)
 {
+  // TODO: fix
 //	cout << "button: " << button << "\n";
 //	if(button==1) {			// left button
 //	}
+/*
 	if(button==4) {				// middle button
 		if(!controlPressed && !shiftPressed)
 			forCurrent(m_config.middleClickAction);
@@ -2397,11 +2223,8 @@ void YammiGui::middleClick(int button)
 //		if(shiftPressed && controlPressed)
 //			cout << "both\n";
 	}
+*/
 }
-
-//void YammiGui::leftClick()
-
-
 
 
 
@@ -3660,7 +3483,7 @@ void YammiGui::seek( int pos )
 }
 
 
-void YammiGui::setSelectionMode(int mode)
+void YammiGui::setSelectionMode(SelectionMode mode)
 {
   selectionMode = mode;
 }

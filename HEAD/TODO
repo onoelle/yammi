@@ -26,7 +26,12 @@ main purpose: clean up, so other people can more easily contribute to the projec
 - fix song info for multiple songs
 - make mpg123 and ogg123 configurable?
 - implement onPlayed and afterPlayed plugin types
-- make follow symlinks an option?
+- make follow symlinks a configurable option?
+- fix or delete child-safe mode
+- on startup: progress bar when loading database
+- fix second view menu / behaviour on hiding columns the first time
+- implement skip backwards in artsplayer
+- handle unplayable files (wishes, text files) => introduce file types and different behaviour
 
 for version 1.0.1
 -----------------
@@ -41,30 +46,19 @@ for version 1.0.1
 later...
 --------
 - add new plugin types: "on song played", "after song played"
-- extend consistency check to not only rename, but also move files within certain folder structure
 - rating of tracks
 - subfolders
-- keep sorting when changing folders?
-- disable repeat/shuffle mode in noatun?
 - history of visited folders + "go back" button
 - any ripping plugin? have a look at existing ripping programs suitable to be called as plugin
 - xml export plugin?
-- "rescan tags"-button in song info dialog or in consistency check?
 - make configurable/auto-detected forbidden characters: http://osdev.berlios.de/osd-fs.html
-- check: moving songs in playlist not possible (on Mandrake, rpm?)
 - {wish} in playlist: noatun stops playing
 - polish GUI... (esp. the "butt ugly" icons?)
 - no crossfading with noatun: replace workaround to avoid pauses in playback between songs
-- removing a song from playlist: only remove this one (idea: function "removeDuplicates" for playlist?)
-- update database: select a single file
 - on deleting a song: delete in *all* lists (history, categories, ...)
 - write little random(int range) method?
 - plugin: publish a sample plugin (echo...) with all replacements
-- folder for recent additions to database?
 - remove symlinking for "burn to media": provide "physical categories"?
-- add to consistency check: update option for re-reading layer/tag info from existing songs
-  - updating tags from outside of Yammi => update info in Yammi
-- => reach stable status!!!
 
 
 even later...
@@ -78,10 +72,6 @@ even later...
 - page up and down keys don't work after searching
 - use QProcess instead of system() calls? (prelisten, xmms, noatun, shutdownscript, ...)
 
-- cleanup
-  - clean up yammigui.h (protected/public) !!! (oh oh...)
-  - clean up other classes (eg. folder)...
-- optimize startup time and behaviour
 - swap management: in song: method getFilename() vs. getRealFilename() (fast)???
 - speed up loading of categories? (binary search)
 - xmms lock file?  => not easy to determine whether xmms is running or just lock file present
@@ -93,8 +83,6 @@ even later...
 - saveFilename/renaming of file in song.cpp
 - update database: text log window
 - search for similar: add an option to search for songs played "near" this one
-- statistic folder / more info in history folder
-- more options for burning folder
 
 
 KNOWN BUGS

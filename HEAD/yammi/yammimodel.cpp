@@ -931,7 +931,7 @@ bool YammiModel::checkConsistency(KProgressDialog* progress, MyList* selection, 
           else {
             // 2. delete entry in database
             kdWarning()<< "deleting entry " << s->displayName()<<endl;
-            m_yammi->forSong(s, Song::DeleteEntry);
+            m_yammi->deleteEntry(s);
             p->nonExistingDeleted++;
           }
         }

@@ -62,12 +62,29 @@ class YammiGui : public KMainWindow
 {
 	Q_OBJECT
 public:
-// constants
-  enum { AUTOPLAY_OFF = 0, AUTOPLAY_LNP = 1, AUTOPLAY_RANDOM = 2, AUTOPLAY_FOLDER = 10, FUZZY_FOLDER_LIST_SIZE = 50 };
+  /**
+   * Determines the way the playlist is filled up when it contains less then 5 songs.
+   */
+  enum AutoplayMode { AUTOPLAY_OFF = 0, AUTOPLAY_LNP = 1, AUTOPLAY_RANDOM = 2, AUTOPLAY_FOLDER = 10, FUZZY_FOLDER_LIST_SIZE = 50 };
+  /**
+   * Enumeration for the available columns.
+   */
   enum Columns {COLUMN_ARTIST = 0, COLUMN_TITLE = 1, COLUMN_ALBUM = 2, COLUMN_LENGTH = 3, COLUMN_YEAR = 4,  COLUMN_TRACKNR = 5,
 	COLUMN_GENRE = 6, COLUMN_ADDED_TO = 7, COLUMN_BITRATE = 8, COLUMN_FILENAME = 9, COLUMN_PATH = 10, COLUMN_COMMENT = 11,
 	COLUMN_LAST_PLAYED = 12 };
 
+  /**
+   * The selection mode determines for which songs an action is to be executed
+   * for all forSelection...() methods.
+   * The default is SELECTION_MODE_USER_SELECTED, which means the action is executed for
+   * all songs selected in the songlistview by the user.
+   * The selection mode enables to use the same slots for toolbuttons and context menu entries alike,
+   * although their "scope" might be different. A context menu on a folder eg. just has to ensure
+   * that the selection mode is set properly before invoking the slot, and to restore the selection
+   * mode afterwards again.
+   */
+  enum SelectionMode {SELECTION_MODE_USER_SELECTED = 0, SELECTION_MODE_FOLDER = 1, SELECTION_MODE_ALL = 2, SELECTION_MODE_CURRENT = 3,
+  SELECTION_MODE_CUSTOM = 4};
 
 public:
 	YammiGui( );
@@ -156,7 +173,7 @@ public:
 	QString getColumnName(int column);
 	
 public slots:
-	void forSong(Song* s, Song::action act, QString dir=0);
+	void deleteEntry(Song* s);
 	void checkForGrabbedTrack();
 	void slotFolderChanged();
 	void updatePlaylist();
@@ -164,36 +181,20 @@ public slots:
 	void selectAll();
 	void invertSelection();
 	
-  // selection stuff
-  // *************************
-  
-  /**  perform <action> on songs selected in listview  */
-  void forSelection(Song::action act);
-  /** just needed for menu receivers with ints */
-  void forSelection(int act) {forSelection((Song::action) act);}
+  // forSelection methods
+  // ********************
+  // all forSelection...() methods perform an action on a selection of songs
+  // see selectionMode for possible selections of song
 
-	// song action slots
-	void forAllCheckConsistency();
-	void forCurrent(Song::action act);
-	void forAll(Song::action act);
-
-
-	void forSelectionPrelistenStart()     { forSelection(Song::PrelistenStart); }
-	void forSelectionPrelistenMiddle()    { forSelection(Song::PrelistenMiddle); }
-	void forSelectionPrelistenEnd()       { forSelection(Song::PrelistenEnd); }
-  void forSelectionMove()               { forSelection(Song::MoveTo); }
+	void forSelectionPrelistenStart()     { forSelectionPrelisten(0); }
+	void forSelectionPrelistenMiddle()    { forSelectionPrelisten(33); }
+	void forSelectionPrelistenEnd()       { forSelectionPrelisten(95); }
+  void forSelectionPrelisten(int where);
+  void forSelectionMove();
 	void forSelectionPlugin(int pluginIndex);
 	void forSelectionBurnToMedia();
 	void forSelectionCheckConsistency();
 
-  void searchForSimilarEntry()            { searchSimilar(1000); }
-  void searchForSimilarArtist()           { searchSimilar(1001); }
-  void searchForSimilarTitle()            { searchSimilar(1002); }
-  void searchForSimilarAlbum()            { searchSimilar(1003); }
-  void gotoFolderArtist()                 { goToFolder(2001); }
-  void gotoFolderAlbum()                  { goToFolder(2002); }
-  void gotoFolderGenre()                  { goToFolder(2003); }
-  
   /** Enqueue the selected songs at the end of the Playlist.
 	  * If the Shift key is pressed, the songs are shuffled before being appended */
 	void forSelectionAppend( );
@@ -209,6 +210,17 @@ public slots:
 	void forSelectionSongInfo( );
   /** Delete selected songs */
   void forSelectionDelete( );
+
+
+  void forAllCheckConsistency();
+
+  void searchForSimilarEntry()            { searchSimilar(1000); }
+  void searchForSimilarArtist()           { searchSimilar(1001); }
+  void searchForSimilarTitle()            { searchSimilar(1002); }
+  void searchForSimilarAlbum()            { searchSimilar(1003); }
+  void gotoFolderArtist()                 { goToFolder(2001); }
+  void gotoFolderAlbum()                  { goToFolder(2002); }
+  void gotoFolderGenre()                  { goToFolder(2003); }
 
 	/** Remove all songs from the playlist */
 	void clearPlaylist();
@@ -250,7 +262,7 @@ public:
 	bool isScanning;
   void updateSongPopup();
 	void updateListViewColumns();
-  void setSelectionMode(int mode);
+  void setSelectionMode(SelectionMode mode);
 
 protected:
 	void createMenuBar( );
@@ -301,7 +313,7 @@ protected:
   QStringList   columnOrder;
   int           columnWidth[MAX_COLUMN_NO];
 
-  int           selectionMode;
+  SelectionMode selectionMode;
 
 	QTimer regularTimer;
 	QTimer checkTimer;
