@@ -1805,7 +1805,7 @@ void YammiGui::openHelp()
 void YammiGui::aboutDialog()
 {
 	QMessageBox::information( this, "Yammi",	QString("Yammi - Yet Another Music Manager I...\n\n\n")+
-																					"Version "+model->config.yammiVersion+", 12-2001 - 5-2002 by Oliver Nölle\n\n"+
+																					"Version "+model->config.yammiVersion+", 12-2001 - 7-2002 by Oliver Nölle\n\n"+
 																					"Contact: oli.noelle@web.de\n\n"+
 																					"Project home page: yammi.sourceforge.net\n\n\n"+
 																					"have fun...\n");
