@@ -5,7 +5,23 @@ Please visit   http://yammi.sourceforge.net   for detailed information about Yam
 PLEASE READ THE FOLLOWING, if you have problems with compiling
 via the normal configure/make/make install procedure...
 
+
+I hope you enjoy using Yammi...
+
+Oliver Nölle
+
+
+
+PROBLEMS???
+-----------
 Yammi has some dependencies/requirements that can be switched off:
+
+
+Attention:
+----------
+Non-KDE users please use --disable-KDE as a switch to configure!
+(future versions of Yammi might depend on KDE! If you don't like that, let the author know,
+he might change his mind...)
 
 kdecore (http://www.kde.org)
 ----------------------------
@@ -55,8 +71,8 @@ and the binary should be installed as /opt/kde3/bin/yammi
 
 
 
-Problems???
------------
+Still problems???
+-----------------
 As I am not an expert in configure scripts and makefiles, the provided ones might not work
 on your system and configuration.
 If you can't compile yammi at all, please drop me a short email with the error message along
@@ -101,13 +117,3 @@ CMP3Info.cpp:175: `ID3_NR_OF_V1_GENRES' undeclared (first use this function)
 |  static char* ID3_v1_genre_description[ID3_NR_OF_V1_GENRES] =
 `----
 
-
-
-
-
-
-
-I hope you enjoy using Yammi...
-
---------------------------------
-Oliver Nölle (oli.noelle@web.de)

@@ -63,9 +63,6 @@
 /* libsm */
 #undef HAVE_LIBSM
 
-/* Define if you have the `stdc++' library (-lstdc++). */
-#undef HAVE_LIBSTDC__
-
 /* Define if you have the `vorbis' library (-lvorbis). */
 #undef HAVE_LIBVORBIS
 

@@ -168,7 +168,8 @@ dnl Checks for libraries.
 dnl -------------------------------
 
 dnl standard C++ library
-AC_CHECK_LIB( stdc++, cout, , AC_MSG_ERROR( *** stdc++ library is required *** ), )
+dnl commented out by Oliver, 14.5.2003 (maybe cout type did not match on all systems???)
+dnl AC_CHECK_LIB( stdc++, cout, , AC_MSG_ERROR( *** stdc++ library is required *** ), )
 
 dnl OGG vorbis libraries
 if test "x$configure_enable_ogglibs" = "xyes"; then
@@ -237,7 +238,7 @@ fi
 
 dnl Noatun support (for proper kde app: add "-lkdeui -lkio ")
 dnl check to see if KDE->DCOP is available
-dnl this app requires KDE so so noatun support might as well always be
+dnl this app requires KDE so noatun support might as well always be
 dnl enabled.
 if test "x$configure_enable_noatun" = "xyes"; then
 #    dnl additional path to libraries for linking KDE

@@ -45,7 +45,6 @@ NoatunPlayer::NoatunPlayer(YammiModel* model)
   }
    
   // this will be the inactive player
-  cout << "clearing other's player playlist...\n";
   currentPlayer=(currentPlayer+1) % 2;
   sendDcopCommandInt("setVolume(int)", 0);
   clearPlaylist();
@@ -203,17 +202,16 @@ void NoatunPlayer::check()
 
   // 2. check, whether we should initiate a song change (start crossfading)
   if(model->config.fadeTime>0) {
-    if(fade<100) {  // don't start fading if we are still fading last song? TODO: really?
-      cout << "start crossfading, but we are still fading (" << fade << ")\n";
-//      return;
-    }
     if(getStatus()==PLAYING && timeLeft<model->config.fadeTime && timeLeft>0) {
+      if(fade<100) {  // don't start fading if we are still fading last song? TODO: really?
+        cout << "start crossfading, but we are still crossfading (" << fade << ")\n";
+      }
       startSongChange();
     }
   }
   else {
     if(getStatus()==PLAYING && timeLeft<1000 && timeLeft>0) {
-//      cout << "should prepare for next song without crossfading...\n";      
+//      cout << "should prepare for next songchange without crossfading...\n";      
     }
   }
 }
