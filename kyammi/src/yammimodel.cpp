@@ -381,7 +381,7 @@ void YammiModel::readSongDatabase(  ) {
         int bitrate = e.attribute("bitrate", "0").toInt( );
         int year = e.attribute("year", "0").toInt( );
         int trackNr = e.attribute("trackNr", "0").toInt( );
-        int genreNr = e.attribute("genreNr", "0").toInt( );
+        int genreNr = e.attribute("genreNr", "-1").toInt( );
 
         // read date as "dd/mm/yyyy, hh:mm:ss"
         MyDateTime addedTo;
@@ -475,7 +475,7 @@ void YammiModel::saveSongDatabase() {
             elem.setAttribute( "year", QString("%1").arg(s->year) );
         if(s->trackNr!=0)
             elem.setAttribute( "trackNr", QString("%1").arg(s->trackNr));
-        if(s->genreNr!=0)
+        if(s->genreNr!=-1)
             elem.setAttribute( "genreNr", QString("%1").arg(s->genreNr));
 
         elem.setAttribute( "addedTo", s->addedTo.writeToString());
