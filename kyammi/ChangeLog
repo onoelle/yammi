@@ -5,7 +5,7 @@
 - fixed: exit program instead of infinite loop when noatun option "allow only one instance" checked
 - fixed: noatun stops playback sometimes
 - fixed: icon transparency in prelisten icons (on dark backgrounds)
-- improved: song info dialog and correcting filenames/paths
+- improved: song info dialog nicely shows inconsistent filenames/paths and allows to correct them
 - improved: prelisten functionality now fully configurable (also fixes prelistening to flac files)
 - improved: updated italian translation
 - improved: added confirm dialog when editing more than 20 songs

@@ -91,6 +91,7 @@
 #include "lineeditshift.h"
 #include "trackpositionslider.h"
 #include "searchthread.h"
+#include "util.h"
 
 #include "mediaplayer.h"
 #include "dummyplayer.h"
@@ -2208,8 +2209,10 @@ void YammiGui::forSelectionSongInfo( ) {
             s->correctFilename();
             model->allSongsChanged(true);
         }
-        if(si.CheckBoxCorrectPath && s->checkDirectory(config()->consistencyPara.ignoreCaseInFilenames)==false) {
+        if(si.CheckBoxCorrectPath->isChecked() && s->checkDirectory(config()->consistencyPara.ignoreCaseInFilenames)==false) {
+            QString pathBefore = s->path;
             s->correctPath();
+            Util::deleteDirectoryIfEmpty(pathBefore, config()->scanDir);
             model->allSongsChanged(true);
         }        
     }
