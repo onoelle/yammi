@@ -775,8 +775,7 @@ void YammiModel::addSongToDatabase(QString filename, QString mediaName=0) {
         } else {
             // b) not exactly the same => add as new (change title to make it unique)
             // here we do not have to distinguish between harddisk and media
-            kdWarning()<< "seems like new song <" << newSong->artist << " - " << newSong->title << "> already existing..."<<endl
-            << "(Yammi does not allow two songs with the same artist/title/album identification)"<<endl;
+            kdWarning() << "seems like new song '" << newSong->artist << " - " << newSong->title << "' already existing..." << endl << "(Yammi does not allow two songs with the same artist/title/album identification)" << endl;
             int tryNo=2;
             QString extTitle;
             for(bool notUnique=true; notUnique; tryNo++) {
@@ -791,7 +790,7 @@ void YammiModel::addSongToDatabase(QString filename, QString mediaName=0) {
     }
     // new song, not in database yet
     allSongs.appendSong(newSong);
-    kdDebug()<<"Song added: "<<newSong->displayName()<<endl;
+    kdDebug() << "Song added: " << newSong->displayName() << endl;
     entriesAdded++;
     allSongsChanged(true);
 }

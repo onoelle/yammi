@@ -162,6 +162,7 @@ int Song::create(const QString location, const QString mediaName, bool capitaliz
     // guess artist/title from filename (in case no tags can be read)
     QString ffArtist, ffTitle, ffAlbum;
     guessTagsFromFilename(saveFilename, savePath, &ffArtist, &ffTitle, &ffAlbum);
+    kdDebug() << "guessed: artist: " << ffArtist << ", title: " << ffTitle << ", album: " << ffAlbum << endl;
     bool treated=false;
 
 
@@ -412,15 +413,19 @@ bool Song::checkDirectory(bool ignoreCase) {
  */
 void Song::guessTagsFromFilename(QString filename, QString path, QString* artist, QString* title, QString* album) {
     *album="";
+    *artist="";
+    *title="";
     QString guessBase=filename;
     // remove suffix, if it looks like we have a suffix
-    if(guessBase.at(guessBase.length()-4)=='.')
+    int suffixPosition=guessBase.findRev('.');
+    kdDebug() << "suff: " << suffixPosition << endl;
+    if(guessBase.at(guessBase.length()-4)=='.') {
         guessBase=guessBase.left(guessBase.length()-4);
+    }
     guessBase=guessBase.replace( QRegExp("_"), " " );							// replace "_" with " "
 
 
-    if(gYammiGui->config()->guessingMode==0) { //gYammiGui->getModel()->config.GUESSING_MODE_SIMPLE) {
-
+    if(gYammiGui->config()->guessingMode == Prefs::GUESSING_MODE_SIMPLE) { 
         int pos=guessBase.find('-');
         if(pos!=-1) {
             *artist=guessBase.left(pos);
@@ -432,9 +437,10 @@ void Song::guessTagsFromFilename(QString filename, QString path, QString* artist
             *title=guessBase;
             *title=title->simplifyWhiteSpace();
         }
+        return;
     }
 
-    if(gYammiGui->config()->guessingMode==1) { //gYammiGui->getModel()->config.GUESSING_MODE_ADVANCED) {
+    if(gYammiGui->config()->guessingMode== Prefs::GUESSING_MODE_ADVANCED) {
         // eg "/artist/album/01 - trackname.mp3"
         //    pos1  pos2
 
@@ -456,7 +462,10 @@ void Song::guessTagsFromFilename(QString filename, QString path, QString* artist
         } else {
             *title=guessBase;
         }
+        return;
     }
+    
+    kdDebug() << "ERROR: unknown guessing mode for guessing tags!\n";
 }
 
 

@@ -328,7 +328,9 @@ int CMP3Info::getBitrate() {
 }
 
 int CMP3Info::getLengthInSeconds() {
-
+    if(getBitrate() == 0) {
+        return 0;
+    }
     // kiloBitFileSize to match kiloBitPerSecond in bitrate...
     int kiloBitFileSize = (8 * fileSize) / 1000;
     

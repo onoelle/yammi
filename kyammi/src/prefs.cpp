@@ -167,7 +167,7 @@ bool Prefs::saveConfig( ) {
 
     cfg->writeEntry("scanDir", scanDir);
     cfg->writeEntry("followSymLinks", followSymLinks);
-    cfg->writeEntry("guessingMode", mediaPlayer);
+    cfg->writeEntry("guessingMode", guessingMode);
     cfg->writeEntry("scanPattern", scanPattern);
 
     cfg->writeEntry("trashDir", trashDir );
