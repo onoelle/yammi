@@ -17,6 +17,7 @@ MAJOR CHANGES:
 - added consistency check which checks location of a file (not correcting yet)
 
 MINOR CHANGES:
+- fixed: recent folder now works again
 - added a button to add standard plugins
 - added an automatic folder "by year"
 - simplified placeholder usage in plugins ({artist} instead of %a)

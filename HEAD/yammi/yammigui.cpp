@@ -583,8 +583,9 @@ void YammiGui::updateGeometrySettings()
 /// updates the automatically calculated folders after changes to song database
 void YammiGui::updateView(bool startup)
 {
-  for(Song* s=model->allSongs.firstSong(); s; s=model->allSongs.nextSong())
-		s->classified=false;	
+  for(Song* s=model->allSongs.firstSong(); s; s=model->allSongs.nextSong()) {
+		s->classified=false;
+  }
 	folderArtists->update(&(model->allSongs), MyList::ByArtist);
 	folderAlbums->update(&(model->allSongs), MyList::ByAlbum);
 	folderGenres->update(&(model->allSongs), MyList::ByGenre);
@@ -615,6 +616,7 @@ void YammiGui::updateView(bool startup)
   int timeDelta=0;  // time delta between two additions in seconds
   Song* last=0;
 	for(Song* s=model->allSongs.firstSong(); s; s=model->allSongs.nextSong()) {
+    cout << "looking at: " << s->displayName() << "\n";
     count++;
     if(last!=0) {
       timeDelta=s->addedTo.secsTo(last->addedTo);
@@ -812,10 +814,18 @@ void YammiGui::setPreferences()
 }
 
 
-/// Updates the popup-menu for songs, especially available categories
+/**
+ * Updates the popup-menu for songs, especially available categories
+ * TODO: xmlui
+ */
 void YammiGui::updateSongPopup()
 {
-	// submenu containing all categories
+  // new version
+  songPopup = (QPopupMenu *)factory()->container("song_popup", this);
+  return;
+  // pop->popup(aPoint);
+
+  // submenu containing all categories
 	playListPopup = new QPopupMenu();
 	playListPopup->insertItem(QIconSet( QPixmap(newCategory_xpm)), tr("New Category..."), this, SLOT(toCategory(int)), 0, 9999);
 	for(unsigned int i=0; i<model->categoryNames.count(); i++) {
@@ -829,22 +839,6 @@ void YammiGui::updateSongPopup()
 	
 	songPlayPopup = new QPopupMenu(songPopup);
 	
-	songPlayPopup->insertItem(getPopupIcon(Song::Enqueue), tr("...Enqueue"), this, SLOT(forSelection(int)), 0, Song::Enqueue);
-	songPlayPopup->insertItem(getPopupIcon(Song::EnqueueRandom), tr("...Enqueue (random)"), this, SLOT(forSelection(int)), 0, Song::EnqueueRandom);
-	songPlayPopup->insertItem(getPopupIcon(Song::EnqueueAsNext), tr("...Enqueue as next"), this, SLOT(forSelection(int)), 0, Song::EnqueueAsNext);
-	songPlayPopup->insertItem(getPopupIcon(Song::EnqueueAsNextRandom), tr("...Enqueue as next (random)"), this, SLOT(forSelection(int)), 0, Song::EnqueueAsNextRandom);
-	songPlayPopup->insertItem(getPopupIcon(Song::PlayNow), tr("...Play now!"), this, SLOT(forSelection(int)), 0, Song::PlayNow);
-	songPlayPopup->insertItem(getPopupIcon(Song::Dequeue), tr("...Dequeue"), this, SLOT(forSelection(int)), 0, Song::Dequeue);
-	songPopup->insertItem( tr("Play/Enqueue..."), songPlayPopup);
-	
-	if(model->config.secondSoundDevice!="") {
-		songPrelistenPopup = new QPopupMenu(songPopup);
-		songPrelistenPopup->insertItem(getPopupIcon(Song::PrelistenStart), tr("...start"), this, SLOT(forSelection(int)), 0, Song::PrelistenStart);
-		songPrelistenPopup->insertItem(getPopupIcon(Song::PrelistenMiddle), tr("...middle"), this, SLOT(forSelection(int)), 0, Song::PrelistenMiddle);
-		songPrelistenPopup->insertItem(getPopupIcon(Song::PrelistenEnd), tr("...end"), this, SLOT(forSelection(int)), 0, Song::PrelistenEnd);
-		songPopup->insertItem( tr("Prelisten to..."), songPrelistenPopup);
-	}
-	songPopup->insertItem(getPopupIcon(Song::SongInfo), tr("Info..."), this, SLOT(forSelection(int)), 0, Song::SongInfo);
 	songPopup->insertItem( tr("Insert Into/Remove From..."), playListPopup);
 
 	songGoToPopup = new QPopupMenu(songPopup);
@@ -879,7 +873,11 @@ void YammiGui::updateSongPopup()
 }
 
 
-// returns icon for popup
+/**
+ * returns a specific icon for popup menu
+ * (according to configured action for doubleclick, etc.)
+ * TODO: fix for xmlui
+ */
 QIconSet YammiGui::getPopupIcon(Song::action whichAction)
 {
 	if(model->config.doubleClickAction==whichAction)
@@ -1269,8 +1267,9 @@ void YammiGui::songListPopup( QListViewItem* Item, const QPoint & point, int )
 void YammiGui::doSongPopup(QPoint point)
 {	
 	int selected=selectedSongs.count();
-	if( selected<=0 )
+	if( selected<=0 ) {
 		return;										// only if at least one song selected
+  }
 	adjustSongPopup();
  	songPopup->popup( point );
 }	
@@ -1279,6 +1278,7 @@ void YammiGui::doSongPopup(QPoint point)
 /// adjust SongPopup corresponding to <selectedSongs>
 void YammiGui::adjustSongPopup()
 {
+  return;
 	int selected=selectedSongs.count();	
 	QString label;
 	Song* first=selectedSongs.firstSong();
@@ -1805,10 +1805,64 @@ void YammiGui::infoSelected( )
 		songInfo(s);
 		return;
 	}
-	else //FIXME - 
+	else //FIXME -
 	{
 		KMessageBox::information(this,QString(i18n("%1 Songs selected").arg(count)));
 	}
+}
+
+
+void YammiGui::deleteSelected( )
+{
+	getSelectedSongs();
+	int count = selectedSongs.count();
+	if(count < 1)
+		return;
+
+  // determine delete mode
+	bool deleteFile=false;
+	bool deleteEntry=false;
+  DeleteDialog dd( this,  "deleteDialog", true);
+	if(selectedSongs.count()==1)
+		dd.LabelSongname->setText(selectedSongs.firstSong()->displayName());
+	else
+		dd.LabelSongname->setText(QString(tr("Delete %1 songs")).arg(selectedSongs.count()));
+	// fill dialog with onMedia info...(for all toDelete songs)
+	for(Song* s=selectedSongs.firstSong(); s; s=selectedSongs.nextSong()) {
+		for(unsigned int i=0; i<s->mediaName.count(); i++) {
+			QString toInsert(s->mediaName[i]);
+			bool exists=false;
+			for(int j=0; j<dd.ComboBoxOnMedia->count(); j++) {
+				if(dd.ComboBoxOnMedia->text(j)==toInsert)
+					exists=true;
+			}
+			if(!exists) {
+				dd.ComboBoxOnMedia->insertItem(toInsert);
+      }
+		}
+	}
+	int result=dd.exec();
+	if(result==QDialog::Accepted) {
+		deleteFile=dd.CheckBoxDeleteFile->isChecked();
+		deleteEntry=dd.CheckBoxDeleteDbEntry->isChecked();
+	}
+	else {
+		return;
+	}
+
+	// OKAY: go through list of songs
+	for(Song* s=selectedSongs.firstSong(); s; s=selectedSongs.nextSong()) {
+		if(deleteFile)	forSong(s, Song::DeleteFile);
+		if(deleteEntry)	forSong(s, Song::DeleteEntry);
+	}
+
+	// update view
+	model->allSongsChanged(true);
+	folderContentChanged(folderAll);
+	if(deleteEntry) {
+		updateView();
+    model->categoriesChanged(true);
+	}    
 }
 
 void YammiGui::songInfo( Song *s )
@@ -2030,64 +2084,20 @@ void YammiGui::forSelection(Song::action act)
     }
 	}
 			
-	// 2. determine delete mode
-	bool deleteFile=false;
-	bool deleteEntry=false;
-	if(act==Song::Delete) {
-		DeleteDialog dd( this,  "deleteDialog", true);
-		if(selectedSongs.count()==1)
-			dd.LabelSongname->setText(selectedSongs.firstSong()->displayName());
-		else
-			dd.LabelSongname->setText(QString(tr("Delete %1 songs")).arg(selectedSongs.count()));
-		// fill dialog with onMedia info...(for all toDelete songs)
-		for(Song* s=selectedSongs.firstSong(); s; s=selectedSongs.nextSong()) {
-			for(unsigned int i=0; i<s->mediaName.count(); i++) {
-				QString toInsert(s->mediaName[i]);
-				bool exists=false;
-				for(int j=0; j<dd.ComboBoxOnMedia->count(); j++) {
-					if(dd.ComboBoxOnMedia->text(j)==toInsert)
-						exists=true;
-				}
-				if(!exists)
-					dd.ComboBoxOnMedia->insertItem(toInsert);
-			}
-		}
-		int result=dd.exec();
-		if(result==QDialog::Accepted) {
-			deleteFile=dd.CheckBoxDeleteFile->isChecked();
-			deleteEntry=dd.CheckBoxDeleteDbEntry->isChecked();
-		}
-		else
-			return;
-	}
 	
 	// OKAY: go through list of songs
 	for(Song* s=selectedSongs.firstSong(); s; s=selectedSongs.nextSong()) {
-		if(act==Song::Delete) {
-			if(deleteFile)	forSong(s, Song::DeleteFile);
-			if(deleteEntry)	forSong(s, Song::DeleteEntry);
-		}
-		else {
-			forSong(s, act, dir);
-			if(act==Song::PlayNow)									// we play first selected song...
-				act=Song::EnqueueAsNext;							// ...and enqueue all others
-			if(act==Song::PrelistenStart || act==Song::PrelistenMiddle || act==Song::PrelistenEnd)
-				break;
-		}
+		forSong(s, act, dir);
+		if(act==Song::PlayNow) {									// we play first selected song...
+			act=Song::EnqueueAsNext;							// ...and enqueue all others
+    }
+		if(act==Song::PrelistenStart || act==Song::PrelistenMiddle || act==Song::PrelistenEnd) {
+			break;
+    }
 	}
 	
 	
 	// some operations need view update
-	if(deleteEntry) {
-		updateView();
-		model->allSongsChanged(true);
-    model->categoriesChanged(true);
-		folderContentChanged(folderAll);
-	}
-	if(deleteFile) {
-		model->allSongsChanged(true);
-		folderContentChanged(folderAll);
-	}
 	if(act==Song::Enqueue || act==Song::EnqueueAsNext || act==Song::Dequeue) {
     player->syncYammi2Player(false);
     folderContentChanged(folderActual);
@@ -3596,6 +3606,7 @@ void YammiGui::setupActions( )
 	//other actions
 	new KAction(i18n("Update Automatic Folder Structure"),0,0,this,SLOT(updateView()),actionCollection(),"update_view");
 	new KAction(i18n("Song Info..."),"song_info",KShortcut(Key_I),this,SLOT(infoSelected()),actionCollection(),"info_selected");
+	new KAction(i18n("Delete Song..."),"delete",0,this,SLOT(deleteSelected()),actionCollection(),"delete_selected");
 	
 	//Setup
 	KStdAction::preferences(this,SLOT(setPreferences()),actionCollection());

@@ -62,8 +62,8 @@ Folder::Folder( QListViewItem* parent, const QString &name, MyList* songList)
 // update the view (after changes in songlist)
 void Folder::update( MyList& songList)
 {
-	this->songList->clear();
-	this->songList->appendList(&songList);
+	this->songList=&songList;
+  owner = false;
 	updateTitle();
 }
 

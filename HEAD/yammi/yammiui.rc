@@ -75,4 +75,24 @@
 <ToolBar name="removablemedia_toolbar">
  <text>Removable Media</text>
 </ToolBar>
+
+<Menu name="song_popup">
+  <Menu name="song_popup"><text>Play/Enqueue</text>
+    <Action name="append_selected"/>
+    <Action name="prepend_selected"/>
+    <Action name="play_selected"/>
+    <Action name="dequeue_selected"/>
+  </Menu>
+  <Menu name="song_popup"><text>Prelisten</text>
+    <Action name="prelisten_start"/>
+    <Action name="prelisten_middle"/>
+    <Action name="prelisten_end"/>
+  </Menu>
+  <Menu name="song_popup"><text>Advanced</text>
+    <Action name="check_consistency"/>
+    <Action name="delete_selected"/>
+  </Menu>
+  <Action name="info_selected"/>
+</Menu>
+
 </kpartgui>

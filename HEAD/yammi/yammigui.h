@@ -148,7 +148,9 @@ public slots:
 	/** Show information about selected songs.
 	  * If there is only one song selected, this function just calls songInfo(s) for the selected song */
 	void infoSelected( );
-	/** Show Dialog to display/edit the song info */
+  /** Delete selected songs */
+  void deleteSelected( );
+  /** Show Dialog to display/edit the song info */
 	void songInfo( Song *s );
 	
 	void autoplayFolder();
