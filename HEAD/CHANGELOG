@@ -3,7 +3,7 @@
 - added support to extract header from ".wav" files to extract length and bitrate from wave files
 - column order and position in songlistview gets remembered, saved and restored
 - maybe still not working correct: restoring session geometry:
-  => position *sometimes* gets shifted by size of decorations...strange!
+  => reported x/y-position *sometimes* gets shifted by size of decorations...strange!
 - new icon set for media player controls (ie. currently only xmms controls)
 - added basic support for .ogg files (Thanks to Philip Scott!):
   - only reading ogg tags, no saving implemented yet

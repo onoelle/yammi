@@ -93,28 +93,28 @@ int noNgrams;
 int noNgramsInLevel[MaximumNgramLen];
 int lenNgramsInLevel[MaximumNgramLen];
 NgramEntry** ngs;
-*/	
+*/
 // constructor: divide searchstring into ngrams and build data structure
 NgramRep::NgramRep(char* searchStr, int length, int minNgramLen_, int maxNgramLen_)
 {
 	minNgramLen=minNgramLen_;
 	maxNgramLen=maxNgramLen_;
 	noLevels=maxNgramLen-minNgramLen+1;
-	
+
 	int i, j;
 	for (i=minNgramLen, j=0, noNgrams=0; i<= maxNgramLen; i++, j++) {
 		noNgrams+=max(length-i+1, 0);
 		noNgramsInLevel[j]=max(length-i+1, 0);
 		lenNgramsInLevel[j]=i;
 	}
-	
+
 	ngs=new NgramEntry*[noNgrams+1];
 	// divide searchstring into ngrams
 	int pre1, pre2;
 	int total=1;		// keep in ngs[0] a pseudo ngram with found always =true
 	ngs[0]=new NgramEntry(0, "x", -1, -1);
 	maxScore=0;
-	
+
 	// for each level (=length of ngrams) get all ngrams
 	for(int level=0; level<noLevels; level++)
 	{
@@ -155,7 +155,7 @@ int FuzzySearch::prepareString(char* convStr, const char* originStr)
 {
 	char*  tmpPtr=convStr;
 	*tmpPtr++=' ';			// leading space
-	
+
 	// if entry is too long, we simply cut it off to MaximumEntryLength
 	for ( ; *originStr && (tmpPtr-convStr < MaximumEntryLength-4); tmpPtr++, originStr++)
 	{
@@ -235,7 +235,7 @@ int FuzzySearch::prepareString(char* convStr, const char* originStr)
 			break;
 		}
 	}
-	
+
 	*tmpPtr++=' ';		// finishing space
 	*tmpPtr = '\0';
 	return (tmpPtr - convStr);
@@ -249,7 +249,7 @@ void FuzzySearch::newOrder() {
 	NgramEntry** ngs;
 	ngs=ngr->ngs;
 	int i,j;
-	
+
 	// step 0: calculate new entropy for all ngrams (depending on frequency)
 	ngr->maxScore=0;
 	for(i = 1; i <= ngr->noNgrams; i++) {
@@ -262,7 +262,7 @@ void FuzzySearch::newOrder() {
 		ngr->maxScore+=entro;
 		ngs[i]->entropy=entro;
 	}
-	
+
 	// step 1: calculate new similarity value for all best matches
 	for(j=0; j<NoBestMatches && bme[j]; j++) {
 		int accuracy=0;
@@ -279,7 +279,7 @@ void FuzzySearch::newOrder() {
 		accuracy=accuracy*1000/ngr->maxScore;
 		bme[j]->sim=accuracy;
 	}
-	
+
 	// step 2: re-order list
 	qsort((void*)bme, j, sizeof(bme[0]), bmeCompare );
 	return;
@@ -339,11 +339,11 @@ void FuzzySearch::initialize(const char* searchStr_, int minNgramLen, int maxNgr
 		bme[i]=NULL;
 	noObjects=0;
 	minSim=-1;
-	
+
 	//	printf("searchstring vorbereiten...");
 	searchStrLen = prepareString(preparedSearchStr, searchStr);
 	//	printf(" result: <%s>\n", preparedSearchStr);
-	
+
 	//	printf("erzeuge ngramrep...\n");
 	ngr=new NgramRep(preparedSearchStr, searchStrLen, minNgramLen, maxNgramLen);
 	ngs=ngr->ngs;
@@ -357,7 +357,7 @@ FuzzySearch::FuzzySearch()
 }
 
 
-// init-constructor	
+// init-constructor
 FuzzySearch::FuzzySearch(const char* searchStr_, int minNgramLen, int maxNgramLen)
 {
 	initialize(searchStr_, minNgramLen, maxNgramLen);
@@ -385,14 +385,14 @@ int FuzzySearch::checkNext(const char* nextEntry, void* objPtr)
 	char	preparedNextEntry[MaximumEntryLength];
 	int		accuracy=0;
 	int		i;
-	
+
 	if (*nextEntry==0)
 		return -1;
-	
+
 	noObjects++;
 	// prepare the string (leading space, lowercase, ...)
 	prepareString(preparedNextEntry, nextEntry);
-	
+
 	// für jedes ngram match überprüfen
 	for(i=1; i<=ngr->noNgrams; i++) {
 		ngs[i]->found=false;
@@ -403,14 +403,14 @@ int FuzzySearch::checkNext(const char* nextEntry, void* objPtr)
 				ngs[i]->found=true;
 			}
 		}
-	}			
+	}
 	accuracy=(accuracy*1000)/ngr->maxScore;
 	// Wenn Guete >= minimaler Wert in best matches liste: insert into list
 	if(accuracy > minSim) {
 		minSim=insertIntoOrderedList(accuracy, nextEntry, preparedNextEntry, objPtr);
 	}
 	return accuracy;
-}	
+}
 
 // returns a sorted array of the best matches
 // returns 0 if class was not initialized

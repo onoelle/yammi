@@ -21,16 +21,16 @@
   - phonetisch: ß -> ss
   - Umlaute in ae, oe, ue
   - Sonderzeichen -> Leerzeichen
-  
+
   2. Suchstring in passende ngramme zerlegen, jeder bekommt eine Anfangsgewichtung nach Länge
-	
+
   3. lineares durchsuchen der Textdatei, <NoBestMatches> besten Einträge werden in einer sortierten Liste gehalten
 
 
-	  
+
   4. Neubewertung der einzelnen ngramme nach frequency, Neusortierung der best matches liste
-		
-  folgende Verbesserungen denkbar:  
+
+  folgende Verbesserungen denkbar:
   - diese 200 Einträge nach Levenshtein-Distanz neu bewerten/ordnen
   (z.B. für suchstring "Heierweg" sollte "Haierweg" besser bewerten als "Eisweierweg"
   - anstatt den ersten beiden Stufen: Bewertung >1000 = exakter Anfangsmatch, Bewertung =1000 exaktes Vorkommen, <1000 fuzzy
@@ -140,7 +140,7 @@ public:
 
 	NgramEntry**	ngs;			// should be protected, but for testing we want to have access
 	NgramRep*		ngr;			// same (we want to have a look at ngrams and their frequency/entropy)
-	
+
 protected:
 	BestMatchEntry* bme[NoBestMatches];
 	int		noObjects;
@@ -148,7 +148,7 @@ protected:
 	int		searchStrLen;
 	char	searchStr[MaximumEntryLength];
 	char	preparedSearchStr[MaximumEntryLength];
-	
+
 	int prepareString(char* convStr, const char* originStr);
 	// compares two best match entries, considering their similarity value
 	static int FuzzySearch::bmeCompare(const void *elem1, const void *elem2)
@@ -161,3 +161,4 @@ protected:
 };
 
 #endif
+

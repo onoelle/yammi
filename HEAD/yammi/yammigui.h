@@ -90,7 +90,7 @@
 #include "foldersorted.h"
 #include "mylistview.h"
 
-
+#include "lineeditshift.h"
 // -----------------------------------------------------------------
 
 
@@ -111,8 +111,10 @@ public:
 protected:
   void      readSettings();
   void      writeSettings();
-  void      moveEvent(QMoveEvent* e);
-
+  void      moveEvent(QMoveEvent* e)         { updateGeometrySettings(); }
+  void      resizeEvent(QResizeEvent* e)     { updateGeometrySettings(); }
+  void      updateGeometrySettings();
+  
   QString   makeReplacements(QString input, Song* s, int index);
 	void			myWait(int msecs);
 	int				shuttingDown;
@@ -147,7 +149,7 @@ protected:
 	//***************
 	MyListView*		songListView;
 	QListView*		folderListView;
-	QLineEdit*		searchField;
+	LineEditShift*	searchField;
 	QPushButton*	currentSongLabel;
 	QComboBox*		mediaListCombo;
 	QPushButton*	loadFromMediaButton;
@@ -224,7 +226,7 @@ protected slots:
 	void				forAllSelectedEnqueue() {forAllSelected(Enqueue); }
 	void				forAllSelectedEnqueueAsNext() {forAllSelected(EnqueueAsNext); }
 	void				forAllSelectedPlayNow() {forAllSelected(PlayNow); }
-	void				forAllSelectedPlayNowIm() { xmms_remote_pause(0);	forAllSelected(PlayNow); }
+//	void				forAllSelectedPlayNowIm() { xmms_remote_pause(0);	forAllSelected(PlayNow); }
 	void				forAllSelectedPrelistenStart() {forAllSelected(PrelistenStart); }
 	void				forAllSelectedPrelistenMiddle() {forAllSelected(PrelistenMiddle); }
 	void				forAllSelectedPrelistenEnd() {forAllSelected(PrelistenEnd); }
@@ -257,8 +259,6 @@ protected:
 	QTimer				regularTimer;
 	QTimer				typeTimer;
 	int						songsUntilShutdown;
-	bool					controlPressed;
-	bool					shiftPressed;
 
 
 
@@ -266,6 +266,8 @@ protected:
 	Folder*				folderAll;
 	Folder*				folderSearchResults;
 public:
+	bool					controlPressed;
+	bool					shiftPressed;
 	FolderSorted*	folderActual;
 protected:
 	FolderGroups*	folderArtists;

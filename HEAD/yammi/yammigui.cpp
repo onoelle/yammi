@@ -58,6 +58,7 @@
 
 #include "mp3info/CMP3Info.h"
 
+
 extern YammiGui* gYammiGui;
 
 
@@ -140,9 +141,9 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
                            this, SLOT(xmms_playPause()), mediaPlayerToolBar);
 	new QToolButton( QPixmap((const char**)stop_xpm), "Stop", QString::null,
                            this, SLOT(xmms_stop()), mediaPlayerToolBar);
-	new QToolButton( QPixmap((const char**)skipbackward_xpm), "Skip backward (F2 or CTRL-F2)", QString::null,
+	new QToolButton( QPixmap((const char**)skipbackward_xpm), "Skip backward (F2 / SHIFT-F2)", QString::null,
  														this, SLOT(xmms_skipBackward()), mediaPlayerToolBar);
-	new QToolButton( QPixmap((const char**)skipforward_xpm), "Skip forward (F3 or CTRL-F3)", QString::null,
+	new QToolButton( QPixmap((const char**)skipforward_xpm), "Skip forward (F3 / SHIFT-F3)", QString::null,
                            this, SLOT(xmms_skipForward()), mediaPlayerToolBar);
 	songSlider = new QSlider( QSlider::Horizontal, mediaPlayerToolBar, "songLength" );
 	songSlider->setTickmarks(QSlider::Below);
@@ -161,7 +162,7 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
 	QLabel *searchLabel = new QLabel(toolBar);
 	searchLabel->setText( "Search:" );
 	searchLabel->setFrameStyle( QFrame::NoFrame );
-	searchField = new QLineEdit ( toolBar );
+	searchField = new LineEditShift ( toolBar );
 	connect( searchField, SIGNAL(textChanged(const QString&)), SLOT(userTyped(const QString&)) );
 	searchField->setFocus();
 	searchField->setFixedWidth(175);
@@ -183,7 +184,7 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
                            this, SLOT(forAllSelectedEnqueue()), toolBar2);
 	new QToolButton (QPixmap(enqueueasnext_xpm), "Enqueue as next (F6)", QString::null,
                            this, SLOT(forAllSelectedEnqueueAsNext()), toolBar2);
-	new QToolButton (QPixmap(playnow_xpm), "Play now (F7 or CTRL-F7)", QString::null,
+	new QToolButton (QPixmap(playnow_xpm), "Play now (F7 / SHIFT-F7)", QString::null,
                            this, SLOT(forAllSelectedPlayNow()), toolBar2);
 	new QToolButton (QPixmap(dequeueSong_xpm), "Dequeue Song (F8)", QString::null,
                            this, SLOT(forAllSelectedDequeue()), toolBar2);
@@ -419,6 +420,7 @@ void YammiGui::endProgram()
 YammiGui::~YammiGui()
 {
 	cout << "trying to exit gracefully...\n";
+  updateGeometrySettings();
   writeSettings();
 	syncYammi2Xmms(true);
 	if(xmmsShuffleWasActivated)
@@ -488,8 +490,9 @@ void YammiGui::readSettings()
 
 
 /// Update the internal geometry settings.
-void YammiGui::moveEvent(QMoveEvent* e)
+void YammiGui::updateGeometrySettings()
 {
+  cout << "updating geomertry: x(): " << x() << ", y(): " << y() << ", width(): " << width() << ", height(): " << height() << "\n";
   geometryX=x();
   geometryY=y();
   geometryWidth=width();
@@ -1092,27 +1095,29 @@ void YammiGui::forSelectionPlugin(int pluginIndex)
 
   if(mode=="single") {
     QProgressDialog progress( "Executing song plugin cmd...", "Cancel", 100, this, "progress", TRUE );
-//    progress.setMinimumDuration(0);
     progress.setTotalSteps(selectedSongs.count());
+    qApp->processEvents();
 
     int index=1;
     for(Song* s=selectedSongs.firstSong(); s; s=selectedSongs.nextSong(), index++) {
-      cmd=makeReplacements(cmd, s, index);
+      QString cmd2=makeReplacements(cmd, s, index);
       
       if(index==1 && confirm) {
         // before  executing cmd on first song, ask user
         QString msg="Execute the following command on each selected song?\n";
         msg+="(here shown: values for first song)\n\n";
-        for(unsigned int i=0; i<cmd.length(); i+=80)
-          msg+=cmd.mid(i, 80)+"\n";
-          if( QMessageBox::warning( this, "Yammi", msg, "Yes", "No")!=0)
+        for(unsigned int i=0; i<cmd2.length(); i+=80) {
+          msg+=cmd2.mid(i, 80)+"\n";
+        }
+        if( QMessageBox::warning( this, "Yammi", msg, "Yes", "No")!=0) {
           return;
         }
-        progress.setProgress(index);
-        qApp->processEvents();	
-        if(progress.wasCancelled())
-			return;
-      system(cmd);
+      }
+      progress.setProgress(index);
+      qApp->processEvents();
+      if(progress.wasCancelled())
+        return;
+      system(cmd2);
     }
   }
 
@@ -2084,7 +2089,7 @@ void YammiGui::xmms_skipForward()
 void YammiGui::xmms_skipBackward()
 {
   ensureXmmsIsRunning();
-  if(controlPressed) {
+  if(shiftPressed) {
     xmms_remote_pause(0);
   }
   int count=model->songsPlayed.count();
@@ -2111,7 +2116,7 @@ void YammiGui::xmms_skipBackward()
 	else
 		songListView->triggerUpdate();
 
-  if(controlPressed) {
+  if(shiftPressed) {
     xmms_remote_play(0);
   }
 }
@@ -2444,33 +2449,29 @@ void YammiGui::keyPressEvent(QKeyEvent* e)
 {
 //  cout << "x: " << this->x() << "pos.x: " << this->pos().x() << "\n";
 //  cout << "geometry.x: " << this->geometry().left() << "frameGeometry.x: " << this->frameGeometry().left() << "\n";
-  cout << "key(): " << e->key() << "text(): " << e->text() << "ascii(): " << e->ascii() << "\n";
+//  cout << "key(): " << e->key() << "text(): " << e->text() << "ascii(): " << e->ascii() << "\n";
 	int key=e->key();
 	switch(key) {
 		case Key_Control:
 			controlPressed=true;
-      cout << "control pressed\n";
-      this->grabKeyboard();
+//      cout << "control pressed\n";
 			break;
 		case Key_Shift:
 			shiftPressed=true;
-      cout << "shift pressed\n";
+//      cout << "shift pressed\n";
 			break;
 		case Key_F1:
 			xmms_playPause();
 			break;
 		case Key_F2:
-        if(e->state()==ShiftButton)
-          cout << "shift pressed\n";
-  			xmms_skipBackward();
+      xmms_skipBackward();
 			break;
 		case Key_F3:
-			xmms_skipForward();
+ 			xmms_skipForward();
 			break;
 		case Key_F4:
 			xmms_stop();
 			break;
-		
 		case Key_F5:
 			forAllSelected(Enqueue);
 			break;
@@ -2478,20 +2479,17 @@ void YammiGui::keyPressEvent(QKeyEvent* e)
 			forAllSelected(EnqueueAsNext);
 			break;
 		case Key_F7:
-			if(controlPressed) {//e->state()==ShiftButton) {
-        // play immediately (without crossfading)
-      	if(xmms_remote_is_playing(0))
-    			xmms_remote_pause(0);
-      }
+//			if(shiftPressed && xmms_remote_is_playing(0)) {
+//   			xmms_remote_pause(0);
+//      }
  			forAllSelected(PlayNow);
 			break;
 		case Key_F8:
-			if(controlPressed) //e->state()==ShiftButton)
+			if(shiftPressed)
 				xmms_clearPlaylist();
 			else
 				forAllSelected(Dequeue);
-			break;
-			
+			break;			
 		case Key_F9:
 			forAllSelected(PrelistenStart);
 			break;
@@ -2578,12 +2576,11 @@ void YammiGui::keyReleaseEvent(QKeyEvent* e)
 	switch(key) {
 		case Key_Control:
 			controlPressed=false;
-      cout << "control released\n";
-      this->releaseKeyboard();
+//      cout << "control released\n";
 			break;
 		case Key_Shift:
 			shiftPressed=false;
-      cout << "shift released\n";
+//      cout << "shift released\n";
 			break;
 		default:
 			e->ignore();
