@@ -223,13 +223,13 @@ public slots:
 
   void forAllCheckConsistency();
 
-  void searchForSimilarEntry()            { searchSimilar(1000); }
-  void searchForSimilarArtist()           { searchSimilar(1001); }
-  void searchForSimilarTitle()            { searchSimilar(1002); }
-  void searchForSimilarAlbum()            { searchSimilar(1003); }
-  void gotoFolderArtist()                 { goToFolder(2001); }
-  void gotoFolderAlbum()                  { goToFolder(2002); }
-  void gotoFolderGenre()                  { goToFolder(2003); }
+  void searchForSimilarEntry()            { searchSimilar(0); }
+  void searchForSimilarArtist()           { searchSimilar(1); }
+  void searchForSimilarTitle()            { searchSimilar(2); }
+  void searchForSimilarAlbum()            { searchSimilar(3); }
+  void gotoFolderArtist()                 { goToFolder(1); }
+  void gotoFolderAlbum()                  { goToFolder(2); }
+  void gotoFolderGenre()                  { goToFolder(3); }
 
 	/** Remove all songs from the playlist */
 	void clearPlaylist();

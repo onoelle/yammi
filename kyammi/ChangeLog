@@ -1,11 +1,17 @@
 ??.??.2004 version 1.2-beta
 ###########################
-- fixed: compiling with --disable-xmms
-- re-added: toolbar button for "Switch to/from playlist"
-- fixed: only selecting first 201 songs in folder popup menu
+Major:
 - added: dcop interface (thanks to Daniel Raneland)
+- added: toolbar button for "Switch to/from playlist"
+- fixed: compiling with --disable-xmms
+
+Minor:
 - started to port yammi handbook from sgml to docbook format (including requirements for installation / compilation)
+- fixed: only selecting first 201 songs in folder popup menu
 - fixed: saving setting for filenamePattern (like "*.mp3 *.ogg")
+- fixed: shuffle playlist/toggle_playlist are back in the playlist menu
+- fixed: search for similar: put the search text into the search field
+- fixed: behaviour of shift+up/down after search (when focus still in search field)
 
 
 02.07.2004 version 1.2-alpha-3

@@ -8,7 +8,7 @@
     <Action name="stop"/>
   </Menu>
   <Menu name="playlist"><text>Playlist</text>
-    <Action name="to_from_playlist"/>
+    <Action name="toggle_playlist"/>
     <Action name="clear_playlist"/>
     <Action name="shuffle_playlist"/>
   </Menu>

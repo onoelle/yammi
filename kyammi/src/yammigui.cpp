@@ -1049,7 +1049,6 @@ void YammiGui::decide(Song* s1, Song* s2) {
 
 /// searches for similar entries like the current song
 void YammiGui::searchSimilar(int what) {
-    what-=1000;
     QString searchFor;
     //	getCurrentSong();
     Song* refSong=selectedSongs.firstSong();
@@ -1066,14 +1065,13 @@ void YammiGui::searchSimilar(int what) {
     default:
         searchFor=refSong->displayName();
     }
-    searchFieldChanged(searchFor);
+	m_searchField->setText(searchFor);
 }
 
 /**
  * Go to a specific folder (album/artist) of selected song.
  */
 void YammiGui::goToFolder(int what) {
-    what-=2000;
     Song* s=selectedSongs.firstSong();
     QString folderName;
 
@@ -1144,11 +1142,10 @@ void YammiGui::updateSearchResults()
 		changeToFolder(folderSearchResults);
 	}	
     songListView->setContentsPos( 0, 0);			// set scroll position to top
-	// TODO: mark more than one entry?
-	int noSelected=1;
 	QListViewItem* item=songListView->firstChild();
-    for(int j=0; item && j<noSelected; j++, item=item->nextSibling()) {
-       	item->setSelected(true);											// select first anyway
+	if(item) {
+       	item->setSelected(true);
+		songListView->setCurrentItem(item);
     }
 	searchResultsUpdateNeeded=false;
 }
@@ -2667,13 +2664,26 @@ void YammiGui::keyPressEvent(QKeyEvent* e) {
         }
         break;
 
+	// key up/down: we manually implement some behaviour in the songlistview here,
+	// as the focus might still be in the search field => very handy for power users
     case Key_Up:
         for(QListViewItem* i=songListView->firstChild(); i; i=i->itemBelow()) {
-            if(i->isSelected()) {
+            if(songListView->currentItem() == i) {
                 if(i->itemAbove()) {
                     i=i->itemAbove();
-                    songListView->clearSelection();
-                    songListView->setSelected(i, true);
+					if(!shiftPressed) {
+	                    songListView->clearSelection();
+                    	songListView->setSelected(i, true);
+					}
+					else {
+						if(i->isSelected()) {
+							i->itemBelow()->setSelected(false);
+						}
+						else {
+							i->setSelected(true);
+						}
+					}
+					songListView->setCurrentItem(i);
                     songListView->ensureItemVisible(i);
                 }
                 break;
@@ -2683,11 +2693,23 @@ void YammiGui::keyPressEvent(QKeyEvent* e) {
 
     case Key_Down:
         for(QListViewItem* i=songListView->firstChild(); i; i=i->itemBelow()) {
-            if(i->isSelected()) {
+            if(songListView->currentItem() == i) {
+//            if(i->isSelected()) {
                 if(i->itemBelow()) {
                     i=i->itemBelow();
-                    songListView->clearSelection();
-                    songListView->setSelected(i, true);
+					if(!shiftPressed) {
+                    	songListView->clearSelection();
+                    	songListView->setSelected(i, true);
+					}
+					else {
+						if(i->isSelected()) {
+							i->itemAbove()->setSelected(false);
+						}
+						else {
+							i->setSelected(true);
+						}
+					}
+					songListView->setCurrentItem(i);
                     songListView->ensureItemVisible(i);
                 }
                 break;
@@ -3309,8 +3331,7 @@ bool YammiGui::setupActions( ) {
     new KAction(i18n("Grab And Encode CD-Track..."),"cd",0,this,SLOT(grabAndEncode()), actionCollection(),"grab");
 
     // playlist actions
-    new KAction(i18n("Clear Playlist..."),0,0,this,SLOT(clearPlaylist()),actionCollection(),"clear_playlist");
-    new KAction(i18n("Shuffle Playlist..."),0,0,this,SLOT(shufflePlaylist()),actionCollection(),"shuffle_playlists");
+    new KAction(i18n("Shuffle Playlist..."),"roll",0,this,SLOT(shufflePlaylist()),actionCollection(),"shuffle_playlist");
     new KAction(i18n("Clear Playlist"),"edittrash",KShortcut(QKeySequence(Key_Shift,Key_F8)),this,SLOT(clearPlaylist()),actionCollection(),"clear_playlist");
     new KAction(i18n("Switch to/from Playlist"),"toggle_playlist",KShortcut(Key_P),this,SLOT(toFromPlaylist()),actionCollection(),"toggle_playlist");
 
