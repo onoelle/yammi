@@ -211,7 +211,7 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
 	
 	// Sleep mode
 	QToolBar* toolBarSleepMode = new QToolBar ( this, "Sleep Mode Toolbar");
-  toolBarSleepMode->setLabel( "Jukebox Functions" );
+  toolBarSleepMode->setLabel( "Sleep Mode" );
 	songsUntilShutdown=-3;
 	sleepModeLabel = new QLabel(toolBarSleepMode);
 	sleepModeLabel->setText( "Sleep mode:" );
@@ -1766,7 +1766,7 @@ void YammiGui::syncYammi2Xmms(bool syncAll)
 /**
  * performs some action for a song
  */
-void YammiGui::forSong(Song* s, action act, QString dir=0)
+void YammiGui::forSong(Song* s, action act, QString dir)
 {		
 	switch (act) {
 	case None:									// no action
@@ -1894,6 +1894,7 @@ void YammiGui::forSong(Song* s, action act, QString dir=0)
 		break;
 		
 /*
+  // removed! both can be implemented as plugin!
 	case CopyTo:						// copy songfile to other location
 		mainStatusBar->message(QString("copying song %1").arg(s->displayName()), 2000);
 		s->copyTo(dir);
@@ -2719,6 +2720,10 @@ void YammiGui::updateSongDatabaseMedia()
 	int result=d.exec();
 	if(result!=QDialog::Accepted)
     return;
+  if(d.LineEditMediaDir->text()=="") {
+    QMessageBox::information( this, "Yammi", "You have to enter a name for the media!", "Okay" );
+    return;
+  }
 
   model->config.mountMediaDir=d.CheckBoxMountMediaDir->isChecked();
   QString mediaName=d.LineEditMediaName->text();

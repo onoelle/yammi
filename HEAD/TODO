@@ -1,6 +1,6 @@
 TODO
 ----
-last update 9.9.2002
+last update 16.9.2002
 
 KNOWN BUGS
 ----------
@@ -14,28 +14,23 @@ KNOWN BUGS
 
 for release 0.7beta
 -------------------
-- finish: dialog+options for updating database: scanning media
-- forbid empty media name on scanning
 - test jukebox functionality
-
 - key events (shift/control/ skip im)
-- on deleting a song: delete in all lists (history, categories, ...)
 - update database: more information+statistics at the end
-- support for prelistening to wav?
 - update database: select a single file
-- -l lib issue??? configure script???
 - for plugins: if %D / %F occurs: popup directory dialog and let user choose directory/file: document
-- prelistening to wavs: skipping not working because we have 0 length!
 
 
 for release 0.7
 ---------------
+- -l lib issue??? configure script???
 - saving ogg tags
-- clean calculation of wav length/bitrate
+- on deleting a song: delete in all lists (history, categories, ...)
 - chose a autoenqueue-folder
 - update documentation
-- new icon set for song actions
-- stopping prelisten: somehow cleaner???
+- new icon set for song actions (enqueue, playnow, ...)
+- stopping prelistening: cleaner approach with QProcess???
+- replacement: filename without suffix
 
 for future releases
 -------------------

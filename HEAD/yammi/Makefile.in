@@ -1,4 +1,4 @@
-# KDE tags expanded automatically by am_edit - $Revision: 1.15 $ 
+# KDE tags expanded automatically by am_edit - $Revision: 1.16 $ 
 # Makefile.in generated automatically by automake 1.5 from Makefile.am.
 
 # Copyright 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001
@@ -545,7 +545,7 @@ distclean-tags:
 
 #>- DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 #>+ 4
-KDE_DIST=WorkDialogBase.h DeleteDialog.h PreferencesDialogBase.h UpdateDatabaseMediaDialogBase.h YammiGuiBase.h UpdateDatabaseDialogBase.h SongInfoDialog.h 
+KDE_DIST=WorkDialogBase.h DeleteDialog.h PreferencesDialogBase.h UpdateDatabaseMediaDialogBase.h YammiGuiBase.h UpdateDatabaseDialogBase.h yammi SongInfoDialog.h 
 
 DISTFILES= $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST) $(KDE_DIST)
 
@@ -820,7 +820,7 @@ force-reedit:
 
 
 #>+ 11
-yammi.all_cpp.cpp: $(srcdir)/Makefile.in $(srcdir)/updatedatabasemediadialog.cpp $(srcdir)/updatedatabasedialog.cpp $(srcdir)/yammimodel.cpp $(srcdir)/yammigui.cpp $(srcdir)/songlistitem.cpp $(srcdir)/songinfo.cpp $(srcdir)/songentrytimestamp.cpp $(srcdir)/songentrystring.cpp $(srcdir)/songentryint2.cpp $(srcdir)/songentryint.cpp $(srcdir)/songentry.cpp $(srcdir)/song.cpp $(srcdir)/prefs.cpp $(srcdir)/preferencesdialog.cpp $(srcdir)/mylistview.cpp $(srcdir)/mylist.cpp $(srcdir)/mydatetime.cpp $(srcdir)/main.cpp $(srcdir)/fuzzsrch.cpp $(srcdir)/foldersorted.cpp $(srcdir)/foldermedia.cpp $(srcdir)/foldergroups.cpp $(srcdir)/foldercategories.cpp $(srcdir)/folder.cpp UpdateDatabaseMediaDialogBase.cpp UpdateDatabaseDialogBase.cpp YammiGuiBase.cpp WorkDialogBase.cpp SongInfoDialog.cpp PreferencesDialogBase.cpp DeleteDialog.cpp  updatedatabasedialog.moc.cpp foldercategories.moc.cpp yammigui.moc.cpp foldergroups.moc.cpp folder.moc.cpp foldermedia.moc.cpp songinfo.moc.cpp yammimodel.moc.cpp preferencesdialog.moc.cpp mylistview.moc.cpp updatedatabasemediadialog.moc.cpp
+yammi.all_cpp.cpp: $(srcdir)/Makefile.in $(srcdir)/updatedatabasemediadialog.cpp $(srcdir)/updatedatabasedialog.cpp $(srcdir)/yammimodel.cpp $(srcdir)/yammigui.cpp $(srcdir)/songlistitem.cpp $(srcdir)/songinfo.cpp $(srcdir)/songentrytimestamp.cpp $(srcdir)/songentrystring.cpp $(srcdir)/songentryint2.cpp $(srcdir)/songentryint.cpp $(srcdir)/songentry.cpp $(srcdir)/song.cpp $(srcdir)/prefs.cpp $(srcdir)/preferencesdialog.cpp $(srcdir)/mylistview.cpp $(srcdir)/mylist.cpp $(srcdir)/mydatetime.cpp $(srcdir)/main.cpp $(srcdir)/fuzzsrch.cpp $(srcdir)/foldersorted.cpp $(srcdir)/foldermedia.cpp $(srcdir)/foldergroups.cpp $(srcdir)/foldercategories.cpp $(srcdir)/folder.cpp $(srcdir)/UpdateDatabaseMediaDialogBase.cpp $(srcdir)/UpdateDatabaseDialogBase.cpp $(srcdir)/YammiGuiBase.cpp $(srcdir)/WorkDialogBase.cpp $(srcdir)/SongInfoDialog.cpp $(srcdir)/PreferencesDialogBase.cpp $(srcdir)/DeleteDialog.cpp  updatedatabasedialog.moc.cpp foldercategories.moc.cpp yammigui.moc.cpp foldergroups.moc.cpp folder.moc.cpp foldermedia.moc.cpp songinfo.moc.cpp yammimodel.moc.cpp preferencesdialog.moc.cpp mylistview.moc.cpp updatedatabasemediadialog.moc.cpp
 	@echo 'creating yammi.all_cpp.cpp ...'; \
 	rm -f yammi.all_cpp.files yammi.all_cpp.final; \
 	echo "#define KDE_USE_FINAL 1" >> yammi.all_cpp.final; \
