@@ -791,8 +791,9 @@ bool Song::getWavInfo(QString filename)
       length=1;
     }
     else {
-      cout << "calculating length\bitrate...\n";
+      cout << "calculating length...\n";
       this->length=((((header.dataChunkSize * 8) / header.nChannels) / header.nSamplesPerSec) / header.wBitsPerSample);
+      cout << "...and bitrate...\n";
       this->bitrate=header.nAvgBytesPerSec * 8 / 1000;
       cout << "...done!\n";
       this->comment=QString("%1, %2 KHz, %3 bit").arg(header.nChannels==2 ? "stereo" : "mono").arg(header.nSamplesPerSec).arg(header.wBitsPerSample);
@@ -847,8 +848,10 @@ bool Song::checkTags()
   }
 #endif
 
-  if(!treated)
+  if(!treated) {
+    // we can't read any tags, so we can't check them... => return true
     return true;
+  }
 
   // tags exist => compare to our fields
   same=true;

@@ -54,7 +54,8 @@ using namespace std;
 // dialog includes
 #include "preferencesdialog.h"
 #include "DeleteDialog.h"
-#include "WorkDialogBase.h"
+// TODO: delete?
+//#include "WorkDialogBase.h"
 #include "updatedatabasedialog.h"
 #include "updatedatabasemediadialog.h"
 #include "ConsistencyCheckDialog.h"
@@ -84,8 +85,8 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
 
 #ifdef XMMS_SUPPORT
   cout << "media player: XMMS\n";
+  cout << "     (if nothing happens after this line, you probably have to remove the xmms lock file (/tmp/xmms_<user>.0) and try again.\n";
   player = new XmmsPlayer(0, model);         // use xmms as media player (session 0)
-  cout << "started...\n";
 #endif
 
   
@@ -400,12 +401,14 @@ YammiGui::YammiGui( QWidget *parent, const char *name )
 	if(model->noPrefsFound && model->noDatabaseFound) {
 		QMessageBox::information( this, "Yammi",	QString("Yammi - Yet Another Music Manager I...\n\n\n")+
 																					"It looks like you are starting Yammi the first time...\n\n"+
+                                          " Welcome to convenient song lookups and organization!\n\n"+
 																					"Please edit the settings (Settings -> Configure Yammi...)\n"+
-																					"to adjust the path configuration and all other options,\n"+
-																					"then perform a database update (Database -> Scan Harddisk...)\n"+
-																					"to scan your harddisk for mp3 files.\n\n"+
-																					"have fun...\n\n"+
-																					"Check out Yammi's website for new versions and other info:\n"+
+																					"to adjust your personal configuration and options"+
+                                          "(especially the path to your media files).\n"+
+																					"Then perform a database update (Database -> Scan Harddisk...)\n"+
+																					"to scan your harddisk for media files.\n\n"+
+																					"I hope you have fun using Yammi...\n\n"+
+																					"Please check out Yammi's website for new versions and other info:\n"+
 																					"http://yammi.sourceforge.net");																					
 	}
   // restore session settings
@@ -1374,8 +1377,8 @@ void YammiGui::forSelectionSongInfo()
 /// (burning order will be the order of the selected songs)
 void YammiGui::forSelectionBurnToMedia()
 {
-	long double totalSize=-model->config.criticalSize*1024*1024+1;
-	long double size=model->config.criticalSize*1024*1024+1;				// start with a full medium
+	long double totalSize=0;
+	long double size=-1;
 
 	bool ok;
 	QString collName=QString(QInputDialog::getText( "collection name", "Please enter collection name:", QLineEdit::Normal, QString("my mp3 collection"), &ok, this ));
@@ -1393,44 +1396,112 @@ void YammiGui::forSelectionBurnToMedia()
 	progress.setTotalSteps(selectedSongs.count());
 	qApp->processEvents();
 
-	
-	int mediaNo=atoi(startIndexStr)-1;
+	int startIndex=atoi(startIndexStr);
+  int mediaNo=startIndex-1;
 	QString mediaName=QString("%1_%2").arg(collName).arg(mediaNo);
 	QString mediaDir=QString(model->config.yammiBaseDir+"/media/"+mediaName);
 	long double sizeLimit=(long double)model->config.criticalSize*1024.0*1024.0;
 	int count=0;
-	for(Song* s=selectedSongs.firstSong(); s; s=selectedSongs.nextSong(), count++) {
+	for(Song* s=selectedSongs.firstSong(); s; ) {
 	  progress.setProgress(count);
-  	qApp->processEvents();
 		if(progress.wasCancelled())
 			break;
 
 		QFileInfo fi(s->location());
-		if(size+fi.size()>sizeLimit) {
-			// medium is full, prepare new one
+		if(size==-1 || size+fi.size()>sizeLimit) {
+      // medium is full, prepare new one
 			mediaNo++;
 			mediaName=QString("%1_%2").arg(collName).arg(mediaNo);
 			mediaDir=QString(model->config.yammiBaseDir+"/media/"+mediaName);
-			progress.setLabelText("Preparing media "+mediaName+"...");
-			QDir dir;
-			dir.mkdir(mediaDir);
-			totalSize+=size;
-			size=0;
+			progress.setLabelText("Preparing media "+mediaName);
+      cout << "Preparing media " << mediaName << " (" << count << " files processed so far)...\n";
+			QDir dir(mediaDir);
+      if(dir.exists()) {
+        cout << "directory \"" << mediaDir << "\" already exists, calculating available space...\n";
+        size=diskUsage(mediaDir, sizeLimit);
+        if(size==-1 || size+fi.size()>sizeLimit) {
+          cout << "directory already too full, skipping...\n";
+          continue;
+        }
+        cout << ((int)size/1024.0/1024.0) << " MB already used\n";
+      }
+      else {
+        dir.mkdir(mediaDir);
+        size=0;
+      }
 		}
+
+    // okay, we can really add the song to the current media
 		size+=fi.size();
+    totalSize+=fi.size();
 		// linux specific
 		QString cmd=QString("ln -s \"%1\" \"%3/%4\"").arg(s->location()).arg(mediaDir).arg(s->filename);
 		system(cmd);
 		s->addMediaLocation(mediaName, s->filename);
+    s=selectedSongs.nextSong();
+    count++;
 	}
 	totalSize+=size;				// add last (half full) media
 	
-	cout << "number media: " << mediaNo << " (critical size: " << model->config.criticalSize << " MB)\n";
-	cout << "size of last media: " << size << " (=" << size/(1024*1024) << " MB)\n";
-	cout << "size in total: " << totalSize << " (=" << totalSize/(1024*1024) << " MB)\n";
+	cout << "no of media: " << mediaNo+1-startIndex << " (size limit: " << model->config.criticalSize << " MB, ";
+  cout << "index " << startIndex << " to " << mediaNo << ")\n";
+	cout << "no of files: " << count << "\n";
+	cout << "size of last media: " << (int)(size/1024.0/1024.0) << " MB\n";
+	cout << "size in total: " << (int)(totalSize/1024.0/1024.0) << " MB\n";
 	folderMedia->update(&(model->allSongs));
 	model->allSongsChanged(true);
 }
+
+
+
+/** calculate disk usage for a directory (including all subdirectories)
+ * returns -1 if too full
+ */
+long double YammiGui::diskUsage(QString path, long double sizeLimit)
+{
+  QDir d(path);
+
+  d.setFilter(QDir::Files);
+  const QFileInfoList* list = d.entryInfoList();
+  QFileInfoListIterator it( *list );								      // create list iterator
+
+  long double size=0;
+
+  // step 1: sum up all files
+  for(QFileInfo *fi; (fi=it.current()); ++it ) {						// for each file/dir
+    size+=fi->size();
+    if(size>sizeLimit) {
+      return -1;
+    }
+  }
+
+  // step 2: recursively sum up subdirectories
+	QDir d2(path);
+  d2.setFilter(QDir::Dirs);
+	const QFileInfoList* list2 = d2.entryInfoList();
+	QFileInfoListIterator it2( *list2 );								      // create list iterator
+
+	for(QFileInfo *fi2; (fi2=it2.current()); ++it2 ) {						// for each file/dir
+		if(fi2->fileName()=="." || fi2->fileName()=="..")
+      continue;
+		double long toAdd=diskUsage(fi2->filePath(), sizeLimit);
+    if(toAdd==-1) {
+      return -1;
+    }
+    size+=toAdd;
+    if(size>sizeLimit) {
+      return -1;
+    }
+	}
+
+  cout << "disk usage in directory " << path << ": " << ((int)size/1024.0/1024.0) << " MB\n";
+  return size;
+}
+
+
+
+
+
 
 /// makes a list containing only the current song
 void YammiGui::getCurrentSong()
@@ -1631,8 +1702,12 @@ void YammiGui::forSelection(action act)
 	// some operations need view update
 	if(deleteEntry) {
 		updateView();
+		model->allSongsChanged(true);
+    model->categoriesChanged(true);
+		slotFolderChanged();
 	}
 	if(deleteFile) {
+		model->allSongsChanged(true);
 		slotFolderChanged();
 	}
 	if(act==Enqueue || act==EnqueueAsNext || act==Dequeue) {
@@ -1745,6 +1820,7 @@ void YammiGui::forSong(Song* s, action act, QString dir)
 		break;
 		
 	case Delete: {
+    cout << "debug info: creating delete dialog inside \"forSong\"\n";
 		DeleteDialog dd( this,  "testiii", true);
 		int result=dd.exec();
 		if(result==QDialog::Accepted) {
@@ -1762,25 +1838,19 @@ void YammiGui::forSong(Song* s, action act, QString dir)
 	case DeleteEntry:	{						// delete db entry
     // remove from database
     folderAll->removeSong(s);
-		model->allSongsChanged(true);
 
     // ...and from categories
     for( QListViewItem* f=folderCategories->firstChild(); f; f=f->nextSibling() ) {
       FolderSorted* category=(FolderSorted*)f;
       category->removeSong(s);
     }
-    model->categoriesChanged(true);
-
     // ...and from playlist
     folderActual->removeSong(s);
-		if(chosenFolder==folderActual)
-			slotFolderChanged();
 
   } break;
 	
 	case DeleteFile:						// move songfile to trash
 		s->deleteFile(model->config.trashDir);
-		model->allSongsChanged(true);
 		break;
 		
 /*
@@ -1837,6 +1907,7 @@ void YammiGui::openHelp()
 {
 	// linux specific
 	// hardcoded path, we should probably read $KDEDIR or something instead...
+  // (but I don't know how to do that...)
 	system("konqueror /opt/kde3/share/doc/HTML/en/yammi/index.html &");
 }
 
@@ -1844,7 +1915,7 @@ void YammiGui::openHelp()
 void YammiGui::aboutDialog()
 {
   QString msg=QString("Yammi - Yet Another Music Manager I...\n\n\n");
-  msg+="Version "+model->config.yammiVersion+", 12-2001 - 11-2002 by Oliver Nölle\n";
+  msg+="Version "+model->config.yammiVersion+", 12-2001 - 12-2002 by Oliver Nölle\n";
   #ifdef ENABLE_OGGLIBS
   msg+="- ogglibs support: yes\n";
   #else
@@ -2681,7 +2752,7 @@ void YammiGui::loadSongsFromMedia(QString mediaName)
 // manages loading songfiles from removable media
 void YammiGui::checkPlaylistAvailability()
 {
-	cout << "checking availability...\n";
+//	cout << "checking availability...\n";
 	// iterate through playlist & check whether we need to load songs to swap dir
 	
 	// collect all possibly required media into a listbox,

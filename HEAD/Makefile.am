@@ -2,7 +2,7 @@
 
 SUBDIRS = yammi 
 
-EXTRA_DIST = yammi.kdevprj admin CHANGELOG yammiGrabAndEncode AUTHORS INSTALL README TODO CREDITS 
+EXTRA_DIST = yammi.kdevprj admin CHANGELOG yammiGrabAndEncode AUTHORS INSTALL README TODO CREDITS yammiMp3Edit yammiDmburn 
 
 install-exec-local:
 	$(mkinstalldirs) /usr/local/bin/

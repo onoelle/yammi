@@ -1,44 +1,51 @@
 TODO
 ----
-last update 4.12.2002
+last update 9.12.2002
 
 
 KNOWN BUGS
 ----------
 - floating point exception when scanning wav file???
-- crash after scanning:
-debug info: updating folder problematic...
-debug info: updating title of folderAll...
-QGList::locate: Index 0 out of range
-
 - still problem of freezing xmms => xmms_remote_playlist_delete(0, 0)
 	(seems to be a bug in xmms, posted to bugs@xmms)
 - window geometry: sometimes window position gets shifted by the window decoration towards right lower corner
+- problems with filenames containing "ß"? (problem of qt/linux on fat filesystem?)
+- deleting a song that is currently played, then pressing "current" => crash
 
+for 0.7
+- check consistency check (and consistencyModes!)
+- alternative to mp3burn? => test and document Tom's script
+- add comment for scanning: to clear xmms playlist and stop xmms?
+  or: disable update actions while scanning...
 
 for release 0.7.1
 -----------------
-- check consistency check (and consistencyModes!)
-- on deleting a song: delete in all lists (history, categories, ...)
-- dialog box for checking consistency options
-  => make available for a selection of songs, too?
-- test compiling with gcc 3.2
+- on deleting a song: delete in *all* lists (history, categories, ...)
 - test jukebox functionality
 - update documentation
-- alternative to mp3burn? => test and document Tom's script
-
-- xmms lock file?  => not easy to determine whether xmms is running or just lock file present
-- failing to load a media => crash? (tom)
-- dequeue not working??? when I tested, it worked for me...? (tom)
+- check: failing to load a media => crash? (tom)
 - menu entry for inserting a song into a new category (tom)
-- incorrect track numbers if track number not present (tom)
-- assembly of burning to media: take size of existing files on a media into account (tom)
-- update database: more information+statistics at the end
-- update database: select a single file
-- replacement: %D / %F popup directory dialog and let user choose directory/file: document
-- replacement: filename without suffix
+- folder for recent additions to database?
 - clean up yammigui.h (protected/public) !!! (oh oh...)
 - clean up other classes (eg. folder)...
+- replacement: %D / %F popup directory dialog and let user choose directory/file: document
+- replacement: filename without suffix
+- adding to media: don't add entries already existing
+- speed up loading of categories? (binary search)
+- updating genre tag from outside of Yammi => update info in Yammi
+- wrongly calculated song length for some songs, VBR? (tom, 8.12., )
+- evaluate TCON TTIT1 frame (tom, 8.12.)
+- remove/replace "current" button?
+- => reach stable status!!!
+
+0.7.2
+-----
+- xmms lock file?  => not easy to determine whether xmms is running or just lock file present
+- dequeue not working??? when I tested, it worked for me...? (tom)
+- incorrect track numbers if track number not present (tom) => maybe problem of old id3lib?
+- update database: more information+statistics at the end
+- update database: select a single file
+- simplify {wish} system: (make every entry with empty filename (no media) a wish?
 
 for future releases
 -------------------
@@ -52,17 +59,13 @@ for future releases
 - extensive testing with new user!!!
 - clean up a lot...and complete documentation
 - dialog for burning files on cd/cdrecord plugin?
-- folder for recent additions to database?
-- specific messages on yammi update when starting
 - more tool tips
-- reach stable status
 - update database: text log window
 - make a proper kde3 app out of it or port to windows???
 - search for similar: add an option to search for songs played "near" this one
 - statistic folder / more info in history folder
 - more options for burning folder
-- more options for keeping consistency
-- more evaluation of log info
+- more evaluation of song logging:
   - playing songs that haven't been played for quite a while
 - fix: two albums having the same name appear as one album
 

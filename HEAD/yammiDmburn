@@ -1,0 +1,603 @@
+#!/usr/bin/perl
+# version 0.01
+#Determine whether MPEG::MP3Info is present and load it
+$no_mp3info = 1;
+eval "use MPEG::MP3Info;";
+unless ($@) {
+	undef $no_mp3info;
+	use MPEG::MP3Info;
+}
+
+use Getopt::Long qw(:config no_ignore_case no_auto_abbrev
+                            bundling bundling_override);
+use File::Basename;
+use Pod::Usage;
+
+#define some defaults for convenience
+#defaults get overridden by ~/.dmburnrc
+$tmpdir    = "/tmp";
+$mode      = "tao";
+$cdrecord  = "cdrecord";
+$cdrdao    = "cdrdao";
+$opts{'data'} = 1;
+
+ if(exists $ENV{'CDR_DEVICE'}) {
+    $cdrom_device =  $ENV{'CDR_DEVICE'} ;
+  }
+#getopts('ac:dt:vo:m:', \%opts);
+
+
+GetOptions(
+	   "atip-info-only"          => \$opts{'a'},
+	   "audio!"                  => \$opts{'audio'},
+	   "help|h"                  => \$help,
+           "cdrom_time|c=s"           => \$opts{'c'},
+           "tmp|t=s"                 => \$opts{'t'},
+           "mode|m=s"                => \$opts{'m'}, 
+           "dummy"                   => \$opts{'d'},
+           "dev|d=s"                 => \$opts{'dev'},
+	   "verbose+"                => \$opts{'v'},
+	   "v+"                      => \$opts{'v'}
+	  );
+pod2usage(-verbose => 2) if  $help;
+
+main () ;
+
+sub get_params {
+#  
+
+   read_config ();
+   $cdrom_device  = $opts{'dev'}if ($opts{'dev'});
+   $cdrecord_opts = $opts{'o'}  if ($opts{'o'});
+   $cdrom_time    = $opts{'c'}  if ($opts{'c'});
+   $dummy         = " -dummy "  if ($opts{'d'});
+   $mode          = $opts{'m'}  if ($opts{'m'});
+   $tmpdir        = $opts{'t'}  if ($opts{'t'}) ; 
+    $tmpdir .= "/";
+   
+   print_params () if ($opts{'v'} >=2);
+}
+
+sub print_params {
+    print "mpg123        = $mpg123\n";
+    print "cdrecord      = $cdrecord \n";
+    print "cdrdao        = $cdrdao\n";
+    print "cdrom_device  = $cdrom_device\n";
+    print "cdrecord_opts = $cdrecord_opts\n";
+    print "tmpdir        = $tmpdir\n";
+    print "mode          = $mode\n";
+    print "atip-info     = ".$opts{'a'}."\n"  if exists $opts{'a'};
+    print "cdrom_time     = $cdrom_time \n" ;
+    print "dummy         = ".$opts{'d'}."\n" if exists $opts{'d'}; 
+    print "verbosity     = $opts{'v'}\n";
+  }
+
+
+sub read_config {
+  if ( -f "$ENV{'HOME'}/.dmburnrc" ){
+    no strict 'refs'; # symbolic reference is to convenient to pass
+    open(CFG, "$ENV{'HOME'}/.dmburnrc");
+    while (<CFG>) {
+      chomp;              #  killing these things:
+      s[/\*.*\*/][];      #  /* comment */
+      s[//.*][];          #  // comment
+      s/#.*//;            #  # comment 
+	s/^\s+//;           #  whitespace before stuff
+      s/\s+$//;           #  whitespace after stuff
+      next unless length; #  If our line is empty, We should ignore some stuff
+      my ($event, $pattern) = split(/=/, $_, 2);
+      $$event = $pattern;
+    }
+  }
+}
+
+sub printlist
+{
+  print " - $_\n" foreach (@_);
+}
+
+
+
+
+sub info_only {
+
+  if(exists $opts{'a'}) { # We just want to see how much time the disk has
+    if (exists $opts{'c'} || exists $opts{'d'} || exists $opts{'t'}) {
+      #The -a option is mutually exclusive of all but the -o
+      #"cdrecord options" switch
+      $errmsg="The '-a' ATIP check cannot be used with any other switches\n";
+      $errmsg.="You may use '-c ATIP' to autmatically use disk ATIP info, however.";
+      die $errmsg;
+    } else {
+      get_ATIP_info(); #Let's get the ATIP info and bail
+      exit 0;
+    }
+  }
+}
+
+
+sub get_ATIP_info () {
+	$cdrecord_opts=~/dev=(\S+)/; #Get the device number from the $cdrecord_opts var.
+	die "No CDR device information is available. Please specify the device." unless ($1);
+	open(CDINFO,"cdrecord -atip dev=".$1." 2>&1 |"); #Use cdrecord -atip to get ATIP info
+	while (<CDINFO>) {
+		next unless (/out:.+\((\d+):(\d+)/); #The lead out time is what we want
+		$min=$1; $sec=$2;
+	}	
+	close CDINFO;
+	die "No CD-R in CD Writer." unless ($sec && $min); 
+	printf "ATIP reports available time: [%d:%.2d]\n",$min,$sec;
+}
+
+
+
+sub get_filelist {
+
+  if ($#ARGV < 0) {				#give usage if no args
+    die "Usage:  dmburn [-c MMM:SS] [-d] [-t tmpdir] [-o cdrecord_opts] [mp3 files | wav files | playlist ]\n";
+  }
+
+  for($i = 0; $i <= $#ARGV; $i++) {		
+    die "$ARGV[$i] does not exist" unless (-f $ARGV[$i]); #Check to see if file exists
+    #if a playlist file is specified read all files 
+    if ($ARGV[$i] =~ /m3u$/){
+      open(TRACKLIST, "$ARGV[$i]");
+      while(<TRACKLIST>) {
+	chop;
+	# Ignore blank lines and files that do not exist
+	next if (!$_ || !-e $_);
+	# print "$_ \n" if ($opts{'v'});
+	push(@files, $_);
+      }
+      close(TRACKLIST);
+    }
+    if ($ARGV[$i] =~ /\.mp3$/){
+      push (@files, $ARGV[$i]);}
+    if ($ARGV[$i] =~ /\.wav$/){
+      push (@files, $ARGV[$i]);} 
+  }
+  get_file_array ();
+ 
+}
+
+
+sub get_file_array {
+    if ($no_mp3info) {
+        $i =0;
+	foreach (@files) {
+	    %song_info = extract_song ($_);
+	    $song_array[$i]{'file'} = $_;
+	    $song_array[$i]{'title'} = $song_info{'title'};
+	    $song_array[$i]{'artist'} = $song_info{'artist'};
+	    $song_array[$i]{'album'} = $song_info{'album'};
+	    $song_array[$i]{'year'} = $song_info{'year'};
+            $i++;
+	}
+    }else{
+	$i =0;
+   	foreach (@files) {
+	    
+	    my $tag = get_mp3tag($_) or  %song_info = extract_song ($_);
+	    $song_array[$i]{'file'} = $_;
+	    $song_info{'title'} = $tag->{TITLE} if $tag->{TITLE};
+	    $song_info{'artist'} = $tag->{ARTIST} if $tag->{ARTIST};
+	    $song_info{'album'} = $tag->{ALBUM} if $tag->{ALBUM};
+	    $song_info{'year'} = $tag->{YEAR} if $tag->{YEAR};
+
+	    $song_array[$i]{'title'} = $song_info{'title'};
+	    $song_array[$i]{'artist'} = $song_info{'artist'};
+	    $song_array[$i]{'album'} = $song_info{'album'};
+	    $song_array[$i]{'year'} = $song_info{'year'};
+	    $i++;
+            undef %song_info;
+	    
+	}
+    }
+}
+
+
+sub determine_action () {
+
+# see whether we have everything we need
+
+# exit when tmpdir not writable
+    die "Cannot write to temp. dir -> $tmpdir" unless  ( -d $tmpdir &&  -w $tmpdir);
+# are we processing mp3 or wav files
+  foreach (@files) {
+      $wavmode = 1 if (/\.wav$/);
+      $mp3mode = 1 if (/\.mp3$/);
+      print " - $_\n" if ($opts{'v'} == 3);
+    }
+  die "sorry mixing mp3 and wav files  not supported (yet) \n" if ($mp3mode && $wavmode);
+  print "mode is wav = $wavmode mp3 = $mp3mode \n" if ($opts{'v'});
+
+ if ($cdrom_device eq '') {
+  pod2usage(-message => "\nNeed to specify a cdrecord device options through -o or .dmburnrc\ntry cdrecord --scanbus \n\n" ,-verbose => 1);
+     die "Need to specify a cdrecord device options through -o or .dmburnrc\n try cdrecord --scanbus \n\n" ;
+    }
+
+  if ($cdrom_time) {
+
+     die "Time check not available without MPEG::MP3Info module" if $no_mp3info;
+     if($cdrom_time =~ /ATIP/i){ #If the user trusts ATIP info use that for our time check
+       get_ATIP_info();
+     } else { #Otherwise he'll tell us.
+       die "Time check needs to be in the form of MMM:SS or 'ATIP' to use ATIP info" unless ($cdrom_time =~ /\d{0,3}\:\d{2}$/);
+       ($min,$sec)=split(/\:/,$cdrom_time);
+   }
+     print "time is $min min and $sec sec \n"  if ($opts{'v'} >= 2 ); 
+   }
+
+
+
+}
+
+
+
+
+sub write_toc {
+  $tocfile = $tmpdir . "tocfile";
+  open (TOC , ">$tocfile") or die "CAN't open $tocfile\n";
+  print TOC  "CD_DA\n";
+  foreach (@_) {
+    print TOC "TRACK AUDIO \nFILE \"$_\" 0\n";
+  }
+  close (TOC);
+}
+
+
+sub setup_fifos {
+  for($i = 0; $i <= $#files; $i++) {		
+    $fifo[$i] = $tmpdir . basename $files[$i];	#set the names of the fifos
+    $fifo[$i] =~ s/mp3$/cdr/i;		#foo.mp3 -> foo.cdr
+    if ($sec) {	
+      if (-l $files[$i]) {		#mp3info doesn't work on symlinks
+	$file = readlink $files[$i];
+      } else {
+	$file = $files[$i];
+      }
+      $info = get_mp3info $file; #Let's get the mp3's time
+      $totsecs += ($info->{MM}*60) + $info->{SS} + 4; #Calculate total time adding a fudge factor of 4 secs
+    }
+    system "mkfifo", $fifo[$i];	#Make our fifos (optionally to the tempdir)
+    if (fork() == 0){			#start decoder processes
+      close(STDOUT);
+      open(STDOUT, ">$fifo[$i]");	#this to avoid using the shell
+      exec("mpg123", "--rate", "44100", "--stereo", "-s", $ARGV[$i]);
+      die "Failed to exec mpg123: $!";
+    }
+  }
+}
+
+
+sub calc_mp3_time {
+  $totmin=int $totsecs/60;
+  $totsec=$totsecs % 60;
+  if (($totsecs > (($min*60)+$sec)) && $sec) {
+    printf "The max time allocated was [%d:%.2d].\n",$min,$sec;
+    printf "The total time came to [%d:%.2d].\n",$totmin,$totsec;
+    print "Do you wish to continue? (Y/N) ";
+    while (1) {
+      $key=uc(getc);
+      if ($key eq 'N') {
+	unlink @fifo;
+	exit 1;
+      }
+      last if ($key eq 'Y');
+    }
+  }
+  if ($sec){
+    printf "Total time is [%d:%.2d]\n",$totmin,$totsec;
+    sleep 3;
+  }
+ 
+}
+
+sub write_wav_to_temp (){
+    foreach (@files) {
+	$out_file = basename($_);
+        $out_file =~ s/mp3$/wav/g;
+	$out_file = $tmpdir.$out_file;
+        print 	"$out_file\n";
+	system "mpg123 --rate 44100 --stereo  -w $out_file $_ ";
+	push (@out_files, $out_file);
+    }
+}
+
+
+#now we burn
+
+sub burn_cdrecord {
+  system "$cdrecord", split(/\s+/, $cdrecord_opts), @fifo;
+  
+  #clean up
+  unlink @fifo;
+}
+
+sub burn_dao {
+ system "$cdrdao  write --device $cdrom_device $tocfile";
+}
+
+
+sub extract_song
+  {
+    my $song = shift;
+    my %song_info;
+    $song =~ s+.*/++;
+    $song =~ s/\.(mp3|ogg|wav)$//;
+    $song =~ s/-live/ (live)/;
+
+    my @song = split('-', $song, 3);
+    $song[1] =~ s/-([a-zA-Z0-9_]*)/ ($1)/g;
+  
+    $song_info{'artist'} = $song[0];
+    $song_info{'title'}  = $song[1];
+    $song_info{'album'}  = $song[2];
+
+
+    my @artist = split(/_/,"$song_info{'artist'}");
+    $song_info{'artist'}    = join(" ",@artist);
+    $song_info{'artist'}    =~ s/(\w+)/\u\L$1/g;
+    $song_info{'artist'}    =~ s/^ //g;
+    $song_info{'artist'}    =~ s/ $//g;
+
+    my @title = split(/_/,"$song_info{'title'}");
+    $song_info{'title'}=join(" ",@title);
+    $song_info{'title'} =~ s/(\w+)/\u\L$1/g;
+    $song_info{'title'} =~ s/^ //g;
+    $song_info{'title'} =~ s/ $//g;
+   
+    $song_info{'year'} = $1 if ( $song_info{'album'} =~ /.*\((\d\d\d\d)\)$/) ;
+#    $song_info{'year'} =~ s/.*\((\d\d\d\d)\)$/$1/g;
+
+    my @album=split(/_/,"$song_info{'album'}");
+    $song_info{'album'} =join(" ",@album);
+    $song_info{'album'}=~ s/(\w+)/\u\L$1/g;
+    $song_info{'album'}=~ s/^ //g;
+    $song_info{'album'}=~ s/ $//g;
+    $song_info{'album'}=~ s/\(\d\d\d\d\)$//g;
+    
+
+    $song_info{'artist'} =~ s/\s(don|can|couldn|wouldn|hasn|shouldn|isn)t\s/$1\'t/gi;
+    $song_info{'artist'} =~ s/\s(he|she)s\s/$1\'s/gi; # put ' back in for the id3.
+    $song_info{'album'} =~ s/^(he|she)s\s/$1\'s/gi; # put ' back in for the id3.
+    $song_info{'title'} =~ s/\s(don|can|couldn|wouldn|hasn|shouldn|isn)t\s/$1\'t/gi;
+    $song_info{'title'} =~ s/\s(he|she)s\s/$1\'s/gi; # put ' back in for the id3.
+
+  print("extracting from file: artist= $song_info{'artist'} title= $song_info{'title'} album= $song_info{'album'} year= $song_info{'year'}\n") if $opts{'v'};;
+
+return %song_info;             ;
+}
+
+
+sub write_filenames {
+  $content = $tmpdir . "content.txt";
+  open (CONTENT , ">$content") or die "CAN't open $content\n";
+ for($i = 0; $i <= $#song_array; $i++) {
+    
+      print CONTENT uc( $song_array[$i]{artist});
+      print CONTENT ": \t ";
+      print CONTENT $song_array[$i]{title};
+      print  CONTENT " (".$song_array[$i]{year}.")" if $song_array[$i]{year} ;
+      print  CONTENT "\n";
+  }
+ 
+  close (CONTENT);
+system "cdlabelgen -f $content > /tmp/cover.ps";
+
+}
+
+sub check_total_file_size  {
+    $cdsize = (($min * 60) + $sec) * 150;
+    print $cdsize;
+    foreach $file (@_) {
+	open(FILESIZE,"ls  -Lks $file|"); #Use cdrecord -atip to get ATIP info
+	while (<FILESIZE>) {
+	    /(\d+) .*/;
+	    print "$1\n";
+	    $totsize+=$1;
+	    next;
+	}
+    }
+    
+    if ($totsize >  $cdsize){
+	printf "The max size allocated was %d.2 Mbyte\n",$cdsize / 1024;
+	printf "The total size came to %d.2 Mbyte\n", $totsize / 1024;
+	print  "select less files ";
+        exit 1;
+	}
+}
+
+sub check_total_mp3_time {
+    my $totsecs;
+    foreach (@files){
+	$info = get_mp3info $_; #Let's get the mp3's time
+	$totsecs += ($info->{MM}*60) + $info->{SS} + 4; #Calculate total time adding a fudge factor of 4 secs
+        print " ($info->{MM} $info->{SS} $_ $totsecs \n";
+    }
+    $totmin=int $totsecs/60;
+    $totsec=$totsecs % 60;
+    if (($totsecs > (($min*60)+$sec)) && $sec) {
+	printf "The max time allocated was [%d:%.2d].\n",$min,$sec;
+	printf "The total time came to [%d:%.2d].\n",$totmin,$totsec;
+	print  "select less files ";
+        exit 1;
+    }
+}
+
+sub main {
+    get_params ();
+
+    get_filelist ();
+    determine_action ();
+
+    if ($wavmode) {
+        check_total_file_size (@files) if ($opts{'c'});
+	if ($mode eq "dao"){
+	    write_toc (@files);
+	   system "$cdrdao  write --device $cdrom_device $tocfile";
+	}
+	if ($mode eq "tao"){
+	    system  "$cdrecord $dummy dev=$cdrom_device $cdrecord_opts -audio @files";
+	}
+    }
+    if ($mp3mode){
+
+	if ($opts{'audio'}){
+	    check_total_mp3_time ()if ($opts{'c'});
+	    write_wav_to_temp (); 
+              check_total_file_size (@out_files)if ($opts{'c'}); 
+	    if ($mode eq "dao"){
+		write_toc (@out_files);
+		system "$cdrdao  write --device $cdrom_device $tocfile";
+	    }
+	    if ($mode eq "tao"){
+		system  "$cdrecord $dummy dev=$cdrom_device $cdrecord_opts -audio @out_files";
+	    }
+        #clean up
+	    system  "rm @out_files";
+	}else{
+         #checksize of files
+	    check_total_file_size (@files) if ($opts{'c'});;
+	    foreach (@files){
+		push (@a_files, "/=".$_);
+	    }
+            print "mkisofs -J -r -f -l -o /tmp/cd_image -graft-points @a_files" if $opts{'v'};
+	    system "mkisofs -J -r -f -l -o /tmp/cd_image -graft-points @a_files";
+            print "$cdrecord  $dummy dev=$cdrom_device $cdrecord_opts -data  /tmp/cd_image" 
+		if $opts{'v'};
+	    system "$cdrecord  $dummy dev=$cdrom_device $cdrecord_opts -data  /tmp/cd_image";
+	    #fifoburn not yet supported;
+           #mkisofs  -J -r -f -l -graft-points @a_files | cdrecord -v fs=6m speed=2 dev=2,0 -
+	   } 
+	}
+    write_filenames ();
+
+    exit (0);
+}
+
+exit 1;
+
+1;
+
+__END__
+
+
+=head1 NAME
+
+dmburn - A yammi plug-in to burn CD-ROMs
+
+=head1 OVERVIEW
+
+dmburn is designed as a plug-in for yammi (yammi.sourceforge.net)
+it can be used as a standalone application also.
+
+dmburn does the following:
+burn wav files in dao mode. or
+burn wav files in tao mode. or
+burn mp3 files as data.     or
+burn mp3files as audio cd.
+write a file with the cds content.
+write a cd label.
+
+=head1 SYNOPSIS
+
+
+dmburn [options] files|play-lists
+
+  Options:
+
+
+    --atip-info-only     : show available space on CD-ROM
+    --audio              : make an audio cd
+    --cdrecord_opts      : options passed to cdrecord
+    --cdrom_time| -c     : [MM:SS | Atip]
+                           check total nmp3 length is not exceeding
+                           available space on CD-ROM (not reliable yet)
+    --dummy              : do a test run
+    --dev                : specify CD-ROM device
+    --help      | -h     : print help
+    --mode      | m      : [tao| dao] mode
+    --tmp       | t      : directory to put temporary files, the cover
+                           file and the content file are put there also
+    --verbose   |  -v    : increase verbosity. up to 3 levels are supported
+
+
+=head1 OPTIONS
+
+=over 8
+
+=item B<--atip-info-only>
+
+tries to evaluate the available space on the CD-ROM media and exits
+
+=item B<--audio>
+
+
+writes mp3 files to an audio cd, that is a cd you can play in your cd-player.
+
+=item B<--help>
+
+Prints the manual page and exits
+
+=item B<--cdrecord_opts>
+
+extra options passed to cdrecord '-pad -swab -eject -v  speed=8' is a good start.
+
+
+=item B<--cdrom_time>
+
+Specify the the available time in the form MM:SS on the CD-ROM media (ususaly 80:00 for 700 MB or 74:00 for 650 MB). You can also specify 'Atip' and let the programm try to read from the device.
+ 
+=item B<--dev>
+
+specify your cdrecorder device. usualy it is '0,1,0'. Try 'cdrecord --scanbus' if you are not sure.
+ 
+=item B<--dummy>
+
+Do everything except the actual burning. The laser will be switched of. It is a good idea to specify '-v' in the cdrecord_opts to see what is going on.
+
+
+=item B<--help>
+
+Prints the manual page and exits
+
+=item B<--mode>
+
+When burning audio CDs you can burn separate tracks with a 2 second gap between them. This is the tao (tracks at once) mode and the standard when you do not specify a mode. You can also burn in dao (disc at once) mode which produces separate tracks with no gaps in between them. 
+
+=item B<--tmp>
+
+The temporary directory dmburn will write to. You should have write permissions and the directory should exist.
+
+=item B<--verbose>
+
+increase the level of verbosity. Up to three -v (-vvv) are supported. 
+
+=back
+
+=head1 CONFIGURATION
+
+  use "dmburn %l &" as command skript
+  and "%f " for custom list to write data CDs.
+
+  use "dmburn --audio %l &" as command skript
+  and "%f " for custom list to write audio CDs.
+
+set the other options via the configuration file ~/.dmburnrc or via commandline options in the command skript string. The commandline options overwrite the configuration file. My configuration file looks like this.
+
+   mpg123=/usr/bin/mpg123
+   cdrecord=/usr/bin/cdrecord
+   cdrdao=/usr/bin/cdrdao
+   check_time=80:00
+   cdrom_device=0,1,0
+   cdrecord_opts= -pad -swab -eject -v  speed=8 
+   tmpdir=/tmp
+
+You do not need to set cdrecord, cdrdao and mpg123 as long as they are in your path. You need permission to execute this programms.
+
+=head1 AUTHOR
+
+Tom Roth (tom@tomroth.de)
+
+=cut

@@ -61,8 +61,11 @@ void YammiModel::readPreferences()
 	noPrefsFound=false;
 	// general
 	QString prefsVersion		= getProperty(&doc, "yammiVersion", config.yammiVersion);
-	if(prefsVersion!=config.yammiVersion)
-		cout << "reading preferences from other version of Yammi, should not create any problems\n";
+	if(prefsVersion!=config.yammiVersion) {
+		cout << "reading preferences from other version of Yammi\n";
+    cout << "normally does not create any problems, if unsure, check Yammi's settings...\n";
+    this->savePreferences();
+  }
 	config.trashDir					=	getProperty(&doc, "trashDir", config.trashDir);
 	config.scanDir					=	getProperty(&doc, "scanDir", config.scanDir);
 	config.doubleClickAction=	(action) getProperty(&doc, "doubleClickAction", config.doubleClickAction);
@@ -778,19 +781,19 @@ void YammiModel::updateSongDatabase(QString scanDir, QString filePattern, QStrin
 
 
 /// traverses a directory recursively and processes all mp3 files
-/// puts songs where heuristic is not sure into the problematicSongs list
-void YammiModel::traverse(QString path, QString filePattern, QProgressDialog* progress, QString mediaName)
+/// returns false, if scanning was cancelled
+bool YammiModel::traverse(QString path, QString filePattern, QProgressDialog* progress, QString mediaName)
 {
 	// leave out the following directories
 	if(path+"/"==config.trashDir || path+"/"==config.swapDir) {
 		cout << "skipping trash or swap directory: " << path << "\n";
-		return;
+		return true;
 	}
  	
  	cout << "scanning directory " << path << "\n";
 	progress->setLabelText("scanning directory "+path+"...");
   progress->setProgress(0);
-  qApp->processEvents();
+//  qApp->processEvents();
 	
 	QDir d(path);
 
@@ -808,9 +811,10 @@ void YammiModel::traverse(QString path, QString filePattern, QProgressDialog* pr
 	for(QFileInfo *fi; (fi=it.current()); ++it ) {						// for each file/dir
 		filesScanned++;
 	  progress->setProgress(filesScanned);
-	  qApp->processEvents();
-		if(progress->wasCancelled())
-			return;
+//	  qApp->processEvents();
+		if(progress->wasCancelled()) {
+			return false;
+    }
 			
 		// okay, we have a file to scan, try to add to database
 		addSongToDatabase(fi->filePath(), mediaName);
@@ -826,8 +830,11 @@ void YammiModel::traverse(QString path, QString filePattern, QProgressDialog* pr
 	for(QFileInfo *fi2; (fi2=it2.current()); ++it2 ) {						// for each file/dir
 		if(fi2->fileName()=="." || fi2->fileName()=="..")
       continue;
-		traverse(fi2->filePath(), filePattern, progress, mediaName);
+		if(traverse(fi2->filePath(), filePattern, progress, mediaName)==false) {
+      return false;
+    }
 	}
+  return true;      // scanning was not cancelled
 }
 
 
@@ -986,7 +993,7 @@ bool YammiModel::checkConsistency(QProgressDialog* progress, MyList* selection, 
       }
       if(progress->wasCancelled())
         break;		
-      QString diagnosis=s->checkConsistency(config.tagsConsistent, config.filenamesConsistent);
+      QString diagnosis=s->checkConsistency(true, true);
       if(diagnosis=="") {
         continue;
       }

@@ -492,38 +492,51 @@ Ctrl-S:	Save song database
 <sect> Advanced topics <p>
 
 <sect1> Checking consistency <p>
+Note: This functionality changed slightly since version 0.7!
+
 The menu offers the possibility to check your complete database for consistency.
-This is a tool meant to help you organize your song collection.
+You can as well apply this consistency check to a selection of songs.
 
-The following aspects will be checked:
+The consistency check is a tool meant to help you organizing your song collection.
+You can configure the aspects to be checked in a dialog, right now Yammi
+supports the following checks:
 
-- Songfiles existing and readable
+- check media files: existing and readable?
 
-- No song contained twice in the database.
+If files do not exist on the location given in Yammi's database, the entry can be
+updated with a blank filename and path (if the file is existing on a media)
+or deleted (if the file is not existing on any media).
 
-For that, the songs are considered the same if they have the same artist, title and
-album.
-These three fields serve as the primary key for the database.
+- check tags: consistent with Yammi's database?
+
+If tags are not consistent, they can be corrected in the corresponding files
+(only possible for mp3 and ogg files).
+
+- check filename: consistent with the naming scheme "artist - title"?
+(no other naming schemes supported yet, sorry...)
+
+If Filenames are not consistent, they can be corrected after the naming scheme.
+
+- no song contained twice in the database?
+
+Songs are considered the same if they have the same artist, title and album.
+These three fields serve as the "primary key" for Yammi's database.
 As Yammi uses this primary key for identification (eg. for logging and categories),
 you should never have more than one song with the same primary key.
 On addings songs to your database, Yammi will add a "(2)" to the song title if the
 added song's primary key is already existing.
 
-- consistent id3/ogg tags and filename
+- no two entries pointing to the same file?
 
-If the corresponding entries in the preferences are enabled, it is checked
-whether the songfile has consistent id3/ogg tags and a consistent filename.
-(ie. tags are the same as the entries in Yammi's database, and filename is
-"artist - title.mp3" (or .ogg)).
+One of these entries will be deleted.
 
 
 
 After checking consistency, the folder ProblematicSongs contains all the
-inconsistent songs that were found. A column "reason" explains why a song was
-found to be not consistent. This allows to resolve any inconsistencies.
-If any songs with inconsistent tags or filenames were found, these will be
-corrected the next time you save the database.
-
+problematic songs that were found. A column "reason" explains why a song was
+found to be problematic. This allows to resolve any inconsistencies.
+Note that this folder will not be saved for the next session, so please resolve any
+inconsistencies immediately after checking consistency.
 
 <sect1> Burning files <p>
 

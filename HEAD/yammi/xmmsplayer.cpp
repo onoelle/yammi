@@ -34,8 +34,11 @@ XmmsPlayer::XmmsPlayer(int session, YammiModel* model)
 {
   this->session=session;
   this->model=model;
-  ensureXmmsIsRunning();
-  // check whether xmms is in shuffle mode: if yes, set it to normal
+  bool alreadyRunning=ensureXmmsIsRunning();
+  if(alreadyRunning) {
+    cout << "xmms is already running\n";
+  }
+  // check whether xmms is in shuffle mode: if yes, disable it
   // (confuses Yammi's playlistmanagement)
   if(xmms_remote_is_shuffle(session)) {
     xmms_remote_toggle_shuffle(session);
@@ -51,6 +54,7 @@ XmmsPlayer::XmmsPlayer(int session, YammiModel* model)
 XmmsPlayer::~XmmsPlayer()
 {
 	if(xmmsShuffleWasActivated) {
+    cout << "switching xmms shuffle mode back on...\n";
 		xmms_remote_toggle_shuffle(session);
   }
 }
@@ -64,16 +68,15 @@ bool XmmsPlayer::ensureXmmsIsRunning()
     return true;
   }
   
-	cout << "xmms not running, trying to start it...\n";
+	cout << "xmms not running, starting it...\n";
 	system("xmms &");
 
-  // TODO: wait until xmms is started or move the following into a single-shot timer???
   while(!xmms_remote_is_running(session)) {
-    float x=17.3*session/42.7;
-    for(int i=1; i<10000; i++)
-      x=x*x;
-//    cout << "waiting for xmms to have started...\n";
+    gYammiGui->myWait(100);
   }
+  // to be sure, we wait another 100ms before starting interaction with Xmms
+  gYammiGui->myWait(100);
+  cout << "...xmms is up!\n";
   return false;
 }
 
@@ -379,19 +382,21 @@ void XmmsPlayer::removePlayed()
     // not too nice and clean, I know...
     if(xmms_remote_get_playlist_length(session)==1) {
  	    xmms_remote_playlist_delete(session, 0);
-      model->songsToPlay.removeFirst();
+      if(model->songsToPlay.count()>=1) {
+        model->songsToPlay.removeFirst();
+      }
     }
   }
   else {
     for(int i=0; true ; i++) {
 	    int check=xmms_remote_get_playlist_pos(session);
-      if(!check>0)
+      if(check==0)
 	   	  break;
 //	cout << "removing played songs: " << i << "\n";
 //	cout << QString("xmms_remote_get_playlist_file 0\n");
   	  QString file(xmms_remote_get_playlist_file(session, 0));
 //	cout << "..done, returned: " << file << "\n";
-	    Song* x=model->getSongFromFilename(file);
+	    Song* firstXmmsSong=model->getSongFromFilename(file);
 //	cout << QString("__xmms_remote_playlist_delete 0\n");
 
  	// the following call sometimes seems to crash xmms
@@ -400,8 +405,11 @@ void XmmsPlayer::removePlayed()
  	    xmms_remote_playlist_delete(session, 0);
 //	myWait(100);
 //				cout << "..done\n";
-   	if(x==model->songsToPlay.at(0)->song())
- 	  	model->songsToPlay.removeFirst();
+      if(model->songsToPlay.count()>=1) {
+        if(model->songsToPlay.at(0)->song()==firstXmmsSong) {
+          model->songsToPlay.removeFirst();
+        }
+      }
     }
   }
 }

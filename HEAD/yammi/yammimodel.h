@@ -87,7 +87,7 @@ public:
 	bool			noPrefsFound;
 	bool			noDatabaseFound;
 	
-	void 			traverse(QString path, QString filePattern, QProgressDialog* progress, QString mediaName=0);
+	bool 			traverse(QString path, QString filePattern, QProgressDialog* progress, QString mediaName=0);
 	Song*			getSongFromFilename(QString filename);
 	QString		checkAvailability(Song* s, bool touch=false);
 

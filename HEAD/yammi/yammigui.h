@@ -126,10 +126,13 @@ protected:
   void      updateGeometrySettings();
   
   QString   makeReplacements(QString input, Song* s, int index);
+public:
 	void			myWait(int msecs);
+protected:
 	int				shuttingDown;
   QString   lastPrelistened;
 	void 			decide(Song* s1, Song* s2);
+  long double diskUsage(QString path, long double sizeLimit);  
 	void			keyPressEvent(QKeyEvent* e);
 	void			keyReleaseEvent(QKeyEvent* e);
 		
@@ -230,9 +233,9 @@ protected slots:
   void        forSelectionCheckConsistency();
   
 
-public:		
+public slots:		
 	void				forSong(Song* s, action act, QString dir=0);
-protected:
+protected slots:
 
 	void				forAllSelectedEnqueue()            { forAllSelected(Enqueue); }
 	void				forAllSelectedEnqueueAsNext()      { forAllSelected(EnqueueAsNext); }

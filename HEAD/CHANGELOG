@@ -1,6 +1,9 @@
 ######################
 29.11.2002 version 0.7
-- fixed a lot of bugs that prevented compiling on many systems
+- fixed a lot of bugs that prevented compiling on many systems:
+  - replaced stdlib io functions with the corresponding QT file access methods
+  - added "using namespace std" declarations (needed by gcc3.x compiler)
+  -
 - successfully compiled on sourceforge's compile farm on
   - Linux 2.4 (RedHat 7.3)
 - added --disable-ogglibs and --disable-id3lib configure switches to disable linking aginst these libs
@@ -9,6 +12,7 @@
   (only the tags corresponding to id3v1 tags will be written, other tags will get lost)
 - improved system for checking consistency of database or a selection of songs
 - added a dialog box for configuring the consistency check
+- Yammi now waits for Xmms to have started when it is not running yet
 - some minor improvements and bugfixes
 
 
