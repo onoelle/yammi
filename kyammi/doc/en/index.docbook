@@ -503,6 +503,14 @@ This backend uses the <ulink url="http://www.xmms.org">X MultiMedia System</ulin
 This backend uses two <ulink url="http://noatun.kde.org">Noatun</ulink>,
 instances for playing your songs. By using two instances, Yammi implements a crossfading of successive tracks (fading out the first Noatun instance while already fading in the second Noatun instance).
 </para>
+<para>
+To make noatun correctly cooperate with Yammi, you might have to change your noatun configuration:
+<itemizedlist>
+<listitem><para>disable "Allow only one instance of Noatun"</para></listitem>
+<listitem><para>disable at least "Tag Reader" and "Lucky Tag Reader" in "Other Plugins" (if you experience problems, try to disable all other Plugins</para></listitem>
+<listitem><para>choose "Split Playlist" as your playlist plugin</para></listitem>
+</itemizedlist>
+</para>
 </sect2>
 
 <sect2 id="gstreamer">

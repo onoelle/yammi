@@ -65,12 +65,11 @@ int main( int argc, char **argv )
 	}
 	app.setMainWidget( yammi );
 	yammi->show();
-	// give yammi a chance for a first draw
-	//app.processEvents( );
+	
+    // give yammi a chance for a first draw
     app.eventLoop()->processEvents(QEventLoop::ExcludeUserInput);
-    //QApplication::eventLoop()->processEvents( QEventLoop::ExcludeUserInput );
-//     
-	KConfig *cfg = app.config( );
+	
+    KConfig *cfg = app.config( );
 	if( cfg->getConfigState( ) == KConfig::ReadOnly || cfg->getConfigState( ) == KConfig::ReadWrite)
 	{
 		QString databaseDir( args->getOption("databasedir") );

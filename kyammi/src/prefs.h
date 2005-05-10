@@ -163,6 +163,9 @@ public:
     /** All consistency check related parameter */
     ConsistencyCheckParameter consistencyPara;
 
+    /** template for playqueue */
+    QString playqueueTemplate;
+    
 private:
 
     /**

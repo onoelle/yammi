@@ -20,6 +20,7 @@
 
 #include <kfiledialog.h>
 #include <klocale.h>
+#include <ktextedit.h>
 #include <qpushbutton.h>
 #include <qradiobutton.h>
 #include <qcombobox.h>
@@ -57,6 +58,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, const char *name, bool mod
     SpinBoxGroupThreshold->setValue(config->groupThreshold);
     CheckBoxLazyGrouping->setChecked(config->lazyGrouping);
     LineEditSearchThreshold->setText(QString("%1").arg(config->searchThreshold));
+    LineEditPlayqueueTemplate->setText(config->playqueueTemplate);
 
     // xmms specific
     LineEditKeepInXmms->setText(QString("%1").arg(config->keepInXmms));
@@ -206,7 +208,8 @@ void PreferencesDialog::myAccept() {
     config->groupThreshold=SpinBoxGroupThreshold->value();
     config->lazyGrouping=CheckBoxLazyGrouping->isChecked();
     config->searchThreshold=atoi(LineEditSearchThreshold->text());
-
+    config->playqueueTemplate = LineEditPlayqueueTemplate->text();
+    
     // xmms specific
     config->keepInXmms=atoi(LineEditKeepInXmms->text());
     if(RadioButtonXmms->isChecked()) {

@@ -1,3 +1,7 @@
+??.??.2005 version 1.2.1
+########################
+- added: playlist view (using a configurable html template)
+
 10.03.2005 version 1.2
 ######################
 - fixed: problems with umlauts in categories/history (saving to correct UTF-8 encoding now)

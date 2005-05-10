@@ -34,7 +34,9 @@
 #include <taglib/id3v1genres.h>
 #include "ConsistencyCheckParameter.h"
 
-
+#include <qsimplerichtext.h>
+#include <khtmlview.h>
+#include <khtml_part.h>
 #include <kapplication.h>
 #include <kglobal.h>
 #include <klocale.h>
@@ -177,7 +179,6 @@ void YammiGui::loadDatabase(QString databaseDir) {
 
     // TODO: make yammi topmost window (does not work: setActiveWindow())
 
-
     if(databaseDir.isEmpty()) {
         databaseDir = KGlobal::dirs()->findResourceDir("appdata", "songdb.xml");
         if(databaseDir.isNull()) {
@@ -256,7 +257,8 @@ void YammiGui::loadDatabase(QString databaseDir) {
     } else {
         changeToFolder(folderAll, true);
     }
-
+    folderContentChanged(folderActual);
+    
     checkTimer.start( 100, FALSE );
     regularTimer.start( 500, FALSE );
     searchResultsTimer.start( 10, FALSE );
@@ -286,21 +288,18 @@ void YammiGui::saveOptions() {
     cfg->writeEntry("CurrentFolder", chosenFolder->folderName());
     cfg->writeEntry("savedSongPosition", player->getCurrentTime());
     cfg->writeEntry("savedPlayingStatus", player->getStatus());
-    for(int i=0;
-            i<MAX_COLUMN_NO;
-            i++) {
-        cfg->writeEntry(QString("Column%1Visible").arg(i), columnIsVisible(i))
-        ;
+    for(int i=0; i<MAX_COLUMN_NO; i++) {
+        cfg->writeEntry(QString("Column%1Visible").arg(i), columnIsVisible(i));
     }
     cfg->writeEntry( "columnOrder" , columnOrder);
-    for(int i=0;
-            i<MAX_COLUMN_NO;
-            i++) {
-        cfg->writeEntry( QString("column%1Width").arg(i), columnWidth[i])
-        ;
+    for(int i=0; i<MAX_COLUMN_NO; i++) {
+        cfg->writeEntry( QString("column%1Width").arg(i), columnWidth[i]);
     }
     cfg->writeEntry("AutoplayFolder", autoplayFoldername);
     cfg->writeEntry("AutoplayMode", autoplayMode);
+    
+    cfg->writeEntry("LeftSplitterWidth", centralWidget->sizes().first());    
+    cfg->writeEntry("LeftUpperSplitterHeight", leftWidget->sizes().first());
 }
 
 
@@ -377,6 +376,14 @@ void YammiGui::readOptions() {
         m_autoplayActionRandom->setChecked(true);
         break;
     }
+        
+    QValueList<int> lst2;
+    lst2.append(cfg->readNumEntry("LeftUpperSplitterHeight", 200));
+    leftWidget->setSizes( lst2 );
+    
+    QValueList<int> lst;
+    lst.append( cfg->readNumEntry("LeftSplitterWidth", 250));
+    centralWidget->setSizes( lst );
 }
 
 
@@ -499,6 +506,7 @@ YammiGui::~YammiGui() {
  * signalled by the mediaplayer or on changes from within yammigui (enqueing, dequeing songs, ...)
  */
 void YammiGui::updatePlaylist() {
+    kdDebug() << "updatePlaylist called" << endl;
     if(folderActual->songlist().count()>0) {
         model->currentSongFilenameAtStartPlay=folderActual->firstSong()->location();
     }
@@ -514,6 +522,68 @@ void YammiGui::updatePlaylist() {
     folderActual->correctOrder();
     player->syncYammi2Player();
     folderContentChanged(folderActual);
+}
+
+/**
+ * Update the html playlist view after changes
+ */
+void YammiGui::updateHtmlPlaylist()
+{
+    QString htmlTemplate = config()->playqueueTemplate;
+    
+    int noSongsToPlay = folderActual->songlist().count();
+    int length = 0;
+    for(unsigned int i=0; i<folderActual->songlist().count(); i++) {
+        length += folderActual->songlist().at(i)->song()->length;
+    }
+    QString formattedTime;
+    formattedTime.sprintf(i18n("%d:%02d"), length/(60*60), (length % (60*60))/60);
+    htmlTemplate.replace(QRegExp("\\{noSongsToPlay\\}"), QString("%1").arg(noSongsToPlay));
+    htmlTemplate.replace(QRegExp("\\{timeToPlay\\}"), formattedTime);
+
+    QString htmlSource("");
+    
+    QStringList entries = QStringList::split(QString("{scope:"), htmlTemplate);
+    
+    for ( QStringList::Iterator it = entries.begin(); it != entries.end(); ++it ) {
+        QString entry = *it;
+        int pos = entry.find('}');
+        if(pos != -1) {
+            QString scopeNumberStr = entry.left(pos);
+            bool ok;
+            int scopeNumber = scopeNumberStr.toInt(&ok);
+            QString entryTemplate = entry.mid(pos +1);
+            if(ok) {
+                if(scopeNumber < 0) {
+                    if(((int)folderSongsPlayed->songlist().count()) >= (-scopeNumber)) {
+                        int listIndex = folderSongsPlayed->songlist().count() + scopeNumber;
+                        Song* s = folderSongsPlayed->songlist().at(listIndex)->song();
+                        htmlSource += s->replacePlaceholders(entryTemplate, scopeNumber);
+                    }
+                }
+                else {
+                    if(((int)folderActual->songlist().count()) > scopeNumber) {
+                        Song* s = folderActual->songlist().at(scopeNumber)->song();
+                        htmlSource += s->replacePlaceholders(entryTemplate, scopeNumber);
+                    }
+                }
+            }
+            else {
+                // out of scope: add without replacing anything
+                htmlSource += entryTemplate;
+            }
+        }
+        else {
+            kdDebug() << "invalid scope definition in template!" << endl;
+        }
+    }
+    
+    playlistPart->begin();
+    playlistPart->write(htmlSource);
+    playlistPart->end();
+
+    playlistPart->show();
+    playlistPart->view()->setHScrollBarMode(QScrollView::AlwaysOn);
 }
 
 /**
@@ -922,6 +992,7 @@ void YammiGui::setPreferences() {
         return;
     }
     updateSongPopup();
+    updateHtmlPlaylist();
     config()->saveConfig();
     if(playerBefore != config()->mediaPlayer) {
         kdDebug() << "trying to switch media player...\n";
@@ -1263,6 +1334,7 @@ void YammiGui::folderContentChanged() {
         addFolderContent(chosenFolder);
         if(chosenFolder == folderActual) {
             updateCurrentSongStatus();
+            updateHtmlPlaylist();
         }
     }
 }
@@ -1274,6 +1346,7 @@ void YammiGui::folderContentChanged(Folder* folder) {
         songListView->triggerUpdate();
         if(folder==folderActual) {
             updateCurrentSongStatus();
+            updateHtmlPlaylist();
         }
         if(folder!=folderSearchResults) {
             m_acceptSearchResults=false;
@@ -3324,24 +3397,33 @@ void YammiGui::loadMediaPlayer( ) {
     kdDebug() << "Media Player : " << player->getName( ) << endl;
 }
 
+/**
+ * Create main gui of Yammi
+ */
 void YammiGui::createMainWidget( ) {
-    QSplitter* centralWidget=new QSplitter(Qt::Horizontal, this);
+    // separate into left and right area
+    centralWidget=new QSplitter(Qt::Horizontal, this);
+    
+    // separate left area into upper (playlist) and lower part (quick browser)
+    leftWidget=new QSplitter(Qt::Vertical, centralWidget);
 
+    // setup html playlist view
+    playlistPart = new KHTMLPart(leftWidget, 0, 0L, 0);
+    playlistPart->view()->setHScrollBarMode(QScrollView::AlwaysOn);
+    
+    centralWidget->setResizeMode( leftWidget, QSplitter::KeepSize );
+    leftWidget->setResizeMode( playlistPart->view(), QSplitter::KeepSize );
+    
     // set up the quick browser on the left
-    folderListView = new QListView( centralWidget );
+    folderListView = new QListView( leftWidget );
     folderListView->header()->setClickEnabled( FALSE );
-    folderListView->addColumn( i18n("Quick Browser") );
+    folderListView->addColumn( i18n("Quick Browser"), -1 );
     folderListView->setRootIsDecorated( TRUE );
     folderListView->setSorting(-1);
-    centralWidget->setResizeMode( folderListView, QSplitter::KeepSize );
 
     // set up the songlist on the right
     songListView = new MyListView( centralWidget );
-
-    QValueList<int> lst;
-    lst.append( 150 );
-    centralWidget->setSizes( lst );
-
+    
     setCentralWidget(centralWidget);
 
     // signals of folderListView
@@ -3567,13 +3649,6 @@ void YammiGui::createMenuBar( ) {
 
     KMenuBar *mainMenu = menuBar( );
     mainMenu->insertItem( i18n("Columns"), columnsMenu, -1, 3 );
-    // the following does not work...
-    //	int id=mainMenu->idAt(3);
-    //	kdDebug() << "id: " << id << endl;
-    //	if(id == -1) return;
-    //	QMenuItem* item=mainMenu->findItem(id);
-    //	if(item == 0) {		return;	}
-    //	QPopupMenu* subMenu=(QPopupMenu*) item;
 }
 
 /**

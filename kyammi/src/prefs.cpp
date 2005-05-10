@@ -85,6 +85,8 @@ void Prefs::setDefaultValues(void) {
     swapSize = 200;
     mountMediaDir = true;
     consistencyPara.setDefaults();
+    
+    playqueueTemplate = "<html><body><img src=\"/home/brian/eye.jpg\" border=\"0\" width=\"341\" height=\"187\"><br><strong><em>Playqueue</em></strong><br/><!-- played songs --><FONT color=\"green\" size=\"-2\">{scope:-3}{artist} - {title}<br/>{scope:-2}{artist} - {title}<br/>{scope:-1}{artist} - {title}<br/></FONT><!-- current song --><FONT color=\"red\" size=\"+1\">{scope:0}{artist} - {title} ({length})<br/>{trackNr} {album}<br/></FONT><!-- songs to play --><FONT color=\"blue\" size=\"-1\">{scope:1}{artist} - {title} ({length})<br/>{scope:2}{artist} - {title} ({length})<br/>{scope:3}{artist} - {title} ({length})<br/></FONT></body></html>";    
 }
 
 
@@ -120,6 +122,7 @@ bool Prefs::loadConfig( ) {
     lazyGrouping                 = cfg->readBoolEntry("lazyGrouping", lazyGrouping);
     searchThreshold              = cfg->readNumEntry("searchThreshold", searchThreshold);
     mediaPlayer                  = cfg->readNumEntry("mediaPlayer", mediaPlayer);
+    playqueueTemplate            = cfg->readEntry("playqueueTemplate", playqueueTemplate);
 
     cfg->setGroup("Xmms");
     keepInXmms                   = cfg->readNumEntry("keepInXmms", keepInXmms);
@@ -202,7 +205,8 @@ bool Prefs::saveConfig( ) {
     cfg->writeEntry("groupThreshold", groupThreshold);
     cfg->writeEntry("lazyGrouping", lazyGrouping);
     cfg->writeEntry("searchThreshold", searchThreshold);
-    cfg->writeEntry("mediaPlayer", mediaPlayer );
+    cfg->writeEntry("mediaPlayer", mediaPlayer);    
+    cfg->writeEntry("playqueueTemplate", playqueueTemplate);
 
     cfg->setGroup("Xmms");
     cfg->writeEntry("keepInXmms", keepInXmms);

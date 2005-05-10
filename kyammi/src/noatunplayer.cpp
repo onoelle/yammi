@@ -63,7 +63,6 @@ NoatunPlayer::~NoatunPlayer() {}
  * Clear playlist of active player.
  */
 void NoatunPlayer::clearActivePlayerPlaylist() {
-    kdDebug() << getCurrentPlayerId() << "clearActivePlayerPlaylist()" << endl;
     sendDcopCommand(QString("clear()"));
     return;
 }
@@ -73,7 +72,6 @@ void NoatunPlayer::clearActivePlayerPlaylist() {
 // check whether two instances of Noatun are running, if not: tries to start them
 // returns true on success
 bool NoatunPlayer::ensurePlayerIsRunning() {
-    kdDebug() << getCurrentPlayerId() << "ensurePlayerIsRunning()" << endl;
     int count=0;
     QString replyStr;
     for(int tries=0; count<2 && tries<10; tries++) {
@@ -160,7 +158,6 @@ void NoatunPlayer::onFade() {
     else {
         fade = currentTime * 100 / model->config()->fadeTime;
     }
-    kdDebug() << "fade:" << fade << endl;
     if(fade<100) {
         sendDcopCommandInt("setVolume(int)", 100-(fade*(100-model->config()->fadeOutEnd)/100), fadeOut);
         sendDcopCommandInt("setVolume(int)", model->config()->fadeInStart+(fade*(100-model->config()->fadeInStart)/100), fadeIn);

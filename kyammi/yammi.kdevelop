@@ -220,8 +220,8 @@ which allows convenient and fast access to any songs.
     <bzip>false</bzip>
     <archname/>
     <appname>yammi</appname>
-    <version>1.2-beta</version>
-    <release>1.2-beta</release>
+    <version>1.2</version>
+    <release>1.2</release>
     <vendor>oliver.noelle</vendor>
     <licence>GPL</licence>
     <summary>Yet Another Music Manager I...</summary>
@@ -232,7 +232,7 @@ which allows convenient and fast access to any songs.
     <devpackage>false</devpackage>
     <docspackage>false</docspackage>
     <appicon>false</appicon>
-    <arch>0</arch>
+    <arch>1</arch>
     <genHTML>false</genHTML>
     <useRPM>false</useRPM>
     <ftpkde>false</ftpkde>

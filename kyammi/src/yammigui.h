@@ -32,6 +32,7 @@
 
 
 class QSlider;
+class QSplitter;
 class QListView;
 class QListViewItem;
 class QComboBox;
@@ -52,6 +53,7 @@ class KToggleAction;
 class SearchThread;
 class TrackPositionSlider;
 class Prefs;
+class KHTMLPart;
 // -----------------------------------------------------------------
 
 
@@ -193,6 +195,7 @@ public slots:
     void checkForGrabbedTrack();
     void slotFolderChanged();
     void updatePlaylist();
+    void updateHtmlPlaylist();
     void updatePlayerStatus();
 
     void selectAll();
@@ -271,6 +274,7 @@ public slots:
 public:
     MediaPlayer*  player;
     MyListView* songListView;
+    KHTMLPart* playlistPart;
     Folder* chosenFolder;
     QWaitCondition searchFieldChangedIndicator;
 
@@ -334,7 +338,8 @@ protected:
     // gui
     //***************
     QListView* folderListView;
-
+    QSplitter* centralWidget;
+    QSplitter* leftWidget;
     QComboBox* mediaListCombo;
     QPushButton* loadFromMediaButton;
 
