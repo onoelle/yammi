@@ -45,6 +45,7 @@ public:
         GstPlayer( YammiModel *yammi );
         virtual ~GstPlayer();
 
+        virtual bool finishInitialization() { return true; }
         virtual QString getName()  {
             return "GstPlayer";
         }

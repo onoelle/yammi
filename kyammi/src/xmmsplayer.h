@@ -35,18 +35,19 @@ class XmmsPlayer : public MediaPlayer {
 public:
     XmmsPlayer(int session, YammiModel* model);
     ~XmmsPlayer();
+    bool finishInitialization();
 
     QString getName() {
         return "xmms";
     }
 
 protected:
-    bool          ensurePlayerIsRunning();
+    bool          ensurePlayerIsRunning(bool block);
     int           session;      // xmms session id
     int           timeLeft;
-    bool			    xmmsShuffleWasActivated;
-    bool			    xmmsRepeatWasActivated;
-    void			    myWait(int msecs);
+    bool          xmmsShuffleWasActivated;
+    bool          xmmsRepeatWasActivated;
+    void          myWait(int msecs);
 
 public:
     // overriden methods

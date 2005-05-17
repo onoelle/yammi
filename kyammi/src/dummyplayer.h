@@ -31,6 +31,8 @@ DummyPlayer( YammiModel *y) : MediaPlayer(y) {}
     ;
     virtual ~DummyPlayer() {}
     ;
+    
+    virtual bool finishInitialization() { return true; }
 
     QString getName() {
         return "DummyPlayer";

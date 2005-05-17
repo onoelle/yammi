@@ -59,14 +59,18 @@ void SongInfo::update()
     bool filenameCorrections = false;
     bool pathCorrections = false;
     for(Song* s = selectedSongs->firstSong(); s; s = selectedSongs->nextSong()) {
-        Song* x = new Song();
-        x->updateReadableFields(s);
+        Song x;
+        x.updateReadableFields(s);
         
-        if(applyChanges(x)) {
+        if(applyChanges(&x)) {
             change = true;
         }
-        QString _constructedFilename = x->constructFilename();
-        QString _constructedPath = x->constructPath();
+        QString _constructedFilename = x.constructFilename();
+        QString _constructedPath = x.constructPath();
+        if(s->filename == "") {
+            _constructedFilename = "";
+            _constructedPath = "";
+        }
         if(firstSong) {
             _proposedFilename = _constructedFilename;
             _proposedPath = _constructedPath;

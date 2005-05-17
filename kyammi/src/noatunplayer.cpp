@@ -21,9 +21,11 @@
 #include <iostream>
 #include <kurl.h>
 #include <kdebug.h>
+#include <kprocess.h>
 using namespace std;
 #include <stdlib.h>
 #include <qprocess.h>
+#include <qwaitcondition.h>
 #include "songentryint.h"
 
 NoatunPlayer::NoatunPlayer(YammiModel* model) : MediaPlayer( model ) {
@@ -33,7 +35,14 @@ NoatunPlayer::NoatunPlayer(YammiModel* model) : MediaPlayer( model ) {
     QCString realAppId = client->registerAs("yammi");
 
     currentPlayer=1;
-    ensurePlayerIsRunning();
+    fade=100;
+    ensurePlayerIsRunning(false);
+}   
+
+
+bool NoatunPlayer::finishInitialization()
+{
+    ensurePlayerIsRunning(true);
     // find out which one of the players is playing and take that one as current player
     if(getStatus()==STOPPED) {
         currentPlayer=0;
@@ -47,8 +56,8 @@ NoatunPlayer::NoatunPlayer(YammiModel* model) : MediaPlayer( model ) {
     // this will be the active player
     currentPlayer=(currentPlayer+1) % 2;
     sendDcopCommandInt("setVolume(int)", 100);
-    fade=100;
     connect( &fadeTimer, SIGNAL(timeout()), SLOT(onFade()) );
+    return true;
 }
 
 
@@ -69,9 +78,11 @@ void NoatunPlayer::clearActivePlayerPlaylist() {
 
 
 
-// check whether two instances of Noatun are running, if not: tries to start them
-// returns true on success
-bool NoatunPlayer::ensurePlayerIsRunning() {
+/**
+ * check whether two instances of Noatun are running, if not: tries to start them
+ * returns true on success
+ */
+bool NoatunPlayer::ensurePlayerIsRunning(bool block) {
     int count=0;
     QString replyStr;
     for(int tries=0; count<2 && tries<10; tries++) {
@@ -105,7 +116,14 @@ bool NoatunPlayer::ensurePlayerIsRunning() {
         for(int i=count; i<2; i++) {
             // if not enough players running: start the missing ones!
             kdDebug() << "trying to start another instance of noatun...\n";
-            system("noatun");
+            KProcess proc;
+            proc << "noatun";
+            proc.start(KProcess::DontCare);
+        }
+        if(count < 2) {
+            // wait for noatun to startup
+            QWaitCondition wait;
+            wait.wait(1000);
         }
     }
     if(count < 2) {
@@ -488,7 +506,7 @@ int NoatunPlayer::callGetInt(QString command, int id) {
     if (!client->call(str.latin1(), QString("Noatun").latin1(), command.latin1(), data, replyType, replyData)) {
         kdDebug() << "call() failed, maybe noatun was closed?\n";
         kdDebug() << "I will check now and restart noatun if necessary...\n";
-        ensurePlayerIsRunning();
+        ensurePlayerIsRunning(true);
     } else {
         QDataStream reply(replyData, IO_ReadOnly);
         if (replyType == "int") {

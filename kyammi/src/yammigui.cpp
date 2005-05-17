@@ -221,6 +221,11 @@ void YammiGui::loadDatabase(QString databaseDir) {
     //player->syncPlayer2Yammi(&(model->songsToPlay));
     KConfig* cfg = kapp->config();
     cfg->setGroup("General Options");
+
+    model->readCategories();
+    model->readHistory();
+    player->finishInitialization();
+    
     bool restorePlaylistOnStartup = true;            // TODO: make this configurable
     if(restorePlaylistOnStartup) {
         model->readList(&(model->songsToPlay), config()->databaseDir + "/" + "playqueue.xml");
@@ -239,9 +244,6 @@ void YammiGui::loadDatabase(QString databaseDir) {
         }
     }
     checkPlaylistAvailability();
-
-    model->readCategories();
-    model->readHistory();
     // update dynamic folders based on database contents
     updateView(true);
 
@@ -3397,6 +3399,11 @@ void YammiGui::loadMediaPlayer( ) {
     kdDebug() << "Media Player : " << player->getName( ) << endl;
 }
 
+void YammiGui::playlistViewPopup(const QString &url, const QPoint &point) {
+    kdDebug() << "url: " << url << endl;
+    xxx
+}
+
 /**
  * Create main gui of Yammi
  */
@@ -3409,6 +3416,7 @@ void YammiGui::createMainWidget( ) {
 
     // setup html playlist view
     playlistPart = new KHTMLPart(leftWidget, 0, 0L, 0);
+    connect( playlistPart, SIGNAL( popupMenu(const QString &url, const QPoint &point)), this, SLOT(playlistViewPopup(const QString &url, const QPoint &point)) );
     playlistPart->view()->setHScrollBarMode(QScrollView::AlwaysOn);
     
     centralWidget->setResizeMode( leftWidget, QSplitter::KeepSize );

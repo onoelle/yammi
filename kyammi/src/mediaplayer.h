@@ -38,46 +38,48 @@ enum PlayerStatus { STOPPED, PAUSED, PLAYING};
  * 4. Whenever Yammi changes it's playlist, it calls syncYammi2Player()
  *    to possibly fill up the playlist of the player.
  */
-class MediaPlayer : public QObject
-{
-  Q_OBJECT
+class MediaPlayer : public QObject {
+    Q_OBJECT
 
-public: 
-	MediaPlayer( YammiModel *yammi );
-	virtual ~MediaPlayer();
-	virtual QString getName() = 0;
-	
-	virtual void clearPlaylist() = 0;
-  
+public:
+    MediaPlayer( YammiModel *yammi );
+    virtual bool finishInitialization() = 0;
+    virtual ~MediaPlayer();
+    virtual QString getName() = 0;
+
+    virtual void clearPlaylist() = 0;
+
 public slots:
-  virtual void check() = 0;
-  virtual PlayerStatus getStatus() { return status; }
-  virtual bool play() = 0;
-  virtual bool pause() = 0;
-  virtual bool stop() = 0;
-  virtual bool playPause() = 0;
-  virtual bool skipForward(bool withoutCrossfading) = 0;
-  virtual bool skipBackward(bool withoutCrossfading) = 0;
-  virtual void syncYammi2Player() = 0;
-  virtual bool jumpTo(int value) = 0;
-  virtual QString getCurrentFile() = 0;
-  virtual int getCurrentTime() = 0;
-  virtual int getTotalTime() = 0;
-  virtual void quit() = 0;
+    virtual void check() = 0;
+    virtual PlayerStatus getStatus() {
+        return status;
+    }
+    virtual bool play() = 0;
+    virtual bool pause() = 0;
+    virtual bool stop() = 0;
+    virtual bool playPause() = 0;
+    virtual bool skipForward(bool withoutCrossfading) = 0;
+    virtual bool skipBackward(bool withoutCrossfading) = 0;
+    virtual void syncYammi2Player() = 0;
+    virtual bool jumpTo(int value) = 0;
+    virtual QString getCurrentFile() = 0;
+    virtual int getCurrentTime() = 0;
+    virtual int getTotalTime() = 0;
+    virtual void quit() = 0;
 
 signals:
-	// should be emitted, if the playlist of player changed (eg. song change)
-	void playlistChanged();
-	// should be emitted, if status of player changed (eg. play -> pause)
-	void statusChanged();
-	
+    // should be emitted, if the playlist of player changed (eg. song change)
+    void playlistChanged();
+    // should be emitted, if status of player changed (eg. play -> pause)
+    void statusChanged();
+
 protected:
-  PlayerStatus status;
-  PlayerStatus lastStatus;
-  YammiModel*   model;
-  MyList* playlist;
-	
-  
+    PlayerStatus status;
+    PlayerStatus lastStatus;
+    YammiModel*   model;
+    MyList* playlist;
+
+
 };
 
 #endif

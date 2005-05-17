@@ -5,8 +5,6 @@ last update 10.03.2005
 
 for version 1.2.1
 -----------------
-- fix: deactivate "correct path" when no filename (song on media)
-
 - add: publish plugin for html-export
 - add: add unplayable songs to problematic songs
 - improve: simplify {wish} system: (make every entry with empty filename (no media) a wish?

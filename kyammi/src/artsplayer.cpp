@@ -51,6 +51,9 @@ namespace Yammi {
         m_currentSong = 0;
     }
 
+    bool ArtsPlayer::finishInitialization() {
+        return true;
+    }
 
     ArtsPlayer::~ArtsPlayer() {
         kdDebug() << "---ArtsPlayer::~ArtsPlayer(YammiModel *yammi)" << endl;

@@ -24,16 +24,24 @@
 
 #include "songentryint.h"
 #include <kdebug.h>
+#include <kprocess.h>
 
 
 XmmsPlayer::XmmsPlayer(int session, YammiModel* model) : MediaPlayer( model ) {
     #ifdef ENABLE_XMMS
     this->session=session;
-    bool alreadyRunning=ensurePlayerIsRunning();
+    bool alreadyRunning=ensurePlayerIsRunning(false);
     if(alreadyRunning) {
         kdDebug() << "xmms is already running\n";
     }
-    // check whether xmms is in shuffle or repeat mode: if yes, disable it
+    #endif
+}
+
+bool XmmsPlayer::finishInitialization()
+{
+    #ifdef ENABLE_XMMS
+    ensurePlayerIsRunning(true);
+     // check whether xmms is in shuffle or repeat mode: if yes, disable it
     if(xmms_remote_is_shuffle(session)) {
         xmms_remote_toggle_shuffle(session);
         xmmsShuffleWasActivated=true;
@@ -49,6 +57,7 @@ XmmsPlayer::XmmsPlayer(int session, YammiModel* model) : MediaPlayer( model ) {
         xmmsRepeatWasActivated=false;
     }
     #endif
+    return true;
 }
 
 
@@ -70,7 +79,7 @@ XmmsPlayer::~XmmsPlayer() {
  * This call blocks until xmms is up.
  * Returns, whether xmms was already running.
  */
-bool XmmsPlayer::ensurePlayerIsRunning() {
+bool XmmsPlayer::ensurePlayerIsRunning(bool block) {
     #ifdef ENABLE_XMMS
     if(xmms_remote_is_running(session)) {
         kdDebug() << "running instance of xmms found\n";
@@ -78,8 +87,15 @@ bool XmmsPlayer::ensurePlayerIsRunning() {
     }
 
     kdDebug() << "xmms not running, starting it...\n";
-    system("xmms &");
-
+    //system("xmms &");
+    KProcess* proc = new KProcess();
+    *proc << "xmms";
+    proc->setUsePty(KProcess::NoCommunication, true);
+    proc->start(KProcess::OwnGroup);
+    if(!block) {
+        return false;
+    }
+    
     int i;
     for(i=0; !xmms_remote_is_running(session) && i<100; i++) {
         kdDebug() << "waiting for xmms to be ready ( " << i << " of 100 tries)\n";
@@ -246,7 +262,7 @@ bool XmmsPlayer::pause() {
 /// toggle between play and pause
 bool XmmsPlayer::playPause() {
     #ifdef ENABLE_XMMS
-    ensurePlayerIsRunning();
+    ensurePlayerIsRunning(true);
     xmms_remote_play_pause(session);
     #endif
 
@@ -257,7 +273,7 @@ bool XmmsPlayer::playPause() {
 /// skip forward in playlist (if desired without crossfading)
 bool XmmsPlayer::skipForward(bool withoutCrossfading) {
     #ifdef ENABLE_XMMS
-    ensurePlayerIsRunning();
+    ensurePlayerIsRunning(true);
     if(withoutCrossfading) {
         xmms_remote_pause(session);
     }
@@ -274,7 +290,7 @@ bool XmmsPlayer::skipForward(bool withoutCrossfading) {
 /// skip backward in playlist (if desired without crossfading)
 bool XmmsPlayer::skipBackward(bool withoutCrossfading) {
     #ifdef ENABLE_XMMS
-    ensurePlayerIsRunning();
+    ensurePlayerIsRunning(true);
     if(withoutCrossfading) {
         xmms_remote_pause(session);
     }
@@ -297,7 +313,7 @@ bool XmmsPlayer::skipBackward(bool withoutCrossfading) {
 /// stop playback
 bool XmmsPlayer::stop() {
     #ifdef ENABLE_XMMS
-    ensurePlayerIsRunning();
+    ensurePlayerIsRunning(true);
     xmms_remote_stop(session);
     #endif
 

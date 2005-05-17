@@ -1,6 +1,7 @@
 ??.??.2005 version 1.2.1
 ########################
 - added: playlist view (using a configurable html template)
+- fixed: deactivate "correct filename/path" when no filename (song only on media)
 
 10.03.2005 version 1.2
 ######################

@@ -61,6 +61,9 @@ public:
 	virtual void clearPlaylist();
 
 public slots:
+	
+    /** Reimplemented from MediaPlayer. */
+    virtual bool finishInitialization();
 
 	/** Reimplemented from MediaPlayer.
 	    Checks if the current song has finished and starts the next one */
