@@ -2,7 +2,7 @@
                           yammigui.cpp  -  description
                              -------------------
     begin                : Tue Feb 27 2001
-    copyright            : (C) 2001 by Brian O.Nölle
+    copyright            : (C) 2001 by Brian O.Nï¿½le
     email                : yammi-developer@lists.sourceforge.net
  ***************************************************************************/
 
@@ -542,6 +542,9 @@ void YammiGui::updateHtmlPlaylist()
     formattedTime.sprintf(i18n("%d:%02d"), length/(60*60), (length % (60*60))/60);
     htmlTemplate.replace(QRegExp("\\{noSongsToPlay\\}"), QString("%1").arg(noSongsToPlay));
     htmlTemplate.replace(QRegExp("\\{timeToPlay\\}"), formattedTime);
+    
+    QString yammiDir = KGlobal::dirs()->findResourceDir("appdata","pics/nowplaying.png");    
+    htmlTemplate.replace(QRegExp("\\{yammiPicsDir\\}"), yammiDir + "pics");
 
     QString htmlSource("");
     
@@ -3401,7 +3404,6 @@ void YammiGui::loadMediaPlayer( ) {
 
 void YammiGui::playlistViewPopup(const QString &url, const QPoint &point) {
     kdDebug() << "url: " << url << endl;
-    xxx
 }
 
 /**

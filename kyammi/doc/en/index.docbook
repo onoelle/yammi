@@ -1419,6 +1419,17 @@ Yammi has a set of standard plugins already configured.
 For other plugin examples, have a look at Yammi's website.
 </para>
 </sect2>
+
+
+<sect2>
+<title>Customizing the playlist view</title>
+<para>
+Yammi uses a template to display the playlist in the upper left corner of its window.
+This template can easily be customized, just have a look at it in the configuration dialog.
+The placeholders like {artist} and scope definitions like {scope:1} should be almost self-explanatory...
+</para>
+</sect2>
+
 </sect1>
 
 <sect1 id="tipsAndTricks">

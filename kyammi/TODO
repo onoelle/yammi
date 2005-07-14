@@ -1,11 +1,10 @@
 TODO
 ----
-last update 10.03.2005
+last update 12.07.2005
 
 
-for version 1.2.1
+for version 1.2.2
 -----------------
-- add: publish plugin for html-export
 - add: add unplayable songs to problematic songs
 - improve: simplify {wish} system: (make every entry with empty filename (no media) a wish?
 - improve: child safe mode?
@@ -14,7 +13,6 @@ for version 1.2.1
 - on deleting a song: delete in *all* lists (history, categories, ...)
 - improve: use dialog with textbox for properly displaying a plugin's command before executing
 media-player-related:
-- speedup startup by starting media players in own thread (noatun, xmms)
 - fix: skipForward in noatun while still crossfading: take current volume as start of crossfading
 - fix: xmms stopped, enqueue as next: does not work
 - rating of songs
@@ -44,7 +42,7 @@ most recent first:
 - (12.12.2004) If you "Play now" a song that is already playing, Yammi crashes. 
   => cannot reproduce with xmms or noatun => only with artsplayer???
 - (12.12.2004) I confirm too the crash when exiting yammi, it happens before yammi writes
- the config file, no matter what the player backend is.
+the config file, no matter what the player backend is.
   => cannot reproduce, maybe fixed with correctly terminating searchthread?
 - (14.09.2004) cannot sort files according to path
 - (15.08.2004) crash on clearing playlist including currently played song (which media player?)

@@ -6,7 +6,7 @@
 # - and where do I find good docs (and not "to be written..." all over)
 
 
-EXTRA_DIST = in.xpm notin.xpm newCategory.xpm some_in.xpm yammi16x16.png yammi32x32.png yammi48x48.png yammi64x64.png stop_prelisten.png prelisten_start.png prelisten_middle.png prelisten_end.png play_now.png enqueue_asnext.png enqueue.png toggle_playlist.png
+EXTRA_DIST = in.xpm notin.xpm newCategory.xpm some_in.xpm yammi16x16.png yammi32x32.png yammi48x48.png yammi64x64.png stop_prelisten.png prelisten_start.png prelisten_middle.png prelisten_end.png play_now.png enqueue_asnext.png enqueue.png toggle_playlist.png nowplaying.png playlistbackground.jpg
 
 install-data-local:
 	$(mkinstalldirs) $(kde_datadir)/yammi/icons/crystalsvg/22x22/actions/
@@ -19,6 +19,10 @@ install-data-local:
 	$(INSTALL_DATA) $(srcdir)/prelisten_middle.png $(kde_datadir)/yammi/icons/crystalsvg/22x22/actions/prelisten_middle.png
 	$(INSTALL_DATA) $(srcdir)/prelisten_end.png $(kde_datadir)/yammi/icons/crystalsvg/22x22/actions/prelisten_end.png
 	$(INSTALL_DATA) $(srcdir)/toggle_playlist.png $(kde_datadir)/yammi/icons/crystalsvg/22x22/actions/toggle_playlist.png
+	
+	$(mkinstalldirs) $(kde_datadir)/yammi/pics/
+	$(INSTALL_DATA) $(srcdir)/nowplaying.png $(kde_datadir)/yammi/pics/nowplaying.png
+	$(INSTALL_DATA) $(srcdir)/playlistbackground.jpg $(kde_datadir)/yammi/pics/playlistbackground.jpg
 
 	$(mkinstalldirs) $(kde_icondir)/crystalsvg/{16x16,22x22,32x32,48x48,64x64}/apps/
 
@@ -37,6 +41,8 @@ uninstall-local:
 	-rm -f $(kde_datadir)/yammi/icons/crystalsvg/22x22/actions/prelisten_end.png
 	-rm -f $(kde_datadir)/yammi/icons/crystalsvg/22x22/actions/stop_prelisten.png
 	-rm -f $(kde_datadir)/yammi/icons/crystalsvg/22x22/actions/toggle_playlist.png
+	-rm -f $(kde_datadir)/yammi/pics/nowplaying.png
+	-rm -f $(kde_datadir)/yammi/pics/playlistbackground.jpg
 	-rm -f $(kde_icondir)/crystalsvg/16x16/apps/yammi.png
 	-rm -f $(kde_icondir)/crystalsvg/22x22/apps/yammi.png
 	-rm -f $(kde_icondir)/crystalsvg/32x32/apps/yammi.png

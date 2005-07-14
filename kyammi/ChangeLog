@@ -1,7 +1,8 @@
-??.??.2005 version 1.2.1
+12.07.2005 version 1.2.1
 ########################
 - added: playlist view (using a configurable html template)
-- fixed: deactivate "correct filename/path" when no filename (song only on media)
+- improved: loading media players in background (reduces startup time)
+- fixed: song info dialog: deactivate "correct filename/path" when no filename (song only on media)
 
 10.03.2005 version 1.2
 ######################
