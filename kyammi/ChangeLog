@@ -1,8 +1,9 @@
-12.07.2005 version 1.2.1
+18.07.2005 version 1.2.1
 ########################
 - added: playlist view (using a configurable html template)
 - improved: loading media players in background (reduces startup time)
 - fixed: song info dialog: deactivate "correct filename/path" when no filename (song only on media)
+- updated my development environment to a Suse 9.3 based KDE 3.4.1 (KDevelop 3.2.1)
 
 10.03.2005 version 1.2
 ######################

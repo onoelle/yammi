@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <!DOCTYPE book PUBLIC "-//KDE//DTD DocBook XML V4.1.2-Based Variant V1.1//EN" "dtd/kdex.dtd" [
-  <!ENTITY yammi "<application>yammi 1.2</application>">
+  <!ENTITY yammi "<application>yammi 1.2.1</application>">
   <!ENTITY kappname "&yammi;"><!-- Do *not* replace kappname-->
   <!ENTITY package "kde-multimedia"><!-- kdebase, kdeadmin, etc -->
   <!ENTITY % addindex "IGNORE">
@@ -76,8 +76,8 @@ Please respect the format of the date (YYYY-MM-DD) and of the version
 (V.MM.LL), it could be used by automation scripts.
 Do NOT change these in the translation. -->
 
-<date>2005-02-06</date>
-<releaseinfo>1.2</releaseinfo>
+<date>2005-07-17</date>
+<releaseinfo>1.2.1</releaseinfo>
 
 <!-- Abstract about this handbook -->
 

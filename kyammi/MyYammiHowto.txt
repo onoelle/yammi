@@ -66,7 +66,7 @@ In kdevelop
 3. Build -> Run configure
 4. Tools -> Project Distribution & Publishing -> make distribution
 
-anschlieﬂend CVS taggen!
+anschliessend CVS taggen!
 
 publish handbook
 ----------------
@@ -74,4 +74,4 @@ cp /home/oliver/work/programming/kyammi/docs/index.docbook /home/oliver/work/pro
 im 2. Verzeichnis:
 meinproc --check index.docbook
 ./myreplace
-...und anschlieﬂend mit Quanta hochladen
+...und anschliessend mit Quanta hochladen

@@ -86,7 +86,35 @@ void Prefs::setDefaultValues(void) {
     mountMediaDir = true;
     consistencyPara.setDefaults();
     
-    playqueueTemplate = "<html><body><img src=\"/home/brian/eye.jpg\" border=\"0\" width=\"341\" height=\"187\"><br><strong><em>Playqueue</em></strong><br/><!-- played songs --><FONT color=\"green\" size=\"-2\">{scope:-3}{artist} - {title}<br/>{scope:-2}{artist} - {title}<br/>{scope:-1}{artist} - {title}<br/></FONT><!-- current song --><FONT color=\"red\" size=\"+1\">{scope:0}{artist} - {title} ({length})<br/>{trackNr} {album}<br/></FONT><!-- songs to play --><FONT color=\"blue\" size=\"-1\">{scope:1}{artist} - {title} ({length})<br/>{scope:2}{artist} - {title} ({length})<br/>{scope:3}{artist} - {title} ({length})<br/></FONT></body></html>";    
+    playqueueTemplate = "{scope:none}\
+<html>\
+<head></head>\
+<body background=\"{yammiPicsDir}/playlistbackground.jpg\" style=\"font-size:10pt;font-family:helvetica\">\
+<p>\
+<nobr><span style=\"font-size:14pt;font-weight:bold;font-style:italic;color:#888888\">&nbsp; Playqueue</span></nobr><br />\
+<span style=\"font-size:10pt;color:#00aa00\">\
+{scope:-3}<nobr>-3. {artist} - {title} ({length})</nobr><br />\
+{scope:-2}<nobr>-2. {artist} - {title} ({length})</nobr><br />\
+{scope:-1}<nobr>-1. {artist} - {title} ({length})</nobr><br />\
+</span>\
+{scope:0}<span style=\"font-size:10pt;color:#ff0000\">\
+<nobr><img align=\"left\" src=\"file:{yammiPicsDir}/nowplaying.png\"/>\
+<b>&nbsp;{artist} - {title} ({length})</nobr></b><br />\
+<nobr>&nbsp;Album: {album}, Track: {trackNr}</nobr><br />\
+</span>\
+<span style=\"font-size:10pt;color:#0000ff\">\
+{scope:1}<nobr>1. &nbsp;{artist} - {title} ({length})</nobr><br/>\
+{scope:2}<nobr>2. &nbsp;{artist} - {title} ({length})</nobr><br/>\
+{scope:3}<nobr>3. &nbsp;{artist} - {title} ({length})</nobr><br/>\
+{scope:4}<nobr>4. &nbsp;{artist} - {title} ({length})</nobr><br/>\
+{scope:5}<nobr>5. &nbsp;{artist} - {title} ({length})</nobr><br/>\
+{scope:none}\
+</span>\
+<span style=\"font-size:10pt;color:#888888\">\
+<nobr>&nbsp;&nbsp;...{noSongsToPlay} songs to play ({timeToPlay} hh:mm)</nobr><br/>\
+</span>\
+</p>\
+</body></html>";
 }
 
 

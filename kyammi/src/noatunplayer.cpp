@@ -2,7 +2,7 @@
                           noatunplayer.cpp  -  description
                              -------------------
     begin                : Sun Jan 19 2003
-    copyright            : (C) 2003 by Oliver Nölle
+    copyright            : (C) 2003 by Oliver Nï¿½le
     email                : yammi-developer@lists.sourceforge.net
  ***************************************************************************/
 
@@ -116,15 +116,17 @@ bool NoatunPlayer::ensurePlayerIsRunning(bool block) {
         for(int i=count; i<2; i++) {
             // if not enough players running: start the missing ones!
             kdDebug() << "trying to start another instance of noatun...\n";
-            KProcess proc;
+// does not work well:
+/*            KProcess proc;
             proc << "noatun";
-            proc.start(KProcess::DontCare);
+            proc.start(KProcess::Block); */
+            system("noatun");
         }
-        if(count < 2) {
+/*        if(count < 2) {
             // wait for noatun to startup
             QWaitCondition wait;
             wait.wait(1000);
-        }
+        }*/
     }
     if(count < 2) {
         kdError() << "could not start the two required noatun instances!\n";
