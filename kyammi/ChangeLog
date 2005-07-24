@@ -1,8 +1,10 @@
-18.07.2005 version 1.2.1
+24.07.2005 version 1.2.1
 ########################
 - added: playlist view (using a configurable html template)
-- improved: loading media players in background (reduces startup time)
+- improved: loading media players in background (reduces startup time) (except noatun)
 - fixed: song info dialog: deactivate "correct filename/path" when no filename (song only on media)
+- fixed: bug 1241570 (Not completly scanned / Corrupt database) (thanks to Marco)
+- added: debian packaging support for the source tree (thanks to Janne)
 - updated my development environment to a Suse 9.3 based KDE 3.4.1 (KDevelop 3.2.1)
 
 10.03.2005 version 1.2

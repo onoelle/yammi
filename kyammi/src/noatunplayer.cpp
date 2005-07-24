@@ -426,7 +426,7 @@ int NoatunPlayer::getTotalTime() {
 
 
 void NoatunPlayer::syncYammi2Player() {
-    kdDebug() << getCurrentPlayerId() << "syncYammi2Player()" << endl;
+//    kdDebug() << getCurrentPlayerId() << "syncYammi2Player()" << endl;
     bool haveToUpdate = model->skipUnplayableSongs();
     
     if(playlist->count()==0) {

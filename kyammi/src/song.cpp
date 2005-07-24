@@ -183,7 +183,7 @@ bool Song::create(const QString location, const QString mediaName, bool capitali
  * @return true if at least one tag could be read and was not empty, false otherwise.
  */
 bool Song::readTags(QString filename) {
-    TagLib::FileRef f(filename);
+    TagLib::FileRef f(QFile::encodeName(filename));
     if(f.isNull()) {
         kdDebug() << "reading tags: could not create TagLib::FileRef for file " << filename << endl;
         return false;
@@ -215,7 +215,7 @@ bool Song::readTags(QString filename) {
  * @return true if properties could be read, false otherwise.
  */
 bool Song::readLayerInfo(QString filename) {
-    TagLib::FileRef f(filename);
+    TagLib::FileRef f(QFile::encodeName(filename));
     if(f.isNull()) {
         kdDebug() << "reading layer info: could not create TagLib::FileRef for file " << filename << endl;
     }
@@ -496,7 +496,7 @@ bool Song::saveTags() {
         return false;
     }
 
-    TagLib::FileRef f(filename);
+    TagLib::FileRef f(QFile::encodeName(filename));
     if(f.isNull()) {
         kdDebug() << "saving tags: could not create TagLib::FileRef for file " << filename << endl;
         return false;
@@ -781,12 +781,12 @@ QString Song::makeValidFilename(QString filename, bool file) {
     filename.replace(QRegExp("[?]"), "");                                               // ?
     filename.replace(QRegExp(":"), "");                                                 // :
 
-    filename.replace(QRegExp("ü"), "ue");                                                   // umlaute
-    filename.replace(QRegExp("Ü"), "Ue");                                                   //
-    filename.replace(QRegExp("ö"), "oe");                                                   //
-    filename.replace(QRegExp("Ö"), "Oe");                                                   //
-    filename.replace(QRegExp("ä"), "ae");                                                   //
-    filename.replace(QRegExp("Ä"), "Ae");                                                   //
+    filename.replace(QRegExp("Ã¼"), "ue");                                                   // umlaute
+    filename.replace(QRegExp("Ãœ"), "Ue");                                                   //
+    filename.replace(QRegExp("Ã¶"), "oe");                                                   //
+    filename.replace(QRegExp("Ã–"), "Oe");                                                   //
+    filename.replace(QRegExp("Ã¤"), "ae");                                                   //
+    filename.replace(QRegExp("Ã„"), "Ae");                                                   //
     return filename;
 }
 
