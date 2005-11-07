@@ -111,7 +111,7 @@ void Prefs::setDefaultValues(void) {
 {scope:none}\
 </span>\
 <span style=\"font-size:10pt;color:#888888\">\
-<nobr>&nbsp;&nbsp;...{noSongsToPlay} songs to play ({timeToPlay} hh:mm)</nobr><br/>\
+<nobr>&nbsp;&nbsp;...{noSongsToPlay} more songs to play ({timeToPlay} hh:mm)</nobr><br/>\
 </span>\
 </p>\
 </body></html>";

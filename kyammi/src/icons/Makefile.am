@@ -50,3 +50,11 @@ uninstall-local:
 	-rm -f $(kde_icondir)/crystalsvg/64x64/apps/yammi.png
 
 ####### kdevelop will overwrite this part!!! (end)############
+INCLUDES = -I$(top_srcdir)/src/icons
+noinst_HEADERS = 128.png defaultControlClick.xpm defaultShiftClick.xpm\
+	enqueue_asnext.png enqueue.png in.xpm Makefile Makefile.am Makefile.in\
+	newCategory.xpm notin.xpm nowplaying.png playlistbackground.jpg\
+	play_now.png play_red.png prelisten_end.png prelisten_middle.png\
+	prelisten_start.png some_in.xpm stop_prelisten.png toggle_playlist.png\
+	yammi16x16.png yammi22x22.png yammi32x32.png yammi48x48.png\
+	yammi64x64.png yammi.png

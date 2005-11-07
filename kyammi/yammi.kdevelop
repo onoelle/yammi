@@ -3,7 +3,7 @@
   <general>
     <author>Oliver Nölle</author>
     <email>oli.noelle@web.de</email>
-    <version>1.2.1</version>
+    <version>1.2.3</version>
     <projectmanagement>KDevKDEAutoProject</projectmanagement>
     <primarylanguage>C++</primarylanguage>
     <keywords>
@@ -112,10 +112,10 @@ which allows convenient and fast access to any songs.
       <group pattern="*.po;*.ts" name="Translations" />
       <group pattern="*" name="Others" />
       <hidenonprojectfiles>false</hidenonprojectfiles>
-      <hidenonlocation>true</hidenonlocation>
+      <hidenonlocation>false</hidenonlocation>
     </groups>
     <tree>
-      <hidepatterns></hidepatterns>
+      <hidepatterns/>
       <hidenonprojectfiles>false</hidenonprojectfiles>
       <showvcsfields>false</showvcsfields>
     </tree>
@@ -169,10 +169,10 @@ which allows convenient and fast access to any songs.
     <general>
       <dbgshell>libtool</dbgshell>
       <programargs>--nofork</programargs>
-      <gdbpath/>
-      <configGdbScript/>
-      <runShellScript/>
-      <runGdbScript/>
+      <gdbpath></gdbpath>
+      <configGdbScript></configGdbScript>
+      <runShellScript></runShellScript>
+      <runGdbScript></runGdbScript>
       <breakonloadinglibs>true</breakonloadinglibs>
       <separatetty>false</separatetty>
       <floatingtoolbar>false</floatingtoolbar>
@@ -206,7 +206,7 @@ which allows convenient and fast access to any songs.
       <headerCompletionDelay>250</headerCompletionDelay>
     </codecompletion>
     <creategettersetter>
-      <prefixGet/>
+      <prefixGet></prefixGet>
       <prefixSet>set</prefixSet>
       <prefixVariable>m_,_</prefixVariable>
       <parameterName>theValue</parameterName>
@@ -225,15 +225,22 @@ which allows convenient and fast access to any songs.
     <bzip>false</bzip>
     <archname/>
     <appname>yammi</appname>
-    <version>1.2</version>
-    <release>1.2</release>
+    <version>1.2.2</version>
+    <release>1.2.2</release>
     <vendor>oliver.noelle</vendor>
     <licence>GPL</licence>
     <summary>Yet Another Music Manager I...</summary>
     <group>Multimedia</group>
     <packager>Oliver Noelle</packager>
     <description>Yet Another Music Manager I...</description>
-    <changelog>kde-ified Yammi</changelog>
+    <changelog>Changelog for version 1.2.1
+- added: playlist view (using a configurable html template)
+- improved: loading media players in background (reduces startup time) (except noatun)
+- fixed: song info dialog: deactivate &quot;correct filename/path&quot; when no filename (song only on media)
+- fixed: bug 1241570 (Not completly scanned / Corrupt database) (thanks to Marco)
+- added: debian packaging support for the source tree (thanks to Janne)
+- updated my development environment to a Suse 9.3 based KDE 3.4.1 (KDevelop 3.2.1)
+</changelog>
     <devpackage>false</devpackage>
     <docspackage>false</docspackage>
     <appicon>false</appicon>

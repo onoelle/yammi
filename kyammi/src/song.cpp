@@ -2,7 +2,7 @@
                           song.cpp  -  description
                              -------------------
     begin                : Sat Feb 10 2001
-    copyright            : (C) 2001 by Brian O.NÔøΩle
+    copyright            : (C) 2001 by Brian O.Nƒè≈ºÀùle
     email                : yammi-developer@lists.sourceforge.net
  ***************************************************************************/
 
@@ -781,12 +781,12 @@ QString Song::makeValidFilename(QString filename, bool file) {
     filename.replace(QRegExp("[?]"), "");                                               // ?
     filename.replace(QRegExp(":"), "");                                                 // :
 
-    filename.replace(QRegExp("√º"), "ue");                                                   // umlaute
-    filename.replace(QRegExp("√ú"), "Ue");                                                   //
-    filename.replace(QRegExp("√∂"), "oe");                                                   //
-    filename.replace(QRegExp("√ñ"), "Oe");                                                   //
-    filename.replace(QRegExp("√§"), "ae");                                                   //
-    filename.replace(QRegExp("√Ñ"), "Ae");                                                   //
+    filename.replace(QRegExp("¸"), "ue");                                                   // umlaute
+    filename.replace(QRegExp("‹"), "Ue");                                                   //
+    filename.replace(QRegExp("ˆ"), "oe");                                                   //
+    filename.replace(QRegExp("÷"), "Oe");                                                   //
+    filename.replace(QRegExp("‰"), "ae");                                                   //
+    filename.replace(QRegExp("ƒ"), "Ae");                                                   //
     return filename;
 }
 

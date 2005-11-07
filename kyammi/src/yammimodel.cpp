@@ -606,9 +606,10 @@ bool YammiModel::traverse(QString path, bool followSymLinks, QString filePattern
     QDir d(path);
 
     // step 1: scan files
-    d.setFilter(QDir::Files);
+    d.setFilter(QDir::Files | QDir::Hidden);
     d.setNameFilter(filePattern);
     d.setSorting( QDir::Name );
+    
     const QFileInfoList* list = d.entryInfoList();
     if (!list) {
         kdWarning() << "Warning: Skipping unreadable directory: " << path << "\n";
@@ -630,7 +631,7 @@ bool YammiModel::traverse(QString path, bool followSymLinks, QString filePattern
 
     // step 2: recursively scan subdirectories
     QDir d2(path);
-    d2.setFilter(QDir::Dirs | QDir::Readable);
+    d2.setFilter(QDir::Dirs | QDir::Readable  | QDir::Hidden);
     d2.setSorting( QDir::Name );
     const QFileInfoList* list2 = d2.entryInfoList();
     if (!list2) {

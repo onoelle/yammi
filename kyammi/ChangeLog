@@ -1,4 +1,14 @@
-24.07.2005 version 1.2.1
+??.??.2005 version 1.2.3
+########################
+- fixed: scanning harddisk did not include hidden files and directories
+- fixed: occasional crash after renaming or removing categories
+
+31.07.2005 version 1.2.2
+########################
+- fixed: not properly replacing umlauts for building valid filenames
+- fixed: missing icons and translation files in tarball (bug 1248755)
+
+30.07.2005 version 1.2.1
 ########################
 - added: playlist view (using a configurable html template)
 - improved: loading media players in background (reduces startup time) (except noatun)

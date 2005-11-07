@@ -533,9 +533,12 @@ void YammiGui::updateHtmlPlaylist()
 {
     QString htmlTemplate = config()->playqueueTemplate;
     
-    int noSongsToPlay = folderActual->songlist().count();
+    int noSongsToPlay = folderActual->songlist().count() -1;
+    if(noSongsToPlay < 0) {
+      noSongsToPlay = 0;
+    }
     int length = 0;
-    for(unsigned int i=0; i<folderActual->songlist().count(); i++) {
+    for(unsigned int i=1; i<folderActual->songlist().count(); i++) {
         length += folderActual->songlist().at(i)->song()->length;
     }
     QString formattedTime;
@@ -1367,8 +1370,9 @@ void YammiGui::folderContentChanged(Folder* folder) {
 void YammiGui::addFolderContent(Folder* folder) {
     folderToAdd=folder;
     alreadyAdded=0;
+    kdDebug() << "adding folder content of folder " << folder->folderName() << endl;
 
-    if(folder->songlist().count()!=0) {
+    if(folder->songlist().count() != 0) {
         songListView->setSorting(-1);
         songListView->setUpdatesEnabled(false);
         addFolderContentSnappy();
@@ -1378,19 +1382,24 @@ void YammiGui::addFolderContent(Folder* folder) {
 }
 
 void YammiGui::addFolderContentSnappy() {
+    kdDebug() << "snappy adding folder content of folder " << folderToAdd->folderName() << endl;
     int i=0;
-    SongEntry* entry;
+    SongEntry* entry = 0;
+    
     SongListItem* lastOne=(SongListItem*)songListView->firstChild();
-    for (entry = folderToAdd->firstEntry(); entry && i<alreadyAdded; entry = folderToAdd->nextEntry(), i++ ) {
-        SongListItem* check=(SongListItem*)lastOne->itemBelow();
-        if(check!=0)
-            lastOne=check;
+    if(folderToAdd->songlist().count() != 0) {
+        for (entry = folderToAdd->firstEntry(); entry && i<alreadyAdded; entry = folderToAdd->nextEntry(), i++ ) {
+            SongListItem* check=(SongListItem*)lastOne->itemBelow();
+            if(check!=0)
+                lastOne=check;
+        }
+    
+        for (; entry && i<=alreadyAdded+200; entry = folderToAdd->nextEntry(), i++ ) {
+            lastOne=new SongListItem( songListView, entry); //, lastOne);
+        }
+        alreadyAdded=i;
     }
-
-    for (; entry && i<=alreadyAdded+200; entry = folderToAdd->nextEntry(), i++ ) {
-        lastOne=new SongListItem( songListView, entry); //, lastOne);
-    }
-    alreadyAdded=i;
+    
     // any songs left to add?
     if(entry) {
         // yes, add them after processing events
@@ -1398,6 +1407,7 @@ void YammiGui::addFolderContentSnappy() {
         connect(timer, SIGNAL(timeout()), this, SLOT(addFolderContentSnappy()) );
         timer->start(0, TRUE);
     } else {		// no, we are finished
+        kdDebug() << "finishing off..." << endl;
         QApplication::restoreOverrideCursor();
         songListView->setUpdatesEnabled(true);
 
@@ -2465,9 +2475,11 @@ bool YammiGui::newCategory() {
 void YammiGui::removeCategory() {
     QListViewItem* i = folderListView->currentItem();
     QString name=((Folder*)i)->folderName();
-    QString msg(i18n("Delete category %1 ?\n (will be deleted immediately!)"));
+    QString msg(i18n("Delete category %1 ?\n (will be deleted immediately!)").arg(name));
     if( KMessageBox::warningYesNo( this, msg) == KMessageBox::Yes ) {
         model->removeCategory(name);
+        folderListView->setCurrentItem( (QListViewItem*)folderCategories );
+        folderListView->setSelected( (QListViewItem*)folderCategories , TRUE );
         folderCategories->update(model->allCategories, model->categoryNames);
         updateSongPopup();
     }
@@ -2486,8 +2498,14 @@ void YammiGui::renameCategory() {
     }
 
     model->renameCategory(oldName, newName);
+    kdDebug() << "renamed in model..." << endl;
+    folderListView->setCurrentItem( (QListViewItem*)folderCategories );
+    folderListView->setSelected( (QListViewItem*)folderCategories , TRUE );
     folderCategories->update(model->allCategories, model->categoryNames);
+    kdDebug() << "categories updated..." << endl;
     updateSongPopup();
+    kdDebug() << "updated song popup..." << endl;
+    //changeToFolder((Folder*)i, TRUE);
 }
 
 /**

@@ -17,6 +17,7 @@
 
 #include "foldercategories.h"
 #include "foldersorted.h"
+#include <kdebug.h>
 
 FolderCategories::FolderCategories( QListView* parent, QString title)
 		: Folder( parent, title )
@@ -34,6 +35,7 @@ void FolderCategories::update(QPtrList<MyList> allCategories, QStringList catego
 {
 	// we have to delete all existing items first!
 	while(firstChild()) {
+        kdDebug() << "deleting item" << endl;   
 		QListViewItem* toDelete=firstChild();
 		delete(toDelete);
 	}
@@ -45,15 +47,18 @@ void FolderCategories::update(QPtrList<MyList> allCategories, QStringList catego
 	for(MyList* ptr=allCategories.first(); ptr; ptr=allCategories.next(), count++)
 	{
 		FolderSorted *f = new FolderSorted( this, categoryNames[count] );
+        kdDebug() << "calling f->update()" << endl;      
 		f->update(*ptr);
 		f->folderPopup = new QPopupMenu( 0 );
 		f->folderPopup->insertItem( "Remove Category", this, SLOT(removeCategory()));
 		f->folderPopup->insertItem( "New Category..", this, SLOT(newCategory()));
 		f->folderPopup->insertItem( "Rename Category..", this, SLOT(renameCategory()));
-    f->folderPopup->insertItem( "Load .m3u into Category", this, SLOT(loadM3uIntoCategory()));
-    f->folderPopup->setItemChecked(13, true);
+        f->folderPopup->insertItem( "Load .m3u into Category", this, SLOT(loadM3uIntoCategory()));
+        f->folderPopup->setItemChecked(13, true);
 	}
 	setText(0, fName+QString(" (%1)").arg(count));
-  sortChildItems(0, true);
+    kdDebug() << "calling sortChildItems()" << endl;      
+    sortChildItems(0, true);
+    kdDebug() << "...done" << endl;      
 }
 
