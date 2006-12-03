@@ -1,41 +1,41 @@
 /**	  Unscharfe Suche nach Objektnamen
 *
-* 7-2000 bis 8-2000 by Oliver Nölle
+* 7-2000 bis 8-2000 by Oliver Nï¿½le
 *
 * Version 1.0, last modified 18.8.2000
 *
 
-  - führt unscharfe Suche auf Objektnamen durch
+  - fhrt unscharfe Suche auf Objektnamen durch
   d.h. fehlertolerante Suche nach Objekten oder Strassen
   - basiert auf ngram-Zerlegung
   Artikel+Source in der c't (ich glaube 4-97)
-  - Effizienz angepaßt an
+  - Effizienz angepaï¿½ an
     - kurzer Suchstring (ca. 2-20 Zeichen)
-    - viele (ca. 10.000 - 100.000) aber daür kurze (ca. 10-30 Zeichen) Einträge in der Objektdatenbank
-  - Qualität verbessert durch
-    - Berechnung des Informationsgehalts eines ngrams (frequency=Auftretenshäufigkeit)
+    - viele (ca. 10.000 - 100.000) aber dar kurze (ca. 10-30 Zeichen) Eintrï¿½e in der Objektdatenbank
+  - Qualitï¿½ verbessert durch
+    - Berechnung des Informationsgehalts eines ngrams (frequency=Auftretenshï¿½figkeit)
 
   Strategie:
   1. Suchstring + Objektnamen vorverarbeiten
   - to lowercase
-  - phonetisch: ß -> ss
+  - phonetisch: ï¿½-> ss
   - Umlaute in ae, oe, ue
   - Sonderzeichen -> Leerzeichen
 
-  2. Suchstring in passende ngramme zerlegen, jeder bekommt eine Anfangsgewichtung nach Länge
+  2. Suchstring in passende ngramme zerlegen, jeder bekommt eine Anfangsgewichtung nach Lï¿½ge
 
-  3. lineares durchsuchen der Textdatei, <NoBestMatches> besten Einträge werden in einer sortierten Liste gehalten
+  3. lineares durchsuchen der Textdatei, <NoBestMatches> besten Eintrï¿½e werden in einer sortierten Liste gehalten
 
 
 
   4. Neubewertung der einzelnen ngramme nach frequency, Neusortierung der best matches liste
 
   folgende Verbesserungen denkbar:
-  - diese 200 Einträge nach Levenshtein-Distanz neu bewerten/ordnen
-  (z.B. für suchstring "Heierweg" sollte "Haierweg" besser bewerten als "Eisweierweg"
+  - diese 200 Eintrï¿½e nach Levenshtein-Distanz neu bewerten/ordnen
+  (z.B. fr suchstring "Heierweg" sollte "Haierweg" besser bewerten als "Eisweierweg"
   - anstatt den ersten beiden Stufen: Bewertung >1000 = exakter Anfangsmatch, Bewertung =1000 exaktes Vorkommen, <1000 fuzzy
-  - anstatt fuzzy search und fuzzy phonetic getrennt: Bewertungen addieren / maximale Bewertung übernehmen
-  - überdenken der Präsentation der Ergebnisse der verschiedenen Stufen => transparentere Bewertungen
+  - anstatt fuzzy search und fuzzy phonetic getrennt: Bewertungen addieren / maximale Bewertung bernehmen
+  - berdenken der Prï¿½entation der Ergebnisse der verschiedenen Stufen => transparentere Bewertungen
 
 */
 
@@ -151,7 +151,7 @@ protected:
 
 	int prepareString(char* convStr, const char* originStr);
 	// compares two best match entries, considering their similarity value
-	static int FuzzySearch::bmeCompare(const void *elem1, const void *elem2)
+	static int bmeCompare(const void *elem1, const void *elem2)
 	{
 		int sim1=(*(BestMatchEntry**)elem1)->sim;
 		int sim2=(*(BestMatchEntry**)elem2)->sim;
