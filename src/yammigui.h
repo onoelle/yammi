@@ -196,7 +196,6 @@ public slots:
     void slotFolderChanged();
     void updatePlaylist();
     void updateHtmlPlaylist();
-    void playlistViewPopup(const QString &url, const QPoint &point);
     
     void updatePlayerStatus();
 

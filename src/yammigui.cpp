@@ -3398,10 +3398,6 @@ void YammiGui::loadMediaPlayer( ) {
     qDebug() << "Media Player : " << player->getName( );
 }
 
-void YammiGui::playlistViewPopup(const QString &url, const QPoint &point) {
-    qDebug() << "url: " << url;
-}
-
 /**
  * Create main gui of Yammi
  */
@@ -3414,7 +3410,6 @@ void YammiGui::createMainWidget( ) {
 
     // setup html playlist view
     playlistPart = new KHTMLPart(leftWidget, 0, 0L, 0);
-    connect( playlistPart, SIGNAL( popupMenu(const QString &url, const QPoint &point)), this, SLOT(playlistViewPopup(const QString &url, const QPoint &point)) );
     playlistPart->view()->setHScrollBarMode(QScrollView::AlwaysOn);
     
     centralWidget->setResizeMode( leftWidget, QSplitter::KeepSize );
