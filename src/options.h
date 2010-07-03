@@ -51,4 +51,7 @@ QDebug& qWarning();
 QDebug& qError();
 QDebug& qFatal();
 
+bool moveFile(const QString &oldName, const QString &newName);
+bool copyFile(const QString &oldFilePath, const QString &newFilePath);
+
 #endif //OPTIONS_H

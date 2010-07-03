@@ -22,8 +22,6 @@
 #include "prefs.h"
 #include "util.h"
 
-#include <kio/job.h>
-
 #include <taglib/audioproperties.h>
 #include <taglib/fileref.h>
 #include <taglib/id3v1genres.h>    //used to load genre list
@@ -823,7 +821,7 @@ void Song::moveTo(QString dir) {
     }
 
     QString newLocation=QString("%3/%4").arg(dir).arg(filename);
-    KIO::move(KURL(location()), KURL(newLocation));
+    moveFile(location(), newLocation);
 }
 
 
