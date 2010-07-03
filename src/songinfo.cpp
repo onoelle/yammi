@@ -19,7 +19,7 @@
 #include "song.h"
 #include "mylist.h"
 
-#include <klineedit.h>
+#include <qlineedit.h>
 #include <qlabel.h>
 #include <qcombobox.h>
 #include <qcheckbox.h>
