@@ -26,7 +26,7 @@
 
 class YammiGui;
 class ConsistencyCheckParameter;
-class KProgressDialog;
+class QProgressDialog;
 
 
 /**
@@ -67,7 +67,7 @@ public:
     bool _categoriesChanged;
 
 
-    bool traverse(QString path, bool followSymLinks, QString filePattern, KProgressDialog* progress, QString mediaName=0);
+    bool traverse(QString path, bool followSymLinks, QString filePattern, QProgressDialog* progress, QString mediaName=0);
     Song* getSongFromFilename(QString filename);
     QString checkAvailability(Song* s, bool touch=false);
     bool skipUnplayableSongs(bool firstTwo=false);    
@@ -109,10 +109,10 @@ public slots:
     *  - scans recursively, starting from specified scanDir
     *  - constructs song objects from all files matching the filePattern
     *  - checks whether already existing, whether modified, if not => inserts into database */
-    void updateSongDatabase(QString scanDir, bool followSymLinks, QString filePattern, QString mediaName, KProgressDialog* progress);
+    void updateSongDatabase(QString scanDir, bool followSymLinks, QString filePattern, QString mediaName, QProgressDialog* progress);
     void updateSongDatabase(QStringList list);
     void addSongToDatabase(QString filename, QString mediaName);
-    void fixGenres(KProgressDialog* progress);
+    void fixGenres(QProgressDialog* progress);
 
 protected:
     YammiGui *m_yammi;

@@ -8,7 +8,7 @@
 #include <qlabel.h>
 
 #include <kapplication.h>
-#include <kprogress.h>
+#include <qprogressdialog.h>
 #include <ktextedit.h>
 
 #include "ConsistencyCheckParameter.h"
@@ -87,16 +87,13 @@ void ConsistencyCheckDialog::startCheck() {
     p->resetStatistics();
     TextEditOutput->clear();
 
-    KProgressDialog progress( this, 0, tr("Yammi"), tr("Checking consistency..."), true);
-    progress.setLabel(tr("Step 1: checking all songs in database..."));
-    progress.progressBar()->setTotalSteps(selectedSongs->count());
-    progress.progressBar()->setProgress(0);
+    QProgressDialog progress(this);
+    progress.setLabelText(tr("Step 1: checking all songs in database..."));
+    progress.setTotalSteps(selectedSongs->count());
+    progress.setProgress(0);
     progress.setMinimumDuration(0);
     progress.setAutoReset(false);
     progress.setAutoClose(false);
-    progress.setAllowCancel(true);
-    progress.showCancelButton(true);
-    kapp->processEvents();
 
     KTextEdit* output = TextEditOutput;
     output->append(tr("Checking consistency of %1 songs...").arg(selectedSongs->count()));
@@ -112,7 +109,7 @@ void ConsistencyCheckDialog::startCheck() {
             }
             output->append(QString(" - %1...\n").arg(s->displayName()));
             if(i % 10 == 0) {
-                progress.progressBar()->setProgress(i);
+                progress.setProgress(i);
             }
             QString diagnosis=s->checkConsistency(true, true, p->ignoreCaseInFilenames, true);
             if(diagnosis=="") {
@@ -317,9 +314,9 @@ void ConsistencyCheckDialog::startCheck() {
 
     // 2. check for songs contained twice
     if(!progress.wasCancelled() && p->checkDoubles) {
-        progress.setLabel(tr("Step 2: check for song entries pointing to same file"));
-        progress.progressBar()->setTotalSteps(model->allSongs.count());
-        progress.progressBar()->setProgress(0);
+        progress.setLabelText(tr("Step 2: check for song entries pointing to same file"));
+        progress.setTotalSteps(model->allSongs.count());
+        progress.setProgress(0);
         kapp->processEvents();
 
         model->allSongs.setSortOrderAndSort(MyList::ByFilename + 16*(MyList::ByPath));
@@ -330,7 +327,7 @@ void ConsistencyCheckDialog::startCheck() {
                 break;
             }
             if(i % 20 == 0) {
-                progress.progressBar()->setProgress(i);
+                progress.setProgress(i);
             }
 
             if(s->artist=="{wish}") {        // ignore wishes
@@ -354,9 +351,9 @@ void ConsistencyCheckDialog::startCheck() {
         }
 
         // 3. check for two songs with identical primary key
-        progress.setLabel(tr("Step 3: check for songs with identical primary keys"));
-        progress.progressBar()->setTotalSteps(model->allSongs.count());
-        progress.progressBar()->setProgress(0);
+        progress.setLabelText(tr("Step 3: check for songs with identical primary keys"));
+        progress.setTotalSteps(model->allSongs.count());
+        progress.setProgress(0);
         kapp->processEvents();
 
         model->allSongs.setSortOrderAndSort(MyList::ByKey);
@@ -367,7 +364,7 @@ void ConsistencyCheckDialog::startCheck() {
                 break;
             }
             if(i % 20 == 0) {
-                progress.progressBar()->setProgress(i);
+                progress.setProgress(i);
             }
             if(s->artist=="{wish}") {
                 continue;

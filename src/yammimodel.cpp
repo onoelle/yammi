@@ -19,7 +19,7 @@
 
 #include <kapplication.h>
 #include <kstatusbar.h>
-#include <kprogress.h>
+#include <qprogressdialog.h>
 #include <kstandarddirs.h>
 #include <qmessagebox.h>
 
@@ -141,17 +141,18 @@ void YammiModel::readCategories() {
 	QString filter("*.xml");
 	QStringList cats = d.entryList(filter, QDir::Files, QDir::DirsFirst);
 
-	int total=cats.count();
-    KProgressDialog dia(0,0,tr("Loading categories"),tr("Reading categories..."), true);
-    dia.setAllowCancel(false);
+    int total=cats.count();
+    QProgressDialog dia;
+    dia.setModal(true);
+    dia.setLabelText(tr("Loading categories"));
+    dia.setTotalSteps(total);
+    dia.setCancelButton(NULL);
     dia.setMinimumDuration(0);
-    KProgress *p = dia.progressBar();
-    p->setTotalSteps( total );
+
     int progressCount=0;
     for( QStringList::Iterator it = cats.begin(); it!=cats.end(); ++it, progressCount++ ) {
-        p->setProgress( progressCount );
-        kapp->eventLoop()->processEvents(QEventLoop::ExcludeUserInput);
-		QString filename(d.absPath()+ "/" + (*it));
+        dia.setProgress(progressCount);
+        QString filename(d.absPath()+ "/" + (*it));
         qDebug() << "category found: " << filename;
 		if(readList(0, filename)) {
 			count++;
@@ -184,15 +185,16 @@ void YammiModel::readHistory() {
     int total = root.attribute("count", "0").toInt( );
     QDomElement e = root.firstChild().toElement();
 
-    KProgressDialog dia(0,0,tr("Loading song history"),tr("Reading song history..."), true);
-    dia.setAllowCancel(false);
+    QProgressDialog dia;
+    dia.setModal(true);
+    dia.setLabelText(tr("Loading song history"));
+    dia.setTotalSteps(total);
+    dia.setCancelButton(NULL);
     dia.setMinimumDuration(0);
-    KProgress *p = dia.progressBar();
-    p->setTotalSteps( total );
+
     for(int i=0; !e.isNull(); i++) {
         if(i % 100==0) {
-            p->setProgress( i );
-            kapp->eventLoop()->processEvents(QEventLoop::ExcludeUserInput);
+            dia.setProgress(i);
         }
         QString artist = e.attribute("artist", "unknown");
         QString title  = e.attribute("title", "unknown");
@@ -362,16 +364,18 @@ void YammiModel::readSongDatabase(  ) {
     int total = root.attribute("count", "0").toInt( );
     QDomElement e = root.firstChild().toElement();
 
-    KProgressDialog dia(0,0,tr("Loading database"),tr("Reading Song Database file"), true);
-    dia.setAllowCancel(false);
+
+    QProgressDialog dia;
+    dia.setModal(true);
+    dia.setLabelText(tr("Loading database"));
+    dia.setTotalSteps(total);
+    dia.setCancelButton(NULL);
     dia.setMinimumDuration(0);
-    KProgress *p = dia.progressBar();
-    p->setTotalSteps( total );
+
     int count = 0;
     while( !e.isNull( ) ) {
         if(count % 100==0) {
-            p->setProgress( count );
-            kapp->eventLoop()->processEvents(QEventLoop::ExcludeUserInput);
+            dia.setProgress( count );
         }
 
         QString artist   = e.attribute("artist", "unknown");
@@ -508,7 +512,7 @@ bool YammiModel::categoriesChanged() {
 
 
 //   Updates the xml-database by scanning harddisk
-void YammiModel::updateSongDatabase(QString scanDir, bool followSymLinks, QString filePattern, QString mediaName, KProgressDialog* progress) {
+void YammiModel::updateSongDatabase(QString scanDir, bool followSymLinks, QString filePattern, QString mediaName, QProgressDialog* progress) {
     entriesAdded=0;
     corruptSongs=0;
     if(m_yammi->config()->childSafe) {
@@ -589,16 +593,15 @@ void YammiModel::updateSongDatabase(QStringList list) {
 
 /// traverses a directory recursively and processes all mp3 files
 /// returns false, if scanning was cancelled
-bool YammiModel::traverse(QString path, bool followSymLinks, QString filePattern, KProgressDialog* progress, QString mediaName) {
+bool YammiModel::traverse(QString path, bool followSymLinks, QString filePattern, QProgressDialog* progress, QString mediaName) {
     // leave out the following directories
     if(path+"/"==m_yammi->config()->trashDir || path+"/"==m_yammi->config()->swapDir) {
         qWarning() << "skipping trash or swap directory: " << path;
         return true;
     }
     qDebug() << "scanning directory " << path;
-    progress->setLabel(QString(tr("scanning directory %1 ...")).arg(path));
-    progress->progressBar()->setProgress(0);
-    kapp->processEvents();
+    progress->setLabelText(QString(tr("scanning directory %1 ...")).arg(path));
+    progress->setProgress(0);
 
     QDir d(path);
 
@@ -613,12 +616,12 @@ bool YammiModel::traverse(QString path, bool followSymLinks, QString filePattern
         return true;
     }
     int filesToScan=list->count();
-    progress->progressBar()->setTotalSteps(filesToScan);
+    progress->setTotalSteps(filesToScan);
     QFileInfoListIterator it( *list );
     int filesScanned=0;
     for(QFileInfo *fi; (fi=it.current()); ++it ) {
         filesScanned++;
-        progress->progressBar()->setProgress(filesScanned);
+        progress->setProgress(filesScanned);
         if(progress->wasCancelled()) {
             return false;
         }
@@ -656,12 +659,10 @@ bool YammiModel::traverse(QString path, bool followSymLinks, QString filePattern
 /**
  * fix incorrect genres by re-reading them from whole song database
  */
-void YammiModel::fixGenres(KProgressDialog* progress) {
+void YammiModel::fixGenres(QProgressDialog* progress) {
     int i = 0;
     for(Song* s=allSongs.firstSong(); s; s=allSongs.nextSong(), i++) {
-        progress->progressBar()->setProgress(i);
-        kapp->processEvents();
-        kapp->eventLoop()->processEvents(QEventLoop::ExcludeUserInput);
+        progress->setProgress(i);
         if(progress->wasCancelled()) {
             qDebug() << "fixing genres aborted...";
             return;

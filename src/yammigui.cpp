@@ -55,7 +55,7 @@
 #include <kaction.h>
 #include <kstdaction.h>
 #include <qmessagebox.h>
-#include <kprogress.h>
+#include <qprogressdialog.h>
 #include <kkeydialog.h>
 #include <kprocess.h>
 #include <dcopobject.h>
@@ -421,16 +421,19 @@ bool YammiGui::queryExit() {
 
 void YammiGui::shutdownSequence( ) {
     QString msg(tr("Shutting down in %1 seconds"));
-    KProgressDialog d(this,0,tr("Shutting down..."));
+    const int total = 10;
 
+    QProgressDialog d(this);
+    d.setModal(true);
+    d.setLabelText(tr("Shutting down..."));
+    d.setTotalSteps(total);
     d.setMinimumDuration(0);
-    d.setAllowCancel(true);
+
     QTimer *t;
-    int total = 10;
-    d.progressBar()->setTotalSteps(total);
+
     for( int i = 0; i < 10; ++i ) {
-        d.setLabel( msg.arg(total-i) );
-        d.progressBar()->setProgress( i );
+        d.setLabelText( msg.arg(total-i) );
+        d.setProgress( i );
         t = new QTimer();
         t->start(1000,true);
         while(t->isActive()) {
@@ -1622,12 +1625,13 @@ void YammiGui::forSelectionPlugin(int pluginIndex) {
             }
         }
         int index=1;
-        KProgressDialog progress( this,0, tr("Yammi"),tr("Executing song plugin cmd..."),true);
-        progress.progressBar()->setTotalSteps(selectedSongs.count());
+        QProgressDialog progress(this);
+        progress.setLabelText(tr("Executing song plugin cmd..."));
+        progress.setModal(true);
+        progress.setTotalSteps(selectedSongs.count());
         for(Song* s=selectedSongs.firstSong(); s; s=selectedSongs.nextSong(), index++) {
             QString cmd2=s->replacePlaceholders(cmd, index);
-            progress.progressBar()->setProgress(index);
-            kapp->processEvents();
+            progress.setProgress(index);
             if(progress.wasCancelled()) {
                 return;
             }
@@ -1713,12 +1717,12 @@ void YammiGui::forSelectionBurnToMedia() {
     if(!ok)
         return;
 
-    KProgressDialog progress(this, tr("Preparing media...") );
+    QProgressDialog progress(this);
+    progress.setLabelText(tr("Preparing media..."));
     progress.setMinimumDuration(0);
     progress.setAutoReset(false);
-    progress.progressBar()->setProgress(0);
-    progress.progressBar()->setTotalSteps(selectedSongs.count());
-    kapp->processEvents();
+    progress.setProgress(0);
+    progress.setTotalSteps(selectedSongs.count());
 
     int startIndex=atoi(startIndexStr);
     int mediaNo=startIndex-1;
@@ -1727,7 +1731,7 @@ void YammiGui::forSelectionBurnToMedia() {
     long double sizeLimit=(long double)config()->criticalSize*1024.0*1024.0;
     int count=0;
     for(Song* s=selectedSongs.firstSong(); s; ) {
-        progress.progressBar()->setProgress(count);
+        progress.setProgress(count);
         if(progress.wasCancelled())
             break;
 
@@ -1737,7 +1741,7 @@ void YammiGui::forSelectionBurnToMedia() {
             mediaNo++;
             mediaName=QString("%1_%2").arg(collName).arg(mediaNo);
             mediaDir= config()->databaseDir + "media/"+ mediaName + "/";
-            progress.setLabel(tr("Preparing media ")+mediaName);
+            progress.setLabelText(tr("Preparing media ")+mediaName);
             qDebug() << "Preparing media " << mediaName << " (" << count << " files processed so far)...";
             QDir dir(mediaDir);
             if(dir.exists()) {
@@ -2833,12 +2837,11 @@ void YammiGui::fixGenres() {
         return;
     }
     isScanning=true;
-    KProgressDialog progress( this, 0, tr("Yammi"), tr ("Re-Reading all genres from your files..."), true);
+    QProgressDialog progress(this);
+    progress.setLabelText(tr("Re-Reading all genres from your files..."));
+    progress.setTotalSteps(model->allSongs.count());
+    progress.setModal(true);
     progress.setMinimumDuration(0);
-    progress.setAllowCancel(true);
-    progress.progressBar()->setTotalSteps(model->allSongs.count());
-    progress.progressBar()->setProgress(0);
-    kapp->processEvents();
     model->fixGenres(&progress);
     updateView();
     isScanning=false;
@@ -3112,13 +3115,13 @@ void YammiGui::updateSongDatabase(QString scanDir, QString filePattern, QString 
     if(config()->childSafe) {
         return;
     }
-    KProgressDialog progress( this, 0, tr("Yammi"), tr ("Scanning..."), true);
+    QProgressDialog progress(this);
+    progress.setLabelText(tr("Scanning..."));
+    progress.setModal(true);
     progress.setMinimumDuration(0);
     progress.setAutoReset(false);
     progress.setAutoClose(false);
-    progress.setAllowCancel(true);
-    progress.progressBar()->setProgress(0);
-    kapp->processEvents();
+    progress.setProgress(0);
 
     isScanning=true;
     model->updateSongDatabase(scanDir, config()->followSymLinks, filePattern, media, &progress);
@@ -3190,11 +3193,12 @@ void YammiGui::loadSongsFromMedia(QString mediaName) {
             }
         }
     }
-    KProgressDialog progress( this,0, tr("Yammi"), tr("Loading song files..."),true);
-    progress.progressBar()->setTotalSteps(songsToLoad);
+    QProgressDialog progress(this);
+    progress.setLabelText(tr("Loading song files..."));
+    progress.setModal(true);
+    progress.setTotalSteps(songsToLoad);
     progress.setMinimumDuration(0);
-    progress.progressBar()->setProgress(0);
-    kapp->processEvents();
+    progress.setProgress(0);
 
     QString mediaDir=config()->mediaDir;
     QString swapDir=config()->swapDir;
@@ -3216,9 +3220,8 @@ void YammiGui::loadSongsFromMedia(QString mediaName) {
             if(s->mediaName[j]==mediaName) {
                 if(model->checkAvailability(s)=="") {
                     qDebug() << "loading song " << s->displayName() << "from " << mediaDir << s->mediaLocation[j];
-                    progress.setLabel(tr("loading song: ")+s->displayName()+" ("+QString("%1").arg(i+1)+tr(". in playlist)"));
-                    progress.progressBar()->setProgress(loaded);
-                    kapp->processEvents();
+                    progress.setLabelText(tr("loading song: ")+s->displayName()+" ("+QString("%1").arg(i+1)+tr(". in playlist)"));
+                    progress.setProgress(loaded);
                     if(progress.wasCancelled()) {
                         break;
                     }
@@ -3236,8 +3239,7 @@ void YammiGui::loadSongsFromMedia(QString mediaName) {
             }
         }
     }
-    progress.progressBar()->setProgress(loaded);
-    kapp->processEvents();
+    progress.setProgress(loaded);
     // unmount swap dir
     if(config()->mountMediaDir) {
         // linux specific
