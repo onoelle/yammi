@@ -52,7 +52,6 @@
 #include <qmessagebox.h>
 #include <qprogressdialog.h>
 #include <kkeydialog.h>
-#include <kprocess.h>
 #include <dcopobject.h>
 
 
@@ -104,6 +103,8 @@ extern YammiGui* gYammiGui;
 YammiGui::YammiGui() : DCOPObject("YammiPlayer"), KMainWindow( ) {
     gYammiGui = this;
     setGeometry(0, 0, 800, 600);
+
+    prelistenProcess = new QProcess;
 
     // initialize some fields
     validState = false;
@@ -481,6 +482,7 @@ YammiGui::~YammiGui() {
     searchThread->wait();
     delete searchThread;
     searchThread = NULL;
+    delete prelistenProcess;
 }
 
 
@@ -2971,14 +2973,17 @@ void YammiGui::changeSleepMode() {
  * stops playback on headphone
  */
 void YammiGui::stopPrelisten() {
-    if(!prelistenProcess.isRunning()) {
+    if(!prelistenProcess->isRunning()) {
         qDebug() << "looks like no prelisten process running...";
         return;
     }
-    bool result=prelistenProcess.kill(9);
+    prelistenProcess->kill();
+    /* disabled - probably with a newer qt version
+    bool result = prelistenProcess->kill(9);
     if(!result) {
         qWarning() << "could not stop prelisten process!";
     }
+    */
 }
 
 /**
@@ -3034,19 +3039,17 @@ void YammiGui::preListen(Song* s, int skipTo) {
     prelistenCmd = replacePrelistenSkip(prelistenCmd, s->length, skipTo);        
     qDebug() << "prelisten command: " << prelistenCmd;
     
-    prelistenProcess.clearArguments();
-    prelistenProcess.setUseShell(true);
+    prelistenProcess->clearArguments();
+    //prelistenProcess->setUseShell(true);
     QStringList argList = QStringList::split( QChar('|'), prelistenCmd );
-    for ( QStringList::Iterator it = argList.begin(); it != argList.end(); ++it ) {
-        prelistenProcess << *it;
-    }
+    prelistenProcess->setArguments(argList);
     
-    if(prelistenProcess.isRunning()) {
+    if(prelistenProcess->isRunning()) {
         qDebug() << "waiting for prelisten process to die...";
-        prelistenProcess.detach();
+        prelistenProcess->kill();
     }
     
-    bool result = prelistenProcess.start(KProcess::OwnGroup, KProcess::NoCommunication);
+    bool result = prelistenProcess->start();
     if(!result) {
         qWarning() << "could not start prelisten process!";
     }

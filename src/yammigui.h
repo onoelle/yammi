@@ -28,7 +28,7 @@
 //#include "prefs.h"
 #include "mylist.h"
 #include "yammidcopiface.h"
-#include "kprocess.h"
+#include <qprocess.h>
 
 
 class QSlider;
@@ -386,7 +386,7 @@ protected:
     QTimer regularTimer;
     QTimer searchResultsTimer;
     QTimer checkTimer;
-    KProcess prelistenProcess;
+    QProcess* prelistenProcess;
 
     // folders
     Folder* folderAll;
