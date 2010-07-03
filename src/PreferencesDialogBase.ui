@@ -1473,7 +1473,7 @@ loaded from those media into a swap directory.</string>
                             <string>This template is used for displaying the playqueue.</string>
                         </property>
                     </widget>
-                    <widget class="KTextEdit" row="1" column="0">
+                    <widget class="QTextEdit" row="1" column="0">
                         <property name="name">
                             <cstring>LineEditPlayqueueTemplate</cstring>
                         </property>
@@ -1535,7 +1535,4 @@ loaded from those media into a swap directory.</string>
     <tabstop>TabWidget2</tabstop>
 </tabstops>
 <layoutdefaults spacing="6" margin="11"/>
-<includehints>
-    <includehint>ktextedit.h</includehint>
-</includehints>
 </UI>

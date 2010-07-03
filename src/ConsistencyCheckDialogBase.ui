@@ -1,4 +1,4 @@
-<!DOCTYPE UI><UI version="3.2" stdsetdef="1">
+<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
 <class>CheckConsistencyDialogBase</class>
 <widget class="QDialog">
     <property name="name">
@@ -220,7 +220,7 @@
                 </widget>
             </grid>
         </widget>
-        <widget class="KTextEdit" row="1" column="2" rowspan="6" colspan="2">
+        <widget class="QTextEdit" row="1" column="2" rowspan="6" colspan="2">
             <property name="name">
                 <cstring>TextEditOutput</cstring>
             </property>

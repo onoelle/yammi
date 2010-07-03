@@ -19,7 +19,7 @@
 #include "preferencesdialog.h"
 
 #include <qfiledialog.h>
-#include <ktextedit.h>
+#include <qtextedit.h>
 #include <qpushbutton.h>
 #include <qradiobutton.h>
 #include <qcombobox.h>

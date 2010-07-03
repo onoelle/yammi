@@ -9,7 +9,7 @@
 
 #include <kapplication.h>
 #include <qprogressdialog.h>
-#include <ktextedit.h>
+#include <qtextedit.h>
 
 #include "ConsistencyCheckParameter.h"
 #include "applytoalldialog.h"
@@ -95,7 +95,7 @@ void ConsistencyCheckDialog::startCheck() {
     progress.setAutoReset(false);
     progress.setAutoClose(false);
 
-    KTextEdit* output = TextEditOutput;
+    QTextEdit* output = TextEditOutput;
     output->append(tr("Checking consistency of %1 songs...").arg(selectedSongs->count()));
     model->problematicSongs.clear();
 
