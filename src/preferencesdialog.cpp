@@ -18,7 +18,7 @@
 #include "options.h"
 #include "preferencesdialog.h"
 
-#include <kfiledialog.h>
+#include <qfiledialog.h>
 #include <ktextedit.h>
 #include <qpushbutton.h>
 #include <qradiobutton.h>
@@ -220,7 +220,7 @@ void PreferencesDialog::myAccept() {
 
 // file dialog for trash dir
 void PreferencesDialog::chooseTrashDir() {
-    QString dir=KFileDialog::getExistingDirectory(LineEditTrashDir->text(), this, tr("choose trash directory"));
+    QString dir = QFileDialog::getExistingDirectory(LineEditTrashDir->text(), this, NULL, tr("choose trash directory"));
     if(!dir.isNull()) {
         LineEditTrashDir->setText(dir);
     }
@@ -228,7 +228,7 @@ void PreferencesDialog::chooseTrashDir() {
 
 // file dialog for media dir
 void PreferencesDialog::chooseMediaDir() {
-    QString dir=KFileDialog::getExistingDirectory(LineEditMediaDir->text(), this, tr("choose media directory"));
+    QString dir = QFileDialog::getExistingDirectory(LineEditMediaDir->text(), this, NULL, tr("choose media directory"));
     if(!dir.isNull()) {
         LineEditMediaDir->setText(dir);
     }
@@ -236,7 +236,7 @@ void PreferencesDialog::chooseMediaDir() {
 
 // file dialog for swap dir
 void PreferencesDialog::chooseSwapDir() {
-    QString dir=KFileDialog::getExistingDirectory(LineEditSwapDir->text(), this, tr("choose swap directory"));
+    QString dir = QFileDialog::getExistingDirectory(LineEditSwapDir->text(), this, NULL, tr("choose swap directory"));
     if(!dir.isNull()) {
         LineEditSwapDir->setText(dir);
     }

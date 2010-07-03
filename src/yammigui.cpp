@@ -46,7 +46,7 @@
 #include <kstatusbar.h>
 #include <kkeydialog.h>
 #include <kaccel.h>
-#include <kfiledialog.h>
+#include <qfiledialog.h>
 #include <kconfig.h>
 #include <kurl.h>
 #include <kurldrag.h>
@@ -1577,13 +1577,13 @@ void YammiGui::forSelectionPlugin(int pluginIndex) {
     QString cmd=config()->pluginCommand[pluginIndex];
 
     if(cmd.contains("{directoryDialog}")>0) {
-        QString dir = KFileDialog::getExistingDirectory("", this, tr("choose directory for plugin"));
+        QString dir = QFileDialog::getExistingDirectory("", this, NULL, tr("choose directory for plugin"));
         if(dir.isNull())
             return;
         cmd.replace(QRegExp("\\{directoryDialog\\}"), dir);
     }
     if(cmd.contains("{fileDialog}")>0) {
-        QString file = KFileDialog::getSaveFileName("",QString::null, this, tr("choose file for plugin"));
+        QString file = QFileDialog::getSaveFileName("", QString::null, this, NULL, tr("choose file for plugin"));
         if(file.isNull())
             return;
         cmd.replace(QRegExp("\\{fileDialog\\}"), file);
@@ -1686,7 +1686,7 @@ void YammiGui::forSelectionMove() {
     }
     // let user choose destination directory
     QString startPath=selectedSongs.firstSong()->path;
-    QString dir=KFileDialog::getExistingDirectory(startPath, this, tr("Select destination directory"));
+    QString dir = QFileDialog::getExistingDirectory(startPath, this, NULL, tr("Select destination directory"));
     if(dir.isNull()) {
         return;
     }
@@ -2512,7 +2512,7 @@ void YammiGui::renameCategory() {
 void YammiGui::loadM3uIntoCategory() {
     QListViewItem* i = folderListView->currentItem();
     FolderSorted* categoryFolder=(FolderSorted*)i;
-    QString filename = KFileDialog::getOpenFileName("/", "Playlists (*.m3u)", this,tr("Choose a Playlist to insert" ));
+    QString filename = QFileDialog::getOpenFileName("/", "Playlists (*.m3u)", this, NULL, tr("Choose a Playlist to insert" ));
     if(filename.isNull()) {
         return;
     }
@@ -3074,8 +3074,7 @@ void YammiGui::updateSongDatabaseHarddisk() {
 }
 
 void YammiGui::updateSongDatabaseSingleFile() {
-    QStringList files = KFileDialog::getOpenFileNames( ":singleFile", QString::null, this, tr("Open file(s) to import"));
-    //    QStringList files = KFileDialog::getOpenFileNames( config()->scanDir, QString::null, this, tr("Open file(s) to import"));
+    QStringList files = QFileDialog::getOpenFileNames( ":singleFile", QString::null, this, NULL, tr("Open file(s) to import"));
     if(files.count()==0) {
         return;
     }

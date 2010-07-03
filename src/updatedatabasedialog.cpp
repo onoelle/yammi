@@ -18,7 +18,7 @@
 
 #include "updatedatabasedialog.h"
 
-#include <kfiledialog.h>
+#include <qfiledialog.h>
 
 #include <qlineedit.h>
 #include <qcheckbox.h>
@@ -50,7 +50,7 @@ void UpdateDatabaseDialog::myAccept() {
 
 // file dialog for scan dir
 void UpdateDatabaseDialog::chooseScanDir() {
-    QString dir = KFileDialog::getExistingDirectory(LineEditScanDir->text(), this, tr("choose scan directory"));
+    QString dir = QFileDialog::getExistingDirectory(LineEditScanDir->text(), this, NULL, tr("choose scan directory"));
     if(!dir.isNull()) {
         LineEditScanDir->setText(dir);
     }

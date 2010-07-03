@@ -21,7 +21,7 @@
 #include <qcheckbox.h>
 #include <qobject.h>
 #include <qpushbutton.h>
-#include <kfiledialog.h>
+#include <qfiledialog.h>
 
 
 
@@ -42,7 +42,7 @@ UpdateDatabaseMediaDialog::~UpdateDatabaseMediaDialog() {}
 
 // file dialog for media dir
 void UpdateDatabaseMediaDialog::chooseMediaDir() {
-    QString dir=KFileDialog::getExistingDirectory(LineEditMediaDir->text(), this, tr("choose media directory"));
+    QString dir = QFileDialog::getExistingDirectory(LineEditMediaDir->text(), this, NULL, tr("choose media directory"));
     if(!dir.isNull()) {
         LineEditMediaDir->setText(dir);
     }
