@@ -53,7 +53,7 @@ class KToggleAction;
 class SearchThread;
 class TrackPositionSlider;
 class Prefs;
-class KHTMLPart;
+class QTextEdit;
 // -----------------------------------------------------------------
 
 
@@ -275,7 +275,7 @@ public slots:
 public:
     MediaPlayer*  player;
     MyListView* songListView;
-    KHTMLPart* playlistPart;
+    QTextEdit* playlistPart;
     Folder* chosenFolder;
     QWaitCondition searchFieldChangedIndicator;
 

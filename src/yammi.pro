@@ -12,7 +12,7 @@ QMAKE_CXX=ccache g++
 
 INCLUDEPATH += /usr/include/kde
 
-LIBS += -lartskde -lkhtml -lkdeui -L/usr/lib -ltag -lxine
+LIBS += -lartskde -lkdeui -L/usr/lib -ltag -lxine
 
 MOC_DIR = .moc
 OBJECTS_DIR = .obj

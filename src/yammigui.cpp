@@ -34,9 +34,7 @@
 #include <taglib/id3v1genres.h>
 #include "ConsistencyCheckParameter.h"
 
-#include <qsimplerichtext.h>
-#include <khtmlview.h>
-#include <khtml_part.h>
+#include <qtextedit.h>
 #include <kapplication.h>
 #include <kglobal.h>
 #include <kiconloader.h>
@@ -569,12 +567,7 @@ void YammiGui::updateHtmlPlaylist()
         }
     }
     
-    playlistPart->begin();
-    playlistPart->write(htmlSource);
-    playlistPart->end();
-
-    playlistPart->show();
-    playlistPart->view()->setHScrollBarMode(QScrollView::AlwaysOn);
+    playlistPart->setText(htmlSource);
 }
 
 /**
@@ -3409,11 +3402,12 @@ void YammiGui::createMainWidget( ) {
     leftWidget=new QSplitter(Qt::Vertical, centralWidget);
 
     // setup html playlist view
-    playlistPart = new KHTMLPart(leftWidget, 0, 0L, 0);
-    playlistPart->view()->setHScrollBarMode(QScrollView::AlwaysOn);
+    playlistPart = new QTextEdit(leftWidget);
+    playlistPart->setReadOnly(true);
+    playlistPart->setHScrollBarMode(QScrollView::AlwaysOn);
     
     centralWidget->setResizeMode( leftWidget, QSplitter::KeepSize );
-    leftWidget->setResizeMode( playlistPart->view(), QSplitter::KeepSize );
+    leftWidget->setResizeMode(playlistPart, QSplitter::KeepSize );
     
     // set up the quick browser on the left
     folderListView = new QListView( leftWidget );
