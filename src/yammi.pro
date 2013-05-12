@@ -8,6 +8,7 @@ CONFIG += qt debug
 
 QMAKE = qmake-qt3
 QMAKE_UIC = uic -L /usr/lib/kde3/plugins
+QMAKE_CXX=ccache g++
 
 INCLUDEPATH += /usr/include/kde
 
