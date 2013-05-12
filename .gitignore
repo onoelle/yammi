@@ -1,0 +1,9 @@
+src/*.ui~
+src/.obj
+src/.moc
+src/.ui
+src/Makefile
+src/yammidcopiface.kidl
+src/yammidcopiface_skel.cpp
+src/yammi
+src/*.pro.user
