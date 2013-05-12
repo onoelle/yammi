@@ -3655,6 +3655,8 @@ bool YammiGui::setupActions( ) {
     new KWidgetAction( w ,"Sleep Mode",0, 0, 0,actionCollection(),"sleep_mode");
 
     // the rc file must be installed (eg. in /opt/kde3/share/apps/yammi/yammiui.rc)
+    QString curDir = QDir::currentDirPath();
+    KGlobal::dirs()->addResourceDir("data", curDir); // to find yammiui.rc e.g. when developing
     createGUI();
     // test whether file was found and loaded
     QPopupMenu* anyMenu = (QPopupMenu *)factory()->container("player", this);
