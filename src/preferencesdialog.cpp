@@ -60,28 +60,8 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, const char *name, bool mod
     LineEditSearchThreshold->setText(QString("%1").arg(config->searchThreshold));
     LineEditPlayqueueTemplate->setText(config->playqueueTemplate);
 
-    // xmms specific
-    LineEditKeepInXmms->setText(QString("%1").arg(config->keepInXmms));
-    #ifdef ENABLE_XMMS
-    RadioButtonXmms->setChecked(config->mediaPlayer==config->MEDIA_PLAYER_XMMS);
-    #else
-
-    RadioButtonXmms->setEnabled(false);
-    LineEditKeepInXmms->setEnabled(false);
-    #endif
-
-    // noatun specific
-    LineEditFadeTime->setText(QString("%1").arg(config->fadeTime));
-    LineEditFadeOutEnd->setText(QString("%1").arg(config->fadeOutEnd));
-    LineEditFadeInStart->setText(QString("%1").arg(config->fadeInStart));
-    RadioButtonNoatun->setChecked(config->mediaPlayer==config->MEDIA_PLAYER_NOATUN);
-
     // artsplayer specific
     RadioButtonArtsPlayer->setChecked(config->mediaPlayer==config->MEDIA_PLAYER_ARTSPLAYER);
-    
-    // gstplayer specific
-    RadioButtonGstPlayer->setChecked(config->mediaPlayer==config->MEDIA_PLAYER_GSTPLAYER);
-    LineEditAudioSink->setText(QString("%1").arg(config->audioSink));
     
     for(int i=0; i<Song::getMaxSongAction(); i++) {
         ComboBoxDoubleClickAction->insertItem(Song::getSongAction(i));
@@ -210,29 +190,9 @@ void PreferencesDialog::myAccept() {
     config->searchThreshold=atoi(LineEditSearchThreshold->text());
     config->playqueueTemplate = LineEditPlayqueueTemplate->text();
     
-    // xmms specific
-    config->keepInXmms=atoi(LineEditKeepInXmms->text());
-    if(RadioButtonXmms->isChecked()) {
-        config->mediaPlayer=config->MEDIA_PLAYER_XMMS;
-    }
-    if(RadioButtonNoatun->isChecked()) {
-        config->mediaPlayer=config->MEDIA_PLAYER_NOATUN;
-    }
     if(RadioButtonArtsPlayer->isChecked()) {
         config->mediaPlayer=config->MEDIA_PLAYER_ARTSPLAYER;
     }
-    if(RadioButtonGstPlayer->isChecked()) {
-        config->mediaPlayer=config->MEDIA_PLAYER_GSTPLAYER;
-    }
-
-    // GStreamer specific
-    config->audioSink=LineEditAudioSink->text();
-
-    // noatun specific
-    config->fadeTime=atoi(LineEditFadeTime->text());
-    config->fadeOutEnd=atoi(LineEditFadeOutEnd->text());
-    config->fadeInStart=atoi(LineEditFadeInStart->text());
-
 
     // plugins
     config->grabAndEncodeCmd=LineEditGrabAndEncodeCmd->text();

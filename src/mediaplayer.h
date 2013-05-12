@@ -27,7 +27,6 @@ enum PlayerStatus { STOPPED, PAUSED, PLAYING};
 
 
 /** This class abstracts away the details of a supported media player.
- * The supported players are XMMS, Noatun or a built-in arts player.
  *
  * Most methods should be straight-forward.
  *

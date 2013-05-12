@@ -31,14 +31,12 @@ SOURCES = \
     foldermedia.cpp \
     foldersorted.cpp \
     fuzzsrch.cpp \
-    gstplayer.cpp \
     lineeditshift.cpp \
     main.cpp \
     mediaplayer.cpp \
     mydatetime.cpp \
     mylist.cpp \
     mylistview.cpp \
-    noatunplayer.cpp \
     preferencesdialog.cpp \
     prefs.cpp \
     searchthread.cpp \
@@ -69,14 +67,12 @@ HEADERS = \
     foldermedia.h \
     foldersorted.h \
     fuzzsrch.h \
-    gstplayer.h \
     i18n.h \
     lineeditshift.h \
     mediaplayer.h \
     mydatetime.h \
     mylist.h \
     mylistview.h \
-    noatunplayer.h \
     options.h \
     preferencesdialog.h \
     prefs.h \

@@ -36,21 +36,8 @@ YammiGui* gYammiGui;
  */
 int main( int argc, char **argv )
 {
-	QString build_opts("");
-#ifdef ENABLE_XMMS
-	build_opts+=i18n("- XMMS support: yes\n");
-#else
-	build_opts+=i18n("- XMMS support: no\n");
-#endif
-	
-#ifdef ENABLE_GSTREAMER
-	build_opts+=i18n("- gstreamer support: yes\n");
-#else
-	build_opts+=i18n("- gstreamer support: no\n");
-#endif
-  
 	KAboutData about("yammi", I18N_NOOP("Yammi"), version, description,
-                     KAboutData::License_GPL, "(C) 2001-2005 by Oliver Noelle", build_opts, "http://yammi.sourceforge.net", "yammi-developer@lists.sourceforge.net");
+                     KAboutData::License_GPL, "(C) 2001-2005 by Oliver Noelle", "", "http://yammi.sourceforge.net", "yammi-developer@lists.sourceforge.net");
 
 	KCmdLineArgs::init(argc, argv, &about);
 	KCmdLineArgs::addCmdLineOptions( options );

@@ -34,10 +34,8 @@
 class Prefs {
 public:
     // constants
-    static const int MEDIA_PLAYER_XMMS = 0;
-    static const int MEDIA_PLAYER_NOATUN = 1;
-    static const int MEDIA_PLAYER_ARTSPLAYER = 2;
-    static const int MEDIA_PLAYER_GSTPLAYER = 3;
+    static const int MEDIA_PLAYER_DUMMY = 0;
+    static const int MEDIA_PLAYER_ARTSPLAYER = 1;
     static const int GUESSING_MODE_SIMPLE = 0;
     static const int GUESSING_MODE_ADVANCED = 1;
 
@@ -116,21 +114,6 @@ public:
     bool lazyGrouping;
     /** Threshold for searching */
     int searchThreshold;
-
-    // xmms specific
-    /** Songs in playlist of xmms */
-    int keepInXmms;
-
-    // gstreamer specific
-    QString audioSink;
-    
-    // noatun specific
-    /** Fading time for Noatun (0=disabled) */
-    int fadeTime;
-    /** Fade out in % */
-    int fadeOutEnd;
-    /** Fade in in % */
-    int fadeInStart;
 
     // plugins
     /** Name of grab and encode script */

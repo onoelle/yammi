@@ -97,15 +97,7 @@
 
 #include "mediaplayer.h"
 #include "dummyplayer.h"
-#include "noatunplayer.h"
 #include "artsplayer.h"
-#include "gstplayer.h"
-#ifdef ENABLE_XMMS
-#include "xmmsplayer.h"
-#else
-#define XmmsPlayer DummyPlayer
-#endif
-
 
 static QString columnName[] = { i18n("Artist"), i18n("Title"), i18n("Album"), i18n("Length"),
                                 i18n("Year"), i18n("TrackNr"), i18n("Genre"), i18n("AddedTo"), i18n("Bitrate"),
@@ -3385,30 +3377,13 @@ void YammiGui::toggleColumnVisibility(int column) {
 void YammiGui::loadMediaPlayer( ) {
     player = 0;
     switch( config()->mediaPlayer ) {
-        #ifdef ENABLE_XMMS
-    case 0:
-        player = new XmmsPlayer(0, model);
-        break;
-        #endif
-
-    case 1:
-        int retval;
-        retval = system("which noatun");
-        retval = WEXITSTATUS(retval);
-        if (retval == 0) {
-            player = new NoatunPlayer( model );
-        } else {
-            kdDebug() << "WARNING: looks like you want to use noatun, but noatun cannot be found\n";
-        }
-        break;
-    case 2:
+    case Prefs::MEDIA_PLAYER_ARTSPLAYER:
         player = new Yammi::ArtsPlayer( model );
         break;
-    case 3:
-        player = new Yammi::GstPlayer( model );
+    case Prefs::MEDIA_PLAYER_DUMMY:
+    default:
+        player = new DummyPlayer( model );
         break;
-        //    default:
-        //        player = new DummyPlayer( model );
     }
     if (!player) {
         player = new DummyPlayer( model );

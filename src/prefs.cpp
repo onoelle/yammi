@@ -66,15 +66,6 @@ void Prefs::setDefaultValues(void) {
     lazyGrouping = false;
     searchThreshold = 20;
 
-    keepInXmms = 3;
-
-    fadeTime = 10000;
-    fadeOutEnd = 50;
-    fadeInStart = 70;
-
-    // gstreamer specific
-    audioSink = "osssink";
-    
     // plugins
     grabAndEncodeCmd = "yammiGrabAndEncode";
     shutdownScript = "dcop ksmserver ksmserver \"logout\" 0 2 0";
@@ -152,17 +143,6 @@ bool Prefs::loadConfig( ) {
     mediaPlayer                  = cfg->readNumEntry("mediaPlayer", mediaPlayer);
     playqueueTemplate            = cfg->readEntry("playqueueTemplate", playqueueTemplate);
 
-    cfg->setGroup("Xmms");
-    keepInXmms                   = cfg->readNumEntry("keepInXmms", keepInXmms);
-
-    cfg->setGroup("GStreamer");
-    audioSink                    = cfg->readEntry("audioSink", audioSink);
-    
-    cfg->setGroup("Noatun");
-    fadeTime                     = cfg->readNumEntry("fadeTime", fadeTime);
-    fadeOutEnd                   = cfg->readNumEntry("fadeOutEnd", fadeOutEnd);
-    fadeInStart                  = cfg->readNumEntry("fadeInStart", fadeInStart);
-
     cfg->setGroup("Plugins");
     grabAndEncodeCmd             = cfg->readEntry("grabAndEncodeCmd", grabAndEncodeCmd);
     shutdownScript               = cfg->readEntry("shutdownScript", shutdownScript);
@@ -235,17 +215,6 @@ bool Prefs::saveConfig( ) {
     cfg->writeEntry("searchThreshold", searchThreshold);
     cfg->writeEntry("mediaPlayer", mediaPlayer);    
     cfg->writeEntry("playqueueTemplate", playqueueTemplate);
-
-    cfg->setGroup("Xmms");
-    cfg->writeEntry("keepInXmms", keepInXmms);
-
-    cfg->setGroup("GStreamer");
-    cfg->writeEntry("audioSink",audioSink);
-    
-    cfg->setGroup("Noatun");
-    cfg->writeEntry("fadeTime", fadeTime);
-    cfg->writeEntry("fadeOutEnd", fadeOutEnd);
-    cfg->writeEntry("fadeInStart", fadeInStart);
 
     cfg->setGroup("Plugins");
     cfg->writeEntry("grabAndEncodeCmd", grabAndEncodeCmd);
