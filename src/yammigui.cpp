@@ -249,8 +249,6 @@ void YammiGui::saveOptions() {
     cfg->writeEntry("MediaPlayerToolbar Pos", (int) toolBar("MediaPlayerToolbar")->barPos());
     cfg->writeEntry("Show SongActionsToolbar", static_cast<KToggleAction*>(ac->action("SongActionsToolbar"))->isChecked());
     cfg->writeEntry("SongActionsToolbar Pos", (int) toolBar("SongActionsToolbar")->barPos());
-    cfg->writeEntry("Show SleepModeToolbar", static_cast<KToggleAction*>(ac->action("SleepModeToolbar"))->isChecked());
-    cfg->writeEntry("SleepModeToolbar Pos", (int) toolBar("SleepModeToolbar")->barPos());
 
     cfg->writeEntry("CurrentFolder", chosenFolder->folderName());
     cfg->writeEntry("savedSongPosition", player->getCurrentTime());
@@ -294,11 +292,6 @@ void YammiGui::readOptions() {
     pos=(KToolBar::BarPosition) cfg->readNumEntry("SongActionsToolbar Pos", KToolBar::Top);
     toolBar("SongActionsToolbar")->setBarPos(pos);
     toolbarToggled("SongActionsToolbar");
-    b = cfg->readBoolEntry("Show SleepModeToolbar", true);
-    static_cast<KToggleAction*>(ac->action("SleepModeToolbar"))->setChecked(b);
-    pos=(KToolBar::BarPosition) cfg->readNumEntry("SleepModeToolbar Pos", KToolBar::Top);
-    toolBar("SleepModeToolbar")->setBarPos(pos);
-    toolbarToggled("SleepModeToolbar");
 
     //Statusbar
     // 	b = cfg->readBoolEntry("Show Statusbar", true);
@@ -395,43 +388,6 @@ bool YammiGui::queryExit() {
     return true;
 }
 
-
-void YammiGui::shutdownSequence( ) {
-    QString msg(tr("Shutting down in %1 seconds"));
-    const int total = 10;
-
-    QProgressDialog d(this);
-    d.setModal(true);
-    d.setLabelText(tr("Shutting down..."));
-    d.setTotalSteps(total);
-    d.setMinimumDuration(0);
-
-    QTimer *t;
-
-    for( int i = 0; i < 10; ++i ) {
-        d.setLabelText( msg.arg(total-i) );
-        d.setProgress( i );
-        t = new QTimer();
-        t->start(1000,true);
-        while(t->isActive()) {
-            kapp->processEvents();
-        }
-        delete t;
-        if( d.wasCancelled() ) {
-            qDebug()<<"Shutdown cancelled";
-            changeSleepMode();
-            return;
-        }
-    }
-    model->save();
-    //TODO: change to saveDatabase()
-    // (what if the user touched the database in between? => save immediately or cancel sleep mode)
-    if(config()->shutdownScript.isEmpty()) {
-        this->close();
-    } else {
-        system(config()->shutdownScript+" &");
-    }
-}
 
 void YammiGui::toolbarToggled( const QString& name ) {
     QString n = name;
@@ -591,7 +547,7 @@ void YammiGui::handleLastSong(Song* lastSong) {
 }
 
 /**
- * Called when a new song is played: updates title bar, songSlider, checks sleepMode
+ * Called when a new song is played: updates title bar, songSlider
  */
 void YammiGui::handleNewSong(Song* newSong) {
     currentSong=newSong;
@@ -604,15 +560,6 @@ void YammiGui::handleNewSong(Song* newSong) {
     // TODO: take swapped file?
     currentFile=newSong->location();
     currentSongStarted=currentSongStarted.currentDateTime();
-
-    if(m_sleepMode) {
-        int left = m_sleepModeSpinBox->value() - 1;
-        if(left > 0 ) {
-            m_sleepModeSpinBox->setValue(left);
-        } else {
-            shutdownSequence();
-        }
-    }
 
     setCaption("Yammi: "+currentSong->displayName());
     m_seekSlider->setupTickmarks(currentSong);
@@ -634,10 +581,6 @@ void YammiGui::updatePlayerStatus() {
         m_playPauseAction->setText(tr("Play"));
     }
 
-    // check, if we stopped because playlist empty and sleep mode activated
-    if(m_sleepMode && player->getStatus() == STOPPED && model->songsToPlay.count()==0) {
-        shutdownSequence( );
-    }
 }
 
 
@@ -2640,28 +2583,11 @@ void YammiGui::keyPressEvent(QKeyEvent* e) {
         shiftPressed=true;
         break;
 
-    case Key_Pause:									// exit program (press twice for shutting down computer)
-        changeSleepMode();
-        break;
-
     case Key_PageUp:
-        if(m_sleepMode) {
-            int left = m_sleepModeSpinBox->value() + 1;
-            m_sleepModeSpinBox->setValue(left);
-        }
-        else {
-            songListView->simulateKeyPressEvent(e);
-        }
+        songListView->simulateKeyPressEvent(e);
         break;
     case Key_PageDown:
-        if(m_sleepMode) {
-            int left = m_sleepModeSpinBox->value() - 1;
-            if(left > 0 )
-                m_sleepModeSpinBox->setValue(left);
-        }
-        else {
-            songListView->simulateKeyPressEvent(e);
-        }
+        songListView->simulateKeyPressEvent(e);
         break;
 
     case Key_Up:
@@ -2733,28 +2659,6 @@ void YammiGui::saveDatabase() {
     model->save();
     return;
 }
-
-
-void YammiGui::changeSleepMode() {
-    kapp->beep();
-    if(!m_sleepMode) {
-        m_sleepMode = true;
-        m_sleepModeSpinBox->setValue(3);
-        if(model->allSongsChanged() || model->categoriesChanged()) {
-            QString msg = tr("The Database has been modified. Save changes?\n(answering no will cancel sleep mode)");
-            if (QMessageBox::warning(this, "", msg, QMessageBox::Yes, QMessageBox::No | QMessageBox::Escape) == QMessageBox::Yes) {
-                saveDatabase();
-            } else {
-                m_sleepMode = false; //leave sleep mode off
-            }
-        }
-    } else {
-        m_sleepMode = false;
-    }
-    m_sleepModeButton->setText(m_sleepMode? tr("shutdown"):tr("(disabled)"));
-    m_sleepModeSpinBox->setEnabled(m_sleepMode);
-}
-
 
 
 void YammiGui::updateSongDatabaseHarddisk() {
@@ -3082,7 +2986,6 @@ bool YammiGui::setupActions( ) {
     ta = new KToggleAction("Main ToolBar",0,0,this,SLOT(toolbarToggled()),actionCollection(),"MainToolbar");
     ta = new KToggleAction("Media Player",0,0,this,SLOT(toolbarToggled()),actionCollection(),"MediaPlayerToolbar");
     ta = new KToggleAction("Song Actions",0,0,this,SLOT(toolbarToggled()),actionCollection(),"SongActionsToolbar");
-    ta = new KToggleAction("Sleep Mode",0,0,this,SLOT(toolbarToggled()),actionCollection(),"SleepModeToolbar");
 
     // other actions
     new KAction(tr("Update Automatic Folder Structure"),"reload",0,this,SLOT(updateView()),actionCollection(),"update_view");
@@ -3107,20 +3010,6 @@ bool YammiGui::setupActions( ) {
         QToolTip::add( btn, tr("Add this entry to the database as a \"wish\""));
     */
     new KWidgetAction(w, "Search", 0, 0, 0, actionCollection(), "search");
-
-    // Sleep mode
-    w = new QHBox( );
-    new QLabel(tr("Sleep mode:"),w);
-    m_sleepModeButton = new QPushButton(tr("(disabled)"), w);
-    QToolTip::add
-        ( m_sleepModeButton, tr("toggle sleep mode"));
-    connect( m_sleepModeButton, SIGNAL( clicked() ), this, SLOT( changeSleepMode() ) );
-    m_sleepModeSpinBox=new QSpinBox(1, 99, 1, w);
-    QToolTip::add
-        ( m_sleepModeSpinBox, tr("number songs until shutdown"));
-    m_sleepMode = false;
-    m_sleepModeSpinBox->setEnabled(m_sleepMode);
-    new KWidgetAction( w ,"Sleep Mode",0, 0, 0,actionCollection(),"sleep_mode");
 
     // the rc file must be installed (eg. in /opt/kde3/share/apps/yammi/yammiui.rc)
     QString curDir = QDir::currentDirPath();

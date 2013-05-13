@@ -37,7 +37,6 @@
       <Action name="MainToolbar"/>
       <Action name="MediaPlayerToolbar"/>
       <Action name="SongActionsToolbar"/>
-      <Action name="SleepModeToolbar"/>
     </Menu>
   </Menu>
 </MenuBar>
@@ -53,10 +52,6 @@
 <ToolBar name="MainToolbar">
  <text>Main ToolBar</text>
  <Action name="search"/>
-</ToolBar>
-<ToolBar name="SleepModeToolbar">
- <text>Sleep</text>
- <Action name="sleep_mode"/>
 </ToolBar>
 <ToolBar name="SongActionsToolbar">
  <text>Song Actions</text>

@@ -838,31 +838,12 @@
                             <string>a script to grab a track from cd and encode to mp3</string>
                         </property>
                     </widget>
-                    <widget class="QLabel" row="1" column="0">
-                        <property name="name">
-                            <cstring>LabelShutdownScript</cstring>
-                        </property>
-                        <property name="text">
-                            <string>shutdown script</string>
-                        </property>
-                        <property name="toolTip" stdset="0">
-                            <string>a script that is invoked on sleep mode</string>
-                        </property>
-                    </widget>
                     <widget class="QLineEdit" row="0" column="1">
                         <property name="name">
                             <cstring>LineEditGrabAndEncodeCmd</cstring>
                         </property>
                         <property name="toolTip" stdset="0">
                             <string>a script to grab a track from cd and encode to mp3</string>
-                        </property>
-                    </widget>
-                    <widget class="QLineEdit" row="1" column="1">
-                        <property name="name">
-                            <cstring>LineEditShutdownScript</cstring>
-                        </property>
-                        <property name="toolTip" stdset="0">
-                            <string>a script that is invoked on sleep mode</string>
                         </property>
                     </widget>
                     <widget class="QGroupBox" row="2" column="0" rowspan="1" colspan="2">
@@ -1164,7 +1145,6 @@ Group mode = executed once for the selection</string>
     <tabstop>SpinBoxGroupThreshold</tabstop>
     <tabstop>CheckBoxChildSafe</tabstop>
     <tabstop>LineEditGrabAndEncodeCmd</tabstop>
-    <tabstop>LineEditShutdownScript</tabstop>
     <tabstop>ComboBoxPlugins</tabstop>
     <tabstop>PushButtonNewPlugin</tabstop>
     <tabstop>PushButtonDeletePlugin</tabstop>

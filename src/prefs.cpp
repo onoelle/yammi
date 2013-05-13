@@ -60,7 +60,6 @@ void Prefs::setDefaultValues(void) {
 
     // plugins
     grabAndEncodeCmd = "yammiGrabAndEncode";
-    shutdownScript = "dcop ksmserver ksmserver \"logout\" 0 2 0";
 
     consistencyPara.setDefaults();
     
@@ -126,7 +125,6 @@ bool Prefs::loadConfig( ) {
 
     cfg->setGroup("Plugins");
     grabAndEncodeCmd             = cfg->readEntry("grabAndEncodeCmd", grabAndEncodeCmd);
-    shutdownScript               = cfg->readEntry("shutdownScript", shutdownScript);
     pluginCommand                = cfg->readListEntry("pluginCommand");
     pluginMenuEntry              = cfg->readListEntry("pluginMenuEntry");
     pluginCustomList             = cfg->readListEntry("pluginCustomList");
@@ -186,7 +184,6 @@ bool Prefs::saveConfig( ) {
 
     cfg->setGroup("Plugins");
     cfg->writeEntry("grabAndEncodeCmd", grabAndEncodeCmd);
-    cfg->writeEntry("shutdownScript", shutdownScript);
     cfg->writeEntry("pluginCommand", pluginCommand);
     cfg->writeEntry("pluginMenuEntry", pluginMenuEntry);
     cfg->writeEntry("pluginCustomList", pluginCustomList);

@@ -98,9 +98,6 @@ public:
       *           the default will be used */
     void loadDatabase(QString databaseDir);
 
-    /** Start a count-down and then shut down yammi unless the user decides to cancel */
-    void shutdownSequence( );
-
     /** Yammi config options (preferences) */
     Prefs* config();
     
@@ -153,8 +150,6 @@ protected:
 protected slots:
     /** Show/hide a toolbar after the correspondingt action is toggled by the user*/
     void toolbarToggled( const QString& name = QString::null );
-    /** Turn on/off the sleep mode */
-    void changeSleepMode();
 private:
     /** Setup UI-actions*/
     bool setupActions( );
@@ -166,9 +161,6 @@ private:
     LineEditShift* m_searchField;
     bool searchResultsUpdateNeeded;
     bool m_acceptSearchResults;
-    bool m_sleepMode;
-    QSpinBox* m_sleepModeSpinBox;
-    QPushButton* m_sleepModeButton;
 
 public:
     void stopDragging();

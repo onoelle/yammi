@@ -68,7 +68,6 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, const char *name, bool mod
     // plugins
     //////////
     LineEditGrabAndEncodeCmd->setText(QString("%1").arg(config->grabAndEncodeCmd));
-    LineEditShutdownScript->setText(QString("%1").arg(config->shutdownScript));
 #if QT_VERSION >= 0x040200
     PluginUrlLabel->setOpenExternalLinks(true);
 #endif
@@ -173,7 +172,6 @@ void PreferencesDialog::myAccept() {
 
     // plugins
     config->grabAndEncodeCmd=LineEditGrabAndEncodeCmd->text();
-    config->shutdownScript=LineEditShutdownScript->text();
 
     config->pluginCommand = _pluginCommand;
     config->pluginMenuEntry = _pluginMenuEntry;

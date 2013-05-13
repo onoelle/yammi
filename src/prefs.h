@@ -110,8 +110,6 @@ public:
     // plugins
     /** Name of grab and encode script */
     QString grabAndEncodeCmd;
-    /** Shutdown script */
-    QString shutdownScript;
 
     /** List of plugins */
     QStringList pluginMenuEntry;
