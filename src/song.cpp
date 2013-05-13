@@ -792,7 +792,6 @@ void Song::moveTo(QString dir) {
 
 QString Song::getSongAction(int index) {
     const char* songAction[] = {"None", "Enqueue", "EnqueueAsNext", "PlayNow", "SongInfo",
-                                "PrelistenStart", "PrelistenMiddle", "PrelistenEnd",
                                 "Delete", "DeleteFile", "DeleteEntry",
                                 "CheckConsistency", "MoveTo",
                                 "Dequeue"

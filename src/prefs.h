@@ -99,13 +99,6 @@ public:
     /** capitalize title, artist and album */
     bool capitalizeTags;
 
-
-    /** prelistening configuration */
-    QString prelistenMp3Command;
-    QString prelistenOggCommand;
-    QString prelistenWavCommand;
-    QString prelistenFlacCommand;
-    QString prelistenOtherCommand;
     
     /** Group threshold */
     int groupThreshold;

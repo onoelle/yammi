@@ -53,13 +53,7 @@ void Prefs::setDefaultValues(void) {
     filenamesConsistent = false;
     directoriesConsistent = false;
     capitalizeTags = true;
-    
-    prelistenMp3Command = "mpg123|-a /dev/dsp1|--skip {skipFrames}|'{absoluteFilename}'";
-    prelistenOggCommand = "ogg123|-d oss|-odsp:/dev/dsp1|--skip {skipSeconds}|'{absoluteFilename}'";
-    prelistenWavCommand = "play|-d /dev/dsp1|'{absoluteFilename}'|trim {skipSamples}";
-    prelistenFlacCommand = "mplayer|-ss {skipSeconds}|-ao oss:/dev/dsp1|'{absoluteFilename}'";
-    prelistenOtherCommand ="";
-    
+
     groupThreshold = 5;
     lazyGrouping = false;
     searchThreshold = 20;
@@ -121,11 +115,6 @@ bool Prefs::loadConfig( ) {
     logging                      = cfg->readBoolEntry("logging", logging);
     childSafe                    = cfg->readBoolEntry("childSafe", childSafe);
     capitalizeTags               = cfg->readBoolEntry("capitalizeTags", capitalizeTags);
-    prelistenMp3Command          = cfg->readEntry("prelistenMp3Command", prelistenMp3Command);
-    prelistenOggCommand          = cfg->readEntry("prelistenOggCommand", prelistenOggCommand);
-    prelistenWavCommand          = cfg->readEntry("prelistenWavCommand", prelistenWavCommand);
-    prelistenFlacCommand          = cfg->readEntry("prelistenFlacCommand", prelistenFlacCommand);
-    prelistenOtherCommand          = cfg->readEntry("prelistenOtherCommand", prelistenOtherCommand);
     groupThreshold               = cfg->readNumEntry("groupThreshold", groupThreshold);
     if(groupThreshold < 1) {
         groupThreshold = 1;
@@ -189,11 +178,6 @@ bool Prefs::saveConfig( ) {
     cfg->writeEntry("logging", logging);
     cfg->writeEntry("childSafe", childSafe);
     cfg->writeEntry("capitalizeTags", capitalizeTags);
-    cfg->writeEntry("prelistenMp3Command", prelistenMp3Command);
-    cfg->writeEntry("prelistenOggCommand", prelistenOggCommand);
-    cfg->writeEntry("prelistenWavCommand", prelistenWavCommand);
-    cfg->writeEntry("prelistenFlacCommand", prelistenFlacCommand);
-    cfg->writeEntry("prelistenOtherCommand", prelistenOtherCommand);
     cfg->writeEntry("groupThreshold", groupThreshold);
     cfg->writeEntry("lazyGrouping", lazyGrouping);
     cfg->writeEntry("searchThreshold", searchThreshold);

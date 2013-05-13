@@ -48,11 +48,6 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, const char *name, bool mod
     LineEditFilenamePattern->setText(config->consistencyPara.filenamePattern);
     LineEditDirectoriesPattern->setText(config->consistencyPara.directoryPattern);
     
-    LineEditPrelistenMp3Command->setText(config->prelistenMp3Command);
-    LineEditPrelistenOggCommand->setText(config->prelistenOggCommand);
-    LineEditPrelistenWavCommand->setText(config->prelistenWavCommand);
-    LineEditPrelistenFlacCommand->setText(config->prelistenFlacCommand);
-    LineEditPrelistenOtherCommand->setText(config->prelistenOtherCommand);
     SpinBoxGroupThreshold->setValue(config->groupThreshold);
     CheckBoxLazyGrouping->setChecked(config->lazyGrouping);
     LineEditSearchThreshold->setText(QString("%1").arg(config->searchThreshold));
@@ -165,11 +160,6 @@ void PreferencesDialog::myAccept() {
     } else {
         config->childSafe=CheckBoxChildSafe->isChecked();
     }
-    config->prelistenMp3Command=LineEditPrelistenMp3Command->text();
-    config->prelistenOggCommand=LineEditPrelistenOggCommand->text();
-    config->prelistenWavCommand=LineEditPrelistenWavCommand->text();
-    config->prelistenFlacCommand=LineEditPrelistenFlacCommand->text();
-    config->prelistenOtherCommand=LineEditPrelistenOtherCommand->text();
     config->groupThreshold=SpinBoxGroupThreshold->value();
     config->lazyGrouping=CheckBoxLazyGrouping->isChecked();
     config->searchThreshold=atoi(LineEditSearchThreshold->text());

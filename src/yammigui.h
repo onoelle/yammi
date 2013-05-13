@@ -171,7 +171,6 @@ private:
     QPushButton* m_sleepModeButton;
 
 public:
-    QString replacePrelistenSkip(QString input, int lengthInSeconds, int skipTo);
     void stopDragging();
     void requestSearchResultsUpdate(MyList* results);
     YammiModel* getModel() {
@@ -204,16 +203,6 @@ public slots:
     // all forSelection...() methods perform an action on a selection of songs
     // see selectionMode for possible selections of song
 
-    void forSelectionPrelistenStart()     {
-        forSelectionPrelisten(0);
-    }
-    void forSelectionPrelistenMiddle()    {
-        forSelectionPrelisten(33);
-    }
-    void forSelectionPrelistenEnd()       {
-        forSelectionPrelisten(95);
-    }
-    void forSelectionPrelisten(int where);
     void forSelectionMove();
     void forSelectionPlugin(int pluginIndex);
     void forSelectionCheckConsistency();
@@ -341,7 +330,6 @@ protected:
     QPopupMenu* playListPopup;
     QPopupMenu* songPopup;
     QPopupMenu* songPlayPopup;
-    QPopupMenu* songPrelistenPopup;
     QPopupMenu* songGoToPopup;
     QPopupMenu* songSearchPopup;
     QPopupMenu* songAdvancedPopup;
@@ -380,7 +368,6 @@ protected:
     QTimer regularTimer;
     QTimer searchResultsTimer;
     QTimer checkTimer;
-    QProcess* prelistenProcess;
 
     // folders
     Folder* folderAll;
@@ -438,8 +425,6 @@ protected:
     //****************
 protected slots:
     void toggleColumnVisibility(int column);
-    void preListen(Song* s, int skipTo);  ///< sends the song to headphones
-    void stopPrelisten();
     void shufflePlaylist();
     void updateSearchResults();
 

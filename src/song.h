@@ -71,7 +71,6 @@ public:
     // all possible actions for a single or a selection of songs
     // caution: corresponds to the static songAction field in class Song (song.cpp)
     enum action {	None, Enqueue, EnqueueAsNext, PlayNow, SongInfo,
-                  PrelistenStart, PrelistenMiddle, PrelistenEnd,
                   Delete, DeleteFile, DeleteEntry,
                   CheckConsistency, MoveTo,
                   Dequeue

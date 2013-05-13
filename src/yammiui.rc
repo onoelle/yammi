@@ -38,7 +38,6 @@
       <Action name="MediaPlayerToolbar"/>
       <Action name="SongActionsToolbar"/>
       <Action name="SleepModeToolbar"/>
-      <Action name="PrelistenToolbar"/>
     </Menu>
   </Menu>
 </MenuBar>
@@ -54,13 +53,6 @@
 <ToolBar name="MainToolbar">
  <text>Main ToolBar</text>
  <Action name="search"/>
-</ToolBar>
-<ToolBar name="PrelistenToolbar">
- <text>Prelisten</text>
- <Action name="prelisten_start"/>
- <Action name="prelisten_middle"/>
- <Action name="prelisten_end"/>
- <Action name="stop_prelisten"/>
 </ToolBar>
 <ToolBar name="SleepModeToolbar">
  <text>Sleep</text>
@@ -83,11 +75,6 @@
     <Action name="prepend_selected"/>
     <Action name="play_selected"/>
     <Action name="dequeue_selected"/>
-  </Menu>
-  <Menu name="prelisten"><text>Prelisten</text>
-    <Action name="prelisten_start"/>
-    <Action name="prelisten_middle"/>
-    <Action name="prelisten_end"/>
   </Menu>
   <Action name="info_selected"/>
   <Menu name="goto"><text>Go to folder...</text>

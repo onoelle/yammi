@@ -102,8 +102,6 @@ YammiGui::YammiGui() : DCOPObject("YammiPlayer"), KMainWindow( ) {
     gYammiGui = this;
     setGeometry(0, 0, 800, 600);
 
-    prelistenProcess = new QProcess;
-
     // initialize some fields
     validState = false;
     currentSong = 0;
@@ -465,7 +463,6 @@ YammiGui::~YammiGui() {
     searchThread->wait();
     delete searchThread;
     searchThread = NULL;
-    delete prelistenProcess;
 }
 
 
@@ -1511,9 +1508,6 @@ void YammiGui::adjustSongPopup() {
 
     songPopup->setItemEnabled(Song::PlayNow, enable);
     songPopup->setItemEnabled(Song::Dequeue, enable);
-    songPopup->setItemEnabled(Song::PrelistenStart, enable);
-    songPopup->setItemEnabled(Song::PrelistenMiddle, enable);
-    songPopup->setItemEnabled(Song::PrelistenEnd, enable);
     songPopup->setItemEnabled(Song::CheckConsistency, enable);
     songPopup->setItemEnabled(Song::MoveTo, enable);
 }
@@ -1832,19 +1826,6 @@ void YammiGui::forSelectionEnqueueAsNext( ) {
     folderActual->correctOrder();
     player->syncYammi2Player();
     folderContentChanged(folderActual);
-}
-
-
-void YammiGui::forSelectionPrelisten(int where ) {
-    getSelectedSongs();
-    int count = selectedSongs.count();
-    if(count < 1) {
-        return;
-    }
-    for(Song* s = selectedSongs.firstSong(); s; s=selectedSongs.nextSong()) {
-        preListen(s, where);
-        break;
-    }
 }
 
 
@@ -2250,15 +2231,6 @@ void YammiGui::forSelection(int action) {
         break;
     case Song::SongInfo:
         forSelectionSongInfo();
-        break;
-    case Song::PrelistenStart:
-        forSelectionPrelistenStart();
-        break;
-    case Song::PrelistenMiddle:
-        forSelectionPrelistenMiddle();
-        break;
-    case Song::PrelistenEnd:
-        forSelectionPrelistenEnd();
         break;
     case Song::Delete:
         forSelectionDelete();
@@ -2785,92 +2757,6 @@ void YammiGui::changeSleepMode() {
 
 
 
-/**
- * stops playback on headphone
- */
-void YammiGui::stopPrelisten() {
-    if(!prelistenProcess->isRunning()) {
-        qDebug() << "looks like no prelisten process running...";
-        return;
-    }
-    prelistenProcess->kill();
-    /* disabled - probably with a newer qt version
-    bool result = prelistenProcess->kill(9);
-    if(!result) {
-        qWarning() << "could not stop prelisten process!";
-    }
-    */
-}
-
-/**
- * Replace skipXYZ placeholders with computed values
- */
-QString YammiGui::replacePrelistenSkip(QString input, int lengthInSeconds, int skipTo)
-{
-    int skipSeconds = lengthInSeconds * skipTo / 100;
-    int skipMilliSeconds = skipSeconds * 1000;
-    int skipFrames = skipSeconds * 38;
-//    int skipSamples = skipSeconds * 441;
-
-    input.replace(QRegExp("\\{skipSeconds\\}"), QString("%1").arg(skipSeconds));
-    input.replace(QRegExp("\\{skipMilliSeconds\\}"), QString("%1").arg(skipMilliSeconds));
-    input.replace(QRegExp("\\{skipFrames\\}"), QString("%1").arg(skipFrames));
-//    input.replace(QRegExp("\\{skipSamples\\}"), QString("%1").arg(skipSamples));
-    return input;
-}
-    
-/**
- * sends the song to headphones
- * skipTo: 0 = beginning of song, 100 = end
- */
-void YammiGui::preListen(Song* s, int skipTo) {
-    // first, kill any previous prelisten process
-    stopPrelisten();
-    
-    // now play song via configured command line tools
-    QString prelistenCmd;
-    if(s->filename.right(3).upper()=="MP3") {
-        prelistenCmd = config()->prelistenMp3Command;
-    }
-    else if(s->filename.right(3).upper()=="OGG") {
-        prelistenCmd = config()->prelistenOggCommand;
-    }
-    else if(s->filename.right(3).upper()=="WAV") {
-        prelistenCmd = config()->prelistenWavCommand;
-    }
-    else if(s->filename.right(4).upper()=="FLAC") {
-        prelistenCmd = config()->prelistenFlacCommand;
-    }
-    else {
-        prelistenCmd = config()->prelistenOtherCommand;
-    }
-
-    if(prelistenCmd == "") {
-        qDebug() << "no prelistening configured for this file type: " << s->filename;
-        return;
-    }
-    
-    // prepare command
-    prelistenCmd = s->replacePlaceholders(prelistenCmd, 0);
-    prelistenCmd = replacePrelistenSkip(prelistenCmd, s->length, skipTo);        
-    qDebug() << "prelisten command: " << prelistenCmd;
-    
-    prelistenProcess->clearArguments();
-    //prelistenProcess->setUseShell(true);
-    QStringList argList = QStringList::split( QChar('|'), prelistenCmd );
-    prelistenProcess->setArguments(argList);
-    
-    if(prelistenProcess->isRunning()) {
-        qDebug() << "waiting for prelisten process to die...";
-        prelistenProcess->kill();
-    }
-    
-    bool result = prelistenProcess->start();
-    if(!result) {
-        qWarning() << "could not start prelisten process!";
-    }
-}
-
 void YammiGui::updateSongDatabaseHarddisk() {
     UpdateDatabaseDialog d(this, config());
     // show dialog
@@ -3169,9 +3055,6 @@ bool YammiGui::setupActions( ) {
     new KAction(tr("Enqueue at end (append)"), "enqueue", KShortcut(Key_F5), this, SLOT(forSelectionEnqueue()), actionCollection(), "append_selected");
     new KAction(tr("Play Now!"), "play_now", KShortcut(Key_F7), this, SLOT(forSelectionPlayNow()), actionCollection(), "play_selected");
     new KAction(tr("Dequeue Songs"), "stop", KShortcut(Key_F8), this, SLOT(forSelectionDequeue()), actionCollection(), "dequeue_selected");
-    new KAction(tr("Prelisten start"), "prelisten_start", KShortcut(Key_F9), this, SLOT(forSelectionPrelistenStart()), actionCollection(), "prelisten_start");
-    new KAction(tr("Prelisten middle"), "prelisten_middle", KShortcut(Key_F10), this, SLOT(forSelectionPrelistenMiddle()), actionCollection(), "prelisten_middle");
-    new KAction(tr("Prelisten end"), "prelisten_end", KShortcut(Key_F11), this, SLOT(forSelectionPrelistenEnd()), actionCollection(), "prelisten_end");
     new KAction(tr("Song Info..."), "info", KShortcut(Key_I), this, SLOT(forSelectionSongInfo()), actionCollection(), "info_selected");
     new KAction(tr("Delete Song..."), 0, 0, this, SLOT(forSelectionDelete()), actionCollection(), "delete_selected");
     new KAction(tr("Check Consistency..."),"spellcheck",0,this,SLOT(forSelectionCheckConsistency()), actionCollection(),"check_consistency");
@@ -3184,8 +3067,6 @@ bool YammiGui::setupActions( ) {
     new KAction(tr("Goto album"), 0, 0, this, SLOT(gotoFolderAlbum()), actionCollection(), "goto_album_folder");
     new KAction(tr("Goto genre"), 0, 0, this, SLOT(gotoFolderGenre()), actionCollection(), "goto_genre_folder");
     new KAction(tr("Goto year"), 0, 0, this, SLOT(gotoFolderYear()), actionCollection(), "goto_year_folder");
-
-    new KAction(tr("Stop prelisten"),"stop_prelisten",KShortcut(Key_F12),this,SLOT(stopPrelisten()),actionCollection(),"stop_prelisten");
 
     // autoplay actions
     KToggleAction *ta;
@@ -3202,7 +3083,6 @@ bool YammiGui::setupActions( ) {
     ta = new KToggleAction("Media Player",0,0,this,SLOT(toolbarToggled()),actionCollection(),"MediaPlayerToolbar");
     ta = new KToggleAction("Song Actions",0,0,this,SLOT(toolbarToggled()),actionCollection(),"SongActionsToolbar");
     ta = new KToggleAction("Sleep Mode",0,0,this,SLOT(toolbarToggled()),actionCollection(),"SleepModeToolbar");
-    ta = new KToggleAction("Prelisten",0,0,this,SLOT(toolbarToggled()),actionCollection(),"PrelistenToolbar");
 
     // other actions
     new KAction(tr("Update Automatic Folder Structure"),"reload",0,this,SLOT(updateView()),actionCollection(),"update_view");
