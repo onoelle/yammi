@@ -54,7 +54,7 @@
 #include <kstdaccel.h>
 #include <kaction.h>
 #include <kstdaction.h>
-#include <kmessagebox.h>
+#include <qmessagebox.h>
 #include <kprogress.h>
 #include <kdebug.h>
 #include <kkeydialog.h>
@@ -190,22 +190,9 @@ void YammiGui::loadDatabase(QString databaseDir) {
         if(oldDir.exists() && oldDir.exists("songdb.xml")) {
             kdDebug() << "no database existing yet, database from previous yammi versions found\n";
             kdDebug() << "importing your old song database from " << oldYammiDir << endl;
-            /*
-            TODO: KMessageBox crashes after any button pressed... event loop problem???
 
-            QString msg("No yammi database has been found at\n");
-            msg+="\t" + databaseDir + "\n";
-            msg+="However, an old yammi database\n";
-            msg+="(from a previous version of yammi)\n";
-            msg+="has been found at\n";
-            msg+="\t" + oldYammiDir +"\n\n";
-            msg+="Do you wish to import this database?\n";
-            int result=KMessageBox::questionYesNoCancel(this, msg, "import existing database");
-            if(result==KMessageBox::Yes) {
-            */
             importOld=true;
             config()->databaseDir=oldYammiDir;
-            //}
         }
     }
     model->readSongDatabase();
@@ -401,13 +388,18 @@ bool YammiGui::queryClose() {
     kdDebug() << "queryClose()" << endl;
     if(model->allSongsChanged() || model->categoriesChanged()) {
         QString msg=tr("The Song Database has been modified.\nDo you want to save the changes?");
-        switch( KMessageBox::warningYesNoCancel(this,msg,tr("Database modified"))) {
-        case KMessageBox::Yes:
+        switch (QMessageBox::warning(this, tr("Database modified"), msg,
+                                     QMessageBox::Yes | QMessageBox::Default,
+                                     QMessageBox::No,
+                                     QMessageBox::Cancel | QMessageBox::Escape))
+        {
+        case QMessageBox::Yes:
             saveDatabase();
             break;
-        case KMessageBox::No:
+        case QMessageBox::No:
             break;
-        case KMessageBox::Cancel:
+        case QMessageBox::Cancel:
+        default:
             return false;
         }
     } else { //the db has not changed, but save history anyways...(only if more than 2 songs to add)
@@ -1145,17 +1137,26 @@ void YammiGui::decide(Song* s1, Song* s2) {
     }
 
     QString msg = tr("Two identical songs: \ns1: %1\ns2: %2\nDo you want to delete one of them?");
-    int what = KMessageBox::warningYesNoCancel( this, msg.arg(str1).arg(str2),QString::null,tr("Delete s1"), tr("Delete s2"));
-    if(what == KMessageBox::Yes) {
+    switch (QMessageBox::warning(this, "", msg.arg(str1).arg(str2),
+                                 tr("Delete s1"),
+                                 tr("Delete s2"),
+                                 tr("Keep both"), 0, 2))
+    {
+    case 0:
         kdDebug()<< "deleting s1\n";
         s1->deleteFile(config()->trashDir);
         folderAll->removeSong(s1);
-    }
-    if(what == KMessageBox::No) {
+        break;
+    case 1:
         kdDebug()<< "deleting s2\n";
         s2->deleteFile(config()->trashDir);
         folderAll->removeSong(s2);
+        break;
+    case 2:
+    default:
+        break;
     }
+
     model->allSongsChanged(true);
 }
 
@@ -1617,7 +1618,7 @@ void YammiGui::forSelectionPlugin(int pluginIndex) {
             for(unsigned int i=0; i<sampleCmd.length(); i+=80) {
                 msg+=sampleCmd.mid(i, 80)+"\n";
             }
-            if( KMessageBox::warningYesNo( this,msg ) != KMessageBox::Yes) {
+            if (QMessageBox::warning(this, "", msg, QMessageBox::Yes, QMessageBox::No | QMessageBox::Escape) != QMessageBox::Yes) {
                 return;
             }
         }
@@ -1662,7 +1663,7 @@ void YammiGui::forSelectionPlugin(int pluginIndex) {
                     break;
                 }
             }
-            if( KMessageBox::warningYesNo( this, msg) != KMessageBox::Yes) {
+            if (QMessageBox::warning(this, "", msg, QMessageBox::Yes, QMessageBox::No | QMessageBox::Escape) != QMessageBox::Yes) {
                 return;
             }
         }
@@ -1797,7 +1798,7 @@ void YammiGui::forSelectionBurnToMedia() {
                 .arg(mediaNo+1-startIndex).arg(config()->criticalSize).arg(startIndex).arg(mediaNo)
                 .arg(count).arg((int)(size/1024.0/1024.0)).arg((int)(totalSize/1024.0/1024.0))
                 .arg(config()->databaseDir + "media/");
-    KMessageBox::information( this, msg );
+    QMessageBox::information(this, "Yammi", msg);
 }
 
 
@@ -2220,7 +2221,7 @@ void YammiGui::forSelectionSongInfo( ) {
             msg += tr("\nNote: Your changes may affect the location of the selected files!\n");
         }
         msg += tr("\n\nDo you want to continue?");
-        if( KMessageBox::warningYesNo( this, msg) != KMessageBox::Yes ) {
+        if (QMessageBox::warning(this, "", msg, QMessageBox::Yes, QMessageBox::No | QMessageBox::Escape) != QMessageBox::Yes) {
             return;
         }
     }
@@ -2468,7 +2469,7 @@ void YammiGui::removeCategory() {
     QListViewItem* i = folderListView->currentItem();
     QString name=((Folder*)i)->folderName();
     QString msg(tr("Delete category %1 ?\n (will be deleted immediately!)").arg(name));
-    if( KMessageBox::warningYesNo( this, msg) == KMessageBox::Yes ) {
+    if (QMessageBox::warning(this, "", msg, QMessageBox::Yes, QMessageBox::No | QMessageBox::Escape) == QMessageBox::Yes) {
         model->removeCategory(name);
         folderListView->setCurrentItem( (QListViewItem*)folderCategories );
         folderListView->setSelected( (QListViewItem*)folderCategories , TRUE );
@@ -2564,8 +2565,9 @@ void YammiGui::removeMedia() {
     QString mediaName=chosenFolder->folderName();
     QString msg = QString(tr("Remove media %1 and the corresponding directory?\n\
                                (which contains the symbolic links to the songs)")).arg(mediaName);
-    if( KMessageBox::warningYesNo( this, msg )!=KMessageBox::Yes)
+    if (QMessageBox::warning(this, "", msg, QMessageBox::Yes, QMessageBox::No | QMessageBox::Escape) != QMessageBox::Yes) {
         return;
+    }
     model->removeMedia(mediaName);
     folderMedia->update(&(model->allSongs));
 }
@@ -2778,7 +2780,7 @@ void YammiGui::grabAndEncode() {
     QFileInfo fi(filename);
     if(fi.exists()) {
         QString msg = tr("The file\n%1\nalready exists!\n\nPlease choose a different artist/title combination.");
-        KMessageBox::information( this, msg.arg(filename));
+        QMessageBox::information(this, "Yammi", msg.arg(filename));
         return;
     }
     // linux specific
@@ -2819,7 +2821,7 @@ void YammiGui::checkForGrabbedTrack() {
     msg+=QString(tr("%1 songs added to database\n")).arg(model->entriesAdded);
     msg+=QString(tr("%1 songs corrupt (=not added)\n")).arg(model->corruptSongs);
     msg+=QString(tr("%1 problematic issues(check in folder Problematic Songs)")).arg(model->problematicSongs.count());
-    KMessageBox::information( this,msg);
+    QMessageBox::information(this,"Yammi", msg);
 }
 
 
@@ -2827,7 +2829,8 @@ void YammiGui::checkForGrabbedTrack() {
  * Fix all genres by re-reading them from the files.
  */
 void YammiGui::fixGenres() {
-    if( KMessageBox::warningYesNo(this, "Do you want to fix the genre of all songs (potentially broken or incomplete from earlier versions of yammi) by re-reading all genres from available files now?" ) != KMessageBox::Yes ) {
+    QString msg = tr("Do you want to fix the genre of all songs (potentially broken or incomplete from earlier versions of yammi) by re-reading all genres from available files now?");
+    if (QMessageBox::warning(this, "", msg, QMessageBox::Yes, QMessageBox::No | QMessageBox::Escape) != QMessageBox::Yes) {
         return;
     }
     isScanning=true;
@@ -2957,7 +2960,7 @@ void YammiGui::changeSleepMode() {
         m_sleepModeSpinBox->setValue(3);
         if(model->allSongsChanged() || model->categoriesChanged()) {
             QString msg = tr("The Database has been modified. Save changes?\n(answering no will cancel sleep mode)");
-            if( KMessageBox::warningYesNo(this,msg) == KMessageBox::Yes ) {
+            if (QMessageBox::warning(this, "", msg, QMessageBox::Yes, QMessageBox::No | QMessageBox::Escape) == QMessageBox::Yes) {
                 saveDatabase();
             } else {
                 m_sleepMode = false; //leave sleep mode off
@@ -3084,7 +3087,7 @@ void YammiGui::updateSongDatabaseSingleFile() {
     msg+=QString(tr("%1 songs added to database\n")).arg(model->entriesAdded);
     msg+=QString(tr("%1 songs corrupt (=not added)\n")).arg(model->corruptSongs);
     msg+=QString(tr("%1 songs problematic (check in folder Problematic Songs)\n")).arg(model->problematicSongs.count());
-    KMessageBox::information( this, msg );
+    QMessageBox::information(this, "Yammi", msg);
 }
 
 
@@ -3097,7 +3100,7 @@ void YammiGui::updateSongDatabaseMedia() {
     }
     config()->saveConfig();
     if(d.LineEditMediaDir->text()=="") {
-        KMessageBox::information( this,tr("You have to enter a name for the media!") );
+        QMessageBox::information(this, "Yammi", tr("You have to enter a name for the media!"));
         return;
     }
     QString mediaName = d.LineEditMediaName->text();
@@ -3129,7 +3132,7 @@ void YammiGui::updateSongDatabase(QString scanDir, QString filePattern, QString 
     msg+=QString(tr("%1 songs added to database\n")).arg(model->entriesAdded);
     msg+=QString(tr("%1 songs corrupt (=not added)\n")).arg(model->corruptSongs);
     msg+=QString(tr("%1 songs problematic (check in folder Problematic Songs)\n")).arg(model->problematicSongs.count());
-    KMessageBox::information( this,msg);
+    QMessageBox::information(this, "", msg);
     changeToFolder(folderRecentAdditions);
 
     isScanning=false;
@@ -3390,7 +3393,7 @@ void YammiGui::loadMediaPlayer( ) {
     }
     if (!player) {
         player = new DummyPlayer( model );
-        /*        KMessageBox::error(this, tr("Can't create the player object.\n"
+        /*        QMessageBox::error(this, tr("Can't create the player object.\n"
                                               "Please select a suitable backend player\n"
                                               "from the Preferences Dialog"), tr("Error"));*/
         kdDebug() << "Can't create player backend, select a suitable backend in the Preferences Dialog\n";

@@ -8,7 +8,6 @@
 #include <kconfig.h>
 #include <kaboutdata.h>
 #include <kcmdlineargs.h>
-#include <kmessagebox.h>
 #include <kdebug.h>
 #include <config.h>
 #include <kglobal.h>

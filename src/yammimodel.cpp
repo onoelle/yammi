@@ -21,7 +21,7 @@
 #include <kstatusbar.h>
 #include <kprogress.h>
 #include <kstandarddirs.h>
-#include <kmessagebox.h>
+#include <qmessagebox.h>
 #include <kdebug.h>
 
 
@@ -348,7 +348,7 @@ void YammiModel::readSongDatabase(  ) {
     if( !doc.setContent(&f, false, &errorMsg, &errorLine, &errorColumn) ) {
         f.close();
         QString msg = QString(tr("Error reading database file:\n%1\n(Error: %2, line %3, column %4)") ).arg(f.name()).arg(errorMsg).arg(errorLine).arg(errorColumn);
-        KMessageBox::error(0L,msg,tr("Error reading database"));
+        QMessageBox::warning(NULL, tr("Error reading database"), msg, QMessageBox::Ok, QMessageBox::NoButton);
         return;
     }
     f.close();
@@ -357,7 +357,7 @@ void YammiModel::readSongDatabase(  ) {
     if(version=="0.5.2" || version=="0.5.1" || version=="0.5" || version=="no version") {
         QString msg( tr("Your Song Database seems to be very old.\n You might need to create \
                           a new Database and scan your harddisk for songs") );
-        KMessageBox::sorry( 0L, msg, tr("Unknown Song Database version") );
+        QMessageBox::warning(NULL, tr("Unknown Song Database version"), msg, QMessageBox::Ok, QMessageBox::NoButton);
         //try to continue anyway...?
     }
 
@@ -525,7 +525,7 @@ void YammiModel::updateSongDatabase(QString scanDir, bool followSymLinks, QStrin
         if(!d.exists()) {
             QString msg( tr("The base directory for scanning does not exist!\n\
                               Set value \"scanDir\" to an existing directory!"));
-            KMessageBox::error( m_yammi, msg);
+            QMessageBox::warning(NULL, "", msg, QMessageBox::Ok, QMessageBox::NoButton);
             return;
         } else {
             traverse(scanDir, followSymLinks, filePattern, progress);
@@ -549,7 +549,7 @@ void YammiModel::updateSongDatabase(QString scanDir, bool followSymLinks, QStrin
                              does not exist or is not redable!\n Set value \"mediaDir\" in the preferences to an existing directory!\n\
                              (if necessary, enable the \"mount media\" option in the preferences)"));
             msg.arg(scanDir);
-            KMessageBox::error( m_yammi, msg);
+            QMessageBox::warning(NULL, "", msg, QMessageBox::Ok, QMessageBox::NoButton);
         } else {
             traverse(scanDir, followSymLinks, filePattern, progress, mediaName);
             kdDebug() << "finished scanning!" << endl;

@@ -15,7 +15,7 @@
 #include <qapplication.h>
 
 #include <kdebug.h>
-#include <kmessagebox.h>
+#include <qmessagebox.h>
 #include <kstandarddirs.h>
 #include <kurl.h>
 
@@ -48,7 +48,7 @@ namespace Yammi {
         m_xine = xine_new();
 
         if (!m_xine) {
-           KMessageBox::error( 0, tr("Yammi could not initialize xine.") );
+           QMessageBox::critical( 0, "Yammi", tr("Yammi could not initialize xine.") );
            //return false;
         }
 
@@ -86,7 +86,7 @@ namespace Yammi {
        m_audioPort = xine_open_audio_driver( m_xine, "auto", NULL );
        if( !m_audioPort ) {
           //TODO make engine method that is the same but parents the dialog for us
-          KMessageBox::error( 0, tr("xine was unable to initialize any audio drivers.") );
+          QMessageBox::critical( 0, "Yammi", tr("xine was unable to initialize any audio drivers.") );
           return false;
        }
 
@@ -94,7 +94,7 @@ namespace Yammi {
        if( !m_stream ) {
           xine_close_audio_driver( m_xine, m_audioPort );
           m_audioPort = NULL;
-          KMessageBox::error( 0, tr("Yammi could not create a new xine stream.") );
+          QMessageBox::critical( 0, "Yammi", tr("Yammi could not create a new xine stream.") );
           return false;
        }
 
