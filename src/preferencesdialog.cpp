@@ -81,6 +81,9 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, const char *name, bool mod
     //////////
     LineEditGrabAndEncodeCmd->setText(QString("%1").arg(config->grabAndEncodeCmd));
     LineEditShutdownScript->setText(QString("%1").arg(config->shutdownScript));
+#if QT_VERSION >= 0x040200
+    PluginUrlLabel->setOpenExternalLinks(true);
+#endif
 
     insertPluginValues();
 

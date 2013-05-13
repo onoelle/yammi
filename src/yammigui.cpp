@@ -48,9 +48,6 @@
 #include <kaccel.h>
 #include <qfiledialog.h>
 #include <kconfig.h>
-#include <kurl.h>
-#include <kurldrag.h>
-#include <kurlrequesterdlg.h>
 #include <kstdaccel.h>
 #include <kaction.h>
 #include <kstdaction.h>

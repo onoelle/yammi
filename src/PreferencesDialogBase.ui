@@ -1234,15 +1234,12 @@ Group mode = executed once for the selection</string>
                                     <string>See Yammi's homepage for useful plugin configurations:</string>
                                 </property>
                             </widget>
-                            <widget class="KURLLabel" row="7" column="0" rowspan="1" colspan="3">
+                            <widget class="QLabel" row="7" column="0" rowspan="1" colspan="3">
                                 <property name="name">
-                                    <cstring>kURLLabel1</cstring>
+                                    <cstring>PluginUrlLabel</cstring>
                                 </property>
                                 <property name="text">
-                                    <string>http://yammi.sourceforge.net/plugins.html</string>
-                                </property>
-                                <property name="url" stdset="0">
-                                    <string>http://yammi.sourceforge.net/plugins.html</string>
+                                    <string>&lt;a href="http://yammi.sourceforge.net/plugins.html"&gt;http://yammi.sourceforge.net/plugins.html&lt;/a&gt;</string>
                                 </property>
                             </widget>
                             <widget class="QLabel" row="4" column="2">
@@ -1499,12 +1496,6 @@ loaded from those media into a swap directory.</string>
         <receiver>Preferences</receiver>
         <slot>reject()</slot>
     </connection>
-    <connection>
-        <sender>kURLLabel1</sender>
-        <signal>leftClickedURL()</signal>
-        <receiver>Preferences</receiver>
-        <slot>kURLLabel1_leftClickedURL()</slot>
-    </connection>
 </connections>
 <tabstops>
     <tabstop>ComboBoxDoubleClickAction</tabstop>
@@ -1543,12 +1534,8 @@ loaded from those media into a swap directory.</string>
     <tabstop>LineEditCriticalSize</tabstop>
     <tabstop>TabWidget2</tabstop>
 </tabstops>
-<slots>
-    <slot>kURLLabel1_leftClickedURL()</slot>
-</slots>
 <layoutdefaults spacing="6" margin="11"/>
 <includehints>
-    <includehint>kurllabel.h</includehint>
     <includehint>ktextedit.h</includehint>
 </includehints>
 </UI>
