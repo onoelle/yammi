@@ -16,7 +16,6 @@
 
 #include <qmessagebox.h>
 #include <kstandarddirs.h>
-#include <kurl.h>
 
 #include "xine-engine.h"
 
@@ -136,7 +135,7 @@ namespace Yammi {
             qDebug() << "m_currentSong: " << m_currentSong->displayName();
         }
 
-        KURL url;
+        QFile file;
         SongEntry* songEntry = playlist->at(0);
         if (songEntry) {
             qDebug() << "playlist->at(0): " << songEntry->song()->displayName();
@@ -154,10 +153,10 @@ namespace Yammi {
 
             QString location = model->checkAvailability( songEntry->song() );
             qDebug() << "returned location: " << location;
+            file.setName(location);
             m_currentSong = songEntry->song();
-            url.setPath(location);
-            if(!url.isValid()) {
-                qDebug() << "ERROR: url not valid: " << url;
+            if (!file.exists()) {
+                qDebug() << "ERROR: location not valid: " << file.name();
                 return;
             }
         }
@@ -165,15 +164,13 @@ namespace Yammi {
         if( !ensureStream() )
             return;
 
-        //Engine::Base::load( url, isStream );
-
        // for users who stubbonly refuse to use DMIX or buy a good soundcard
        // why doesn't xine do this? I cannot say.
        xine_close( m_stream );
 
        qDebug() << "Before xine_open() *****";
 
-       if( xine_open( m_stream, QFile::encodeName( url.url() ) ) )
+       if( xine_open( m_stream, QFile::encodeName( file.name() ) ) )
        {
           qDebug() << "After xine_open() *****";
 

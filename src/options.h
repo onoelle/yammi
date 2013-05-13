@@ -25,7 +25,6 @@
   dirty workaround until qt4 can be used ...
   */
 typedef std::ostream& (endlFunc)(std::ostream&);
-class KURL;
 class QString;
 class QDebug {
 public:
@@ -36,9 +35,6 @@ public:
         return *this;
     }
     QDebug& operator<<(const endlFunc*) {
-        return *this;
-    }
-    QDebug& operator<<(const KURL&) {
         return *this;
     }
     QDebug& operator<<(const QString&) {
