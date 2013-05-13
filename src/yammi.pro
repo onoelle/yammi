@@ -12,7 +12,7 @@ QMAKE_CXX=ccache g++
 
 INCLUDEPATH += /usr/include/kde
 
-LIBS += -lartskde -lkdeui -L/usr/lib -ltag -lxine
+LIBS += -lkdeui -L/usr/lib -ltag -lxine
 
 MOC_DIR = .moc
 OBJECTS_DIR = .obj
@@ -22,7 +22,6 @@ QMAKE_CLEAN += yammi
 
 SOURCES = \
     applytoalldialog.cpp \
-    artsplayer.cpp \
     ConsistencyCheckDialog.cpp \
     ConsistencyCheckParameter.cpp \
     foldercategories.cpp \
@@ -57,7 +56,6 @@ SOURCES = \
 
 HEADERS = \
     applytoalldialog.h \
-    artsplayer.h \
     ConsistencyCheckDialog.h \
     ConsistencyCheckParameter.h \
     dummyplayer.h \

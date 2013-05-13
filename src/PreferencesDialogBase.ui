@@ -798,20 +798,6 @@
                                     <number>1</number>
                                 </property>
                             </widget>
-                            <widget class="QRadioButton">
-                                <property name="name">
-                                    <cstring>RadioButtonArtsPlayer</cstring>
-                                </property>
-                                <property name="text">
-                                    <string>ArtsPlayer</string>
-                                </property>
-                                <property name="checked">
-                                    <bool>false</bool>
-                                </property>
-                                <property name="buttonGroupId">
-                                    <number>1</number>
-                                </property>
-                            </widget>
                         </hbox>
                     </widget>
                 </grid>

@@ -256,13 +256,6 @@ namespace Yammi {
 #else
         pause();
         jumpTo(0);
-        /*
-        if( m_currentPlay && m_currentPlay->state() != Arts::posIdle ) {
-            m_currentPlay->halt();
-        }
-        status = getStatus( );
-        emit statusChanged( );
-        */
         return true;
 #endif
     }

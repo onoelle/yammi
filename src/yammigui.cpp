@@ -78,7 +78,6 @@
 
 #include "mediaplayer.h"
 #include "dummyplayer.h"
-#include "artsplayer.h"
 #include "xine-engine.h"
 
 static QString columnName[] = { QObject::tr("Artist"), QObject::tr("Title"), QObject::tr("Album"),QObject:: tr("Length"),
@@ -2703,9 +2702,6 @@ void YammiGui::loadMediaPlayer( ) {
     switch( config()->mediaPlayer ) {
     case Prefs::MEDIA_PLAYER_XINEENGINE:
         player = new Yammi::XineEngine(model);
-        break;
-    case Prefs::MEDIA_PLAYER_ARTSPLAYER:
-        player = new Yammi::ArtsPlayer( model );
         break;
     case Prefs::MEDIA_PLAYER_DUMMY:
     default:

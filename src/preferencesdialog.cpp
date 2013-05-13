@@ -54,7 +54,6 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, const char *name, bool mod
     LineEditPlayqueueTemplate->setText(config->playqueueTemplate);
 
     RadioButtonXineEngine->setChecked(config->mediaPlayer == config->MEDIA_PLAYER_XINEENGINE);
-    RadioButtonArtsPlayer->setChecked(config->mediaPlayer == config->MEDIA_PLAYER_ARTSPLAYER);
     
     for(int i=0; i<Song::getMaxSongAction(); i++) {
         ComboBoxDoubleClickAction->insertItem(Song::getSongAction(i));
@@ -165,8 +164,6 @@ void PreferencesDialog::myAccept() {
     
     if (RadioButtonXineEngine->isChecked()) {
         config->mediaPlayer = config->MEDIA_PLAYER_XINEENGINE;
-    } else if (RadioButtonArtsPlayer->isChecked()) {
-        config->mediaPlayer = config->MEDIA_PLAYER_ARTSPLAYER;
     }
 
     // plugins
