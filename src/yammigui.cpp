@@ -39,7 +39,6 @@
 #include <khtml_part.h>
 #include <kapplication.h>
 #include <kglobal.h>
-#include <klocale.h>
 #include <kiconloader.h>
 #include <kstandarddirs.h>
 #include <kdeversion.h>
@@ -100,9 +99,9 @@
 #include "artsplayer.h"
 #include "xine-engine.h"
 
-static QString columnName[] = { i18n("Artist"), i18n("Title"), i18n("Album"), i18n("Length"),
-                                i18n("Year"), i18n("TrackNr"), i18n("Genre"), i18n("AddedTo"), i18n("Bitrate"),
-                                i18n("Filename"), i18n("Path"), i18n("Comment"), i18n("Last Played") };
+static QString columnName[] = { QObject::tr("Artist"), QObject::tr("Title"), QObject::tr("Album"),QObject:: tr("Length"),
+                                QObject::tr("Year"), QObject::tr("TrackNr"), QObject::tr("Genre"), QObject::tr("AddedTo"), QObject::tr("Bitrate"),
+                                QObject::tr("Filename"), QObject::tr("Path"), QObject::tr("Comment"), QObject::tr("Last Played") };
 
 
 extern YammiGui* gYammiGui;
@@ -357,8 +356,8 @@ void YammiGui::readOptions() {
     for(int i=0; i<MAX_COLUMN_NO; i++) {
         columnWidth[i]=cfg->readNumEntry(QString("column%1Width").arg(i));
     }
-    autoplayFoldername=cfg->readEntry("AutoplayFolder", i18n("All Music"));
-    m_currentAutoPlay->setText(i18n("Folder: ")+autoplayFoldername);
+    autoplayFoldername=cfg->readEntry("AutoplayFolder", tr("All Music"));
+    m_currentAutoPlay->setText(tr("Folder: ")+autoplayFoldername);
     autoplayMode=cfg->readNumEntry( "AutoplayMode", AUTOPLAY_OFF);
     switch(autoplayMode) {
     case AUTOPLAY_OFF:
@@ -401,8 +400,8 @@ void YammiGui::readProperties(KConfig *config) {
 bool YammiGui::queryClose() {
     kdDebug() << "queryClose()" << endl;
     if(model->allSongsChanged() || model->categoriesChanged()) {
-        QString msg=i18n("The Song Database has been modified.\nDo you want to save the changes?");
-        switch( KMessageBox::warningYesNoCancel(this,msg,i18n("Database modified"))) {
+        QString msg=tr("The Song Database has been modified.\nDo you want to save the changes?");
+        switch( KMessageBox::warningYesNoCancel(this,msg,tr("Database modified"))) {
         case KMessageBox::Yes:
             saveDatabase();
             break;
@@ -430,8 +429,8 @@ bool YammiGui::queryExit() {
 
 
 void YammiGui::shutdownSequence( ) {
-    QString msg(i18n("Shutting down in %1 seconds"));
-    KProgressDialog d(this,0,i18n("Shutting down..."));
+    QString msg(tr("Shutting down in %1 seconds"));
+    KProgressDialog d(this,0,tr("Shutting down..."));
 
     d.setMinimumDuration(0);
     d.setAllowCancel(true);
@@ -535,7 +534,7 @@ void YammiGui::updateHtmlPlaylist()
         length += folderActual->songlist().at(i)->song()->length;
     }
     QString formattedTime;
-    formattedTime.sprintf(i18n("%d:%02d"), length/(60*60), (length % (60*60))/60);
+    formattedTime.sprintf(tr("%d:%02d"), length/(60*60), (length % (60*60))/60);
     htmlTemplate.replace(QRegExp("\\{noSongsToPlay\\}"), QString("%1").arg(noSongsToPlay));
     htmlTemplate.replace(QRegExp("\\{timeToPlay\\}"), formattedTime);
     
@@ -631,7 +630,7 @@ void YammiGui::handleLastSong(Song* lastSong) {
 void YammiGui::handleNewSong(Song* newSong) {
     currentSong=newSong;
     if(newSong==0) {
-        setCaption(i18n("Yammi - not playing"));
+        setCaption(tr("Yammi - not playing"));
         currentFile="";
         m_seekSlider->setupTickmarks(0);
         return;
@@ -663,10 +662,10 @@ void YammiGui::updatePlayerStatus() {
     }
     if(player->getStatus()==PLAYING) {
         m_playPauseAction->setIcon("player_pause");
-        m_playPauseAction->setText(i18n("Pause"));
+        m_playPauseAction->setText(tr("Pause"));
     } else {
         m_playPauseAction->setIcon("player_play");
-        m_playPauseAction->setText(i18n("Play"));
+        m_playPauseAction->setText(tr("Play"));
     }
 
     // check, if we stopped because playlist empty and sleep mode activated
@@ -851,23 +850,23 @@ void YammiGui::updateListViewColumns() {
     int current=0;
 
     if(chosenFolder==folderActual) {
-        songListView->addColumn( i18n("Pos"), 35);
+        songListView->addColumn( tr("Pos"), 35);
         current++;
     }
     if(chosenFolder==folderHistory || chosenFolder==folderSongsPlayed) {
-        songListView->addColumn( i18n("Played on"), 135);
+        songListView->addColumn( tr("Played on"), 135);
         current++;
     }
     if(chosenFolder==folderSearchResults) {
-        songListView->addColumn( i18n("Match"), 45);
+        songListView->addColumn( tr("Match"), 45);
         current++;
     }
     if(chosenFolder==folderProblematic) {
-        songListView->addColumn( i18n("Reason"), 120);
+        songListView->addColumn( tr("Reason"), 120);
         current++;
     }
     if(((QListViewItem*)chosenFolder)->parent()==folderCategories) {
-        songListView->addColumn( i18n("Pos"), 35);
+        songListView->addColumn( tr("Pos"), 35);
         current++;
     }
 
@@ -1031,7 +1030,7 @@ void YammiGui::configureKeys() {
 void YammiGui::updateSongPopup() {
     kdDebug() << "updating song popup\n";
     playListPopup->clear();
-    playListPopup->insertItem(QIconSet( QPixmap(newCategory_xpm)), i18n("New Category..."), this, SLOT(toCategory(int)), 0, 9999);
+    playListPopup->insertItem(QIconSet( QPixmap(newCategory_xpm)), tr("New Category..."), this, SLOT(toCategory(int)), 0, 9999);
     for(unsigned int i=0; i<model->categoryNames.count(); i++) {
         playListPopup->insertItem(QIconSet( QPixmap(in_xpm)), model->categoryNames[i], this, SLOT(toCategory(int)), 0, 10000+i);
     }
@@ -1145,8 +1144,8 @@ void YammiGui::decide(Song* s1, Song* s2) {
         def=2;
     }
 
-    QString msg = i18n("Two identical songs: \ns1: %1\ns2: %2\nDo you want to delete one of them?");
-    int what = KMessageBox::warningYesNoCancel( this, msg.arg(str1).arg(str2),QString::null,i18n("Delete s1"), i18n("Delete s2"));
+    QString msg = tr("Two identical songs: \ns1: %1\ns2: %2\nDo you want to delete one of them?");
+    int what = KMessageBox::warningYesNoCancel( this, msg.arg(str1).arg(str2),QString::null,tr("Delete s1"), tr("Delete s2"));
     if(what == KMessageBox::Yes) {
         kdDebug()<< "deleting s1\n";
         s1->deleteFile(config()->trashDir);
@@ -1464,7 +1463,7 @@ void YammiGui::adjustSongPopup() {
     QString label;
     Song* first=selectedSongs.firstSong();
     if (selected>1) { 							// more than one song selected
-        label=QString(i18n("%1 songs selected")).arg(selected);
+        label=QString(tr("%1 songs selected")).arg(selected);
     } else {
         label=first->displayName();
     }
@@ -1476,7 +1475,7 @@ void YammiGui::adjustSongPopup() {
     if(folderName == "") {
         folderName = "- no artist -";
     }
-    songGoToPopup->changeItem(id, i18n("Artist: ") + folderName);
+    songGoToPopup->changeItem(id, tr("Artist: ") + folderName);
     songGoToPopup->setItemEnabled(id, getFolderByName(folderName)!=0);
 
     id = songGoToPopup->idAt(1);
@@ -1489,7 +1488,7 @@ void YammiGui::adjustSongPopup() {
         }
         f = getFolderByName(folderName);
     }
-    songGoToPopup->changeItem(id, i18n("Album: ") + folderName);
+    songGoToPopup->changeItem(id, tr("Album: ") + folderName);
     songGoToPopup->setItemEnabled(id, f!=0);
 
     id = songGoToPopup->idAt(2);
@@ -1497,7 +1496,7 @@ void YammiGui::adjustSongPopup() {
     if(folderName == "") {
         folderName = "- no genre -";
     }
-    songGoToPopup->changeItem(id, i18n("Genre: ") + folderName);
+    songGoToPopup->changeItem(id, tr("Genre: ") + folderName);
     songGoToPopup->setItemEnabled(id, getFolderByName(folderName)!=0);
 
     id = songGoToPopup->idAt(3);
@@ -1506,7 +1505,7 @@ void YammiGui::adjustSongPopup() {
     } else {
         folderName = QString("%1").arg(first->year);
     }
-    songGoToPopup->changeItem(id, i18n("Year: ") + folderName);
+    songGoToPopup->changeItem(id, tr("Year: ") + folderName);
     songGoToPopup->setItemEnabled(id, getFolderByName(folderName)!=0);
 
 
@@ -1575,13 +1574,13 @@ void YammiGui::forSelectionPlugin(int pluginIndex) {
     QString cmd=config()->pluginCommand[pluginIndex];
 
     if(cmd.contains("{directoryDialog}")>0) {
-        QString dir = KFileDialog::getExistingDirectory("", this, i18n("choose directory for plugin"));
+        QString dir = KFileDialog::getExistingDirectory("", this, tr("choose directory for plugin"));
         if(dir.isNull())
             return;
         cmd.replace(QRegExp("\\{directoryDialog\\}"), dir);
     }
     if(cmd.contains("{fileDialog}")>0) {
-        QString file = KFileDialog::getSaveFileName("",QString::null, this, i18n("choose file for plugin"));
+        QString file = KFileDialog::getSaveFileName("",QString::null, this, tr("choose file for plugin"));
         if(file.isNull())
             return;
         cmd.replace(QRegExp("\\{fileDialog\\}"), file);
@@ -1598,7 +1597,7 @@ void YammiGui::forSelectionPlugin(int pluginIndex) {
         }
         int midPos = startPos + 13;
         int argumentLength  = endPos - midPos;
-        QString prompt = QString(i18n("Type in plugin parameter"));
+        QString prompt = QString(tr("Type in plugin parameter"));
         if ( argumentLength > 0 ) {
             prompt += QString(" \"%1\"").arg(cmd.mid(midPos, argumentLength));
         }
@@ -1613,8 +1612,8 @@ void YammiGui::forSelectionPlugin(int pluginIndex) {
     if(mode=="single") {
         if(confirm) {
             QString sampleCmd=selectedSongs.firstSong()->replacePlaceholders(cmd, 1);
-            QString msg=i18n("Execute the following command on each selected song?\n");
-            msg+=i18n("(here shown: values for first song)\n\n");
+            QString msg=tr("Execute the following command on each selected song?\n");
+            msg+=tr("(here shown: values for first song)\n\n");
             for(unsigned int i=0; i<sampleCmd.length(); i+=80) {
                 msg+=sampleCmd.mid(i, 80)+"\n";
             }
@@ -1623,7 +1622,7 @@ void YammiGui::forSelectionPlugin(int pluginIndex) {
             }
         }
         int index=1;
-        KProgressDialog progress( this,0, i18n("Yammi"),i18n("Executing song plugin cmd..."),true);
+        KProgressDialog progress( this,0, tr("Yammi"),tr("Executing song plugin cmd..."),true);
         progress.progressBar()->setTotalSteps(selectedSongs.count());
         for(Song* s=selectedSongs.firstSong(); s; s=selectedSongs.nextSong(), index++) {
             QString cmd2=s->replacePlaceholders(cmd, index);
@@ -1655,11 +1654,11 @@ void YammiGui::forSelectionPlugin(int pluginIndex) {
         cmd.replace(QRegExp("\\{customListViaFile\\}"), "`cat " + customListFilename + "`");
 
         if(confirm) {
-            QString msg=i18n("Execute the following command:\n");
+            QString msg=tr("Execute the following command:\n");
             for(unsigned int i=0; i<cmd.length(); i+=80) {
                 msg+=cmd.mid(i, 80)+"\n";
                 if(i>1200) {
-                    msg+=i18n("\n...\n(command truncated)");
+                    msg+=tr("\n...\n(command truncated)");
                     break;
                 }
             }
@@ -1683,7 +1682,7 @@ void YammiGui::forSelectionMove() {
     }
     // let user choose destination directory
     QString startPath=selectedSongs.firstSong()->path;
-    QString dir=KFileDialog::getExistingDirectory(startPath, this, i18n("Select destination directory"));
+    QString dir=KFileDialog::getExistingDirectory(startPath, this, tr("Select destination directory"));
     if(dir.isNull()) {
         return;
     }
@@ -1706,15 +1705,15 @@ void YammiGui::forSelectionBurnToMedia() {
     long double size=-1;
 
     bool ok;
-    QString collName=QString(QInputDialog::getText( i18n("collection name"), i18n("Please enter collection name:"), QLineEdit::Normal, QString(i18n("my mp3 collection")), &ok, this ));
+    QString collName=QString(QInputDialog::getText( tr("collection name"), tr("Please enter collection name:"), QLineEdit::Normal, QString(tr("my mp3 collection")), &ok, this ));
     if(!ok)
         return;
 
-    QString startIndexStr=QString(QInputDialog::getText( i18n("collection start number"), i18n("Please enter start index:"), QLineEdit::Normal, QString("1"), &ok, this ));
+    QString startIndexStr=QString(QInputDialog::getText( tr("collection start number"), tr("Please enter start index:"), QLineEdit::Normal, QString("1"), &ok, this ));
     if(!ok)
         return;
 
-    KProgressDialog progress(this, i18n("Preparing media...") );
+    KProgressDialog progress(this, tr("Preparing media...") );
     progress.setMinimumDuration(0);
     progress.setAutoReset(false);
     progress.progressBar()->setProgress(0);
@@ -1738,7 +1737,7 @@ void YammiGui::forSelectionBurnToMedia() {
             mediaNo++;
             mediaName=QString("%1_%2").arg(collName).arg(mediaNo);
             mediaDir= config()->databaseDir + "media/"+ mediaName + "/";
-            progress.setLabel(i18n("Preparing media ")+mediaName);
+            progress.setLabel(tr("Preparing media ")+mediaName);
             cout << "Preparing media " << mediaName << " (" << count << " files processed so far)...\n";
             QDir dir(mediaDir);
             if(dir.exists()) {
@@ -1780,7 +1779,7 @@ void YammiGui::forSelectionBurnToMedia() {
     cout << "size in total: " << (int)(totalSize/1024.0/1024.0) << " MB\n";
     folderMedia->update(&(model->allSongs));
     model->allSongsChanged(true);
-    QString msg=QString(i18n("Result of \"Burn to media\" process:\n\n\
+    QString msg=QString(tr("Result of \"Burn to media\" process:\n\n\
                              no of media: %1, (size limit: %2 MB)\n\
                              first media index: %3\n\
                              last media index: %4\n\
@@ -1938,7 +1937,7 @@ void YammiGui::forSelectionEnqueue( ) {
     folderActual->correctOrder();
     player->syncYammi2Player();
     folderContentChanged(folderActual);
-    statusBar( )->message(QString(i18n("%1 Songs equeued at end of playlist")).arg(count), 2000);
+    statusBar( )->message(QString(tr("%1 Songs equeued at end of playlist")).arg(count), 2000);
     checkPlaylistAvailability();
 }
 
@@ -2112,7 +2111,7 @@ void YammiGui::forSelectionSongInfo( ) {
             _year=QString("%1").arg(s->year);
             _path=s->path;
             _filename=s->filename;
-            _bitrate=QString(i18n("%1 kb/s")).arg(s->bitrate);
+            _bitrate=QString(tr("%1 kb/s")).arg(s->bitrate);
             _genre=s->genre;
             _proposedFilename=s->constructFilename();
             _proposedPath=s->constructPath();
@@ -2183,21 +2182,21 @@ void YammiGui::forSelectionSongInfo( ) {
     si.ReadOnlyProposedFilename->setText(_proposedFilename);
     si.ReadOnlyProposedPath->setText(_proposedPath);
     if(selected>1) {
-        si.LabelHeading->setText(QString(i18n("Mass editing: %1 songs")).arg(selected));
-        si.LabelSize->setText(i18n("Size (total)"));
-        si.LabelLength->setText(i18n("Length (total)"));
+        si.LabelHeading->setText(QString(tr("Mass editing: %1 songs")).arg(selected));
+        si.LabelSize->setText(tr("Size (total)"));
+        si.LabelLength->setText(tr("Length (total)"));
         QString x;
-        si.ReadOnlyLength->setText(x.sprintf(i18n("%d:%02d:%02d (hh:mm:ss)"), _length/(60*60), (_length % (60*60))/60, _length % 60));
+        si.ReadOnlyLength->setText(x.sprintf(tr("%d:%02d:%02d (hh:mm:ss)"), _length/(60*60), (_length % (60*60))/60, _length % 60));
     } else {
         si.LabelHeading->setText(_artist+" - "+_title);
         QString x;
-        si.ReadOnlyLength->setText(x.sprintf(i18n("%2d:%02d (mm:ss)"), _length/60, _length % 60));
+        si.ReadOnlyLength->setText(x.sprintf(tr("%2d:%02d (mm:ss)"), _length/60, _length % 60));
     }
     if(_size < (1024 * 1024)) {
-        si.ReadOnlySize->setText( QString(i18n("%1 KB")).arg( (float)_size/(float)(1024) , 4,'f', 2));
+        si.ReadOnlySize->setText( QString(tr("%1 KB")).arg( (float)_size/(float)(1024) , 4,'f', 2));
     }
     else {
-        si.ReadOnlySize->setText( QString(i18n("%1 MB")).arg( (float)_size/(float)(1024*1024) , 4,'f', 2));
+        si.ReadOnlySize->setText( QString(tr("%1 MB")).arg( (float)_size/(float)(1024*1024) , 4,'f', 2));
     }
     si.ReadOnlyBitrate->setText(_bitrate);
     si.ComboBoxGenre->setCurrentText(_genre);
@@ -2213,14 +2212,14 @@ void YammiGui::forSelectionSongInfo( ) {
     
     if(selected > 20) {
         QString msg("");
-        msg += QString(i18n("Your changes will affect %1 song entries.\n")).arg(selected);
+        msg += QString(tr("Your changes will affect %1 song entries.\n")).arg(selected);
         if(si.CheckBoxCorrectFilename->isChecked()) {
-            msg += i18n("\nNote: Your changes may change the filenames of the selected files!\n");
+            msg += tr("\nNote: Your changes may change the filenames of the selected files!\n");
         }
         if(si.CheckBoxCorrectPath->isChecked()) {
-            msg += i18n("\nNote: Your changes may affect the location of the selected files!\n");
+            msg += tr("\nNote: Your changes may affect the location of the selected files!\n");
         }
-        msg += i18n("\n\nDo you want to continue?");
+        msg += tr("\n\nDo you want to continue?");
         if( KMessageBox::warningYesNo( this, msg) != KMessageBox::Yes ) {
             return;
         }
@@ -2310,7 +2309,7 @@ void YammiGui::forSelectionDelete( ) {
     if(selectedSongs.count()==1) {
         dd.LabelSongname->setText(selectedSongs.firstSong()->displayName());
     } else {
-        dd.LabelSongname->setText(QString(i18n("Delete %1 songs")).arg(selectedSongs.count()));
+        dd.LabelSongname->setText(QString(tr("Delete %1 songs")).arg(selectedSongs.count()));
     }
     // fill dialog with onMedia info...(for all toDelete songs)
     for(Song* s=selectedSongs.firstSong(); s; s=selectedSongs.nextSong()) {
@@ -2449,9 +2448,9 @@ void YammiGui::forSelection(int action) {
  */
 bool YammiGui::newCategory() {
     bool ok = false;
-    QString caption(i18n("Enter name for category"));
-    QString message(i18n("Please enter name of category"));
-    QString newName=QString(QInputDialog::getText( caption, message, QLineEdit::Normal, QString(i18n("new category")), &ok, this ));
+    QString caption(tr("Enter name for category"));
+    QString message(tr("Please enter name of category"));
+    QString newName=QString(QInputDialog::getText( caption, message, QLineEdit::Normal, QString(tr("new category")), &ok, this ));
     if(!ok) {
         return false;
     }
@@ -2468,7 +2467,7 @@ bool YammiGui::newCategory() {
 void YammiGui::removeCategory() {
     QListViewItem* i = folderListView->currentItem();
     QString name=((Folder*)i)->folderName();
-    QString msg(i18n("Delete category %1 ?\n (will be deleted immediately!)").arg(name));
+    QString msg(tr("Delete category %1 ?\n (will be deleted immediately!)").arg(name));
     if( KMessageBox::warningYesNo( this, msg) == KMessageBox::Yes ) {
         model->removeCategory(name);
         folderListView->setCurrentItem( (QListViewItem*)folderCategories );
@@ -2485,7 +2484,7 @@ void YammiGui::renameCategory() {
     QListViewItem* i = folderListView->currentItem();
     QString oldName=((Folder*)i)->folderName();
     bool ok;
-    QString newName=QString(QInputDialog::getText( i18n("collection name"), i18n("Please enter new name:"), QLineEdit::Normal, oldName, &ok, this ));
+    QString newName=QString(QInputDialog::getText( tr("collection name"), tr("Please enter new name:"), QLineEdit::Normal, oldName, &ok, this ));
     if(!ok) {
         return;
     }
@@ -2509,7 +2508,7 @@ void YammiGui::renameCategory() {
 void YammiGui::loadM3uIntoCategory() {
     QListViewItem* i = folderListView->currentItem();
     FolderSorted* categoryFolder=(FolderSorted*)i;
-    QString filename = KFileDialog::getOpenFileName("/", "Playlists (*.m3u)", this,i18n("Choose a Playlist to insert" ));
+    QString filename = KFileDialog::getOpenFileName("/", "Playlists (*.m3u)", this,tr("Choose a Playlist to insert" ));
     if(filename.isNull()) {
         return;
     }
@@ -2543,7 +2542,7 @@ void YammiGui::loadM3uIntoCategory() {
 void YammiGui::autoplayFolder() {
     Folder* f = (FolderSorted*)folderListView->currentItem();
     autoplayFoldername=f->folderName();
-    m_currentAutoPlay->setText(i18n("Folder: ")+autoplayFoldername);
+    m_currentAutoPlay->setText(tr("Folder: ")+autoplayFoldername);
 }
 
 
@@ -2563,7 +2562,7 @@ void YammiGui::removeMedia() {
     QListViewItem *i = folderListView->currentItem();
     Folder* chosenFolder = ( Folder* )i;
     QString mediaName=chosenFolder->folderName();
-    QString msg = QString(i18n("Remove media %1 and the corresponding directory?\n\
+    QString msg = QString(tr("Remove media %1 and the corresponding directory?\n\
                                (which contains the symbolic links to the songs)")).arg(mediaName);
     if( KMessageBox::warningYesNo( this, msg )!=KMessageBox::Yes)
         return;
@@ -2576,7 +2575,7 @@ void YammiGui::renameMedia() {
     QListViewItem* i = folderListView->currentItem();
     QString oldName=((Folder*)i)->folderName();
     bool ok;
-    QString newName=QString(QInputDialog::getText( i18n("Rename Media"), i18n("Please enter new name:"), QLineEdit::Normal, oldName, &ok, this ));
+    QString newName=QString(QInputDialog::getText( tr("Rename Media"), tr("Please enter new name:"), QLineEdit::Normal, oldName, &ok, this ));
     if(!ok)
         return;
     model->renameMedia(oldName, newName);
@@ -2631,9 +2630,9 @@ void YammiGui::clearPlaylist() {
 
     bool saveCurrentSong=(currentSong!=0 && player->getStatus()!=STOPPED && model->songsToPlay.count()>1);
     ApplyToAllBase confirm(this, "confirmDialog", true);
-    QString msg=QString(i18n("Clear complete playlist?\n(%1 entries)")).arg(model->songsToPlay.count());
+    QString msg=QString(tr("Clear complete playlist?\n(%1 entries)")).arg(model->songsToPlay.count());
     confirm.TextLabel->setText(msg);
-    confirm.CheckBoxApply->setText(i18n("including current song"));
+    confirm.CheckBoxApply->setText(tr("including current song"));
     confirm.CheckBoxApply->setChecked(!saveCurrentSong);
     // show dialog
     int result=confirm.exec();
@@ -2754,8 +2753,8 @@ void YammiGui::autoFillPlaylist() {
 // grab a track from audio-cd, encode, and add to database
 void YammiGui::grabAndEncode() {
     bool ok = false;
-    QString caption(i18n("Enter track number"));
-    QString message(i18n("Please enter track number"));
+    QString caption(tr("Enter track number"));
+    QString message(tr("Please enter track number"));
     QString trackNrStr(QInputDialog::getText( caption, message, QLineEdit::Normal, QString("1"), &ok, this ));
     if(!ok)
         return;
@@ -2763,22 +2762,22 @@ void YammiGui::grabAndEncode() {
     if(trackNr<1)
         return;
 
-    caption=i18n("Enter artist");
-    message=i18n("Please enter artist");
-    QString artist(QInputDialog::getText( caption, message, QLineEdit::Normal, QString(i18n("MyArtist")), &ok, this ));
+    caption=tr("Enter artist");
+    message=tr("Please enter artist");
+    QString artist(QInputDialog::getText( caption, message, QLineEdit::Normal, QString(tr("MyArtist")), &ok, this ));
     if(!ok)
         return;
 
-    caption=i18n("Enter title");
-    message=i18n("Please enter title");
-    QString title(QInputDialog::getText( caption, message, QLineEdit::Normal, QString(i18n("Fantastic Song")), &ok, this ));
+    caption=tr("Enter title");
+    message=tr("Please enter title");
+    QString title(QInputDialog::getText( caption, message, QLineEdit::Normal, QString(tr("Fantastic Song")), &ok, this ));
     if(!ok)
         return;
 
-    QString filename=QString(i18n("%1%2 - %3.mp3")).arg(config()->scanDir).arg(artist).arg(title);
+    QString filename=QString(tr("%1%2 - %3.mp3")).arg(config()->scanDir).arg(artist).arg(title);
     QFileInfo fi(filename);
     if(fi.exists()) {
-        QString msg = i18n("The file\n%1\nalready exists!\n\nPlease choose a different artist/title combination.");
+        QString msg = tr("The file\n%1\nalready exists!\n\nPlease choose a different artist/title combination.");
         KMessageBox::information( this, msg.arg(filename));
         return;
     }
@@ -2786,7 +2785,7 @@ void YammiGui::grabAndEncode() {
     QString cmd=QString("%1 %2 \"%3\" \"%4\" \"%5\" &").arg(config()->grabAndEncodeCmd).arg(trackNr).arg(artist).arg(title).arg(filename);
     system(cmd);
     grabbedTrackFilename=filename;
-    statusBar( )->message(i18n("grabbing track, will be available shortly..."), 30000);
+    statusBar( )->message(tr("grabbing track, will be available shortly..."), 30000);
     // now we start a timer to check for availability of new track every 5 seconds
     QTimer* timer=new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(checkForGrabbedTrack()) );
@@ -2807,7 +2806,7 @@ void YammiGui::checkForGrabbedTrack() {
         cout << "new grabbed track " << grabbedTrackFilename << " is unreadable\n";
         return;
     }
-    statusBar( )->message(i18n("grabbed song available"), 20000);
+    statusBar( )->message(tr("grabbed song available"), 20000);
     model->entriesAdded=0;
     model->corruptSongs=0;
     model->problematicSongs.clear();
@@ -2816,10 +2815,10 @@ void YammiGui::checkForGrabbedTrack() {
     updateView();
     folderProblematic->update(model->problematicSongs);
     folderAll->updateTitle();
-    QString msg=i18n("Yammi tried to add the grabbed song to the database.\n\nSome statistics: \n\n");
-    msg+=QString(i18n("%1 songs added to database\n")).arg(model->entriesAdded);
-    msg+=QString(i18n("%1 songs corrupt (=not added)\n")).arg(model->corruptSongs);
-    msg+=QString(i18n("%1 problematic issues(check in folder Problematic Songs)")).arg(model->problematicSongs.count());
+    QString msg=tr("Yammi tried to add the grabbed song to the database.\n\nSome statistics: \n\n");
+    msg+=QString(tr("%1 songs added to database\n")).arg(model->entriesAdded);
+    msg+=QString(tr("%1 songs corrupt (=not added)\n")).arg(model->corruptSongs);
+    msg+=QString(tr("%1 problematic issues(check in folder Problematic Songs)")).arg(model->problematicSongs.count());
     KMessageBox::information( this,msg);
 }
 
@@ -2832,7 +2831,7 @@ void YammiGui::fixGenres() {
         return;
     }
     isScanning=true;
-    KProgressDialog progress( this, 0, i18n("Yammi"), i18n ("Re-Reading all genres from your files..."), true);
+    KProgressDialog progress( this, 0, tr("Yammi"), tr ("Re-Reading all genres from your files..."), true);
     progress.setMinimumDuration(0);
     progress.setAllowCancel(true);
     progress.progressBar()->setTotalSteps(model->allSongs.count());
@@ -2957,7 +2956,7 @@ void YammiGui::changeSleepMode() {
         m_sleepMode = true;
         m_sleepModeSpinBox->setValue(3);
         if(model->allSongsChanged() || model->categoriesChanged()) {
-            QString msg = i18n("The Database has been modified. Save changes?\n(answering no will cancel sleep mode)");
+            QString msg = tr("The Database has been modified. Save changes?\n(answering no will cancel sleep mode)");
             if( KMessageBox::warningYesNo(this,msg) == KMessageBox::Yes ) {
                 saveDatabase();
             } else {
@@ -2967,7 +2966,7 @@ void YammiGui::changeSleepMode() {
     } else {
         m_sleepMode = false;
     }
-    m_sleepModeButton->setText(m_sleepMode? i18n("shutdown"):i18n("(disabled)"));
+    m_sleepModeButton->setText(m_sleepMode? tr("shutdown"):tr("(disabled)"));
     m_sleepModeSpinBox->setEnabled(m_sleepMode);
 }
 
@@ -3070,8 +3069,8 @@ void YammiGui::updateSongDatabaseHarddisk() {
 }
 
 void YammiGui::updateSongDatabaseSingleFile() {
-    QStringList files = KFileDialog::getOpenFileNames( ":singleFile", QString::null, this, i18n("Open file(s) to import"));
-    //    QStringList files = KFileDialog::getOpenFileNames( config()->scanDir, QString::null, this, i18n("Open file(s) to import"));
+    QStringList files = KFileDialog::getOpenFileNames( ":singleFile", QString::null, this, tr("Open file(s) to import"));
+    //    QStringList files = KFileDialog::getOpenFileNames( config()->scanDir, QString::null, this, tr("Open file(s) to import"));
     if(files.count()==0) {
         return;
     }
@@ -3081,10 +3080,10 @@ void YammiGui::updateSongDatabaseSingleFile() {
     folderProblematic->update(model->problematicSongs);
     folderAll->updateTitle();
     changeToFolder(folderRecentAdditions);
-    QString msg=i18n("Updated your database.\n\nStatistics: \n\n");
-    msg+=QString(i18n("%1 songs added to database\n")).arg(model->entriesAdded);
-    msg+=QString(i18n("%1 songs corrupt (=not added)\n")).arg(model->corruptSongs);
-    msg+=QString(i18n("%1 songs problematic (check in folder Problematic Songs)\n")).arg(model->problematicSongs.count());
+    QString msg=tr("Updated your database.\n\nStatistics: \n\n");
+    msg+=QString(tr("%1 songs added to database\n")).arg(model->entriesAdded);
+    msg+=QString(tr("%1 songs corrupt (=not added)\n")).arg(model->corruptSongs);
+    msg+=QString(tr("%1 songs problematic (check in folder Problematic Songs)\n")).arg(model->problematicSongs.count());
     KMessageBox::information( this, msg );
 }
 
@@ -3098,7 +3097,7 @@ void YammiGui::updateSongDatabaseMedia() {
     }
     config()->saveConfig();
     if(d.LineEditMediaDir->text()=="") {
-        KMessageBox::information( this,i18n("You have to enter a name for the media!") );
+        KMessageBox::information( this,tr("You have to enter a name for the media!") );
         return;
     }
     QString mediaName = d.LineEditMediaName->text();
@@ -3111,7 +3110,7 @@ void YammiGui::updateSongDatabase(QString scanDir, QString filePattern, QString 
     if(config()->childSafe) {
         return;
     }
-    KProgressDialog progress( this, 0, i18n("Yammi"), i18n ("Scanning..."), true);
+    KProgressDialog progress( this, 0, tr("Yammi"), tr ("Scanning..."), true);
     progress.setMinimumDuration(0);
     progress.setAutoReset(false);
     progress.setAutoClose(false);
@@ -3126,10 +3125,10 @@ void YammiGui::updateSongDatabase(QString scanDir, QString filePattern, QString 
     updateView();
     folderProblematic->update(model->problematicSongs);
     folderAll->updateTitle();
-    QString msg=i18n("Updated your database.\n\nStatistics: \n\n");
-    msg+=QString(i18n("%1 songs added to database\n")).arg(model->entriesAdded);
-    msg+=QString(i18n("%1 songs corrupt (=not added)\n")).arg(model->corruptSongs);
-    msg+=QString(i18n("%1 songs problematic (check in folder Problematic Songs)\n")).arg(model->problematicSongs.count());
+    QString msg=tr("Updated your database.\n\nStatistics: \n\n");
+    msg+=QString(tr("%1 songs added to database\n")).arg(model->entriesAdded);
+    msg+=QString(tr("%1 songs corrupt (=not added)\n")).arg(model->corruptSongs);
+    msg+=QString(tr("%1 songs problematic (check in folder Problematic Songs)\n")).arg(model->problematicSongs.count());
     KMessageBox::information( this,msg);
     changeToFolder(folderRecentAdditions);
 
@@ -3189,7 +3188,7 @@ void YammiGui::loadSongsFromMedia(QString mediaName) {
             }
         }
     }
-    KProgressDialog progress( this,0, i18n("Yammi"), i18n("Loading song files..."),true);
+    KProgressDialog progress( this,0, tr("Yammi"), tr("Loading song files..."),true);
     progress.progressBar()->setTotalSteps(songsToLoad);
     progress.setMinimumDuration(0);
     progress.progressBar()->setProgress(0);
@@ -3215,7 +3214,7 @@ void YammiGui::loadSongsFromMedia(QString mediaName) {
             if(s->mediaName[j]==mediaName) {
                 if(model->checkAvailability(s)=="") {
                     cout << "loading song " << s->displayName() << "from " << mediaDir << s->mediaLocation[j] << "\n";
-                    progress.setLabel(i18n("loading song: ")+s->displayName()+" ("+QString("%1").arg(i+1)+i18n(". in playlist)"));
+                    progress.setLabel(tr("loading song: ")+s->displayName()+" ("+QString("%1").arg(i+1)+tr(". in playlist)"));
                     progress.progressBar()->setProgress(loaded);
                     kapp->processEvents();
                     if(progress.wasCancelled()) {
@@ -3277,7 +3276,7 @@ void YammiGui::checkPlaylistAvailability() {
         }
     }
     if(mediaListCombo->count()==0) {
-        mediaListCombo->insertItem(i18n("<none>"));
+        mediaListCombo->insertItem(tr("<none>"));
         loadFromMediaButton->setEnabled(false);
     } else {
         loadFromMediaButton->setEnabled(true);
@@ -3391,9 +3390,9 @@ void YammiGui::loadMediaPlayer( ) {
     }
     if (!player) {
         player = new DummyPlayer( model );
-        /*        KMessageBox::error(this, i18n("Can't create the player object.\n"
+        /*        KMessageBox::error(this, tr("Can't create the player object.\n"
                                               "Please select a suitable backend player\n"
-                                              "from the Preferences Dialog"), i18n("Error"));*/
+                                              "from the Preferences Dialog"), tr("Error"));*/
         kdDebug() << "Can't create player backend, select a suitable backend in the Preferences Dialog\n";
     }
     kdDebug() << "Media Player : " << player->getName( ) << endl;
@@ -3424,7 +3423,7 @@ void YammiGui::createMainWidget( ) {
     // set up the quick browser on the left
     folderListView = new QListView( leftWidget );
     folderListView->header()->setClickEnabled( FALSE );
-    folderListView->addColumn( i18n("Quick Browser"), -1 );
+    folderListView->addColumn( tr("Quick Browser"), -1 );
     folderListView->setRootIsDecorated( TRUE );
     folderListView->setSorting(-1);
 
@@ -3449,54 +3448,54 @@ void YammiGui::createMainWidget( ) {
 
 void YammiGui::createFolders( ) {
     // folder containing all music
-    folderAll=new Folder( folderListView, QString(i18n("All Music")), &(model->allSongs));
+    folderAll=new Folder( folderListView, QString(tr("All Music")), &(model->allSongs));
 
     // folder containing all artists with more than <n> songs
-    folderArtists = new FolderGroups( folderListView, QString( i18n("Artists") ));
+    folderArtists = new FolderGroups( folderListView, QString( tr("Artists") ));
     folderArtists->moveItem(folderAll);
 
     // folder containing all albums with more than <n> songs
-    folderAlbums = new FolderGroups( folderListView, QString( i18n("Albums") ));
+    folderAlbums = new FolderGroups( folderListView, QString( tr("Albums") ));
     folderAlbums->moveItem(folderArtists);
 
     // folder containing all genres with more than <n> songs
-    folderGenres = new FolderGroups( folderListView, QString( i18n("Genre") ));
+    folderGenres = new FolderGroups( folderListView, QString( tr("Genre") ));
     folderGenres->moveItem(folderAlbums);
 
     // folder containing all songs from a year (if more than <n> songs)
-    folderYears = new FolderGroups( folderListView, QString( i18n("Year") ));
+    folderYears = new FolderGroups( folderListView, QString( tr("Year") ));
     folderYears->moveItem(folderGenres);
 
     // folder containing all categories
-    folderCategories = new FolderCategories( folderListView, QString(i18n("Categories")));
+    folderCategories = new FolderCategories( folderListView, QString(tr("Categories")));
     folderCategories->moveItem(folderYears);
 
     // folder containing media
-    folderMedia = new FolderMedia( folderListView, QString(i18n("Media")));
+    folderMedia = new FolderMedia( folderListView, QString(tr("Media")));
     folderMedia->moveItem(folderCategories);
 
     // folder containing currently played song
-    folderActual = new FolderSorted(folderListView, QString(i18n("Playlist")), &(model->songsToPlay));
+    folderActual = new FolderSorted(folderListView, QString(tr("Playlist")), &(model->songsToPlay));
 
     // folder containing songs played in this session
-    folderSongsPlayed = new Folder(folderListView, QString(i18n("Songs Played")), &(model->songsPlayed));
+    folderSongsPlayed = new Folder(folderListView, QString(tr("Songs Played")), &(model->songsPlayed));
     folderSongsPlayed->moveItem(folderCategories);
 
     // folder containing history
-    folderHistory = new Folder(folderListView, QString(i18n("History")), &(model->songHistory));
+    folderHistory = new Folder(folderListView, QString(tr("History")), &(model->songHistory));
     folderHistory->moveItem(folderSongsPlayed);
 
     // folder containing unclassified songs
-    folderUnclassified = new Folder(folderListView, QString(i18n("Unclassified")), &(model->unclassifiedSongs));
+    folderUnclassified = new Folder(folderListView, QString(tr("Unclassified")), &(model->unclassifiedSongs));
     folderUnclassified->moveItem(folderMedia);
 
-    folderSearchResults = new Folder( folderListView, QString(i18n("Search Results")), &searchResults );
+    folderSearchResults = new Folder( folderListView, QString(tr("Search Results")), &searchResults );
     folderSearchResults->moveItem(folderActual);
 
-    folderProblematic = new Folder( folderListView, QString(i18n("Problematic Songs")) );
+    folderProblematic = new Folder( folderListView, QString(tr("Problematic Songs")) );
     folderProblematic->moveItem(folderUnclassified);
 
-    folderRecentAdditions = new Folder(folderListView, QString(i18n("Recent Additions")), &(model->recentSongs));
+    folderRecentAdditions = new Folder(folderListView, QString(tr("Recent Additions")), &(model->recentSongs));
     folderRecentAdditions->moveItem(folderUnclassified);
 
     // signals of folders
@@ -3514,68 +3513,68 @@ bool YammiGui::setupActions( ) {
 
     //Selection actions
     KStdAction::selectAll(this,SLOT(selectAll()),actionCollection());
-    new KAction(i18n("Invert selection"),0,0,this,SLOT(invertSelection()), actionCollection(),"invert_selection");
+    new KAction(tr("Invert selection"),0,0,this,SLOT(invertSelection()), actionCollection(),"invert_selection");
 
     //Media player actions
-    m_playPauseAction = new KAction(i18n("Play"), "player_play", KShortcut(Key_F1), this, SLOT(playPause()), actionCollection(),"play_pause");
-    new KAction(i18n("Stop"), "player_stop", KShortcut(Key_F4), this, SLOT(stop()), actionCollection(), "stop");
-    new KAction(i18n("Skip Backward"),"player_rew",KShortcut(Key_F2),this,SLOT(skipBackward()), actionCollection(),"skip_backward");
-    new KAction(i18n("Skip Forward"),"player_fwd",KShortcut(Key_F3),this,SLOT(skipForward()), actionCollection(),"skip_forward");
+    m_playPauseAction = new KAction(tr("Play"), "player_play", KShortcut(Key_F1), this, SLOT(playPause()), actionCollection(),"play_pause");
+    new KAction(tr("Stop"), "player_stop", KShortcut(Key_F4), this, SLOT(stop()), actionCollection(), "stop");
+    new KAction(tr("Skip Backward"),"player_rew",KShortcut(Key_F2),this,SLOT(skipBackward()), actionCollection(),"skip_backward");
+    new KAction(tr("Skip Forward"),"player_fwd",KShortcut(Key_F3),this,SLOT(skipForward()), actionCollection(),"skip_forward");
     m_seekSlider = new TrackPositionSlider( QSlider::Horizontal, 0L, "seek_slider");
     m_seekSlider->setFixedWidth(200);
     QToolTip::add
-        (m_seekSlider, i18n("Track position"));
+        (m_seekSlider, tr("Track position"));
     connect(m_seekSlider,SIGNAL(sliderMoved(int)),this,SLOT(seek(int)));
     connect(m_seekSlider,SIGNAL(myWheelEvent(int)),this,SLOT(seekWithWheel(int)));
     new KWidgetAction( m_seekSlider ,"text",0, 0, 0,actionCollection(),"seek");
 
     //Database actions
-    new KAction(i18n("Save Database"),"filesave",KShortcut(QKeySequence(Key_Control,Key_S)),this,SLOT(saveDatabase()), actionCollection(),"save_db");
-    new KAction(i18n("Scan Harddisk..."),"fileimport",0,this,SLOT(updateSongDatabaseHarddisk()), actionCollection(),"scan_hd");
-    new KAction(i18n("Scan Removable Media..."),"fileimport",0,this,SLOT(updateSongDatabaseMedia()), actionCollection(),"scan_media");
-    new KAction(i18n("Import Selected File(s)..."),"edit_add",0,this,SLOT(updateSongDatabaseSingleFile()), actionCollection(),"import_file");
-    new KAction(i18n("Check Consistency..."),"spellcheck",0,this,SLOT(forAllCheckConsistency()), actionCollection(),"check_consistency_all");
-    new KAction(i18n("Fix genres..."),0,0,this,SLOT(fixGenres()), actionCollection(),"fix_genres");
-    new KAction(i18n("Grab And Encode CD-Track..."),"cd",0,this,SLOT(grabAndEncode()), actionCollection(),"grab");
+    new KAction(tr("Save Database"),"filesave",KShortcut(QKeySequence(Key_Control,Key_S)),this,SLOT(saveDatabase()), actionCollection(),"save_db");
+    new KAction(tr("Scan Harddisk..."),"fileimport",0,this,SLOT(updateSongDatabaseHarddisk()), actionCollection(),"scan_hd");
+    new KAction(tr("Scan Removable Media..."),"fileimport",0,this,SLOT(updateSongDatabaseMedia()), actionCollection(),"scan_media");
+    new KAction(tr("Import Selected File(s)..."),"edit_add",0,this,SLOT(updateSongDatabaseSingleFile()), actionCollection(),"import_file");
+    new KAction(tr("Check Consistency..."),"spellcheck",0,this,SLOT(forAllCheckConsistency()), actionCollection(),"check_consistency_all");
+    new KAction(tr("Fix genres..."),0,0,this,SLOT(fixGenres()), actionCollection(),"fix_genres");
+    new KAction(tr("Grab And Encode CD-Track..."),"cd",0,this,SLOT(grabAndEncode()), actionCollection(),"grab");
 
     // playlist actions
-    new KAction(i18n("Shuffle Playlist..."),"roll",0,this,SLOT(shufflePlaylist()),actionCollection(),"shuffle_playlist");
-    new KAction(i18n("Clear Playlist"),"edittrash",KShortcut(QKeySequence(Key_Shift,Key_F8)),this,SLOT(clearPlaylist()),actionCollection(),"clear_playlist");
-    new KAction(i18n("Switch to/from Playlist"),"toggle_playlist",KShortcut(QKeySequence(Key_Control,Key_P)),this,SLOT(toFromPlaylist()),actionCollection(),"toggle_playlist");
+    new KAction(tr("Shuffle Playlist..."),"roll",0,this,SLOT(shufflePlaylist()),actionCollection(),"shuffle_playlist");
+    new KAction(tr("Clear Playlist"),"edittrash",KShortcut(QKeySequence(Key_Shift,Key_F8)),this,SLOT(clearPlaylist()),actionCollection(),"clear_playlist");
+    new KAction(tr("Switch to/from Playlist"),"toggle_playlist",KShortcut(QKeySequence(Key_Control,Key_P)),this,SLOT(toFromPlaylist()),actionCollection(),"toggle_playlist");
 
     // selection actions
-    new KAction(i18n("Enqueue as next (prepend)"), "enqueue_asnext", KShortcut(Key_F6), this, SLOT(forSelectionEnqueueAsNext()), actionCollection(), "prepend_selected");
-    new KAction(i18n("Enqueue at end (append)"), "enqueue", KShortcut(Key_F5), this, SLOT(forSelectionEnqueue()), actionCollection(), "append_selected");
-    new KAction(i18n("Play Now!"), "play_now", KShortcut(Key_F7), this, SLOT(forSelectionPlayNow()), actionCollection(), "play_selected");
-    new KAction(i18n("Dequeue Songs"), "stop", KShortcut(Key_F8), this, SLOT(forSelectionDequeue()), actionCollection(), "dequeue_selected");
-    new KAction(i18n("Prelisten start"), "prelisten_start", KShortcut(Key_F9), this, SLOT(forSelectionPrelistenStart()), actionCollection(), "prelisten_start");
-    new KAction(i18n("Prelisten middle"), "prelisten_middle", KShortcut(Key_F10), this, SLOT(forSelectionPrelistenMiddle()), actionCollection(), "prelisten_middle");
-    new KAction(i18n("Prelisten end"), "prelisten_end", KShortcut(Key_F11), this, SLOT(forSelectionPrelistenEnd()), actionCollection(), "prelisten_end");
-    new KAction(i18n("Song Info..."), "info", KShortcut(Key_I), this, SLOT(forSelectionSongInfo()), actionCollection(), "info_selected");
-    new KAction(i18n("Delete Song..."), 0, 0, this, SLOT(forSelectionDelete()), actionCollection(), "delete_selected");
-    new KAction(i18n("Burn To Media"), 0, 0, this, SLOT(forSelectionBurnToMedia()), actionCollection(), "burn_selected");
-    new KAction(i18n("Check Consistency..."),"spellcheck",0,this,SLOT(forSelectionCheckConsistency()), actionCollection(),"check_consistency");
-    new KAction(i18n("Move Files"), 0, 0, this, SLOT(forSelectionMove()), actionCollection(), "move_selected");
-    new KAction(i18n("Search for similar entry"), 0, 0, this, SLOT(searchForSimilarEntry()), actionCollection(), "search_similar_entry");
-    new KAction(i18n("Search for similar artist"), 0, 0, this, SLOT(searchForSimilarArtist()), actionCollection(), "search_similar_artist");
-    new KAction(i18n("Search for similar title"), 0, 0, this, SLOT(searchForSimilarTitle()), actionCollection(), "search_similar_title");
-    new KAction(i18n("Search for similar album"), 0, 0, this, SLOT(searchForSimilarAlbum()), actionCollection(), "search_similar_album");
-    new KAction(i18n("Goto artist"), 0, 0, this, SLOT(gotoFolderArtist()), actionCollection(), "goto_artist_folder");
-    new KAction(i18n("Goto album"), 0, 0, this, SLOT(gotoFolderAlbum()), actionCollection(), "goto_album_folder");
-    new KAction(i18n("Goto genre"), 0, 0, this, SLOT(gotoFolderGenre()), actionCollection(), "goto_genre_folder");
-    new KAction(i18n("Goto year"), 0, 0, this, SLOT(gotoFolderYear()), actionCollection(), "goto_year_folder");
+    new KAction(tr("Enqueue as next (prepend)"), "enqueue_asnext", KShortcut(Key_F6), this, SLOT(forSelectionEnqueueAsNext()), actionCollection(), "prepend_selected");
+    new KAction(tr("Enqueue at end (append)"), "enqueue", KShortcut(Key_F5), this, SLOT(forSelectionEnqueue()), actionCollection(), "append_selected");
+    new KAction(tr("Play Now!"), "play_now", KShortcut(Key_F7), this, SLOT(forSelectionPlayNow()), actionCollection(), "play_selected");
+    new KAction(tr("Dequeue Songs"), "stop", KShortcut(Key_F8), this, SLOT(forSelectionDequeue()), actionCollection(), "dequeue_selected");
+    new KAction(tr("Prelisten start"), "prelisten_start", KShortcut(Key_F9), this, SLOT(forSelectionPrelistenStart()), actionCollection(), "prelisten_start");
+    new KAction(tr("Prelisten middle"), "prelisten_middle", KShortcut(Key_F10), this, SLOT(forSelectionPrelistenMiddle()), actionCollection(), "prelisten_middle");
+    new KAction(tr("Prelisten end"), "prelisten_end", KShortcut(Key_F11), this, SLOT(forSelectionPrelistenEnd()), actionCollection(), "prelisten_end");
+    new KAction(tr("Song Info..."), "info", KShortcut(Key_I), this, SLOT(forSelectionSongInfo()), actionCollection(), "info_selected");
+    new KAction(tr("Delete Song..."), 0, 0, this, SLOT(forSelectionDelete()), actionCollection(), "delete_selected");
+    new KAction(tr("Burn To Media"), 0, 0, this, SLOT(forSelectionBurnToMedia()), actionCollection(), "burn_selected");
+    new KAction(tr("Check Consistency..."),"spellcheck",0,this,SLOT(forSelectionCheckConsistency()), actionCollection(),"check_consistency");
+    new KAction(tr("Move Files"), 0, 0, this, SLOT(forSelectionMove()), actionCollection(), "move_selected");
+    new KAction(tr("Search for similar entry"), 0, 0, this, SLOT(searchForSimilarEntry()), actionCollection(), "search_similar_entry");
+    new KAction(tr("Search for similar artist"), 0, 0, this, SLOT(searchForSimilarArtist()), actionCollection(), "search_similar_artist");
+    new KAction(tr("Search for similar title"), 0, 0, this, SLOT(searchForSimilarTitle()), actionCollection(), "search_similar_title");
+    new KAction(tr("Search for similar album"), 0, 0, this, SLOT(searchForSimilarAlbum()), actionCollection(), "search_similar_album");
+    new KAction(tr("Goto artist"), 0, 0, this, SLOT(gotoFolderArtist()), actionCollection(), "goto_artist_folder");
+    new KAction(tr("Goto album"), 0, 0, this, SLOT(gotoFolderAlbum()), actionCollection(), "goto_album_folder");
+    new KAction(tr("Goto genre"), 0, 0, this, SLOT(gotoFolderGenre()), actionCollection(), "goto_genre_folder");
+    new KAction(tr("Goto year"), 0, 0, this, SLOT(gotoFolderYear()), actionCollection(), "goto_year_folder");
 
-    new KAction(i18n("Stop prelisten"),"stop_prelisten",KShortcut(Key_F12),this,SLOT(stopPrelisten()),actionCollection(),"stop_prelisten");
+    new KAction(tr("Stop prelisten"),"stop_prelisten",KShortcut(Key_F12),this,SLOT(stopPrelisten()),actionCollection(),"stop_prelisten");
 
     // autoplay actions
     KToggleAction *ta;
-    m_autoplayActionOff = new KRadioAction(i18n("Off"),0,0,this,SLOT(autoplayOff()),actionCollection(),"autoplay_off");
+    m_autoplayActionOff = new KRadioAction(tr("Off"),0,0,this,SLOT(autoplayOff()),actionCollection(),"autoplay_off");
     m_autoplayActionOff->setExclusiveGroup("autoplay");
-    m_autoplayActionLnp = new KRadioAction(i18n("Longest not played"),0,0,this,SLOT(autoplayLNP()),actionCollection(),"autoplay_longest");
+    m_autoplayActionLnp = new KRadioAction(tr("Longest not played"),0,0,this,SLOT(autoplayLNP()),actionCollection(),"autoplay_longest");
     m_autoplayActionLnp->setExclusiveGroup("autoplay");
-    m_autoplayActionRandom = new KRadioAction(i18n("Random"),0,0,this,SLOT(autoplayRandom()),actionCollection(),"autoplay_random");
+    m_autoplayActionRandom = new KRadioAction(tr("Random"),0,0,this,SLOT(autoplayRandom()),actionCollection(),"autoplay_random");
     m_autoplayActionRandom->setExclusiveGroup("autoplay");
-    m_currentAutoPlay = new KAction(i18n("Unknown"),0,0,0,0,actionCollection(),"autoplay_folder");
+    m_currentAutoPlay = new KAction(tr("Unknown"),0,0,0,0,actionCollection(),"autoplay_folder");
 
     // toggle toolbar actions
     ta = new KToggleAction("Main ToolBar",0,0,this,SLOT(toolbarToggled()),actionCollection(),"MainToolbar");
@@ -3586,7 +3585,7 @@ bool YammiGui::setupActions( ) {
     ta = new KToggleAction("Prelisten",0,0,this,SLOT(toolbarToggled()),actionCollection(),"PrelistenToolbar");
 
     // other actions
-    new KAction(i18n("Update Automatic Folder Structure"),"reload",0,this,SLOT(updateView()),actionCollection(),"update_view");
+    new KAction(tr("Update Automatic Folder Structure"),"reload",0,this,SLOT(updateView()),actionCollection(),"update_view");
 
     // setup
     KStdAction::preferences(this,SLOT(setPreferences()),actionCollection());
@@ -3595,40 +3594,40 @@ bool YammiGui::setupActions( ) {
     // - "insert custom widgets in toolbar using KWidgetAction
     //search
     QHBox *w = new QHBox( );
-    new QLabel(i18n("Search:"),w);
+    new QLabel(tr("Search:"),w);
     m_searchField = new LineEditShift(w);
     m_searchField->setFixedWidth(175);
     QToolTip::add
-        ( m_searchField, i18n("Fuzzy search (Ctrl-F)"));
+        ( m_searchField, tr("Fuzzy search (Ctrl-F)"));
     connect( m_searchField, SIGNAL(textChanged(const QString&)), SLOT(searchFieldChanged(const QString&)));
     /*
         TODO: temporarily disabled before we have a better concept and have it documented properly...
-        QPushButton *btn = new QPushButton(i18n("to wishlist"),w);
+        QPushButton *btn = new QPushButton(tr("to wishlist"),w);
         connect( btn, SIGNAL( clicked() ), this, SLOT( addToWishList() ) );
-        QToolTip::add( btn, i18n("Add this entry to the database as a \"wish\""));
+        QToolTip::add( btn, tr("Add this entry to the database as a \"wish\""));
     */
     new KWidgetAction(w, "Search", 0, 0, 0, actionCollection(), "search");
 
 
     // removable media management
     w = new QHBox( );
-    new QLabel(i18n("Needed media:"),w);
+    new QLabel(tr("Needed media:"),w);
     mediaListCombo = new QComboBox( FALSE, w );
     mediaListCombo->setFixedWidth(150);
-    loadFromMediaButton = new QPushButton(i18n("load"), w);
+    loadFromMediaButton = new QPushButton(tr("load"), w);
     connect( loadFromMediaButton, SIGNAL( clicked() ), this, SLOT( loadMedia() ) );
     new KWidgetAction(w, "Load media", 0, 0, 0, actionCollection(), "load_media");
 
     // Sleep mode
     w = new QHBox( );
-    new QLabel(i18n("Sleep mode:"),w);
-    m_sleepModeButton = new QPushButton(i18n("(disabled)"), w);
+    new QLabel(tr("Sleep mode:"),w);
+    m_sleepModeButton = new QPushButton(tr("(disabled)"), w);
     QToolTip::add
-        ( m_sleepModeButton, i18n("toggle sleep mode"));
+        ( m_sleepModeButton, tr("toggle sleep mode"));
     connect( m_sleepModeButton, SIGNAL( clicked() ), this, SLOT( changeSleepMode() ) );
     m_sleepModeSpinBox=new QSpinBox(1, 99, 1, w);
     QToolTip::add
-        ( m_sleepModeSpinBox, i18n("number songs until shutdown"));
+        ( m_sleepModeSpinBox, tr("number songs until shutdown"));
     m_sleepMode = false;
     m_sleepModeSpinBox->setEnabled(m_sleepMode);
     new KWidgetAction( w ,"Sleep Mode",0, 0, 0,actionCollection(),"sleep_mode");
@@ -3657,7 +3656,7 @@ void YammiGui::createMenuBar( ) {
     }
 
     KMenuBar *mainMenu = menuBar( );
-    mainMenu->insertItem( i18n("Columns"), columnsMenu, -1, 3 );
+    mainMenu->insertItem( tr("Columns"), columnsMenu, -1, 3 );
 }
 
 /**
@@ -3677,9 +3676,9 @@ void YammiGui::createSongPopup() {
     songPopup->insertItem( "", 113, 0);
     songPopup->insertSeparator(1);
     playListPopup = new QPopupMenu(songPopup);
-    songPopup->insertItem( i18n("Insert Into/Remove From..."), playListPopup, -1, -1);
+    songPopup->insertItem( tr("Insert Into/Remove From..."), playListPopup, -1, -1);
     pluginPopup = new QPopupMenu(songPopup);
-    songPopup->insertItem( i18n("Plugins..."), pluginPopup, -1, -1);
+    songPopup->insertItem( tr("Plugins..."), pluginPopup, -1, -1);
     // populate the submenus
     updateSongPopup();
 }

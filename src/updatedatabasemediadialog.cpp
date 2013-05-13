@@ -22,12 +22,11 @@
 #include <qobject.h>
 #include <qpushbutton.h>
 #include <kfiledialog.h>
-#include <klocale.h>
 
 
 
 UpdateDatabaseMediaDialog::UpdateDatabaseMediaDialog(QWidget* parent, Prefs* config)
-: UpdateDatabaseMediaDialogBase(parent, i18n("Update Database (media) Dialog"), true) {
+: UpdateDatabaseMediaDialogBase(parent, tr("Update Database (media) Dialog"), true) {
     this->config = config;
     LineEditMediaDir->setText(config->mediaDir);
     LineEditFilePattern->setText(config->scanPattern);
@@ -43,7 +42,7 @@ UpdateDatabaseMediaDialog::~UpdateDatabaseMediaDialog() {}
 
 // file dialog for media dir
 void UpdateDatabaseMediaDialog::chooseMediaDir() {
-    QString dir=KFileDialog::getExistingDirectory(LineEditMediaDir->text(), this, i18n("choose media directory"));
+    QString dir=KFileDialog::getExistingDirectory(LineEditMediaDir->text(), this, tr("choose media directory"));
     if(!dir.isNull()) {
         LineEditMediaDir->setText(dir);
     }

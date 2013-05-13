@@ -19,7 +19,6 @@
 #include "preferencesdialog.h"
 
 #include <kfiledialog.h>
-#include <klocale.h>
 #include <ktextedit.h>
 #include <qpushbutton.h>
 #include <qradiobutton.h>
@@ -221,7 +220,7 @@ void PreferencesDialog::myAccept() {
 
 // file dialog for trash dir
 void PreferencesDialog::chooseTrashDir() {
-    QString dir=KFileDialog::getExistingDirectory(LineEditTrashDir->text(), this, i18n("choose trash directory"));
+    QString dir=KFileDialog::getExistingDirectory(LineEditTrashDir->text(), this, tr("choose trash directory"));
     if(!dir.isNull()) {
         LineEditTrashDir->setText(dir);
     }
@@ -229,7 +228,7 @@ void PreferencesDialog::chooseTrashDir() {
 
 // file dialog for media dir
 void PreferencesDialog::chooseMediaDir() {
-    QString dir=KFileDialog::getExistingDirectory(LineEditMediaDir->text(), this, i18n("choose media directory"));
+    QString dir=KFileDialog::getExistingDirectory(LineEditMediaDir->text(), this, tr("choose media directory"));
     if(!dir.isNull()) {
         LineEditMediaDir->setText(dir);
     }
@@ -237,7 +236,7 @@ void PreferencesDialog::chooseMediaDir() {
 
 // file dialog for swap dir
 void PreferencesDialog::chooseSwapDir() {
-    QString dir=KFileDialog::getExistingDirectory(LineEditSwapDir->text(), this, i18n("choose swap directory"));
+    QString dir=KFileDialog::getExistingDirectory(LineEditSwapDir->text(), this, tr("choose swap directory"));
     if(!dir.isNull()) {
         LineEditSwapDir->setText(dir);
     }
@@ -359,18 +358,18 @@ void PreferencesDialog::deletePlugin() {
 
 void PreferencesDialog::showReplacements() {
     QString msg("");
-    msg+=i18n("Replacements for command (single mode)\n");
-    msg+=i18n("or custom list (group mode):\n");
+    msg+=tr("Replacements for command (single mode)\n");
+    msg+=tr("or custom list (group mode):\n");
     msg+=Song::getReplacementsDescription();
-    msg+=i18n("{newline} (newline)\n");
-    msg+=i18n("{index} (index of a song within a selection)\n");
-    msg+=i18n("{directoryDialog} (directory dialog, returns chosen directory)\n");
-    msg+=i18n("{fileDialog} (file dialog, returns chosen file)\n");
-    msg+=i18n("{inputString} (input string dialog, returns entered string)\n\n");
+    msg+=tr("{newline} (newline)\n");
+    msg+=tr("{index} (index of a song within a selection)\n");
+    msg+=tr("{directoryDialog} (directory dialog, returns chosen directory)\n");
+    msg+=tr("{fileDialog} (file dialog, returns chosen file)\n");
+    msg+=tr("{inputString} (input string dialog, returns entered string)\n\n");
 
-    msg+=i18n("Replacements for command (group mode):\n");
-    msg+=i18n("{customList} (custom list, directly)\n");
-    msg+=i18n("{customListFile} (filename of custom list)\n");
-    msg+=i18n("{customListViaFile} (custom list, via file / cat command)\n");
+    msg+=tr("Replacements for command (group mode):\n");
+    msg+=tr("{customList} (custom list, directly)\n");
+    msg+=tr("{customListFile} (filename of custom list)\n");
+    msg+=tr("{customListViaFile} (custom list, via file / cat command)\n");
     QMessageBox::information( this, "Yammi",msg);
 }

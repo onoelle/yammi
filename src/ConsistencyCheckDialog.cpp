@@ -9,7 +9,6 @@
 
 #include <kapplication.h>
 #include <kprogress.h>
-#include <klocale.h>
 #include <ktextedit.h>
 
 #include "ConsistencyCheckParameter.h"
@@ -23,13 +22,13 @@
 extern YammiGui* gYammiGui;
 
 ConsistencyCheckDialog::ConsistencyCheckDialog(QWidget* parent, ConsistencyCheckParameter* para, MyList* selectedSongs, YammiModel* model)
-: CheckConsistencyDialogBase(parent, i18n("Check consistency - settings"), false) {
+: CheckConsistencyDialogBase(parent, tr("Check consistency - settings"), false) {
     p=para;
     this->model = model;
     this->selectedSongs = selectedSongs;
     setParameter();
     TextEditOutput->setReadOnly(true);
-    TextLabelTitle->setText(QString(i18n("Checking %1 songs")).arg(selectedSongs->count()));
+    TextLabelTitle->setText(QString(tr("Checking %1 songs")).arg(selectedSongs->count()));
     this->setModal(false);
     connect( CheckBoxCheckForExistence, SIGNAL( clicked() ), this, SLOT( changeSetting() ) );
     connect( CheckBoxCheckTags, SIGNAL( clicked() ), this, SLOT( changeSetting() ) );
@@ -88,8 +87,8 @@ void ConsistencyCheckDialog::startCheck() {
     p->resetStatistics();
     TextEditOutput->clear();
 
-    KProgressDialog progress( this, 0, i18n("Yammi"), i18n("Checking consistency..."), true);
-    progress.setLabel(i18n("Step 1: checking all songs in database..."));
+    KProgressDialog progress( this, 0, tr("Yammi"), tr("Checking consistency..."), true);
+    progress.setLabel(tr("Step 1: checking all songs in database..."));
     progress.progressBar()->setTotalSteps(selectedSongs->count());
     progress.progressBar()->setProgress(0);
     progress.setMinimumDuration(0);
@@ -100,7 +99,7 @@ void ConsistencyCheckDialog::startCheck() {
     kapp->processEvents();
 
     KTextEdit* output = TextEditOutput;
-    output->append(i18n("Checking consistency of %1 songs...").arg(selectedSongs->count()));
+    output->append(tr("Checking consistency of %1 songs...").arg(selectedSongs->count()));
     model->problematicSongs.clear();
 
     // 1. iterate through all songs in database
@@ -124,7 +123,7 @@ void ConsistencyCheckDialog::startCheck() {
 
             if(diagnosis=="file not readable" && p->checkForExistence) {
                 p->nonExisting++;
-                output->append("! " + i18n("file not existing or readable: %1\n").arg(s->displayName()));
+                output->append("! " + tr("file not existing or readable: %1\n").arg(s->displayName()));
                 bool onMedia=s->mediaName.count()>0;
                 if(p->updateNonExisting) {
                     // if we update, there are two cases:
@@ -133,16 +132,16 @@ void ConsistencyCheckDialog::startCheck() {
                         s->filename="";
                         s->path="";
                         p->nonExistingUpdated++;
-                        model->problematicSongs.append(new SongEntryString(s, i18n("filename cleared in song entry")));
-                        output->append("=> " + i18n("filename cleared in song entry"));
+                        model->problematicSongs.append(new SongEntryString(s, tr("filename cleared in song entry")));
+                        output->append("=> " + tr("filename cleared in song entry"));
                     } else {
                         // 2. delete entry in database
-                        output->append(i18n("=> deleting song entry %1\n").arg(s->displayName()));
+                        output->append(tr("=> deleting song entry %1\n").arg(s->displayName()));
                         gYammiGui->deleteEntry(s);
                         p->nonExistingDeleted++;
                     }
                 } else {
-                    model->problematicSongs.append(new SongEntryString(s, i18n("file not existing or readable")));
+                    model->problematicSongs.append(new SongEntryString(s, tr("file not existing or readable")));
                 }
             }
 
@@ -190,24 +189,24 @@ void ConsistencyCheckDialog::startCheck() {
                         if(p->correctTagsDirection==p->YAMMI2TAGS) {
                             if(s->saveTags()) {
                                 p->tagsCorrected++;
-                                model->problematicSongs.append(new SongEntryString(s, i18n("Yammi info written to file tags")));
-                                output->append("=> " + i18n("Yammi info written to file tags"));
+                                model->problematicSongs.append(new SongEntryString(s, tr("Yammi info written to file tags")));
+                                output->append("=> " + tr("Yammi info written to file tags"));
                             }
                         }
                         if(p->correctTagsDirection==p->TAGS2YAMMI) {
                             if(s->rereadTags()) {
                                 p->tagsCorrected++;
-                                model->problematicSongs.append(new SongEntryString(s, i18n("Tags reread from file and Yammi info updated")));
-                                output->append("=> " + i18n("Tags reread from file and Yammi info updated"));
+                                model->problematicSongs.append(new SongEntryString(s, tr("Tags reread from file and Yammi info updated")));
+                                output->append("=> " + tr("Tags reread from file and Yammi info updated"));
                             }
                         }
                     } else {
                         model->problematicSongs.append(new SongEntryString(s, "Yammi info and file tags not consistent"));
-                        output->append("! " + i18n("Yammi info and file tags not consistent"));
+                        output->append("! " + tr("Yammi info and file tags not consistent"));
                     }
                 } else {
-                    model->problematicSongs.append(new SongEntryString(s, i18n("Yammi info and file tags not consistent")));
-                    output->append("! " + i18n("Yammi info and file tags not consistent"));
+                    model->problematicSongs.append(new SongEntryString(s, tr("Yammi info and file tags not consistent")));
+                    output->append("! " + tr("Yammi info and file tags not consistent"));
                 }
             }
 
@@ -215,9 +214,9 @@ void ConsistencyCheckDialog::startCheck() {
 
             if(diagnosis.contains("filename not consistent") && p->checkFilenames) {
                 p->dirtyFilenames++;
-                output->append("! " + i18n("Filename not consistent with Yammi info"));
-                output->append("  " + i18n("expected: %1").arg(s->constructFilename()));
-                output->append("  " + i18n("found: %1").arg(s->filename));
+                output->append("! " + tr("Filename not consistent with Yammi info"));
+                output->append("  " + tr("expected: %1").arg(s->constructFilename()));
+                output->append("  " + tr("found: %1").arg(s->filename));
                 if(p->correctFilenames) {
                     bool reallyCorrect;
                     if(p->correctFilenamesConfirmed==-1) {
@@ -249,22 +248,22 @@ void ConsistencyCheckDialog::startCheck() {
                     if(reallyCorrect) {
                         if(s->correctFilename()) {
                             p->filenamesCorrected++;
-                            model->problematicSongs.append(new SongEntryString(s, i18n("Filename corrected")));
-                            output->append("=> " + i18n("Filename corrected"));
+                            model->problematicSongs.append(new SongEntryString(s, tr("Filename corrected")));
+                            output->append("=> " + tr("Filename corrected"));
                         }
                     } else {
                         model->problematicSongs.append(new SongEntryString(s, "Filename not consistent with Yammi info"));
                     }
                 } else {
-                    model->problematicSongs.append(new SongEntryString(s, i18n("Filename not consistent with Yammi info")));
+                    model->problematicSongs.append(new SongEntryString(s, tr("Filename not consistent with Yammi info")));
                 }
             }
 
             if(diagnosis.contains("directory not consistent") && p->checkDirectories) {
                 p->dirtyDirectories++;
-                output->append("! " + i18n("Directory not consistent with Yammi info"));
-                output->append("  " + i18n("expected: %1").arg(s->constructPath()));
-                output->append("  " + i18n("found: %1").arg(s->path));
+                output->append("! " + tr("Directory not consistent with Yammi info"));
+                output->append("  " + tr("expected: %1").arg(s->constructPath()));
+                output->append("  " + tr("found: %1").arg(s->path));
                 if(p->correctDirectories) {
                     bool reallyCorrect;
                     if(p->correctDirectoriesConfirmed==-1) {
@@ -298,17 +297,17 @@ void ConsistencyCheckDialog::startCheck() {
                         QString pathBefore=s->path;
                         if(s->correctPath()) {
                             p->directoriesCorrected++;
-                            model->problematicSongs.append(new SongEntryString(s, i18n("Directory corrected")));
-                            output->append("=> " + i18n("Directory corrected"));
+                            model->problematicSongs.append(new SongEntryString(s, tr("Directory corrected")));
+                            output->append("=> " + tr("Directory corrected"));
                             if(p->deleteEmptyDirectories) {
                                 Util::deleteDirectoryIfEmpty(pathBefore, model->config()->scanDir);
                             }
                         }
                     } else {
-                        model->problematicSongs.append(new SongEntryString(s, i18n("Directory not consistent with Yammi info")));
+                        model->problematicSongs.append(new SongEntryString(s, tr("Directory not consistent with Yammi info")));
                     }
                 } else {
-                    model->problematicSongs.append(new SongEntryString(s, i18n("Directory not consistent with Yammi info")));
+                    model->problematicSongs.append(new SongEntryString(s, tr("Directory not consistent with Yammi info")));
                 }
             }
 
@@ -318,7 +317,7 @@ void ConsistencyCheckDialog::startCheck() {
 
     // 2. check for songs contained twice
     if(!progress.wasCancelled() && p->checkDoubles) {
-        progress.setLabel(i18n("Step 2: check for song entries pointing to same file"));
+        progress.setLabel(tr("Step 2: check for song entries pointing to same file"));
         progress.progressBar()->setTotalSteps(model->allSongs.count());
         progress.progressBar()->setProgress(0);
         kapp->processEvents();
@@ -343,7 +342,7 @@ void ConsistencyCheckDialog::startCheck() {
 
             // check for songs contained twice in database (but pointing to same file+path)
             if(last->location()==s->location()) {
-                output->append("! " + i18n("two database entries pointing to same file: %1, deleting one").arg(s->filename));
+                output->append("! " + tr("two database entries pointing to same file: %1, deleting one").arg(s->filename));
                 output->append(QString("  1.: %1").arg(last->displayName()));
                 output->append(QString("  2.: %1").arg(s->displayName()));
                 model->allSongs.remove();   // TODO: check: could this cause a problem, because we are iterating through this list???
@@ -355,7 +354,7 @@ void ConsistencyCheckDialog::startCheck() {
         }
 
         // 3. check for two songs with identical primary key
-        progress.setLabel(i18n("Step 3: check for songs with identical primary keys"));
+        progress.setLabel(tr("Step 3: check for songs with identical primary keys"));
         progress.progressBar()->setTotalSteps(model->allSongs.count());
         progress.progressBar()->setProgress(0);
         kapp->processEvents();
@@ -374,11 +373,11 @@ void ConsistencyCheckDialog::startCheck() {
                 continue;
             }
             if(s->sameAs(last)) {
-                output->append("! " + i18n("2 songs with identical primary key\n"));
+                output->append("! " + tr("2 songs with identical primary key\n"));
                 output->append(QString("  1.: %1").arg(last->location()));
                 output->append(QString("  2.: %1").arg(s->location()));
-                model->problematicSongs.append(new SongEntryString(last, i18n("contained twice(1)")));
-                model->problematicSongs.append(new SongEntryString(s, i18n("contained twice(2)")));
+                model->problematicSongs.append(new SongEntryString(last, tr("contained twice(1)")));
+                model->problematicSongs.append(new SongEntryString(s, tr("contained twice(2)")));
                 p->doublesFound++;
             }
         }
@@ -388,9 +387,9 @@ void ConsistencyCheckDialog::startCheck() {
 
     progress.close();
     if(!progress.wasCancelled()) {
-        output->append(i18n("Consistency check finished\n"));
+        output->append(tr("Consistency check finished\n"));
     } else {
-        output->append(i18n("Consistency check was cancelled\n"));
+        output->append(tr("Consistency check was cancelled\n"));
     }
     if(model->problematicSongs.count()==0) {
         output->append("Your Yammi database is nice and clean!\n");
@@ -398,27 +397,27 @@ void ConsistencyCheckDialog::startCheck() {
     } else {
         model->allSongsChanged(true);
         output->append("\n\n");
-        output->append(i18n("Result of consistency check: (%1 songs)\n").arg(selectedSongs->count()));
+        output->append(tr("Result of consistency check: (%1 songs)\n").arg(selectedSongs->count()));
         output->append("---------------------");
-        output->append(i18n("%1 issues found, check folder \"Problematic Songs\" (won't be saved)\n\n").arg(model->problematicSongs.count()));
-        output->append(i18n("- %1 songs not existing\n").arg(p->nonExisting));
+        output->append(tr("%1 issues found, check folder \"Problematic Songs\" (won't be saved)\n\n").arg(model->problematicSongs.count()));
+        output->append(tr("- %1 songs not existing\n").arg(p->nonExisting));
         if(p->nonExisting > 0) {
-            output->append(i18n("     %1 entries updated (filename cleared)\n").arg(p->nonExistingUpdated));
-            output->append(i18n("     %1 entries deleted (because not existing on any media)\n").arg(p->nonExistingDeleted));
+            output->append(tr("     %1 entries updated (filename cleared)\n").arg(p->nonExistingUpdated));
+            output->append(tr("     %1 entries deleted (because not existing on any media)\n").arg(p->nonExistingDeleted));
         }
-        output->append(i18n("- %1 songs with inconsistent tags\n").arg(p->dirtyTags));
+        output->append(tr("- %1 songs with inconsistent tags\n").arg(p->dirtyTags));
         if(p->dirtyTags> 0) {
-            output->append(i18n("     %1 tags corrected\n").arg(p->tagsCorrected));
+            output->append(tr("     %1 tags corrected\n").arg(p->tagsCorrected));
         }
-        output->append(i18n("- %1 songs with inconsistent filename\n").arg(p->dirtyFilenames));
+        output->append(tr("- %1 songs with inconsistent filename\n").arg(p->dirtyFilenames));
         if(p->dirtyFilenames> 0) {
-            output->append(i18n("     %1 filenames corrected\n").arg(p->filenamesCorrected));
+            output->append(tr("     %1 filenames corrected\n").arg(p->filenamesCorrected));
         }
-        output->append(i18n("- %1 songs with inconsistent path\n").arg(p->dirtyDirectories));
+        output->append(tr("- %1 songs with inconsistent path\n").arg(p->dirtyDirectories));
         if(p->dirtyDirectories> 0) {
-            output->append(i18n("   %1 paths corrected\n").arg(p->directoriesCorrected));
+            output->append(tr("   %1 paths corrected\n").arg(p->directoriesCorrected));
         }
-        output->append(i18n("- %1 double entries found\n").arg(p->doublesFound));
+        output->append(tr("- %1 double entries found\n").arg(p->doublesFound));
         return;
     }
 }
@@ -462,7 +461,7 @@ void ConsistencyCheckDialog::changeSetting() {
 
 void ConsistencyCheckDialog::showReplacements() {
     QString msg;
-    msg+=i18n("Replacements for filename/directory pattern:\n\n");
+    msg+=tr("Replacements for filename/directory pattern:\n\n");
     msg+=Song::getReplacementsDescription();
     QMessageBox::information( this, "Yammi",msg);
 }

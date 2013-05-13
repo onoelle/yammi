@@ -22,7 +22,6 @@
 #include "util.h"
 
 #include <kdebug.h>
-#include <klocale.h>
 #include <kio/job.h>
 
 #include <taglib/audioproperties.h>
@@ -849,18 +848,18 @@ QString Song::getSongAction(int index) {
  */
 QString Song::getReplacementsDescription() {
     QString msg;
-    msg+=i18n("{filename} (without path)\n");
-    msg+=i18n("{absoluteFilename} (including path)\n");
-    msg+=i18n("{filenameWithoutSuffix} (without path, without suffix)\n");
-    msg+=i18n("{suffix} (without leading dot)\n");
-    msg+=i18n("{path} (without filename)\n");
-    msg+=i18n("{artist}, {title}, {album}, {comment} (corresponding to the tags)\n");
-    msg+=i18n("{bitrate} (in kbps)\n");
-    msg+=i18n("{length} (length in format mm:ss)\n");
-    msg+=i18n("{lengthInSeconds} (length in seconds)\n");
-    msg+=i18n("{mediaList (list of media on which song is contained)\n");
-    msg+=i18n("{trackNr} (Track number)\n");
-    msg+=i18n("{trackNr2Digit} (as above, but padded with zero if necessary)\n");
+    msg+=QObject::tr("{filename} (without path)\n");
+    msg+=QObject::tr("{absoluteFilename} (including path)\n");
+    msg+=QObject::tr("{filenameWithoutSuffix} (without path, without suffix)\n");
+    msg+=QObject::tr("{suffix} (without leading dot)\n");
+    msg+=QObject::tr("{path} (without filename)\n");
+    msg+=QObject::tr("{artist}, {title}, {album}, {comment} (corresponding to the tags)\n");
+    msg+=QObject::tr("{bitrate} (in kbps)\n");
+    msg+=QObject::tr("{length} (length in format mm:ss)\n");
+    msg+=QObject::tr("{lengthInSeconds} (length in seconds)\n");
+    msg+=QObject::tr("{mediaList (list of media on which song is contained)\n");
+    msg+=QObject::tr("{trackNr} (Track number)\n");
+    msg+=QObject::tr("{trackNr2Digit} (as above, but padded with zero if necessary)\n");
     return msg;
 }
 

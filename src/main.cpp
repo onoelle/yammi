@@ -8,7 +8,6 @@
 #include <kconfig.h>
 #include <kaboutdata.h>
 #include <kcmdlineargs.h>
-#include <klocale.h>
 #include <kmessagebox.h>
 #include <kdebug.h>
 #include <config.h>
@@ -23,9 +22,9 @@
 
 static KCmdLineOptions options[] = { 
 			{ "d", 0, 0 },
-			{ "databasedir <dir>", I18N_NOOP("Specifies the database directory"), 0 } };
+                        { "databasedir <dir>", QT_TR_NOOP("Specifies the database directory"), 0 } };
 
-static const char description[] =   I18N_NOOP("Yammi - Yet Another Music Manager I...");
+static const char description[] =   QT_TR_NOOP("Yammi - Yet Another Music Manager I...");
 static const char version[] = VERSION;
 
 // global pointer to YammiGui
@@ -36,7 +35,7 @@ YammiGui* gYammiGui;
  */
 int main( int argc, char **argv )
 {
-	KAboutData about("yammi", I18N_NOOP("Yammi"), version, description,
+        KAboutData about("yammi", QT_TR_NOOP("Yammi"), version, description,
                      KAboutData::License_GPL, "(C) 2001-2005 by Oliver Noelle", "", "http://yammi.sourceforge.net", "yammi-developer@lists.sourceforge.net");
 
 	KCmdLineArgs::init(argc, argv, &about);

@@ -16,7 +16,6 @@
  ***************************************************************************/
 
 #include "foldermedia.h"
-#include <klocale.h>
 
 FolderMedia::FolderMedia( QListView* parent, QString title)
 		: Folder( parent, title )
@@ -40,7 +39,7 @@ void FolderMedia::update(MyList* allSongs)
 	int noMedia=0;
   int notOnMediaCount=0;
   
-  Folder* notOnMediaFolder = new Folder( this, i18n("Not on media"));
+  Folder* notOnMediaFolder = new Folder( this, tr("Not on media"));
 
   for(Song* s=allSongs->firstSong() ; s; s=allSongs->nextSong()) {
     if(s->mediaName.count() == 0) {

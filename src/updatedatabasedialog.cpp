@@ -19,7 +19,6 @@
 #include "updatedatabasedialog.h"
 
 #include <kfiledialog.h>
-#include <klocale.h>
 
 #include <qlineedit.h>
 #include <qcheckbox.h>
@@ -29,7 +28,7 @@
 
 
 UpdateDatabaseDialog::UpdateDatabaseDialog(QWidget *parent, Prefs* config )
-: UpdateDatabaseDialogBase(parent, i18n("Update Database (harddisk)"), true) {
+: UpdateDatabaseDialogBase(parent, tr("Update Database (harddisk)"), true) {
     this->config = config;
     CheckBoxFollowSymlinks->setChecked(config->followSymLinks);
     LineEditScanDir->setText(config->scanDir);
@@ -51,7 +50,7 @@ void UpdateDatabaseDialog::myAccept() {
 
 // file dialog for scan dir
 void UpdateDatabaseDialog::chooseScanDir() {
-    QString dir = KFileDialog::getExistingDirectory(LineEditScanDir->text(), this, i18n("choose scan directory"));
+    QString dir = KFileDialog::getExistingDirectory(LineEditScanDir->text(), this, tr("choose scan directory"));
     if(!dir.isNull()) {
         LineEditScanDir->setText(dir);
     }

@@ -68,7 +68,6 @@ HEADERS = \
     foldermedia.h \
     foldersorted.h \
     fuzzsrch.h \
-    i18n.h \
     lineeditshift.h \
     mediaplayer.h \
     mydatetime.h \

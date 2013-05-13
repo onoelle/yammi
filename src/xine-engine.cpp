@@ -15,7 +15,6 @@
 #include <qapplication.h>
 
 #include <kdebug.h>
-#include <klocale.h>
 #include <kmessagebox.h>
 #include <kstandarddirs.h>
 #include <kurl.h>
@@ -49,7 +48,7 @@ namespace Yammi {
         m_xine = xine_new();
 
         if (!m_xine) {
-           KMessageBox::error( 0, i18n("Yammi could not initialize xine.") );
+           KMessageBox::error( 0, tr("Yammi could not initialize xine.") );
            //return false;
         }
 
@@ -87,7 +86,7 @@ namespace Yammi {
        m_audioPort = xine_open_audio_driver( m_xine, "auto", NULL );
        if( !m_audioPort ) {
           //TODO make engine method that is the same but parents the dialog for us
-          KMessageBox::error( 0, i18n("xine was unable to initialize any audio drivers.") );
+          KMessageBox::error( 0, tr("xine was unable to initialize any audio drivers.") );
           return false;
        }
 
@@ -95,7 +94,7 @@ namespace Yammi {
        if( !m_stream ) {
           xine_close_audio_driver( m_xine, m_audioPort );
           m_audioPort = NULL;
-          KMessageBox::error( 0, i18n("Yammi could not create a new xine stream.") );
+          KMessageBox::error( 0, tr("Yammi could not create a new xine stream.") );
           return false;
        }
 
@@ -478,7 +477,7 @@ namespace Yammi {
             QString
             msg = "%1 %2%";
             msg = msg.arg( QString::fromUtf8( pd->description ) )
-                     .arg( KGlobal::locale()->formatNumber( pd->percent, 0 ) );
+                     .arg( pd->percent );
 
             QCustomEvent *e = new QCustomEvent( 3002 );
             e->setData( new QString( msg ) );
@@ -514,30 +513,30 @@ namespace Yammi {
                 break;
 
             case XINE_MSG_UNKNOWN_HOST:
-                message = i18n("The host is unknown for the URL: <i>%1</i>"); goto param;
+                message = tr("The host is unknown for the URL: <i>%1</i>"); goto param;
             case XINE_MSG_UNKNOWN_DEVICE:
-                message = i18n("The device name you specified seems invalid."); goto param;
+                message = tr("The device name you specified seems invalid."); goto param;
             case XINE_MSG_NETWORK_UNREACHABLE:
-                message = i18n("The network appears unreachable."); goto param;
+                message = tr("The network appears unreachable."); goto param;
             case XINE_MSG_AUDIO_OUT_UNAVAILABLE:
-                message = i18n("Audio output unavailable; the device is busy."); goto param;
+                message = tr("Audio output unavailable; the device is busy."); goto param;
             case XINE_MSG_CONNECTION_REFUSED:
-                message = i18n("The connection was refused for the URL: <i>%1</i>"); goto param;
+                message = tr("The connection was refused for the URL: <i>%1</i>"); goto param;
             case XINE_MSG_FILE_NOT_FOUND:
-                message = i18n("xine could not find the URL: <i>%1</i>"); goto param;
+                message = tr("xine could not find the URL: <i>%1</i>"); goto param;
             case XINE_MSG_PERMISSION_ERROR:
-                message = i18n("Access was denied for the URL: <i>%1</i>"); goto param;
+                message = tr("Access was denied for the URL: <i>%1</i>"); goto param;
             case XINE_MSG_READ_ERROR:
-                message = i18n("The source cannot be read for the URL: <i>%1</i>"); goto param;
+                message = tr("The source cannot be read for the URL: <i>%1</i>"); goto param;
             case XINE_MSG_LIBRARY_LOAD_ERROR:
-                message = i18n("A problem occurred while loading a library or decoder."); goto param;
+                message = tr("A problem occurred while loading a library or decoder."); goto param;
 
             case XINE_MSG_GENERAL_WARNING:
-                message = i18n("General Warning"); goto explain;
+                message = tr("General Warning"); goto explain;
             case XINE_MSG_SECURITY:
-                message = i18n("Security Warning"); goto explain;
+                message = tr("Security Warning"); goto explain;
             default:
-                message = i18n("Unknown Error"); goto explain;
+                message = tr("Unknown Error"); goto explain;
 
 
             explain:
@@ -583,7 +582,7 @@ namespace Yammi {
                     message += QString::fromUtf8( (char*)data + data->parameters );
                     message += "</i>";
                 }
-                else message += i18n("Sorry, no additional information is available.");
+                else message += tr("Sorry, no additional information is available.");
 
                 QApplication::postEvent( xe, new QCustomEvent(QEvent::Type(3001), new QString(message)) );
             }

@@ -22,7 +22,6 @@
 #include <kprogress.h>
 #include <kstandarddirs.h>
 #include <kmessagebox.h>
-#include <klocale.h>
 #include <kdebug.h>
 
 
@@ -81,7 +80,7 @@ bool YammiModel::readList(MyList* list, QString filename)
     int errorColumn;
     QDomDocument doc;
     if( !doc.setContent(&f, false, &errorMsg, &errorLine, &errorColumn) ) {
-        QString msg = QString(i18n("Error reading categories file:\n%1\n(Error: %2, line %3, column %4)") ).arg(f.name()).arg(errorMsg).arg(errorLine).arg(errorColumn);
+        QString msg = QString(tr("Error reading categories file:\n%1\n(Error: %2, line %3, column %4)") ).arg(f.name()).arg(errorMsg).arg(errorLine).arg(errorColumn);
         kdError() << "Error reading file contents: " << filename << endl << msg << endl;
         f.close();
         return false;
@@ -145,7 +144,7 @@ void YammiModel::readCategories() {
 	QStringList cats = d.entryList(filter, QDir::Files, QDir::DirsFirst);
 
 	int total=cats.count();
-    KProgressDialog dia(0,0,i18n("Loading categories"),i18n("Reading categories..."), true);
+    KProgressDialog dia(0,0,tr("Loading categories"),tr("Reading categories..."), true);
     dia.setAllowCancel(false);
     dia.setMinimumDuration(0);
     KProgress *p = dia.progressBar();
@@ -187,7 +186,7 @@ void YammiModel::readHistory() {
     int total = root.attribute("count", "0").toInt( );
     QDomElement e = root.firstChild().toElement();
 
-    KProgressDialog dia(0,0,i18n("Loading song history"),i18n("Reading song history..."), true);
+    KProgressDialog dia(0,0,tr("Loading song history"),tr("Reading song history..."), true);
     dia.setAllowCancel(false);
     dia.setMinimumDuration(0);
     KProgress *p = dia.progressBar();
@@ -348,24 +347,24 @@ void YammiModel::readSongDatabase(  ) {
     int errorColumn;
     if( !doc.setContent(&f, false, &errorMsg, &errorLine, &errorColumn) ) {
         f.close();
-        QString msg = QString(i18n("Error reading database file:\n%1\n(Error: %2, line %3, column %4)") ).arg(f.name()).arg(errorMsg).arg(errorLine).arg(errorColumn);
-        KMessageBox::error(0L,msg,i18n("Error reading database"));
+        QString msg = QString(tr("Error reading database file:\n%1\n(Error: %2, line %3, column %4)") ).arg(f.name()).arg(errorMsg).arg(errorLine).arg(errorColumn);
+        KMessageBox::error(0L,msg,tr("Error reading database"));
         return;
     }
     f.close();
     QDomElement root = doc.documentElement( );
     QString version = root.attribute("yammiVersion", "no version");
     if(version=="0.5.2" || version=="0.5.1" || version=="0.5" || version=="no version") {
-        QString msg( i18n("Your Song Database seems to be very old.\n You might need to create \
+        QString msg( tr("Your Song Database seems to be very old.\n You might need to create \
                           a new Database and scan your harddisk for songs") );
-        KMessageBox::sorry( 0L, msg, i18n("Unknown Song Database version") );
+        KMessageBox::sorry( 0L, msg, tr("Unknown Song Database version") );
         //try to continue anyway...?
     }
 
     int total = root.attribute("count", "0").toInt( );
     QDomElement e = root.firstChild().toElement();
 
-    KProgressDialog dia(0,0,i18n("Loading database"),i18n("Reading Song Database file"), true);
+    KProgressDialog dia(0,0,tr("Loading database"),tr("Reading Song Database file"), true);
     dia.setAllowCancel(false);
     dia.setMinimumDuration(0);
     KProgress *p = dia.progressBar();
@@ -524,7 +523,7 @@ void YammiModel::updateSongDatabase(QString scanDir, bool followSymLinks, QStrin
         // check that scanDir is an existing directory
         QDir d(scanDir);
         if(!d.exists()) {
-            QString msg( i18n("The base directory for scanning does not exist!\n\
+            QString msg( tr("The base directory for scanning does not exist!\n\
                               Set value \"scanDir\" to an existing directory!"));
             KMessageBox::error( m_yammi, msg);
             return;
@@ -546,7 +545,7 @@ void YammiModel::updateSongDatabase(QString scanDir, bool followSymLinks, QStrin
         // check that mediaDir is an existing directory
         QDir d(scanDir);
         if(!d.exists()) {
-            QString msg(i18n("The specified directory for removable media:\n %1 \n\
+            QString msg(tr("The specified directory for removable media:\n %1 \n\
                              does not exist or is not redable!\n Set value \"mediaDir\" in the preferences to an existing directory!\n\
                              (if necessary, enable the \"mount media\" option in the preferences)"));
             msg.arg(scanDir);
@@ -599,7 +598,7 @@ bool YammiModel::traverse(QString path, bool followSymLinks, QString filePattern
         return true;
     }
     kdDebug() << "scanning directory " << path<<endl;
-    progress->setLabel(QString(i18n("scanning directory %1 ...")).arg(path));
+    progress->setLabel(QString(tr("scanning directory %1 ...")).arg(path));
     progress->progressBar()->setProgress(0);
     kapp->processEvents();
 
