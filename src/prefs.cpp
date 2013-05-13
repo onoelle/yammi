@@ -58,9 +58,6 @@ void Prefs::setDefaultValues(void) {
     lazyGrouping = false;
     searchThreshold = 20;
 
-    // plugins
-    grabAndEncodeCmd = "yammiGrabAndEncode";
-
     consistencyPara.setDefaults();
     
     playqueueTemplate = "{scope:none}\
@@ -124,7 +121,6 @@ bool Prefs::loadConfig( ) {
     playqueueTemplate            = cfg->readEntry("playqueueTemplate", playqueueTemplate);
 
     cfg->setGroup("Plugins");
-    grabAndEncodeCmd             = cfg->readEntry("grabAndEncodeCmd", grabAndEncodeCmd);
     pluginCommand                = cfg->readListEntry("pluginCommand");
     pluginMenuEntry              = cfg->readListEntry("pluginMenuEntry");
     pluginCustomList             = cfg->readListEntry("pluginCustomList");
@@ -183,7 +179,6 @@ bool Prefs::saveConfig( ) {
     cfg->writeEntry("playqueueTemplate", playqueueTemplate);
 
     cfg->setGroup("Plugins");
-    cfg->writeEntry("grabAndEncodeCmd", grabAndEncodeCmd);
     cfg->writeEntry("pluginCommand", pluginCommand);
     cfg->writeEntry("pluginMenuEntry", pluginMenuEntry);
     cfg->writeEntry("pluginCustomList", pluginCustomList);

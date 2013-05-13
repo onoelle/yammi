@@ -2476,81 +2476,6 @@ void YammiGui::autoFillPlaylist() {
 }
 
 
-
-
-// grab a track from audio-cd, encode, and add to database
-void YammiGui::grabAndEncode() {
-    bool ok = false;
-    QString caption(tr("Enter track number"));
-    QString message(tr("Please enter track number"));
-    QString trackNrStr(QInputDialog::getText( caption, message, QLineEdit::Normal, QString("1"), &ok, this ));
-    if(!ok)
-        return;
-    int trackNr=atoi(trackNrStr);
-    if(trackNr<1)
-        return;
-
-    caption=tr("Enter artist");
-    message=tr("Please enter artist");
-    QString artist(QInputDialog::getText( caption, message, QLineEdit::Normal, QString(tr("MyArtist")), &ok, this ));
-    if(!ok)
-        return;
-
-    caption=tr("Enter title");
-    message=tr("Please enter title");
-    QString title(QInputDialog::getText( caption, message, QLineEdit::Normal, QString(tr("Fantastic Song")), &ok, this ));
-    if(!ok)
-        return;
-
-    QString filename=QString(tr("%1%2 - %3.mp3")).arg(config()->scanDir).arg(artist).arg(title);
-    QFileInfo fi(filename);
-    if(fi.exists()) {
-        QString msg = tr("The file\n%1\nalready exists!\n\nPlease choose a different artist/title combination.");
-        QMessageBox::information(this, "Yammi", msg.arg(filename));
-        return;
-    }
-    // linux specific
-    QString cmd=QString("%1 %2 \"%3\" \"%4\" \"%5\" &").arg(config()->grabAndEncodeCmd).arg(trackNr).arg(artist).arg(title).arg(filename);
-    system(cmd);
-    grabbedTrackFilename=filename;
-    statusBar( )->message(tr("grabbing track, will be available shortly..."), 30000);
-    // now we start a timer to check for availability of new track every 5 seconds
-    QTimer* timer=new QTimer(this);
-    connect(timer, SIGNAL(timeout()), this, SLOT(checkForGrabbedTrack()) );
-    timer->start(5000, TRUE);
-}
-
-/** checks for availability of a song that is currently being grabbed and encoded
- */
-void YammiGui::checkForGrabbedTrack() {
-    QFileInfo fileInfo(grabbedTrackFilename);
-    if(!fileInfo.exists()) {
-        QTimer* timer=new QTimer(this);
-        connect(timer, SIGNAL(timeout()), this, SLOT(checkForGrabbedTrack()) );
-        timer->start(5000, TRUE);
-        return;
-    }
-    if(!fileInfo.isReadable()) {
-        qDebug() << "new grabbed track " << grabbedTrackFilename << " is unreadable";
-        return;
-    }
-    statusBar( )->message(tr("grabbed song available"), 20000);
-    model->entriesAdded=0;
-    model->corruptSongs=0;
-    model->problematicSongs.clear();
-
-    model->addSongToDatabase(grabbedTrackFilename);
-    updateView();
-    folderProblematic->update(model->problematicSongs);
-    folderAll->updateTitle();
-    QString msg=tr("Yammi tried to add the grabbed song to the database.\n\nSome statistics: \n\n");
-    msg+=QString(tr("%1 songs added to database\n")).arg(model->entriesAdded);
-    msg+=QString(tr("%1 songs corrupt (=not added)\n")).arg(model->corruptSongs);
-    msg+=QString(tr("%1 problematic issues(check in folder Problematic Songs)")).arg(model->problematicSongs.count());
-    QMessageBox::information(this,"Yammi", msg);
-}
-
-
 /**
  * Fix all genres by re-reading them from the files.
  */
@@ -2947,7 +2872,6 @@ bool YammiGui::setupActions( ) {
     new KAction(tr("Import Selected File(s)..."),"edit_add",0,this,SLOT(updateSongDatabaseSingleFile()), actionCollection(),"import_file");
     new KAction(tr("Check Consistency..."),"spellcheck",0,this,SLOT(forAllCheckConsistency()), actionCollection(),"check_consistency_all");
     new KAction(tr("Fix genres..."),0,0,this,SLOT(fixGenres()), actionCollection(),"fix_genres");
-    new KAction(tr("Grab And Encode CD-Track..."),"cd",0,this,SLOT(grabAndEncode()), actionCollection(),"grab");
 
     // playlist actions
     new KAction(tr("Shuffle Playlist..."),"roll",0,this,SLOT(shufflePlaylist()),actionCollection(),"shuffle_playlist");

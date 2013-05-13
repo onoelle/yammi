@@ -827,25 +827,6 @@
                     <property name="name">
                         <cstring>unnamed</cstring>
                     </property>
-                    <widget class="QLabel" row="0" column="0">
-                        <property name="name">
-                            <cstring>LabelGrabAndEncodeCmd</cstring>
-                        </property>
-                        <property name="text">
-                            <string>grab and encode script</string>
-                        </property>
-                        <property name="toolTip" stdset="0">
-                            <string>a script to grab a track from cd and encode to mp3</string>
-                        </property>
-                    </widget>
-                    <widget class="QLineEdit" row="0" column="1">
-                        <property name="name">
-                            <cstring>LineEditGrabAndEncodeCmd</cstring>
-                        </property>
-                        <property name="toolTip" stdset="0">
-                            <string>a script to grab a track from cd and encode to mp3</string>
-                        </property>
-                    </widget>
                     <widget class="QGroupBox" row="2" column="0" rowspan="1" colspan="2">
                         <property name="name">
                             <cstring>GroupBox7</cstring>
@@ -1144,7 +1125,6 @@ Group mode = executed once for the selection</string>
     <tabstop>CheckBoxLazyGrouping</tabstop>
     <tabstop>SpinBoxGroupThreshold</tabstop>
     <tabstop>CheckBoxChildSafe</tabstop>
-    <tabstop>LineEditGrabAndEncodeCmd</tabstop>
     <tabstop>ComboBoxPlugins</tabstop>
     <tabstop>PushButtonNewPlugin</tabstop>
     <tabstop>PushButtonDeletePlugin</tabstop>

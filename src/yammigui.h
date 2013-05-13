@@ -180,7 +180,6 @@ public:
 public slots:
     void songListPopup(QListViewItem*, const QPoint&, int);
     void deleteEntry(Song* s);
-    void checkForGrabbedTrack();
     void slotFolderChanged();
     void updatePlaylist();
     void updateHtmlPlaylist();
@@ -340,8 +339,6 @@ protected:
     YammiModel* model;
     // file that is currently played by player
     QString currentFile;
-    // filename of new track being grabbed
-    QString grabbedTrackFilename;
     // the thread doing the fuzzy search in background
     SearchThread* searchThread;
 
@@ -460,7 +457,6 @@ protected slots:
     void loadM3uIntoCategory();
 
     void pluginOnFolder();
-    void grabAndEncode();
     void addFolderContentSnappy();
 
     // dcop acessible functions

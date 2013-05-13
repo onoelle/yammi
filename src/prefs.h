@@ -108,9 +108,6 @@ public:
     int searchThreshold;
 
     // plugins
-    /** Name of grab and encode script */
-    QString grabAndEncodeCmd;
-
     /** List of plugins */
     QStringList pluginMenuEntry;
     /** List of command of plugins */
