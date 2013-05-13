@@ -87,7 +87,6 @@ HEADERS = \
     updatedatabasedialog.h \
     util.h \
     xine-engine.h \
-    yammidcopiface.h \
     yammigui.h \
     yammiicons.h \
     yammimodel.h
@@ -99,20 +98,3 @@ FORMS = \
     PreferencesDialogBase.ui \
     SongInfoDialog.ui \
     UpdateDatabaseDialogBase.ui
-
-SOURCES += \
-    yammidcopiface_skel.cpp
-
-#SOURCES_DCOP = yammidcopiface.h
-#yammidcop.output  = ${QMAKE_FILE_BASE}_skel.cpp
-#yammidcop.commands = dcopidl ${QMAKE_FILE_NAME} > ${QMAKE_FILE_BASE}.kidl && dcopidl2cpp --c++-suffix cpp --no-signals --no-stub ${QMAKE_FILE_BASE}.kidl
-##yammidcop.depends =
-#yammidcop.input = SOURCES_DCOP
-
-yammidcopiface_skel.cpp.target  = yammidcopiface_skel.cpp
-yammidcopiface_skel.cpp.commands = dcopidl yammidcopiface.h > yammidcopiface.kidl && dcopidl2cpp --c++-suffix cpp --no-signals --no-stub yammidcopiface.kidl
-yammidcopiface_skel.cpp.depends = yammidcopiface.h
-QMAKE_EXTRA_UNIX_TARGETS += yammidcopiface_skel.cpp
-PRE_TARGETDEPS += yammidcopiface_skel.cpp
-
-QMAKE_CLEAN += *.kidl *_skel.cpp

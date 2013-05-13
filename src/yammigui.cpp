@@ -44,7 +44,6 @@
 #include <qmessagebox.h>
 #include <qprogressdialog.h>
 #include <kkeydialog.h>
-#include <dcopobject.h>
 
 
 #include <qheader.h>
@@ -90,7 +89,7 @@ static QString columnName[] = { QObject::tr("Artist"), QObject::tr("Title"), QOb
 extern YammiGui* gYammiGui;
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-YammiGui::YammiGui() : DCOPObject("YammiPlayer"), KMainWindow( ) {
+YammiGui::YammiGui() : KMainWindow( ) {
     gYammiGui = this;
     setGeometry(0, 0, 800, 600);
 
@@ -3012,7 +3011,7 @@ Prefs* YammiGui::config() {
 }
 
 
-/*     DCOP-functions     */
+/*     (Remote)-functions     */
 void YammiGui::play() {
 
     player->play();

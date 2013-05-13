@@ -26,7 +26,6 @@
 #include <qwaitcondition.h>
 #include "options.h"
 #include "mylist.h"
-#include "yammidcopiface.h"
 #include <qprocess.h>
 
 
@@ -61,7 +60,7 @@ class QTextEdit;
  *
  * ...still way to big and unordered...
  */
-class YammiGui : public KMainWindow, virtual public YammiDcopIface {
+class YammiGui : public KMainWindow {
     Q_OBJECT
 public:    
     /**
@@ -277,7 +276,7 @@ public:
     void updateListViewColumns();
     void setSelectionMode(SelectionMode mode);
 
-    /* DCOP functions, skipForward and skipBackward are used as is */
+    /* (Remote) functions, skipForward and skipBackward are used as is */
     void play();
     void pause();
 
@@ -452,7 +451,7 @@ protected slots:
     void pluginOnFolder();
     void addFolderContentSnappy();
 
-    // dcop acessible functions
+    // (Remote) acessible functions
     void stop();
     void playPause();
 
