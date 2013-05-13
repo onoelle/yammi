@@ -35,19 +35,12 @@
 
 #include <qtextedit.h>
 #include <kapplication.h>
-#include <kglobal.h>
-#include <kiconloader.h>
 #include <kstandarddirs.h>
-#include <kdeversion.h>
 #include <kmenubar.h>
 #include <kstatusbar.h>
-#include <kkeydialog.h>
-#include <kaccel.h>
 #include <qfiledialog.h>
 #include <kconfig.h>
-#include <kstdaccel.h>
 #include <kaction.h>
-#include <kstdaction.h>
 #include <qmessagebox.h>
 #include <qprogressdialog.h>
 #include <kkeydialog.h>
@@ -82,7 +75,6 @@
 #include "mylistview.h"
 #include "lineeditshift.h"
 #include "trackpositionslider.h"
-#include "searchthread.h"
 #include "util.h"
 
 #include "mediaplayer.h"
@@ -334,22 +326,6 @@ void YammiGui::readOptions() {
     QValueList<int> lst;
     lst.append( cfg->readNumEntry("LeftSplitterWidth", 250));
     centralWidget->setSizes( lst );
-}
-
-
-void YammiGui::saveProperties(KConfig *config) {
-    qDebug() << "saveProperties(KConfig *config, name: " << config->name() << ")";
-    // the 'config' object points to the session managed
-    // config file.  anything you write here will be available
-    // later when this app is restored
-}
-
-void YammiGui::readProperties(KConfig *config) {
-    qDebug() << "readProperties(KConfig *config, name: " << config->name() << ")";
-    // the 'config' object points to the session managed
-    // config file.  this function is automatically called whenever
-    // the app is being restored.  read in here whatever you wrote
-    // in 'saveProperties'
 }
 
 

@@ -9,8 +9,6 @@
 #include <kaboutdata.h>
 #include <kcmdlineargs.h>
 #include <config.h>
-#include <kglobal.h>
-#include <kstandarddirs.h>
 #include <qeventloop.h>
 
 #include "yammigui.h"

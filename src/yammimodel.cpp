@@ -18,9 +18,7 @@
 #include "yammimodel.h"
 
 #include <kapplication.h>
-#include <kstatusbar.h>
 #include <qprogressdialog.h>
-#include <kstandarddirs.h>
 #include <qmessagebox.h>
 
 #include <qdom.h>

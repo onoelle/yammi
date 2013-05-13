@@ -25,7 +25,6 @@
 #include <qtimer.h>
 #include <qwaitcondition.h>
 #include "options.h"
-//#include "prefs.h"
 #include "mylist.h"
 #include "yammidcopiface.h"
 #include <qprocess.h>
@@ -120,12 +119,6 @@ protected:
     void saveOptions();
     /** read general Options again and initialize all variables*/
     void readOptions();
-
-    /** Save information that should be recovered when the app is restored*/
-    void saveProperties(KConfig *config);
-    /** Read information from last session when the app is restored by KDE*/
-    void readProperties(KConfig *config);
-    /** Return the configuration (preferences) object. This is not KDE's KConfig object*/
 
     /**
      * queryClose is called before the window is closed, either by the user
