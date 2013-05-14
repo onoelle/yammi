@@ -3061,11 +3061,11 @@ void YammiGui::createSongPopup() {
     songPopup->insertItem( "", 113, 0);
     songPopup->insertSeparator(1);
 
-    subMenu = songPopup->addMenu(tr("Play/Enqueue"));
-    subMenu->addAction(m_actionEnqueueAtEnd);
-    subMenu->addAction(m_actionEnqueueAsNext);
-    subMenu->addAction(m_actionPlayNow);
-    subMenu->addAction(m_actionDequeueSong);
+    //subMenu = songPopup->addMenu(tr("Play/Enqueue"));
+    songPopup->addAction(m_actionEnqueueAtEnd);
+    songPopup->addAction(m_actionEnqueueAsNext);
+    songPopup->addAction(m_actionPlayNow);
+    songPopup->addAction(m_actionDequeueSong);
     songPopup->addAction(m_actionSongInfo);
 
     subMenu = songPopup->addMenu(tr("Go to folder..."));
