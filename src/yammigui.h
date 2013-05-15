@@ -454,6 +454,10 @@ protected slots:
     void pluginOnFolder();
     void addFolderContentSnappy();
 
+    void slotLoadInMixxxDeck1();
+    void slotLoadInMixxxDeck2();
+    void loadSelectedSongInMixxxDeck(int deckNumber);
+
 private:
     QAction* m_actionQuit;
     QAction* m_actionSelectAll;
@@ -491,6 +495,8 @@ private:
     QAction* m_actionPrelistenMiddle;
     QAction* m_actionPrelistenEnd;
     QAction* m_actionStopPrelisten;
+    QAction* m_actionLoadInMixxxDeck1;
+    QAction* m_actionLoadInMixxxDeck2;
     QAction* m_actionSongInfo;
     QAction* m_actionGotoFolderArtist;
     QAction* m_actionGotoFolderAlbum;

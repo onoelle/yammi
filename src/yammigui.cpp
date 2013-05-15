@@ -43,6 +43,7 @@
 #include <QSpinBox>
 #include <QSplitter>
 #include <QTextStream>
+#include <QtDBus>
 #include <QToolBar>
 #include <QToolTip>
 
@@ -1271,6 +1272,65 @@ void YammiGui::addFolderContentSnappy() {
     }
 }
 
+void YammiGui::slotLoadInMixxxDeck1()
+{
+    loadSelectedSongInMixxxDeck(1);
+}
+
+void YammiGui::slotLoadInMixxxDeck2()
+{
+    loadSelectedSongInMixxxDeck(2);
+}
+
+void YammiGui::loadSelectedSongInMixxxDeck(int deckNumber)
+{
+    bool doLoad = true;
+
+    getSelectedSongs();
+    if (selectedSongs.count() != 1) {
+        doLoad = false;
+    }
+
+    QDBusInterface iface("org.mixxx", "/PlayerManager", "", QDBusConnection::sessionBus());
+    if (doLoad) {
+        if (iface.isValid()) {
+            QDBusReply<bool> reply = iface.call("slotIsDeckPlaying", deckNumber);
+            if (reply.isValid()) {
+                qDebug() << "Reply to slotIsDeckPlaying was:" << reply.value();
+                if (reply.value() == true) {
+                    switch (QMessageBox::warning(this,
+                                                 tr("Load Selected Song In Mixxx Deck"),
+                                                 tr("The deck in Mixxx is currently playing. Do you really want to load this song?"),
+                                                 QMessageBox::Yes,
+                                                 QMessageBox::No | QMessageBox::Default | QMessageBox::Escape))
+                    {
+                        case QMessageBox::Yes:
+                            doLoad = true;
+                            break;
+                        case QMessageBox::No:
+                        default:
+                            doLoad = false;
+                    }
+                }
+            } else {
+                qDebug() << "Call to slotIsDeckPlaying failed:" << qPrintable(reply.error().message());
+            }
+        } else {
+            qDebug() << "QDBusInterface failed:" << qPrintable(QDBusConnection::sessionBus().lastError().message());
+        }
+    }
+
+    if (doLoad) {
+        QString file = selectedSongs.first()->song()->location();
+        QDBusReply<void> reply = iface.call("slotLoadToDeck", file, deckNumber);
+        if (reply.isValid()) {
+            qDebug() << "Call to slotLoadToDeck succeeded";
+        } else {
+            qDebug() << "Call to slotLoadToDeck failed:" << qPrintable(reply.error().message());
+        }
+    }
+}
+
 
 /// user clicked on a song
 void YammiGui::slotSongChanged() {}
@@ -1375,6 +1435,19 @@ void YammiGui::adjustSongPopup() {
     songPopup->setItemEnabled(Song::PrelistenEnd, enable);
     songPopup->setItemEnabled(Song::CheckConsistency, enable);
     songPopup->setItemEnabled(Song::MoveTo, enable);
+
+    bool isMixRunning = false;
+    getSelectedSongs();
+    if (selectedSongs.count() == 1) {
+        QDBusInterface iface("org.mixxx", "/PlayerManager", "", QDBusConnection::sessionBus());
+        if (iface.isValid()) {
+            isMixRunning = true;
+        } else {
+            qDebug() << "QDBusInterface failed:" << qPrintable(QDBusConnection::sessionBus().lastError().message());
+        }
+    }
+    m_actionLoadInMixxxDeck1->setVisible(isMixRunning);
+    m_actionLoadInMixxxDeck2->setVisible(isMixRunning);
 }
 
 
@@ -3022,6 +3095,14 @@ bool YammiGui::setupActions()
     m_actionStopPrelisten->setIcon(QIcon("icons:stop_prelisten.png"));
     connect(m_actionStopPrelisten, SIGNAL(triggered()), this, SLOT(stopPrelisten()));
 
+    m_actionLoadInMixxxDeck1 = new QAction(tr("Load in Mixxx Deck 1"), this);
+    m_actionLoadInMixxxDeck1->setIcon(QIcon("icons:mixxx-icon.png"));
+    connect(m_actionLoadInMixxxDeck1, SIGNAL(triggered()), this, SLOT(slotLoadInMixxxDeck1()));
+
+    m_actionLoadInMixxxDeck2 = new QAction(tr("Load in Mixxx Deck 2"), this);
+    m_actionLoadInMixxxDeck2->setIcon(QIcon("icons:mixxx-icon.png"));
+    connect(m_actionLoadInMixxxDeck2, SIGNAL(triggered()), this, SLOT(slotLoadInMixxxDeck2()));
+
     m_actionSongInfo = new QAction(tr("Song Info ..."), this);
     m_actionSongInfo->setShortcut(QKeySequence(Qt::Key_I));
     m_actionSongInfo->setIcon(style->standardIcon(QStyle::QStyle::SP_FileDialogDetailedView));
@@ -3210,6 +3291,8 @@ void YammiGui::createSongPopup() {
     songPopup->addAction(m_actionPlayNow);
     songPopup->addAction(m_actionDequeueSong);
     songPopup->addAction(m_actionSongInfo);
+    songPopup->addAction(m_actionLoadInMixxxDeck1);
+    songPopup->addAction(m_actionLoadInMixxxDeck2);
 
     subMenu = songPopup->addMenu(tr("Prelisten"));
     subMenu->addAction(m_actionPrelistenStart);
