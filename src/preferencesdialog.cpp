@@ -60,8 +60,8 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, const char *name, bool mod
     LineEditSearchThreshold->setText(QString("%1").arg(config->searchThreshold));
     LineEditPlayqueueTemplate->setText(config->playqueueTemplate);
 
-    // artsplayer specific
-    RadioButtonArtsPlayer->setChecked(config->mediaPlayer==config->MEDIA_PLAYER_ARTSPLAYER);
+    RadioButtonXineEngine->setChecked(config->mediaPlayer == config->MEDIA_PLAYER_XINEENGINE);
+    RadioButtonArtsPlayer->setChecked(config->mediaPlayer == config->MEDIA_PLAYER_ARTSPLAYER);
     
     for(int i=0; i<Song::getMaxSongAction(); i++) {
         ComboBoxDoubleClickAction->insertItem(Song::getSongAction(i));
@@ -190,8 +190,10 @@ void PreferencesDialog::myAccept() {
     config->searchThreshold=atoi(LineEditSearchThreshold->text());
     config->playqueueTemplate = LineEditPlayqueueTemplate->text();
     
-    if(RadioButtonArtsPlayer->isChecked()) {
-        config->mediaPlayer=config->MEDIA_PLAYER_ARTSPLAYER;
+    if (RadioButtonXineEngine->isChecked()) {
+        config->mediaPlayer = config->MEDIA_PLAYER_XINEENGINE;
+    } else if (RadioButtonArtsPlayer->isChecked()) {
+        config->mediaPlayer = config->MEDIA_PLAYER_ARTSPLAYER;
     }
 
     // plugins

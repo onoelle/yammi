@@ -35,7 +35,8 @@ class Prefs {
 public:
     // constants
     static const int MEDIA_PLAYER_DUMMY = 0;
-    static const int MEDIA_PLAYER_ARTSPLAYER = 1;
+    static const int MEDIA_PLAYER_XINEENGINE = 1;
+    static const int MEDIA_PLAYER_ARTSPLAYER = 2;
     static const int GUESSING_MODE_SIMPLE = 0;
     static const int GUESSING_MODE_ADVANCED = 1;
 

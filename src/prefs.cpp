@@ -37,12 +37,12 @@ Prefs::~Prefs() {}
 
 void Prefs::setDefaultValues(void) {
     // general
-    mediaPlayer = MEDIA_PLAYER_ARTSPLAYER;
+    mediaPlayer = MEDIA_PLAYER_XINEENGINE;
     yammiVersion = VERSION;
     databaseDir = KGlobal::dirs()->findResourceDir("appdata","songdb.xml");
     trashDir = QDir::homeDirPath() + "/Desktop/Trash";
     scanDir = "/mp3/inbox/";
-    scanPattern = "*.mp3 *.ogg *.wav";
+    scanPattern = "*.mp3 *.ogg *.wav *.wma *.m4a *.flac";
     followSymLinks = false;
     guessingMode = GUESSING_MODE_SIMPLE;
 

@@ -98,6 +98,7 @@
 #include "mediaplayer.h"
 #include "dummyplayer.h"
 #include "artsplayer.h"
+#include "xine-engine.h"
 
 static QString columnName[] = { i18n("Artist"), i18n("Title"), i18n("Album"), i18n("Length"),
                                 i18n("Year"), i18n("TrackNr"), i18n("Genre"), i18n("AddedTo"), i18n("Bitrate"),
@@ -3377,6 +3378,9 @@ void YammiGui::toggleColumnVisibility(int column) {
 void YammiGui::loadMediaPlayer( ) {
     player = 0;
     switch( config()->mediaPlayer ) {
+    case Prefs::MEDIA_PLAYER_XINEENGINE:
+        player = new Yammi::XineEngine(model);
+        break;
     case Prefs::MEDIA_PLAYER_ARTSPLAYER:
         player = new Yammi::ArtsPlayer( model );
         break;

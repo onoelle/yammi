@@ -780,11 +780,25 @@
                         <property name="title">
                             <string>Media Player</string>
                         </property>
-                        <grid>
+                        <hbox>
                             <property name="name">
                                 <cstring>unnamed</cstring>
                             </property>
-                            <widget class="QRadioButton" row="1" column="1">
+                            <widget class="QRadioButton">
+                                <property name="name">
+                                    <cstring>RadioButtonXineEngine</cstring>
+                                </property>
+                                <property name="text">
+                                    <string>XineEngine</string>
+                                </property>
+                                <property name="checked">
+                                    <bool>false</bool>
+                                </property>
+                                <property name="buttonGroupId">
+                                    <number>1</number>
+                                </property>
+                            </widget>
+                            <widget class="QRadioButton">
                                 <property name="name">
                                     <cstring>RadioButtonArtsPlayer</cstring>
                                 </property>
@@ -798,28 +812,7 @@
                                     <number>1</number>
                                 </property>
                             </widget>
-                        </grid>
-                    </widget>
-                    <widget class="QGroupBox" row="2" column="0">
-                        <property name="name">
-                            <cstring>GroupBoxArtsPlayer</cstring>
-                        </property>
-                        <property name="title">
-                            <string>ArtsPlayer settings</string>
-                        </property>
-                        <grid>
-                            <property name="name">
-                                <cstring>unnamed</cstring>
-                            </property>
-                            <widget class="QLabel" row="0" column="0">
-                                <property name="name">
-                                    <cstring>textLabel1_2</cstring>
-                                </property>
-                                <property name="text">
-                                    <string>- no settings yet -</string>
-                                </property>
-                            </widget>
-                        </grid>
+                        </hbox>
                     </widget>
                 </grid>
             </widget>

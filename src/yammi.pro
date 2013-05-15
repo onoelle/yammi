@@ -12,7 +12,7 @@ QMAKE_CXX=ccache g++
 
 INCLUDEPATH += /usr/include/kde
 
-LIBS += -lartskde -lkhtml -lkdeui -L/usr/lib -ltag
+LIBS += -lartskde -lkhtml -lkdeui -L/usr/lib -ltag -lxine
 
 MOC_DIR = .moc
 OBJECTS_DIR = .obj
@@ -52,6 +52,7 @@ SOURCES = \
     updatedatabasedialog.cpp \
     updatedatabasemediadialog.cpp \
     util.cpp \
+    xine-engine.cpp \
     yammigui.cpp \
     yammimodel.cpp
 
@@ -89,6 +90,7 @@ HEADERS = \
     updatedatabasedialog.h \
     updatedatabasemediadialog.h \
     util.h \
+    xine-engine.h \
     yammidcopiface.h \
     yammigui.h \
     yammiicons.h \
