@@ -21,8 +21,8 @@
 #include <Q3HBox>
 #include <Q3Header>
 #include <Q3ListView>
-#include <QMenu>
 #include <QProgressDialog>
+#include <QMenu>
 #include <QTextEdit>
 #include <Q3ValueList>
 #include <QActionGroup>
@@ -35,6 +35,7 @@
 #include <QMessageBox>
 #include <QMenuBar>
 #include <QPixmap>
+#include <QProcess>
 #include <QPushButton>
 #include <QResource>
 #include <QSettings>
@@ -99,6 +100,8 @@ YammiGui::YammiGui() : QMainWindow( ) {
     //QDir::addSearchPath("icons", "icons");
 
     setWindowIcon(QIcon("icons:yammi.png"));
+
+    prelistenProcess = new QProcess;
 
     // initialize some fields
     validState = false;
@@ -255,6 +258,7 @@ void YammiGui::readOptions() {
     qFindChild<QAction*>(this, "MainToolbar")->setChecked(!qFindChild<QToolBar*>(this, "MainToolbar")->isHidden());
     qFindChild<QAction*>(this, "MediaPlayerToolbar")->setChecked(!qFindChild<QToolBar*>(this, "MediaPlayerToolbar")->isHidden());
     qFindChild<QAction*>(this, "SongActionsToolbar")->setChecked(!qFindChild<QToolBar*>(this, "SongActionsToolbar")->isHidden());
+    qFindChild<QAction*>(this, "PrelistenToolbar")->setChecked(!qFindChild<QToolBar*>(this, "PrelistenToolbar")->isHidden());
 
     cfg.beginGroup("General Options");
 
@@ -361,6 +365,7 @@ YammiGui::~YammiGui() {
     searchThread->wait();
     delete searchThread;
     searchThread = NULL;
+    delete prelistenProcess;
 }
 
 
@@ -1368,6 +1373,9 @@ void YammiGui::adjustSongPopup() {
 
     songPopup->setItemEnabled(Song::PlayNow, enable);
     songPopup->setItemEnabled(Song::Dequeue, enable);
+    songPopup->setItemEnabled(Song::PrelistenStart, enable);
+    songPopup->setItemEnabled(Song::PrelistenMiddle, enable);
+    songPopup->setItemEnabled(Song::PrelistenEnd, enable);
     songPopup->setItemEnabled(Song::CheckConsistency, enable);
     songPopup->setItemEnabled(Song::MoveTo, enable);
 }
@@ -1675,6 +1683,19 @@ void YammiGui::forSelectionEnqueueAsNext( ) {
     folderActual->correctOrder();
     player->syncYammi2Player();
     folderContentChanged(folderActual);
+}
+
+
+void YammiGui::forSelectionPrelisten(int where ) {
+    getSelectedSongs();
+    int count = selectedSongs.count();
+    if(count < 1) {
+        return;
+    }
+    for(Song* s = selectedSongs.firstSong(); s; s=selectedSongs.nextSong()) {
+        preListen(s, where);
+        break;
+    }
 }
 
 
@@ -2079,6 +2100,15 @@ void YammiGui::forSelection(int action) {
         break;
     case Song::SongInfo:
         forSelectionSongInfo();
+        break;
+    case Song::PrelistenStart:
+        forSelectionPrelistenStart();
+        break;
+    case Song::PrelistenMiddle:
+        forSelectionPrelistenMiddle();
+        break;
+    case Song::PrelistenEnd:
+        forSelectionPrelistenEnd();
         break;
     case Song::Delete:
         forSelectionDelete();
@@ -2491,6 +2521,89 @@ void YammiGui::saveDatabase() {
 }
 
 
+/**
+ * stops playback on headphone
+ */
+void YammiGui::stopPrelisten() {
+    if(prelistenProcess->state() == QProcess::NotRunning) {
+        qDebug() << "looks like no prelisten process running...";
+        return;
+    }
+    prelistenProcess->kill();
+    /* disabled - probably with a newer qt version
+    bool result = prelistenProcess->kill(9);
+    if(!result) {
+        qWarning() << "could not stop prelisten process!\n";
+    }
+    */
+}
+
+/**
+ * Replace skipXYZ placeholders with computed values
+ */
+QString YammiGui::replacePrelistenSkip(QString input, int lengthInSeconds, int skipTo)
+{
+    int skipSeconds = lengthInSeconds * skipTo / 100;
+    int skipMilliSeconds = skipSeconds * 1000;
+    int skipFrames = skipSeconds * 38;
+//    int skipSamples = skipSeconds * 441;
+
+    input.replace(QRegExp("\\{skipSeconds\\}"), QString("%1").arg(skipSeconds));
+    input.replace(QRegExp("\\{skipMilliSeconds\\}"), QString("%1").arg(skipMilliSeconds));
+    input.replace(QRegExp("\\{skipFrames\\}"), QString("%1").arg(skipFrames));
+//    input.replace(QRegExp("\\{skipSamples\\}"), QString("%1").arg(skipSamples));
+    return input;
+}
+    
+/**
+ * sends the song to headphones
+ * skipTo: 0 = beginning of song, 100 = end
+ */
+void YammiGui::preListen(Song* s, int skipTo) {
+    // first, kill any previous prelisten process
+    stopPrelisten();
+    
+    // now play song via configured command line tools
+    QString prelistenCmd;
+    if(s->filename.right(3).upper()=="MP3") {
+        prelistenCmd = config()->prelistenMp3Command;
+    }
+    else if(s->filename.right(3).upper()=="OGG") {
+        prelistenCmd = config()->prelistenOggCommand;
+    }
+    else if(s->filename.right(3).upper()=="WAV") {
+        prelistenCmd = config()->prelistenWavCommand;
+    }
+    else if(s->filename.right(4).upper()=="FLAC") {
+        prelistenCmd = config()->prelistenFlacCommand;
+    }
+    else {
+        prelistenCmd = config()->prelistenOtherCommand;
+    }
+
+    if(prelistenCmd == "") {
+        qDebug() << "no prelistening configured for this file type: " << s->filename;
+        return;
+    }
+    
+    if (prelistenProcess->state() != QProcess::NotRunning) {
+        qDebug() << "waiting for prelisten process to die...";
+        prelistenProcess->kill();
+    }
+
+    // prepare command
+    prelistenCmd = s->replacePlaceholders(prelistenCmd, 0);
+    prelistenCmd = replacePrelistenSkip(prelistenCmd, s->length, skipTo);        
+
+    //prelistenProcess->setUseShell(true);
+    QStringList argList = QStringList::split( QChar('|'), prelistenCmd );
+    QString program = argList[0];
+    argList.removeFirst();
+
+    qDebug() << "program=" << program << "argList=" << argList;
+    prelistenProcess->start(program, argList);
+}
+
 void YammiGui::updateSongDatabaseHarddisk() {
     UpdateDatabaseDialog d(this, config());
     // show dialog
@@ -2788,6 +2901,11 @@ bool YammiGui::setupActions()
     m_actionToggleSongActionsToolbar->setName("SongActionsToolbar");
     m_actionGroupToggleToolbar->addAction(m_actionToggleSongActionsToolbar);
 
+    m_actionTogglePrelistenToolbar = new QAction(tr("Prelisten"), this);
+    m_actionTogglePrelistenToolbar->setCheckable(true);
+    m_actionTogglePrelistenToolbar->setName("PrelistenToolbar");
+    m_actionGroupToggleToolbar->addAction(m_actionTogglePrelistenToolbar);
+
     m_actionGroupColumnVisibility = new QActionGroup(this);
     m_actionGroupColumnVisibility->setExclusive(false);
     connect(m_actionGroupColumnVisibility, SIGNAL(triggered(QAction*)), this, SLOT(toggleColumnVisibility(QAction*)));
@@ -2886,6 +3004,26 @@ bool YammiGui::setupActions()
     m_actionDequeueSong->setShortcut(QKeySequence(Qt::Key_F8));
     m_actionDequeueSong->setIcon(style->standardIcon(QStyle::QStyle::SP_DialogCancelButton));
     connect(m_actionDequeueSong, SIGNAL(triggered()), this, SLOT(forSelectionDequeue()));
+
+    m_actionPrelistenStart = new QAction(tr("Prelisten Start"), this);
+    m_actionPrelistenStart->setShortcut(QKeySequence(Qt::Key_F9));
+    m_actionPrelistenStart->setIcon(QIcon("icons:prelisten_start.png"));
+    connect(m_actionPrelistenStart, SIGNAL(triggered()), this, SLOT(forSelectionPrelistenStart()));
+
+    m_actionPrelistenMiddle = new QAction(tr("Prelisten Middle"), this);
+    m_actionPrelistenMiddle->setShortcut(QKeySequence(Qt::Key_F10));
+    m_actionPrelistenMiddle->setIcon(QIcon("icons:prelisten_middle.png"));
+    connect(m_actionPrelistenMiddle, SIGNAL(triggered()), this, SLOT(forSelectionPrelistenMiddle()));
+
+    m_actionPrelistenEnd = new QAction(tr("Prelisten End"), this);
+    m_actionPrelistenEnd->setShortcut(QKeySequence(Qt::Key_F11));
+    m_actionPrelistenEnd->setIcon(QIcon("icons:prelisten_end.png"));
+    connect(m_actionPrelistenEnd, SIGNAL(triggered()), this, SLOT(forSelectionPrelistenEnd()));
+
+    m_actionStopPrelisten = new QAction(tr("Stop Prelisten"), this);
+    m_actionStopPrelisten->setShortcut(QKeySequence(Qt::Key_F12));
+    m_actionStopPrelisten->setIcon(QIcon("icons:stop_prelisten.png"));
+    connect(m_actionStopPrelisten, SIGNAL(triggered()), this, SLOT(stopPrelisten()));
 
     m_actionSongInfo = new QAction(tr("Song Info ..."), this);
     m_actionSongInfo->setShortcut(QKeySequence(Qt::Key_I));
@@ -3039,6 +3177,14 @@ void YammiGui::createToolbars()
     songActionsToolBar->addAction(m_actionToFromPlaylist);
     songActionsToolBar->addAction(m_actionDequeueSong);
     songActionsToolBar->addAction(m_actionSongInfo);
+
+    QToolBar* prelistenToolBar = new QToolBar(this, "PrelistenToolbar");
+    prelistenToolBar->setCaption("Prelisten");
+    addToolBar(prelistenToolBar);
+    prelistenToolBar->addAction(m_actionPrelistenStart);
+    prelistenToolBar->addAction(m_actionPrelistenMiddle);
+    prelistenToolBar->addAction(m_actionPrelistenEnd);
+    prelistenToolBar->addAction(m_actionStopPrelisten);
 }
 
 
@@ -3067,6 +3213,11 @@ void YammiGui::createSongPopup() {
     songPopup->addAction(m_actionPlayNow);
     songPopup->addAction(m_actionDequeueSong);
     songPopup->addAction(m_actionSongInfo);
+
+    subMenu = songPopup->addMenu(tr("Prelisten"));
+    subMenu->addAction(m_actionPrelistenStart);
+    subMenu->addAction(m_actionPrelistenMiddle);
+    subMenu->addAction(m_actionPrelistenEnd);
 
     subMenu = songPopup->addMenu(tr("Go to folder..."));
     subMenu->addAction(m_actionGotoFolderArtist);

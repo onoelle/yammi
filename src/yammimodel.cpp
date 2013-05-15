@@ -18,6 +18,7 @@
 #include <QProgressDialog>
 #include <QCheckBox>
 #include <QDebug>
+#include <QDir>
 #include <QDomDocument>
 #include <QMessageBox>
 #include <QTextStream>

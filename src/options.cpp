@@ -1,6 +1,6 @@
 
-#include <QString>
 #include <QDir>
+#include <QString>
 
 #include "options.h"
 

@@ -22,6 +22,8 @@
 #include <taglib/tstring.h>
 
 #include <QDebug>
+#include <QDir>
+#include <QFileInfo>
 
 #include "options.h"
 #include "song.h"
@@ -794,6 +796,7 @@ void Song::moveTo(QString dir) {
 
 QString Song::getSongAction(int index) {
     const char* songAction[] = {"None", "Enqueue", "EnqueueAsNext", "PlayNow", "SongInfo",
+                                "PrelistenStart", "PrelistenMiddle", "PrelistenEnd",
                                 "Delete", "DeleteFile", "DeleteEntry",
                                 "CheckConsistency", "MoveTo",
                                 "Dequeue"
@@ -853,6 +856,7 @@ QString Song::replacePlaceholders(QString input, int index) {
     }
 
     // replace
+    input.replace(QRegExp("'\\{absoluteFilename\\}'"), location()); // With the QProcess in Qt4 the '' would be given to the program - which would therefore not find the file.
     input.replace(QRegExp("\\{absoluteFilename\\}"), location());
     input.replace(QRegExp("\\{filename\\}"), filename);
     input.replace(QRegExp("\\{filenameWithoutSuffix\\}"), filenameWithoutSuffix);

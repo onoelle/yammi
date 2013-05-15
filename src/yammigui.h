@@ -20,7 +20,6 @@
 
 #define MAX_COLUMN_NO 15
 
-#include <Q3Process>
 #include <QKeyEvent>
 #include <QMainWindow>
 #include <QTimer>
@@ -36,9 +35,11 @@ class QActionGroup;
 class QMenu;
 class QComboBox;
 class QPushButton;
+class QProcess;
 class QSlider;
 class QSpinBox;
 class QSplitter;
+class QTextEdit;
 
 class YammiModel;
 class MediaPlayer;
@@ -52,7 +53,6 @@ class Song;
 class SearchThread;
 class TrackPositionSlider;
 class Prefs;
-class QTextEdit;
 // -----------------------------------------------------------------
 
 
@@ -188,6 +188,7 @@ private:
     bool m_acceptSearchResults;
 
 public:
+    QString replacePrelistenSkip(QString input, int lengthInSeconds, int skipTo);
     void stopDragging();
     void requestSearchResultsUpdate(MyList* results);
     YammiModel* getModel() {
@@ -219,6 +220,16 @@ public slots:
     // all forSelection...() methods perform an action on a selection of songs
     // see selectionMode for possible selections of song
 
+    void forSelectionPrelistenStart()     {
+        forSelectionPrelisten(0);
+    }
+    void forSelectionPrelistenMiddle()    {
+        forSelectionPrelisten(33);
+    }
+    void forSelectionPrelistenEnd()       {
+        forSelectionPrelisten(95);
+    }
+    void forSelectionPrelisten(int where);
     void forSelectionMove();
     void forSelectionPlugin(int pluginIndex);
     void forSelectionCheckConsistency();
@@ -325,6 +336,7 @@ protected:
 
     QMenu* playListPopup;
     QMenu* songPopup;
+    QMenu* songPrelistenPopup;
     QMenu* songGoToPopup;
     QMenu* songAdvancedPopup;
     QMenu* pluginPopup;
@@ -352,6 +364,7 @@ protected:
     QTimer regularTimer;
     QTimer searchResultsTimer;
     QTimer checkTimer;
+    QProcess* prelistenProcess;
 
     // folders
     Folder* folderAll;
@@ -398,6 +411,8 @@ protected:
     //****************
 protected slots:
     void toggleColumnVisibility(QAction* action);
+    void preListen(Song* s, int skipTo);  ///< sends the song to headphones
+    void stopPrelisten();
     void shufflePlaylist();
     void updateSearchResults();
 
@@ -450,6 +465,7 @@ private:
     QAction* m_actionToggleMainToolbar;
     QAction* m_actionToggleMediaPlayerToolbar;
     QAction* m_actionToggleSongActionsToolbar;
+    QAction* m_actionTogglePrelistenToolbar;
     QActionGroup* m_actionGroupColumnVisibility;
     QAction* m_actionPlayPause;
     QAction* m_actionSkipBackward;
@@ -473,6 +489,10 @@ private:
     QAction* m_actionEnqueueAsNext;
     QAction* m_actionPlayNow;
     QAction* m_actionDequeueSong;
+    QAction* m_actionPrelistenStart;
+    QAction* m_actionPrelistenMiddle;
+    QAction* m_actionPrelistenEnd;
+    QAction* m_actionStopPrelisten;
     QAction* m_actionSongInfo;
     QAction* m_actionGotoFolderArtist;
     QAction* m_actionGotoFolderAlbum;
