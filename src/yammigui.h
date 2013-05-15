@@ -332,7 +332,7 @@ protected:
     QSplitter* centralWidget;
     QSplitter* leftWidget;
 
-    QMenu* playListPopup;
+    QMenu* songCategoryPopup;
     QMenu* songPopup;
     QMenu* songPrelistenPopup;
     QMenu* songGoToPopup;

@@ -880,10 +880,10 @@ void YammiGui::configureKeys() {
  */
 void YammiGui::updateSongPopup() {
     qDebug() << "updating song popup";
-    playListPopup->clear();
-    playListPopup->insertItem(QIcon("icons:newCategory.xpm"), tr("New Category..."), this, SLOT(toCategory(int)), 0, 9999);
+    songCategoryPopup->clear();
+    songCategoryPopup->insertItem(QIcon("icons:newCategory.xpm"), tr("New Category..."), this, SLOT(toCategory(int)), 0, 9999);
     for(int i=0; i<model->categoryNames.count(); i++) {
-        playListPopup->insertItem(QIcon("icons:in.xpm"), model->categoryNames[i], this, SLOT(toCategory(int)), 0, 10000+i);
+        songCategoryPopup->insertItem(QIcon("icons:in.xpm"), model->categoryNames[i], this, SLOT(toCategory(int)), 0, 10000+i);
     }
     pluginPopup->clear();
     for(int i=0; i<config()->pluginMenuEntry.count(); i++) {
@@ -1410,13 +1410,13 @@ void YammiGui::adjustSongPopup() {
         int mode=category->containsSelection(&selectedSongs);
         switch(mode) {
         case 0:
-            playListPopup->changeItem(10000+k, QIcon("icons:notin.xpm"), playListPopup->text(10000+k));
+            songCategoryPopup->changeItem(10000+k, QIcon("icons:notin.xpm"), songCategoryPopup->text(10000+k));
             break;
         case 1:
-            playListPopup->changeItem(10000+k, QIcon("icons:some_in.xpm"), playListPopup->text(10000+k));
+            songCategoryPopup->changeItem(10000+k, QIcon("icons:some_in.xpm"), songCategoryPopup->text(10000+k));
             break;
         case 2:
-            playListPopup->changeItem(10000+k, QIcon("icons:in.xpm"), playListPopup->text(10000+k));
+            songCategoryPopup->changeItem(10000+k, QIcon("icons:in.xpm"), songCategoryPopup->text(10000+k));
             break;
         }
     }
@@ -3316,8 +3316,8 @@ void YammiGui::createSongPopup() {
     subMenu->addAction(m_actionDeleteSong);
     subMenu->addAction(m_actionMoveFiles);
 
-    playListPopup = new QMenu(songPopup);
-    songPopup->insertItem( tr("Insert Into/Remove From..."), playListPopup, -1, -1);
+    songCategoryPopup = new QMenu(songPopup);
+    songPopup->insertItem( tr("Insert Into/Remove From..."), songCategoryPopup, -1, -1);
     pluginPopup = new QMenu(songPopup);
     songPopup->insertItem( tr("Plugins..."), pluginPopup, -1, -1);
     // populate the submenus
