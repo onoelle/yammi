@@ -32,6 +32,7 @@ class Q3ListViewItem;
 class QActionGroup;
 class QMenu;
 class QKeyEvent;
+class QLineEdit;
 class QPushButton;
 class QProcess;
 class QSlider;
@@ -43,7 +44,6 @@ class YammiModel;
 class MediaPlayer;
 class MyDateTime;
 class MyListView;
-class LineEditShift;
 class Folder;
 class FolderGroups;
 class FolderSorted;
@@ -181,7 +181,7 @@ private:
 private:
     bool validState;
     TrackPositionSlider* m_seekSlider;
-    LineEditShift* m_searchField;
+    QLineEdit* m_searchField;
     bool searchResultsUpdateNeeded;
     bool m_acceptSearchResults;
 

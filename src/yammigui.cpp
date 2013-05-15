@@ -53,7 +53,6 @@
 #include "foldersorted.h"
 #include "fuzzsrch.h"
 #include "dummyplayer.h"
-#include "lineeditshift.h"
 #include "mediaplayer.h"
 #include "mylistview.h"
 #include "prefs.h"
@@ -3136,7 +3135,7 @@ void YammiGui::createToolbars()
     //search
     Q3HBox *w = new Q3HBox();
     new QLabel(tr("Search:"),w);
-    m_searchField = new LineEditShift(w);
+    m_searchField = new QLineEdit(w);
     m_searchField->setFixedWidth(175);
     QToolTip::add(m_searchField, tr("Fuzzy search (Ctrl-F)"));
     connect( m_searchField, SIGNAL(textChanged(const QString&)), SLOT(searchFieldChanged(const QString&)));

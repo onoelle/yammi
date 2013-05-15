@@ -21,7 +21,6 @@ SOURCES = \
     foldergroups.cpp \
     foldersorted.cpp \
     fuzzsrch.cpp \
-    lineeditshift.cpp \
     main.cpp \
     mediaplayer.cpp \
     mydatetime.cpp \
@@ -55,7 +54,6 @@ HEADERS = \
     folder.h \
     foldersorted.h \
     fuzzsrch.h \
-    lineeditshift.h \
     mediaplayer.h \
     mydatetime.h \
     mylist.h \
