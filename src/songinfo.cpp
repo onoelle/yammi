@@ -15,13 +15,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QCheckBox>
-#include <QComboBox>
-#include <QLabel>
-#include <QLineEdit>
-#include <QPushButton>
-
 #include "songinfo.h"
+
 #include "song.h"
 #include "mylist.h"
 

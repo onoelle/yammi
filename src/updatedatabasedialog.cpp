@@ -15,15 +15,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <Q3FileDialog>
-#include <QLineEdit>
-#include <QCheckBox>
-#include <QPushButton>
-
 #include "updatedatabasedialog.h"
 
-#include "prefs.h"
+#include <Q3FileDialog>
 
+#include "prefs.h"
 
 
 UpdateDatabaseDialog::UpdateDatabaseDialog(QWidget *parent, Prefs* config )

@@ -23,7 +23,6 @@
 #include <QString>
 
 #include "folder.h"
-#include "song.h"
 
 
 /**

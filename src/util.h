@@ -22,6 +22,7 @@
 
 class QString;
 
+
 /**
  @author Oliver Nölle
  * Some static utility methods.
@@ -31,5 +32,8 @@ public:
 	static void deleteDirectoryIfEmpty(QString path, QString noDeleteDir);
 	static bool ensurePathExists(QString path);	
 };
+
+bool moveFile(const QString &oldName, const QString &newName);
+bool copyFile(const QString &oldFilePath, const QString &newFilePath);
 
 #endif

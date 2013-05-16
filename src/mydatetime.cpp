@@ -15,8 +15,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <stdio.h>
 #include "mydatetime.h"
+
+#include <stdio.h>
+
 
 MyDateTime::MyDateTime()
 {

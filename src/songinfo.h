@@ -20,8 +20,9 @@
 
 #include <SongInfoDialog.h>
 
-class Song;
 class MyList;
+class Song;
+
 
 /**
   *@author Brian O.Nölle

@@ -28,6 +28,9 @@ extern "C"
 
 #include "mediaplayer.h"
 
+class Song;
+
+
 namespace Yammi {
 
     class XineEngine : public MediaPlayer {

@@ -15,13 +15,15 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "songlistitem.h"
+
 #include <taglib/id3v1genres.h>
 
-#include "songlistitem.h"
-#include "yammigui.h"
-#include "yammimodel.h"
 #include "folder.h"
 #include "foldersorted.h"
+#include "yammigui.h"
+#include "yammimodel.h"
+
 
 extern YammiGui* gYammiGui;
 
@@ -243,4 +245,9 @@ QString SongListItem::key(int visibleColumn, bool) const
         return s->path+s->filename;
     }
     return text(column);
+}
+
+Song* SongListItem::song() const
+{
+    return songEntry->song();
 }

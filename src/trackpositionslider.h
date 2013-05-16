@@ -22,10 +22,11 @@
 
 #include <QSlider>
 
-class QWheelEvent;
 class QMouseEvent;
+class QWheelEvent;
 
 class Song;
+
 
 /**
  *@author Oliver Nölle

@@ -15,21 +15,16 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <Q3FileDialog>
-#include <Q3TextEdit>
-#include <Q3ValueList>
-#include <QCheckBox>
-#include <QComboBox>
-#include <QInputDialog>
-#include <QMessageBox>
-#include <QPushButton>
-#include <QSpinBox>
-#include <QRadioButton>
-
-#include "options.h"
 #include "preferencesdialog.h"
 
+#include <Q3FileDialog>
+#include <QInputDialog>
+#include <QMessageBox>
+
+#include "ConsistencyCheckParameter.h"
+#include "prefs.h"
 #include "song.h"
+
 
 PreferencesDialog::PreferencesDialog(QWidget *parent, const char *name, bool modal, Prefs* config )
 : Preferences(parent, name, modal) {
@@ -45,8 +40,8 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, const char *name, bool mod
     CheckBoxTagsConsistent->setChecked(config->tagsConsistent);
     CheckBoxFilenamesConsistent->setChecked(config->filenamesConsistent);
     CheckBoxDirectoriesConsistent->setChecked(config->directoriesConsistent);
-    LineEditFilenamePattern->setText(config->consistencyPara.filenamePattern);
-    LineEditDirectoriesPattern->setText(config->consistencyPara.directoryPattern);
+    LineEditFilenamePattern->setText(config->consistencyPara->filenamePattern);
+    LineEditDirectoriesPattern->setText(config->consistencyPara->directoryPattern);
     
     LineEditPrelistenMp3Command->setText(config->prelistenMp3Command);
     LineEditPrelistenOggCommand->setText(config->prelistenOggCommand);
@@ -151,8 +146,8 @@ void PreferencesDialog::myAccept() {
     config->tagsConsistent=CheckBoxTagsConsistent->isChecked();
     config->filenamesConsistent=CheckBoxFilenamesConsistent->isChecked();
     config->directoriesConsistent=CheckBoxDirectoriesConsistent->isChecked();
-    config->consistencyPara.filenamePattern=LineEditFilenamePattern->text();
-    config->consistencyPara.directoryPattern=LineEditDirectoriesPattern->text();
+    config->consistencyPara->filenamePattern=LineEditFilenamePattern->text();
+    config->consistencyPara->directoryPattern=LineEditDirectoriesPattern->text();
     
     if(config->childSafe && !CheckBoxChildSafe->isChecked()) {
         bool ok;

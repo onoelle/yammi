@@ -1,21 +1,18 @@
 
-#include <QProgressDialog>
-#include <Q3TextEdit>
-#include <QCheckBox>
-#include <QComboBox>
-#include <QLabel>
-#include <QLineEdit>
-#include <QMessageBox>
-#include <QPushButton>
-
 #include "ConsistencyCheckDialog.h"
-#include "ConsistencyCheckParameter.h"
+
+#include <QMessageBox>
+#include <QProgressDialog>
+
 #include "applytoalldialog.h"
+#include "ConsistencyCheckParameter.h"
 #include "mylist.h"
-#include "yammimodel.h"
+#include "prefs.h"
+#include "song.h"
 #include "songentrystring.h"
 #include "util.h"
 #include "yammigui.h"
+#include "yammimodel.h"
 
 
 extern YammiGui* gYammiGui;

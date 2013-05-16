@@ -15,6 +15,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "song.h"
+
 #include <taglib/audioproperties.h>
 #include <taglib/fileref.h>
 #include <taglib/id3v1genres.h>    //used to load genre list
@@ -25,12 +27,10 @@
 #include <QDir>
 #include <QFileInfo>
 
-#include "options.h"
-#include "song.h"
-
-#include "yammigui.h"
+#include "ConsistencyCheckParameter.h"
 #include "prefs.h"
 #include "util.h"
+#include "yammigui.h"
 
 using namespace std;
 
@@ -698,7 +698,7 @@ QString Song::capitalize(QString str) {
  * Takes care of special characters not allowed in filenames.
  */
 QString Song::constructFilename() {
-    QString pattern=gYammiGui->config()->consistencyPara.filenamePattern;
+    QString pattern=gYammiGui->config()->consistencyPara->filenamePattern;
     QString filename=replacePlaceholders(pattern, 0);
     return makeValidFilename(filename, true);
 }
@@ -709,7 +709,7 @@ QString Song::constructFilename() {
  * Returns the path without trailing slash.
  */
 QString Song::constructPath() {
-    QString pattern=gYammiGui->config()->consistencyPara.directoryPattern;
+    QString pattern=gYammiGui->config()->consistencyPara->directoryPattern;
     QString path=replacePlaceholders(pattern, 0);
     // now remove "empty navigation steps" such as "Madonna//Holiday.mp3" (because no album given)
     while(path.contains("//")) {

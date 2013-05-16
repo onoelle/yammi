@@ -18,9 +18,10 @@
 #ifndef DUMMYPLAYER_H
 #define DUMMYPLAYER_H
 
-#include <mediaplayer.h>
+#include "mediaplayer.h"
 
-/**a dummy player class with no behaviour
+
+/** a dummy player class with no behaviour
   *@author Oliver Nölle
   */
 

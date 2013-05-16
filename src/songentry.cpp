@@ -17,6 +17,7 @@
 
 #include "songentry.h"
 
+
 SongEntry::SongEntry(Song* s)
 {
 	songPtr=s;
@@ -24,4 +25,14 @@ SongEntry::SongEntry(Song* s)
 
 SongEntry::~SongEntry()
 {
+}
+
+QString SongEntry::getKey(int)
+{
+    return QString("");
+}
+
+QString SongEntry::getColumn(int)
+{
+    return QString("");
 }

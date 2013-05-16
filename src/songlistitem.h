@@ -20,8 +20,8 @@
 
 #include <Q3ListViewItem>
 
-#include "song.h"
-#include "songentry.h"
+class Song;
+class SongEntry;
 
 class SongListItem : public Q3ListViewItem
 {
@@ -32,7 +32,7 @@ public:
   virtual void   paintCell( QPainter *p, const QColorGroup &cg, int column, int width, int alignment );
 	int        compare( Q3ListViewItem *i, int col, bool ascending ) const;
 	QString    key(int column, bool ascending) const;
-	Song*      song() const	{ return songEntry->song(); }
+    Song*      song() const;
 
 //protected:
 	SongEntry* songEntry;

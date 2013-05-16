@@ -15,16 +15,17 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "mylistview.h"
+
 #include <Q3Header>
 #include <QEvent>
 #include <QMouseEvent>
 #include <QKeyEvent>
 
-#include "mylistview.h"
-#include "yammigui.h"
-#include "songlistitem.h"
 #include "song.h"
+#include "songlistitem.h"
 #include "folder.h"
+#include "yammigui.h"
 
 
 using namespace std;

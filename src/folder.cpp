@@ -15,9 +15,10 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "folder.h"
+
 #include <QMenu>
 
-#include "folder.h"
 #include "yammigui.h"
 
 extern YammiGui* gYammiGui;

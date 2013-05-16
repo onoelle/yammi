@@ -17,6 +17,9 @@
 
 #include "mediaplayer.h"
 
+#include "yammimodel.h"
+
+
 MediaPlayer::MediaPlayer( YammiModel *yammi )
 {
 	model = yammi;

@@ -22,9 +22,9 @@
 
 #include <QThread>
 
-#include "mylist.h"
-
+class MyList;
 class YammiGui;
+
 
 /**
 @author Oliver Nölle
@@ -44,7 +44,7 @@ protected:
 	QString searchTerm;
 	QString currentSearchTerm;
 	bool searchRunning;
-	MyList searchResults;
+    MyList* searchResults;
 	YammiGui* gYammiGui;
 };
 

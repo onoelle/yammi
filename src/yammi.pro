@@ -27,7 +27,6 @@ SOURCES = \
     mydatetime.cpp \
     mylist.cpp \
     mylistview.cpp \
-    options.cpp \
     preferencesdialog.cpp \
     prefs.cpp \
     searchthread.cpp \
@@ -61,7 +60,6 @@ HEADERS = \
     mydatetime.h \
     mylist.h \
     mylistview.h \
-    options.h \
     preferencesdialog.h \
     prefs.h \
     searchthread.h \

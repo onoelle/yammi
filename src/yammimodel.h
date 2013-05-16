@@ -19,16 +19,17 @@
 #ifndef YAMMIMODEL_H
 #define YAMMIMODEL_H
 
-#include <QObject>
 #include <Q3PtrList>
+#include <QObject>
+#include <QStringList>
 
 #include "mylist.h"
-#include "prefs.h"
-
 
 class QProgressDialog;
+
 class YammiGui;
 class ConsistencyCheckParameter;
+class Prefs;
 
 
 /**
@@ -115,7 +116,7 @@ public slots:
 
 protected:
     YammiGui *m_yammi;
-    Prefs m_config;
+    Prefs* m_config;
 };
 
 #endif

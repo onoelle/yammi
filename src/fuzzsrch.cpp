@@ -7,11 +7,12 @@
 * nur Methodenrümpfe, Klassendeklarationen+Doku in fuzzsrch.h
 */
 
+#include "fuzzsrch.h"
+
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
 
-#include "fuzzsrch.h"
 
 
 /*class BestMatchEntry {

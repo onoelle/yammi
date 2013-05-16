@@ -19,7 +19,9 @@
 #define UPDATEDATABASEDIALOG_H
 
 #include "UpdateDatabaseDialogBase.h"
-#include "prefs.h"
+
+class Prefs;
+
 
 /**
   *@author Oliver Nölle

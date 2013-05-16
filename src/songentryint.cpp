@@ -17,6 +17,7 @@
 
 #include "songentryint.h"
 
+
 SongEntryInt::SongEntryInt(Song* s, int intInfo)
  :SongEntry(s)
 {

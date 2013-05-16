@@ -17,6 +17,7 @@
 
 #include "songentrytimestamp.h"
 
+
 SongEntryTimestamp::SongEntryTimestamp(Song* s, MyDateTime* t)
 	:SongEntry(s)
 {

@@ -21,7 +21,8 @@
 #include <QString>
 
 #include "mydatetime.h"
-#include "options.h"
+
+class Song;
 
 
 /* Wave File header structure */

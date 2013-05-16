@@ -19,7 +19,9 @@
 #define FOLDERSORTED_H
 
 #include "folder.h"
-#include "mylistview.h"
+
+class MyListView;
+
 
 /**
   *@author Oliver Nölle

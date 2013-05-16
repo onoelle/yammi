@@ -15,6 +15,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "yammigui.h"
+
 #include <taglib/id3v1genres.h>
 
 #include <Q3FileDialog>
@@ -27,7 +29,6 @@
 #include <Q3ValueList>
 #include <QActionGroup>
 #include <QCheckBox>
-#include <QComboBox>
 #include <QDebug>
 #include <QInputDialog>
 #include <QKeyEvent>
@@ -45,22 +46,18 @@
 #include <QToolBar>
 #include <QToolTip>
 
-
-#include "yammigui.h"
-#include "searchthread.h"
-
-#include "yammimodel.h"
-
-// dialog includes
-#include "preferencesdialog.h"
-#include "DeleteDialog.h"
-#include "updatedatabasedialog.h"
-#include "ConsistencyCheckDialog.h"
-#include "ApplyToAllBase.h"
-
 #include "ConsistencyCheckParameter.h"
-
-#include "yammimodel.h"
+#include "folder.h"
+#include "foldergroups.h"
+#include "foldercategories.h"
+#include "foldersorted.h"
+#include "fuzzsrch.h"
+#include "dummyplayer.h"
+#include "lineeditshift.h"
+#include "mediaplayer.h"
+#include "mylistview.h"
+#include "prefs.h"
+#include "searchthread.h"
 #include "song.h"
 #include "songentry.h"
 #include "songentryint.h"
@@ -68,19 +65,18 @@
 #include "songentrytimestamp.h"
 #include "songlistitem.h"
 #include "songinfo.h"
-#include "fuzzsrch.h"
-#include "folder.h"
-#include "foldergroups.h"
-#include "foldercategories.h"
-#include "foldersorted.h"
-#include "mylistview.h"
-#include "lineeditshift.h"
 #include "trackpositionslider.h"
 #include "util.h"
-
-#include "mediaplayer.h"
-#include "dummyplayer.h"
 #include "xine-engine.h"
+#include "yammimodel.h"
+
+// dialog includes
+#include "ApplyToAllBase.h"
+#include "ConsistencyCheckDialog.h"
+#include "DeleteDialog.h"
+#include "preferencesdialog.h"
+#include "updatedatabasedialog.h"
+
 
 static QString columnName[] = { QObject::tr("Artist"), QObject::tr("Title"), QObject::tr("Album"),QObject:: tr("Length"),
                                 QObject::tr("Year"), QObject::tr("TrackNr"), QObject::tr("Genre"), QObject::tr("AddedTo"), QObject::tr("Bitrate"),
@@ -91,6 +87,7 @@ extern YammiGui* gYammiGui;
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 YammiGui::YammiGui() : QMainWindow( ) {
+    currentSongStarted = new MyDateTime();
     gYammiGui = this;
     setGeometry(0, 0, 800, 600);
 
@@ -366,6 +363,7 @@ YammiGui::~YammiGui() {
     delete searchThread;
     searchThread = NULL;
     delete prelistenProcess;
+    delete currentSongStarted;
 }
 
 
@@ -485,7 +483,7 @@ void YammiGui::handleLastSong(Song* lastSong) {
         }
     }
     MyDateTime now;
-    SongEntryTimestamp* entry=new SongEntryTimestamp(lastSong, &currentSongStarted);
+    SongEntryTimestamp* entry=new SongEntryTimestamp(lastSong, currentSongStarted);
     lastSong->lastPlayed=entry->timestamp;
     folderSongsPlayed->addEntry(entry);		// append to songsPlayed
 }
@@ -503,7 +501,7 @@ void YammiGui::handleNewSong(Song* newSong) {
     }
     // TODO: take swapped file?
     currentFile=newSong->location();
-    currentSongStarted=currentSongStarted.currentDateTime();
+    *currentSongStarted = currentSongStarted->currentDateTime();
 
     setCaption("Yammi: "+currentSong->displayName());
     m_seekSlider->setupTickmarks(currentSong);
@@ -1635,7 +1633,7 @@ void YammiGui::forAllCheckConsistency() {
 
 void YammiGui::forSelectionCheckConsistency() {
     getSelectedSongs();
-    ConsistencyCheckDialog d(this, &(config()->consistencyPara), &selectedSongs, model);
+    ConsistencyCheckDialog d(this, config()->consistencyPara, &selectedSongs, model);
     d.exec();
     config()->saveConfig();
     folderProblematic->update(model->problematicSongs);
@@ -1988,11 +1986,11 @@ void YammiGui::forSelectionSongInfo( ) {
             }
         }
         
-        if(si.CheckBoxCorrectFilename->isChecked() && s->checkFilename(config()->consistencyPara.ignoreCaseInFilenames)==false) {
+        if(si.CheckBoxCorrectFilename->isChecked() && s->checkFilename(config()->consistencyPara->ignoreCaseInFilenames)==false) {
             s->correctFilename();
             model->allSongsChanged(true);
         }
-        if(si.CheckBoxCorrectPath->isChecked() && s->checkDirectory(config()->consistencyPara.ignoreCaseInFilenames)==false) {
+        if(si.CheckBoxCorrectPath->isChecked() && s->checkDirectory(config()->consistencyPara->ignoreCaseInFilenames)==false) {
             QString pathBefore = s->path;
             s->correctPath();
             Util::deleteDirectoryIfEmpty(pathBefore, config()->scanDir);

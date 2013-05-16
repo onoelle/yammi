@@ -20,8 +20,8 @@
 
 #include <QObject>
 
-#include "mylist.h"
-#include "yammimodel.h"
+class MyList;
+class YammiModel;
 
 
 enum PlayerStatus { STOPPED, PAUSED, PLAYING};

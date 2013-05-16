@@ -18,9 +18,12 @@
 #ifndef SONGENTRY_H
 #define SONGENTRY_H
 
-#include "song.h"
+#include <QString>
 
-/**pointer to song + some additional info
+class Song;
+
+
+/** pointer to song + some additional info
   *@author Oliver Nölle
   */
 
@@ -32,8 +35,8 @@ public:
     Song* song() { return songPtr; };
     virtual int getBase() { return 0; } ;
     virtual int compare (int, SongEntry*) { return 0; } ;
-    virtual QString getKey(int) { return QString(""); } ;
-    virtual QString getColumn(int) { return QString(""); };
+    virtual QString getKey(int);
+    virtual QString getColumn(int);
 protected:
     Song* songPtr;
 };

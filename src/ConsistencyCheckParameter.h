@@ -20,6 +20,7 @@
 
 #include <QString>
 
+
 class ConsistencyCheckParameter {
 public:
     static const int YAMMI2TAGS = 0;

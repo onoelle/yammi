@@ -20,6 +20,9 @@
 
 #include <QLineEdit>
 
+class QKeyEvent;
+
+
 /** Just a wrapper class around QLineEdit which propagates shift key events
  * to gYammiGui.
  */

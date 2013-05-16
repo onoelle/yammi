@@ -19,7 +19,8 @@
  ***************************************************************************/
 
 #include "ConsistencyCheckParameter.h"
- 
+
+
 ConsistencyCheckParameter::ConsistencyCheckParameter()
 {
 	setDefaults();

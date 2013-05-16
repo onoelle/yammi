@@ -20,12 +20,10 @@
 
 #define MAX_COLUMN_NO 15
 
-#include <QKeyEvent>
 #include <QMainWindow>
 #include <QTimer>
 #include <QWaitCondition>
 
-#include "options.h"
 #include "mylist.h"
 
 
@@ -33,7 +31,7 @@ class Q3ListView;
 class Q3ListViewItem;
 class QActionGroup;
 class QMenu;
-class QComboBox;
+class QKeyEvent;
 class QPushButton;
 class QProcess;
 class QSlider;
@@ -43,6 +41,7 @@ class QTextEdit;
 
 class YammiModel;
 class MediaPlayer;
+class MyDateTime;
 class MyListView;
 class LineEditShift;
 class Folder;
@@ -180,7 +179,6 @@ private:
     bool setupActions( );
 
 private:
-//    Prefs m_config;
     bool validState;
     TrackPositionSlider* m_seekSlider;
     LineEditShift* m_searchField;
@@ -295,7 +293,7 @@ public:
     // song that is currently played or 0 if not in database
     Song* currentSong;
     // timestamp when song was started playing
-    MyDateTime currentSongStarted;
+    MyDateTime* currentSongStarted;
     bool controlPressed;
     bool shiftPressed;
     FolderSorted* folderActual;

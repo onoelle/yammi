@@ -15,24 +15,28 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "prefs.h"
+
 #include <QDebug>
 #include <QDesktopServices>
 #include <QDir>
 #include <QSettings>
 
-#include "prefs.h"
-#include "options.h"
 #include "config.h"
-
-
+#include "ConsistencyCheckParameter.h"
 
 
 /// sets preferences to the default values
-Prefs::Prefs() {
+Prefs::Prefs()
+{
+    consistencyPara = new ConsistencyCheckParameter();
     setDefaultValues();
 }
 
-Prefs::~Prefs() {}
+Prefs::~Prefs()
+{
+    delete consistencyPara;
+}
 
 void Prefs::setDefaultValues(void) {
     // general
@@ -64,7 +68,7 @@ void Prefs::setDefaultValues(void) {
     lazyGrouping = false;
     searchThreshold = 20;
 
-    consistencyPara.setDefaults();
+    consistencyPara->setDefaults();
     
     playqueueTemplate = "{scope:none}\
 <html>\
@@ -147,21 +151,21 @@ bool Prefs::loadConfig( ) {
     tagsConsistent          = cfg.readBoolEntry("tagsConsistent", tagsConsistent);
     filenamesConsistent	    = cfg.readBoolEntry("filenamesConsistent", filenamesConsistent);
     directoriesConsistent	= cfg.readBoolEntry("directoriesConsistent", directoriesConsistent);
-    consistencyPara.checkDirectories	= cfg.readBoolEntry("checkDirectories", consistencyPara.checkDirectories);
-    consistencyPara.checkDoubles		= cfg.readBoolEntry("checkDoubles", consistencyPara.checkDoubles);
-    consistencyPara.ignoreCaseInFilenames = cfg.readBoolEntry("ignoreCaseInFilenames", consistencyPara.ignoreCaseInFilenames);
-    consistencyPara.checkFilenames		= cfg.readBoolEntry("checkFilenames", consistencyPara.checkFilenames);
-    consistencyPara.checkForExistence	= cfg.readBoolEntry("checkForExistence", consistencyPara.checkForExistence);
-    consistencyPara.checkTags			= cfg.readBoolEntry("checkTags", consistencyPara.checkTags);
-    consistencyPara.correctDirectories	= cfg.readBoolEntry("correctDirectories", consistencyPara.correctDirectories);
-    consistencyPara.correctFilenames	= cfg.readBoolEntry("correctFilenames", consistencyPara.correctFilenames);
-    consistencyPara.correctTags			= cfg.readBoolEntry("correctTags", consistencyPara.correctTags);
-    consistencyPara.correctTagsDirection= cfg.readBoolEntry("correctTagsDirection", consistencyPara.correctTagsDirection);
-    consistencyPara.deleteEmptyDirectories= cfg.readBoolEntry("deleteEmptyDirectories", consistencyPara.deleteEmptyDirectories);
-    consistencyPara.directoryPattern	= cfg.readEntry("directoryPattern", consistencyPara.directoryPattern);
-    consistencyPara.filenamePattern		= cfg.readEntry("filenamePattern", consistencyPara.filenamePattern);
-    consistencyPara.ignoreCaseInFilenames= cfg.readBoolEntry("ignoreCaseInFilenames", consistencyPara.ignoreCaseInFilenames);
-    consistencyPara.updateNonExisting= cfg.readBoolEntry("updateNonExisting", consistencyPara.updateNonExisting);
+    consistencyPara->checkDirectories	= cfg.readBoolEntry("checkDirectories", consistencyPara->checkDirectories);
+    consistencyPara->checkDoubles		= cfg.readBoolEntry("checkDoubles", consistencyPara->checkDoubles);
+    consistencyPara->ignoreCaseInFilenames = cfg.readBoolEntry("ignoreCaseInFilenames", consistencyPara->ignoreCaseInFilenames);
+    consistencyPara->checkFilenames		= cfg.readBoolEntry("checkFilenames", consistencyPara->checkFilenames);
+    consistencyPara->checkForExistence	= cfg.readBoolEntry("checkForExistence", consistencyPara->checkForExistence);
+    consistencyPara->checkTags			= cfg.readBoolEntry("checkTags", consistencyPara->checkTags);
+    consistencyPara->correctDirectories	= cfg.readBoolEntry("correctDirectories", consistencyPara->correctDirectories);
+    consistencyPara->correctFilenames	= cfg.readBoolEntry("correctFilenames", consistencyPara->correctFilenames);
+    consistencyPara->correctTags			= cfg.readBoolEntry("correctTags", consistencyPara->correctTags);
+    consistencyPara->correctTagsDirection= cfg.readBoolEntry("correctTagsDirection", consistencyPara->correctTagsDirection);
+    consistencyPara->deleteEmptyDirectories= cfg.readBoolEntry("deleteEmptyDirectories", consistencyPara->deleteEmptyDirectories);
+    consistencyPara->directoryPattern	= cfg.readEntry("directoryPattern", consistencyPara->directoryPattern);
+    consistencyPara->filenamePattern		= cfg.readEntry("filenamePattern", consistencyPara->filenamePattern);
+    consistencyPara->ignoreCaseInFilenames= cfg.readBoolEntry("ignoreCaseInFilenames", consistencyPara->ignoreCaseInFilenames);
+    consistencyPara->updateNonExisting= cfg.readBoolEntry("updateNonExisting", consistencyPara->updateNonExisting);
     cfg.endGroup();
 
     qDebug() << "Config loaded";
@@ -214,20 +218,20 @@ bool Prefs::saveConfig( ) {
     cfg.setValue("filenamesConsistent", filenamesConsistent);
     cfg.setValue("directoriesConsistent", directoriesConsistent);
 
-    cfg.setValue("checkDirectories", consistencyPara.checkDirectories);
-    cfg.setValue("checkDoubles", consistencyPara.checkDoubles);
-    cfg.setValue("checkFilenames", consistencyPara.checkFilenames);
-    cfg.setValue("checkForExistence", consistencyPara.checkForExistence);
-    cfg.setValue("checkTags", consistencyPara.checkTags);
-    cfg.setValue("correctDirectories", consistencyPara.correctDirectories);
-    cfg.setValue("correctFilenames", consistencyPara.correctFilenames);
-    cfg.setValue("correctTags", consistencyPara.correctTags);
-    cfg.setValue("correctTagsDirection", consistencyPara.correctTagsDirection);
-    cfg.setValue("deleteEmptyDirectories", consistencyPara.deleteEmptyDirectories);
-    cfg.setValue("directoryPattern", consistencyPara.directoryPattern);
-    cfg.setValue("filenamePattern", consistencyPara.filenamePattern);
-    cfg.setValue("ignoreCaseInFilenames", consistencyPara.ignoreCaseInFilenames);
-    cfg.setValue("updateNonExisting", consistencyPara.updateNonExisting);
+    cfg.setValue("checkDirectories", consistencyPara->checkDirectories);
+    cfg.setValue("checkDoubles", consistencyPara->checkDoubles);
+    cfg.setValue("checkFilenames", consistencyPara->checkFilenames);
+    cfg.setValue("checkForExistence", consistencyPara->checkForExistence);
+    cfg.setValue("checkTags", consistencyPara->checkTags);
+    cfg.setValue("correctDirectories", consistencyPara->correctDirectories);
+    cfg.setValue("correctFilenames", consistencyPara->correctFilenames);
+    cfg.setValue("correctTags", consistencyPara->correctTags);
+    cfg.setValue("correctTagsDirection", consistencyPara->correctTagsDirection);
+    cfg.setValue("deleteEmptyDirectories", consistencyPara->deleteEmptyDirectories);
+    cfg.setValue("directoryPattern", consistencyPara->directoryPattern);
+    cfg.setValue("filenamePattern", consistencyPara->filenamePattern);
+    cfg.setValue("ignoreCaseInFilenames", consistencyPara->ignoreCaseInFilenames);
+    cfg.setValue("updateNonExisting", consistencyPara->updateNonExisting);
     cfg.endGroup();
     qDebug() << "Config saved";
     return true;

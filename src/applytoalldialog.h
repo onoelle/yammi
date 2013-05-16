@@ -22,7 +22,6 @@
 
 #include "ApplyToAllBase.h"
 
-class QWidget;
 
 /**
 @author Oliver Nölle

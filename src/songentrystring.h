@@ -20,7 +20,8 @@
 
 #include "songentry.h"
 
-/**song entry enriched with a string
+
+/** song entry enriched with a string
   *@author Oliver Nölle
   */
 

@@ -20,7 +20,7 @@
 #define FOLDERGROUPS_H
 
 #include "folder.h"
-#include "song.h"
+
 
 /**
   *@author Brian O.Nölle

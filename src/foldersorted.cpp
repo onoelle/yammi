@@ -16,14 +16,13 @@
  ***************************************************************************/
 
 #include "foldersorted.h"
-#include "yammigui.h"
+
+#include "mylistview.h"
 #include "songlistitem.h"
 #include "songentryint.h"
 
+
 using namespace std;
-
-extern YammiGui* gYammiGui;
-
 
 // construct a folder (top-level)
 FolderSorted::FolderSorted( Q3ListView *parent, const QString &name )

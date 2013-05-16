@@ -12,6 +12,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "xine-engine.h"
+
 #include <Q3CString>
 #include <QApplication>
 #include <QCustomEvent>
@@ -23,8 +25,9 @@
 #include <QMutex>
 #include <QWaitCondition>
 
-#include "xine-engine.h"
+#include "prefs.h"
 #include "songentryint.h"
+#include "yammimodel.h"
 
 
 //define this to use xine in a more standard way

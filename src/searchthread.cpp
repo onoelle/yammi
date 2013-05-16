@@ -18,22 +18,25 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include "searchthread.h"
+
 #include <QDebug>
 #include <QMutex>
 #include <QWaitCondition>
 
-#include "searchthread.h"
 #include "fuzzsrch.h"
-#include "song.h"
 #include "mylist.h"
+#include "prefs.h"
+#include "song.h"
+#include "songentryint2.h"
 #include "yammigui.h"
 #include "yammimodel.h"
-#include "songentryint2.h"
 
 
 SearchThread::SearchThread(YammiGui* yammiGui)
 : QThread()
 {
+    searchResults = new MyList;
 	gYammiGui=yammiGui;
 	currentSearchTerm="";
 	searchTerm="";	
@@ -43,7 +46,10 @@ SearchThread::SearchThread(YammiGui* yammiGui)
 }
 
 
-SearchThread::~SearchThread() {}
+SearchThread::~SearchThread()
+{
+    delete searchResults;
+}
 
 void SearchThread::run() {
     QMutex mutex;
@@ -51,9 +57,9 @@ void SearchThread::run() {
 		if(searchTerm!=currentSearchTerm) {
 			searchRunning=true;
 			currentSearchTerm=searchTerm;
-			searchResults.clear();
+            searchResults->clear();
 			if(currentSearchTerm=="") {
-				gYammiGui->requestSearchResultsUpdate(&searchResults);
+                gYammiGui->requestSearchResultsUpdate(searchResults);
 				searchRunning=false;
 				continue;
 			}
@@ -82,18 +88,18 @@ void SearchThread::run() {
 				bme=fs.getBestMatchesList();				// STEP 4
 
 				// insert n best matches into search result list
-				searchResults.clear();
+                searchResults->clear();
 				int noSelected=0;
 				int showThreshold=gYammiGui->config()->searchThreshold*10;
 				int selectThreshold=700;
 				for(int noResults=0; noResults<200 && bme[noResults] && (bme[noResults])->sim > showThreshold; noResults++) {
-					searchResults.append( new SongEntryInt2 ((Song*)bme[noResults]->objPtr, bme[noResults]->sim) );
+                    searchResults->append( new SongEntryInt2 ((Song*)bme[noResults]->objPtr, bme[noResults]->sim) );
 					if(bme[noResults]->sim>selectThreshold) {
 						noSelected++;
 					}
 				}
 				if(searchTerm==currentSearchTerm) {
-					gYammiGui->requestSearchResultsUpdate(&searchResults);
+                    gYammiGui->requestSearchResultsUpdate(searchResults);
 					searchRunning=false;
 				}
 			}

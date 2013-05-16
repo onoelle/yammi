@@ -18,16 +18,14 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QPushButton>
-
 #include "applytoalldialog.h"
+
 
 ApplyToAllDialog::ApplyToAllDialog(QWidget* parent)
  : ApplyToAllBase(parent, "confirm dialog", true)
 {
 	  connect( PushButtonAbort, SIGNAL( clicked() ), this, SLOT( abort() ) );
 }
-
 
 ApplyToAllDialog::~ApplyToAllDialog()
 {

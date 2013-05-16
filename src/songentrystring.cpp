@@ -17,6 +17,7 @@
 
 #include "songentrystring.h"
 
+
 SongEntryString::SongEntryString(Song* s, QString stringInfo)
  :SongEntry(s)
 {

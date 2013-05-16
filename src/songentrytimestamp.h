@@ -22,7 +22,7 @@
 #include "mydatetime.h"
 
 
-/**song info extended with a timestamp
+/** song info extended with a timestamp
   *@author Oliver Nölle
   */
 

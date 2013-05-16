@@ -18,11 +18,10 @@
 #ifndef PREFERENCESDIALOG_H
 #define PREFERENCESDIALOG_H
 
-#include <QWidget>
-
 #include "PreferencesDialogBase.h"
-#include "prefs.h"
-#include "song.h"
+
+class Prefs;
+
 
 /**
   *@author O.Nölle

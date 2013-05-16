@@ -21,8 +21,10 @@
 #include <Q3PtrList>
 #include <Q3PtrCollection>
 
-#include <song.h>
-#include <songentry.h>
+#include "songentry.h"
+
+class MyList;
+class Song;
 
 
 /**

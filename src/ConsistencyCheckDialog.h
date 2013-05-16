@@ -1,12 +1,12 @@
 #ifndef CONSISTENCYCHECKDIALOG_H
 #define CONSISTENCYCHECKDIALOG_H
 
-#include <ConsistencyCheckDialogBase.h>
+#include "ConsistencyCheckDialogBase.h"
 
-class QWidget;
 class ConsistencyCheckParameter;
 class MyList;
 class YammiModel;
+
 
 class ConsistencyCheckDialog : public CheckConsistencyDialogBase {
     Q_OBJECT

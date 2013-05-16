@@ -15,12 +15,14 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "foldercategories.h"
+
 #include <QMenu>
 #include <Q3PtrList>
 #include <QDebug>
 
-#include "foldercategories.h"
 #include "foldersorted.h"
+
 
 FolderCategories::FolderCategories( Q3ListView* parent, QString title)
 		: Folder( parent, title )

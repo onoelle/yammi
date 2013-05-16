@@ -15,43 +15,47 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QProgressDialog>
-#include <QCheckBox>
+#include "yammimodel.h"
+
 #include <QDebug>
 #include <QDir>
 #include <QDomDocument>
 #include <QMessageBox>
+#include <QProgressDialog>
 #include <QTextStream>
 // TODO: avoid the gui-stuff includes in yammimodel
 
-#include "yammimodel.h"
-#include "yammigui.h"
 #include "applytoalldialog.h"
-#include "options.h"
-#include "mediaplayer.h"
 #include "ConsistencyCheckParameter.h"
+#include "fuzzsrch.h"
+#include "mediaplayer.h"
+#include "mylist.h"
+#include "mydatetime.h"
+#include "prefs.h"
 #include "song.h"
 #include "songentry.h"
 #include "songentryint.h"
 #include "songentrystring.h"
 #include "songentrytimestamp.h"
 #include "songinfo.h"
-#include "fuzzsrch.h"
-#include "prefs.h"
-#include "mylist.h"
-#include "mydatetime.h"
 #include "util.h"
+#include "yammigui.h"
 
 
-YammiModel::YammiModel( YammiGui *y ) {
+YammiModel::YammiModel( YammiGui *y )
+{
+    m_config = new Prefs();
     m_yammi = y;
 }
 
-YammiModel::~YammiModel() {}
+YammiModel::~YammiModel()
+{
+    delete m_config;
+}
 
 Prefs* YammiModel::config()
 {
-    return &m_config;
+    return m_config;
 }
 
 

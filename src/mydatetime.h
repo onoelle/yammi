@@ -20,7 +20,8 @@
 
 #include <QDateTime>
 
-/**extends the QT base class with operators to read/write to a string
+
+/** extends the QT base class with operators to read/write to a string
   *@author Brian O.Nölle
   */
 

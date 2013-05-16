@@ -15,13 +15,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QEvent>
-#include <qnamespace.h>
-#include <QKeyEvent>
-
 #include "lineeditshift.h"
 
+#include <QEvent>
+#include <QKeyEvent>
+
 #include "yammigui.h"
+
 
 extern YammiGui* gYammiGui;
 

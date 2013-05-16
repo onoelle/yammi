@@ -16,8 +16,10 @@
  ***************************************************************************/
 
 #include "foldergroups.h"
-#include "yammigui.h"
+
 #include "prefs.h"
+#include "yammigui.h"
+
 
 extern YammiGui* gYammiGui;
 

@@ -17,8 +17,8 @@
 #ifndef FOLDER_H
 #define FOLDER_H
 
-#include <QObject>
 #include <Q3ListViewItem>
+#include <QObject>
 
 #include "song.h"
 #include "songentry.h"
@@ -26,6 +26,7 @@
 #include "mylist.h"
 
 class QMenu;
+
 
 // represents a folder on the left
 class Folder : public QObject, public Q3ListViewItem {

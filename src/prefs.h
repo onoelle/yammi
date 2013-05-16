@@ -26,7 +26,8 @@
 #include <QStringList>
 
 #include "song.h"
-#include "ConsistencyCheckParameter.h"
+
+class ConsistencyCheckParameter;
 
 
 /**
@@ -128,7 +129,7 @@ public:
     QStringList pluginConfirm;
 
     /** All consistency check related parameter */
-    ConsistencyCheckParameter consistencyPara;
+    ConsistencyCheckParameter* consistencyPara;
 
     /** template for playqueue */
     QString playqueueTemplate;

@@ -15,11 +15,14 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "mylist.h"
+
 #include <taglib/id3v1genres.h>
+
 #include <Q3PtrCollection>
 
-#include "mylist.h"
 #include "song.h"
+
 
 MyList::MyList()
 {
