@@ -6,6 +6,7 @@
 
 #include <QDebug>
 #include <QApplication>
+#include <QtDBus>
 
 #include "config.h"
 #include "yammigui.h"
@@ -29,11 +30,26 @@ int main( int argc, char **argv )
     app.setOrganizationDomain("yammi.sourceforge.net");
     app.setApplicationName("yammi");
 
+    if (!QDBusConnection::sessionBus().isConnected()) {
+        fprintf(stderr, "Cannot connect to the D-Bus session bus.\n"
+                "To start it, run:\n"
+                "\teval `dbus-launch --auto-syntax`\n");
+        return 1;
+    }
+
+    if (!QDBusConnection::sessionBus().registerService("net.sf.yammi.yammi.YammiGui")) {
+        fprintf(stderr, "%s\n", qPrintable(QDBusConnection::sessionBus().lastError().message()));
+        exit(1);
+    }
+
     YammiGui* yammi = new YammiGui();
 	if(!yammi->isValidState()) {
         qDebug() << "shutting down now...";
 		return 1;
 	}
+
+    QDBusConnection::sessionBus().registerObject("/YammiGui", yammi, QDBusConnection::ExportScriptableSlots);
+
 	app.setMainWidget( yammi );
 	yammi->show();
 	

@@ -1,7 +1,7 @@
 
 TEMPLATE += app
 QT += xml qt3support
-CONFIG += qt debug uic3
+CONFIG += qt qdbus debug uic3
 
 LIBS += -ltag -lxine
 

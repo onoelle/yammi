@@ -102,11 +102,41 @@ public:
     
 public slots:
     /** Seeks in the current song (if any) to position pos */
-    void seek( int pos );
+    Q_SCRIPTABLE void seek( int pos );
     void seekWithWheel(int rotation);
 
     /** Request a fuzzy search in the song database, and switch to the search-results view */
     void searchFieldChanged( const QString &fuzzy );
+
+    /* (Remote) functions, skipForward and skipBackward are used as is */
+    Q_SCRIPTABLE void play();
+    Q_SCRIPTABLE void pause();
+
+    Q_SCRIPTABLE void aplayOff();
+    Q_SCRIPTABLE void aplayLNP();
+    Q_SCRIPTABLE void aplayRandom();
+
+    Q_SCRIPTABLE int currentTime();
+    Q_SCRIPTABLE int totalTime();
+
+    Q_SCRIPTABLE QString songInfo();
+    Q_SCRIPTABLE QString songArtist();
+    Q_SCRIPTABLE QString songTitle();
+    Q_SCRIPTABLE int songTrack();
+    Q_SCRIPTABLE QString songTrack2D();
+    Q_SCRIPTABLE QString songAlbum();
+    Q_SCRIPTABLE QString songGenre();
+    Q_SCRIPTABLE QString songComment();
+    Q_SCRIPTABLE int songYear();
+
+    Q_SCRIPTABLE void skipBackward();
+    Q_SCRIPTABLE void skipForward();
+    Q_SCRIPTABLE void stop();
+    Q_SCRIPTABLE void playPause();
+
+    /* At the command line this call is possible then:
+             qdbus net.sf.yammi.yammi.YammiGui /YammiGui net.sourceforge.yammi.yammi.YammiGui.playPause
+    */
 
 protected:
     /** creates the internal MediaPlayer */
@@ -279,27 +309,6 @@ public:
     void updateListViewColumns();
     void setSelectionMode(SelectionMode mode);
 
-    /* (Remote) functions, skipForward and skipBackward are used as is */
-    void play();
-    void pause();
-
-    void aplayOff();
-    void aplayLNP();
-    void aplayRandom();
-
-    int currentTime();
-    int totalTime();
-
-    QString songInfo();
-    QString songArtist();
-    QString songTitle();
-    int songTrack();
-    QString songTrack2D();
-    QString songAlbum();
-    QString songGenre();
-    QString songComment();
-    int songYear();
-
 protected:
     void createMenuBar( );
     void createSongPopup( );
@@ -418,8 +427,6 @@ protected slots:
     void updateSongDatabase(QString scanDir, QString filePattern);
     void updateView(bool startup=false);
 
-    void skipBackward();
-    void skipForward();
     void addToWishList();
     void toCategory(int index);
 
@@ -433,10 +440,6 @@ protected slots:
 
     void pluginOnFolder();
     void addFolderContentSnappy();
-
-    // (Remote) acessible functions
-    void stop();
-    void playPause();
 
 private:
     QAction* m_actionQuit;
