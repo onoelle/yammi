@@ -138,7 +138,7 @@
             </property>
             <widget class="QWidget">
                 <property name="name">
-                    <cstring>tab</cstring>
+                    <cstring>tab1</cstring>
                 </property>
                 <attribute name="title">
                     <string>General</string>
@@ -382,7 +382,7 @@
             </widget>
             <widget class="QWidget">
                 <property name="name">
-                    <cstring>tab</cstring>
+                    <cstring>tab2</cstring>
                 </property>
                 <attribute name="title">
                     <string>Database</string>
@@ -756,7 +756,7 @@
             </widget>
             <widget class="QWidget">
                 <property name="name">
-                    <cstring>tab</cstring>
+                    <cstring>tab3</cstring>
                 </property>
                 <attribute name="title">
                     <string>MediaPlayer</string>
@@ -1054,7 +1054,7 @@ Group mode = executed once for the selection</string>
             </widget>
             <widget class="QWidget">
                 <property name="name">
-                    <cstring>TabPage</cstring>
+                    <cstring>TabPage1</cstring>
                 </property>
                 <attribute name="title">
                     <string>Playqueue Template</string>
