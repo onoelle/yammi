@@ -18,18 +18,18 @@
 #ifndef MYLISTVIEW_H
 #define MYLISTVIEW_H
 
-#include <qlistview.h>
-#include <qcursor.h>
+#include <Q3ListView>
 
 class Song;
 class QKeyEvent;
+class QMouseEvent;
 
 
 /**extends the QListView class, esp. for dragging songs...
   *@author Oliver Nölle
   */
 
-class MyListView : public QListView  {
+class MyListView : public Q3ListView  {
     Q_OBJECT
 public:
     MyListView(QWidget *parent=0, const char *name=0);
@@ -45,7 +45,7 @@ protected:
     Song* dragSong;
     QPoint dragPoint;
     int dragStartedAtIndex;
-    QListViewItem* dragItem;
+    Q3ListViewItem* dragItem;
     QWidget* parent;
 
     void contentsMouseMoveEvent ( QMouseEvent * e);

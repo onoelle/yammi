@@ -20,10 +20,10 @@
 #ifndef YAMMISEARCHTHREAD_H
 #define YAMMISEARCHTHREAD_H
 
-#include <qthread.h>
+#include <QThread>
+
 #include "mylist.h"
 
-class QString;
 class YammiGui;
 
 /**

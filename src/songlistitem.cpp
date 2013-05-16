@@ -15,17 +15,18 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <taglib/id3v1genres.h>
+
 #include "songlistitem.h"
 #include "yammigui.h"
 #include "yammimodel.h"
 #include "folder.h"
 #include "foldersorted.h"
-#include <taglib/id3v1genres.h>
 
 extern YammiGui* gYammiGui;
 
-SongListItem::SongListItem( QListView* parent, SongEntry* entry, SongListItem* after )
-    : QListViewItem( parent, after )
+SongListItem::SongListItem( Q3ListView* parent, SongEntry* entry, SongListItem* after )
+    : Q3ListViewItem( parent, after )
 {
 	setColumns(entry);
 }
@@ -156,7 +157,7 @@ void SongListItem::paintCell( QPainter *p, const QColorGroup &cg,
 	if(gYammiGui->currentSong==song())											// current song in red
 		_cg.setColor( QColorGroup::Text, Qt::red );
 	
-  QListViewItem::paintCell( p, _cg, column, width, alignment );
+  Q3ListViewItem::paintCell( p, _cg, column, width, alignment );
   _cg.setColor( QColorGroup::Text, c );
 }
 
@@ -166,7 +167,7 @@ void SongListItem::paintCell( QPainter *p, const QColorGroup &cg,
  * character data is handled by the key() function
  * visibleColumn is the original column number
  */
-int SongListItem::compare( QListViewItem *i, int visibleColumn, bool ascending ) const
+int SongListItem::compare( Q3ListViewItem *i, int visibleColumn, bool ascending ) const
 {
 	SongListItem* other=(SongListItem*)i;
 	int base=songEntry->getBase();

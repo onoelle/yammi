@@ -21,7 +21,8 @@
 #define APPLYTOALLDIALOG_H
 
 #include "ApplyToAllBase.h"
-#include <qwidget.h>
+
+class QWidget;
 
 /**
 @author Oliver Nölle

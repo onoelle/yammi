@@ -15,10 +15,14 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QMenu>
+#include <Q3PtrList>
+#include <QDebug>
+
 #include "foldercategories.h"
 #include "foldersorted.h"
 
-FolderCategories::FolderCategories( QListView* parent, QString title)
+FolderCategories::FolderCategories( Q3ListView* parent, QString title)
 		: Folder( parent, title )
 {
 }
@@ -30,16 +34,16 @@ FolderCategories::~FolderCategories()
 
 
 // update all Categorys according to given structures
-void FolderCategories::update(QPtrList<MyList> allCategories, QStringList categoryNames)
+void FolderCategories::update(Q3PtrList<MyList> allCategories, QStringList categoryNames)
 {
 	// we have to delete all existing items first!
 	while(firstChild()) {
         qDebug() << "deleting item";
-		QListViewItem* toDelete=firstChild();
+		Q3ListViewItem* toDelete=firstChild();
 		delete(toDelete);
 	}
 	
-	folderPopup = new QPopupMenu( 0 );
+    folderPopup = new QMenu( 0 );
 	folderPopup->insertItem( "New Category..", this, SLOT(newCategory()));
 	
 	int count=0;
@@ -48,7 +52,7 @@ void FolderCategories::update(QPtrList<MyList> allCategories, QStringList catego
 		FolderSorted *f = new FolderSorted( this, categoryNames[count] );
         qDebug() << "calling f->update()";
 		f->update(*ptr);
-		f->folderPopup = new QPopupMenu( 0 );
+        f->folderPopup = new QMenu( 0 );
 		f->folderPopup->insertItem( "Remove Category", this, SLOT(removeCategory()));
 		f->folderPopup->insertItem( "New Category..", this, SLOT(newCategory()));
 		f->folderPopup->insertItem( "Rename Category..", this, SLOT(renameCategory()));

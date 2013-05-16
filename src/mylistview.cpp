@@ -15,10 +15,12 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <Q3Header>
+#include <QEvent>
+#include <QMouseEvent>
+#include <QKeyEvent>
+
 #include "mylistview.h"
-
-#include <qheader.h>
-
 #include "yammigui.h"
 #include "songlistitem.h"
 #include "song.h"
@@ -29,7 +31,7 @@ using namespace std;
 
 extern YammiGui* gYammiGui;
 
-MyListView::MyListView(QWidget *parent, const char *name ) : QListView(parent,name) {
+MyListView::MyListView(QWidget *parent, const char *name ) : Q3ListView(parent,name) {
     dragging=false;
     dontTouchFirst=false;
     sortedBy=0;
@@ -46,7 +48,7 @@ MyListView::~MyListView() {}
  */
 void MyListView::sortColumnChanged(int column) {
     int newColumn=column+1;
-    if(sortOrder()==Qt::Descending) {
+    if(sortOrder()==Qt::DescendingOrder) {
         sortedBy=-newColumn;
     } else {
         sortedBy=newColumn;
@@ -66,7 +68,7 @@ void MyListView::simulateMouseMove() {
  * - song list is sorted ascending by first column (which must be the "Pos" column)
  */
 void MyListView::contentsMousePressEvent ( QMouseEvent * e) {
-    if(gYammiGui->chosenFolder->isSorted() && sortedBy==1 && e->button()==LeftButton) {
+    if(gYammiGui->chosenFolder->isSorted() && sortedBy==1 && e->button()==Qt::LeftButton) {
         dragPoint=e->globalPos();
         dragItem=itemAt(viewport()->mapFromGlobal(dragPoint));
         if(dragItem) {
@@ -91,7 +93,7 @@ void MyListView::contentsMousePressEvent ( QMouseEvent * e) {
             //      qDebug() << "no dragItem found";
         }
     }
-    QListView::contentsMousePressEvent(e);
+    Q3ListView::contentsMousePressEvent(e);
 }
 
 
@@ -101,7 +103,7 @@ void MyListView::contentsMousePressEvent ( QMouseEvent * e) {
 void MyListView::contentsMouseMoveEvent ( QMouseEvent * e) {
     if(!dragging) {
         // if not dragging we call super class to perform normal behavior on dragging
-        QListView::contentsMouseMoveEvent(e);
+        Q3ListView::contentsMouseMoveEvent(e);
         return;
     }
 
@@ -120,7 +122,7 @@ void MyListView::contentsMouseMoveEvent ( QMouseEvent * e) {
       QPoint widgetMappedPoint2=mapFromGlobal(point2);
       qDebug() << "widgetMappedPoint2: x: " << widgetMappedPoint2.x() << ", y: " << widgetMappedPoint2.y();
       */
-    QListViewItem* item=itemAt(mappedPoint);
+    Q3ListViewItem* item=itemAt(mappedPoint);
     /*  if(item!=0) {
           qDebug() << "item: " << ((SongListItem*)item)->song()->displayName();
       }
@@ -142,7 +144,7 @@ void MyListView::contentsMouseMoveEvent ( QMouseEvent * e) {
     if(item==0)	{
         //    qDebug() << "item==0";
         bool above=viewport()->mapFromGlobal(point).y()<0;
-        QListViewItem* swapItem;
+        Q3ListViewItem* swapItem;
         if(above) {
             swapItem=dragItem->itemAbove();
             if(swapItem) {
@@ -208,7 +210,7 @@ void MyListView::contentsMouseReleaseEvent ( QMouseEvent * e) {
         int column=oldSortOrder-1;
         setSorting(column);
     }
-    QListView::contentsMouseReleaseEvent(e);
+    Q3ListView::contentsMouseReleaseEvent(e);
 }
 
 void MyListView::simulateKeyPressEvent(QKeyEvent* e)

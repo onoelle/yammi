@@ -23,6 +23,8 @@
 #ifndef PREFS_H
 #define PREFS_H
 
+#include <QStringList>
+
 #include "song.h"
 #include "ConsistencyCheckParameter.h"
 

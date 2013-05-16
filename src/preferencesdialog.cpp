@@ -15,19 +15,19 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <Q3FileDialog>
+#include <Q3TextEdit>
+#include <Q3ValueList>
+#include <QCheckBox>
+#include <QComboBox>
+#include <QInputDialog>
+#include <QMessageBox>
+#include <QPushButton>
+#include <QSpinBox>
+#include <QRadioButton>
+
 #include "options.h"
 #include "preferencesdialog.h"
-
-#include <qfiledialog.h>
-#include <qtextedit.h>
-#include <qpushbutton.h>
-#include <qradiobutton.h>
-#include <qcombobox.h>
-#include <qvaluelist.h>
-#include <qcheckbox.h>
-#include <qinputdialog.h>
-#include <qmessagebox.h>
-#include <qspinbox.h>
 
 #include "song.h"
 
@@ -179,7 +179,7 @@ void PreferencesDialog::myAccept() {
 
 // file dialog for trash dir
 void PreferencesDialog::chooseTrashDir() {
-    QString dir = QFileDialog::getExistingDirectory(LineEditTrashDir->text(), this, NULL, tr("choose trash directory"));
+    QString dir = Q3FileDialog::getExistingDirectory(LineEditTrashDir->text(), this, NULL, tr("choose trash directory"));
     if(!dir.isNull()) {
         LineEditTrashDir->setText(dir);
     }

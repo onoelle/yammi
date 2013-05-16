@@ -18,7 +18,9 @@
 #ifndef MYLIST_H
 #define MYLIST_H
 
-#include <qptrlist.h>
+#include <Q3PtrList>
+#include <Q3PtrCollection>
+
 #include <song.h>
 #include <songentry.h>
 
@@ -30,7 +32,7 @@
  * - enables adding/removing/searching SongEntry or Song types...
  * Otherwise, use exactly as QPtrList<SongEntry>.
 */
-class MyList : public QPtrList<SongEntry> {
+class MyList : public Q3PtrList<SongEntry> {
 
 public: 
 	MyList();
@@ -48,7 +50,7 @@ public:
   int       containsSelection(MyList* selection);
 	Song*			getSongByKey(QString artist, QString title, QString album);
 
-	int				compareItems( QCollection::Item item1, QCollection::Item item2);
+	int				compareItems( Q3PtrCollection::Item item1, Q3PtrCollection::Item item2);
 	int				myCompare(Song* song1, Song* song2, int sortBy);
   int       getSortOrder() { return sortOrder; }
   void			setSortOrderAndSort(int newSortOrder, bool sortAnyway=false);

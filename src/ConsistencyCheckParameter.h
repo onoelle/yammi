@@ -18,7 +18,7 @@
 #ifndef CONSISTENCYCHECKPARAMETER_H
 #define CONSISTENCYCHECKPARAMETER_H
 
-#include <qstring.h>
+#include <QString>
 
 class ConsistencyCheckParameter {
 public:

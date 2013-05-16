@@ -17,11 +17,16 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
+#include <QEvent>
+#include <QMouseEvent>
+#include <QWheelEvent>
+
 #include "trackpositionslider.h"
 #include "song.h"
 
 
-TrackPositionSlider::TrackPositionSlider(Orientation orientation, QWidget *parent, const char *name) : QSlider(orientation, parent, name)
+TrackPositionSlider::TrackPositionSlider(Qt::Orientation orientation, QWidget *parent, const char *name) : QSlider(orientation, parent, name)
 {
     setLineStep(1*1000);
     setPageStep(10*1000);
@@ -30,13 +35,14 @@ TrackPositionSlider::TrackPositionSlider(Orientation orientation, QWidget *paren
 
 void TrackPositionSlider::mousePressEvent(QMouseEvent *e)
 {
-	if(e->button() == LeftButton) {
-    	QMouseEvent reverse(QEvent::MouseButtonPress, e->pos(), MidButton, e->state());
+	if(e->button() == Qt::LeftButton) {
+    	QMouseEvent reverse(QEvent::MouseButtonPress, e->pos(), Qt::MidButton, e->state());
     	QSlider::mousePressEvent(&reverse); 
-    	emit sliderPressed();
+        //emit sliderPressed();
+        emit sliderMoved(value());
 	}
-	else if(e->button() == MidButton) {
-    	QMouseEvent reverse(QEvent::MouseButtonPress, e->pos(), MidButton, e->state());
+	else if(e->button() == Qt::MidButton) {
+    	QMouseEvent reverse(QEvent::MouseButtonPress, e->pos(), Qt::MidButton, e->state());
     	QSlider::mousePressEvent(&reverse); 
 	}
 }
@@ -51,14 +57,14 @@ void TrackPositionSlider::setupTickmarks(Song* song)
 {
     if(song == 0) {
         setRange(0, 0);
-        setTickmarks(QSlider::NoMarks);
+        setTickmarks(QSlider::NoTicks);
         setValue(0);
         setEnabled(false);
     }
     else {
         setRange(0, song->length*1000);
         setValue(0);
-        setTickmarks(QSlider::Below);
+        setTickmarks(QSlider::TicksBelow);
         setTickInterval(1000*60);
         setEnabled(true);        
         updateGeometry();

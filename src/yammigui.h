@@ -20,22 +20,25 @@
 
 #define MAX_COLUMN_NO 15
 
-#include <kmainwindow.h>
+#include <Q3Process>
+#include <QKeyEvent>
+#include <QMainWindow>
+#include <QTimer>
+#include <QWaitCondition>
 
-#include <qtimer.h>
-#include <qwaitcondition.h>
 #include "options.h"
 #include "mylist.h"
-#include <qprocess.h>
 
 
-class QSlider;
-class QSplitter;
-class QListView;
-class QListViewItem;
+class Q3ListView;
+class Q3ListViewItem;
+class QActionGroup;
+class QMenu;
 class QComboBox;
 class QPushButton;
+class QSlider;
 class QSpinBox;
+class QSplitter;
 
 class YammiModel;
 class MediaPlayer;
@@ -46,7 +49,6 @@ class FolderGroups;
 class FolderSorted;
 class FolderCategories;
 class Song;
-class KToggleAction;
 class SearchThread;
 class TrackPositionSlider;
 class Prefs;
@@ -60,7 +62,7 @@ class QTextEdit;
  *
  * ...still way to big and unordered...
  */
-class YammiGui : public KMainWindow {
+class YammiGui : public QMainWindow {
     Q_OBJECT
 public:    
     /**
@@ -92,9 +94,8 @@ public:
     virtual ~YammiGui();
 
     /** Load the Song database.
-      * @param db Database file. If empty the file set in yammi's config file, or 
-      *           the default will be used */
-    void loadDatabase(QString databaseDir);
+      * @param db Database file. */
+    void loadDatabase();
 
     /** Yammi config options (preferences) */
     Prefs* config();
@@ -119,6 +120,8 @@ protected:
     /** read general Options again and initialize all variables*/
     void readOptions();
 
+    void closeEvent(QCloseEvent *event);
+
     /**
      * queryClose is called before the window is closed, either by the user
      * or by the session manager. If data has been modified, this function can 
@@ -141,7 +144,7 @@ protected:
 
 protected slots:
     /** Show/hide a toolbar after the correspondingt action is toggled by the user*/
-    void toolbarToggled( const QString& name = QString::null );
+    void toolbarToggled(QAction* action);
 private:
     /** Setup UI-actions*/
     bool setupActions( );
@@ -170,7 +173,7 @@ public:
     QString getColumnName(int column);
 
 public slots:
-    void songListPopup(QListViewItem*, const QPoint&, int);
+    void songListPopup(Q3ListViewItem*, const QPoint&, int);
     void deleteEntry(Song* s);
     void slotFolderChanged();
     void updatePlaylist();
@@ -302,30 +305,21 @@ protected:
     void createSongPopup( );
     void createFolders( );
     void createMainWidget( );
+    void createToolbars();
     static int randomNum(int numbers = RAND_MAX);
 
     // gui
     //***************
-    QListView* folderListView;
+    Q3ListView* folderListView;
     QSplitter* centralWidget;
     QSplitter* leftWidget;
 
-    QPopupMenu* playListPopup;
-    QPopupMenu* songPopup;
-    QPopupMenu* songPlayPopup;
-    QPopupMenu* songGoToPopup;
-    QPopupMenu* songSearchPopup;
-    QPopupMenu* songAdvancedPopup;
-    QPopupMenu* pluginPopup;
-    QPopupMenu* folderPopup;
-
-    QPopupMenu*   lastSongPopupMenu;
-    QPopupMenu*   currentSongPopupMenu;
-    QPopupMenu*   nextSongPopupMenu;
-
-    QPopupMenu*   toolbarsMenu;
-    QPopupMenu*   columnsMenu;
-
+    QMenu* playListPopup;
+    QMenu* songPopup;
+    QMenu* songGoToPopup;
+    QMenu* songAdvancedPopup;
+    QMenu* pluginPopup;
+    QMenu* folderPopup;
 
 
     YammiModel* model;
@@ -358,7 +352,6 @@ protected:
     // protected methods
     //******************
 protected:
-    //	QIconSet 	getPopupIcon(Song::action whichAction);
     void		forSelection(int action);
     void          gotoFuzzyFolder(bool backward);
     void          changeToFolder(Folder* newFolder, bool changeAnyway=false);
@@ -391,21 +384,11 @@ protected:
     void					addFolderContent(Folder* folder);
     int           autoplayMode;
 
-    // UI - actions
-    //need to keep track of this so that we can change the icon/text
-    KAction* m_playPauseAction;
-    KAction* m_currentAutoPlay;
-    KToggleAction* m_autoplayActionOff;
-    KToggleAction* m_autoplayActionLnp;
-    KToggleAction* m_autoplayActionRandom;
-
-
-
 
     // protected slots
     //****************
 protected slots:
-    void toggleColumnVisibility(int column);
+    void toggleColumnVisibility(QAction* action);
     void shufflePlaylist();
     void updateSearchResults();
 
@@ -423,7 +406,7 @@ protected slots:
     void autoplayLNP();
     void autoplayRandom();
     void doSongPopup(QPoint point);
-    void slotFolderPopup( QListViewItem*, const QPoint &, int );
+    void slotFolderPopup( Q3ListViewItem*, const QPoint &, int );
     void adjustSongPopup();
 
     void doubleClick();
@@ -455,6 +438,50 @@ protected slots:
     void stop();
     void playPause();
 
+private:
+    QAction* m_actionQuit;
+    QAction* m_actionSelectAll;
+    QAction* m_actionInvertSelection;
+    QAction* m_actionUpdateView;
+    QActionGroup* m_actionGroupToggleToolbar;
+    QAction* m_actionToggleMainToolbar;
+    QAction* m_actionToggleMediaPlayerToolbar;
+    QAction* m_actionToggleSongActionsToolbar;
+    QActionGroup* m_actionGroupColumnVisibility;
+    QAction* m_actionPlayPause;
+    QAction* m_actionSkipBackward;
+    QAction* m_actionSkipForward;
+    QAction* m_actionStop;
+    QAction* m_actionToFromPlaylist;
+    QAction* m_actionClearPlayList;
+    QAction* m_actionShufflePlaylist;
+    QAction* m_actionSaveDatabase;
+    QAction* m_actionScanHarddisk;
+    QAction* m_actionImportSelectedFiles;
+    QAction* m_actionCheckConsistencyAll;
+    QAction* m_actionFixGenres;
+    QActionGroup* m_actionGroupAutoplay;
+    QAction* m_actionAutoplayOff;
+    QAction* m_actionAutoplayLnp;
+    QAction* m_actionAutoplayRandom;
+    QAction* m_actionCurrentAutoPlay;
+    QAction* m_actionConfigureYammi;
+    QAction* m_actionEnqueueAtEnd;
+    QAction* m_actionEnqueueAsNext;
+    QAction* m_actionPlayNow;
+    QAction* m_actionDequeueSong;
+    QAction* m_actionSongInfo;
+    QAction* m_actionGotoFolderArtist;
+    QAction* m_actionGotoFolderAlbum;
+    QAction* m_actionGotoFolderGenre;
+    QAction* m_actionGotoFolderYear;
+    QAction* m_actionSearchSimilarEntry;
+    QAction* m_actionSearchSimilarArtist;
+    QAction* m_actionSearchSimilarTitle;
+    QAction* m_actionSimilarAlbum;
+    QAction* m_actionCheckConsistencySelection;
+    QAction* m_actionDeleteSong;
+    QAction* m_actionMoveFiles;
 };
 
 #endif

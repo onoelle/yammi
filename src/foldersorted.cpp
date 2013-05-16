@@ -16,7 +16,6 @@
  ***************************************************************************/
 
 #include "foldersorted.h"
-
 #include "yammigui.h"
 #include "songlistitem.h"
 #include "songentryint.h"
@@ -27,28 +26,28 @@ extern YammiGui* gYammiGui;
 
 
 // construct a folder (top-level)
-FolderSorted::FolderSorted( QListView *parent, const QString &name )
+FolderSorted::FolderSorted( Q3ListView *parent, const QString &name )
 			: Folder(parent, name)
 {
 	sorted=true;
 }
 
 // construct a folder (not top-level)
-FolderSorted::FolderSorted( QListViewItem* parent, const QString &name )
+FolderSorted::FolderSorted( Q3ListViewItem* parent, const QString &name )
 			: Folder(parent, name)
 {
 	sorted=true;
 }
 
 // construct a folder (top-level)
-FolderSorted::FolderSorted( QListView *parent, const QString &name, MyList* songList)
+FolderSorted::FolderSorted( Q3ListView *parent, const QString &name, MyList* songList)
 			: Folder(parent, name, songList)
 {
 	sorted=true;  
 }
 
 // construct a folder (not top-level)
-FolderSorted::FolderSorted( QListViewItem* parent, const QString &name, MyList* songList)
+FolderSorted::FolderSorted( Q3ListViewItem* parent, const QString &name, MyList* songList)
 			: Folder(parent, name, songList)
 {
 	sorted=true;  
@@ -118,7 +117,7 @@ void FolderSorted::syncWithListView(MyListView* listView)
 	songList->clear();		// don't use folder->clearSongs() as it affects the list!
 	// what if order reverse?
 	int index=1;
-	for(QListViewItem* i=listView->firstChild(); i; i=i->itemBelow()) {
+	for(Q3ListViewItem* i=listView->firstChild(); i; i=i->itemBelow()) {
 		// don't use addEntry for the same reason...
 		songList->append(new SongEntryInt( ((SongListItem*)i)->song(), index));
 		index++;

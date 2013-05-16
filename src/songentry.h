@@ -25,17 +25,17 @@
   */
 
 class SongEntry {
-public: 
-	SongEntry(Song* s);
-	virtual ~SongEntry();
-	
-	Song* song() { return songPtr; };
-	virtual int getBase() { return 0; } ;
-	virtual int compare (int, SongEntry*) { return 0; } ;
-	virtual QString getKey(int) { return QString(""); } ;
-	virtual QString getColumn(int) { return QString(""); };
+public:
+    SongEntry(Song* s);
+    virtual ~SongEntry();
+
+    Song* song() { return songPtr; };
+    virtual int getBase() { return 0; } ;
+    virtual int compare (int, SongEntry*) { return 0; } ;
+    virtual QString getKey(int) { return QString(""); } ;
+    virtual QString getColumn(int) { return QString(""); };
 protected:
-	Song* songPtr;
+    Song* songPtr;
 };
 
 #endif

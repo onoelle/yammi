@@ -15,6 +15,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QMenu>
+
 #include "folder.h"
 #include "yammigui.h"
 
@@ -22,8 +24,8 @@ extern YammiGui* gYammiGui;
 
 
 // constructs a top-level folder
-Folder::Folder( QListView *parent, const QString &name )
-			: QListViewItem( parent ),
+Folder::Folder( Q3ListView *parent, const QString &name )
+			: Q3ListViewItem( parent ),
 				owner(true)
 {
 	init(name);
@@ -33,8 +35,8 @@ Folder::Folder( QListView *parent, const QString &name )
 }
 
 // construct a top-level folder
-Folder::Folder( QListView* parent, const QString &name, MyList* songList)
-			: QListViewItem( parent )				
+Folder::Folder( Q3ListView* parent, const QString &name, MyList* songList)
+			: Q3ListViewItem( parent )				
 {
 	init(name);
 	this->songList=songList;
@@ -42,16 +44,16 @@ Folder::Folder( QListView* parent, const QString &name, MyList* songList)
 }
 
 // construct a folder (not top-level)
-Folder::Folder( QListViewItem* parent, const QString &name )
-			: QListViewItem( parent )				
+Folder::Folder( Q3ListViewItem* parent, const QString &name )
+			: Q3ListViewItem( parent )				
 {
 	init(name);
 	songList=new MyList();
 }
 
 // construct a folder (not top-level)
-Folder::Folder( QListViewItem* parent, const QString &name, MyList* songList)
-			: QListViewItem( parent )			  
+Folder::Folder( Q3ListViewItem* parent, const QString &name, MyList* songList)
+			: Q3ListViewItem( parent )			  
 {
 	init(name);
 	this->songList=songList;
@@ -157,9 +159,9 @@ void Folder::updateTitle()
 /**
  * insert content menu...
  */
-void Folder::popup(QPoint point, QPopupMenu* contentMenu)
+void Folder::popup(QPoint point, QMenu* contentMenu)
 {
-  allPopup=new QPopupMenu();
+  allPopup=new QMenu();
   // autoplay
   allPopup->insertItem( "Autoplay", this, SLOT(autoplayFolder()), 0, 13);
   if(gYammiGui->autoplayFoldername==this->folderName()) {

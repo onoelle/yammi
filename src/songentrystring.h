@@ -18,23 +18,23 @@
 #ifndef SONGENTRYSTRING_H
 #define SONGENTRYSTRING_H
 
-#include <songentry.h>
+#include "songentry.h"
 
 /**song entry enriched with a string
   *@author Oliver Nölle
   */
 
 class SongEntryString : public SongEntry  {
-public: 
-	SongEntryString(Song* s, QString stringInfo);
-	~SongEntryString();
-	
-	virtual int getBase() { return 1; };
-	virtual int compare(int column, SongEntry* other);
-	virtual QString getKey(int) { return stringInfo; };
-	virtual QString getColumn(int) { return stringInfo; };
+public:
+    SongEntryString(Song* s, QString stringInfo);
+    ~SongEntryString();
+
+    virtual int getBase() { return 1; };
+    virtual int compare(int column, SongEntry* other);
+    virtual QString getKey(int) { return stringInfo; };
+    virtual QString getColumn(int) { return stringInfo; };
 protected:
-	QString stringInfo;
+    QString stringInfo;
 };
 
 #endif

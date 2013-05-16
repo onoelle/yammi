@@ -15,9 +15,11 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <taglib/id3v1genres.h>
+#include <Q3PtrCollection>
+
 #include "mylist.h"
 #include "song.h"
-#include <taglib/id3v1genres.h>
 
 MyList::MyList()
 {
@@ -156,7 +158,7 @@ void MyList::setSortOrderAndSort(int newSortOrder, bool sortAnyway)
 }
 
 // compares on one or more attributes
-int MyList::compareItems( QCollection::Item item1, QCollection::Item item2)
+int MyList::compareItems( Q3PtrCollection::Item item1, Q3PtrCollection::Item item2)
 {
 	Song* song1=((SongEntry*) item1)->song();
 	Song* song2=((SongEntry*) item2)->song();

@@ -12,13 +12,18 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qapplication.h>
-
-#include <qmessagebox.h>
-#include <kstandarddirs.h>
+#include <Q3CString>
+#include <QApplication>
+#include <QCustomEvent>
+#include <QDebug>
+#include <QDesktopServices>
+#include <QEvent>
+#include <QFile>
+#include <QMessageBox>
+#include <QMutex>
+#include <QWaitCondition>
 
 #include "xine-engine.h"
-
 #include "songentryint.h"
 
 
@@ -27,7 +32,7 @@
 
 
 ///returns the configuration we will use. there is no KInstance, so using this hacked up method.
-static inline QCString configPath() { return QFile::encodeName(locate( "data", "yammi/") + "xine-config" ); }
+static inline Q3CString configPath() { return QFile::encodeName(QDesktopServices::storageLocation(QDesktopServices::DataLocation) + "/xine-config" ); }
 
 
 namespace Yammi {
@@ -207,6 +212,8 @@ namespace Yammi {
     bool
     XineEngine::play()
     {
+        qDebug() << "XineEngine::play";
+
         if( xine_get_param( m_stream, XINE_PARAM_SPEED ) == XINE_SPEED_PAUSE )
         {
             xine_set_param( m_stream, XINE_PARAM_SPEED, XINE_SPEED_NORMAL );
@@ -260,6 +267,8 @@ namespace Yammi {
     bool
     XineEngine::pause()
     {
+        qDebug() << "XineEngine::pause";
+
         if ( !m_stream )
             return false;
 
@@ -353,7 +362,11 @@ namespace Yammi {
         {
             xine_get_pos_length( m_stream, &pos, &time, &length );
             if( time > tmp ) break;
-            usleep( 100000 );
+
+            QMutex dummy;
+            dummy.lock();
+            QWaitCondition waitCondition;
+            waitCondition.wait(&dummy, 100); //usleep( 100000 );
         }
 
         return time;
@@ -427,6 +440,7 @@ namespace Yammi {
             xine_play( m_stream, 0, (int)ms );
 
         status = getStatus();
+        emit statusChanged();
 
         return true;
     }

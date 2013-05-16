@@ -1,23 +1,15 @@
 
-
-#qmake-qt3 -o Makefile yammi.pro
-
 TEMPLATE += app
+QT += xml qt3support
+CONFIG += qt debug uic3
 
-CONFIG += qt debug
-
-QMAKE = qmake-qt3
-QMAKE_UIC = uic -L /usr/lib/kde3/plugins
-QMAKE_CXX=ccache g++
-
-INCLUDEPATH += /usr/include/kde
-
-LIBS += -lkdeui -L/usr/lib -ltag -lxine
+LIBS += -ltag -lxine
 
 MOC_DIR = .moc
 OBJECTS_DIR = .obj
 UI_DIR = .ui
 
+QMAKE_CXX=ccache g++
 QMAKE_CLEAN += yammi
 
 SOURCES = \
@@ -86,10 +78,10 @@ HEADERS = \
     util.h \
     xine-engine.h \
     yammigui.h \
-    yammiicons.h \
     yammimodel.h
 
-FORMS = \
+#The following line was changed from FORMS to FORMS3 by qt3to4
+FORMS3 = \
     ApplyToAllBase.ui \
     ConsistencyCheckDialogBase.ui \
     DeleteDialog.ui \

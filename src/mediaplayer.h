@@ -18,7 +18,8 @@
 #ifndef MEDIAPLAYER_H
 #define MEDIAPLAYER_H
 
-#include <qobject.h>
+#include <QObject>
+
 #include "mylist.h"
 #include "yammimodel.h"
 

@@ -18,15 +18,7 @@
 #ifndef SONG_H
 #define SONG_H
 
-#include <qstring.h>
-#include <qstringlist.h>
-#include <qdatetime.h>
-#include <stdlib.h>
-#include <iostream>
-using namespace std;
-#include <qregexp.h>
-#include <qfileinfo.h>
-#include <qdir.h>
+#include <QString>
 
 #include "mydatetime.h"
 #include "options.h"
@@ -64,8 +56,6 @@ WaveHeader;
  * todo: make _some_ more things protected...
  */
 
-#define MAX_SONG_ACTION 15
-
 class Song {
 public:
     // all possible actions for a single or a selection of songs
@@ -73,7 +63,7 @@ public:
     enum action {	None, Enqueue, EnqueueAsNext, PlayNow, SongInfo,
                   Delete, DeleteFile, DeleteEntry,
                   CheckConsistency, MoveTo,
-                  Dequeue
+                  Dequeue, MAX_SONG_ACTION
                 };
 
     /// default constructor, just assigns default values

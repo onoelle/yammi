@@ -17,25 +17,25 @@
 #ifndef FOLDER_H
 #define FOLDER_H
 
-#include <qobject.h>
-#include <qlistview.h>
-#include <qlist.h>
-#include <qpopupmenu.h>
+#include <QObject>
+#include <Q3ListViewItem>
 
 #include "song.h"
 #include "songentry.h"
 #include "songentryint.h"
 #include "mylist.h"
 
+class QMenu;
+
 // represents a folder on the left
-class Folder : public QObject, public QListViewItem {
+class Folder : public QObject, public Q3ListViewItem {
     Q_OBJECT
 
 public:
-    Folder			(QListView* parent, const QString &name );						// top-level folder
-    Folder			(QListView* parent, const QString &name, MyList* songList);
-    Folder			(QListViewItem* parent, const QString &name );				// subfolder
-    Folder			(QListViewItem* parent, const QString &name, MyList* songList);
+    Folder			(Q3ListView* parent, const QString &name );						// top-level folder
+    Folder			(Q3ListView* parent, const QString &name, MyList* songList);
+    Folder			(Q3ListViewItem* parent, const QString &name );				// subfolder
+    Folder			(Q3ListViewItem* parent, const QString &name, MyList* songList);
     ~Folder();
 
     void			init(QString name);
@@ -68,14 +68,14 @@ public:
         return songList->next();
     }
 
-    virtual void 	popup(QPoint point, QPopupMenu* contentMenu);
+    virtual void 	popup(QPoint point, QMenu* contentMenu);
 
     MyList& songlist() {
         return *songList;
     }
 
-    QPopupMenu*		folderPopup;
-    QPopupMenu*		allPopup;
+    QMenu*		folderPopup;
+    QMenu*		allPopup;
     bool            isSorted()                  {
         return sorted;
     }

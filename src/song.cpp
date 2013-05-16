@@ -15,18 +15,20 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <taglib/audioproperties.h>
+#include <taglib/fileref.h>
+#include <taglib/id3v1genres.h>    //used to load genre list
+#include <taglib/tag.h>
+#include <taglib/tstring.h>
+
+#include <QDebug>
+
 #include "options.h"
 #include "song.h"
 
 #include "yammigui.h"
 #include "prefs.h"
 #include "util.h"
-
-#include <taglib/audioproperties.h>
-#include <taglib/fileref.h>
-#include <taglib/id3v1genres.h>    //used to load genre list
-#include <taglib/tag.h>
-#include <taglib/tstring.h>
 
 using namespace std;
 
@@ -351,7 +353,7 @@ void Song::guessTagsFromFilename(QString filename, QString path, QString* artist
 
 bool Song::getWavInfo(QString filename) {
     QFile wavFile(filename);
-    if( wavFile.open( IO_ReadOnly ) ) {
+    if( wavFile.open( QIODevice::ReadOnly ) ) {
         QDataStream stream( &wavFile );
         WaveHeader header;
         stream.readRawBytes((char*)&header, sizeof(WaveHeader));
@@ -540,7 +542,7 @@ bool Song::correctFilename() {
     }
 
     QFile touchFile(newname);
-    if(!touchFile.open(IO_WriteOnly)) {
+    if(!touchFile.open(QIODevice::WriteOnly)) {
         qDebug() << "ERROR renaming: could not touch file";
         return false;
     }
@@ -680,10 +682,10 @@ QString Song::capitalize(QString str) {
     // do nothing with the empty string
     if(str=="")
         return str;
-    str.at(0)=str.at(0).upper();
-    for(unsigned int pos=1; pos<str.length(); pos++) {
+    str[0] = str.at(0).upper();
+    for(int pos=1; pos<str.length(); pos++) {
         if(str.at(pos-1)==' ')
-            str.at(pos)=str.at(pos).upper();
+            str[pos]=str.at(pos).upper();
     }
     return str;
 }
@@ -733,7 +735,7 @@ QString Song::getSuffix() {
         return "";
     }
     QString suffix=base.mid(suffixLength+1);
-    if(base==0) {
+    if(base.toInt()==0) {
         return "";
     }
     return suffix;
@@ -796,7 +798,7 @@ QString Song::getSongAction(int index) {
                                 "CheckConsistency", "MoveTo",
                                 "Dequeue"
                                };
-    if(index<=MAX_SONG_ACTION) {
+    if(index<=MAX_SONG_ACTION-1) {
         return QString(songAction[index]);
     }
     else {

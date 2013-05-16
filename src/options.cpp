@@ -1,31 +1,8 @@
 
+#include <QString>
+#include <QDir>
+
 #include "options.h"
-#include <qstring.h>
-#include <qdir.h>
-
-/*
-  dirty workaround until qt4 can be used ...
-  */
-
-QDebug& qDebug() {
-    QDebug *a = new QDebug();
-    return *a;
-}
-
-QDebug& qWarning() {
-    QDebug *a = new QDebug();
-    return *a;
-}
-
-QDebug& qError() {
-    QDebug *a = new QDebug();
-    return *a;
-}
-
-QDebug& qFatal() {
-    QDebug *a = new QDebug();
-    return *a;
-}
 
 
 // copied from http://albumshaper.cvs.sourceforge.net/viewvc/albumshaper/albumshaper2/src/backend/tools/fileTools.cpp?revision=1.9&content-type=text%2Fplain
@@ -68,8 +45,8 @@ bool copyFile(const QString &oldFilePath, const QString &newFilePath)
   //load both files
   QFile oldFile(oldFilePath);
   QFile newFile(newFilePath);
-  bool openOld = oldFile.open( IO_ReadOnly );
-  bool openNew = newFile.open( IO_WriteOnly );
+  bool openOld = oldFile.open( QIODevice::ReadOnly );
+  bool openNew = newFile.open( QIODevice::WriteOnly );
 
   //if either file fails to open bail
   if(!openOld || !openNew) { return false; }

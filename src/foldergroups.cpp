@@ -18,17 +18,16 @@
 #include "foldergroups.h"
 #include "yammigui.h"
 #include "prefs.h"
-#include <taglib/id3v1genres.h>
 
 extern YammiGui* gYammiGui;
 
-FolderGroups::FolderGroups( QListView* parent, QString title)
+FolderGroups::FolderGroups( Q3ListView* parent, QString title)
 : Folder( parent, title ) {}
 
 void FolderGroups::update(MyList* allSongs, int sortBy) {
     // we have to delete all existing items first!
     while(firstChild()) {
-        QListViewItem* toDelete=firstChild();
+        Q3ListViewItem* toDelete=firstChild();
         // change to Folder* toDelete=(Folder*)firstChild();
         delete(toDelete);
     }

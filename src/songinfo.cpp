@@ -15,15 +15,15 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QCheckBox>
+#include <QComboBox>
+#include <QLabel>
+#include <QLineEdit>
+#include <QPushButton>
+
 #include "songinfo.h"
 #include "song.h"
 #include "mylist.h"
-
-#include <qlineedit.h>
-#include <qlabel.h>
-#include <qcombobox.h>
-#include <qcheckbox.h>
-#include <qpushbutton.h>
 
 
 SongInfo::SongInfo(QWidget* parent, MyList* selectedSongs) : SongInfoDialog(parent, "song info", true)

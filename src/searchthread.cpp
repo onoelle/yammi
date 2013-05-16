@@ -17,11 +17,12 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
+#include <QDebug>
+#include <QMutex>
+#include <QWaitCondition>
+
 #include "searchthread.h"
-
-
-#include <qwaitcondition.h>
-
 #include "fuzzsrch.h"
 #include "song.h"
 #include "mylist.h"
@@ -29,9 +30,6 @@
 #include "yammimodel.h"
 #include "songentryint2.h"
 
-//using namespace std;
-
-//extern YammiGui* gYammiGui;
 
 SearchThread::SearchThread(YammiGui* yammiGui)
 : QThread()
@@ -48,6 +46,7 @@ SearchThread::SearchThread(YammiGui* yammiGui)
 SearchThread::~SearchThread() {}
 
 void SearchThread::run() {
+    QMutex mutex;
     while(!stopThreadFlag) {
 		if(searchTerm!=currentSearchTerm) {
 			searchRunning=true;
@@ -100,10 +99,12 @@ void SearchThread::run() {
 			}
 		}
 		if(!searchRunning && searchTerm==currentSearchTerm) {
-			gYammiGui->searchFieldChangedIndicator.wait();
+            mutex.lock();
+            gYammiGui->searchFieldChangedIndicator.wait(&mutex);
+            mutex.unlock();
 		}
 	}
-        qDebug() << "searchThread stopped";
+    qDebug() << "searchThread stopped";
 }
 
 

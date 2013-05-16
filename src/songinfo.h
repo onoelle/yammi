@@ -18,7 +18,6 @@
 #ifndef SONGINFO_H
 #define SONGINFO_H
 
-#include <qwidget.h>
 #include <SongInfoDialog.h>
 
 class Song;

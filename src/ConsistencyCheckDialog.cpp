@@ -1,16 +1,14 @@
+
+#include <QProgressDialog>
+#include <Q3TextEdit>
+#include <QCheckBox>
+#include <QComboBox>
+#include <QLabel>
+#include <QLineEdit>
+#include <QMessageBox>
+#include <QPushButton>
+
 #include "ConsistencyCheckDialog.h"
-
-#include <qcheckbox.h>
-#include <qcombobox.h>
-#include <qpushbutton.h>
-#include <qlineedit.h>
-#include <qmessagebox.h>
-#include <qlabel.h>
-
-#include <kapplication.h>
-#include <qprogressdialog.h>
-#include <qtextedit.h>
-
 #include "ConsistencyCheckParameter.h"
 #include "applytoalldialog.h"
 #include "mylist.h"
@@ -18,6 +16,7 @@
 #include "songentrystring.h"
 #include "util.h"
 #include "yammigui.h"
+
 
 extern YammiGui* gYammiGui;
 
@@ -89,13 +88,13 @@ void ConsistencyCheckDialog::startCheck() {
 
     QProgressDialog progress(this);
     progress.setLabelText(tr("Step 1: checking all songs in database..."));
-    progress.setTotalSteps(selectedSongs->count());
-    progress.setProgress(0);
+    progress.setRange(0, selectedSongs->count());
+    progress.setValue(0);
     progress.setMinimumDuration(0);
     progress.setAutoReset(false);
     progress.setAutoClose(false);
 
-    QTextEdit* output = TextEditOutput;
+    Q3TextEdit* output = TextEditOutput;
     output->append(tr("Checking consistency of %1 songs...").arg(selectedSongs->count()));
     model->problematicSongs.clear();
 
@@ -103,13 +102,13 @@ void ConsistencyCheckDialog::startCheck() {
     if(p->checkForExistence || p->checkTags || p->checkFilenames || p->checkDirectories) {
         int i=0;
         for(Song* s=selectedSongs->firstSong(); s; s=selectedSongs->nextSong(), i++) {
-            kapp->processEvents();
-            if(progress.wasCancelled()) {
+            qApp->processEvents();
+            if(progress.wasCanceled()) {
                 break;
             }
             output->append(QString(" - %1...\n").arg(s->displayName()));
             if(i % 10 == 0) {
-                progress.setProgress(i);
+                progress.setValue(i);
             }
             QString diagnosis=s->checkConsistency(true, true, p->ignoreCaseInFilenames, true);
             if(diagnosis=="") {
@@ -302,21 +301,21 @@ void ConsistencyCheckDialog::startCheck() {
 
 
     // 2. check for songs contained twice
-    if(!progress.wasCancelled() && p->checkDoubles) {
+    if(!progress.wasCanceled() && p->checkDoubles) {
         progress.setLabelText(tr("Step 2: check for song entries pointing to same file"));
-        progress.setTotalSteps(model->allSongs.count());
-        progress.setProgress(0);
-        kapp->processEvents();
+        progress.setRange(0, model->allSongs.count());
+        progress.setValue(0);
+        qApp->processEvents();
 
         model->allSongs.setSortOrderAndSort(MyList::ByFilename + 16*(MyList::ByPath));
         Song* last=model->allSongs.firstSong();
         int i=0;
         for(Song* s=model->allSongs.nextSong(); s; s=model->allSongs.nextSong(), i++) {
-            if(progress.wasCancelled()) {
+            if(progress.wasCanceled()) {
                 break;
             }
             if(i % 20 == 0) {
-                progress.setProgress(i);
+                progress.setValue(i);
             }
 
             if(s->artist=="{wish}") {        // ignore wishes
@@ -341,19 +340,19 @@ void ConsistencyCheckDialog::startCheck() {
 
         // 3. check for two songs with identical primary key
         progress.setLabelText(tr("Step 3: check for songs with identical primary keys"));
-        progress.setTotalSteps(model->allSongs.count());
-        progress.setProgress(0);
-        kapp->processEvents();
+        progress.setRange(0, model->allSongs.count());
+        progress.setValue(0);
+        qApp->processEvents();
 
         model->allSongs.setSortOrderAndSort(MyList::ByKey);
         last=model->allSongs.firstSong();
         i=0;
         for(Song* s=model->allSongs.nextSong(); s; s=model->allSongs.nextSong(), i++) {
-            if(progress.wasCancelled()) {
+            if(progress.wasCanceled()) {
                 break;
             }
             if(i % 20 == 0) {
-                progress.setProgress(i);
+                progress.setValue(i);
             }
             if(s->artist=="{wish}") {
                 continue;
@@ -372,7 +371,7 @@ void ConsistencyCheckDialog::startCheck() {
     model->allSongs.setSortOrderAndSort(MyList::ByKey);
 
     progress.close();
-    if(!progress.wasCancelled()) {
+    if(!progress.wasCanceled()) {
         output->append(tr("Consistency check finished\n"));
     } else {
         output->append(tr("Consistency check was cancelled\n"));

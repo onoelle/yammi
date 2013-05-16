@@ -18,8 +18,7 @@
 #ifndef LINEEDITSHIFT_H
 #define LINEEDITSHIFT_H
 
-#include <qwidget.h>
-#include <qlineedit.h>
+#include <QLineEdit>
 
 /** Just a wrapper class around QLineEdit which propagates shift key events
  * to gYammiGui.

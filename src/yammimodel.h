@@ -19,14 +19,16 @@
 #ifndef YAMMIMODEL_H
 #define YAMMIMODEL_H
 
-#include <qobject.h>
+#include <QObject>
+#include <Q3PtrList>
+
 #include "mylist.h"
 #include "prefs.h"
 
 
+class QProgressDialog;
 class YammiGui;
 class ConsistencyCheckParameter;
-class QProgressDialog;
 
 
 /**
@@ -58,7 +60,7 @@ public:
     MyList unclassifiedSongs; // songs not in any category/album/group
     MyList recentSongs; // songs recently added
 
-    QPtrList<MyList> allCategories; // categories
+    Q3PtrList<MyList> allCategories; // categories
     QStringList	categoryNames; // names of categories
 
     int entriesAdded;

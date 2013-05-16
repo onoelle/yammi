@@ -17,10 +17,13 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
+#include <QDir>
+#include <QDebug>
+#include <QString>
+
 #include "options.h"
 #include "util.h"
-#include <qstring.h>
-#include <qdir.h>
 
 /**
  * Deletes a directory if empty.

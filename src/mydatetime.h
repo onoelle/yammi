@@ -18,7 +18,7 @@
 #ifndef MYDATETIME_H
 #define MYDATETIME_H
 
-#include <qdatetime.h>
+#include <QDateTime>
 
 /**extends the QT base class with operators to read/write to a string
   *@author Brian O.Nölle

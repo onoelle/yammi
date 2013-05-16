@@ -20,8 +20,10 @@
 #ifndef TRACKPOSITIONSLIDER_H
 #define TRACKPOSITIONSLIDER_H
 
-#include <qslider.h>
-#include <qobject.h>
+#include <QSlider>
+
+class QWheelEvent;
+class QMouseEvent;
 
 class Song;
 
@@ -35,7 +37,7 @@ class TrackPositionSlider : public QSlider
 	Q_OBJECT
 
 public:
-    TrackPositionSlider(Orientation orientation, QWidget *parent, const char *name);
+    TrackPositionSlider(Qt::Orientation orientation, QWidget *parent, const char *name);
 	void setupTickmarks(Song* song);
     
 signals:

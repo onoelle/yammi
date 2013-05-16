@@ -18,21 +18,21 @@
 #ifndef SONGENTRYINT_H
 #define SONGENTRYINT_H
 
-#include <songentry.h>
+#include "songentry.h"
 
 /**
   *@author Oliver Nölle
   */
 
 class SongEntryInt : public SongEntry  {
-public: 
-	SongEntryInt(Song* s, int intInfo);
-	~SongEntryInt();
-	virtual int getBase() { return 1; };
-	virtual int compare(int column, SongEntry* other);	
-	virtual QString getKey(int column);
-	virtual QString getColumn(int no);
-	int intInfo;
+public:
+    SongEntryInt(Song* s, int intInfo);
+    ~SongEntryInt();
+    virtual int getBase() { return 1; };
+    virtual int compare(int column, SongEntry* other);
+    virtual QString getKey(int column);
+    virtual QString getColumn(int no);
+    int intInfo;
 };
 
 #endif

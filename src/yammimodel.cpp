@@ -15,19 +15,15 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QProgressDialog>
+#include <QCheckBox>
+#include <QDebug>
+#include <QDomDocument>
+#include <QMessageBox>
+#include <QTextStream>
+// TODO: avoid the gui-stuff includes in yammimodel
+
 #include "yammimodel.h"
-
-#include <kapplication.h>
-#include <qprogressdialog.h>
-#include <qmessagebox.h>
-
-#include <qdom.h>
-
-// TODO: avoid the following includes in yammimodel (because it is gui-stuff)
-#include <qcheckbox.h>
-#include <qeventloop.h>
-
-
 #include "yammigui.h"
 #include "applytoalldialog.h"
 #include "options.h"
@@ -67,8 +63,8 @@ Prefs* YammiModel::config()
 bool YammiModel::readList(MyList* list, QString filename)
 {
     QFile f(filename);
-    if ( !f.open( IO_ReadOnly ) ) {
-        qError() << "Could not open file for reading:" << filename;
+    if ( !f.open( QIODevice::ReadOnly ) ) {
+        qCritical() << "Could not open file for reading:" << filename;
         return false;
     }
     QString errorMsg;
@@ -77,7 +73,7 @@ bool YammiModel::readList(MyList* list, QString filename)
     QDomDocument doc;
     if( !doc.setContent(&f, false, &errorMsg, &errorLine, &errorColumn) ) {
         QString msg = QString(tr("Error reading categories file:\n%1\n(Error: %2, line %3, column %4)") ).arg(f.name()).arg(errorMsg).arg(errorLine).arg(errorColumn);
-        qError() << "Error reading file contents: " << filename << endl << msg;
+        qCritical() << "Error reading file contents: " << filename << endl << msg;
         f.close();
         return false;
     }
@@ -85,7 +81,7 @@ bool YammiModel::readList(MyList* list, QString filename)
     // get root element
     QDomElement e = doc.documentElement();
     if(e.tagName()!="category") {
-        qError() << "Does not seem to be a category xml file: " << filename;
+        qCritical() << "Does not seem to be a category xml file: " << filename;
         return false;
     }
 
@@ -143,13 +139,13 @@ void YammiModel::readCategories() {
     QProgressDialog dia;
     dia.setModal(true);
     dia.setLabelText(tr("Loading categories"));
-    dia.setTotalSteps(total);
+    dia.setRange(0, total);
     dia.setCancelButton(NULL);
     dia.setMinimumDuration(0);
 
     int progressCount=0;
     for( QStringList::Iterator it = cats.begin(); it!=cats.end(); ++it, progressCount++ ) {
-        dia.setProgress(progressCount);
+        dia.setValue(progressCount);
         QString filename(d.absPath()+ "/" + (*it));
         qDebug() << "category found: " << filename;
 		if(readList(0, filename)) {
@@ -167,13 +163,13 @@ void YammiModel::readHistory() {
     qDebug() << "reading song history from " << filename;
 
     QFile f( filename );
-    if ( !f.open( IO_ReadOnly ) ) {
-        qError() << "could not open history file : " << filename;
+    if ( !f.open( QIODevice::ReadOnly ) ) {
+        qCritical() << "could not open history file : " << filename;
         return;
     }
     QDomDocument doc;
     if ( !doc.setContent( &f ) ) {
-        qError() << "could not parse history file, incorrect xml format? " << filename;
+        qCritical() << "could not parse history file, incorrect xml format? " << filename;
         f.close();
         return;
     }
@@ -186,13 +182,13 @@ void YammiModel::readHistory() {
     QProgressDialog dia;
     dia.setModal(true);
     dia.setLabelText(tr("Loading song history"));
-    dia.setTotalSteps(total);
+    dia.setRange(0, total);
     dia.setCancelButton(NULL);
     dia.setMinimumDuration(0);
 
     for(int i=0; !e.isNull(); i++) {
         if(i % 100==0) {
-            dia.setProgress(i);
+            dia.setValue(i);
         }
         QString artist = e.attribute("artist", "unknown");
         QString title  = e.attribute("title", "unknown");
@@ -258,8 +254,8 @@ void YammiModel::saveHistory() {
 
     QString filename(path + "history.xml");
     QFile file(filename);
-    if(!file.open(IO_WriteOnly)) {
-        qError() << "could not open file for writing:" << filename;
+    if(!file.open(QIODevice::WriteOnly)) {
+        qCritical() << "could not open file for writing:" << filename;
         return;
     }
     QTextStream str(&file);
@@ -275,8 +271,8 @@ void YammiModel::saveCategories() {
     QString path = config()->databaseDir + "categories/";
 	QDir dir(path);
 	if(!dir.exists()) {
-                qDebug() << "creating directory " << path;
-		dir.mkdir(path, true);
+        qDebug() << "creating directory " << path;
+        dir.mkpath(path);
 	}
     qDebug() << "saving dirty categories to directory " << path;
 
@@ -316,8 +312,8 @@ bool YammiModel::saveList(MyList* list, QString path, QString filename)
     // save to file...
     QString absoluteFilename(path + "/" + filename + ".xml");
     QFile file(absoluteFilename);
-    if(!file.open(IO_WriteOnly)) {
-        qError() << "Could not save folder " << absoluteFilename;
+    if(!file.open(QIODevice::WriteOnly)) {
+        qCritical() << "Could not save folder " << absoluteFilename;
         return false;
     }
     QTextStream str(&file);
@@ -334,7 +330,7 @@ void YammiModel::readSongDatabase(  ) {
     QString filename(config()->databaseDir + "songdb.xml");
         qDebug() << "reading song database from: " << filename;
     QFile f(filename);
-    if( !f.open(IO_ReadOnly) ) {
+    if( !f.open(QIODevice::ReadOnly) ) {
                 qWarning() << "could not read song database from " << filename;
         return;
     }
@@ -366,14 +362,14 @@ void YammiModel::readSongDatabase(  ) {
     QProgressDialog dia;
     dia.setModal(true);
     dia.setLabelText(tr("Loading database"));
-    dia.setTotalSteps(total);
+    dia.setRange(0, total);
     dia.setCancelButton(NULL);
     dia.setMinimumDuration(0);
 
     int count = 0;
     while( !e.isNull( ) ) {
         if(count % 100==0) {
-            dia.setProgress( count );
+            dia.setValue( count );
         }
 
         QString artist   = e.attribute("artist", "unknown");
@@ -455,8 +451,8 @@ void YammiModel::saveSongDatabase() {
     }
 
     QFile file(filename);
-    if(!file.open(IO_WriteOnly)) {
-        qError() << "could not open file for writing:" << filename;
+    if(!file.open(QIODevice::WriteOnly)) {
+        qCritical() << "could not open file for writing:" << filename;
         return;
     }
     QTextStream str(&file);
@@ -507,7 +503,7 @@ void YammiModel::updateSongDatabase(QString scanDir, bool followSymLinks, QStrin
     if(!d.exists()) {
         QString msg( tr("The base directory for scanning does not exist!\n\
                           Set value \"scanDir\" to an existing directory!"));
-        QMessageBox::warning(NULL, "", msg, QMessageBox::Ok, QMessageBox::NoButton);
+        QMessageBox::warning(NULL, "", msg, QMessageBox::Ok, Qt::NoButton);
         return;
     } else {
         traverse(scanDir, followSymLinks, filePattern, progress);
@@ -550,55 +546,43 @@ bool YammiModel::traverse(QString path, bool followSymLinks, QString filePattern
     }
     qDebug() << "scanning directory " << path;
     progress->setLabelText(QString(tr("scanning directory %1 ...")).arg(path));
-    progress->setProgress(0);
+    progress->setValue(0);
 
     QDir d(path);
 
     // step 1: scan files
     d.setFilter(QDir::Files | QDir::Hidden);
-    d.setNameFilter(filePattern);
+    d.setNameFilters(filePattern.split(QChar(' ')));
     d.setSorting( QDir::Name );
-    
-    const QFileInfoList* list = d.entryInfoList();
-    if (!list) {
-        qWarning() << "Warning: Skipping unreadable directory: " << path;
-        return true;
-    }
-    int filesToScan=list->count();
-    progress->setTotalSteps(filesToScan);
-    QFileInfoListIterator it( *list );
+    QFileInfoList list = d.entryInfoList();
+    progress->setRange(0, list.count());
     int filesScanned=0;
-    for(QFileInfo *fi; (fi=it.current()); ++it ) {
+    for(QFileInfoListIterator it = list.begin(); it != list.end(); ++it ) {
         filesScanned++;
-        progress->setProgress(filesScanned);
-        if(progress->wasCancelled()) {
+        progress->setValue(filesScanned);
+        if(progress->wasCanceled()) {
             return false;
         }
         // okay, we have a file to scan, try to add to database
-        addSongToDatabase(fi->filePath());
+        addSongToDatabase(it->filePath());
     }
 
     // step 2: recursively scan subdirectories
     QDir d2(path);
     d2.setFilter(QDir::Dirs | QDir::Readable  | QDir::Hidden);
     d2.setSorting( QDir::Name );
-    const QFileInfoList* list2 = d2.entryInfoList();
-    if (!list2) {
-        qWarning() << "Warning: Skipping unreadable child directory: " << path;
-        return true;
-    }
-    QFileInfoListIterator it2( *list2 );
-    for(QFileInfo *fi2; (fi2=it2.current()); ++it2 ) {
-        if(fi2->fileName()=="." || fi2->fileName()=="..") {
+    QFileInfoList list2 = d2.entryInfoList();
+    for(QFileInfoListIterator it2 = list2.begin(); it2 != list2.end(); ++it2) {
+        if(it2->fileName()=="." || it2->fileName()=="..") {
             continue;
         }
         if(followSymLinks == false) {
-            if(fi2->isSymLink()) {
-                qDebug() << "skipping symlink " << fi2->filePath();
+            if(it2->isSymLink()) {
+                qDebug() << "skipping symlink " << it2->filePath();
                 continue;
             }
         }
-        if(traverse(fi2->filePath(), followSymLinks, filePattern, progress) == false) {
+        if(traverse(it2->filePath(), followSymLinks, filePattern, progress) == false) {
             return false;
         }
     }
@@ -611,8 +595,8 @@ bool YammiModel::traverse(QString path, bool followSymLinks, QString filePattern
 void YammiModel::fixGenres(QProgressDialog* progress) {
     int i = 0;
     for(Song* s=allSongs.firstSong(); s; s=allSongs.nextSong(), i++) {
-        progress->setProgress(i);
-        if(progress->wasCancelled()) {
+        progress->setValue(i);
+        if(progress->wasCanceled()) {
             qDebug() << "fixing genres aborted...";
             return;
         }
@@ -663,7 +647,7 @@ void YammiModel::addSongToDatabase(QString filename) {
     Song* newSong = new Song();
     newSong->create(filename, m_yammi->config()->capitalizeTags);
     if(newSong->corrupted) {
-        qError() << "new song file " << filename << " is corrupt (not readable for yammi), skipping";
+        qCritical() << "new song file " << filename << " is corrupt (not readable for yammi), skipping";
         corruptSongs++;
         return;
     }
@@ -727,7 +711,7 @@ void YammiModel::addSongToDatabase(QString filename) {
 QStringList* YammiModel::readM3uFile(QString filename) {
     QStringList* list=new QStringList();
     QFile file(filename);
-    if (!file.open( IO_ReadOnly  ) )
+    if (!file.open( QIODevice::ReadOnly  ) )
         return list;
     QTextStream stream(&file);
     while(!stream.atEnd()) {
@@ -776,7 +760,7 @@ void YammiModel::renameCategory(QString oldCategoryName, QString newCategoryName
             QDir dir;
             QString path = config()->databaseDir + "categories/";
             if(!dir.rename(path+oldCategoryName+".xml", path+newCategoryName+".xml"))
-                qError() << "could not rename category file:" << path << oldCategoryName << ".xml";
+                qCritical() << "could not rename category file:" << path << oldCategoryName << ".xml";
             break;
         }
     }
@@ -810,7 +794,7 @@ void YammiModel::saveAll() {
  */
 void YammiModel::save() {
     qDebug() << "model save()";
-    KApplication::setOverrideCursor( Qt::waitCursor );
+    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
     // save dirty categories
     saveCategories();
     if(allSongsChanged()) {
@@ -819,7 +803,7 @@ void YammiModel::save() {
     if(allSongsChanged() || m_yammi->config()->logging) {
         saveHistory();
     }
-    KApplication::restoreOverrideCursor();
+    QApplication::restoreOverrideCursor();
 }
 
 

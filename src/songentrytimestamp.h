@@ -18,8 +18,8 @@
 #ifndef SONGENTRYTIMESTAMP_H
 #define SONGENTRYTIMESTAMP_H
 
-#include <songentry.h>
-#include <mydatetime.h>
+#include "songentry.h"
+#include "mydatetime.h"
 
 
 /**song info extended with a timestamp
@@ -27,16 +27,16 @@
   */
 
 class SongEntryTimestamp : public SongEntry  {
-public: 
-	SongEntryTimestamp(Song* s);
-	SongEntryTimestamp(Song* s, MyDateTime* datetime);
-	virtual ~SongEntryTimestamp();
-	
-	virtual int getBase() { return 1; };
-	virtual int compare(int column, SongEntry* other);
-	virtual QString getKey(int no);
-	virtual QString getColumn(int no);
-	MyDateTime timestamp;
+public:
+    SongEntryTimestamp(Song* s);
+    SongEntryTimestamp(Song* s, MyDateTime* datetime);
+    virtual ~SongEntryTimestamp();
+
+    virtual int getBase() { return 1; };
+    virtual int compare(int column, SongEntry* other);
+    virtual QString getKey(int no);
+    virtual QString getColumn(int no);
+    MyDateTime timestamp;
 protected:
 };
 

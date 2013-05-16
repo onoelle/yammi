@@ -18,18 +18,19 @@
 #ifndef SONGLISTITEM_H
 #define SONGLISTITEM_H
 
+#include <Q3ListViewItem>
+
 #include "song.h"
 #include "songentry.h"
-#include "qlistview.h"
 
-class SongListItem : public QListViewItem
+class SongListItem : public Q3ListViewItem
 {
 public:
-  SongListItem( QListView *parent, SongEntry *s, SongListItem* after=0 );
+  SongListItem( Q3ListView *parent, SongEntry *s, SongListItem* after=0 );
 	void       setColumns(SongEntry* entry);
 
   virtual void   paintCell( QPainter *p, const QColorGroup &cg, int column, int width, int alignment );
-	int        compare( QListViewItem *i, int col, bool ascending ) const;
+	int        compare( Q3ListViewItem *i, int col, bool ascending ) const;
 	QString    key(int column, bool ascending) const;
 	Song*      song() const	{ return songEntry->song(); }
 

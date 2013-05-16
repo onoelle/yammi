@@ -18,8 +18,7 @@
 #ifndef UPDATEDATABASEDIALOG_H
 #define UPDATEDATABASEDIALOG_H
 
-#include <qwidget.h>
-#include <UpdateDatabaseDialogBase.h>
+#include "UpdateDatabaseDialogBase.h"
 #include "prefs.h"
 
 /**
