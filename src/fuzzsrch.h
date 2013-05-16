@@ -1,41 +1,41 @@
 /**	  Unscharfe Suche nach Objektnamen
 *
-* 7-2000 bis 8-2000 by Oliver N�le
+* 7-2000 bis 8-2000 by Oliver Nölle
 *
 * Version 1.0, last modified 18.8.2000
 *
 
-  - fhrt unscharfe Suche auf Objektnamen durch
+  - führt unscharfe Suche auf Objektnamen durch
   d.h. fehlertolerante Suche nach Objekten oder Strassen
   - basiert auf ngram-Zerlegung
   Artikel+Source in der c't (ich glaube 4-97)
-  - Effizienz angepa� an
+  - Effizienz angepaßt an
     - kurzer Suchstring (ca. 2-20 Zeichen)
-    - viele (ca. 10.000 - 100.000) aber dar kurze (ca. 10-30 Zeichen) Eintr�e in der Objektdatenbank
-  - Qualit� verbessert durch
-    - Berechnung des Informationsgehalts eines ngrams (frequency=Auftretensh�figkeit)
+    - viele (ca. 10.000 - 100.000) aber dar kurze (ca. 10-30 Zeichen) Einträge in der Objektdatenbank
+  - Qualität verbessert durch
+    - Berechnung des Informationsgehalts eines ngrams (frequency=Auftretenshäufigkeit)
 
   Strategie:
   1. Suchstring + Objektnamen vorverarbeiten
   - to lowercase
-  - phonetisch: �-> ss
+  - phonetisch: ß -> ss
   - Umlaute in ae, oe, ue
   - Sonderzeichen -> Leerzeichen
 
-  2. Suchstring in passende ngramme zerlegen, jeder bekommt eine Anfangsgewichtung nach L�ge
+  2. Suchstring in passende ngramme zerlegen, jeder bekommt eine Anfangsgewichtung nach Länge
 
-  3. lineares durchsuchen der Textdatei, <NoBestMatches> besten Eintr�e werden in einer sortierten Liste gehalten
+  3. lineares durchsuchen der Textdatei, <NoBestMatches> besten Einträge werden in einer sortierten Liste gehalten
 
 
 
   4. Neubewertung der einzelnen ngramme nach frequency, Neusortierung der best matches liste
 
   folgende Verbesserungen denkbar:
-  - diese 200 Eintr�e nach Levenshtein-Distanz neu bewerten/ordnen
+  - diese 200 Einträge nach Levenshtein-Distanz neu bewerten/ordnen
   (z.B. fr suchstring "Heierweg" sollte "Haierweg" besser bewerten als "Eisweierweg"
   - anstatt den ersten beiden Stufen: Bewertung >1000 = exakter Anfangsmatch, Bewertung =1000 exaktes Vorkommen, <1000 fuzzy
-  - anstatt fuzzy search und fuzzy phonetic getrennt: Bewertungen addieren / maximale Bewertung bernehmen
-  - berdenken der Pr�entation der Ergebnisse der verschiedenen Stufen => transparentere Bewertungen
+  - anstatt fuzzy search und fuzzy phonetic getrennt: Bewertungen addieren / maximale Bewertung übernehmen
+  - überdenken der Präsentation der Ergebnisse der verschiedenen Stufen => transparentere Bewertungen
 
 */
 

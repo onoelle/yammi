@@ -2,7 +2,7 @@
                           songentrytimestamp.h  -  description
                              -------------------
     begin                : Fri Feb 8 2002
-    copyright            : (C) 2002 by Oliver Nölle
+    copyright            : (C) 2002 by Oliver NÃ¶lle
     email                : yammi-developer@lists.sourceforge.net
  ***************************************************************************/
 
@@ -23,7 +23,7 @@
 
 
 /**song info extended with a timestamp
-  *@author Oliver Nölle
+  *@author Oliver NÃ¶lle
   */
 
 class SongEntryTimestamp : public SongEntry  {

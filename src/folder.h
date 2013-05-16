@@ -2,7 +2,7 @@
                           folder.h  -  description
                              -------------------
     begin                : Fri Feb 23 2001
-    copyright            : (C) 2001 by Brian O.Nölle
+    copyright            : (C) 2001 by Brian O.NÃ¶lle
     email                : yammi-developer@lists.sourceforge.net
  ***************************************************************************/
 

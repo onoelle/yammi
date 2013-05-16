@@ -2,7 +2,7 @@
                           updatedatabasemediadialog.cpp  -  description
                              -------------------
     begin                : Fri Sep 13 2002
-    copyright            : (C) 2002 by Oliver Nölle
+    copyright            : (C) 2002 by Oliver NÃ¶lle
     email                : yammi-developer@lists.sourceforge.net
  ***************************************************************************/
 

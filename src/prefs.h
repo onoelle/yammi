@@ -2,7 +2,7 @@
                           prefs.h  -  description
                              -------------------
     begin                : Sun Sep 9 2001
-    copyright            : (C) 2001 by Brian O.Nlle
+    copyright            : (C) 2001 by Brian O.Nölle
     email                :  yammi-developer@lists.sourceforge.net
  
     04/10/2003 Stefan Gmeiner (riddlebox@freesurf.ch)
@@ -29,7 +29,7 @@
 
 /**
  * this class just holds all configuration values
- * @author Brian O.Nlle
+ * @author Brian O.Nölle
  */
 class Prefs {
 public:

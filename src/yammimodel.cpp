@@ -2,7 +2,7 @@
                           yammimodel.cpp  -  description
                              -------------------
     begin                : Sun Oct 7 2001
-    copyright            : (C) 2001 by Brian O.Nlle
+    copyright            : (C) 2001 by Brian O.Nölle
     email                : yammi-developer@lists.sourceforge.net
  ***************************************************************************/
 

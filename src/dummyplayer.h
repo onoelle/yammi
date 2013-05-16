@@ -2,7 +2,7 @@
                           dummyplayer.h  -  description
                              -------------------
     begin                : Thu Apr 24 2003
-    copyright            : (C) 2003 by Oliver Nölle
+    copyright            : (C) 2003 by Oliver NÃ¶lle
     email                : yammi-developer@lists.sourceforge.net
  ***************************************************************************/
 
@@ -21,7 +21,7 @@
 #include <mediaplayer.h>
 
 /**a dummy player class with no behaviour
-  *@author Oliver Nölle
+  *@author Oliver NÃ¶lle
   */
 
 class DummyPlayer : public MediaPlayer  {

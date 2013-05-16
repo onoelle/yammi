@@ -2,7 +2,7 @@
                           mylist.h  -  description
                              -------------------
     begin                : Mon Mar 19 2001
-    copyright            : (C) 2001 by Brian O.Nölle
+    copyright            : (C) 2001 by Brian O.NÃ¶lle
     email                : yammi-developer@lists.sourceforge.net
  ***************************************************************************/
 

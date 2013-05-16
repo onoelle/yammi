@@ -2,7 +2,7 @@
                           songentry.h  -  description
                              -------------------
     begin                : Fri Feb 8 2002
-    copyright            : (C) 2002 by Oliver Nölle
+    copyright            : (C) 2002 by Oliver NÃ¶lle
     email                : yammi-developer@lists.sourceforge.net
  ***************************************************************************/
 
@@ -21,7 +21,7 @@
 #include "song.h"
 
 /**pointer to song + some additional info
-  *@author Oliver Nölle
+  *@author Oliver NÃ¶lle
   */
 
 class SongEntry {

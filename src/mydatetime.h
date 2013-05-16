@@ -2,7 +2,7 @@
                           mydatetime.h  -  description
                              -------------------
     begin                : Fri Nov 2 2001
-    copyright            : (C) 2001 by Brian O.Nlle
+    copyright            : (C) 2001 by Brian O.Nölle
     email                :  yammi-developer@lists.sourceforge.net
  ***************************************************************************/
 
@@ -21,7 +21,7 @@
 #include <qdatetime.h>
 
 /**extends the QT base class with operators to read/write to a string
-  *@author Brian O.Nlle
+  *@author Brian O.Nölle
   */
 
 class MyDateTime : public QDateTime  {

@@ -2,7 +2,7 @@
                           mylistview.h  -  description
                              -------------------
     begin                : Sat Jan 12 2002
-    copyright            : (C) 2002 by Oliver Nölle
+    copyright            : (C) 2002 by Oliver NÃ¶lle
     email                : yammi-developer@lists.sourceforge.net
  ***************************************************************************/
 
@@ -26,7 +26,7 @@ class QKeyEvent;
 
 
 /**extends the QListView class, esp. for dragging songs...
-  *@author Oliver Nölle
+  *@author Oliver NÃ¶lle
   */
 
 class MyListView : public QListView  {

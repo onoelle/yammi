@@ -2,7 +2,7 @@
                           songinfo.h  -  description
                              -------------------
     begin                : Fri Aug 10 2001
-    copyright            : (C) 2001 by Brian O.Nlle
+    copyright            : (C) 2001 by Brian O.Nölle
     email                : yammi-developer@lists.sourceforge.net
  ***************************************************************************/
 
@@ -25,7 +25,7 @@ class Song;
 class MyList;
 
 /**
-  *@author Brian O.Nlle
+  *@author Brian O.Nölle
   */
 
 class SongInfo : public SongInfoDialog  {

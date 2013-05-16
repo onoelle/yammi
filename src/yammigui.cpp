@@ -2,7 +2,7 @@
                           yammigui.cpp  -  description
                              -------------------
     begin                : Tue Feb 27 2001
-    copyright            : (C) 2001 by Brian O.N�le
+    copyright            : (C) 2001 by Brian O.Nölle
     email                : yammi-developer@lists.sourceforge.net
  ***************************************************************************/
 

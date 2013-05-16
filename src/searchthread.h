@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2004 by Oliver Nölle                                    *
+ *   Copyright (C) 2004 by Oliver NÃ¶lle                                    *
  *   oli.noelle@web.de                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -27,7 +27,7 @@ class QString;
 class YammiGui;
 
 /**
-@author Oliver Nölle
+@author Oliver NÃ¶lle
  * A thread for performing the fuzzy search in the background.
 */
 class SearchThread : public QThread

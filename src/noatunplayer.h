@@ -2,7 +2,7 @@
                           noatunplayer.h  -  description
                              -------------------
     begin                : Sun Jan 19 2003
-    copyright            : (C) 2003 by Oliver Nölle
+    copyright            : (C) 2003 by Oliver NÃ¶lle
     email                : yammi-developer@lists.sourceforge.net
  ***************************************************************************/
 

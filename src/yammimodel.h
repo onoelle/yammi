@@ -2,7 +2,7 @@
                           yammimodel.h  -  description
                              -------------------
     begin                : Sun Oct 7 2001
-    copyright            : (C) 2001 by Brian O.Nlle
+    copyright            : (C) 2001 by Brian O.Nölle
     email                : yammi-developer@lists.sourceforge.net
  
  ***************************************************************************/
@@ -31,7 +31,7 @@ class KProgressDialog;
 
 /**
  * this is the model of Yammi
- *	@author Brian O.Nlle
+ *	@author Brian O.Nölle
  */
 //This is actually Yammi's Database....
 class YammiModel : public QObject {

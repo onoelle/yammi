@@ -2,7 +2,7 @@
                           updatedatabasemediadialog.h  -  description
                              -------------------
     begin                : Fri Sep 13 2002
-    copyright            : (C) 2002 by Oliver Nölle
+    copyright            : (C) 2002 by Oliver NÃ¶lle
     email                : yammi-developer@lists.sourceforge.net
  ***************************************************************************/
 
@@ -23,7 +23,7 @@
 #include "prefs.h"
 
 /**
-  *@author Oliver Nölle
+  *@author Oliver NÃ¶lle
   */
 
 class UpdateDatabaseMediaDialog : public UpdateDatabaseMediaDialogBase  {

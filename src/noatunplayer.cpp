@@ -2,7 +2,7 @@
                           noatunplayer.cpp  -  description
                              -------------------
     begin                : Sun Jan 19 2003
-    copyright            : (C) 2003 by Oliver N�le
+    copyright            : (C) 2003 by Oliver Nölle
     email                : yammi-developer@lists.sourceforge.net
  ***************************************************************************/
 

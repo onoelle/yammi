@@ -1,10 +1,10 @@
 /**	  Unscharfe Suche nach Objektnamen
 *
-* 7-2000 - 8-2000 by Oliver Nölle
+* 7-2000 - 8-2000 by Oliver NÃ¶lle
 *
 * Version 1.0, last modified 18.8.2000
 *
-* nur Methodenrümpfe, Klassendeklarationen+Doku in fuzzsrch.h
+* nur MethodenrÃ¼mpfe, Klassendeklarationen+Doku in fuzzsrch.h
 */
 
 #include <stdio.h>
@@ -148,7 +148,7 @@ prepare a string:
 - to lowercase
 - replace special characters like '-', '.', ... with space
 - return length
-- phonetic similarities => ß -> ss, ö -> oe, ...
+- phonetic similarities => ÃŸ -> ss, Ã¶ -> oe, ...
 */
 int FuzzySearch::prepareString(char* convStr, const char* originStr)
 {
@@ -265,7 +265,7 @@ void FuzzySearch::newOrder() {
 	// step 1: calculate new similarity value for all best matches
 	for(j=0; j<NoBestMatches && bme[j]; j++) {
 		int accuracy=0;
-		// für jedes ngram match überprüfen
+		// fÃ¼r jedes ngram match Ã¼berprÃ¼fen
 		for(i=1; i<=ngr->noNgrams; i++) {
 			ngs[i]->found=false;
 			if(ngs[ngs[i]->precondition[0]]->found==true && ngs[ngs[i]->precondition[1]]->found==true) {
@@ -392,7 +392,7 @@ int FuzzySearch::checkNext(const char* nextEntry, void* objPtr)
 	// prepare the string (leading space, lowercase, ...)
 	prepareString(preparedNextEntry, nextEntry);
 
-	// für jedes ngram match überprüfen
+	// fÃ¼r jedes ngram match Ã¼berprÃ¼fen
 	for(i=1; i<=ngr->noNgrams; i++) {
 		ngs[i]->found=false;
 		if(ngs[ngs[i]->precondition[0]]->found==true && ngs[ngs[i]->precondition[1]]->found==true) {

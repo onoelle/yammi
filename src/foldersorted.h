@@ -2,7 +2,7 @@
                           foldersorted.h  -  description
                              -------------------
     begin                : Thu Mar 28 2002
-    copyright            : (C) 2002 by Oliver Nölle
+    copyright            : (C) 2002 by Oliver NÃ¶lle
     email                : yammi-developer@lists.sourceforge.net
  ***************************************************************************/
 
@@ -22,7 +22,7 @@
 #include "mylistview.h"
 
 /**
-  *@author Oliver Nölle
+  *@author Oliver NÃ¶lle
   */
 
 class FolderSorted : public Folder  {

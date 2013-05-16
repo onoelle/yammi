@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2004 by Oliver Nölle                                    *
+ *   Copyright (C) 2004 by Oliver NÃ¶lle                                    *
  *   oli.noelle@web.de                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -26,7 +26,7 @@
 class Song;
 
 /**
- *@author Oliver Nölle
+ *@author Oliver NÃ¶lle
  * Convenience class, copied from Scott Wheelers "Juk" project
  * (see http://ktown.kde.org/~wheeler/juk.html)
  */
