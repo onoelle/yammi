@@ -15,13 +15,13 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "options.h"
 #include "song.h"
 
 #include "yammigui.h"
 #include "prefs.h"
 #include "util.h"
 
-#include <kdebug.h>
 #include <kio/job.h>
 
 #include <taglib/audioproperties.h>
@@ -121,11 +121,11 @@ bool Song::create(const QString location, const QString mediaName, bool capitali
 
     QFileInfo* fi = new QFileInfo(location);
     if(!fi->exists()) {
-        kdDebug() << "trying to construct song, but file " << location << " does not exist!\n";
+        qDebug() << "trying to construct song, but file " << location << " does not exist!";
         return false;
     }
     if(!fi->isReadable()) {
-        kdDebug() << "trying to construct song, but file " << location << " is not accessible!\n";
+        qDebug() << "trying to construct song, but file " << location << " is not accessible!";
         return false;
     }
     if(mediaName==0) {          // song is on harddisk
@@ -137,10 +137,10 @@ bool Song::create(const QString location, const QString mediaName, bool capitali
         QString mountPath = gYammiGui->config()->mediaDir;
         QString locationOnMedia=location;
         if(locationOnMedia.left(mountPath.length()) != mountPath) {
-            kdDebug() << "warning: song file is not on the mount path\n";
+            qDebug() << "warning: song file is not on the mount path";
         }
         locationOnMedia = locationOnMedia.right(locationOnMedia.length()-mountPath.length());
-        kdDebug() << "mediaName: " << mediaName << ", locationOnMedia: " << locationOnMedia << "\n";
+        qDebug() << "mediaName: " << mediaName << ", locationOnMedia: " << locationOnMedia << "";
         addMediaLocation(mediaName, locationOnMedia);
     }
     filesize=fi->size();
@@ -151,7 +151,7 @@ bool Song::create(const QString location, const QString mediaName, bool capitali
 
     if(!readTags(location)) {
         guessTagsFromFilename(saveFilename, savePath, &artist, &title, &album);
-        kdDebug() << "guessed: artist: " << artist << ", title: " << title << ", album: " << album << endl;
+        qDebug() << "guessed: artist: " << artist << ", title: " << title << ", album: " << album;
     }
     if(!readLayerInfo(location)) {
         length = 0;
@@ -184,18 +184,18 @@ bool Song::create(const QString location, const QString mediaName, bool capitali
 bool Song::readTags(QString filename) {
     TagLib::FileRef f(QFile::encodeName(filename));
     if(f.isNull()) {
-        kdDebug() << "reading tags: could not create TagLib::FileRef for file " << filename << endl;
+        qDebug() << "reading tags: could not create TagLib::FileRef for file " << filename;
         return false;
     }
     // read tags
     TagLib::Tag* tag;
     tag = f.tag();
     if(tag == 0) {
-        kdDebug() << "reading tags: tag == 0 in file " << filename << endl;
+        qDebug() << "reading tags: tag == 0 in file " << filename;
         return false;
     }
     if(tag->isEmpty()) {
-        kdDebug() << "reading tags: tags are empty in file " << filename << endl;
+        qDebug() << "reading tags: tags are empty in file " << filename;
         return false;
     }
     album = TStringToQString( tag->album() ).stripWhiteSpace();
@@ -216,13 +216,13 @@ bool Song::readTags(QString filename) {
 bool Song::readLayerInfo(QString filename) {
     TagLib::FileRef f(QFile::encodeName(filename));
     if(f.isNull()) {
-        kdDebug() << "reading layer info: could not create TagLib::FileRef for file " << filename << endl;
+        qDebug() << "reading layer info: could not create TagLib::FileRef for file " << filename;
     }
     else {
         TagLib::AudioProperties* audioProperties;
         audioProperties = f.audioProperties();
         if(audioProperties == 0) {
-            kdDebug() << "could not read audio properties from file " << filename << endl;
+            qDebug() << "could not read audio properties from file " << filename;
         }
         else {
             bitrate = audioProperties->bitrate();
@@ -237,10 +237,10 @@ bool Song::readLayerInfo(QString filename) {
             return true;
         }
         else {
-            kdDebug() << "reading layer info: could not read wav header information from wav file \"" << filename << "\"\n";
+            qDebug() << "reading layer info: could not read wav header information from wav file \"" << filename << "\"";
         }
     }
-    kdDebug() << "reading layer info: not successful => length and bitrate set to 0" << endl;
+    qDebug() << "reading layer info: not successful => length and bitrate set to 0";
     return false;
 }
 
@@ -252,7 +252,7 @@ bool Song::readLayerInfo(QString filename) {
 bool Song::rereadTags() {
     if(!readTags(location())) {
         guessTagsFromFilename(filename, path, &artist, &title, &album);
-        kdDebug() << "guessed: artist: " << artist << ", title: " << title << ", album: " << album << endl;
+        qDebug() << "guessed: artist: " << artist << ", title: " << title << ", album: " << album;
     }
     return true;
 }
@@ -351,7 +351,7 @@ void Song::guessTagsFromFilename(QString filename, QString path, QString* artist
         }
         return;
     }
-    kdDebug() << "ERROR: unknown guessing mode for guessing tags!\n";
+    qDebug() << "ERROR: unknown guessing mode for guessing tags!";
 }
 
 
@@ -371,28 +371,28 @@ bool Song::getWavInfo(QString filename) {
         WaveHeader header;
         stream.readRawBytes((char*)&header, sizeof(WaveHeader));
         wavFile.close();
-        //    kdDebug() << "header data: nChannels: " << header.nChannels << ", wBitsPerSample: " << header.wBitsPerSample << "\n";
-        //    kdDebug() << "nSamplesPerSec: " << header.nSamplesPerSec << ", filesize: " << header.filesize << ", avgBytesPerSec: " << header.nAvgBytesPerSec << "\n";
-        //    kdDebug() << "formatChunkSize: " << header.formatChunkSize << ", dataChunkSize: " << header.dataChunkSize << "\n";
+        //    qDebug() << "header data: nChannels: " << header.nChannels << ", wBitsPerSample: " << header.wBitsPerSample;
+        //    qDebug() << "nSamplesPerSec: " << header.nSamplesPerSec << ", filesize: " << header.filesize << ", avgBytesPerSec: " << header.nAvgBytesPerSec;
+        //    qDebug() << "formatChunkSize: " << header.formatChunkSize << ", dataChunkSize: " << header.dataChunkSize;
 
         if(header.nChannels==0 || header.nSamplesPerSec==0 || header.wBitsPerSample==0) {
-            kdDebug() << "length calculation of file " << filename << " would have yielded division by zero, debug info:\n";
-            kdDebug() << "header data: nChannels: " << header.nChannels << ", wBitsPerSample: " << header.wBitsPerSample << "\n";
-            kdDebug() << "nSamplesPerSec: " << header.nSamplesPerSec << ", filesize: " << header.filesize << ", avgBytesPerSec: " << header.nAvgBytesPerSec << "\n";
-            kdDebug() << "formatChunkSize: " << header.formatChunkSize << ", dataChunkSize: " << header.dataChunkSize << "\n";
-            kdDebug() << "setting length to 1\n";
+            qDebug() << "length calculation of file " << filename << " would have yielded division by zero, debug info:";
+            qDebug() << "header data: nChannels: " << header.nChannels << ", wBitsPerSample: " << header.wBitsPerSample;
+            qDebug() << "nSamplesPerSec: " << header.nSamplesPerSec << ", filesize: " << header.filesize << ", avgBytesPerSec: " << header.nAvgBytesPerSec;
+            qDebug() << "formatChunkSize: " << header.formatChunkSize << ", dataChunkSize: " << header.dataChunkSize;
+            qDebug() << "setting length to 1";
             length=1;
         } else {
-            kdDebug() << "calculating length...\n";
+            qDebug() << "calculating length...";
             this->length=((((header.dataChunkSize * 8) / header.nChannels) / header.nSamplesPerSec) / header.wBitsPerSample);
-            kdDebug() << "...and bitrate...\n";
+            qDebug() << "...and bitrate...";
             this->bitrate=header.nAvgBytesPerSec * 8 / 1000;
-            kdDebug() << "...done!\n";
+            qDebug() << "...done!";
             this->comment=QString("%1, %2 KHz, %3 bit").arg(header.nChannels==2 ? "stereo" : "mono").arg(header.nSamplesPerSec).arg(header.wBitsPerSample);
         }
         return true;
     } else {
-        kdDebug() << "Error in opening wav file for reading!\n";
+        qDebug() << "Error in opening wav file for reading!";
         return false;
     }
 }
@@ -411,7 +411,7 @@ bool Song::checkTags() {
     if(filename=="") {      // song not on local harddisk => we can't check
         return true;
     }
-    kdDebug() << "checking tags of " << displayName() << ", title: " << title << endl;
+    qDebug() << "checking tags of " << displayName() << ", title: " << title;
 
     QString ffArtist, ffTitle, ffAlbum;
     guessTagsFromFilename(filename, path, &ffArtist, &ffTitle, &ffAlbum);
@@ -434,37 +434,37 @@ bool Song::checkTags() {
     same=true;
     if(_album     != this->album)    {
         same=false;
-        kdDebug() << "(album)" << endl;
+        qDebug() << "(album)";
     }
     if(_artist    != this->artist)   {
         same=false;
-        kdDebug() << "(artist)" << endl;
+        qDebug() << "(artist)";
     }
     if(_comment   != this->comment)  {
         same=false;
-        kdDebug() << "(comment)" << endl;
+        qDebug() << "(comment)";
     }
     if(_title     != this->title)    {
         same=false;
-        kdDebug() << "(title)" << endl;
+        qDebug() << "(title)";
     }
     if(_year      != this->year)     {
         same=false;
-        kdDebug() << "(year)" << endl;
+        qDebug() << "(year)";
     }
     if(_trackNr   != this->trackNr)  {
         same=false;
-        kdDebug() << "(trackNr)" << endl;
+        qDebug() << "(trackNr)";
     }
     if(_genre   != this->genre)  {
         same=false;
-        kdDebug() << "(genre: yammi: " << _genre << ", file: " << genre << ")" << endl;
+        qDebug() << "(genre: yammi: " << _genre << ", file: " << genre << ")";
     }
 
     if(same) {            // no differences
         return true;
     }
-    kdDebug() << "checked tags of " << displayName() << ", title: " << title << endl;
+    qDebug() << "checked tags of " << displayName() << ", title: " << title;
 
     // restore original values
     this->album=_album;
@@ -484,26 +484,26 @@ bool Song::checkTags() {
  * @return true if tags have been successfully written.
  */
 bool Song::saveTags() {
-    kdDebug() << "trying to save tags on file " << filename << endl;
+    qDebug() << "trying to save tags on file " << filename;
     QString filename = location();
     if(filename=="") {
         return false;
     }
     QFileInfo fi(filename);
     if(!fi.isWritable()) {
-        kdWarning() << "writing tags: file " << filename << " not writable, skipping\n";
+        qWarning() << "writing tags: file " << filename << " not writable, skipping";
         return false;
     }
 
     TagLib::FileRef f(QFile::encodeName(filename));
     if(f.isNull()) {
-        kdDebug() << "saving tags: could not create TagLib::FileRef for file " << filename << endl;
+        qDebug() << "saving tags: could not create TagLib::FileRef for file " << filename;
         return false;
     }
     TagLib::Tag* tag;
     tag = f.tag();
     if(tag == 0) {
-        kdDebug() << "saving tags: tag == 0 in file " << filename << endl;
+        qDebug() << "saving tags: tag == 0 in file " << filename;
         return false;
     }
     tag->setAlbum(QStringToTString(album));
@@ -515,7 +515,7 @@ bool Song::saveTags() {
     tag->setGenre(QStringToTString(genre));
     bool success = f.save();
     if(!success) {
-        kdDebug() << "saving tags: error on writing tags" << endl;
+        qDebug() << "saving tags: error on writing tags";
     }
     return success;
 }
@@ -530,7 +530,7 @@ bool Song::correctFilename() {
     QString oldname=location();
     QFileInfo fi0(oldname);
     if(!fi0.isWritable()) {
-        kdDebug() << "renaming file: file " << oldname << " not writable, skipping\n";
+        qDebug() << "renaming file: file " << oldname << " not writable, skipping";
         return true;
     }
     QString newFilename=constructFilename();
@@ -541,7 +541,7 @@ bool Song::correctFilename() {
     QDir currentDir=QDir("/");
     if(newname.upper()==oldname.upper()) {
         if(!currentDir.rename(oldname, oldname+".xxx")) {
-            kdDebug() << "WARNING: renaming: new filename equals old filename (except case), and renaming failed (" << newFilename << ")\n";
+            qDebug() << "WARNING: renaming: new filename equals old filename (except case), and renaming failed (" << newFilename << ")";
             return false;
         }
         oldname=oldname+".xxx";
@@ -550,13 +550,13 @@ bool Song::correctFilename() {
     // we first check whether we can create a file with that name (overwriting anything?)
     QFileInfo fi1(newname);
     if(fi1.exists()) {
-        kdDebug() << "WARNING: renaming: new Filename already existing, aborting (" << newFilename << ")\n";
+        qDebug() << "WARNING: renaming: new Filename already existing, aborting (" << newFilename << ")";
         return false;           // return if we don't want to overwrite anything
     }
 
     QFile touchFile(newname);
     if(!touchFile.open(IO_WriteOnly)) {
-        kdDebug() << "ERROR renaming: could not touch file\n";
+        qDebug() << "ERROR renaming: could not touch file";
         return false;
     }
     QString dummy="test";
@@ -565,17 +565,17 @@ bool Song::correctFilename() {
 
     QFileInfo fi(newname);
     if(!fi.exists()) {
-        kdDebug() << "ERROR renaming: Filename not allowed: " << newFilename << "\n";
+        qDebug() << "ERROR renaming: Filename not allowed: " << newFilename;
         return false;
     }
     // okay, successful
 
     if(!currentDir.rename(oldname, newname)) {
-        kdDebug() << "ERROR: renaming from " << oldname << " to " << newname << "failed!\n";
+        qDebug() << "ERROR: renaming from " << oldname << " to " << newname << "failed!";
         return false;
     }
     this->filename=newFilename;
-    kdDebug() << "filename corrected to " << newFilename << "\n";
+    qDebug() << "filename corrected to " << newFilename;
     return true;
 }
 
@@ -586,16 +586,16 @@ bool Song::correctFilename() {
 bool Song::correctPath() {
     QString newPath=constructPath();
     if(!Util::ensurePathExists(newPath)) {
-        kdDebug() << "could not create path " << newPath << "\n";
+        qDebug() << "could not create path " << newPath;
         return false;
     }
     QDir d=QDir("/");
     if(!d.rename(location(), newPath + "/" + filename)) {
-        kdDebug() << "could not rename file from " << location() << " to " << newPath << "\n";
+        qDebug() << "could not rename file from " << location() << " to " << newPath;
         return false;
     }
     path = newPath;
-    kdDebug() << "path corrected to " << newPath << "\n";
+    qDebug() << "path corrected to " << newPath;
     return true;
 }
 
@@ -634,7 +634,7 @@ bool Song::checkReadability() {
         return false;
     QFileInfo fileInfo(location());
     if(!fileInfo.exists() || !fileInfo.isReadable()) {
-        kdDebug() << "file " << location() << " does not exist or unreadable\n";
+        qDebug() << "file " << location() << " does not exist or unreadable";
         return false;
     }
     return true;
@@ -667,7 +667,7 @@ QString Song::checkConsistency(bool requireConsistentTags, bool requireConsisten
     if(requireConsistentTags) {
         // checking tags
         if(!checkTags()) {
-            kdDebug() << "tags on file " << this->filename << " are not set correctly...\n";
+            qDebug() << "tags on file " << this->filename << " are not set correctly...";
             diagnosis+="tags not correct ";
         }
     }
@@ -675,7 +675,7 @@ QString Song::checkConsistency(bool requireConsistentTags, bool requireConsisten
     if(requireConsistentFilename && filename!="") {
         // checking filename
         if(!checkFilename(ignoreCaseInFilenames)) {
-            kdDebug() << "file " << this->filename << " does not have correct filename\n";
+            qDebug() << "file " << this->filename << " does not have correct filename";
             diagnosis+="filename not consistent ";
         }
     }
@@ -683,7 +683,7 @@ QString Song::checkConsistency(bool requireConsistentTags, bool requireConsisten
     if(requireConsistentDirectory && path!="") {
         // checking directory
         if(!checkDirectory(ignoreCaseInFilenames)) {
-            kdDebug() << "file " << this->filename << " is not in correct directory\n";
+            qDebug() << "file " << this->filename << " is not in correct directory";
             diagnosis+="directory not consistent ";
         }
     }

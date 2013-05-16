@@ -20,7 +20,6 @@
 #include "searchthread.h"
 
 
-#include <kdebug.h>
 #include <qwaitcondition.h>
 
 #include "fuzzsrch.h"
@@ -104,7 +103,7 @@ void SearchThread::run() {
 			gYammiGui->searchFieldChangedIndicator.wait();
 		}
 	}
-	kdDebug() << "searchThread stopped\n";
+        qDebug() << "searchThread stopped";
 }
 
 

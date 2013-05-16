@@ -15,4 +15,40 @@
  *                                                                         *
  ***************************************************************************/
 
+#ifndef OPTIONS_H
+#define OPTIONS_H
+
 #include "config.h"
+#include <iostream>
+
+/*
+  dirty workaround until qt4 can be used ...
+  */
+typedef std::ostream& (endlFunc)(std::ostream&);
+class KURL;
+class QString;
+class QDebug {
+public:
+    QDebug& operator<<(const int) {
+        return *this;
+    }
+    QDebug& operator<<(const char*) {
+        return *this;
+    }
+    QDebug& operator<<(const endlFunc*) {
+        return *this;
+    }
+    QDebug& operator<<(const KURL&) {
+        return *this;
+    }
+    QDebug& operator<<(const QString&) {
+        return *this;
+    }
+};
+
+QDebug& qDebug();
+QDebug& qWarning();
+QDebug& qError();
+QDebug& qFatal();
+
+#endif //OPTIONS_H

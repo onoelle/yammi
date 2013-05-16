@@ -24,7 +24,6 @@
 #include "options.h"
 #include "config.h"
 
-#include <kdebug.h>
 
 
 
@@ -113,7 +112,7 @@ void Prefs::setDefaultValues(void) {
  * baseDir must be an existing and readable directory
  */
 bool Prefs::loadConfig( ) {
-    kdDebug() << "loading Configuration..." << endl;
+    qDebug() << "loading Configuration...";
 
     KConfig* cfg = kapp->config();
 
@@ -179,7 +178,7 @@ bool Prefs::loadConfig( ) {
     consistencyPara.ignoreCaseInFilenames= cfg->readBoolEntry("ignoreCaseInFilenames", consistencyPara.ignoreCaseInFilenames);
     consistencyPara.updateNonExisting= cfg->readBoolEntry("updateNonExisting", consistencyPara.updateNonExisting);
 
-    kdDebug() << "Config loaded" << endl;
+    qDebug() << "Config loaded";
     return true;
 }
 
@@ -187,7 +186,7 @@ bool Prefs::loadConfig( ) {
  * save preferences (if changed) to disk
  */
 bool Prefs::saveConfig( ) {
-    kdDebug() << "saving Configuration..." << endl;
+    qDebug() << "saving Configuration...";
 
     KConfig *cfg = kapp->config();
 
@@ -251,7 +250,7 @@ bool Prefs::saveConfig( ) {
     cfg->writeEntry("filenamePattern", consistencyPara.filenamePattern);
     cfg->writeEntry("ignoreCaseInFilenames", consistencyPara.ignoreCaseInFilenames);
     cfg->writeEntry("updateNonExisting", consistencyPara.updateNonExisting);
-    kdDebug() << "Config saved" << endl;
+    qDebug() << "Config saved";
     return true;
 }
 

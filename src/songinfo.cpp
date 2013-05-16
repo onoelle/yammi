@@ -19,7 +19,6 @@
 #include "song.h"
 #include "mylist.h"
 
-#include <kdebug.h>
 #include <klineedit.h>
 #include <qlabel.h>
 #include <qcombobox.h>

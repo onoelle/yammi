@@ -15,14 +15,13 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "options.h"
 #include "artsplayer.h"
 
 #include <arts/kplayobject.h>
 #include <arts/kplayobjectfactory.h>
 #include <arts/kartsdispatcher.h>
 #include <arts/kartsserver.h>
-
-#include <kdebug.h>
 
 #include "songentry.h"
 #include "songentryint.h"
@@ -31,22 +30,22 @@
 namespace Yammi {
 
     ArtsPlayer::ArtsPlayer(YammiModel *yammi) : MediaPlayer(yammi) {
-        kdDebug() << "ArtsPlayer::ArtsPlayer(YammiModel *yammi)" << endl;
+        qDebug() << "ArtsPlayer::ArtsPlayer(YammiModel *yammi)";
         m_dispatcher = new KArtsDispatcher( );
-        kdDebug() << "creating KArtsServer...\n";
+        qDebug() << "creating KArtsServer...";
         m_server = new KArtsServer( );
         if(m_server == 0) {
-            kdError() << "ERROR: could not create KArtsServer\n";
+            qError() << "ERROR: could not create KArtsServer";
             return;
         }
         Arts::SoundServerV2 server = m_server->server();
         if(server.isNull()) {
-            kdError() << "ERROR: could not get server from KArtsServer\n";
+            qError() << "ERROR: could not get server from KArtsServer";
             return;
         }
-        kdDebug() << "creating PlayObjectFactory...\n";
+        qDebug() << "creating PlayObjectFactory...";
         m_factory = new KDE::PlayObjectFactory( server );
-        kdDebug() << "...done\n";
+        qDebug() << "...done";
         m_currentPlay = 0;
         m_currentSong = 0;
     }
@@ -56,7 +55,7 @@ namespace Yammi {
     }
 
     ArtsPlayer::~ArtsPlayer() {
-        kdDebug() << "---ArtsPlayer::~ArtsPlayer(YammiModel *yammi)" << endl;
+        qDebug() << "---ArtsPlayer::~ArtsPlayer(YammiModel *yammi)";
         quit( );
         delete m_factory;
         delete m_server;
@@ -69,7 +68,7 @@ namespace Yammi {
         if( s != status ) {
             if( status == PLAYING && s == STOPPED ) {
                 if( m_currentSong == playlist->firstSong() ) {
-                    kdDebug() << "Song finished... get new one!" << endl;
+                    qDebug() << "Song finished... get new one!";
                     playlist->removeFirst( );
                     delete m_currentPlay;
                     m_currentPlay = 0;
@@ -195,7 +194,7 @@ namespace Yammi {
 
     
     void ArtsPlayer::syncYammi2Player() {
-        kdDebug() << "ArtsPlayer::syncYammi2Player()" << endl;
+        qDebug() << "ArtsPlayer::syncYammi2Player()";
         
         bool haveToUpdate=model->skipUnplayableSongs();
         
@@ -212,10 +211,10 @@ namespace Yammi {
             return;
         }
         if(m_currentSong != 0) {
-            kdDebug() << "m_currentSong: " << m_currentSong->displayName() << endl;
+            qDebug() << "m_currentSong: " << m_currentSong->displayName();
         }
         if(playlist->count() > 0) {
-            kdDebug() << "playlist->at(0): " << playlist->at(0)->song()->displayName() << endl;
+            qDebug() << "playlist->at(0): " << playlist->at(0)->song()->displayName();
         }
             
         if(m_currentSong == playlist->at(0)->song()) {
@@ -234,33 +233,33 @@ namespace Yammi {
         m_currentSong = 0;
         
         QString location = model->checkAvailability( playlist->at(0)->song() );
-        kdDebug() << "returned location: " << location << endl;
+        qDebug() << "returned location: " << location;
         m_currentSong = playlist->at(0)->song();
         KURL url;
         url.setPath(location);
         if(!url.isValid()) {
-            kdDebug() << "ERROR: url not valid: " << url << endl;
+            qDebug() << "ERROR: url not valid: " << url;
             return;
         }
         m_currentPlay = m_factory->createPlayObject( url, true );
-        kdDebug() << "ArtsPlayer::PlayObject created" << endl;
+        qDebug() << "ArtsPlayer::PlayObject created";
         
         // these 2 lines ensure that totalTime() returns meaningful values
         // (otherwise, totalTime() seems to return 0 as long as song has not started playing yet)
         m_currentPlay->play();
         m_currentPlay->pause();
-        kdDebug() << "ArtsPlayer:: play/pause done (for initializing totalTime())" << endl;
+        qDebug() << "ArtsPlayer:: play/pause done (for initializing totalTime())";
         
         if(haveToUpdate) {
             emit playlistChanged();
         }
-        kdDebug() << "...ArtsPlayer::syncYammi2Player() done" << endl;
+        qDebug() << "...ArtsPlayer::syncYammi2Player() done";
         return;
     }
 
     
     bool ArtsPlayer::jumpTo(int value) {
-        kdDebug() << "ArtsPlayer::jumpTo\n";
+        qDebug() << "ArtsPlayer::jumpTo";
         if( !m_currentPlay) {
             return false;
         }

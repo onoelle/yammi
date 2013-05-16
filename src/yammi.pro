@@ -37,6 +37,7 @@ SOURCES = \
     mydatetime.cpp \
     mylist.cpp \
     mylistview.cpp \
+    options.cpp \
     preferencesdialog.cpp \
     prefs.cpp \
     searchthread.cpp \

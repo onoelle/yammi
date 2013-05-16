@@ -8,7 +8,6 @@
 #include <kconfig.h>
 #include <kaboutdata.h>
 #include <kcmdlineargs.h>
-#include <kdebug.h>
 #include <config.h>
 #include <kglobal.h>
 #include <kstandarddirs.h>
@@ -45,7 +44,7 @@ int main( int argc, char **argv )
 	KUniqueApplication app;
 	YammiGui* yammi = new YammiGui();
 	if(!yammi->isValidState()) {
-		kdDebug() << "shutting down now...\n";
+                qDebug() << "shutting down now...";
 		return 1;
 	}
 	app.setMainWidget( yammi );

@@ -18,7 +18,6 @@
 #include "mylistview.h"
 
 #include <qheader.h>
-#include <kdebug.h>
 
 #include "yammigui.h"
 #include "songlistitem.h"
@@ -71,11 +70,11 @@ void MyListView::contentsMousePressEvent ( QMouseEvent * e) {
         dragPoint=e->globalPos();
         dragItem=itemAt(viewport()->mapFromGlobal(dragPoint));
         if(dragItem) {
-            //      cout << "dragItem found: " << ((SongListItem*)dragItem)->song()->displayName() << "\n";
+            //      qDebug() << "dragItem found: " << ((SongListItem*)dragItem)->song()->displayName();
             // check whether we allow dragging of first item
             if(!dontTouchFirst || dragItem!=firstChild()) {
                 // start dragging
-                //        cout << "dragging started\n";
+                //        qDebug() << "dragging started";
                 dragging=true;
 
                 // do we have to disable sorting???
@@ -89,7 +88,7 @@ void MyListView::contentsMousePressEvent ( QMouseEvent * e) {
                 dragSong=((SongListItem*)dragItem)->song();
             }
         } else {
-            //      cout << "no dragItem found\n";
+            //      qDebug() << "no dragItem found";
         }
     }
     QListView::contentsMousePressEvent(e);
@@ -108,40 +107,40 @@ void MyListView::contentsMouseMoveEvent ( QMouseEvent * e) {
 
     // dragging: check whether mouse has moved to new item
     QPoint point=e->globalPos();
-    //  cout << "e->globalPos(): x: " << point.x() << ", y: " << point.y() << "\n";
+    //  qDebug() << "e->globalPos(): x: " << point.x() << ", y: " << point.y();
     QPoint mappedPoint=viewport()->mapFromGlobal(point);
-    /*  cout << "mappedPoint: x: " << mappedPoint.x() << ", y: " << mappedPoint.y() << "\n";
+    /*  qDebug() << "mappedPoint: x: " << mappedPoint.x() << ", y: " << mappedPoint.y();
       QPoint widgetMappedPoint=mapFromGlobal(point);
-      cout << "widgetMappedPoint: x: " << widgetMappedPoint.x() << ", y: " << widgetMappedPoint.y() << "\n";
+      qDebug() << "widgetMappedPoint: x: " << widgetMappedPoint.x() << ", y: " << widgetMappedPoint.y();
       
       QPoint point2=QCursor::pos();
-      cout << "QCursor::pos(): x: " << point2.x() << ", y: " << point2.y() << "\n";
+      qDebug() << "QCursor::pos(): x: " << point2.x() << ", y: " << point2.y();
       QPoint mappedPoint2=viewport()->mapFromGlobal(point2);
-      cout << "mappedPoint2: x: " << mappedPoint.x() << ", y: " << mappedPoint.y() << "\n";
+      qDebug() << "mappedPoint2: x: " << mappedPoint.x() << ", y: " << mappedPoint.y();
       QPoint widgetMappedPoint2=mapFromGlobal(point2);
-      cout << "widgetMappedPoint2: x: " << widgetMappedPoint2.x() << ", y: " << widgetMappedPoint2.y() << "\n";
+      qDebug() << "widgetMappedPoint2: x: " << widgetMappedPoint2.x() << ", y: " << widgetMappedPoint2.y();
       */
     QListViewItem* item=itemAt(mappedPoint);
     /*  if(item!=0) {
-    	  cout << "item: " << ((SongListItem*)item)->song()->displayName() << "\n";
+          qDebug() << "item: " << ((SongListItem*)item)->song()->displayName();
       }
     	QListViewItem* item2=itemAt(widgetMappedPoint);
       if(item2!=0) {
-    	  cout << "item2: " << ((SongListItem*)item2)->song()->displayName() << "\n";
+          qDebug() << "item2: " << ((SongListItem*)item2)->song()->displayName();
       }
     	QListViewItem* item3=itemAt(mappedPoint2);
       if(item3!=0) {
-    	  cout << "item3: " << ((SongListItem*)item3)->song()->displayName() << "\n";
+          qDebug() << "item3: " << ((SongListItem*)item3)->song()->displayName();
       }
     	QListViewItem* item4=itemAt(widgetMappedPoint2);
       if(item4!=0) {
-    	  cout << "item4: " << ((SongListItem*)item4)->song()->displayName() << "\n";
+          qDebug() << "item4: " << ((SongListItem*)item4)->song()->displayName();
       }
     */
 
     // no valid item, mouse above or below listview?
     if(item==0)	{
-        //    cout << "item==0\n";
+        //    qDebug() << "item==0";
         bool above=viewport()->mapFromGlobal(point).y()<0;
         QListViewItem* swapItem;
         if(above) {
@@ -171,17 +170,17 @@ void MyListView::contentsMouseMoveEvent ( QMouseEvent * e) {
         return;
 
 
-    //  cout << "drag requested: \ndragSong: " << dragSong->displayName() << "\ns: " << s->displayName() << "\n";
-    //  cout << "point.y(): " << point.y() << ", dragPoint.y(): " << dragPoint.y() << "\n";
+    //  qDebug() << "drag requested: \ndragSong: " << dragSong->displayName() << "\ns: " << s->displayName();
+    //  qDebug() << "point.y(): " << point.y() << ", dragPoint.y(): " << dragPoint.y();
     bool up=(point.y() < dragPoint.y());
     if(up) {		// don't allow dragging to top song (is played)
         if(dontTouchFirst && item==firstChild()) {
-            //			cout << "dragging to top song not allowed in this folder!\n";
+            //			qDebug() << "dragging to top song not allowed in this folder!";
             return;
         }
     }
 
-    //  cout << "moving item!\n";
+    //  qDebug() << "moving item!";
     dragItem->moveItem(item);
     if(up) {
         dragItem->itemAbove()->moveItem(dragItem);

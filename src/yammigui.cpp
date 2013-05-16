@@ -56,7 +56,6 @@
 #include <kstdaction.h>
 #include <qmessagebox.h>
 #include <kprogress.h>
-#include <kdebug.h>
 #include <kkeydialog.h>
 #include <kprocess.h>
 #include <dcopobject.h>
@@ -180,7 +179,7 @@ void YammiGui::loadDatabase(QString databaseDir) {
     if(!databaseDir.endsWith("/")) {
         databaseDir+="/";
     }
-    kdDebug() << "trying to load database from directory " << databaseDir << endl;
+    qDebug() << "trying to load database from directory " << databaseDir;
     QDir d(databaseDir);
     bool importOld=false;
     config()->databaseDir = databaseDir;
@@ -188,8 +187,8 @@ void YammiGui::loadDatabase(QString databaseDir) {
     if(!d.exists("songdb.xml")) {
         QDir oldDir(oldYammiDir);
         if(oldDir.exists() && oldDir.exists("songdb.xml")) {
-            kdDebug() << "no database existing yet, database from previous yammi versions found\n";
-            kdDebug() << "importing your old song database from " << oldYammiDir << endl;
+            qDebug() << "no database existing yet, database from previous yammi versions found";
+            qDebug() << "importing your old song database from " << oldYammiDir;
 
             importOld=true;
             config()->databaseDir=oldYammiDir;
@@ -246,7 +245,7 @@ void YammiGui::loadDatabase(QString databaseDir) {
 }
 
 void YammiGui::saveOptions() {
-    kdDebug() << "saveOptions() " << endl;
+    qDebug() << "saveOptions() ";
     KConfig *cfg = kapp->config();
     KActionCollection *ac = actionCollection( );
 
@@ -285,7 +284,7 @@ void YammiGui::saveOptions() {
 
 
 void YammiGui::readOptions() {
-    kdDebug() << "readOptions()" << endl;
+    qDebug() << "readOptions()";
     KConfig *cfg = kapp->config();
     KActionCollection *ac = actionCollection( );
 
@@ -338,7 +337,7 @@ void YammiGui::readOptions() {
     }
     columnOrder=cfg->readListEntry("columnOrder");
     if(columnOrder.count()==0) {
-        kdDebug() << "no column order found, taking default order\n";
+        qDebug() << "no column order found, taking default order";
     }
     for(int i=0; i<MAX_COLUMN_NO; i++) {
         columnWidth[i]=cfg->readNumEntry(QString("column%1Width").arg(i));
@@ -369,14 +368,14 @@ void YammiGui::readOptions() {
 
 
 void YammiGui::saveProperties(KConfig *config) {
-    kdDebug() << "saveProperties(KConfig *config, name: " << config->name() << ")" << endl;
+    qDebug() << "saveProperties(KConfig *config, name: " << config->name() << ")";
     // the 'config' object points to the session managed
     // config file.  anything you write here will be available
     // later when this app is restored
 }
 
 void YammiGui::readProperties(KConfig *config) {
-    kdDebug() << "readProperties(KConfig *config, name: " << config->name() << ")" << endl;
+    qDebug() << "readProperties(KConfig *config, name: " << config->name() << ")";
     // the 'config' object points to the session managed
     // config file.  this function is automatically called whenever
     // the app is being restored.  read in here whatever you wrote
@@ -385,7 +384,7 @@ void YammiGui::readProperties(KConfig *config) {
 
 
 bool YammiGui::queryClose() {
-    kdDebug() << "queryClose()" << endl;
+    qDebug() << "queryClose()";
     if(model->allSongsChanged() || model->categoriesChanged()) {
         QString msg=tr("The Song Database has been modified.\nDo you want to save the changes?");
         switch (QMessageBox::warning(this, tr("Database modified"), msg,
@@ -413,7 +412,7 @@ bool YammiGui::queryClose() {
 }
 
 bool YammiGui::queryExit() {
-    kdDebug() << "queryExit() " << endl;
+    qDebug() << "queryExit() ";
     saveOptions();
     player->quit( );
     return true;
@@ -439,7 +438,7 @@ void YammiGui::shutdownSequence( ) {
         }
         delete t;
         if( d.wasCancelled() ) {
-            kdDebug()<<"Shutdown cancelled"<<endl;
+            qDebug()<<"Shutdown cancelled";
             changeSleepMode();
             return;
         }
@@ -465,8 +464,8 @@ void YammiGui::toolbarToggled( const QString& name ) {
     }
     KToggleAction *action = dynamic_cast<KToggleAction*>(actionCollection()->action( n ));
     if(!action) {
-        kdError()<<"toolbarToggled( const QString& name ) : action not found n = "
-        <<n<<" (name = "<<name<<")"<<endl;
+        qError()<<"toolbarToggled( const QString& name ) : action not found n = "
+        <<n<<" (name = "<<name<<")";
         return;
     }
     if(!action->isChecked()) {
@@ -492,7 +491,7 @@ YammiGui::~YammiGui() {
  * signalled by the mediaplayer or on changes from within yammigui (enqueing, dequeing songs, ...)
  */
 void YammiGui::updatePlaylist() {
-    kdDebug() << "updatePlaylist called" << endl;
+    qDebug() << "updatePlaylist called";
     if(folderActual->songlist().count()>0) {
         model->currentSongFilenameAtStartPlay=folderActual->firstSong()->location();
     }
@@ -566,7 +565,7 @@ void YammiGui::updateHtmlPlaylist()
             }
         }
         else {
-            kdDebug() << "invalid scope definition in template!" << endl;
+            qDebug() << "invalid scope definition in template!";
         }
     }
     
@@ -967,7 +966,7 @@ void YammiGui::saveColumnSettings() {
         int section=header->mapToSection(j);
         columnOrder.append(header->label(section));
         columnWidth[j]=header->sectionSize(section);
-        //    cout << "j: " << j << ", section: " << section << "label: " << header->label(section) << ", size: " << header->sectionSize(section) << "\n";
+        //    qDebug() << "j: " << j << ", section: " << section << "label: " << header->label(section) << ", size: " << header->sectionSize(section);
     }
 }
 
@@ -987,18 +986,18 @@ void YammiGui::setPreferences() {
     updateHtmlPlaylist();
     config()->saveConfig();
     if(playerBefore != config()->mediaPlayer) {
-        kdDebug() << "trying to switch media player...\n";
+        qDebug() << "trying to switch media player...";
         int savedSongPosition = player->getCurrentTime();
         int savedPlayingState = player->getStatus();
         player->stop();
         disconnectMediaPlayer();
-        kdDebug() << "old player disconnected\n";
+        qDebug() << "old player disconnected";
         delete player;
-        kdDebug() << "old player deleted\n";
+        qDebug() << "old player deleted";
         loadMediaPlayer();
-        kdDebug() << "new media player loaded...\n";
+        qDebug() << "new media player loaded...";
         connectMediaPlayer();
-        kdDebug() << "new media player connected...\n";
+        qDebug() << "new media player connected...";
         player->syncYammi2Player();
         if(savedSongPosition != 0) {
             player->jumpTo(savedSongPosition);
@@ -1020,7 +1019,7 @@ void YammiGui::configureKeys() {
  * Updates the songPopup submenus with available categories and plugins
  */
 void YammiGui::updateSongPopup() {
-    kdDebug() << "updating song popup\n";
+    qDebug() << "updating song popup";
     playListPopup->clear();
     playListPopup->insertItem(QIconSet( QPixmap(newCategory_xpm)), tr("New Category..."), this, SLOT(toCategory(int)), 0, 9999);
     for(unsigned int i=0; i<model->categoryNames.count(); i++) {
@@ -1101,7 +1100,7 @@ void YammiGui::toCategory(int index) {
     }
 
     if(categoryFolder==0) {
-        cout << "folder not found!\n";
+        qDebug() << "folder not found!";
         return;
     }
     // go through list of songs
@@ -1125,8 +1124,8 @@ void YammiGui::toCategory(int index) {
 void YammiGui::decide(Song* s1, Song* s2) {
     QString str1("s1: "+s1->artist+","+s1->title+","+s1->filename+","+QString("%1").arg(s1->bitrate)+","+s1->path);
     QString str2("s2: "+s2->artist+","+s2->title+","+s2->filename+","+QString("%1").arg(s2->bitrate)+","+s2->path);
-    cout << str1 << "\n";
-    cout << str2 << "\n";
+    qDebug() << str1;
+    qDebug() << str2;
 
     int def=0;									// 1=keep s1, 2=keep s2, 0=keep both
     if(s1->bitrate > s2->bitrate) {
@@ -1143,12 +1142,12 @@ void YammiGui::decide(Song* s1, Song* s2) {
                                  tr("Keep both"), 0, 2))
     {
     case 0:
-        kdDebug()<< "deleting s1\n";
+        qDebug()<< "deleting s1";
         s1->deleteFile(config()->trashDir);
         folderAll->removeSong(s1);
         break;
     case 1:
-        kdDebug()<< "deleting s2\n";
+        qDebug()<< "deleting s2";
         s2->deleteFile(config()->trashDir);
         folderAll->removeSong(s2);
         break;
@@ -1231,7 +1230,7 @@ void YammiGui::goToFolder(int what) {
         folder=getFolderByName(folderName);
     }
     if(folder==0) {
-        kdDebug() << "goto artist/album/genre/year: folder '" << folderName << "' not existing\n";
+        qDebug() << "goto artist/album/genre/year: folder '" << folderName << "' not existing";
     } else {
         changeToFolder(folder);
     }
@@ -1363,7 +1362,7 @@ void YammiGui::folderContentChanged(Folder* folder) {
 void YammiGui::addFolderContent(Folder* folder) {
     folderToAdd=folder;
     alreadyAdded=0;
-    kdDebug() << "adding folder content of folder " << folder->folderName() << endl;
+    qDebug() << "adding folder content of folder " << folder->folderName();
 
     if(folder->songlist().count() != 0) {
         songListView->setSorting(-1);
@@ -1375,7 +1374,7 @@ void YammiGui::addFolderContent(Folder* folder) {
 }
 
 void YammiGui::addFolderContentSnappy() {
-    kdDebug() << "snappy adding folder content of folder " << folderToAdd->folderName() << endl;
+    qDebug() << "snappy adding folder content of folder " << folderToAdd->folderName();
     int i=0;
     SongEntry* entry = 0;
     
@@ -1400,7 +1399,7 @@ void YammiGui::addFolderContentSnappy() {
         connect(timer, SIGNAL(timeout()), this, SLOT(addFolderContentSnappy()) );
         timer->start(0, TRUE);
     } else {		// no, we are finished
-        kdDebug() << "finishing off..." << endl;
+        qDebug() << "finishing off...";
         QApplication::restoreOverrideCursor();
         songListView->setUpdatesEnabled(true);
 
@@ -1739,16 +1738,16 @@ void YammiGui::forSelectionBurnToMedia() {
             mediaName=QString("%1_%2").arg(collName).arg(mediaNo);
             mediaDir= config()->databaseDir + "media/"+ mediaName + "/";
             progress.setLabel(tr("Preparing media ")+mediaName);
-            cout << "Preparing media " << mediaName << " (" << count << " files processed so far)...\n";
+            qDebug() << "Preparing media " << mediaName << " (" << count << " files processed so far)...";
             QDir dir(mediaDir);
             if(dir.exists()) {
-                cout << "directory \"" << mediaDir << "\" already exists, calculating available space...\n";
+                qDebug() << "directory \"" << mediaDir << "\" already exists, calculating available space...";
                 size=diskUsage(mediaDir, sizeLimit);
                 if(size==-1 || size+fi.size()>sizeLimit) {
-                    cout << "directory already too full, skipping...\n";
+                    qDebug() << "directory already too full, skipping...";
                     continue;
                 }
-                cout << ((int)size/1024.0/1024.0) << " MB already used\n";
+                qDebug() << ((int)size/1024.0/1024.0) << " MB already used";
             } else {
                 dir.mkdir(mediaDir);
                 size=0;
@@ -1758,7 +1757,7 @@ void YammiGui::forSelectionBurnToMedia() {
         count++;
         // check, whether song already contained on media
         if(s->mediaName.contains(mediaName)) {
-            cout << "song already existing on this media, skipping...\n";
+            qDebug() << "song already existing on this media, skipping...";
             s=selectedSongs.nextSong();
             continue;
         }
@@ -1773,11 +1772,11 @@ void YammiGui::forSelectionBurnToMedia() {
         s=selectedSongs.nextSong();
     }
 
-    cout << "no of media: " << mediaNo+1-startIndex << " (size limit: " << config()->criticalSize << " MB, ";
-    cout << "index " << startIndex << " to " << mediaNo << ")\n";
-    cout << "no of files: " << count << "\n";
-    cout << "size of last media: " << (int)(size/1024.0/1024.0) << " MB\n";
-    cout << "size in total: " << (int)(totalSize/1024.0/1024.0) << " MB\n";
+    qDebug() << "no of media: " << mediaNo+1-startIndex << " (size limit: " << config()->criticalSize << " MB, ";
+    qDebug() << "index " << startIndex << " to " << mediaNo << ")";
+    qDebug() << "no of files: " << count;
+    qDebug() << "size of last media: " << (int)(size/1024.0/1024.0) << " MB";
+    qDebug() << "size in total: " << (int)(totalSize/1024.0/1024.0) << " MB";
     folderMedia->update(&(model->allSongs));
     model->allSongsChanged(true);
     QString msg=QString(tr("Result of \"Burn to media\" process:\n\n\
@@ -1812,7 +1811,7 @@ long double YammiGui::diskUsage(QString path, long double sizeLimit) {
     d.setFilter(QDir::Files);
     const QFileInfoList* list = d.entryInfoList();
     if (!list) {
-        kdError() << "Error: cannot read access swap directory: " << path << "\n";
+        qError() << "Error: cannot read access swap directory: " << path;
         return 0;
     }
     QFileInfoListIterator it( *list );								      // create list iterator
@@ -1832,7 +1831,7 @@ long double YammiGui::diskUsage(QString path, long double sizeLimit) {
     d2.setFilter(QDir::Dirs);
     const QFileInfoList* list2 = d2.entryInfoList();
     if (!list2) {
-        kdWarning() << "Error: Skipping unreadable directory under swap directory: " << path << "\n";
+        qWarning() << "Error: Skipping unreadable directory under swap directory: " << path;
         return 0;
     }
     QFileInfoListIterator it2( *list2 );								      // create list iterator
@@ -1850,7 +1849,7 @@ long double YammiGui::diskUsage(QString path, long double sizeLimit) {
         }
     }
 
-    cout << "disk usage in directory " << path << ": " << ((int)size/1024.0/1024.0) << " MB\n";
+    qDebug() << "disk usage in directory " << path << ": " << ((int)size/1024.0/1024.0) << " MB";
     return size;
 }
 
@@ -1881,7 +1880,7 @@ void YammiGui::getSelectedSongs() {
             }
         } else {
             // here we are in the middle of adding all songs... (lazy adding) => take folder content directly
-            kdDebug() << "taking songs directly from list...\n";
+            qDebug() << "taking songs directly from list...";
             for(Song* s=chosenFolder->firstSong(); s; s=chosenFolder->nextSong()) {
                 selectedSongs.appendSong(s);
             }
@@ -2008,7 +2007,7 @@ void YammiGui::forSelectionDequeue( ) {
             int pos=((SongEntryInt*)entry)->intInfo-1;
             if(pos!=0 || player->getStatus()==STOPPED) {
                 // only dequeue if not currently played song (or player stopped)
-                kdDebug() << "song dequeued: " << entry->song()->displayName() << endl;
+                qDebug() << "song dequeued: " << entry->song()->displayName();
                 model->songsToPlay.remove(pos);
             }
         }
@@ -2023,7 +2022,7 @@ void YammiGui::forSelectionDequeue( ) {
                 Song* check = model->songsToPlay.at(i)->song();
                 if(check == s) {
                     model->songsToPlay.remove(i);
-                    kdDebug() << "song dequeued: " << s->displayName() << endl;
+                    qDebug() << "song dequeued: " << s->displayName();
                     i--;
                 }
             }
@@ -2439,7 +2438,7 @@ void YammiGui::forSelection(int action) {
         forSelectionBurnToMedia();
         break;
     default:
-        kdWarning() << "unknown action for double click: " << action << endl;
+        qWarning() << "unknown action for double click: " << action;
     }
 }
 
@@ -2491,13 +2490,13 @@ void YammiGui::renameCategory() {
     }
 
     model->renameCategory(oldName, newName);
-    kdDebug() << "renamed in model..." << endl;
+    qDebug() << "renamed in model...";
     folderListView->setCurrentItem( (QListViewItem*)folderCategories );
     folderListView->setSelected( (QListViewItem*)folderCategories , TRUE );
     folderCategories->update(model->allCategories, model->categoryNames);
-    kdDebug() << "categories updated..." << endl;
+    qDebug() << "categories updated...";
     updateSongPopup();
-    kdDebug() << "updated song popup..." << endl;
+    qDebug() << "updated song popup...";
     //changeToFolder((Folder*)i, TRUE);
 }
 
@@ -2521,7 +2520,7 @@ void YammiGui::loadM3uIntoCategory() {
         Song* toAdd=model->getSongFromFilename(filename);
         if(toAdd==0) {
             // no song found with that filename
-            cout << "no song in database found with filename \"" << filename << "\" (not in Yammi database yet?), skipping\n";
+            qDebug() << "no song in database found with filename \"" << filename << "\" (not in Yammi database yet?), skipping";
         } else {
             categoryFolder->addSong(toAdd);
         }
@@ -2594,7 +2593,7 @@ void YammiGui::pluginOnFolder() {
     QTextStream str(&f);
 
     for(Song* s=chosenFolder->firstSong(); s; s=chosenFolder->nextSong()) {
-        cout << s->path << "/" << s->filename << "\n";
+        qDebug() << s->path << "/" << s->filename;
         str << s->path <<"/" << s->filename << "\n";
     }
     f.close();
@@ -2805,7 +2804,7 @@ void YammiGui::checkForGrabbedTrack() {
         return;
     }
     if(!fileInfo.isReadable()) {
-        cout << "new grabbed track " << grabbedTrackFilename << " is unreadable\n";
+        qDebug() << "new grabbed track " << grabbedTrackFilename << " is unreadable";
         return;
     }
     statusBar( )->message(tr("grabbed song available"), 20000);
@@ -2846,9 +2845,9 @@ void YammiGui::fixGenres() {
 }
 
 void YammiGui::keyPressEvent(QKeyEvent* e) {
-    //  cout << "x: " << this->x() << "pos.x: " << this->pos().x() << "\n";
-    //  cout << "geometry.x: " << this->geometry().left() << "frameGeometry.x: " << this->frameGeometry().left() << "\n";
-    //  cout << "key(): " << e->key() << "text(): " << e->text() << "ascii(): " << e->ascii() << "\n";
+    //  qDebug() << "x: " << this->x() << "pos.x: " << this->pos().x();
+    //  qDebug() << "geometry.x: " << this->geometry().left() << "frameGeometry.x: " << this->frameGeometry().left();
+    //  qDebug() << "key(): " << e->key() << "text(): " << e->text() << "ascii(): " << e->ascii();
     int key=e->key();
     switch(key) {
     case Key_Control:
@@ -2917,16 +2916,16 @@ void YammiGui::keyPressEvent(QKeyEvent* e) {
 }
 
 void YammiGui::keyReleaseEvent(QKeyEvent* e) {
-    //	cout << "release key(): " << e->key() << "text(): " << e->text() << "ascii(): " << e->ascii() << "\n";
+    //	qDebug() << "release key(): " << e->key() << "text(): " << e->text() << "ascii(): " << e->ascii();
     int key=e->key();
     switch(key) {
     case Key_Control:
         controlPressed=false;
-        //      cout << "control released\n";
+        //      qDebug() << "control released";
         break;
     case Key_Shift:
         shiftPressed=false;
-        //      cout << "shift released\n";
+        //      qDebug() << "shift released";
         break;
     default:
         e->ignore();
@@ -2980,12 +2979,12 @@ void YammiGui::changeSleepMode() {
  */
 void YammiGui::stopPrelisten() {
     if(!prelistenProcess.isRunning()) {
-        kdDebug() << "looks like no prelisten process running..." << endl;
+        qDebug() << "looks like no prelisten process running...";
         return;
     }
     bool result=prelistenProcess.kill(9);
     if(!result) {
-        kdWarning() << "could not stop prelisten process!\n";
+        qWarning() << "could not stop prelisten process!";
     }
 }
 
@@ -3033,14 +3032,14 @@ void YammiGui::preListen(Song* s, int skipTo) {
     }
 
     if(prelistenCmd == "") {
-        kdDebug() << "no prelistening configured for this file type: " << s->filename << endl;
+        qDebug() << "no prelistening configured for this file type: " << s->filename;
         return;
     }
     
     // prepare command
     prelistenCmd = s->replacePlaceholders(prelistenCmd, 0);
     prelistenCmd = replacePrelistenSkip(prelistenCmd, s->length, skipTo);        
-    kdDebug() << "prelisten command: " << prelistenCmd << endl;
+    qDebug() << "prelisten command: " << prelistenCmd;
     
     prelistenProcess.clearArguments();
     prelistenProcess.setUseShell(true);
@@ -3050,13 +3049,13 @@ void YammiGui::preListen(Song* s, int skipTo) {
     }
     
     if(prelistenProcess.isRunning()) {
-        kdDebug() << "waiting for prelisten process to die..." << endl;
+        qDebug() << "waiting for prelisten process to die...";
         prelistenProcess.detach();
     }
     
     bool result = prelistenProcess.start(KProcess::OwnGroup, KProcess::NoCommunication);
     if(!result) {
-        kdWarning() << "could not start prelisten process!\n";
+        qWarning() << "could not start prelisten process!";
     }
 }
 
@@ -3216,7 +3215,7 @@ void YammiGui::loadSongsFromMedia(QString mediaName) {
         for(unsigned int j=0; j<s->mediaLocation.count(); j++) {
             if(s->mediaName[j]==mediaName) {
                 if(model->checkAvailability(s)=="") {
-                    cout << "loading song " << s->displayName() << "from " << mediaDir << s->mediaLocation[j] << "\n";
+                    qDebug() << "loading song " << s->displayName() << "from " << mediaDir << s->mediaLocation[j];
                     progress.setLabel(tr("loading song: ")+s->displayName()+" ("+QString("%1").arg(i+1)+tr(". in playlist)"));
                     progress.progressBar()->setProgress(loaded);
                     kapp->processEvents();
@@ -3301,14 +3300,14 @@ void YammiGui::checkSwapSize() {
     long double sizeLimit=(long double)config()->swapSize*1024.0*1024.0;
     long double size=0.0;
     QString path=config()->swapDir;
-    cout << "checking swap size in directory " << path << ", limit: " << config()->swapSize << " MB\n";
+    qDebug() << "checking swap size in directory " << path << ", limit: " << config()->swapSize << " MB";
     QDir d(path);
 
     d.setFilter(QDir::Files);
     d.setSorting(QDir::Time);			// most recent first
     const QFileInfoList *list = d.entryInfoList();
     if (!list) {
-        kdError() << "Error: cannot access swap directory: " << path << "\n";
+        qError() << "Error: cannot access swap directory: " << path;
         return;
     }
 
@@ -3321,10 +3320,10 @@ void YammiGui::checkSwapSize() {
 
         if(size+fi->size()>sizeLimit) {
             // swap dir too full, delete this entry
-            cout << "removing from swap dir: " << fi->fileName() << "\n";
+            qDebug() << "removing from swap dir: " << fi->fileName();
             QDir dir;
             if(!dir.remove(path+fi->fileName())) {
-                cout << "could not remove LRU song from swapdir";
+                qDebug() << "could not remove LRU song from swapdir";
             }
         } else {
             size+=fi->size();
@@ -3396,13 +3395,13 @@ void YammiGui::loadMediaPlayer( ) {
         /*        QMessageBox::error(this, tr("Can't create the player object.\n"
                                               "Please select a suitable backend player\n"
                                               "from the Preferences Dialog"), tr("Error"));*/
-        kdDebug() << "Can't create player backend, select a suitable backend in the Preferences Dialog\n";
+        qDebug() << "Can't create player backend, select a suitable backend in the Preferences Dialog";
     }
-    kdDebug() << "Media Player : " << player->getName( ) << endl;
+    qDebug() << "Media Player : " << player->getName( );
 }
 
 void YammiGui::playlistViewPopup(const QString &url, const QPoint &point) {
-    kdDebug() << "url: " << url << endl;
+    qDebug() << "url: " << url;
 }
 
 /**
@@ -3642,7 +3641,7 @@ bool YammiGui::setupActions( ) {
     // test whether file was found and loaded
     QPopupMenu* anyMenu = (QPopupMenu *)factory()->container("player", this);
     if(anyMenu == 0) {
-        kdError() << "you must have the file 'yammiui.rc' installed (eg. in /opt/kde3/share/apps/yammi/yammiui.rc)\n";
+        qError() << "you must have the file 'yammiui.rc' installed (eg. in /opt/kde3/share/apps/yammi/yammiui.rc)";
         return false;
     }
     return true;
@@ -3669,11 +3668,11 @@ void YammiGui::createMenuBar( ) {
  * or plugins.
  */
 void YammiGui::createSongPopup() {
-    kdDebug() << "creating song popup\n";
+    qDebug() << "creating song popup";
     songPopup = (QPopupMenu *)factory()->container("song_popup", this);
     songGoToPopup = (QPopupMenu *)factory()->container("goto", this);
     if(songPopup == 0 || songGoToPopup == 0) {
-        kdFatal() << "yammiui.rc not installed correctly!!!\n";
+        qFatal() << "yammiui.rc not installed correctly!!!";
         return;
     }
     songPopup->insertItem( "", 113, 0);
@@ -3692,13 +3691,13 @@ void YammiGui::createSongPopup() {
  * @param pos time in milliseconds
  */
 void YammiGui::seek( int pos ) {
-//    kdDebug() << "seek song to pos " << pos << endl;
+//    qDebug() << "seek song to pos " << pos;
     player->jumpTo(pos);
 }
 
 
 void YammiGui::seekWithWheel(int rotation) {
-    kdDebug() << "seekWithWheel() called\n";
+    qDebug() << "seekWithWheel() called";
     if(rotation<0) {
         m_seekSlider->addPage();
     } else {

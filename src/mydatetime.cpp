@@ -49,7 +49,7 @@ void MyDateTime::readFromString(QString str)
 	char sep1, sep2, sep3, sep3b, sep4, sep5;
 	// read date as "dd/mm/yyyy, hh:mm:ss"
 	sscanf(str, "%d%c%d%c%d%c%c%d%c%d%c%d", &dd, &sep1, &mm, &sep2, &yyyy, &sep3, &sep3b, &h, &sep4, &m, &sep5, &s);
-    // kdDebug() << "dd: " << dd << ", mm: " << mm << ", yyyy: " << yyyy << endl;
+    // qDebug() << "dd: " << dd << ", mm: " << mm << ", yyyy: " << yyyy;
 	this->setDate(QDate (yyyy, mm, dd));
 	this->setTime(QTime (h, m, s));
 }

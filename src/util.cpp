@@ -17,8 +17,8 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#include "options.h"
 #include "util.h"
-#include <kdebug.h>
 #include <qstring.h>
 #include <qdir.h>
 
@@ -69,7 +69,7 @@ bool Util::ensurePathExists(QString path) {
         return true;
     }
     if(!frontPathDir.mkdir(endDir)) {
-        kdWarning() << "failed creating dir " << endDir << " in dir " << frontPath << endl;
+        qWarning() << "failed creating dir " << endDir << " in dir " << frontPath;
         return false;
     }
     return true;

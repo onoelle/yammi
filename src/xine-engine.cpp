@@ -14,7 +14,6 @@
 
 #include <qapplication.h>
 
-#include <kdebug.h>
 #include <qmessagebox.h>
 #include <kstandarddirs.h>
 #include <kurl.h>
@@ -43,7 +42,7 @@ namespace Yammi {
             , m_post( 0 )
             , m_currentSong( 0 )
     {
-        kdDebug() << "'Bringing joy to small mexican gerbils, a few weeks at a time.'\n";
+        qDebug() << "'Bringing joy to small mexican gerbils, a few weeks at a time.'\n";
 
         m_xine = xine_new();
 
@@ -57,7 +56,7 @@ namespace Yammi {
         #endif
 
         xine_config_load( m_xine, configPath() );
-        kdDebug() << "w00t" << configPath() << endl;
+        qDebug() << "w00t" << QString(configPath());
 
         xine_init( m_xine );
 
@@ -129,18 +128,18 @@ namespace Yammi {
     void
     XineEngine::syncYammi2Player()
     {
-        kdDebug() << "XineEngine::syncYammi2Player()" << endl;
+        qDebug() << "XineEngine::syncYammi2Player()";
 
         bool haveToUpdate=model->skipUnplayableSongs();
 
         if(m_currentSong != 0) {
-            kdDebug() << "m_currentSong: " << m_currentSong->displayName() << endl;
+            qDebug() << "m_currentSong: " << m_currentSong->displayName();
         }
 
         KURL url;
         SongEntry* songEntry = playlist->at(0);
         if (songEntry) {
-            kdDebug() << "playlist->at(0): " << songEntry->song()->displayName() << endl;
+            qDebug() << "playlist->at(0): " << songEntry->song()->displayName();
 
             if(m_currentSong == songEntry->song()) {
                 if(haveToUpdate) {
@@ -154,11 +153,11 @@ namespace Yammi {
             m_currentSong = 0;
 
             QString location = model->checkAvailability( songEntry->song() );
-            kdDebug() << "returned location: " << location << endl;
+            qDebug() << "returned location: " << location;
             m_currentSong = songEntry->song();
             url.setPath(location);
             if(!url.isValid()) {
-                kdDebug() << "ERROR: url not valid: " << url << endl;
+                qDebug() << "ERROR: url not valid: " << url;
                 return;
             }
         }
@@ -172,11 +171,11 @@ namespace Yammi {
        // why doesn't xine do this? I cannot say.
        xine_close( m_stream );
 
-       kdDebug() << "Before xine_open() *****" << endl;
+       qDebug() << "Before xine_open() *****";
 
        if( xine_open( m_stream, QFile::encodeName( url.url() ) ) )
        {
-          kdDebug() << "After xine_open() *****" << endl;
+          qDebug() << "After xine_open() *****";
 
           #ifndef XINE_SAFE_MODE
           //we must ensure the scope is pruned of old buffers
@@ -310,7 +309,7 @@ namespace Yammi {
         if( s != status ) {
             if( status == PLAYING && s == STOPPED ) {
                 if( m_currentSong == playlist->firstSong() ) {
-                    kdDebug() << "Song finished... get new one!" << endl;
+                    qDebug() << "Song finished... get new one!";
                     playlist->removeFirst( );
                     m_currentSong = 0;
                     emit playlistChanged( );
@@ -458,14 +457,14 @@ namespace Yammi {
         {
         case XINE_EVENT_UI_SET_TITLE:
 
-            kdDebug() << "XINE_EVENT_UI_SET_TITLE\n";
+            qDebug() << "XINE_EVENT_UI_SET_TITLE";
 
             QApplication::postEvent( xe, new QCustomEvent( 3003 ) );
 
             break;
 
         case XINE_EVENT_UI_PLAYBACK_FINISHED:
-            kdDebug() << "XINE_EVENT_UI_PLAYBACK_FINISHED\n";
+            qDebug() << "XINE_EVENT_UI_PLAYBACK_FINISHED";
 
             //emit signal from GUI thread
             QApplication::postEvent( xe, new QCustomEvent(3000) );
@@ -488,7 +487,7 @@ namespace Yammi {
 
         case XINE_EVENT_UI_MESSAGE:
         {
-            kdDebug() << "message received from xine\n";
+            qDebug() << "message received from xine";
 
             xine_ui_message_data_t *data = (xine_ui_message_data_t *)xineEvent->data;
             QString message;
@@ -504,7 +503,7 @@ namespace Yammi {
                     *p = *msg == '\0' ? '\n' : *msg;
                 *p = '\0';
 
-                kdDebug() << str << endl;
+                qDebug() << str;
 
                 break;
             }
