@@ -38,8 +38,6 @@ public slots:
     void myAccept();
 
     void chooseTrashDir();
-    void chooseMediaDir();
-    void chooseSwapDir();
 
     void updatePlugin(int newPos);
     void updatePluginMenuEntry(const QString& newText);

@@ -1,4 +1,4 @@
-<!DOCTYPE UI><UI version="3.2" stdsetdef="1">
+<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
 <class>SongInfoDialog</class>
 <widget class="QDialog">
     <property name="name">
@@ -377,22 +377,6 @@
                         <string>Length</string>
                     </property>
                 </widget>
-                <widget class="QComboBox" row="0" column="5">
-                    <property name="name">
-                        <cstring>ComboBoxMedia</cstring>
-                    </property>
-                    <property name="sizePolicy">
-                        <sizepolicy>
-                            <hsizetype>1</hsizetype>
-                            <vsizetype>0</vsizetype>
-                            <horstretch>0</horstretch>
-                            <verstretch>0</verstretch>
-                        </sizepolicy>
-                    </property>
-                    <property name="toolTip" stdset="0">
-                        <string>lists all media containing this song</string>
-                    </property>
-                </widget>
                 <widget class="QLineEdit" row="1" column="5">
                     <property name="name">
                         <cstring>ReadOnlyBitrate</cstring>
@@ -407,17 +391,6 @@
                     </property>
                     <property name="readOnly">
                         <bool>true</bool>
-                    </property>
-                </widget>
-                <widget class="QLabel" row="0" column="4">
-                    <property name="name">
-                        <cstring>LabelMedia</cstring>
-                    </property>
-                    <property name="text">
-                        <string>Media</string>
-                    </property>
-                    <property name="toolTip" stdset="0">
-                        <string>lists all media containing this song</string>
                     </property>
                 </widget>
                 <widget class="QLabel" row="1" column="4">
@@ -567,7 +540,6 @@
     <tabstop>LineEditTrack</tabstop>
     <tabstop>ComboBoxGenre</tabstop>
     <tabstop>ReadOnlyLength</tabstop>
-    <tabstop>ComboBoxMedia</tabstop>
     <tabstop>ReadOnlySize</tabstop>
     <tabstop>ReadOnlyBitrate</tabstop>
     <tabstop>ReadOnlyPath</tabstop>

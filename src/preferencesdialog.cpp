@@ -48,7 +48,6 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, const char *name, bool mod
     LineEditFilenamePattern->setText(config->consistencyPara.filenamePattern);
     LineEditDirectoriesPattern->setText(config->consistencyPara.directoryPattern);
     
-    LineEditCriticalSize->setText(QString("%1").arg(config->criticalSize));
     LineEditPrelistenMp3Command->setText(config->prelistenMp3Command);
     LineEditPrelistenOggCommand->setText(config->prelistenOggCommand);
     LineEditPrelistenWavCommand->setText(config->prelistenWavCommand);
@@ -71,12 +70,6 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, const char *name, bool mod
     }
     ComboBoxMiddleClickAction->setCurrentItem(config->middleClickAction);
 
-    // jukebox functions
-    LineEditMediaDir->setText(config->mediaDir);
-    CheckBoxMountMediaDir->setChecked(config->mountMediaDir);
-    LineEditSwapDir->setText(config->swapDir);
-    LineEditSwapSize->setText(QString("%1").arg(config->swapSize));
-
     // plugins
     //////////
     LineEditGrabAndEncodeCmd->setText(QString("%1").arg(config->grabAndEncodeCmd));
@@ -89,8 +82,6 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, const char *name, bool mod
 
     // connections
     connect( ButtonChooseTrashDir, SIGNAL( clicked() ), this, SLOT( chooseTrashDir() ) );
-    connect( ButtonChooseMediaDir, SIGNAL( clicked() ), this, SLOT( chooseMediaDir() ) );
-    connect( ButtonChooseSwapDir, SIGNAL( clicked() ), this, SLOT( chooseSwapDir() ) );
 
     connect( ComboBoxPlugins, SIGNAL( activated(int) ), this, SLOT (updatePlugin(int) ) );
     connect( LineEditPluginMenuEntry, SIGNAL( textChanged(const QString&) ), this, SLOT (updatePluginMenuEntry(const QString&) ) );
@@ -136,12 +127,6 @@ void PreferencesDialog::addStandardPlugins() {
 		newPlugin("Export to m3u Playlist", "echo -n -e \"#EXTM3U\n{customList}\" > {fileDialog}", "group", "#EXTINF:{lengthInSeconds},{artist} - {title}{newline}{absoluteFilename}{newline}", "true");
 	}
 	
-	if(!_pluginMenuEntry.contains("Burn with K3b(audio)")) {
-		newPlugin("Burn with K3b(audio)", "echo -n -e \"#EXTM3U\n{customList}\" > /tmp/burnlist.m3u && k3b --audiocd /tmp/burnlist.m3u &", "group", "#EXTINF:{lengthInSeconds},{artist} - {title}{newline}{absoluteFilename}{newline}", "true");
-	}
-	if(!_pluginMenuEntry.contains("Burn with K3b(data)")) {
-		newPlugin("Burn with K3b(data)", "k3b --datacd {customListViaFile} &", "group", "\"{absoluteFilename}\" ", "true");
-	}
 	if(!_pluginMenuEntry.contains("MusicBrainz Search")) {
 		newPlugin("MusicBrainz Search", "konqueror http://www.musicbrainz.org/showtrm.html?trm=`/usr/bin/trm \"{absoluteFilename}\"`&", "single", "", "true");
 	}
@@ -154,7 +139,6 @@ void PreferencesDialog::addStandardPlugins() {
 void PreferencesDialog::myAccept() {
     // general
     config->trashDir=LineEditTrashDir->text();
-    config->mediaDir=LineEditMediaDir->text();
     if(RadioButtonSimpleGuessmode->isChecked())
         config->guessingMode=config->GUESSING_MODE_SIMPLE;
     if(RadioButtonAdvancedGuessmode->isChecked())
@@ -181,7 +165,6 @@ void PreferencesDialog::myAccept() {
     } else {
         config->childSafe=CheckBoxChildSafe->isChecked();
     }
-    config->criticalSize=atoi(LineEditCriticalSize->text());
     config->prelistenMp3Command=LineEditPrelistenMp3Command->text();
     config->prelistenOggCommand=LineEditPrelistenOggCommand->text();
     config->prelistenWavCommand=LineEditPrelistenWavCommand->text();
@@ -208,15 +191,6 @@ void PreferencesDialog::myAccept() {
     config->pluginMode = _pluginMode;
     config->pluginConfirm = _pluginConfirm;
 
-    // jukebox functions
-    config->mediaDir=LineEditMediaDir->text();
-    if(config->mediaDir.right(1)!="/")
-        config->mediaDir+="/";
-    config->swapDir=LineEditSwapDir->text();
-    if(config->swapDir.right(1)!="/")
-        config->swapDir+="/";
-    config->swapSize=atoi(LineEditSwapSize->text());
-    config->mountMediaDir=CheckBoxMountMediaDir->isChecked();
     accept();
 }
 
@@ -228,23 +202,6 @@ void PreferencesDialog::chooseTrashDir() {
         LineEditTrashDir->setText(dir);
     }
 }
-
-// file dialog for media dir
-void PreferencesDialog::chooseMediaDir() {
-    QString dir = QFileDialog::getExistingDirectory(LineEditMediaDir->text(), this, NULL, tr("choose media directory"));
-    if(!dir.isNull()) {
-        LineEditMediaDir->setText(dir);
-    }
-}
-
-// file dialog for swap dir
-void PreferencesDialog::chooseSwapDir() {
-    QString dir = QFileDialog::getExistingDirectory(LineEditSwapDir->text(), this, NULL, tr("choose swap directory"));
-    if(!dir.isNull()) {
-        LineEditSwapDir->setText(dir);
-    }
-}
-
 
 void PreferencesDialog::updatePlugin(int newPos) {
     if(newPos==0) {

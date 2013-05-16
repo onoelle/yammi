@@ -121,22 +121,11 @@ void ConsistencyCheckDialog::startCheck() {
             if(diagnosis=="file not readable" && p->checkForExistence) {
                 p->nonExisting++;
                 output->append("! " + tr("file not existing or readable: %1\n").arg(s->displayName()));
-                bool onMedia=s->mediaName.count()>0;
                 if(p->updateNonExisting) {
-                    // if we update, there are two cases:
-                    if(onMedia) {
-                        // 1. update entry: set filename+path to ""
-                        s->filename="";
-                        s->path="";
-                        p->nonExistingUpdated++;
-                        model->problematicSongs.append(new SongEntryString(s, tr("filename cleared in song entry")));
-                        output->append("=> " + tr("filename cleared in song entry"));
-                    } else {
-                        // 2. delete entry in database
-                        output->append(tr("=> deleting song entry %1\n").arg(s->displayName()));
-                        gYammiGui->deleteEntry(s);
-                        p->nonExistingDeleted++;
-                    }
+                    // 2. delete entry in database
+                    output->append(tr("=> deleting song entry %1\n").arg(s->displayName()));
+                    gYammiGui->deleteEntry(s);
+                    p->nonExistingDeleted++;
                 } else {
                     model->problematicSongs.append(new SongEntryString(s, tr("file not existing or readable")));
                 }

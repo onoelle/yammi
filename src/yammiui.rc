@@ -37,7 +37,6 @@
       <Action name="MainToolbar"/>
       <Action name="MediaPlayerToolbar"/>
       <Action name="SongActionsToolbar"/>
-      <Action name="RemovableMediaToolbar" />
       <Action name="SleepModeToolbar"/>
       <Action name="PrelistenToolbar"/>
     </Menu>
@@ -77,10 +76,6 @@
 <!--   <Action name="clear_playlist"/> -->
    <Action name="info_selected"/>
 </ToolBar>
-<ToolBar name="RemovableMediaToolbar">
- <text>Removable Media</text>
- <Action name="load_media"/>
-</ToolBar>
 
 <Menu name="song_popup">
   <Menu name="play_enqueue"><text>Play/Enqueue</text>
@@ -111,7 +106,6 @@
     <Action name="check_consistency"/>
     <Action name="delete_selected"/>
     <Action name="move_selected"/>
-    <Action name="burn_selected"/>
   </Menu>
 </Menu>
 

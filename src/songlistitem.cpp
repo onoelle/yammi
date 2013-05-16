@@ -93,29 +93,14 @@ void SongListItem::setColumns(SongEntry* entry)
     }
     current++;
   }
-  if(s->filename!="") {
-    if(columnIsVisible(gYammiGui->COLUMN_FILENAME)) {
-      setText( current, s->filename );
-      current++;
-    }
-    if(columnIsVisible(gYammiGui->COLUMN_PATH)) {
-      setText( current, s->path );
-      current++;
-    }
+  if(columnIsVisible(gYammiGui->COLUMN_FILENAME)) {
+    setText( current, s->filename );
+    current++;
   }
-  else {		// song not on harddisk
-    if(columnIsVisible(gYammiGui->COLUMN_FILENAME)) {
-      current++;
-    }
-    if(columnIsVisible(gYammiGui->COLUMN_PATH)) {
-      QString mediaNameList("");
-      for(unsigned int i=0; i<s->mediaName.count(); i++) {
-        mediaNameList+="<"+s->mediaName[i]+"> ";
-      }
-      setText( current, mediaNameList);
-      current++;
-    }
-	}
+  if(columnIsVisible(gYammiGui->COLUMN_PATH)) {
+    setText( current, s->path );
+    current++;
+  }
   if(columnIsVisible(gYammiGui->COLUMN_COMMENT)) {
     if(s->comment!="") {
       setText( current, s->comment );
@@ -225,30 +210,36 @@ int SongListItem::compare( QListViewItem *i, int visibleColumn, bool ascending )
  */
 QString SongListItem::key(int visibleColumn, bool) const
 {
-	int base=songEntry->getBase();
-	if(visibleColumn<base) {
-		return songEntry->getKey(visibleColumn);
-	}
+    int base=songEntry->getBase();
+    if(visibleColumn<base) {
+        return songEntry->getKey(visibleColumn);
+    }
 
-  int column=gYammiGui->mapToRealColumn(visibleColumn-base);
-	const Song* s=song();
-	
-	if(column==gYammiGui->COLUMN_ARTIST)
-		if(s->artist=="")
-			return " "+s->title;
-		else
-			return s->artist+s->title;
-	if(column==gYammiGui->COLUMN_TITLE)
-		return s->title;
-	if(column==gYammiGui->COLUMN_ALBUM)
-		if(s->album=="")
-			return " "+s->title;
-		else
-			return s->album+QString("%1").arg(s->trackNr, 2);
-	if(column==gYammiGui->COLUMN_GENRE) {
+    int column=gYammiGui->mapToRealColumn(visibleColumn-base);
+    const Song* s=song();
+
+    if(column==gYammiGui->COLUMN_ARTIST) {
+        if(s->artist=="") {
+            return " "+s->title;
+        } else{
+            return s->artist+s->title;
+        }
+    }
+    if(column==gYammiGui->COLUMN_TITLE) {
+        return s->title;
+    }
+    if(column==gYammiGui->COLUMN_ALBUM) {
+        if(s->album=="") {
+            return " "+s->title;
+        } else {
+            return s->album+QString("%1").arg(s->trackNr, 2);
+        }
+    }
+    if(column==gYammiGui->COLUMN_GENRE) {
         return s->genre;
     }
-	if(column==gYammiGui->COLUMN_PATH)
-		return s->path+s->filename;
-	return text(column);
+    if(column==gYammiGui->COLUMN_PATH) {
+        return s->path+s->filename;
+    }
+    return text(column);
 }

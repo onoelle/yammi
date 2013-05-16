@@ -67,9 +67,9 @@ public:
     bool _categoriesChanged;
 
 
-    bool traverse(QString path, bool followSymLinks, QString filePattern, QProgressDialog* progress, QString mediaName=0);
+    bool traverse(QString path, bool followSymLinks, QString filePattern, QProgressDialog* progress);
     Song* getSongFromFilename(QString filename);
-    QString checkAvailability(Song* s, bool touch=false);
+    QString checkAvailability(Song* s);
     bool skipUnplayableSongs(bool firstTwo=false);    
 
     bool allSongsChanged();
@@ -86,9 +86,6 @@ public:
 
     bool categoriesChanged();
     void categoriesChanged(bool changed);
-
-    void removeMedia(QString mediaToDelete);
-    void renameMedia(QString oldMediaName, QString newMediaName);
 
     void readSongDatabase(  );
     void saveSongDatabase();
@@ -109,9 +106,9 @@ public slots:
     *  - scans recursively, starting from specified scanDir
     *  - constructs song objects from all files matching the filePattern
     *  - checks whether already existing, whether modified, if not => inserts into database */
-    void updateSongDatabase(QString scanDir, bool followSymLinks, QString filePattern, QString mediaName, QProgressDialog* progress);
+    void updateSongDatabase(QString scanDir, bool followSymLinks, QString filePattern, QProgressDialog* progress);
     void updateSongDatabase(QStringList list);
-    void addSongToDatabase(QString filename, QString mediaName);
+    void addSongToDatabase(QString filename);
     void fixGenres(QProgressDialog* progress);
 
 protected:

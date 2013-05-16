@@ -28,7 +28,6 @@ SOURCES = \
     foldercategories.cpp \
     folder.cpp \
     foldergroups.cpp \
-    foldermedia.cpp \
     foldersorted.cpp \
     fuzzsrch.cpp \
     lineeditshift.cpp \
@@ -51,7 +50,6 @@ SOURCES = \
     songlistitem.cpp \
     trackpositionslider.cpp \
     updatedatabasedialog.cpp \
-    updatedatabasemediadialog.cpp \
     util.cpp \
     xine-engine.cpp \
     yammigui.cpp \
@@ -66,7 +64,6 @@ HEADERS = \
     foldercategories.h \
     foldergroups.h \
     folder.h \
-    foldermedia.h \
     foldersorted.h \
     fuzzsrch.h \
     lineeditshift.h \
@@ -88,7 +85,6 @@ HEADERS = \
     songlistitem.h \
     trackpositionslider.h \
     updatedatabasedialog.h \
-    updatedatabasemediadialog.h \
     util.h \
     xine-engine.h \
     yammidcopiface.h \
@@ -102,8 +98,7 @@ FORMS = \
     DeleteDialog.ui \
     PreferencesDialogBase.ui \
     SongInfoDialog.ui \
-    UpdateDatabaseDialogBase.ui \
-    UpdateDatabaseMediaDialogBase.ui
+    UpdateDatabaseDialogBase.ui
 
 SOURCES += \
     yammidcopiface_skel.cpp

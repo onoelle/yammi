@@ -27,7 +27,6 @@
 #include "preferencesdialog.h"
 #include "DeleteDialog.h"
 #include "updatedatabasedialog.h"
-#include "updatedatabasemediadialog.h"
 #include "ConsistencyCheckDialog.h"
 #include "ApplyToAllBase.h"
 
@@ -79,7 +78,6 @@
 #include "folder.h"
 #include "foldergroups.h"
 #include "foldercategories.h"
-#include "foldermedia.h"
 #include "foldersorted.h"
 #include "mylistview.h"
 #include "lineeditshift.h"
@@ -217,7 +215,6 @@ void YammiGui::loadDatabase(QString databaseDir) {
             }
         }
     }
-    checkPlaylistAvailability();
     // update dynamic folders based on database contents
     updateView(true);
 
@@ -254,10 +251,6 @@ void YammiGui::saveOptions() {
     cfg->writeEntry("MediaPlayerToolbar Pos", (int) toolBar("MediaPlayerToolbar")->barPos());
     cfg->writeEntry("Show SongActionsToolbar", static_cast<KToggleAction*>(ac->action("SongActionsToolbar"))->isChecked());
     cfg->writeEntry("SongActionsToolbar Pos", (int) toolBar("SongActionsToolbar")->barPos());
-    cfg->writeEntry("Show PrelistenToolbar", static_cast<KToggleAction*>(ac->action("PrelistenToolbar"))->isChecked());
-    cfg->writeEntry("PrelistenToolbar Pos", (int) toolBar("PrelistenToolbar")->barPos());
-    cfg->writeEntry("Show RemovableMediaToolbar", static_cast<KToggleAction*>(ac->action("RemovableMediaToolbar"))->isChecked());
-    cfg->writeEntry("RemovableMediaToolbar Pos", (int) toolBar("RemovableMediaToolbar")->barPos());
     cfg->writeEntry("Show SleepModeToolbar", static_cast<KToggleAction*>(ac->action("SleepModeToolbar"))->isChecked());
     cfg->writeEntry("SleepModeToolbar Pos", (int) toolBar("SleepModeToolbar")->barPos());
 
@@ -303,16 +296,6 @@ void YammiGui::readOptions() {
     pos=(KToolBar::BarPosition) cfg->readNumEntry("SongActionsToolbar Pos", KToolBar::Top);
     toolBar("SongActionsToolbar")->setBarPos(pos);
     toolbarToggled("SongActionsToolbar");
-    b = cfg->readBoolEntry("Show PrelistenToolbar", true);
-    static_cast<KToggleAction*>(ac->action("PrelistenToolbar"))->setChecked(b);
-    pos=(KToolBar::BarPosition) cfg->readNumEntry("PrelistenToolbar Pos", KToolBar::Top);
-    toolBar("PrelistenToolbar")->setBarPos(pos);
-    toolbarToggled("PrelistenToolbar");
-    b = cfg->readBoolEntry("Show RemovableMediaToolbar", true);
-    static_cast<KToggleAction*>(ac->action("RemovableMediaToolbar"))->setChecked(b);
-    pos=(KToolBar::BarPosition) cfg->readNumEntry("RemovableMediaToolbar Pos", KToolBar::Top);
-    toolBar("RemovableMediaToolbar")->setBarPos(pos);
-    toolbarToggled("RemovableMediaToolbar");
     b = cfg->readBoolEntry("Show SleepModeToolbar", true);
     static_cast<KToggleAction*>(ac->action("SleepModeToolbar"))->setChecked(b);
     pos=(KToolBar::BarPosition) cfg->readNumEntry("SleepModeToolbar Pos", KToolBar::Top);
@@ -760,14 +743,12 @@ void YammiGui::updateView(bool startup) {
     folderAlbums->update(&(model->allSongs), MyList::ByAlbum);
     folderGenres->update(&(model->allSongs), MyList::ByGenre);
     folderYears->update(&(model->allSongs), MyList::ByYear);
-    folderMedia->update(&(model->allSongs));
     folderSearchResults->update(searchResults);
 
     if(startup) {
         // this is only necessary on startup
         folderActual->update(model->songsToPlay);
         folderCategories->update(model->allCategories, model->categoryNames);
-        folderMedia->update(&(model->allSongs));
         folderAll->updateTitle();
         folderHistory->updateTitle();
         createSongPopup();
@@ -1535,7 +1516,6 @@ void YammiGui::adjustSongPopup() {
     songPopup->setItemEnabled(Song::PrelistenEnd, enable);
     songPopup->setItemEnabled(Song::CheckConsistency, enable);
     songPopup->setItemEnabled(Song::MoveTo, enable);
-    songPopup->setItemEnabled(Song::BurnToMedia, enable);
 }
 
 
@@ -1692,112 +1672,6 @@ void YammiGui::forSelectionMove() {
 
 
 
-/**
- * prepare burning selection to media
- * (burning order will be the order of the selected songs)
- */
-void YammiGui::forSelectionBurnToMedia() {
-    long double totalSize=0;
-    long double size=-1;
-
-    bool ok;
-    QString collName=QString(QInputDialog::getText( tr("collection name"), tr("Please enter collection name:"), QLineEdit::Normal, QString(tr("my mp3 collection")), &ok, this ));
-    if(!ok)
-        return;
-
-    QString startIndexStr=QString(QInputDialog::getText( tr("collection start number"), tr("Please enter start index:"), QLineEdit::Normal, QString("1"), &ok, this ));
-    if(!ok)
-        return;
-
-    QProgressDialog progress(this);
-    progress.setLabelText(tr("Preparing media..."));
-    progress.setMinimumDuration(0);
-    progress.setAutoReset(false);
-    progress.setProgress(0);
-    progress.setTotalSteps(selectedSongs.count());
-
-    int startIndex=atoi(startIndexStr);
-    int mediaNo=startIndex-1;
-    QString mediaName=QString("%1_%2").arg(collName).arg(mediaNo);
-    QString mediaDir = config()->databaseDir + "media/" + mediaName + "/";
-    long double sizeLimit=(long double)config()->criticalSize*1024.0*1024.0;
-    int count=0;
-    for(Song* s=selectedSongs.firstSong(); s; ) {
-        progress.setProgress(count);
-        if(progress.wasCancelled())
-            break;
-
-        QFileInfo fi(s->location());
-        if(size==-1 || size+fi.size()>sizeLimit) {
-            // medium is full, prepare new one
-            mediaNo++;
-            mediaName=QString("%1_%2").arg(collName).arg(mediaNo);
-            mediaDir= config()->databaseDir + "media/"+ mediaName + "/";
-            progress.setLabelText(tr("Preparing media ")+mediaName);
-            qDebug() << "Preparing media " << mediaName << " (" << count << " files processed so far)...";
-            QDir dir(mediaDir);
-            if(dir.exists()) {
-                qDebug() << "directory \"" << mediaDir << "\" already exists, calculating available space...";
-                size=diskUsage(mediaDir, sizeLimit);
-                if(size==-1 || size+fi.size()>sizeLimit) {
-                    qDebug() << "directory already too full, skipping...";
-                    continue;
-                }
-                qDebug() << ((int)size/1024.0/1024.0) << " MB already used";
-            } else {
-                dir.mkdir(mediaDir);
-                size=0;
-            }
-        }
-
-        count++;
-        // check, whether song already contained on media
-        if(s->mediaName.contains(mediaName)) {
-            qDebug() << "song already existing on this media, skipping...";
-            s=selectedSongs.nextSong();
-            continue;
-        }
-
-        // okay, we really add the song to the current media
-        size+=fi.size();
-        totalSize+=fi.size();
-        // linux specific
-        QString cmd=QString("ln -s \"%1\" \"%2/%3\"").arg(s->location()).arg(mediaDir).arg(s->filename);
-        system(cmd);
-        s->addMediaLocation(mediaName, s->filename);
-        s=selectedSongs.nextSong();
-    }
-
-    qDebug() << "no of media: " << mediaNo+1-startIndex << " (size limit: " << config()->criticalSize << " MB, ";
-    qDebug() << "index " << startIndex << " to " << mediaNo << ")";
-    qDebug() << "no of files: " << count;
-    qDebug() << "size of last media: " << (int)(size/1024.0/1024.0) << " MB";
-    qDebug() << "size in total: " << (int)(totalSize/1024.0/1024.0) << " MB";
-    folderMedia->update(&(model->allSongs));
-    model->allSongsChanged(true);
-    QString msg=QString(tr("Result of \"Burn to media\" process:\n\n\
-                             no of media: %1, (size limit: %2 MB)\n\
-                             first media index: %3\n\
-                             last media index: %4\n\
-                             no of files: %5\n\
-                             size of last media: %6 MB\n\
-                             size in total: %7 MB\n\n\n\
-                             You have now for each medium a directory in\n\
-                             %8,\n\
-                             containing symbolic links to all contained songs.\n\n\
-                             For burning these files to a CD, you can use a\n\
-                             burning program of your choice and burn\n\
-                             each directory to a seperate CD.\n\
-                             (Depending on your burning program, you might have\n\
-                             to check an option \"follow symlinks\" or similar)."))
-                .arg(mediaNo+1-startIndex).arg(config()->criticalSize).arg(startIndex).arg(mediaNo)
-                .arg(count).arg((int)(size/1024.0/1024.0)).arg((int)(totalSize/1024.0/1024.0))
-                .arg(config()->databaseDir + "media/");
-    QMessageBox::information(this, "Yammi", msg);
-}
-
-
-
 /** calculate disk usage for a directory (including all subdirectories)
  * returns -1 if too full
  */
@@ -1934,7 +1808,6 @@ void YammiGui::forSelectionEnqueue( ) {
     player->syncYammi2Player();
     folderContentChanged(folderActual);
     statusBar( )->message(QString(tr("%1 Songs equeued at end of playlist")).arg(count), 2000);
-    checkPlaylistAvailability();
 }
 
 void YammiGui::forSelectionEnqueueAsNext( ) {
@@ -1959,7 +1832,6 @@ void YammiGui::forSelectionEnqueueAsNext( ) {
     folderActual->correctOrder();
     player->syncYammi2Player();
     folderContentChanged(folderActual);
-    checkPlaylistAvailability();
 }
 
 
@@ -2033,7 +1905,6 @@ void YammiGui::forSelectionDequeue( ) {
     }
     int column=sortedByBefore-1;
     songListView->setSorting(column, ascending);
-    checkPlaylistAvailability();
 }
 
 
@@ -2085,17 +1956,6 @@ void YammiGui::forSelectionSongInfo( ) {
             _size+=file.size();
         }
         _length+=s->length;
-
-        // insert all media, over that songs are distributed
-        for(unsigned int m=0; m<s->mediaName.count(); m++) {
-            bool found=false;
-            for(int n=0; n<si.ComboBoxMedia->count(); n++) {
-                if(si.ComboBoxMedia->text(n)==s->mediaName[m])
-                    found=true;
-            }
-            if(!found)
-                si.ComboBoxMedia->insertItem(s->mediaName[m]);
-        }
 
         if(selected==1) {
             _addedTo=s->addedTo;
@@ -2307,20 +2167,6 @@ void YammiGui::forSelectionDelete( ) {
     } else {
         dd.LabelSongname->setText(QString(tr("Delete %1 songs")).arg(selectedSongs.count()));
     }
-    // fill dialog with onMedia info...(for all toDelete songs)
-    for(Song* s=selectedSongs.firstSong(); s; s=selectedSongs.nextSong()) {
-        for(unsigned int i=0; i<s->mediaName.count(); i++) {
-            QString toInsert(s->mediaName[i]);
-            bool exists=false;
-            for(int j=0; j<dd.ComboBoxOnMedia->count(); j++) {
-                if(dd.ComboBoxOnMedia->text(j)==toInsert)
-                    exists=true;
-            }
-            if(!exists) {
-                dd.ComboBoxOnMedia->insertItem(toInsert);
-            }
-        }
-    }
     int result=dd.exec();
     if(result!=QDialog::Accepted) {
         return;
@@ -2429,9 +2275,6 @@ void YammiGui::forSelection(int action) {
         break;
     case Song::Dequeue:
         forSelectionDequeue();
-        break;
-    case Song::BurnToMedia:
-        forSelectionBurnToMedia();
         break;
     default:
         qWarning() << "unknown action for double click: " << action;
@@ -2550,33 +2393,6 @@ void YammiGui::autoplayLNP() {
 }
 void YammiGui::autoplayRandom() {
     autoplayMode = AUTOPLAY_RANDOM;
-}
-
-/// remove media
-// uahhaa... ugly! make mediaName + mediaLocation a struct/class, oli!
-void YammiGui::removeMedia() {
-    QListViewItem *i = folderListView->currentItem();
-    Folder* chosenFolder = ( Folder* )i;
-    QString mediaName=chosenFolder->folderName();
-    QString msg = QString(tr("Remove media %1 and the corresponding directory?\n\
-                               (which contains the symbolic links to the songs)")).arg(mediaName);
-    if (QMessageBox::warning(this, "", msg, QMessageBox::Yes, QMessageBox::No | QMessageBox::Escape) != QMessageBox::Yes) {
-        return;
-    }
-    model->removeMedia(mediaName);
-    folderMedia->update(&(model->allSongs));
-}
-
-
-void YammiGui::renameMedia() {
-    QListViewItem* i = folderListView->currentItem();
-    QString oldName=((Folder*)i)->folderName();
-    bool ok;
-    QString newName=QString(QInputDialog::getText( tr("Rename Media"), tr("Please enter new name:"), QLineEdit::Normal, oldName, &ok, this ));
-    if(!ok)
-        return;
-    model->renameMedia(oldName, newName);
-    folderMedia->update(&(model->allSongs));
 }
 
 
@@ -2808,7 +2624,7 @@ void YammiGui::checkForGrabbedTrack() {
     model->corruptSongs=0;
     model->problematicSongs.clear();
 
-    model->addSongToDatabase(grabbedTrackFilename, 0);
+    model->addSongToDatabase(grabbedTrackFilename);
     updateView();
     folderProblematic->update(model->problematicSongs);
     folderAll->updateTitle();
@@ -3063,7 +2879,7 @@ void YammiGui::updateSongDatabaseHarddisk() {
         return;
     }
     config()->saveConfig();
-    updateSongDatabase(config()->scanDir, config()->scanPattern, 0);
+    updateSongDatabase(config()->scanDir, config()->scanPattern);
 }
 
 void YammiGui::updateSongDatabaseSingleFile() {
@@ -3085,25 +2901,7 @@ void YammiGui::updateSongDatabaseSingleFile() {
 }
 
 
-void YammiGui::updateSongDatabaseMedia() {
-    UpdateDatabaseMediaDialog d(this, config());
-    // show dialog
-    int result=d.exec();
-    if(result!=QDialog::Accepted) {
-        return;
-    }
-    config()->saveConfig();
-    if(d.LineEditMediaDir->text()=="") {
-        QMessageBox::information(this, "Yammi", tr("You have to enter a name for the media!"));
-        return;
-    }
-    QString mediaName = d.LineEditMediaName->text();
-    updateSongDatabase(config()->mediaDir, config()->scanPattern, mediaName);
-}
-
-
-
-void YammiGui::updateSongDatabase(QString scanDir, QString filePattern, QString media) {
+void YammiGui::updateSongDatabase(QString scanDir, QString filePattern) {
     if(config()->childSafe) {
         return;
     }
@@ -3116,7 +2914,7 @@ void YammiGui::updateSongDatabase(QString scanDir, QString filePattern, QString 
     progress.setProgress(0);
 
     isScanning=true;
-    model->updateSongDatabase(scanDir, config()->followSymLinks, filePattern, media, &progress);
+    model->updateSongDatabase(scanDir, config()->followSymLinks, filePattern, &progress);
 
     progress.close();
     updateView();
@@ -3163,166 +2961,6 @@ void YammiGui::invertSelection() {
         i->setSelected(!i->isSelected());
     }
     songListView->triggerUpdate();
-}
-
-
-/**
- * Tries to load all songs of the playlist that need to be swapped into the swap dir,
- * assuming the chosen media is inserted.
- * Mounts the media if necessary/configured.
- */
-void YammiGui::loadSongsFromMedia(QString mediaName) {
-    // find out how many songs we try to load from the chosen media
-    // (to indicate proper progress)
-    int songsToLoad=0;
-    for(unsigned int i=1; i<model->songsToPlay.count(); i++) {
-        Song* s=model->songsToPlay.at(i)->song();
-        for(unsigned int j=0; j<s->mediaLocation.count(); j++) {
-            if(s->mediaName[j]==mediaName) {
-                if(model->checkAvailability(s)=="") {
-                    songsToLoad++;
-                }
-            }
-        }
-    }
-    QProgressDialog progress(this);
-    progress.setLabelText(tr("Loading song files..."));
-    progress.setModal(true);
-    progress.setTotalSteps(songsToLoad);
-    progress.setMinimumDuration(0);
-    progress.setProgress(0);
-
-    QString mediaDir=config()->mediaDir;
-    QString swapDir=config()->swapDir;
-    if(config()->mountMediaDir) {
-        // linux specific
-        QString cmd;
-        cmd=QString("mount %1").arg(config()->mediaDir);
-        system(cmd);
-    }
-    // iterate through playlist and load all songs on that media into swap dir
-    // (that are not available so far)
-    int loaded=0;
-    for(unsigned int i=1; i<model->songsToPlay.count(); i++) {
-        if(progress.wasCancelled()) {
-            break;
-        }
-        Song* s=model->songsToPlay.at(i)->song();
-        for(unsigned int j=0; j<s->mediaLocation.count(); j++) {
-            if(s->mediaName[j]==mediaName) {
-                if(model->checkAvailability(s)=="") {
-                    qDebug() << "loading song " << s->displayName() << "from " << mediaDir << s->mediaLocation[j];
-                    progress.setLabelText(tr("loading song: ")+s->displayName()+" ("+QString("%1").arg(i+1)+tr(". in playlist)"));
-                    progress.setProgress(loaded);
-                    if(progress.wasCancelled()) {
-                        break;
-                    }
-                    QString filename=s->constructFilename();
-                    // linux specific
-                    QString cmd;
-                    cmd=QString("cp \"%1%2\" \"%3%4.part\"").arg(mediaDir).arg(s->mediaLocation[j]).arg(swapDir).arg(filename);
-                    system(cmd);
-                    QDir dir;
-                    dir.rename(swapDir+filename+".part", swapDir+filename);
-                    // check swap size (if necessary, delete LRU songs)
-                    checkSwapSize();
-                    loaded++;
-                }
-            }
-        }
-    }
-    progress.setProgress(loaded);
-    // unmount swap dir
-    if(config()->mountMediaDir) {
-        // linux specific
-        QString cmd;
-        cmd=QString("umount %1").arg(config()->mediaDir);
-        system(cmd);
-    }
-
-    player->syncYammi2Player();
-    checkPlaylistAvailability();
-    //	folderContentChanged(folderActual);
-    songListView->triggerUpdate();
-}
-
-/**
- * Manages loading songfiles from removable media
- */
-void YammiGui::checkPlaylistAvailability() {
-    // iterate through playlist & check whether we need to load songs to swap dir
-
-    // collect all possibly required media into a listbox,
-    // the most urgent media first
-    mediaListCombo->clear();
-    for(unsigned int i=1; i<model->songsToPlay.count(); i++) {
-        Song* s=model->songsToPlay.at(i)->song();
-        if(s->filename=="") {				// for performance, we first test this (fast)
-            if(model->checkAvailability(s, true)=="") {				// this needs harddisk (slow)
-                for(unsigned int j=0; j<s->mediaLocation.count(); j++) {
-                    bool exists=false;
-                    for(int k=0; k<mediaListCombo->count(); k++) {
-                        if(mediaListCombo->text(k)==s->mediaName[j])
-                            exists=true;
-                    }
-                    if(!exists)
-                        mediaListCombo->insertItem(s->mediaName[j]);
-                }
-            }
-        }
-    }
-    if(mediaListCombo->count()==0) {
-        mediaListCombo->insertItem(tr("<none>"));
-        loadFromMediaButton->setEnabled(false);
-    } else {
-        loadFromMediaButton->setEnabled(true);
-    }
-}
-
-/// loads the currently in the media list chosen media
-void YammiGui::loadMedia() {
-    QString mediaName=mediaListCombo->currentText();
-    loadSongsFromMedia(mediaName);
-}
-
-/**
- * Checks whether the swapped songs take more space than the given limit.
- * If they do, we delete the least recently used song files, until we are below
- * the limit again.
- */
-void YammiGui::checkSwapSize() {
-    long double sizeLimit=(long double)config()->swapSize*1024.0*1024.0;
-    long double size=0.0;
-    QString path=config()->swapDir;
-    qDebug() << "checking swap size in directory " << path << ", limit: " << config()->swapSize << " MB";
-    QDir d(path);
-
-    d.setFilter(QDir::Files);
-    d.setSorting(QDir::Time);			// most recent first
-    const QFileInfoList *list = d.entryInfoList();
-    if (!list) {
-        qError() << "Error: cannot access swap directory: " << path;
-        return;
-    }
-
-    QFileInfoListIterator it( *list );
-
-    for(QFileInfo *fi; (fi=it.current()); ++it ) {
-        if (fi->isDir()) {							// if directory...		=> skip
-            continue;
-        }
-
-        if(size+fi->size()>sizeLimit) {
-            // swap dir too full, delete this entry
-            qDebug() << "removing from swap dir: " << fi->fileName();
-            QDir dir;
-            if(!dir.remove(path+fi->fileName())) {
-                qDebug() << "could not remove LRU song from swapdir";
-            }
-        } else {
-            size+=fi->size();
-        }
-    }
 }
 
 
@@ -3462,10 +3100,6 @@ void YammiGui::createFolders( ) {
     folderCategories = new FolderCategories( folderListView, QString(tr("Categories")));
     folderCategories->moveItem(folderYears);
 
-    // folder containing media
-    folderMedia = new FolderMedia( folderListView, QString(tr("Media")));
-    folderMedia->moveItem(folderCategories);
-
     // folder containing currently played song
     folderActual = new FolderSorted(folderListView, QString(tr("Playlist")), &(model->songsToPlay));
 
@@ -3479,7 +3113,6 @@ void YammiGui::createFolders( ) {
 
     // folder containing unclassified songs
     folderUnclassified = new Folder(folderListView, QString(tr("Unclassified")), &(model->unclassifiedSongs));
-    folderUnclassified->moveItem(folderMedia);
 
     folderSearchResults = new Folder( folderListView, QString(tr("Search Results")), &searchResults );
     folderSearchResults->moveItem(folderActual);
@@ -3495,8 +3128,6 @@ void YammiGui::createFolders( ) {
     connect(folderCategories, SIGNAL( CategoryRemoved() ), this, SLOT(removeCategory()));
     connect(folderCategories, SIGNAL( CategoryRenamed() ), this, SLOT(renameCategory()));
     connect(folderCategories, SIGNAL( LoadM3uIntoCategory() ), this, SLOT(loadM3uIntoCategory()));
-    connect(folderMedia, SIGNAL( RemoveMedia() ), this, SLOT(removeMedia()));
-    connect(folderMedia, SIGNAL( RenameMedia() ), this, SLOT(renameMedia()));
 }
 
 
@@ -3523,7 +3154,6 @@ bool YammiGui::setupActions( ) {
     //Database actions
     new KAction(tr("Save Database"),"filesave",KShortcut(QKeySequence(Key_Control,Key_S)),this,SLOT(saveDatabase()), actionCollection(),"save_db");
     new KAction(tr("Scan Harddisk..."),"fileimport",0,this,SLOT(updateSongDatabaseHarddisk()), actionCollection(),"scan_hd");
-    new KAction(tr("Scan Removable Media..."),"fileimport",0,this,SLOT(updateSongDatabaseMedia()), actionCollection(),"scan_media");
     new KAction(tr("Import Selected File(s)..."),"edit_add",0,this,SLOT(updateSongDatabaseSingleFile()), actionCollection(),"import_file");
     new KAction(tr("Check Consistency..."),"spellcheck",0,this,SLOT(forAllCheckConsistency()), actionCollection(),"check_consistency_all");
     new KAction(tr("Fix genres..."),0,0,this,SLOT(fixGenres()), actionCollection(),"fix_genres");
@@ -3544,7 +3174,6 @@ bool YammiGui::setupActions( ) {
     new KAction(tr("Prelisten end"), "prelisten_end", KShortcut(Key_F11), this, SLOT(forSelectionPrelistenEnd()), actionCollection(), "prelisten_end");
     new KAction(tr("Song Info..."), "info", KShortcut(Key_I), this, SLOT(forSelectionSongInfo()), actionCollection(), "info_selected");
     new KAction(tr("Delete Song..."), 0, 0, this, SLOT(forSelectionDelete()), actionCollection(), "delete_selected");
-    new KAction(tr("Burn To Media"), 0, 0, this, SLOT(forSelectionBurnToMedia()), actionCollection(), "burn_selected");
     new KAction(tr("Check Consistency..."),"spellcheck",0,this,SLOT(forSelectionCheckConsistency()), actionCollection(),"check_consistency");
     new KAction(tr("Move Files"), 0, 0, this, SLOT(forSelectionMove()), actionCollection(), "move_selected");
     new KAction(tr("Search for similar entry"), 0, 0, this, SLOT(searchForSimilarEntry()), actionCollection(), "search_similar_entry");
@@ -3572,7 +3201,6 @@ bool YammiGui::setupActions( ) {
     ta = new KToggleAction("Main ToolBar",0,0,this,SLOT(toolbarToggled()),actionCollection(),"MainToolbar");
     ta = new KToggleAction("Media Player",0,0,this,SLOT(toolbarToggled()),actionCollection(),"MediaPlayerToolbar");
     ta = new KToggleAction("Song Actions",0,0,this,SLOT(toolbarToggled()),actionCollection(),"SongActionsToolbar");
-    ta = new KToggleAction("Removable Media",0,0,this,SLOT(toolbarToggled()),actionCollection(),"RemovableMediaToolbar");
     ta = new KToggleAction("Sleep Mode",0,0,this,SLOT(toolbarToggled()),actionCollection(),"SleepModeToolbar");
     ta = new KToggleAction("Prelisten",0,0,this,SLOT(toolbarToggled()),actionCollection(),"PrelistenToolbar");
 
@@ -3599,16 +3227,6 @@ bool YammiGui::setupActions( ) {
         QToolTip::add( btn, tr("Add this entry to the database as a \"wish\""));
     */
     new KWidgetAction(w, "Search", 0, 0, 0, actionCollection(), "search");
-
-
-    // removable media management
-    w = new QHBox( );
-    new QLabel(tr("Needed media:"),w);
-    mediaListCombo = new QComboBox( FALSE, w );
-    mediaListCombo->setFixedWidth(150);
-    loadFromMediaButton = new QPushButton(tr("load"), w);
-    connect( loadFromMediaButton, SIGNAL( clicked() ), this, SLOT( loadMedia() ) );
-    new KWidgetAction(w, "Load media", 0, 0, 0, actionCollection(), "load_media");
 
     // Sleep mode
     w = new QHBox( );

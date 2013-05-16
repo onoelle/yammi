@@ -47,7 +47,6 @@ class Folder;
 class FolderGroups;
 class FolderSorted;
 class FolderCategories;
-class FolderMedia;
 class Song;
 class KToggleAction;
 class SearchThread;
@@ -173,8 +172,6 @@ private:
 
 public:
     QString replacePrelistenSkip(QString input, int lengthInSeconds, int skipTo);
-    // checks whether the swapped songs take more space than the given limit
-    void checkSwapSize();
     void stopDragging();
     void requestSearchResultsUpdate(MyList* results);
     YammiModel* getModel() {
@@ -219,7 +216,6 @@ public slots:
     void forSelectionPrelisten(int where);
     void forSelectionMove();
     void forSelectionPlugin(int pluginIndex);
-    void forSelectionBurnToMedia();
     void forSelectionCheckConsistency();
 
     /** Enqueue the selected songs at the end of the Playlist.
@@ -341,8 +337,6 @@ protected:
     QListView* folderListView;
     QSplitter* centralWidget;
     QSplitter* leftWidget;
-    QComboBox* mediaListCombo;
-    QPushButton* loadFromMediaButton;
 
     QPopupMenu* playListPopup;
     QPopupMenu* songPopup;
@@ -419,7 +413,6 @@ protected:
     FolderGroups*	folderAlbums;
     FolderGroups* folderGenres;
     FolderGroups* folderYears;
-    FolderMedia*	folderMedia;
     Folder* 			folderUnclassified;
     Folder*				folderProblematic;
     Folder*				folderHistory;				// songs played sometime
@@ -472,9 +465,8 @@ protected slots:
 
     void saveDatabase();
     void updateSongDatabaseHarddisk();
-    void updateSongDatabaseMedia();
     void updateSongDatabaseSingleFile();
-    void updateSongDatabase(QString scanDir, QString filePattern, QString media);
+    void updateSongDatabase(QString scanDir, QString filePattern);
     void updateView(bool startup=false);
 
     void skipBackward();
@@ -483,10 +475,6 @@ protected slots:
     void toCategory(int index);
 
     void onTimer();
-    // removable media management
-    void checkPlaylistAvailability();
-    void loadSongsFromMedia(QString mediaName);
-    void loadMedia();
 
     /** create new category */
     bool newCategory();
@@ -495,8 +483,6 @@ protected slots:
     void loadM3uIntoCategory();
 
     void pluginOnFolder();
-    void removeMedia();
-    void renameMedia();
     void grabAndEncode();
     void addFolderContentSnappy();
 

@@ -86,8 +86,6 @@ public:
     Song::action doubleClickAction;
     /** Action for click on middle button */
     Song::action middleClickAction;
-    /** Max size of media for burning */
-    int criticalSize;
     /** Logging of played songs activated */
     bool logging;
     /** Child safe mode activated (no changes allowed) */
@@ -132,17 +130,6 @@ public:
     QStringList pluginMode;
     /** List of plugin confirmation */
     QStringList pluginConfirm;
-
-    // jukebox functions
-    /** Maximum swap size */
-    int swapSize;
-    /** Should media been mounted and unmounted */
-    bool mountMediaDir;
-
-    /** Mountpoint for mounting external media */
-    QString mediaDir;
-    /** Directory for swapping */
-    QString swapDir;
 
     /** All consistency check related parameter */
     ConsistencyCheckParameter consistencyPara;

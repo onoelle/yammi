@@ -53,7 +53,6 @@ void Prefs::setDefaultValues(void) {
     filenamesConsistent = false;
     directoriesConsistent = false;
     capitalizeTags = true;
-    criticalSize = 700;
     
     prelistenMp3Command = "mpg123|-a /dev/dsp1|--skip {skipFrames}|'{absoluteFilename}'";
     prelistenOggCommand = "ogg123|-d oss|-odsp:/dev/dsp1|--skip {skipSeconds}|'{absoluteFilename}'";
@@ -69,11 +68,6 @@ void Prefs::setDefaultValues(void) {
     grabAndEncodeCmd = "yammiGrabAndEncode";
     shutdownScript = "dcop ksmserver ksmserver \"logout\" 0 2 0";
 
-    // jukebox functions
-    mediaDir = "/dev/cdrom/";
-    swapDir = "/tmp/";
-    swapSize = 200;
-    mountMediaDir = true;
     consistencyPara.setDefaults();
     
     playqueueTemplate = "{scope:none}\
@@ -127,7 +121,6 @@ bool Prefs::loadConfig( ) {
     logging                      = cfg->readBoolEntry("logging", logging);
     childSafe                    = cfg->readBoolEntry("childSafe", childSafe);
     capitalizeTags               = cfg->readBoolEntry("capitalizeTags", capitalizeTags);
-    criticalSize                 = cfg->readNumEntry("criticalSize", criticalSize);
     prelistenMp3Command          = cfg->readEntry("prelistenMp3Command", prelistenMp3Command);
     prelistenOggCommand          = cfg->readEntry("prelistenOggCommand", prelistenOggCommand);
     prelistenWavCommand          = cfg->readEntry("prelistenWavCommand", prelistenWavCommand);
@@ -150,13 +143,6 @@ bool Prefs::loadConfig( ) {
     pluginCustomList             = cfg->readListEntry("pluginCustomList");
     pluginConfirm                = cfg->readListEntry("pluginConfirm");
     pluginMode                   = cfg->readListEntry("pluginMode");
-
-    cfg->setGroup("Jukebox");
-    mediaDir                     = cfg->readEntry("mediaDir", mediaDir);
-    mountMediaDir                = cfg->readBoolEntry("mountMediaDir", mountMediaDir);
-    swapDir                      = cfg->readEntry("swapDir", swapDir);
-    swapSize                     = cfg->readNumEntry("swapSize", swapSize);
-
 
     cfg->setGroup("ConsistencyCheck");
     tagsConsistent          = cfg->readBoolEntry("tagsConsistent", tagsConsistent);
@@ -203,7 +189,6 @@ bool Prefs::saveConfig( ) {
     cfg->writeEntry("logging", logging);
     cfg->writeEntry("childSafe", childSafe);
     cfg->writeEntry("capitalizeTags", capitalizeTags);
-    cfg->writeEntry("criticalSize", criticalSize);
     cfg->writeEntry("prelistenMp3Command", prelistenMp3Command);
     cfg->writeEntry("prelistenOggCommand", prelistenOggCommand);
     cfg->writeEntry("prelistenWavCommand", prelistenWavCommand);
@@ -223,13 +208,6 @@ bool Prefs::saveConfig( ) {
     cfg->writeEntry("pluginCustomList", pluginCustomList);
     cfg->writeEntry("pluginConfirm", pluginConfirm);
     cfg->writeEntry("pluginMode", pluginMode);
-
-    cfg->setGroup("Jukebox");
-    cfg->writeEntry("mediaDir", mediaDir);
-    cfg->writeEntry("mountMediaDir", mountMediaDir);
-    cfg->writeEntry("swapDir", swapDir);
-    cfg->writeEntry("swriteize", swapSize);
-
 
     cfg->setGroup("ConsistencyCheck");
     cfg->writeEntry("tagsConsistent", tagsConsistent);

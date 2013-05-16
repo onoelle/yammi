@@ -398,17 +398,6 @@ void YammiModel::readSongDatabase(  ) {
         Song* s = new Song(artist, title, album, filename, path, length, bitrate, addedTo, year, comment, trackNr, genre);
         allSongs.appendSong( s );
 
-        QDomNode child = e.firstChild();
-        while( !child.isNull() ) {
-            QDomElement mediaElem = child.toElement(); // try to convert the node to an element.
-            if( !mediaElem.isNull() ) {
-                QString mediaName=mediaElem.attribute("mediaName", "unspecified media");
-                QString mediaLocation=mediaElem.attribute("mediaLocation", "unspecified location");
-                s->addMediaLocation(mediaName, mediaLocation);
-            }
-            child = child.nextSibling();
-        }
-
         e = e.nextSibling().toElement();
         count++;
     }
@@ -455,12 +444,6 @@ void YammiModel::saveSongDatabase() {
             elem.setAttribute( "genre", QString("%1").arg(s->genre));
 
         elem.setAttribute( "addedTo", s->addedTo.writeToString());
-        for(unsigned int i=0; i<s->mediaName.count(); i++) {
-            QDomElement media = doc.createElement( "media" );
-            media.setAttribute( "mediaName", s->mediaName[i]);
-            media.setAttribute( "mediaLocation", s->mediaLocation[i]);
-            elem.appendChild(media);
-        }
         root.appendChild( elem );
     }
     root.setAttribute("count",count);
@@ -512,7 +495,7 @@ bool YammiModel::categoriesChanged() {
 
 
 //   Updates the xml-database by scanning harddisk
-void YammiModel::updateSongDatabase(QString scanDir, bool followSymLinks, QString filePattern, QString mediaName, QProgressDialog* progress) {
+void YammiModel::updateSongDatabase(QString scanDir, bool followSymLinks, QString filePattern, QProgressDialog* progress) {
     entriesAdded=0;
     corruptSongs=0;
     if(m_yammi->config()->childSafe) {
@@ -520,49 +503,17 @@ void YammiModel::updateSongDatabase(QString scanDir, bool followSymLinks, QStrin
         return;
     }
     problematicSongs.clear();
-    if(mediaName==0) {
-        qDebug()<<"scanning harddisk for new songs...";
-        // check that scanDir is an existing directory
-        QDir d(scanDir);
-        if(!d.exists()) {
-            QString msg( tr("The base directory for scanning does not exist!\n\
-                              Set value \"scanDir\" to an existing directory!"));
-            QMessageBox::warning(NULL, "", msg, QMessageBox::Ok, QMessageBox::NoButton);
-            return;
-        } else {
-            traverse(scanDir, followSymLinks, filePattern, progress);
-            qDebug() << "finished scanning!";
-        }
+    qDebug()<<"scanning harddisk for new songs...";
+    // check that scanDir is an existing directory
+    QDir d(scanDir);
+    if(!d.exists()) {
+        QString msg( tr("The base directory for scanning does not exist!\n\
+                          Set value \"scanDir\" to an existing directory!"));
+        QMessageBox::warning(NULL, "", msg, QMessageBox::Ok, QMessageBox::NoButton);
+        return;
     } else {
-        qDebug() << "scanning removable media for new songs...";
-
-        // mount media dir
-        if(m_yammi->config()->mountMediaDir) {
-            // linux specific
-            QString cmd;
-            cmd=QString("mount %1").arg(scanDir);
-            system(cmd);
-        }
-
-        // check that mediaDir is an existing directory
-        QDir d(scanDir);
-        if(!d.exists()) {
-            QString msg(tr("The specified directory for removable media:\n %1 \n\
-                             does not exist or is not redable!\n Set value \"mediaDir\" in the preferences to an existing directory!\n\
-                             (if necessary, enable the \"mount media\" option in the preferences)"));
-            msg.arg(scanDir);
-            QMessageBox::warning(NULL, "", msg, QMessageBox::Ok, QMessageBox::NoButton);
-        } else {
-            traverse(scanDir, followSymLinks, filePattern, progress, mediaName);
-            qDebug() << "finished scanning!";
-        }
-        // umount media dir
-        if(m_yammi->config()->mountMediaDir) {
-            // linux specific
-            QString cmd;
-            cmd=QString("umount %1").arg(scanDir);
-            system(cmd);
-        }
+        traverse(scanDir, followSymLinks, filePattern, progress);
+        qDebug() << "finished scanning!";
     }
 }
 
@@ -580,11 +531,11 @@ void YammiModel::updateSongDatabase(QStringList list) {
         if(filename.endsWith(".m3u")) {
             QStringList* playlist = readM3uFile(filename);
             for(QStringList::Iterator it2 = playlist->begin();it2 != playlist->end();++it) {
-                addSongToDatabase(QString(*it2), 0);
+                addSongToDatabase(QString(*it2));
             }
             delete playlist;
         } else {
-            addSongToDatabase(filename, 0);
+            addSongToDatabase(filename);
         }
     }
 }
@@ -593,10 +544,10 @@ void YammiModel::updateSongDatabase(QStringList list) {
 
 /// traverses a directory recursively and processes all mp3 files
 /// returns false, if scanning was cancelled
-bool YammiModel::traverse(QString path, bool followSymLinks, QString filePattern, QProgressDialog* progress, QString mediaName) {
+bool YammiModel::traverse(QString path, bool followSymLinks, QString filePattern, QProgressDialog* progress) {
     // leave out the following directories
-    if(path+"/"==m_yammi->config()->trashDir || path+"/"==m_yammi->config()->swapDir) {
-        qWarning() << "skipping trash or swap directory: " << path;
+    if(path+"/"==m_yammi->config()->trashDir) {
+        qWarning() << "skipping trash directory: " << path;
         return true;
     }
     qDebug() << "scanning directory " << path;
@@ -626,7 +577,7 @@ bool YammiModel::traverse(QString path, bool followSymLinks, QString filePattern
             return false;
         }
         // okay, we have a file to scan, try to add to database
-        addSongToDatabase(fi->filePath(), mediaName);
+        addSongToDatabase(fi->filePath());
     }
 
     // step 2: recursively scan subdirectories
@@ -649,7 +600,7 @@ bool YammiModel::traverse(QString path, bool followSymLinks, QString filePattern
                 continue;
             }
         }
-        if(traverse(fi2->filePath(), followSymLinks, filePattern, progress, mediaName) == false) {
+        if(traverse(fi2->filePath(), followSymLinks, filePattern, progress) == false) {
             return false;
         }
     }
@@ -670,7 +621,7 @@ void YammiModel::fixGenres(QProgressDialog* progress) {
         
         qDebug() << "trying to fix genre in file " << s->location();
         Song* fixSong=new Song();
-        bool success = fixSong->create(s->location(), 0, config()->capitalizeTags);
+        bool success = fixSong->create(s->location(), config()->capitalizeTags);
         if(success) {
             qDebug() << "old genre saved in yammi database: " << s->genre << ", fixed genre: " << fixSong->genre;
             s->genre = fixSong->genre;
@@ -681,7 +632,7 @@ void YammiModel::fixGenres(QProgressDialog* progress) {
 }
 
 // adds a single songfile to the database
-void YammiModel::addSongToDatabase(QString filename, QString mediaName=0) {
+void YammiModel::addSongToDatabase(QString filename) {
     qDebug() << "scanning file '" << filename << "'...";
     bool found=false;
     for(Song* s=allSongs.firstSong(); s; s=allSongs.nextSong()) {
@@ -712,7 +663,7 @@ void YammiModel::addSongToDatabase(QString filename, QString mediaName=0) {
 
     // okay, new song (at least new filename/path) => construct song object
     Song* newSong = new Song();
-    newSong->create(filename, mediaName, m_yammi->config()->capitalizeTags);
+    newSong->create(filename, m_yammi->config()->capitalizeTags);
     if(newSong->corrupted) {
         qError() << "new song file " << filename << " is corrupt (not readable for yammi), skipping";
         corruptSongs++;
@@ -724,49 +675,29 @@ void YammiModel::addSongToDatabase(QString filename, QString mediaName=0) {
         // yes, song with this key already existing!
         if(newSong->length==s->length && newSong->bitrate==s->bitrate && newSong->album==s->album) {
             // a) okay, we assume it is exactly the same song...
-            if(mediaName==0) {
-                // case 1: scanning harddisk
-                if(s->filename=="") {
-                    // case 1a: song has no filename = was not available on harddisk
-                    // => make it available (at new location)
+
+            // case 1: scanning harddisk
+            if(s->filename=="") {
+                // case 1a: song has no filename = was not available on harddisk
+                // => make it available (at new location)
+                s->setTo(newSong);
+                allSongsChanged(true);
+                delete(newSong);
+                return;
+            } else {
+                // case 1b: song has filename
+                QFileInfo fileInfo(s->location());
+                if(!fileInfo.exists()) {
+                    // but still not available => probably has been moved
+                    qWarning() << "looks like file " << newSong->filename << " has been moved from " << s->path << " to " << newSong->path << ", correcting path info";
                     s->setTo(newSong);
                     allSongsChanged(true);
                     delete(newSong);
                     return;
-                } else {
-                    // case 1b: song has filename
-                    QFileInfo fileInfo(s->location());
-                    if(!fileInfo.exists()) {
-                        // but still not available => probably has been moved
-                        qWarning() << "looks like file " << newSong->filename << " has been moved from " << s->path << " to " << newSong->path << ", correcting path info";
-                        s->setTo(newSong);
-                        allSongsChanged(true);
-                        delete(newSong);
-                        return;
-                    }
-                    // song is available, we don't need two songs => skip
-                    qWarning() << "file " << newSong->filename << " already available at " << s->location() << ", skipping";
-                    delete(newSong);
-                    return;
                 }
-            } else {
-                // case 2: scanning removable media => add media, if not already added
-                bool exists=false;
-                for(unsigned int i=0; i<s->mediaName.count(); i++) {
-                    if(s->mediaName[i]==mediaName)
-                        exists=true;
-                }
-                if(!exists) {
-                    qDebug() << "adding media " << mediaName << " to mediaList in song " << s->displayName();
-                    QString locationOnMedia=filename;
-                    if(locationOnMedia.left(m_yammi->config()->mediaDir.length())!=m_yammi->config()->mediaDir)
-                        qError() << "strange error, scanning media, but file not on media";
-                    locationOnMedia=locationOnMedia.right(locationOnMedia.length()-m_yammi->config()->mediaDir.length());
-                    s->addMediaLocation(mediaName, locationOnMedia);
-                    allSongsChanged(true);
-                } else {
-                    qDebug() << "song " << s->location() << " is already known to be on this media";
-                }
+                // song is available, we don't need two songs => skip
+                qWarning() << "file " << newSong->filename << " already available at " << s->location() << ", skipping";
+                delete(newSong);
                 return;
             }
         } else {
@@ -894,44 +825,6 @@ void YammiModel::save() {
 }
 
 
-
-/* removing a media, ie. removing the media entry in all songs that are on it
- */
-void YammiModel::removeMedia(QString mediaToDelete) {
-    qDebug()<<"removing media: "<<mediaToDelete;
-    for(Song* s=allSongs.firstSong(); s; s=allSongs.nextSong()) {
-        QStringList::Iterator it2 = s->mediaLocation.begin();
-        for ( QStringList::Iterator it = s->mediaName.begin(); it != s->mediaName.end(); ++it ) {
-            if(mediaToDelete==(*it)) {
-                it=s->mediaName.remove(it);
-                --it;
-                it2=s->mediaLocation.remove(it2);
-                --it2;
-            }
-            ++it2;
-        }
-    }
-    // now delete the directory (if existing)
-    // linux specific
-    qWarning()<<"Remove media disabled";
-    // 	QString cmd=QString("rm -r \"%1/media/%2\"").arg(m_yammi->config()->yammiBaseDir).arg(mediaToDelete);
-    // 	system(cmd);
-    allSongsChanged(true);
-}
-
-void YammiModel::renameMedia(QString oldMediaName, QString newMediaName) {
-    for(Song* s=allSongs.firstSong(); s; s=allSongs.nextSong()) {
-        s->renameMedia(oldMediaName, newMediaName);
-    }
-    // now move the directory (if existing)
-    QDir dir;
-    QString path = config()->databaseDir + "media/";
-    if(!dir.rename(path+oldMediaName, path+newMediaName)) {
-        qDebug() << "could not rename media dir!:" << path + oldMediaName;
-    }
-    allSongsChanged(true);
-}
-
 /**
  * Marks those playlists as dirty that contain the given song
  */
@@ -950,74 +843,36 @@ void YammiModel::markPlaylists(Song* s) {
 Song* YammiModel::getSongFromFilename(QString filename) {
     // strip filename to relative name
     int pos=filename.findRev('/', -1);
-    QString path=filename.left(pos+1);
     QString lookFor=filename.right(filename.length()-pos-1);
 
-    if(path==m_yammi->config()->swapDir) {
-        for(SongEntry* entry=allSongs.first(); entry; entry=allSongs.next()) {
-            if(entry->song()->filename=="" && entry->song()->constructFilename()==lookFor)
-                return entry->song();
-        }
-    } else {
-        for(SongEntry* entry=allSongs.first(); entry; entry=allSongs.next()) {
-            if(entry->song()->filename==lookFor)
-                return entry->song();
-        }
+    for(SongEntry* entry=allSongs.first(); entry; entry=allSongs.next()) {
+        if(entry->song()->filename==lookFor)
+            return entry->song();
     }
+
     return 0;
 }
 
 
 /**
  * Checks whether a song is available on the local harddisk
- * or needs to be retrieved from a removable media.
  * If song is available, returns the absolute path+filename to the songfile.
- * (if song is in swap dir and touch is set to true,
- * the file will be touched to implement a kind of LRU strategy)
  * If not yet available, returns "".
  * If song will never be available because it is not contained on any media, returns "never".
  */
-QString YammiModel::checkAvailability(Song* s, bool touch) {
+QString YammiModel::checkAvailability(Song* s) {
     if(s->location()!="/") {
         QFileInfo fi(s->location());
         if(fi.exists() && fi.isReadable()) {
             return s->location();
         }
     }
-    // no location given, check whether already existing in swap dir
-    QString dir=m_yammi->config()->swapDir;
-    QString filename=s->constructFilename();
-    QFileInfo fi(dir+filename);
-    if(fi.exists() && fi.isReadable()) {
-        if(touch) {
-            // linux specific
-            QString cmd;
-            cmd=QString("touch \"%1\"").arg(dir+filename);
-            system(cmd);
-            /*		does not work: touching a file using QT classes...
-            			QFile touchFile(dir+filename);
-            			if(!touchFile.open(IO_ReadWrite))
-                            qDebug() << "could not touch songfile (for LRU method)";
-            			else {
-            				touchFile.flush();
-            				touchFile.close();
-            			}
-            */
-        }
-        return dir+filename;
-    }
-
-    // not available, need to load it from media
-    if(s->mediaLocation.count()!=0) {
-        return "";
-    } else {
-        return "never";
-    }
+    return "never";
 }
 
 /**
  * Remove all those thongs from top of playlist that are unplayable:
- * - swapped songs not on harddisk and not loaded from removable media
+ * - swapped songs not on harddisk
  * - those that match unplayable file mask ("*.txt")
  * Does NOT emit the playlistChanged() signal!
  */

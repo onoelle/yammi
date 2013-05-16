@@ -1,4 +1,4 @@
-<!DOCTYPE UI><UI version="3.2" stdsetdef="1">
+<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
 <class>DeleteDialog</class>
 <widget class="QDialog">
     <property name="name">
@@ -8,8 +8,8 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>304</width>
-            <height>197</height>
+            <width>348</width>
+            <height>211</height>
         </rect>
     </property>
     <property name="sizePolicy">
@@ -110,22 +110,6 @@
                 <string>deletes the file on harddisk (if you keep the database entry, this song needs to be loaded for playing)</string>
             </property>
         </widget>
-        <widget class="QComboBox" row="6" column="4" rowspan="1" colspan="2">
-            <property name="name">
-                <cstring>ComboBoxOnMedia</cstring>
-            </property>
-            <property name="sizePolicy">
-                <sizepolicy>
-                    <hsizetype>7</hsizetype>
-                    <vsizetype>0</vsizetype>
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                </sizepolicy>
-            </property>
-            <property name="toolTip" stdset="0">
-                <string>shows a list of media, on which the song(s) to delete can be found</string>
-            </property>
-        </widget>
         <widget class="QLabel" row="1" column="0" rowspan="1" colspan="6">
             <property name="name">
                 <cstring>LabelSongname</cstring>
@@ -140,26 +124,6 @@
             </property>
             <property name="text">
                 <string>song to delete...</string>
-            </property>
-        </widget>
-        <widget class="QLabel" row="5" column="0" rowspan="2" colspan="4">
-            <property name="name">
-                <cstring>TextLabel1_2</cstring>
-            </property>
-            <property name="sizePolicy">
-                <sizepolicy>
-                    <hsizetype>1</hsizetype>
-                    <vsizetype>0</vsizetype>
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                </sizepolicy>
-            </property>
-            <property name="text">
-                <string>For your information:
-Song is contained on media</string>
-            </property>
-            <property name="toolTip" stdset="0">
-                <string>shows a list of media, on which the song(s) to delete can be found</string>
             </property>
         </widget>
         <widget class="QPushButton" row="8" column="1">
@@ -281,7 +245,6 @@ Song is contained on media</string>
 <tabstops>
     <tabstop>CheckBoxDeleteDbEntry</tabstop>
     <tabstop>CheckBoxDeleteFile</tabstop>
-    <tabstop>ComboBoxOnMedia</tabstop>
     <tabstop>PushButtonOK</tabstop>
     <tabstop>PushButtonCancel</tabstop>
 </tabstops>

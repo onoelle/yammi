@@ -74,7 +74,7 @@ public:
                   PrelistenStart, PrelistenMiddle, PrelistenEnd,
                   Delete, DeleteFile, DeleteEntry,
                   CheckConsistency, MoveTo,
-                  Dequeue, BurnToMedia
+                  Dequeue
                 };
 
     /// default constructor, just assigns default values
@@ -84,7 +84,7 @@ public:
     Song(QString artist, QString title, QString album, QString filename, QString path, int length, int bitrate, MyDateTime addedTo, int year, QString comment, int trackNr, QString genre);
 
     /// constructs a song object from a given file
-    bool create(const QString filename, const QString mediaName, bool capitalizeTags);
+    bool create(const QString filename, bool capitalizeTags);
 
     /// check consistency
     QString checkConsistency(bool requireConsistentTags, bool requireConsistentFilename, bool ignoreCaseInFilename, bool requireConsistentDirectory);
@@ -155,8 +155,6 @@ public:
     QString makeValidFilename(QString filename, bool file);
 
 
-    void addMediaLocation(QString mediaName, QString locationOnMedia);  ///< adds the location on a media to song info
-    void renameMedia(QString oldMediaName, QString newMediaName);
     void deleteFile(QString trashDir);
     void moveTo(QString dir);
 
@@ -182,8 +180,6 @@ public:
     MyDateTime addedTo;        // when song was added to my database
     MyDateTime lastPlayed;     // last time song was played
     int noPlayed;              // how often song was played since added
-    QStringList mediaName;
-    QStringList mediaLocation;
 
     bool classified;
     bool corrupted;

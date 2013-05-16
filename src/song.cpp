@@ -112,7 +112,7 @@ Song::Song(QString artist, QString title, QString album, QString filename, QStri
  * @return    true if successful
  *            false on error (file not found)
  */
-bool Song::create(const QString location, const QString mediaName, bool capitalizeTags) {
+bool Song::create(const QString location, bool capitalizeTags) {
     // step 1:
     // - check for existence and access
     // - get filename, path and size
@@ -126,21 +126,8 @@ bool Song::create(const QString location, const QString mediaName, bool capitali
         qDebug() << "trying to construct song, but file " << location << " is not accessible!";
         return false;
     }
-    if(mediaName==0) {          // song is on harddisk
-        filename = fi->fileName();
-        path = fi->dirPath(TRUE);
-    } else {                                    // scanning removable media
-        filename = "";
-        path = "";
-        QString mountPath = gYammiGui->config()->mediaDir;
-        QString locationOnMedia=location;
-        if(locationOnMedia.left(mountPath.length()) != mountPath) {
-            qDebug() << "warning: song file is not on the mount path";
-        }
-        locationOnMedia = locationOnMedia.right(locationOnMedia.length()-mountPath.length());
-        qDebug() << "mediaName: " << mediaName << ", locationOnMedia: " << locationOnMedia << "";
-        addMediaLocation(mediaName, locationOnMedia);
-    }
+    filename = fi->fileName();
+    path = fi->dirPath(TRUE);
     filesize=fi->size();
     QString saveFilename(fi->fileName());
     QString savePath(fi->dirPath(TRUE));
@@ -736,17 +723,7 @@ QString Song::constructPath() {
  */
 QString Song::getSuffix() {
     QString base;
-    if(filename=="") {
-        // this is the case for swapped songs: filename is empty
-        // => we have to look it up in the stored media location
-        if(mediaLocation.count()==0) {
-            return "";
-        } else {
-            base=mediaLocation[0];
-        }
-    } else {
-        base=filename;
-    }
+    base=filename;
     if(filename=="!") {
         return "!";
     }
@@ -788,18 +765,6 @@ QString Song::makeValidFilename(QString filename, bool file) {
 }
 
 
-void Song::addMediaLocation(QString mediaName, QString locationOnMedia) {
-    this->mediaName.append(mediaName);
-    this->mediaLocation.append(locationOnMedia);
-}
-
-void Song::renameMedia(QString oldMediaName, QString newMediaName) {
-    for(unsigned int i=0; i<mediaName.count(); i++) {
-        if(mediaName[i]==oldMediaName)
-            mediaName[i]=newMediaName;
-    }
-}
-
 void Song::deleteFile(QString trashDir)                     // move songfile to trash
 {
     if(filename=="")
@@ -830,7 +795,7 @@ QString Song::getSongAction(int index) {
                                 "PrelistenStart", "PrelistenMiddle", "PrelistenEnd",
                                 "Delete", "DeleteFile", "DeleteEntry",
                                 "CheckConsistency", "MoveTo",
-                                "Dequeue", "BurnToMedia"
+                                "Dequeue"
                                };
     if(index<=MAX_SONG_ACTION) {
         return QString(songAction[index]);
@@ -855,7 +820,6 @@ QString Song::getReplacementsDescription() {
     msg+=QObject::tr("{bitrate} (in kbps)\n");
     msg+=QObject::tr("{length} (length in format mm:ss)\n");
     msg+=QObject::tr("{lengthInSeconds} (length in seconds)\n");
-    msg+=QObject::tr("{mediaList (list of media on which song is contained)\n");
     msg+=QObject::tr("{trackNr} (Track number)\n");
     msg+=QObject::tr("{trackNr2Digit} (as above, but padded with zero if necessary)\n");
     return msg;
@@ -868,15 +832,6 @@ QString Song::getReplacementsDescription() {
 QString Song::replacePlaceholders(QString input, int index) {
     // 1. prepare strings
     QString lengthStr;
-
-    // medialist
-    QString mediaList="";
-    for(unsigned int i=0; i<mediaName.count(); i++) {
-        if(i!=0) {
-            mediaList+=", ";
-        }
-        mediaList+=mediaName[i];
-    }
 
     // filename without suffix
     QString filenameWithoutSuffix;
@@ -911,7 +866,6 @@ QString Song::replacePlaceholders(QString input, int index) {
     input.replace(QRegExp("\\{length\\}"), lengthStr.sprintf("%2d:%02d", length/60, length % 60));
     input.replace(QRegExp("\\{lengthInSeconds\\}"), QString("%1").arg(length));
     input.replace(QRegExp("\\{newline\\}"), "\n");
-    input.replace(QRegExp("\\{mediaList\\}"), mediaList);
     input.replace(QRegExp("\\{trackNr\\}"), trackNrStr);
     input.replace(QRegExp("\\{trackNr2Digit\\}"), trackNrStr.rightJustify(2,'0'));
     return input;
