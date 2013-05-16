@@ -9,7 +9,7 @@ MOC_DIR = .moc
 OBJECTS_DIR = .obj
 UI_DIR = .ui
 
-QMAKE_CXX=ccache g++
+#QMAKE_CXX=ccache g++
 QMAKE_CLEAN += yammi
 
 SOURCES = \
