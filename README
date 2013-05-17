@@ -37,6 +37,7 @@ And you are done. Right now you should be able to run Yammi from the source tree
 
 Or if you want to install it somewhere do following. This will install it to
 your home directory e.g. /home/user/bin/yammi (so no root rights required):
+  $ qmake-qt4
   $ make install
 
 Then you can start it by this command:
