@@ -54,25 +54,23 @@ int main( int argc, char **argv )
         qDebug() << "translation not found: directory:" << directory << " filename:" << filename;
     }
 
-    if (!QDBusConnection::sessionBus().isConnected()) {
-        fprintf(stderr, "Cannot connect to the D-Bus session bus.\n"
-                "To start it, run:\n"
-                "\teval `dbus-launch --auto-syntax`\n");
-        return 1;
-    }
-
-    if (!QDBusConnection::sessionBus().registerService("net.sf.yammi.yammi.YammiGui")) {
-        fprintf(stderr, "%s\n", qPrintable(QDBusConnection::sessionBus().lastError().message()));
-        exit(1);
-    }
-
     YammiGui* yammi = new YammiGui();
 	if(!yammi->isValidState()) {
         qDebug() << "shutting down now...";
 		return 1;
 	}
 
-    QDBusConnection::sessionBus().registerObject("/YammiGui", yammi, QDBusConnection::ExportScriptableSlots);
+    if (!QDBusConnection::sessionBus().isConnected()) {
+        qCritical() << "Cannot connect to the D-Bus session bus.\n"
+                "To start it, run:\n"
+                "\teval `dbus-launch --auto-syntax`";
+    } else {
+        if (!QDBusConnection::sessionBus().registerService("net.sf.yammi.yammi.YammiGui")) {
+            qCritical() << qPrintable(QDBusConnection::sessionBus().lastError().message());
+        } else {
+            QDBusConnection::sessionBus().registerObject("/YammiGui", yammi, QDBusConnection::ExportScriptableSlots);
+        }
+    }
 
 	app.setMainWidget( yammi );
 	yammi->show();
