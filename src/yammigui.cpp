@@ -19,28 +19,28 @@
 
 #include <taglib/id3v1genres.h>
 
-#include <Q3FileDialog>
 #include <Q3HBox>
 #include <Q3Header>
 #include <Q3ListView>
-#include <QProgressDialog>
-#include <QMenu>
-#include <QTextEdit>
 #include <Q3ValueList>
 #include <QActionGroup>
 #include <QCheckBox>
 #include <QDebug>
+#include <QFileDialog>
 #include <QInputDialog>
 #include <QKeyEvent>
 #include <QLabel>
+#include <QMenu>
 #include <QMessageBox>
 #include <QMenuBar>
 #include <QPixmap>
 #include <QProcess>
+#include <QProgressDialog>
 #include <QPushButton>
 #include <QSettings>
 #include <QSpinBox>
 #include <QSplitter>
+#include <QTextEdit>
 #include <QTextStream>
 #include <QtDBus>
 #include <QToolBar>
@@ -1475,13 +1475,13 @@ void YammiGui::forSelectionPlugin(int pluginIndex) {
     QString cmd=config()->pluginCommand[pluginIndex];
 
     if(cmd.contains("{directoryDialog}")>0) {
-        QString dir = Q3FileDialog::getExistingDirectory("", this, NULL, tr("choose directory for plugin"));
+        QString dir = QFileDialog::getExistingDirectory("", this, NULL, tr("choose directory for plugin"));
         if(dir.isNull())
             return;
         cmd.replace(QRegExp("\\{directoryDialog\\}"), dir);
     }
     if(cmd.contains("{fileDialog}")>0) {
-        QString file = Q3FileDialog::getSaveFileName("", QString::null, this, NULL, tr("choose file for plugin"));
+        QString file = QFileDialog::getSaveFileName("", QString::null, this, NULL, tr("choose file for plugin"));
         if(file.isNull())
             return;
         cmd.replace(QRegExp("\\{fileDialog\\}"), file);
@@ -1584,7 +1584,7 @@ void YammiGui::forSelectionMove() {
     }
     // let user choose destination directory
     QString startPath=selectedSongs.firstSong()->path;
-    QString dir = Q3FileDialog::getExistingDirectory(startPath, this, NULL, tr("Select destination directory"));
+    QString dir = QFileDialog::getExistingDirectory(startPath, this, NULL, tr("Select destination directory"));
     if(dir.isNull()) {
         return;
     }
@@ -2261,7 +2261,7 @@ void YammiGui::renameCategory() {
 void YammiGui::loadM3uIntoCategory() {
     Q3ListViewItem* i = folderListView->currentItem();
     FolderSorted* categoryFolder=(FolderSorted*)i;
-    QString filename = Q3FileDialog::getOpenFileName("/", "Playlists (*.m3u)", this, NULL, tr("Choose a Playlist to insert" ));
+    QString filename = QFileDialog::getOpenFileName("/", "Playlists (*.m3u)", this, NULL, tr("Choose a Playlist to insert" ));
     if(filename.isNull()) {
         return;
     }
@@ -2680,7 +2680,7 @@ void YammiGui::updateSongDatabaseHarddisk() {
 }
 
 void YammiGui::updateSongDatabaseSingleFile() {
-    QStringList files = Q3FileDialog::getOpenFileNames( ":singleFile", QString::null, this, NULL, tr("Open file(s) to import"));
+    QStringList files = QFileDialog::getOpenFileNames( ":singleFile", QString::null, this, NULL, tr("Open file(s) to import"));
     if(files.count()==0) {
         return;
     }

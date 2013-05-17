@@ -17,7 +17,7 @@
 
 #include "updatedatabasedialog.h"
 
-#include <Q3FileDialog>
+#include <QFileDialog>
 
 #include "prefs.h"
 
@@ -45,7 +45,7 @@ void UpdateDatabaseDialog::myAccept() {
 
 // file dialog for scan dir
 void UpdateDatabaseDialog::chooseScanDir() {
-    QString dir = Q3FileDialog::getExistingDirectory(LineEditScanDir->text(), this, NULL, tr("choose scan directory"));
+    QString dir = QFileDialog::getExistingDirectory(LineEditScanDir->text(), this, NULL, tr("choose scan directory"));
     if(!dir.isNull()) {
         LineEditScanDir->setText(dir);
     }

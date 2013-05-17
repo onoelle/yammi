@@ -17,7 +17,7 @@
 
 #include "preferencesdialog.h"
 
-#include <Q3FileDialog>
+#include <QFileDialog>
 #include <QInputDialog>
 #include <QMessageBox>
 
@@ -184,7 +184,7 @@ void PreferencesDialog::myAccept() {
 
 // file dialog for trash dir
 void PreferencesDialog::chooseTrashDir() {
-    QString dir = Q3FileDialog::getExistingDirectory(LineEditTrashDir->text(), this, NULL, tr("choose trash directory"));
+    QString dir = QFileDialog::getExistingDirectory(LineEditTrashDir->text(), this, NULL, tr("choose trash directory"));
     if(!dir.isNull()) {
         LineEditTrashDir->setText(dir);
     }
