@@ -12,7 +12,6 @@
 #include "yammigui.h"
 
 
-static const char description[] =   QT_TR_NOOP("Yammi - Yet Another Music Manager I...");
 static const char version[] = VERSION;
 
 // global pointer to YammiGui
@@ -24,11 +23,36 @@ YammiGui* gYammiGui;
 int main( int argc, char **argv )
 {
 	srand(time(NULL));
+
     QApplication app(argc, argv);
-    //KAboutData about("yammi", QT_TR_NOOP("Yammi"), version, description, KAboutData::License_GPL, "(C) 2001-2005 by Oliver Noelle", "", "http://yammi.sourceforge.net", "yammi-developer@lists.sourceforge.net");
+    //KAboutData about("yammi", QT_TR_NOOP("Yammi"), version, QT_TR_NOOP("Yammi - Yet Another Music Manager I ..."), KAboutData::License_GPL, "(C) 2001-2005 by Oliver Noelle", "", "http://yammi.sourceforge.net", "yammi-developer@lists.sourceforge.net");
     app.setOrganizationName("yammi");
     app.setOrganizationDomain("yammi.sourceforge.net");
     app.setApplicationName("yammi");
+
+    /* set the search path, so the Qt resource system could find the icons and pictures */
+    QDir::addSearchPath("icons", QCoreApplication::applicationDirPath() + "/icons");
+    QDir::addSearchPath("icons", QDir::currentDirPath() + "/icons");
+
+    QDir::addSearchPath("translations", QCoreApplication::applicationDirPath() + "/translations");
+    QDir::addSearchPath("translations", QDir::currentDirPath() + "/translations");
+
+    QString directory = "translations:";
+    QString filename = QString("yammi_%1").arg(QLocale::system().name().toLower());
+#if QT_VERSION < QT_VERSION_CHECK(4, 8, 2)
+    /* in squeeze loading with the resource path "translations:yammi_de_de" is not working
+       whereas in wheezy it is working. Therefore here get the path to the resource for ourselve.
+    */
+    QFileInfo fi(directory + "yammi_de.qm");
+    directory = fi.absolutePath();
+    qDebug() << "using workaround for older Qt versions: directory:" << directory << " filename:" << filename;
+#endif
+    QTranslator* translator = new QTranslator();
+    if (translator->load(filename, directory)) {
+        app.installTranslator(translator);
+    } else {
+        qDebug() << "translation not found: directory:" << directory << " filename:" << filename;
+    }
 
     if (!QDBusConnection::sessionBus().isConnected()) {
         fprintf(stderr, "Cannot connect to the D-Bus session bus.\n"

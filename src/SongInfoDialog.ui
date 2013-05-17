@@ -230,7 +230,7 @@
                         <bool>true</bool>
                     </property>
                     <property name="toolTip" stdset="0">
-                        <string>not implemented yet...</string>
+                        <string>not implemented yet ...</string>
                     </property>
                 </widget>
                 <widget class="QLabel" row="0" column="2">
@@ -316,7 +316,7 @@
                 </font>
             </property>
             <property name="text">
-                <string>song info...</string>
+                <string>song info ...</string>
             </property>
         </widget>
         <spacer row="4" column="2">

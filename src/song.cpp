@@ -641,7 +641,7 @@ bool Song::checkReadability() {
 QString Song::checkConsistency(bool requireConsistentTags, bool requireConsistentFilename, bool ignoreCaseInFilenames, bool requireConsistentDirectory) {
     QString diagnosis="";
 
-    if(artist=="{wish}") {                          // ignore wishes...
+    if(artist==QObject::tr("{wish}")) {                          // ignore wishes...
         return "";
     }
     if(filename=="") {                                  // ...and songs not on harddisk
@@ -649,7 +649,7 @@ QString Song::checkConsistency(bool requireConsistentTags, bool requireConsisten
     }
 
     if(checkReadability()==false) {
-        return "file not readable";
+        return QObject::tr("file not readable");
     }
 
 
@@ -657,7 +657,7 @@ QString Song::checkConsistency(bool requireConsistentTags, bool requireConsisten
         // checking tags
         if(!checkTags()) {
             qDebug() << "tags on file " << this->filename << " are not set correctly...";
-            diagnosis+="tags not correct ";
+            diagnosis+=QObject::tr("tags not correct ");
         }
     }
 
@@ -665,7 +665,7 @@ QString Song::checkConsistency(bool requireConsistentTags, bool requireConsisten
         // checking filename
         if(!checkFilename(ignoreCaseInFilenames)) {
             qDebug() << "file " << this->filename << " does not have correct filename";
-            diagnosis+="filename not consistent ";
+            diagnosis+=QObject::tr("filename not consistent ");
         }
     }
 
@@ -673,7 +673,7 @@ QString Song::checkConsistency(bool requireConsistentTags, bool requireConsisten
         // checking directory
         if(!checkDirectory(ignoreCaseInFilenames)) {
             qDebug() << "file " << this->filename << " is not in correct directory";
-            diagnosis+="directory not consistent ";
+            diagnosis+=QObject::tr("directory not consistent ");
         }
     }
     return diagnosis;
@@ -805,7 +805,7 @@ QString Song::getSongAction(int index) {
         return QString(songAction[index]);
     }
     else {
-        return QString("no such action");
+        return QString(QObject::tr("no such action"));
     }
 }
 

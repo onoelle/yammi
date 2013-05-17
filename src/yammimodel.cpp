@@ -354,8 +354,7 @@ void YammiModel::readSongDatabase(  ) {
     QDomElement root = doc.documentElement( );
     QString version = root.attribute("yammiVersion", "no version");
     if(version=="0.5.2" || version=="0.5.1" || version=="0.5" || version=="no version") {
-        QString msg( tr("Your Song Database seems to be very old.\n You might need to create \
-                          a new Database and scan your harddisk for songs") );
+        QString msg( tr("Your Song Database seems to be very old.\nYou might need to create a new Database and scan your harddisk for songs") );
         QMessageBox::warning(NULL, tr("Unknown Song Database version"), msg, QMessageBox::Ok, QMessageBox::NoButton);
         //try to continue anyway...?
     }
@@ -506,8 +505,7 @@ void YammiModel::updateSongDatabase(QString scanDir, bool followSymLinks, QStrin
     // check that scanDir is an existing directory
     QDir d(scanDir);
     if(!d.exists()) {
-        QString msg( tr("The base directory for scanning does not exist!\n\
-                          Set value \"scanDir\" to an existing directory!"));
+        QString msg( tr("The base directory for scanning does not exist!\nSet value \"scanDir\" to an existing directory!"));
         QMessageBox::warning(NULL, "", msg, QMessageBox::Ok, Qt::NoButton);
         return;
     } else {

@@ -46,7 +46,7 @@ void FolderCategories::update(Q3PtrList<MyList> allCategories, QStringList categ
 	}
 	
     folderPopup = new QMenu( 0 );
-	folderPopup->insertItem( "New Category..", this, SLOT(newCategory()));
+    folderPopup->insertItem(QObject::tr("New Category ..."), this, SLOT(newCategory()));
 	
 	int count=0;
 	for(MyList* ptr=allCategories.first(); ptr; ptr=allCategories.next(), count++)
@@ -55,10 +55,10 @@ void FolderCategories::update(Q3PtrList<MyList> allCategories, QStringList categ
         qDebug() << "calling f->update()";
 		f->update(*ptr);
         f->folderPopup = new QMenu( 0 );
-		f->folderPopup->insertItem( "Remove Category", this, SLOT(removeCategory()));
-		f->folderPopup->insertItem( "New Category..", this, SLOT(newCategory()));
-		f->folderPopup->insertItem( "Rename Category..", this, SLOT(renameCategory()));
-        f->folderPopup->insertItem( "Load .m3u into Category", this, SLOT(loadM3uIntoCategory()));
+        f->folderPopup->insertItem(tr("Remove Category ..."), this, SLOT(removeCategory()));
+        f->folderPopup->insertItem(tr("New Category ..."), this, SLOT(newCategory()));
+        f->folderPopup->insertItem(tr("Rename Category ..."), this, SLOT(renameCategory()));
+        f->folderPopup->insertItem(tr("Load .m3u into Category"), this, SLOT(loadM3uIntoCategory()));
         f->folderPopup->setItemChecked(13, true);
 	}
 	setText(0, fName+QString(" (%1)").arg(count));

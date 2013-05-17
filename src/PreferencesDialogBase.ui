@@ -152,7 +152,7 @@
                             <cstring>GroupBox3</cstring>
                         </property>
                         <property name="title">
-                            <string>Mouse configuration / Default actions for...</string>
+                            <string>Mouse configuration / Default actions for ...</string>
                         </property>
                         <grid>
                             <property name="name">
@@ -529,7 +529,7 @@
                                 <string>child safe mode</string>
                             </property>
                             <property name="toolTip" stdset="0">
-                                <string>if activated, some potentially dangerous actions are not allowed (eg. deleting a song). To disable this, you need a password...</string>
+                                <string>if activated, some potentially dangerous actions are not allowed (eg. deleting a song). To disable this, you need a password ...</string>
                             </property>
                         </widget>
                         <widget class="QSpinBox" row="1" column="1" rowspan="3" colspan="1">
@@ -1112,7 +1112,7 @@ Additionally to the usual placeholders (see the plugins tab) you can use {skipSe
                                     </sizepolicy>
                                 </property>
                                 <property name="text">
-                                    <string>Placeholders...</string>
+                                    <string>Placeholders ...</string>
                                 </property>
                             </widget>
                             <widget class="QLineEdit" row="2" column="3" rowspan="1" colspan="2">

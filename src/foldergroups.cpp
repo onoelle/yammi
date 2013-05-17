@@ -140,7 +140,7 @@ void FolderGroups::createGroupFolder(MyList* group, int sortBy) {
     case MyList::ByArtist:								// name folder by artist
         folderName=firstSong->artist;
         if(folderName=="") {
-            folderName="- no artist -";
+            folderName=tr("- no artist -");
         }
         break;
     case MyList::ByAlbum:								// name folder by artist (if only one) + album
@@ -149,20 +149,20 @@ void FolderGroups::createGroupFolder(MyList* group, int sortBy) {
         else
             folderName=firstSong->album;
         if(folderName=="") {
-            folderName="- no album -";
+            folderName=tr("- no album -");
         }
         break;
     case MyList::ByGenre:
         folderName=firstSong->genre;
         if(folderName=="") {
-            folderName="- no genre -";
+            folderName=tr("- no genre -");
         }
         break;
     case MyList::ByYear:
         if(firstSong->year!=0) {
             folderName=QString("%1").arg(firstSong->year);
         } else {
-            folderName="- no year -";
+            folderName=tr("- no year -");
         }
         break;
     }

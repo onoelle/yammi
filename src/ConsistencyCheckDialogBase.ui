@@ -63,7 +63,7 @@
                 </sizepolicy>
             </property>
             <property name="text">
-                <string>Start Check...</string>
+                <string>Start Check ...</string>
             </property>
         </widget>
         <widget class="QPushButton" row="7" column="3">
@@ -87,7 +87,7 @@
                 <cstring>PushButtonPatternReplacements</cstring>
             </property>
             <property name="text">
-                <string>Pattern Replacements...</string>
+                <string>Pattern Replacements ...</string>
             </property>
         </widget>
         <spacer row="7" column="1">

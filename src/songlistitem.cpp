@@ -118,7 +118,7 @@ void SongListItem::setColumns(SongEntry* entry)
       setText( current, s->lastPlayed.writeToString() );
     }
     else {
-      setText( current, "never" );
+      setText( current, QObject::tr("never") );
     }
     current++;
   }
@@ -143,7 +143,7 @@ void SongListItem::paintCell( QPainter *p, const QColorGroup &cg,
 	  QString path=gYammiGui->getModel()->checkAvailability(song());
   	if (path=="" )										// not yet available in light grey
 			_cg.setColor( QColorGroup::Text, Qt::lightGray );
-	  else if (path=="never" )					// never available in yellow
+      else if (path=="never" )					// never available in yellow
 			_cg.setColor( QColorGroup::Text, Qt::yellow );
 		else
       if(song()->filename=="")															// swapped in dark grey

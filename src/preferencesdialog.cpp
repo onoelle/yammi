@@ -102,7 +102,7 @@ void PreferencesDialog::insertPluginValues() {
     _pluginMode= config->pluginMode;
     _pluginConfirm= config->pluginConfirm;
 
-    ComboBoxPlugins->insertItem("choose entry");
+    ComboBoxPlugins->insertItem(tr("choose entry"));
     ComboBoxPlugins->insertStringList(_pluginMenuEntry);
     ComboBoxPluginMode->insertItem("single");
     ComboBoxPluginMode->insertItem("group");
@@ -111,16 +111,16 @@ void PreferencesDialog::insertPluginValues() {
 
 
 void PreferencesDialog::addStandardPlugins() {
-	if(!_pluginMenuEntry.contains("Create CD Label")) {
-        newPlugin("Create CD Label", "cdlabelgen -c \"Title\" -s \"Subtitle\" -b -w -i \"{customList}\" > {fileDialog}", "group", "{index}. {artist} - {title} ({length})%", "true");
+    if(!_pluginMenuEntry.contains(tr("Create CD Label"))) {
+        newPlugin(tr("Create CD Label"), "cdlabelgen -c \"Title\" -s \"Subtitle\" -b -w -i \"{customList}\" > {fileDialog}", "group", "{index}. {artist} - {title} ({length})%", "true");
 	}
 	
-	if(!_pluginMenuEntry.contains("Export to m3u Playlist")) {
-		newPlugin("Export to m3u Playlist", "echo -n -e \"#EXTM3U\n{customList}\" > {fileDialog}", "group", "#EXTINF:{lengthInSeconds},{artist} - {title}{newline}{absoluteFilename}{newline}", "true");
+    if(!_pluginMenuEntry.contains(tr("Export to m3u Playlist"))) {
+        newPlugin(tr("Export to m3u Playlist"), "echo -n -e \"#EXTM3U\n{customList}\" > {fileDialog}", "group", "#EXTINF:{lengthInSeconds},{artist} - {title}{newline}{absoluteFilename}{newline}", "true");
 	}
 	
-	if(!_pluginMenuEntry.contains("MusicBrainz Search")) {
-		newPlugin("MusicBrainz Search", "konqueror http://www.musicbrainz.org/showtrm.html?trm=`/usr/bin/trm \"{absoluteFilename}\"`&", "single", "", "true");
+    if(!_pluginMenuEntry.contains(tr("MusicBrainz Search"))) {
+        newPlugin(tr("MusicBrainz Search"), "konqueror http://www.musicbrainz.org/showtrm.html?trm=`/usr/bin/trm \"{absoluteFilename}\"`&", "single", "", "true");
 	}
 }
 
@@ -151,7 +151,7 @@ void PreferencesDialog::myAccept() {
     
     if(config->childSafe && !CheckBoxChildSafe->isChecked()) {
         bool ok;
-        QString passwd=QString(QInputDialog::getText( "password", "enter password", QLineEdit::Password, QString(""), &ok, this ));
+        QString passwd=QString(QInputDialog::getText(tr("password"), tr("enter password"), QLineEdit::Password, QString(""), &ok, this ));
         if(passwd=="protect")
             config->childSafe=false;
     } else {
@@ -268,12 +268,12 @@ void PreferencesDialog::updatePluginConfirm(bool checked) {
 }
 
 void PreferencesDialog::newPlugin() {
-    ComboBoxPlugins->insertItem("new item");
-    _pluginMenuEntry.append("new item");
-    _pluginCommand.append("new command");
-    _pluginMode.append("single");
-    _pluginCustomList.append("new custom list");
-    _pluginConfirm.append("true");
+    ComboBoxPlugins->insertItem(tr("new item"));
+    _pluginMenuEntry.append(tr("new item"));
+    _pluginCommand.append(tr("new command"));
+    _pluginMode.append(tr("single"));
+    _pluginCustomList.append(tr("new custom list"));
+    _pluginConfirm.append(tr("true"));
     ComboBoxPlugins->setCurrentItem(ComboBoxPlugins->count()-1);
     updatePlugin(ComboBoxPlugins->count()-1);
 }

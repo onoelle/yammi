@@ -84,3 +84,6 @@ FORMS3 = \
     PreferencesDialogBase.ui \
     SongInfoDialog.ui \
     UpdateDatabaseDialogBase.ui
+
+TRANSLATIONS = \
+    translations/yammi_de.ts

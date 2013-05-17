@@ -41,7 +41,7 @@
                 </sizepolicy>
             </property>
             <property name="text">
-                <string>Start Scan...</string>
+                <string>Start Scan ...</string>
             </property>
         </widget>
         <widget class="QPushButton" row="1" column="2">

@@ -91,11 +91,6 @@ YammiGui::YammiGui() : QMainWindow( ) {
     gYammiGui = this;
     setGeometry(0, 0, 800, 600);
 
-    /* set the search path, so the Qt resource system could find the icons and pictures */
-    QDir::addSearchPath("icons", QCoreApplication::applicationDirPath() + "/icons");
-    QDir::addSearchPath("icons", QDir::currentDirPath() + "/icons");
-    //QDir::addSearchPath("icons", "icons");
-
     setWindowIcon(QIcon("icons:yammi.png"));
 
     prelistenProcess = new QProcess;
@@ -406,7 +401,7 @@ void YammiGui::updateHtmlPlaylist()
         length += folderActual->songlist().at(i)->song()->length;
     }
     QString formattedTime;
-    formattedTime.sprintf(tr("%d:%02d"), length/(60*60), (length % (60*60))/60);
+    formattedTime.sprintf("%d:%02d", length/(60*60), (length % (60*60))/60);
     htmlTemplate.replace(QRegExp("\\{noSongsToPlay\\}"), QString("%1").arg(noSongsToPlay));
     htmlTemplate.replace(QRegExp("\\{timeToPlay\\}"), formattedTime);
     
@@ -881,7 +876,7 @@ void YammiGui::configureKeys() {
 void YammiGui::updateSongPopup() {
     qDebug() << "updating song popup";
     songCategoryPopup->clear();
-    songCategoryPopup->insertItem(QIcon("icons:newCategory.xpm"), tr("New Category..."), this, SLOT(toCategory(int)), 0, 9999);
+    songCategoryPopup->insertItem(QIcon("icons:newCategory.xpm"), tr("New Category ..."), this, SLOT(toCategory(int)), 0, 9999);
     for(int i=0; i<model->categoryNames.count(); i++) {
         songCategoryPopup->insertItem(QIcon("icons:in.xpm"), model->categoryNames[i], this, SLOT(toCategory(int)), 0, 10000+i);
     }
@@ -896,12 +891,12 @@ void YammiGui::updateSongPopup() {
 void YammiGui::addToWishList() {
     QString toAdd = m_searchField->text();
     MyDateTime wishDate=wishDate.currentDateTime();
-    Song* newSong=new Song("{wish}", toAdd, "", "", "", 0, 0, wishDate, 0, "", 0, 0);
+    Song* newSong=new Song(tr("{wish}"), toAdd, "", "", "", 0, 0, wishDate, 0, "", 0, 0);
     folderAll->addSong(newSong);
     // FIXME: selectionMode for custom list?
     //forSong(newSong, Song::SongInfo, NULL);
     model->allSongsChanged(true);
-    m_searchField->setText("{wish}");
+    m_searchField->setText(tr("{wish}"));
     folderContentChanged(folderAll);
     m_searchField->setText("");
 }
@@ -1031,7 +1026,7 @@ void YammiGui::goToFolder(int what) {
     case 1:
         folderName=s->artist;
         if(folderName == "") {
-            folderName = "- no artist -";
+            folderName = tr("- no artist -");
         }
         break;
 
@@ -1042,13 +1037,13 @@ void YammiGui::goToFolder(int what) {
     case 3:
         folderName=s->genre;
         if(folderName == "") {
-            folderName = "- no genre -";
+            folderName = tr("- no genre -");
         }
         break;
 
     case 4:
         if(s->year == 0) {
-            folderName = "- no year -";
+            folderName = tr("- no year -");
         } else {
             folderName=QString("%1").arg(s->year);
         }
@@ -1368,7 +1363,7 @@ void YammiGui::adjustSongPopup() {
     int id = songGoToPopup->idAt(0);
     QString folderName = first->artist;
     if(folderName == "") {
-        folderName = "- no artist -";
+        folderName = tr("- no artist -");
     }
     songGoToPopup->changeItem(id, tr("Artist: ") + folderName);
     songGoToPopup->setItemEnabled(id, getFolderByName(folderName)!=0);
@@ -1379,7 +1374,7 @@ void YammiGui::adjustSongPopup() {
     if(f == 0) {
         folderName = first->album;
         if(folderName == "") {
-            folderName = "- no album -";
+            folderName = tr("- no album -");
         }
         f = getFolderByName(folderName);
     }
@@ -1389,14 +1384,14 @@ void YammiGui::adjustSongPopup() {
     id = songGoToPopup->idAt(2);
     folderName = first->genre;
     if(folderName == "") {
-        folderName = "- no genre -";
+        folderName = tr("- no genre -");
     }
     songGoToPopup->changeItem(id, tr("Genre: ") + folderName);
     songGoToPopup->setItemEnabled(id, getFolderByName(folderName)!=0);
 
     id = songGoToPopup->idAt(3);
     if(first->year == 0) {
-        folderName = "- no year -";
+        folderName = tr("- no year -");
     } else {
         folderName = QString("%1").arg(first->year);
     }
@@ -1530,7 +1525,7 @@ void YammiGui::forSelectionPlugin(int pluginIndex) {
         }
         int index=1;
         QProgressDialog progress(this);
-        progress.setLabelText(tr("Executing song plugin cmd..."));
+        progress.setLabelText(tr("Executing song plugin cmd ..."));
         progress.setModal(true);
         progress.setRange(0, selectedSongs.count());
         for(Song* s=selectedSongs.firstSong(); s; s=selectedSongs.nextSong(), index++) {
@@ -1887,7 +1882,7 @@ void YammiGui::forSelectionSongInfo( ) {
             _year=QString("%1").arg(s->year);
             _path=s->path;
             _filename=s->filename;
-            _bitrate=QString(tr("%1 kb/s")).arg(s->bitrate);
+            _bitrate=QString("%1 kb/s").arg(s->bitrate);
             _genre=s->genre;
             _proposedFilename=s->constructFilename();
             _proposedPath=s->constructPath();
@@ -1948,7 +1943,7 @@ void YammiGui::forSelectionSongInfo( ) {
         if(_lastTimePlayed!=never)
             si.LineEditLastPlayed->setText(_lastTimePlayed.writeToString());
         else
-            si.LineEditLastPlayed->setText("never");
+            si.LineEditLastPlayed->setText(tr("never"));
     } else {
         si.LineEditLastPlayed->setText("!");
     }
@@ -1962,17 +1957,17 @@ void YammiGui::forSelectionSongInfo( ) {
         si.LabelSize->setText(tr("Size (total)"));
         si.LabelLength->setText(tr("Length (total)"));
         QString x;
-        si.ReadOnlyLength->setText(x.sprintf(tr("%d:%02d:%02d (hh:mm:ss)"), _length/(60*60), (_length % (60*60))/60, _length % 60));
+        si.ReadOnlyLength->setText(x.sprintf("%d:%02d:%02d (hh:mm:ss)", _length/(60*60), (_length % (60*60))/60, _length % 60));
     } else {
         si.LabelHeading->setText(_artist+" - "+_title);
         QString x;
-        si.ReadOnlyLength->setText(x.sprintf(tr("%2d:%02d (mm:ss)"), _length/60, _length % 60));
+        si.ReadOnlyLength->setText(x.sprintf("%2d:%02d (mm:ss)", _length/60, _length % 60));
     }
     if(_size < (1024 * 1024)) {
-        si.ReadOnlySize->setText( QString(tr("%1 KB")).arg( (float)_size/(float)(1024) , 4,'f', 2));
+        si.ReadOnlySize->setText( QString("%1 KB").arg( (float)_size/(float)(1024) , 4,'f', 2));
     }
     else {
-        si.ReadOnlySize->setText( QString(tr("%1 MB")).arg( (float)_size/(float)(1024*1024) , 4,'f', 2));
+        si.ReadOnlySize->setText( QString("%1 MB").arg( (float)_size/(float)(1024*1024) , 4,'f', 2));
     }
     si.ReadOnlyBitrate->setText(_bitrate);
     si.ComboBoxGenre->setCurrentText(_genre);
@@ -2243,7 +2238,7 @@ void YammiGui::renameCategory() {
     Q3ListViewItem* i = folderListView->currentItem();
     QString oldName=((Folder*)i)->folderName();
     bool ok;
-    QString newName=QString(QInputDialog::getText( tr("collection name"), tr("Please enter new name:"), QLineEdit::Normal, oldName, &ok, this ));
+    QString newName=QString(QInputDialog::getText( tr("Category name"), tr("Please enter new name:"), QLineEdit::Normal, oldName, &ok, this ));
     if(!ok) {
         return;
     }
@@ -2491,7 +2486,7 @@ void YammiGui::fixGenres() {
     }
     isScanning=true;
     QProgressDialog progress(this);
-    progress.setLabelText(tr("Re-Reading all genres from your files..."));
+    progress.setLabelText(tr("Re-Reading all genres from your files ..."));
     progress.setRange(0, model->allSongs.count());
     progress.setModal(true);
     progress.setMinimumDuration(0);
@@ -2709,7 +2704,7 @@ void YammiGui::updateSongDatabase(QString scanDir, QString filePattern) {
         return;
     }
     QProgressDialog progress(this);
-    progress.setLabelText(tr("Scanning..."));
+    progress.setLabelText(tr("Scanning ..."));
     progress.setModal(true);
     progress.setMinimumDuration(0);
     progress.setAutoReset(false);
@@ -3132,10 +3127,10 @@ bool YammiGui::setupActions()
     m_actionSimilarAlbum = new QAction(tr("Search for similar album"), this);
     connect(m_actionSimilarAlbum, SIGNAL(triggered()), this, SLOT(searchForSimilarAlbum()));
 
-    m_actionCheckConsistencySelection = new QAction(tr("Check Consistency..."), this);
+    m_actionCheckConsistencySelection = new QAction(tr("Check Consistency ..."), this);
     connect(m_actionCheckConsistencySelection, SIGNAL(triggered()), this, SLOT(forSelectionCheckConsistency()));
 
-    m_actionDeleteSong = new QAction(tr("Delete Song..."), this);
+    m_actionDeleteSong = new QAction(tr("Delete Song ..."), this);
     connect(m_actionDeleteSong, SIGNAL(triggered()), this, SLOT(forSelectionDelete()));
 
     m_actionMoveFiles = new QAction(tr("Move Files"), this);
@@ -3210,7 +3205,7 @@ void YammiGui::createMenuBar()
 void YammiGui::createToolbars()
 {
     QToolBar* mainToolBar = new QToolBar(this, "MainToolbar");
-    mainToolBar->setCaption("Main ToolBar");
+    mainToolBar->setCaption(tr("Main ToolBar"));
     addToolBar(mainToolBar);
 
     //search
@@ -3230,7 +3225,7 @@ void YammiGui::createToolbars()
 
 
     QToolBar* mediaPlayerToolBar = new QToolBar(this, "MediaPlayerToolbar");
-    mediaPlayerToolBar->setCaption("Media Player");
+    mediaPlayerToolBar->setCaption(tr("Media Player"));
     addToolBar(mediaPlayerToolBar);
     mediaPlayerToolBar->addAction(m_actionPlayPause);
     mediaPlayerToolBar->addAction(m_actionSkipBackward);
@@ -3247,7 +3242,7 @@ void YammiGui::createToolbars()
 
 
     QToolBar* songActionsToolBar = new QToolBar(this, "SongActionsToolbar");
-    songActionsToolBar->setCaption("Song Actions");
+    songActionsToolBar->setCaption(tr("Song Actions"));
     addToolBar(songActionsToolBar);
     songActionsToolBar->addAction(m_actionEnqueueAtEnd);
     songActionsToolBar->addAction(m_actionEnqueueAsNext);
@@ -3257,7 +3252,7 @@ void YammiGui::createToolbars()
     songActionsToolBar->addAction(m_actionSongInfo);
 
     QToolBar* prelistenToolBar = new QToolBar(this, "PrelistenToolbar");
-    prelistenToolBar->setCaption("Prelisten");
+    prelistenToolBar->setCaption(tr("Prelisten"));
     addToolBar(prelistenToolBar);
     prelistenToolBar->addAction(m_actionPrelistenStart);
     prelistenToolBar->addAction(m_actionPrelistenMiddle);
@@ -3299,27 +3294,27 @@ void YammiGui::createSongPopup() {
     subMenu->addAction(m_actionPrelistenMiddle);
     subMenu->addAction(m_actionPrelistenEnd);
 
-    subMenu = songPopup->addMenu(tr("Go to folder..."));
+    subMenu = songPopup->addMenu(tr("Go to folder ..."));
     subMenu->addAction(m_actionGotoFolderArtist);
     subMenu->addAction(m_actionGotoFolderAlbum);
     subMenu->addAction(m_actionGotoFolderGenre);
     subMenu->addAction(m_actionGotoFolderYear);
 
-    subMenu = songPopup->addMenu(tr("Search for similar..."));
+    subMenu = songPopup->addMenu(tr("Search for similar ..."));
     subMenu->addAction(m_actionSearchSimilarEntry);
     subMenu->addAction(m_actionSearchSimilarArtist);
     subMenu->addAction(m_actionSearchSimilarTitle);
     subMenu->addAction(m_actionSimilarAlbum);
 
-    subMenu = songPopup->addMenu(tr("Advanced..."));
+    subMenu = songPopup->addMenu(tr("Advanced ..."));
     subMenu->addAction(m_actionCheckConsistencySelection);
     subMenu->addAction(m_actionDeleteSong);
     subMenu->addAction(m_actionMoveFiles);
 
     songCategoryPopup = new QMenu(songPopup);
-    songPopup->insertItem( tr("Insert Into/Remove From..."), songCategoryPopup, -1, -1);
+    songPopup->insertItem( tr("Insert Into/Remove From ..."), songCategoryPopup, -1, -1);
     pluginPopup = new QMenu(songPopup);
-    songPopup->insertItem( tr("Plugins..."), pluginPopup, -1, -1);
+    songPopup->insertItem( tr("Plugins ..."), pluginPopup, -1, -1);
     // populate the submenus
     updateSongPopup();
 }
@@ -3426,13 +3421,13 @@ QString YammiGui::songInfo() {
 
     QString info;
 
-    info = "Artist :  " + songArtist() + "\n";
-    info += "Title :\t  " + songTitle() + "\n";
-    info += "Album :\t  " + songAlbum() + "\n";
-    info += "Track :\t  " + songTrack2D() + "\n";
-    info += "Year :\t  " + QString::number(songYear()) + "\n";
-    info += "Genre :\t  " + songGenre() + "\n" ;
-    info += "Comment : " + songComment() + "\n";
+    info = tr("Artist :  ") + songArtist() + "\n";
+    info += tr("Title :\t  ") + songTitle() + "\n";
+    info += tr("Album :\t  ") + songAlbum() + "\n";
+    info += tr("Track :\t  ") + songTrack2D() + "\n";
+    info += tr("Year :\t  ") + QString::number(songYear()) + "\n";
+    info += tr("Genre :\t  ") + songGenre() + "\n" ;
+    info += tr("Comment : ") + songComment() + "\n";
 
     return info;
 

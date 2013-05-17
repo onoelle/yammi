@@ -123,7 +123,7 @@
                 </sizepolicy>
             </property>
             <property name="text">
-                <string>song to delete...</string>
+                <string>song to delete ...</string>
             </property>
         </widget>
         <widget class="QPushButton" row="8" column="1">

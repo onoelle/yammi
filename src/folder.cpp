@@ -164,7 +164,7 @@ void Folder::popup(QPoint point, QMenu* contentMenu)
 {
   allPopup=new QMenu();
   // autoplay
-  allPopup->insertItem( "Autoplay", this, SLOT(autoplayFolder()), 0, 13);
+  allPopup->insertItem(tr("Autoplay"), this, SLOT(autoplayFolder()), 0, 13);
   if(gYammiGui->autoplayFoldername==this->folderName()) {
     allPopup->setItemChecked(13, true);
   }
@@ -174,12 +174,12 @@ void Folder::popup(QPoint point, QMenu* contentMenu)
 
   // folder popup as defined in subclass
   if (folderPopup) {
-		allPopup->insertItem("Folder...", folderPopup);
+        allPopup->insertItem(tr("Folder ..."), folderPopup);
   }
 
   // content menu (if folder contains at least one song)
 	if (contentMenu) {
-		allPopup->insertItem("Content...", contentMenu);
+        allPopup->insertItem(tr("Content ..."), contentMenu);
   }
 	allPopup->exec(point);
 }
