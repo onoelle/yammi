@@ -14,8 +14,8 @@
 
 #include "xine-engine.h"
 
-#include <Q3CString>
 #include <QApplication>
+#include <QByteArray>
 #include <QCustomEvent>
 #include <QDebug>
 #include <QDesktopServices>
@@ -35,7 +35,7 @@
 
 
 ///returns the configuration we will use. there is no KInstance, so using this hacked up method.
-static inline Q3CString configPath() { return QFile::encodeName(QDesktopServices::storageLocation(QDesktopServices::DataLocation) + "/xine-config" ); }
+static inline QByteArray configPath() { return QFile::encodeName(QDesktopServices::storageLocation(QDesktopServices::DataLocation) + "/xine-config" ); }
 
 
 namespace Yammi {
