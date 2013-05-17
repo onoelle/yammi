@@ -1,0 +1,63 @@
+Yammi - Yet Another Music Manager I ...
+
+Please visit   http://yammi.sourceforge.net   for detailed (but probably
+outdated) information about Yammi.
+
+After the porting to Qt4 a lot of functionality got not tested in depth.
+Therefore it is likely there is something not working aside the normal
+operations like scanning for mp3, playing them and grouping them in
+categories. So you have been warned!
+
+
+
+Dependencies:
+-------------
+- Qt library in version 4
+- xine library
+- TagLib
+
+This command should get you all development stuff you need:
+  at Debian Squeeze:
+    apt-get install build-essential libqt4-dev libxine-dev libtag1-dev
+
+  at Debian Wheezy:
+    apt-get install build-essential libqt4-dev libxine2-dev libtag1-dev
+
+
+
+Getting and building the source from GIT:
+----------------------------
+  $ git clone git://git.code.sf.net/p/yammi/git yammi-git
+  $ cd yammi-git/src
+  $ qmake-qt4
+  $ make all updateqm
+
+And you are done. Right now you should be able to run Yammi from the source tree:
+  $ ./yammi
+
+Or if you want to install it somewhere do following. This will install it to
+your home directory e.g. /home/user/bin/yammi (so no root rights required):
+  $ make install
+
+Then you can start it by this command:
+  $ ~/bin/yammi/yammi
+
+
+
+The directory containing the yammi executable can be moved to another location
+and be startable from there.
+The configuration lies in following files and directories:
+  /home/user/.local/share/data/yammi/yammi
+  /home/user/.config/yammi
+
+
+
+Translations:
+-------------
+Currently the english and german languages should be in a good shape.
+For spanish and italian I could judge about it - you have to try it.
+If they are not usable please delete the translations/yammi*.qm file for your locale.
+Other translations are not included.
+
+
+I hope you enjoy using Yammi...

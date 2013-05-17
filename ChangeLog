@@ -1,3 +1,13 @@
+17.05.2013 version 1.3.0
+- moved version control system from CVS to GIT
+- removed: output methods xmms, gstreamer, arts and noatun were removed
+- removed: no dependency to KDE now
+- removed: features burn, removable media, sleep/shutdown, and grab/encode were removed
+- changed: build system is now Qts qmake (QtCreator)
+- changed: remote control moved from DCOP to DBus
+- changed: german translation complete, spanish and italian only converted from .po and probably not usable
+- added: xine used for output
+
 ??.??.2005 version 1.2.3
 ########################
 - fixed: scanning harddisk did not include hidden files and directories
