@@ -19,7 +19,6 @@
 
 #include <taglib/id3v1genres.h>
 
-#include <Q3HBox>
 #include <Q3Header>
 #include <Q3ListView>
 #include <Q3ValueList>
@@ -3208,9 +3207,12 @@ void YammiGui::createToolbars()
     addToolBar(mainToolBar);
 
     //search
-    Q3HBox *w = new Q3HBox();
-    new QLabel(tr("Search:"),w);
-    m_searchField = new QLineEdit(w);
+    QWidget *w = new QWidget;
+    QHBoxLayout *layout = new QHBoxLayout;
+    layout->addWidget(new QLabel(tr("Search:")));
+    layout->addWidget(m_searchField = new QLineEdit(w));
+    w->setLayout(layout);
+
     m_searchField->setFixedWidth(175);
     QToolTip::add(m_searchField, tr("Fuzzy search (Ctrl-F)"));
     connect( m_searchField, SIGNAL(textChanged(const QString&)), SLOT(searchFieldChanged(const QString&)));
