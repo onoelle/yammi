@@ -85,5 +85,13 @@ FORMS3 = \
     SongInfoDialog.ui \
     UpdateDatabaseDialogBase.ui
 
+
+# translations
 TRANSLATIONS = \
-    translations/yammi_de.ts
+    translations/yammi_de.ts \
+    translations/yammi_es.ts \
+    translations/yammi_it.ts
+
+updateqm.commands = lrelease-qt4 yammi.pro
+updateqm.target = updateqm
+QMAKE_EXTRA_TARGETS += updateqm
