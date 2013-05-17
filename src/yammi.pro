@@ -95,3 +95,16 @@ TRANSLATIONS = \
 updateqm.commands = lrelease-qt4 yammi.pro
 updateqm.target = updateqm
 QMAKE_EXTRA_TARGETS += updateqm
+
+
+# installation
+yammi.path = $$(HOME)/bin/yammi
+yammi.files = yammi
+
+yammi-icons.path = $${yammi.path}/icons
+yammi-icons.files = icons/*
+
+yammi-translations.path = $${yammi.path}/translations
+yammi-translations.files = translations/*.qm
+
+INSTALLS += yammi yammi-icons yammi-translations
