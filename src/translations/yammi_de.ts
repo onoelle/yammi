@@ -2061,21 +2061,24 @@ Statistik:
         <location filename="../yammigui.cpp" line="2721"/>
         <source>%1 songs added to database
 </source>
-        <translation>%1 Lied(er) zur Datenbank hinzugefügt</translation>
+        <translation>%1 Lied(er) zur Datenbank hinzugefügt
+</translation>
     </message>
     <message>
         <location filename="../yammigui.cpp" line="2695"/>
         <location filename="../yammigui.cpp" line="2722"/>
         <source>%1 songs corrupt (=not added)
 </source>
-        <translation>%1 Lied(er) fehlerhaft (=nicht hinzugefügt)</translation>
+        <translation>%1 Lied(er) fehlerhaft (=nicht hinzugefügt)
+</translation>
     </message>
     <message>
         <location filename="../yammigui.cpp" line="2696"/>
         <location filename="../yammigui.cpp" line="2723"/>
         <source>%1 songs problematic (check in folder Problematic Songs)
 </source>
-        <translation>%1 Lied(er) problematisch (siehe Ordner Problematische Lieder)</translation>
+        <translation>%1 Lied(er) problematisch (siehe Ordner Problematische Lieder)
+</translation>
     </message>
     <message>
         <source>Scanning...</source>
