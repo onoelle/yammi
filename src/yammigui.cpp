@@ -38,7 +38,6 @@
 #include <QPixmap>
 #include <QProcess>
 #include <QPushButton>
-#include <QResource>
 #include <QSettings>
 #include <QSpinBox>
 #include <QSplitter>

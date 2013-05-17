@@ -4,8 +4,8 @@
 **
 *****************************************************************************/
 
-#include <QDebug>
 #include <QApplication>
+#include <QDebug>
 #include <QtDBus>
 
 #include "config.h"
