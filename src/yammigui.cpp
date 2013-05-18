@@ -21,7 +21,6 @@
 
 #include <Q3Header>
 #include <Q3ListView>
-#include <Q3ValueList>
 #include <QActionGroup>
 #include <QCheckBox>
 #include <QDebug>
