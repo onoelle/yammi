@@ -98,7 +98,8 @@ void ConsistencyCheckDialog::startCheck() {
     // 1. iterate through all songs in database
     if(p->checkForExistence || p->checkTags || p->checkFilenames || p->checkDirectories) {
         int i=0;
-        for(Song* s=selectedSongs->firstSong(); s; s=selectedSongs->nextSong(), i++) {
+        for (MyList::iterator it = selectedSongs->begin(); it != selectedSongs->end(); it++, i++) {
+            Song* s = (*it)->song();
             qApp->processEvents();
             if(progress.wasCanceled()) {
                 break;
@@ -305,9 +306,18 @@ void ConsistencyCheckDialog::startCheck() {
         qApp->processEvents();
 
         model->allSongs.setSortOrderAndSort(MyList::ByFilename + 16*(MyList::ByPath));
-        Song* last=model->allSongs.firstSong();
+        QMutableListIterator<SongEntry*> it(model->allSongs);
+        //MyList::iterator it = model->allSongs.begin();
+        Song* last = 0;
         int i=0;
-        for(Song* s=model->allSongs.nextSong(); s; s=model->allSongs.nextSong(), i++) {
+        while (it.hasNext()) {
+            SongEntry* se = it.next();
+            Song* s = se->song();
+            if (i == 0) {
+                last = s;
+            } else {
+                i++;
+            }
             if(progress.wasCanceled()) {
                 break;
             }
@@ -327,7 +337,7 @@ void ConsistencyCheckDialog::startCheck() {
                 output->append("! " + tr("two database entries pointing to same file: %1, deleting one").arg(s->filename));
                 output->append(QString("  1.: %1").arg(last->displayName()));
                 output->append(QString("  2.: %1").arg(s->displayName()));
-                model->allSongs.remove();   // TODO: check: could this cause a problem, because we are iterating through this list???
+                model->allSongs.removeAll(se);   // TODO: check: could this cause a problem, because we are iterating through this list???
                 model->allSongsChanged(true);
                 p->doublesFound++;
                 continue;
@@ -342,9 +352,16 @@ void ConsistencyCheckDialog::startCheck() {
         qApp->processEvents();
 
         model->allSongs.setSortOrderAndSort(MyList::ByKey);
-        last=model->allSongs.firstSong();
+        it.toFront();
         i=0;
-        for(Song* s=model->allSongs.nextSong(); s; s=model->allSongs.nextSong(), i++) {
+        while (it.hasNext()) {
+            SongEntry* se = it.next();
+            Song* s = se->song();
+            if (i == 0) {
+                last = s;
+            } else {
+                i++;
+            }
             if(progress.wasCanceled()) {
                 break;
             }

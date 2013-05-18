@@ -230,7 +230,8 @@ void YammiModel::saveHistory() {
     // iterate through songs in history AND songsPlayed folder
     // => save each song as a xml song element
     int count=0;
-    for(SongEntry* entry=songHistory.first(); entry; entry=songHistory.next()) {
+    for (MyList::Iterator it = songHistory.begin(); it != songHistory.end(); it++) {
+        SongEntry* entry = *it;
         QDomElement elem = doc.createElement( "song" );
         elem.setAttribute( "artist", entry->song()->artist );
         elem.setAttribute( "title", entry->song()->title );
@@ -239,7 +240,8 @@ void YammiModel::saveHistory() {
         root.appendChild( elem );
         count++;
     }
-    for(SongEntry* entry=songsPlayed.first(); entry; entry=songsPlayed.next()) {
+    for (MyList::Iterator it = songsPlayed.begin(); it != songsPlayed.end(); it++) {
+        SongEntry* entry = *it;
         QDomElement elem = doc.createElement( "song" );
         elem.setAttribute( "artist", entry->song()->artist );
         elem.setAttribute( "title", entry->song()->title );
@@ -307,7 +309,8 @@ bool YammiModel::saveList(MyList* list, QString path, QString filename)
     root.setAttribute("name", filename);
     doc.appendChild(root);
 
-    for(Song* s = list->firstSong(); s; s=list->nextSong()) {
+    for (MyList::iterator it = list->begin(); it != list->end(); it++) {
+        Song* s = (*it)->song();
         QDomElement elem = doc.createElement( "song" );
         elem.setAttribute( "artist", s->artist );
         elem.setAttribute( "title", s->title );
@@ -415,7 +418,8 @@ void YammiModel::saveSongDatabase() {
 
     // iterate through songs and save each song as a xml song element
     int count=0;
-    for(Song* s = allSongs.firstSong(); s; s = allSongs.nextSong()) {
+    for (MyList::iterator it = allSongs.begin(); it != allSongs.end(); it++) {
+        Song* s = (*it)->song();
         count++;
         QDomElement elem = doc.createElement( "song" );
         if(s->artist!="unknown")
@@ -597,7 +601,8 @@ bool YammiModel::traverse(QString path, bool followSymLinks, QString filePattern
  */
 void YammiModel::fixGenres(QProgressDialog* progress) {
     int i = 0;
-    for(Song* s=allSongs.firstSong(); s; s=allSongs.nextSong(), i++) {
+    for (MyList::iterator it = allSongs.begin(); it != allSongs.end(); it++, i++) {
+        Song* s = (*it)->song();
         progress->setValue(i);
         if(progress->wasCanceled()) {
             qDebug() << "fixing genres aborted...";
@@ -620,7 +625,8 @@ void YammiModel::fixGenres(QProgressDialog* progress) {
 void YammiModel::addSongToDatabase(QString filename) {
     qDebug() << "scanning file '" << filename << "'...";
     bool found=false;
-    for(Song* s=allSongs.firstSong(); s; s=allSongs.nextSong()) {
+    for (MyList::Iterator it = allSongs.begin(); it != allSongs.end(); it++) {
+        Song* s = (*it)->song();
         // this check might fail when filename has strange characters?
         if(filename == s->location()) {
             found=true;
@@ -830,7 +836,8 @@ Song* YammiModel::getSongFromFilename(QString filename) {
     int pos=filename.findRev('/', -1);
     QString lookFor=filename.right(filename.length()-pos-1);
 
-    for(SongEntry* entry=allSongs.first(); entry; entry=allSongs.next()) {
+    for (MyList::Iterator it = allSongs.begin(); it != allSongs.end(); it++) {
+        SongEntry* entry = *it;
         if(entry->song()->filename==lookFor)
             return entry->song();
     }
@@ -865,7 +872,7 @@ bool YammiModel::skipUnplayableSongs(bool firstTwo) {
     qDebug() << "skipUnplayableSongs()";
     QString location;
     bool songsRemoved = false;
-    while( songsToPlay.at(0) ) {
+    while( !songsToPlay.isEmpty() ) {
         location = checkAvailability( songsToPlay.at(0)->song() );
         if( location == "" || location == "never" ) {
             qDebug() << "Song " << songsToPlay.at(0)->song()->displayName() << "not available, skipping";
@@ -880,7 +887,7 @@ bool YammiModel::skipUnplayableSongs(bool firstTwo) {
             location = checkAvailability( songsToPlay.at(1)->song() );
             if( location == "" || location == "never" ) {
                 qDebug() << "Song " << songsToPlay.at(1)->song()->displayName() << "not available, skipping";
-                songsToPlay.remove(1);
+                delete songsToPlay.takeAt(1);
                 songsRemoved = true;
             } else {
                 break;

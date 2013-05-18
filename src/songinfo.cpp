@@ -52,7 +52,8 @@ void SongInfo::update()
     bool firstSong = true;
     bool filenameCorrections = false;
     bool pathCorrections = false;
-    for(Song* s = selectedSongs->firstSong(); s; s = selectedSongs->nextSong()) {
+    for (MyList::iterator it = selectedSongs->begin(); it != selectedSongs->end(); it++) {
+        Song* s = (*it)->song();
         Song x;
         x.updateReadableFields(s);
         

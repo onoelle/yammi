@@ -126,7 +126,7 @@ void Folder::addEntry( SongEntry* entry)
 // removes an item(=Song)
 void Folder::removeEntry(SongEntry* entry)
 {
-	songList->removeRef(entry);
+    songList->removeAll(entry);
 	songList->dirty=true;
 	updateTitle();
 }
@@ -140,17 +140,6 @@ Song* Folder::firstSong()
 	else
 		return 0;
 }
-
-Song* Folder::nextSong()
-{
-	SongEntry* entry=songList->next();
-	if(entry)
-		return entry->song();
-	else
-		return 0;
-}
-
-
 
 void Folder::updateTitle()
 {

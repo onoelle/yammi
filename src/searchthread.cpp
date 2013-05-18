@@ -68,9 +68,9 @@ void SearchThread::run() {
 			FuzzySearch fs;
 			fs.initialize(searchStr.lower(), 2, 4);			// STEP 1
 			// search through all songs
-			Song* s=gYammiGui->getModel()->allSongs.firstSong();
 			QString composed;
-			for(; s; s=gYammiGui->getModel()->allSongs.nextSong()) {
+            for(MyList::iterator it = gYammiGui->getModel()->allSongs.begin(); it != gYammiGui->getModel()->allSongs.end(); it++) {
+                Song* s = (*it)->song();
 				if(searchTerm!=currentSearchTerm) {
 					break;
 				}

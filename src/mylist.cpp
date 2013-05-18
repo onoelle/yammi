@@ -19,7 +19,7 @@
 
 #include <taglib/id3v1genres.h>
 
-#include <Q3PtrCollection>
+#include <tr1/functional>
 
 #include "song.h"
 
@@ -36,50 +36,30 @@ MyList::~MyList()
 
 
 MyList::MyList(MyList* listToClone) {
-	sortOrder=ByKey;
-	dirty=false;
-  SongEntry* s=listToClone->first();
-  while(s != 0) {
-    append(s);
-    s=listToClone->next();
-  }
+    sortOrder = ByKey;
+    dirty = false;
+    for (iterator it = listToClone->begin(); it != listToClone->end(); it++) {
+        append(*it);
+    }
 }
 
 void MyList::appendList(MyList* list) {
-  SongEntry* s=list->first();
-  while(s != 0) {
-    append(s);
-    s=list->next();
-  }  
+    for (iterator it = list->begin(); it != list->end(); it++) {
+        append(*it);
+    }
 }
 
 Song* MyList::firstSong()
 {
-	SongEntry* entry=first();
+    SongEntry* entry = 0;
+    if (!isEmpty()) {
+        entry = first();
+    }
 	if(entry)
 		return entry->song();
 	else
 		return 0;
 }
-
-Song* MyList::nextSong()
-{
-	SongEntry* entry=next();
-	if(entry)
-		return entry->song();
-	else
-		return 0;
-}
-
-Song* MyList::prevSong()
-{
-	SongEntry* entry=prev();
-	if(entry)
-		return entry->song();
-	else
-		return 0;
-}
-
 
 void MyList::appendSong(Song* s)
 {
@@ -87,18 +67,16 @@ void MyList::appendSong(Song* s)
 	dirty=true;
 }
 
-// removes all appearances of song <toDelete> fromo the list
+// removes all appearances of song <toDelete> from the list
 void MyList::removeSong(Song* toDelete)
 {
-	for(SongEntry* entry=first(); entry; ) {
+    QMutableListIterator<SongEntry*> it(*this);
+    while (it.hasNext()) {
+        SongEntry* entry = it.next();
 		if(entry->song()==toDelete) {
-			remove();
+            delete it.value();
+            it.remove();
 			dirty=true;
-			if(entry)
-				entry=next();					// shouldn't this be done by remove() ?
-		}
-		else {
-			entry=next();
 		}
 	}
 }
@@ -108,8 +86,8 @@ void MyList::removeSong(Song* toDelete)
 int MyList::containsSong(Song* lookup)
 {
 	int count=0;
-	for(SongEntry* entry=first(); entry; entry=next()) {
-		if(entry->song()==lookup)
+    for (iterator it = begin(); it != end(); it++) {
+        if ((*it)->song() == lookup)
 			count++;
 	}
 	return count;
@@ -128,8 +106,8 @@ int MyList::containsSelection(MyList* selection)
   bool allContained=true;
   bool noneContained=true;
 
-  for(Song* check=selection->firstSong(); check; check=selection->nextSong()) {
-    if(containsSong(check)) {
+  for (iterator it = selection->begin(); it != selection->end(); it++) {
+    if(containsSong((*it)->song())) {
       noneContained=false;
     }
     else {
@@ -144,9 +122,9 @@ int MyList::containsSelection(MyList* selection)
 // returns the song with the given key, or 0 if not existing
 Song* MyList::getSongByKey(QString artist, QString title, QString album)
 {
-	for(SongEntry* entry=first(); entry; entry=next()) {
-		if(entry->song()->sameAs(artist, title, album))
-			return entry->song();
+    for (iterator it = begin(); it != end(); it++) {
+        if ((*it)->song()->sameAs(artist, title, album))
+            return (*it)->song();
 	}
 	return 0;
 }
@@ -156,15 +134,15 @@ void MyList::setSortOrderAndSort(int newSortOrder, bool sortAnyway)
 {
 	if(sortOrder!=newSortOrder || sortAnyway) {
 		sortOrder=newSortOrder;
-    sort();
+        qSort(begin(), end(), std::tr1::bind(std::tr1::mem_fn(&MyList::lessThan), this, std::tr1::placeholders::_1, std::tr1::placeholders::_2));
 	}
 }
 
 // compares on one or more attributes
-int MyList::compareItems( Q3PtrCollection::Item item1, Q3PtrCollection::Item item2)
+int MyList::lessThan(SongEntry* item1, SongEntry* item2)
 {
-	Song* song1=((SongEntry*) item1)->song();
-	Song* song2=((SongEntry*) item2)->song();
+    Song* song1 = item1->song();
+    Song* song2 = item2->song();
 	int t=myCompare(song1, song2, sortOrder & 0xF);
 	if(t==0) {
 		t=myCompare(song1, song2, (sortOrder >> 4 )& 0xF);
@@ -172,7 +150,7 @@ int MyList::compareItems( Q3PtrCollection::Item item1, Q3PtrCollection::Item ite
 			t=myCompare(song1, song2, (sortOrder >> 8 )& 0xF);
 		}
 	}
-	return t;
+    return (t < 0);
 }
 	
 // compares on one attribute
@@ -226,7 +204,7 @@ void MyList::reverse()
 {
   int noItems=count();
   for(int i=0; i<noItems; i++) {
-    SongEntry* entry=take(i);
+    SongEntry* entry = takeAt(i);
     prepend(entry);
   }
 }
@@ -239,7 +217,7 @@ void MyList::shuffle()
   // 1. copy all items to a temp list
   MyList tempList;
   while(!isEmpty()) {
-    tempList.append(take(0));
+    tempList.append(takeAt(0));
   }
 
   while(!tempList.isEmpty()) {
@@ -251,7 +229,7 @@ void MyList::shuffle()
     if(chosen<0) {
       chosen=-chosen;
     }
-    append(tempList.take(chosen));
+    append(tempList.takeAt(chosen));
   }
 }
 

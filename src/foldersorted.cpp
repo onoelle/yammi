@@ -98,8 +98,8 @@ void FolderSorted::removeSong(Song* s)
 void FolderSorted::correctOrder()
 {
 	int index=1;
-	for(SongEntry* entry=songList->first(); entry; entry=songList->next()) {
-		((SongEntryInt*)entry)->intInfo=index;
+    for (MyList::iterator it = songList->begin(); it != songList->end(); it++) {
+        ((SongEntryInt*)(*it))->intInfo=index;
 		index++;
 	}
 	setText(0, fName+QString(" (%1)").arg(songList->count()));

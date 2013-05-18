@@ -18,8 +18,7 @@
 #ifndef MYLIST_H
 #define MYLIST_H
 
-#include <Q3PtrList>
-#include <Q3PtrCollection>
+#include <QList>
 
 #include "songentry.h"
 
@@ -28,13 +27,13 @@ class Song;
 
 
 /**
- * This class extends QPtrList (with fixed type <SongEntry>).
+ * This class extends QList (with fixed type <SongEntry*>).
  * It can be used everytime when you need to deal with a collection of songs/song entries.
  * - enables sorting
  * - enables adding/removing/searching SongEntry or Song types...
- * Otherwise, use exactly as QPtrList<SongEntry>.
+ * Otherwise, use exactly as QList<SongEntry*>.
 */
-class MyList : public Q3PtrList<SongEntry> {
+class MyList : public QList<SongEntry*> {
 
 public: 
 	MyList();
@@ -42,8 +41,6 @@ public:
 	~MyList();
 	
 	Song*			firstSong();
-	Song*			nextSong();
-	Song*			prevSong();
 
 	void			appendSong(Song* s);					// appends <s> as simple SongEntry
 	void			appendList(MyList* list);			// appends a whole list of song entrys
@@ -52,7 +49,7 @@ public:
   int       containsSelection(MyList* selection);
 	Song*			getSongByKey(QString artist, QString title, QString album);
 
-	int				compareItems( Q3PtrCollection::Item item1, Q3PtrCollection::Item item2);
+    int				lessThan(SongEntry* item1, SongEntry* item2);
 	int				myCompare(Song* song1, Song* song2, int sortBy);
   int       getSortOrder() { return sortOrder; }
   void			setSortOrderAndSort(int newSortOrder, bool sortAnyway=false);

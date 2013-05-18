@@ -45,7 +45,6 @@ public:
     void			updateTitle();
 
     Song*			firstSong();
-    Song*			nextSong();
 
     // these methods add songs..
     virtual void	addSong(Song* s);
@@ -61,12 +60,6 @@ public:
     }
     void			setFolderName(QString folderName)	{
         fName=folderName;
-    }
-    SongEntry*		firstEntry()								{
-        return songList->first();
-    }
-    SongEntry*		nextEntry()									{
-        return songList->next();
     }
 
     virtual void 	popup(QPoint point, QMenu* contentMenu);

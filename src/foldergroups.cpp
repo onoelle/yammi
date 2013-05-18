@@ -37,7 +37,7 @@ void FolderGroups::update(MyList* allSongs, int sortBy) {
     // set sort order for grouping
     allSongs->setSortOrderAndSort(sortBy, true);
 
-    unsigned int threshold=(unsigned int)gYammiGui->config()->groupThreshold;
+    int threshold = gYammiGui->config()->groupThreshold;
     if(threshold<=0) {
         threshold=1;
     }
@@ -46,7 +46,8 @@ void FolderGroups::update(MyList* allSongs, int sortBy) {
     bool same=false;
     MyList currentGroup;
 
-    for(Song* s=allSongs->firstSong(); s; s=allSongs->nextSong()) {
+    for (MyList::iterator it = allSongs->begin(); it != allSongs->end(); it++) {
+        Song* s = (*it)->song();
         QString next;
         switch(sortBy) {
         case MyList::ByArtist:
@@ -121,10 +122,11 @@ void FolderGroups::createGroupFolder(MyList* group, int sortBy) {
 
     // add songs of currentGroup
     bool sameArtist=true;
-    Song* toAdd=group->firstSong();
-    Song* firstSong=toAdd;
-    QString theArtist=toAdd->artist;
-    for(; toAdd; toAdd=group->nextSong()) {
+    MyList::iterator it = group->begin();
+    Song* firstSong = (*it)->song();
+    QString theArtist = (*it)->song()->artist;
+    for (; it != group->end(); it++) {
+        Song* toAdd = (*it)->song();
         f->addEntry(new SongEntry(toAdd));
         if(sortBy!=MyList::ByGenre) {
             toAdd->classified=true;					// do not set on genre???

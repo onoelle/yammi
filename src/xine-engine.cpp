@@ -144,7 +144,10 @@ namespace Yammi {
         }
 
         QFile file;
-        SongEntry* songEntry = playlist->at(0);
+        SongEntry* songEntry = 0;
+        if (!playlist->isEmpty()) {
+            songEntry = playlist->at(0);
+        }
         if (songEntry) {
             qDebug() << "playlist->at(0): " << songEntry->song()->displayName();
 
@@ -421,7 +424,10 @@ namespace Yammi {
     bool
     XineEngine::skipBackward(bool withoutCrossfading)
     {
-        Song* last=playlist->at(0)->song();
+        Song* last = 0;
+        if (!playlist->isEmpty()) {
+            last = playlist->at(0)->song();
+        }
         // insert pseudo-song to be removed
         playlist->insert(0, new SongEntryInt(last, 0));
         return skipForward(withoutCrossfading);
