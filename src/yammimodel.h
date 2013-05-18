@@ -19,7 +19,6 @@
 #ifndef YAMMIMODEL_H
 #define YAMMIMODEL_H
 
-#include <Q3PtrList>
 #include <QObject>
 #include <QStringList>
 
@@ -61,7 +60,7 @@ public:
     MyList unclassifiedSongs; // songs not in any category/album/group
     MyList recentSongs; // songs recently added
 
-    Q3PtrList<MyList> allCategories; // categories
+    QList<MyList*> allCategories; // categories
     QStringList	categoryNames; // names of categories
 
     int entriesAdded;

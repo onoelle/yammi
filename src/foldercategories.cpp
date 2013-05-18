@@ -18,7 +18,6 @@
 #include "foldercategories.h"
 
 #include <QMenu>
-#include <Q3PtrList>
 #include <QDebug>
 
 #include "foldersorted.h"
@@ -36,7 +35,7 @@ FolderCategories::~FolderCategories()
 
 
 // update all Categorys according to given structures
-void FolderCategories::update(Q3PtrList<MyList> allCategories, QStringList categoryNames)
+void FolderCategories::update(QList<MyList*> allCategories, QStringList categoryNames)
 {
 	// we have to delete all existing items first!
 	while(firstChild()) {
@@ -49,11 +48,10 @@ void FolderCategories::update(Q3PtrList<MyList> allCategories, QStringList categ
     folderPopup->insertItem(QObject::tr("New Category ..."), this, SLOT(newCategory()));
 	
 	int count=0;
-	for(MyList* ptr=allCategories.first(); ptr; ptr=allCategories.next(), count++)
-	{
+    for (QList<MyList*>::iterator it = allCategories.begin(); it != allCategories.end(); it++, count++) {
 		FolderSorted *f = new FolderSorted( this, categoryNames[count] );
         qDebug() << "calling f->update()";
-		f->update(*ptr);
+        f->update(**it);
         f->folderPopup = new QMenu( 0 );
         f->folderPopup->insertItem(tr("Remove Category ..."), this, SLOT(removeCategory()));
         f->folderPopup->insertItem(tr("New Category ..."), this, SLOT(newCategory()));

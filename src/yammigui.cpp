@@ -914,10 +914,7 @@ void YammiGui::toCategory(int index) {
         index=model->allCategories.count()-1;
     }
     // choose the desired category
-    MyList* category=model->allCategories.first();
-    for(int i=0; i<index; i++) {
-        category=model->allCategories.next();
-    }
+    MyList* category = model->allCategories.at(index);
     QString chosen=model->categoryNames[index];
 
     // determine whether all/some/none of the selected songs are already in the chosen category
@@ -1401,7 +1398,8 @@ void YammiGui::adjustSongPopup() {
 
     // for each category: determine whether all, some or no songs of selection are contained
     int k=0;
-    for(MyList* category=model->allCategories.first(); category; category=model->allCategories.next(), k++) {
+    for (QList<MyList*>::iterator it = model->allCategories.begin(); it != model->allCategories.end(); it++, k++) {
+        MyList* category = *it;
         int mode=category->containsSelection(&selectedSongs);
         switch(mode) {
         case 0:

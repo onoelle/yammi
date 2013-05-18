@@ -286,7 +286,8 @@ void YammiModel::saveCategories() {
     // save all categories marked as dirty
     QString categoryName;    
     int index=0;
-    for(MyList* category=allCategories.first(); category; category=allCategories.next(), index++) {
+    for (QList<MyList*>::iterator it = allCategories.begin(); it != allCategories.end(); it++, index++) {
+        MyList* category = *it;
         categoryName = categoryNames[index];
         qDebug() << "category " << categoryName;
         if(!category->dirty) {
@@ -739,12 +740,12 @@ QStringList* YammiModel::readM3uFile(QString filename) {
 void YammiModel::removeCategory(QString categoryName) {
     qDebug() << "remove category: " << categoryName;
     QString name=categoryNames.first();
-    int i=0;
-    for(MyList* ptr=allCategories.first(); ptr; ptr=allCategories.next(), i++) {
+    for (int i = 0; i < allCategories.count(); i++) {
+        MyList* ptr = allCategories.at(i);
         QString name=categoryNames[i];
         if(name==categoryName) {
             qDebug() << "category found, deleting...";
-            allCategories.remove();
+            allCategories.removeAll(ptr);
             categoryNames.remove(categoryNames.at(i));
             QString file = config()->databaseDir + "categories/" + name + ".xml";
             qDebug() << "file to delete:" << file;
@@ -759,7 +760,8 @@ void YammiModel::removeCategory(QString categoryName) {
 
 void YammiModel::renameCategory(QString oldCategoryName, QString newCategoryName) {
     int i=0;
-    for(MyList* ptr=allCategories.first(); ptr; ptr=allCategories.next(), i++) {
+    for (QList<MyList*>::iterator it = allCategories.begin(); it != allCategories.end(); it++, i++) {
+        MyList* ptr = *it;
         QString name=categoryNames[i];
         if(name==oldCategoryName) {
             qDebug() << "renaming category..";
@@ -792,8 +794,8 @@ void YammiModel::saveAll() {
     categoriesChanged(true);
     allSongsChanged(true);
     int i=0;
-    for(MyList* ptr=allCategories.first(); ptr; ptr=allCategories.next(), i++) {
-        ptr->dirty=true;
+    for (QList<MyList*>::iterator it = allCategories.begin(); it != allCategories.end(); it++, i++) {
+        (*it)->dirty=true;
     }
     save();
 }
@@ -820,10 +822,10 @@ void YammiModel::save() {
  * Marks those playlists as dirty that contain the given song
  */
 void YammiModel::markPlaylists(Song* s) {
-    for(MyList* category=allCategories.first(); category; category=allCategories.next()) {
-        if(category->containsSong(s)) {
-            category->dirty=true;
-	}
+    for (QList<MyList*>::iterator it = allCategories.begin(); it != allCategories.end(); it++) {
+        if((*it)->containsSong(s)) {
+            (*it)->dirty=true;
+        }
     }
 }
 

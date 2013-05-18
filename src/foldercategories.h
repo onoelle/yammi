@@ -18,7 +18,6 @@
 #ifndef FOLDERCATEGORIES_H
 #define FOLDERCATEGORIES_H
 
-#include <Q3PtrList>
 #include <QDir>
 #include <QString>
 
@@ -35,7 +34,7 @@ class FolderCategories : public Folder
 public:
 	FolderCategories( Q3ListView* parent, QString title );
 	~FolderCategories();
-	void update(Q3PtrList<MyList> allCategories, QStringList categoryNames);
+    void update(QList<MyList*> allCategories, QStringList categoryNames);
 public slots:
 	void removeCategory() { emit CategoryRemoved(); }
 	void newCategory()		{ emit CategoryNew(); }
