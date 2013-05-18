@@ -28,7 +28,7 @@
 class FolderGroups : public Folder  {
 	Q_OBJECT
 public:
-	FolderGroups( Q3ListView* parent, QString title);
+    FolderGroups( QTreeWidget* parent, QString title);
 	~FolderGroups();
 	void update(MyList* allSongs, int sortBy);
 private:

@@ -17,8 +17,8 @@
 #ifndef FOLDER_H
 #define FOLDER_H
 
-#include <Q3ListViewItem>
 #include <QObject>
+#include <QTreeWidget>
 
 #include "song.h"
 #include "songentry.h"
@@ -29,14 +29,14 @@ class QMenu;
 
 
 // represents a folder on the left
-class Folder : public QObject, public Q3ListViewItem {
+class Folder : public QObject, public QTreeWidgetItem {
     Q_OBJECT
 
 public:
-    Folder			(Q3ListView* parent, const QString &name );						// top-level folder
-    Folder			(Q3ListView* parent, const QString &name, MyList* songList);
-    Folder			(Q3ListViewItem* parent, const QString &name );				// subfolder
-    Folder			(Q3ListViewItem* parent, const QString &name, MyList* songList);
+    Folder			(QTreeWidget* parent, const QString &name );						// top-level folder
+    Folder			(QTreeWidget* parent, const QString &name, MyList* songList);
+    Folder			(QTreeWidgetItem* parent, const QString &name );				// subfolder
+    Folder			(QTreeWidgetItem* parent, const QString &name, MyList* songList);
     ~Folder();
 
     void			init(QString name);

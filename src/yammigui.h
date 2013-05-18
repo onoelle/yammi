@@ -31,6 +31,7 @@ class Q3ListView;
 class Q3ListViewItem;
 class QActionGroup;
 class QMenu;
+class QModelIndex;
 class QKeyEvent;
 class QLineEdit;
 class QPushButton;
@@ -39,6 +40,8 @@ class QSlider;
 class QSpinBox;
 class QSplitter;
 class QTextEdit;
+class QTreeWidget;
+class QTreeWidgetItem;
 
 class YammiModel;
 class MediaPlayer;
@@ -204,7 +207,7 @@ public:
 public slots:
     void songListPopup(Q3ListViewItem*, const QPoint&, int);
     void deleteEntry(Song* s);
-    void slotFolderChanged();
+    void slotFolderChanged(const QModelIndex& current, const QModelIndex& previous);
     void updatePlaylist();
     void updateHtmlPlaylist();
     
@@ -328,7 +331,7 @@ protected:
 
     // gui
     //***************
-    Q3ListView* folderListView;
+    QTreeWidget* folderListView;
     QSplitter* centralWidget;
     QSplitter* leftWidget;
 
@@ -428,7 +431,7 @@ protected slots:
     void autoplayLNP();
     void autoplayRandom();
     void doSongPopup(QPoint point);
-    void slotFolderPopup( Q3ListViewItem*, const QPoint &, int );
+    void slotFolderPopup(const QPoint& point);
     void adjustSongPopup();
 
     void doubleClick();

@@ -25,8 +25,8 @@ extern YammiGui* gYammiGui;
 
 
 // constructs a top-level folder
-Folder::Folder( Q3ListView *parent, const QString &name )
-			: Q3ListViewItem( parent ),
+Folder::Folder( QTreeWidget *parent, const QString &name )
+            : QTreeWidgetItem( parent ),
 				owner(true)
 {
 	init(name);
@@ -36,8 +36,8 @@ Folder::Folder( Q3ListView *parent, const QString &name )
 }
 
 // construct a top-level folder
-Folder::Folder( Q3ListView* parent, const QString &name, MyList* songList)
-			: Q3ListViewItem( parent )				
+Folder::Folder( QTreeWidget* parent, const QString &name, MyList* songList)
+            : QTreeWidgetItem( parent )
 {
 	init(name);
 	this->songList=songList;
@@ -45,16 +45,16 @@ Folder::Folder( Q3ListView* parent, const QString &name, MyList* songList)
 }
 
 // construct a folder (not top-level)
-Folder::Folder( Q3ListViewItem* parent, const QString &name )
-			: Q3ListViewItem( parent )				
+Folder::Folder( QTreeWidgetItem* parent, const QString &name )
+            : QTreeWidgetItem( parent )
 {
 	init(name);
 	songList=new MyList();
 }
 
 // construct a folder (not top-level)
-Folder::Folder( Q3ListViewItem* parent, const QString &name, MyList* songList)
-			: Q3ListViewItem( parent )			  
+Folder::Folder( QTreeWidgetItem* parent, const QString &name, MyList* songList)
+            : QTreeWidgetItem( parent )
 {
 	init(name);
 	this->songList=songList;

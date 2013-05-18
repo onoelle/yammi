@@ -23,13 +23,13 @@
 
 extern YammiGui* gYammiGui;
 
-FolderGroups::FolderGroups( Q3ListView* parent, QString title)
+FolderGroups::FolderGroups( QTreeWidget* parent, QString title)
 : Folder( parent, title ) {}
 
 void FolderGroups::update(MyList* allSongs, int sortBy) {
     // we have to delete all existing items first!
-    while(firstChild()) {
-        Q3ListViewItem* toDelete=firstChild();
+    while (childCount()) {
+        QTreeWidgetItem* toDelete = QTreeWidgetItem::child(0);
         // change to Folder* toDelete=(Folder*)firstChild();
         delete(toDelete);
     }
@@ -111,7 +111,7 @@ void FolderGroups::update(MyList* allSongs, int sortBy) {
         createGroupFolder(&currentGroup, sortBy);
     }
     setText(0, fName+QString(" (%1)").arg(groupCount));
-    sortChildItems(0, true);
+    sortChildren(0, Qt::AscendingOrder);
     allSongs->setSortOrderAndSort(MyList::ByArtist);
 }
 

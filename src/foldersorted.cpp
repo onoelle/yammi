@@ -25,28 +25,28 @@
 using namespace std;
 
 // construct a folder (top-level)
-FolderSorted::FolderSorted( Q3ListView *parent, const QString &name )
+FolderSorted::FolderSorted( QTreeWidget *parent, const QString &name )
 			: Folder(parent, name)
 {
 	sorted=true;
 }
 
 // construct a folder (not top-level)
-FolderSorted::FolderSorted( Q3ListViewItem* parent, const QString &name )
+FolderSorted::FolderSorted( QTreeWidgetItem* parent, const QString &name )
 			: Folder(parent, name)
 {
 	sorted=true;
 }
 
 // construct a folder (top-level)
-FolderSorted::FolderSorted( Q3ListView *parent, const QString &name, MyList* songList)
+FolderSorted::FolderSorted( QTreeWidget *parent, const QString &name, MyList* songList)
 			: Folder(parent, name, songList)
 {
 	sorted=true;  
 }
 
 // construct a folder (not top-level)
-FolderSorted::FolderSorted( Q3ListViewItem* parent, const QString &name, MyList* songList)
+FolderSorted::FolderSorted( QTreeWidgetItem* parent, const QString &name, MyList* songList)
 			: Folder(parent, name, songList)
 {
 	sorted=true;  

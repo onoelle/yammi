@@ -29,10 +29,10 @@ class MyListView;
 
 class FolderSorted : public Folder  {
 public: 
-	FolderSorted	(Q3ListView *parent, const QString &name );						// top-level folder
-	FolderSorted	(Q3ListViewItem *parent, const QString &name );				// subfolder
-  FolderSorted  (Q3ListView *parent, const QString &name, MyList* songList);
-  FolderSorted  (Q3ListViewItem* parent, const QString &name, MyList* songList);
+    FolderSorted(QTreeWidget *parent, const QString &name );                        // top-level folder
+    FolderSorted(QTreeWidgetItem *parent, const QString &name );                    // subfolder
+    FolderSorted(QTreeWidget *parent, const QString &name, MyList* songList);
+    FolderSorted(QTreeWidgetItem* parent, const QString &name, MyList* songList);
 	~FolderSorted();
 	
 	virtual void		update( MyList& songList);					// common update method

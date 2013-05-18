@@ -32,7 +32,7 @@ class FolderCategories : public Folder
 {
 	Q_OBJECT
 public:
-	FolderCategories( Q3ListView* parent, QString title );
+    FolderCategories( QTreeWidget* parent, QString title );
 	~FolderCategories();
     void update(QList<MyList*> allCategories, QStringList categoryNames);
 public slots:

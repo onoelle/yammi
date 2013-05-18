@@ -23,7 +23,7 @@
 #include "foldersorted.h"
 
 
-FolderCategories::FolderCategories( Q3ListView* parent, QString title)
+FolderCategories::FolderCategories( QTreeWidget* parent, QString title)
 		: Folder( parent, title )
 {
 }
@@ -38,9 +38,9 @@ FolderCategories::~FolderCategories()
 void FolderCategories::update(QList<MyList*> allCategories, QStringList categoryNames)
 {
 	// we have to delete all existing items first!
-	while(firstChild()) {
+    while (childCount()) {
         qDebug() << "deleting item";
-		Q3ListViewItem* toDelete=firstChild();
+        QTreeWidgetItem* toDelete = QTreeWidgetItem::child(0);
 		delete(toDelete);
 	}
 	
@@ -61,7 +61,7 @@ void FolderCategories::update(QList<MyList*> allCategories, QStringList category
 	}
 	setText(0, fName+QString(" (%1)").arg(count));
     qDebug() << "calling sortChildItems()";
-    sortChildItems(0, true);
+    sortChildren(0, Qt::AscendingOrder);
     qDebug() << "...done";
 }
 

@@ -547,11 +547,13 @@ void YammiGui::gotoFuzzyFolder(bool backward) {//HERE
         fs.initialize(searchStr.lower(), 2, 4);			// STEP 1
 
 
-        for(Q3ListViewItem* i=folderListView->firstChild(); i; i=i->nextSibling()) {
-            Folder* f=(Folder*)i;
+        for (int i = 0; i < folderListView->topLevelItemCount(); i++) {
+            QTreeWidgetItem* item = folderListView->topLevelItem(i);
+            Folder* f = (Folder*)item;
             fs.checkNext(f->folderName().lower(), (void*)f);				// STEP 2 (top-level folder)
-            for(Q3ListViewItem* i2=i->firstChild(); i2; i2=i2->nextSibling()) {
-                Folder* f2=(Folder*)i2;
+            for (int j = 0; j < item->childCount(); i++) {
+                QTreeWidgetItem* item2 = item->child(j);
+                Folder* f2 = (Folder*)item2;
                 fs.checkNext(f2->folderName().lower(), (void*)f2);				// STEP 2 (subfolders)
             }
         }
@@ -594,13 +596,15 @@ void YammiGui::gotoFuzzyFolder(bool backward) {//HERE
  * Return the first found folder with the given name, or 0 if no folder with that name exists
  */
 Folder* YammiGui::getFolderByName(QString folderName) {
-    for(Q3ListViewItem* i=folderListView->firstChild(); i; i=i->nextSibling()) {
-        Folder* f=(Folder*)i;
+    for (int i = 0; i < folderListView->topLevelItemCount(); i++) {
+        QTreeWidgetItem* item = folderListView->topLevelItem(i);
+        Folder* f = (Folder*)item;
         if(f->folderName()==folderName) {
             return f;
         }
-        for(Q3ListViewItem* i2=i->firstChild(); i2; i2=i2->nextSibling()) {
-            Folder* f2=(Folder*)i2;
+        for (int j = 0; j < item->childCount(); j++) {
+            QTreeWidgetItem* item2 = item->child(j);
+            Folder* f2 = (Folder*)item2;
             if(f2->folderName()==folderName) {
                 return f2;
             }
@@ -710,7 +714,7 @@ void YammiGui::updateListViewColumns() {
         songListView->addColumn( tr("Reason"), 120);
         current++;
     }
-    if(((Q3ListViewItem*)chosenFolder)->parent()==folderCategories) {
+    if(((QTreeWidgetItem*)chosenFolder)->parent()==folderCategories) {
         songListView->addColumn( tr("Pos"), 35);
         current++;
     }
@@ -927,7 +931,8 @@ void YammiGui::toCategory(int index) {
 
     // get pointer to the folder
     FolderSorted* categoryFolder=0;
-    for( Q3ListViewItem* f=folderCategories->firstChild(); f; f=f->nextSibling() ) {
+    for (int i = 0; i < folderCategories->childCount(); i++) {
+        QTreeWidgetItem* f = folderCategories->QTreeWidgetItem::child(i);
         if( ((Folder*)f)->folderName()==chosen ) {
             categoryFolder=(FolderSorted*)f;
         }
@@ -1112,8 +1117,8 @@ void YammiGui::updateSearchResults() {
 /**
  * user clicked on a folder
  */
-void YammiGui::slotFolderChanged() {
-    Q3ListViewItem *i = folderListView->currentItem();
+void YammiGui::slotFolderChanged(const QModelIndex& /*current*/, const QModelIndex& /*previous*/) {
+    QTreeWidgetItem *i = folderListView->currentItem();
     if ( !i )
         return;
     changeToFolder((Folder*)i);
@@ -1148,9 +1153,9 @@ void YammiGui::changeToFolder(Folder* newFolder, bool changeAnyway) {
 
     updateListViewColumns();
 
-    folderListView->setCurrentItem( (Q3ListViewItem*)chosenFolder );
-    folderListView->setSelected( (Q3ListViewItem*)chosenFolder , TRUE );
-    folderListView->ensureItemVisible((Q3ListViewItem*)chosenFolder);
+    folderListView->setCurrentItem((QTreeWidgetItem*)chosenFolder);
+    chosenFolder->QTreeWidgetItem::setSelected(true);
+    folderListView->scrollTo(folderListView->currentIndex());
     folderContentChanged();
     QApplication::restoreOverrideCursor();
 }
@@ -1245,7 +1250,7 @@ void YammiGui::addFolderContentSnappy() {
             songListView->setSorting(column, asc);
         } else {
             // special default sorting for certain folders
-            if(((Q3ListViewItem*)chosenFolder)->parent()==folderAlbums) {
+            if(((QTreeWidgetItem*)chosenFolder)->parent()==folderAlbums) {
                 songListView->sortedBy=COLUMN_TRACKNR + 1;
                 songListView->setSorting(COLUMN_TRACKNR, true);
             } else if(chosenFolder==folderRecentAdditions) {
@@ -1447,20 +1452,27 @@ void YammiGui::adjustSongPopup() {
 /**
  * Popup menu on a folder
  */
-void YammiGui::slotFolderPopup( Q3ListViewItem*, const QPoint & point, int ) {
-    Q3ListViewItem *i = folderListView->currentItem();
+void YammiGui::slotFolderPopup(const QPoint& point)
+{
+    QPoint globalPoint = folderListView->viewport()->mapToGlobal(point);
+
+    folderListView->setCurrentIndex(folderListView->indexAt(point));
+
+    QTreeWidgetItem *i = folderListView->currentItem();
     Folder* chosenFolder = ( Folder* )i;
-    setSelectionMode(SELECTION_MODE_FOLDER);
-    getSelectedSongs();
-    if(selectedSongs.count()==0) {
-        // no songs in this folder
-        chosenFolder->popup( point, 0);
+    if (i) {
+        setSelectionMode(SELECTION_MODE_FOLDER);
+        getSelectedSongs();
+        if(selectedSongs.count()==0) {
+            // no songs in this folder
+            chosenFolder->popup(globalPoint, 0);
+            setSelectionMode(SELECTION_MODE_USER_SELECTED);
+            return;
+        }
+        adjustSongPopup();
+        chosenFolder->popup(globalPoint, songPopup);
         setSelectionMode(SELECTION_MODE_USER_SELECTED);
-        return;
     }
-    adjustSongPopup();
-    chosenFolder->popup( point, songPopup);
-    setSelectionMode(SELECTION_MODE_USER_SELECTED);
 }
 
 
@@ -2123,7 +2135,8 @@ void YammiGui::deleteEntry(Song* s) {
     folderAll->removeSong(s);
 
     // ...and from categories
-    for( Q3ListViewItem* f=folderCategories->firstChild(); f; f=f->nextSibling() ) {
+    for (int i = 0; i < folderCategories->childCount(); i++) {
+        QTreeWidgetItem* f = folderCategories->QTreeWidgetItem::child(i);
         FolderSorted* category=(FolderSorted*)f;
         category->removeSong(s);
     }
@@ -2222,13 +2235,13 @@ bool YammiGui::newCategory() {
  * Removes the selected category.
  */
 void YammiGui::removeCategory() {
-    Q3ListViewItem* i = folderListView->currentItem();
+    QTreeWidgetItem* i = folderListView->currentItem();
     QString name=((Folder*)i)->folderName();
     QString msg(tr("Delete category %1 ?\n (will be deleted immediately!)").arg(name));
     if (QMessageBox::warning(this, "", msg, QMessageBox::Yes, QMessageBox::No | QMessageBox::Escape) == QMessageBox::Yes) {
         model->removeCategory(name);
-        folderListView->setCurrentItem( (Q3ListViewItem*)folderCategories );
-        folderListView->setSelected( (Q3ListViewItem*)folderCategories , TRUE );
+        folderListView->setCurrentItem( (QTreeWidgetItem*)folderCategories );
+        folderCategories->QTreeWidgetItem::setSelected(true);
         folderCategories->update(model->allCategories, model->categoryNames);
         updateSongPopup();
     }
@@ -2238,7 +2251,7 @@ void YammiGui::removeCategory() {
  * Renames the selected category, querying the user for the new name.
  */
 void YammiGui::renameCategory() {
-    Q3ListViewItem* i = folderListView->currentItem();
+    QTreeWidgetItem* i = folderListView->currentItem();
     QString oldName=((Folder*)i)->folderName();
     bool ok;
     QString newName=QString(QInputDialog::getText( tr("Category name"), tr("Please enter new name:"), QLineEdit::Normal, oldName, &ok, this ));
@@ -2248,8 +2261,8 @@ void YammiGui::renameCategory() {
 
     model->renameCategory(oldName, newName);
     qDebug() << "renamed in model...";
-    folderListView->setCurrentItem( (Q3ListViewItem*)folderCategories );
-    folderListView->setSelected( (Q3ListViewItem*)folderCategories , TRUE );
+    folderListView->setCurrentItem( (QTreeWidgetItem*)folderCategories );
+    folderCategories->QTreeWidgetItem::setSelected(true);
     folderCategories->update(model->allCategories, model->categoryNames);
     qDebug() << "categories updated...";
     updateSongPopup();
@@ -2263,7 +2276,7 @@ void YammiGui::renameCategory() {
  * Inserts in the order of the playlist.
  */
 void YammiGui::loadM3uIntoCategory() {
-    Q3ListViewItem* i = folderListView->currentItem();
+    QTreeWidgetItem* i = folderListView->currentItem();
     FolderSorted* categoryFolder=(FolderSorted*)i;
     QString filename = QFileDialog::getOpenFileName("/", "Playlists (*.m3u)", this, NULL, tr("Choose a Playlist to insert" ));
     if(filename.isNull()) {
@@ -2741,7 +2754,7 @@ void YammiGui::stopDragging() {
         player->syncYammi2Player();
     }
 
-    if(((Q3ListViewItem*)chosenFolder)->parent()==folderCategories) {
+    if(((QTreeWidgetItem*)chosenFolder)->parent()==folderCategories) {
         // we have to save the order
         model->categoriesChanged(true);
     }
@@ -2852,11 +2865,10 @@ void YammiGui::createMainWidget( ) {
     leftWidget->setResizeMode(playlistPart, QSplitter::KeepSize );
     
     // set up the quick browser on the left
-    folderListView = new Q3ListView( leftWidget );
-    folderListView->header()->setClickEnabled( FALSE );
-    folderListView->addColumn( tr("Quick Browser"), -1 );
-    folderListView->setRootIsDecorated( TRUE );
-    folderListView->setSorting(-1);
+    folderListView = new QTreeWidget( leftWidget );
+    folderListView->header()->setClickable(false);
+    folderListView->headerItem()->setText(0, tr("Quick Browser"));
+    folderListView->setRootIsDecorated(true);
 
     // set up the songlist on the right
     songListView = new MyListView( centralWidget );
@@ -2864,8 +2876,9 @@ void YammiGui::createMainWidget( ) {
     setCentralWidget(centralWidget);
 
     // signals of folderListView
-    connect(folderListView, SIGNAL( currentChanged( Q3ListViewItem* ) ), this, SLOT( slotFolderChanged() ) );
-    connect(folderListView, SIGNAL( rightButtonPressed( Q3ListViewItem *, const QPoint& , int ) ), this, SLOT( slotFolderPopup( Q3ListViewItem *, const QPoint &, int ) ) );
+    connect(folderListView->selectionModel(), SIGNAL(currentChanged(const QModelIndex&, const QModelIndex&)), this, SLOT(slotFolderChanged(const QModelIndex&, const QModelIndex&)));
+    folderListView->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(folderListView, SIGNAL( customContextMenuRequested(const QPoint&)), this, SLOT( slotFolderPopup(const QPoint&) ) );
 
     // signals of songListView
     connect(songListView, SIGNAL( rightButtonPressed( Q3ListViewItem *, const QPoint& , int ) ), this, SLOT( songListPopup( Q3ListViewItem *, const QPoint&, int ) ) );
@@ -2878,52 +2891,19 @@ void YammiGui::createMainWidget( ) {
 
 
 void YammiGui::createFolders( ) {
-    // folder containing all music
-    folderAll=new Folder( folderListView, QString(tr("All Music")), &(model->allSongs));
-
-    // folder containing all artists with more than <n> songs
-    folderArtists = new FolderGroups( folderListView, QString( tr("Artists") ));
-    folderArtists->moveItem(folderAll);
-
-    // folder containing all albums with more than <n> songs
-    folderAlbums = new FolderGroups( folderListView, QString( tr("Albums") ));
-    folderAlbums->moveItem(folderArtists);
-
-    // folder containing all genres with more than <n> songs
-    folderGenres = new FolderGroups( folderListView, QString( tr("Genre") ));
-    folderGenres->moveItem(folderAlbums);
-
-    // folder containing all songs from a year (if more than <n> songs)
-    folderYears = new FolderGroups( folderListView, QString( tr("Year") ));
-    folderYears->moveItem(folderGenres);
-
-    // folder containing all categories
-    folderCategories = new FolderCategories( folderListView, QString(tr("Categories")));
-    folderCategories->moveItem(folderYears);
-
-    // folder containing currently played song
     folderActual = new FolderSorted(folderListView, QString(tr("Playlist")), &(model->songsToPlay));
-
-    // folder containing songs played in this session
+    folderSearchResults = new Folder(folderListView, QString(tr("Search Results")), &searchResults );
+    folderAll = new Folder(folderListView, QString(tr("All Music")), &(model->allSongs));
+    folderArtists = new FolderGroups(folderListView, QString( tr("Artists") ));
+    folderAlbums = new FolderGroups(folderListView, QString( tr("Albums") ));
+    folderGenres = new FolderGroups(folderListView, QString( tr("Genre") ));
+    folderYears = new FolderGroups(folderListView, QString( tr("Year") ));
+    folderCategories = new FolderCategories(folderListView, QString(tr("Categories")));
     folderSongsPlayed = new Folder(folderListView, QString(tr("Songs Played")), &(model->songsPlayed));
-    folderSongsPlayed->moveItem(folderCategories);
-
-    // folder containing history
     folderHistory = new Folder(folderListView, QString(tr("History")), &(model->songHistory));
-    folderHistory->moveItem(folderSongsPlayed);
-
-    // folder containing unclassified songs
     folderUnclassified = new Folder(folderListView, QString(tr("Unclassified")), &(model->unclassifiedSongs));
-    folderUnclassified->moveItem(folderHistory);
-
-    folderSearchResults = new Folder( folderListView, QString(tr("Search Results")), &searchResults );
-    folderSearchResults->moveItem(folderActual);
-
-    folderProblematic = new Folder( folderListView, QString(tr("Problematic Songs")) );
-    folderProblematic->moveItem(folderUnclassified);
-
     folderRecentAdditions = new Folder(folderListView, QString(tr("Recent Additions")), &(model->recentSongs));
-    folderRecentAdditions->moveItem(folderUnclassified);
+    folderProblematic = new Folder(folderListView, QString(tr("Problematic Songs")) );
 
     // signals of folders
     connect(folderCategories, SIGNAL( CategoryNew() ), this, SLOT(newCategory()));
