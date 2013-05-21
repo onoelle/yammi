@@ -90,7 +90,10 @@ FORMS3 = \
 TRANSLATIONS = \
     translations/yammi_de.ts \
     translations/yammi_es.ts \
-    translations/yammi_it.ts
+    translations/yammi_fi.ts \
+    translations/yammi_hu.ts \
+    translations/yammi_it.ts \
+    translations/yammi_nl.ts
 
 updateqm.commands = lrelease-qt4 yammi.pro
 updateqm.target = updateqm
