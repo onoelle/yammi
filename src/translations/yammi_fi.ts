@@ -1,57 +1,59 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="fi_FI">
 <context>
     <name>@default</name>
     <message>
         <source>Artist</source>
-        <translation>Artisti</translation>
+        <translation type="obsolete">Artisti</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation>Kappale</translation>
+        <translation type="obsolete">Kappale</translation>
     </message>
     <message>
         <source>Album</source>
-        <translation>Levy</translation>
+        <translation type="obsolete">Levy</translation>
     </message>
     <message>
         <source>Length</source>
-        <translation>Kesto</translation>
+        <translation type="obsolete">Kesto</translation>
     </message>
     <message>
         <source>Year</source>
-        <translation>Julkaisuvuosi</translation>
+        <translation type="obsolete">Julkaisuvuosi</translation>
     </message>
     <message>
         <source>TrackNr</source>
-        <translation>RaitaNro</translation>
+        <translation type="obsolete">RaitaNro</translation>
     </message>
     <message>
         <source>Genre</source>
-        <translation>Laji</translation>
+        <translation type="obsolete">Laji</translation>
     </message>
     <message>
         <source>AddedTo</source>
-        <translation>Lisätty</translation>
+        <translation type="obsolete">Lisätty</translation>
     </message>
     <message>
         <source>Bitrate</source>
-        <translation>Laatu</translation>
+        <translation type="obsolete">Laatu</translation>
     </message>
     <message>
         <source>Filename</source>
-        <translation>Tiedostonimi</translation>
+        <translation type="obsolete">Tiedostonimi</translation>
     </message>
     <message>
         <source>Path</source>
-        <translation>Polku</translation>
+        <translation type="obsolete">Polku</translation>
     </message>
     <message>
         <source>Comment</source>
-        <translation>Kommentti</translation>
+        <translation type="obsolete">Kommentti</translation>
     </message>
     <message>
         <source>Last Played</source>
-        <translation>Viimeksi Soitettu</translation>
+        <translation type="obsolete">Viimeksi Soitettu</translation>
     </message>
 </context>
 <context>
@@ -70,7 +72,15 @@
     </message>
     <message>
         <source>apply to all items</source>
-        <translation>Muuta kaikki kohteet</translation>
+        <translation type="obsolete">Muuta kaikki kohteet</translation>
+    </message>
+    <message>
+        <source>Abort</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>apply answer to all affected items</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -81,15 +91,15 @@
     </message>
     <message>
         <source>Options for consistency check</source>
-        <translation>Valinnat yhdenmukaisuuden tarkistamiseen</translation>
+        <translation type="obsolete">Valinnat yhdenmukaisuuden tarkistamiseen</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Peruuta</translation>
+        <translation type="obsolete">Peruuta</translation>
     </message>
     <message>
         <source>Start Check...</source>
-        <translation>Aloita tarkistus</translation>
+        <translation type="obsolete">Aloita tarkistus</translation>
     </message>
     <message>
         <source>check for existence of files</source>
@@ -121,7 +131,7 @@
     </message>
     <message>
         <source>If filenames differ from the configured naming scheme, they will be corrected</source>
-        <translation>Korjaa tiedostonimet, jos ne eroavat määritetystä nimeämistavasta</translation>
+        <translation type="obsolete">Korjaa tiedostonimet, jos ne eroavat määritetystä nimeämistavasta</translation>
     </message>
     <message>
         <source>check filenames</source>
@@ -129,7 +139,7 @@
     </message>
     <message>
         <source>Checks, whether the filenames correspond to the configured naming scheme</source>
-        <translation>Tarkistaa, että fiedostonimet noudattavat määritettyä nimeämistapaa</translation>
+        <translation type="obsolete">Tarkistaa, että fiedostonimet noudattavat määritettyä nimeämistapaa</translation>
     </message>
     <message>
         <source>check for doubles</source>
@@ -154,6 +164,324 @@
     <message>
         <source>File Tags =&gt; Yammi database</source>
         <translation>Tiedoston Tagi =&gt; Yammin tietokanta</translation>
+    </message>
+    <message>
+        <source>Consistency Check</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start Check ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Exit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pattern Replacements ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>check directories</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Checks, whether the directories correspond to the configured directory scheme</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>correct inconsistent directories</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>If directories differ from the configured directory scheme, the files will be moved</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>delete empty directories</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>If directories are empty after moving files, these will be removed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>pattern:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The filename pattern to use for renaming files.</source>
+        <translation type="unfinished">Muoto, jota käytetään tiedostojen uudelleennimeämisessä</translation>
+    </message>
+    <message>
+        <source>output of consistency check</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Checks, whether the filenames correspond to the configured filename scheme</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>If filenames differ from the configured filename scheme, they will be corrected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ignore case in filename checks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ignore case differences in filename / directory check</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ConsistencyCheckDialog</name>
+    <message>
+        <source>Check consistency - settings</source>
+        <translation type="unfinished">Tarkista yhtenevyys - asetukset</translation>
+    </message>
+    <message>
+        <source>Checking %1 songs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Step 1: checking all songs in database ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Checking consistency of %1 songs ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>file not readable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>file not existing or readable: %1
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>=&gt; deleting song entry %1
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>file not existing or readable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>tags not correct</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Correct tags in file
+
+	%1?
+
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>(Write yammi info to file tags:
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>artist: %1, title: %2
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>album: %1, comment: %2
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>year: %1, trackNr: %2, genre: %3)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>(Reread tags from filename and update Yammi info)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Yammi info written to file tags</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tags reread from file and Yammi info updated</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Yammi info and file tags not consistent</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>filename not consistent</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Filename not consistent with Yammi info</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>expected: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>found: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Correct filename from
+	%1
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>to
+	%1?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Filename corrected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>directory not consistent</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Directory not consistent with Yammi info</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Correct path for file 
+	%1
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>from
+	%1
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Directory corrected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Step 2: check for song entries pointing to same file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>{wish}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>two database entries pointing to same file: %1, deleting one</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Step 3: check for songs with identical primary keys</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>2 songs with identical primary key
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>contained twice(1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>contained twice(2)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Consistency check finished
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Consistency check was cancelled
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Your Yammi database is nice and clean!
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Result of consistency check: (%1 songs)
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 issues found, check folder &quot;Problematic Songs&quot; (won&apos;t be saved)
+
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>- %1 songs not existing
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>     %1 entries updated (filename cleared)
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>     %1 entries deleted (because not existing on any media)
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>- %1 songs with inconsistent tags
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>     %1 tags corrected
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>- %1 songs with inconsistent filename
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>     %1 filenames corrected
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>- %1 songs with inconsistent path
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>     %1 paths corrected
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>- %1 double entries found
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Replacements for filename/directory pattern:
+
+</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -184,16 +512,16 @@
     </message>
     <message>
         <source>shows a list of media, on which the song(s) to delete can be found</source>
-        <translation>Näyttää listan mediasta, jo(i)lta poistettava kappale(et) löytyy</translation>
+        <translation type="obsolete">Näyttää listan mediasta, jo(i)lta poistettava kappale(et) löytyy</translation>
     </message>
     <message>
         <source>song to delete...</source>
-        <translation>Poistettava kappale...</translation>
+        <translation type="obsolete">Poistettava kappale...</translation>
     </message>
     <message>
         <source>For your information:
 Song is contained on media</source>
-        <translation>Tiedoksi: 
+        <translation type="obsolete">Tiedoksi: 
 Kappale on tallennettu levylle.</translation>
     </message>
     <message>
@@ -203,6 +531,70 @@ Kappale on tallennettu levylle.</translation>
     <message>
         <source>Cancel</source>
         <translation>Peruuta</translation>
+    </message>
+    <message>
+        <source>song to delete ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DummyPlayer</name>
+    <message>
+        <source>DummyPlayer</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Folder</name>
+    <message>
+        <source>Autoplay</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Folder ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Content ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>FolderCategories</name>
+    <message>
+        <source>Remove Category ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Category ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rename Category ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Load .m3u into Category</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>FolderGroups</name>
+    <message>
+        <source>- no artist -</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>- no album -</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>- no genre -</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>- no year -</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -233,7 +625,7 @@ Kappale on tallennettu levylle.</translation>
     </message>
     <message>
         <source>Mouse configuration / Default actions for...</source>
-        <translation>Hiiren asetukset / Oletustoiminnot painalluksille</translation>
+        <translation type="obsolete">Hiiren asetukset / Oletustoiminnot painalluksille</translation>
     </message>
     <message>
         <source>the action that is performed when double-clicking on a song in the song list</source>
@@ -241,11 +633,11 @@ Kappale on tallennettu levylle.</translation>
     </message>
     <message>
         <source>CTRL+middle click</source>
-        <translation>Ctrl + keskimmäinen nappi</translation>
+        <translation type="obsolete">Ctrl + keskimmäinen nappi</translation>
     </message>
     <message>
         <source>SHIFT+middle click</source>
-        <translation>Shift + keskimmäinen nappi</translation>
+        <translation type="obsolete">Shift + keskimmäinen nappi</translation>
     </message>
     <message>
         <source>the action that is performed when clicking with middle mouse button on a song in the song list</source>
@@ -261,11 +653,11 @@ Kappale on tallennettu levylle.</translation>
     </message>
     <message>
         <source>Searching</source>
-        <translation>Hakuasetukset</translation>	
+        <translation>Hakuasetukset</translation>
     </message>
     <message>
         <source>Limits the maximum number of entries listed when searching. Must be between 0 and 200, reasonable: 100</source>
-        <translation>Rajottaa tulosten määrän haettaessa. Arvon tulee olla väliltä 0 ja 200, yleensä 100</translation>
+        <translation type="obsolete">Rajottaa tulosten määrän haettaessa. Arvon tulee olla väliltä 0 ja 200, yleensä 100</translation>
     </message>
     <message>
         <source>determines how many hits will be shown when searching. Must be between 0 and 100, reasonable values are around 25.</source>
@@ -273,11 +665,7 @@ Kappale on tallennettu levylle.</translation>
     </message>
     <message>
         <source>maximum no. results</source>
-        <translation>Hakutulosten maksimimäärä</translation>
-    </message>
-    <message>
-        <source>Tuloskynnys</source>
-        <translation></translation>
+        <translation type="obsolete">Hakutulosten maksimimäärä</translation>
     </message>
     <message>
         <source>Misc</source>
@@ -285,11 +673,11 @@ Kappale on tallennettu levylle.</translation>
     </message>
     <message>
         <source>This device is used (with mpg123) to send songs to your headphone.</source>
-        <translation>Ulostuloon käytettävä äänilaite, mikäli se poikkeaa oletuksesta.</translation>
+        <translation type="obsolete">Ulostuloon käytettävä äänilaite, mikäli se poikkeaa oletuksesta.</translation>
     </message>
     <message>
         <source>second sound device (eg. /dev/dsp1)</source>
-        <translation>Toissijainen äänilaite (esim. /dev/dsp1)</translation>
+        <translation type="obsolete">Toissijainen äänilaite (esim. /dev/dsp1)</translation>
     </message>
     <message>
         <source>Database</source>
@@ -309,11 +697,11 @@ Kappale on tallennettu levylle.</translation>
     </message>
     <message>
         <source>yammi will search in this directory (and recursive in all subdirectories) for new song files</source>
-        <translation>Yammi etsii tästä hakemistosta ja kaikista sen alihakemistoista uusia kappaleita tietokantaan</translation>
+        <translation type="obsolete">Yammi etsii tästä hakemistosta ja kaikista sen alihakemistoista uusia kappaleita tietokantaan</translation>
     </message>
     <message>
         <source>base directory for scanning</source>
-        <translation>Tiedostohaun juuri</translation>
+        <translation type="obsolete">Tiedostohaun juuri</translation>
     </message>
     <message>
         <source>trash directory for deleted song files</source>
@@ -325,7 +713,7 @@ Kappale on tallennettu levylle.</translation>
     </message>
     <message>
         <source>base directory for all mp3 files managed by yammi</source>
-        <translation>Juurihakemisto mp3 tiedostoille joita Yammi hallitsee</translation>
+        <translation type="obsolete">Juurihakemisto mp3 tiedostoille joita Yammi hallitsee</translation>
     </message>
     <message>
         <source>child safe mode</source>
@@ -333,7 +721,7 @@ Kappale on tallennettu levylle.</translation>
     </message>
     <message>
         <source>if activated, some potentially dangerous actions are not allowed (eg. deleting a song). To disable this, you need a password...</source>
-        <translation>Aktivoituna estää mahdollisesti vaaralliset komennot, kuten kappaleen poisto. Lapsilukon avaamiseen tarvitset salasanan.</translation>
+        <translation type="obsolete">Aktivoituna estää mahdollisesti vaaralliset komennot, kuten kappaleen poisto. Lapsilukon avaamiseen tarvitset salasanan.</translation>
     </message>
     <message>
         <source>logging of played songs</source>
@@ -361,16 +749,16 @@ Kappale on tallennettu levylle.</translation>
     </message>
     <message>
         <source>Consistency Mode</source>
-        <translation>Yhteneväisyys</translation>
+        <translation type="obsolete">Yhteneväisyys</translation>
     </message>
     <message>
         <source>Replacements...</source>
-        <translation>Korvaavat</translation>
+        <translation type="obsolete">Korvaavat</translation>
     </message>
     <message>
         <source>filename pattern
 (for renaming files)</source>
-        <translation>Tiedostonnimen muoto
+        <translation type="obsolete">Tiedostonnimen muoto
 (tiedostojen uudelleennimeämiseen)</translation>
     </message>
     <message>
@@ -393,23 +781,23 @@ Kappale on tallennettu levylle.</translation>
     </message>
     <message>
         <source>keep tags consistent</source>
-        <translation>Pidä tagit yhtenevinä</translation>
+        <translation type="obsolete">Pidä tagit yhtenevinä</translation>
     </message>
     <message>
         <source>synchronizes the id3-tags of the mp3 files with the yammi database information. If activated, yammi modifies the tags of your mp3 files!</source>
-        <translation>Päivitä mp3 tiedostojen id3-tagit vastaamaan yammin tietokannan tietoja. Jos aktivoidaan, Yammi muokkaa mp3 tiedostojen tageja!</translation>
+        <translation type="obsolete">Päivitä mp3 tiedostojen id3-tagit vastaamaan yammin tietokannan tietoja. Jos aktivoidaan, Yammi muokkaa mp3 tiedostojen tageja!</translation>
     </message>
     <message>
         <source>keep filenames consistent</source>
-        <translation>Pidä tiedostonimet yhtenevinä</translation>
+        <translation type="obsolete">Pidä tiedostonimet yhtenevinä</translation>
     </message>
     <message>
         <source>Synchronizes the filenames of the mp3 files according to the information in the yammi database. If activated, yammi renames your mp3 files!</source>
-        <translation>Synkronoi tiedostojen nimet vastaamaan Yammin tietokannan tietoja. Jos aktivoidaan, Yammi uudelleennimeää mp3 tiedostoja!</translation>
+        <translation type="obsolete">Synkronoi tiedostojen nimet vastaamaan Yammin tietokannan tietoja. Jos aktivoidaan, Yammi uudelleennimeää mp3 tiedostoja!</translation>
     </message>
     <message>
         <source>ignore case on filename check</source>
-        <translation>Älä huomioi isoja kirjaimia tiedostonimeä tarkistettaessa</translation>
+        <translation type="obsolete">Älä huomioi isoja kirjaimia tiedostonimeä tarkistettaessa</translation>
     </message>
     <message>
         <source>MediaPlayer</source>
@@ -417,49 +805,49 @@ Kappale on tallennettu levylle.</translation>
     </message>
     <message>
         <source>XMMS settings</source>
-        <translation>XMMS:n asetukset</translation>
+        <translation type="obsolete">XMMS:n asetukset</translation>
     </message>
     <message>
         <source>the number of songs to keep in Xmms playlist</source>
-        <translation>Samanaikaisesti XMMS:n soittolistaan lisättävien kappaleiden määrä</translation>
+        <translation type="obsolete">Samanaikaisesti XMMS:n soittolistaan lisättävien kappaleiden määrä</translation>
     </message>
     <message>
         <source>songs in playlist</source>
-        <translation>Kappaleita soittolistassa</translation>
+        <translation type="obsolete">Kappaleita soittolistassa</translation>
     </message>
     <message>
         <source>Noatun settings</source>
-        <translation>Noatunin asetukset</translation>
+        <translation type="obsolete">Noatunin asetukset</translation>
     </message>
     <message>
         <source>Crossfading</source>
-        <translation>Ristiinhäivytys</translation>
+        <translation type="obsolete">Ristiinhäivytys</translation>
     </message>
     <message>
         <source>The total time of crossfading (in seconds)</source>
-        <translation>Ristihäivytykseen käytettävä aika (sekunneissa)</translation>
+        <translation type="obsolete">Ristihäivytykseen käytettävä aika (sekunneissa)</translation>
     </message>
     <message>
         <source>fade out end %</source>
-        <translation>Häivytys lopussa %</translation>
+        <translation type="obsolete">Häivytys lopussa %</translation>
     </message>
     <message>
         <source>Volume in percentage to fade out to</source>
-        <translation>Prosentuaalinen äänenvoimakkuus johon häivytetään</translation>
+        <translation type="obsolete">Prosentuaalinen äänenvoimakkuus johon häivytetään</translation>
     </message>
     <message>
         <source>Volume in percentage to fade in from</source>
-        <translation>Prosentuaalinen voimakkuus johon sisäänhäivytetään</translation>
+        <translation type="obsolete">Prosentuaalinen voimakkuus johon sisäänhäivytetään</translation>
     </message>
     <message>
         <source>fading time (ms),
 set to 0 to disable</source>
-        <translation>Häipymäaika (millisekunteja)
+        <translation type="obsolete">Häipymäaika (millisekunteja)
 aseta 0 poistaaksesi käytöstä</translation>
     </message>
     <message>
         <source>fade in start %</source>
-        <translation>Sisäänhäivytys alussa %</translation>
+        <translation type="obsolete">Sisäänhäivytys alussa %</translation>
     </message>
     <message>
         <source>Media Player</source>
@@ -467,11 +855,11 @@ aseta 0 poistaaksesi käytöstä</translation>
     </message>
     <message>
         <source>XMMS</source>
-        <translation>XMMS</translation>
+        <translation type="obsolete">XMMS</translation>
     </message>
     <message>
         <source>Noatun</source>
-        <translation>Noatun</translation>
+        <translation type="obsolete">Noatun</translation>
     </message>
     <message>
         <source>You have to restart Yammi after changing the media player!
@@ -479,7 +867,7 @@ aseta 0 poistaaksesi käytöstä</translation>
 
 You MUST disable &quot;Allow Only One Instance of Noatun&quot; and
 &quot;Process Playlist Items for Display&quot; in Noatun configuration!</source>
-        <translation>Yammi on uudelleenkäynnistettävä soitto-ohjelmaa vaihdettaessa!
+        <translation type="obsolete">Yammi on uudelleenkäynnistettävä soitto-ohjelmaa vaihdettaessa!
 
 
 Noatunin asetuksista on poistettava &quot;Salli vain yksi sovellusinstanssi&quot; ja &quot;Muokkaa soittolistan kohteita näytölle&quot;!</translation>
@@ -490,19 +878,19 @@ Noatunin asetuksista on poistettava &quot;Salli vain yksi sovellusinstanssi&quot
     </message>
     <message>
         <source>grab and encode script</source>
-        <translation>Rippaus ja koodaus skripti</translation>
+        <translation type="obsolete">Rippaus ja koodaus skripti</translation>
     </message>
     <message>
         <source>a script to grab a track from cd and encode to mp3</source>
-        <translation>Skripti jolla luetaan raita cdltä ja käännetään se mp3 muotoon</translation>
+        <translation type="obsolete">Skripti jolla luetaan raita cdltä ja käännetään se mp3 muotoon</translation>
     </message>
     <message>
         <source>See Yammi&apos;s homepage for useful plugin configurations: http://yammi.sourceforge.net</source>
-        <translation>Voit etsiä lisäosia Yammin kotisivulta: http://yammi.sourceforge.net</translation>
+        <translation type="obsolete">Voit etsiä lisäosia Yammin kotisivulta: http://yammi.sourceforge.net</translation>
     </message>
     <message>
         <source>defines the list format (if %l replacement is used in command)</source>
-        <translation>Määrittelee listamuodon (jos %l korvausta käytetään komennossa)</translation>
+        <translation type="obsolete">Määrittelee listamuodon (jos %l korvausta käytetään komennossa)</translation>
     </message>
     <message>
         <source>the entry to appear in the context menu</source>
@@ -514,11 +902,11 @@ Noatunin asetuksista on poistettava &quot;Salli vain yksi sovellusinstanssi&quot
     </message>
     <message>
         <source>a script that is invoked for all selected songs via context menu (%1 will be replaced by song name)</source>
-        <translation>Skripti joka ajetaan kaikille kappaleille pudotusvalikosta (%1 korvataan kappaleen nimellä)</translation>
+        <translation type="obsolete">Skripti joka ajetaan kaikille kappaleille pudotusvalikosta (%1 korvataan kappaleen nimellä)</translation>
     </message>
     <message>
         <source>a script that is invoked for all selected songs</source>
-        <translation>Skripti joka ajetaan kaikille valituille kappaleille.</translation>
+        <translation type="obsolete">Skripti joka ajetaan kaikille valituille kappaleille.</translation>
     </message>
     <message>
         <source>ask for confirmation</source>
@@ -534,7 +922,7 @@ Noatunin asetuksista on poistettava &quot;Salli vain yksi sovellusinstanssi&quot
     </message>
     <message>
         <source>a script that is invoked for a playlist file generated from all selected songs (%1 will be replaced with the m3u filename)</source>
-        <translation>Skripti joka ajetaan soittolistatiedostolle joka luodaan valituista tiedostoista (%1 korvataan m3u tiedoston nimellä)</translation>
+        <translation type="obsolete">Skripti joka ajetaan soittolistatiedostolle joka luodaan valituista tiedostoista (%1 korvataan m3u tiedoston nimellä)</translation>
     </message>
     <message>
         <source>New Entry</source>
@@ -564,59 +952,59 @@ Ryhmäsuoritus = suorita kerran koko valitulle ryhmälle</translation>
     </message>
     <message>
         <source>shutdown script</source>
-        <translation>Sammutusskripti</translation>
+        <translation type="obsolete">Sammutusskripti</translation>
     </message>
     <message>
         <source>a script that is invoked on shutdown(computer) mode (pressing PAUSE two times)</source>
-        <translation>Skripti jolla kutsutaan shutdown käsky koneelle, kun painetaan PAUSE kaksi kertaa.</translation>
+        <translation type="obsolete">Skripti jolla kutsutaan shutdown käsky koneelle, kun painetaan PAUSE kaksi kertaa.</translation>
     </message>
     <message>
         <source>Removable Media</source>
-        <translation>Siirrettävä media</translation>
+        <translation type="obsolete">Siirrettävä media</translation>
     </message>
     <message>
         <source>Removable Media Management</source>
-        <translation>Siirrettävän median hallinta</translation>
+        <translation type="obsolete">Siirrettävän median hallinta</translation>
     </message>
     <message>
         <source>max size of media for burning (MB)</source>
-        <translation>Maksimikoko poltettavalle medialle (MB)</translation>
+        <translation type="obsolete">Maksimikoko poltettavalle medialle (MB)</translation>
     </message>
     <message>
         <source>indicates maximum size in MB for one media (eg. 700 for a CD-R)</source>
-        <translation>Määrittää siirrettävän median maksimikoon megatavuissa. Esim. 700Mb CD levyille.</translation>
+        <translation type="obsolete">Määrittää siirrettävän median maksimikoon megatavuissa. Esim. 700Mb CD levyille.</translation>
     </message>
     <message>
         <source>swap directory</source>
-        <translation>Vaihtohakemisto</translation>
+        <translation type="obsolete">Vaihtohakemisto</translation>
     </message>
     <message>
         <source>directory where songs from removable media will be swapped</source>
-        <translation>Hakemisto, jonne kappaleet siirrettävältä medialta kopioidaan</translation>
+        <translation type="obsolete">Hakemisto, jonne kappaleet siirrettävältä medialta kopioidaan</translation>
     </message>
     <message>
         <source>mount and umount the media directory</source>
-        <translation>Liitä ja irroita mediahakemisto</translation>
+        <translation type="obsolete">Liitä ja irroita mediahakemisto</translation>
     </message>
     <message>
         <source>try to mount and umount the swap directory before and after loading songs from removable media</source>
-        <translation>Yritä liittää/irroittaa vaihtohakemisto ennen/jälkeen kopiointia siirrettävältä medialta</translation>
+        <translation type="obsolete">Yritä liittää/irroittaa vaihtohakemisto ennen/jälkeen kopiointia siirrettävältä medialta</translation>
     </message>
     <message>
         <source>directory where removable media will be mounted</source>
-        <translation>Kansio jonne siirrettävä media liitetään</translation>
+        <translation type="obsolete">Kansio jonne siirrettävä media liitetään</translation>
     </message>
     <message>
         <source>media directory (mount point)</source>
-        <translation>Mediahakemisto (liitoskohta)</translation>
+        <translation type="obsolete">Mediahakemisto (liitoskohta)</translation>
     </message>
     <message>
         <source>when the swapped songs use more than this value, the least recently used (LRU) are deleted</source>
-        <translation>Kun vaihtohakemistossa olevien kappaleiden viemä tila ylittää tämän määrän, harvoimmin käytetty tiedosto poistetaan.</translation>
+        <translation type="obsolete">Kun vaihtohakemistossa olevien kappaleiden viemä tila ylittää tämän määrän, harvoimmin käytetty tiedosto poistetaan.</translation>
     </message>
     <message>
         <source>maximum swap size (MB)</source>
-        <translation>Vaihtotiedoston maksimikoko (MB)</translation>
+        <translation type="obsolete">Vaihtotiedoston maksimikoko (MB)</translation>
     </message>
     <message>
         <source>These settings configure the &quot;Jukebox&quot; capabilities of Yammi, that is loading songs that are 
@@ -624,54 +1012,439 @@ not available on the harddisk from removable media.
 
 While running, Yammi will always show a list of needed media for the actual playlist, 
 and songs can be loaded from those media into a swap directory.</source>
-        <translation>Nämä asetukset määrittävät Yammin Jukebox ominaisuudet, joihin kuuluu siirrettävällä medialla olevien kappaleiden kopiointi kovalevylle toistoa varten.
+        <translation type="obsolete">Nämä asetukset määrittävät Yammin Jukebox ominaisuudet, joihin kuuluu siirrettävällä medialla olevien kappaleiden kopiointi kovalevylle toistoa varten.
 	
 Yammi näyttää aina tarvittavat mediat kyseiselle soittolistalle, ja kappaleet voidaan ladata vaihtotiedostoon niiltä.</translation>
+    </message>
+    <message>
+        <source>Mouse configuration / Default actions for ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You can assign default actions for a double-click or click with middle mouse buttion on a song in the songlist.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>threshold</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>if activated, some potentially dangerous actions are not allowed (eg. deleting a song). To disable this, you need a password ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tag Handling</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>capitalize tags on new songs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Capitalizes artist, title and album of a newly added Song</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>save tags immediately</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>save all changes in yammi database to the file tags immediately</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>guessing pattern used when adding new songs and no tags available</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>keep directories consistent:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Synchronizes the directories of the files according to the information in the yammi database. If activated, yammi moves your files!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>keep filenames consistent:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Synchronizes the filenames of the files according to the information in the yammi database. If activated, yammi renames your files!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The directory pattern to use for moving files.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>XineEngine</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Prelistening</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Command line tool configuration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>.mp3 files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Configuration of command line tool used for prelistening.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>.ogg files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>.wav files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>.flac files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>other files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The prelisten functionality of Yammi allows to listen to songs on a headphone (requires a second sound device) while the normal playback of your playlist continues (very handy on a party...).
+For each file type listed below, Yammi can use a different command.
+Configure each tool here, separating parameters with &quot;|&quot;.
+Additionally to the usual placeholders (see the plugins tab) you can use {skipSeconds}, {skipMilliSeconds} and {skipFrames}.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add Standard Plugins</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Adds all standard plugins (if not already existing)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>the script that is invoked when this plugin is chosen</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Placeholders ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>defines the content of the {customList} placeholders</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>See Yammi&apos;s homepage for useful plugin configurations:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;a href=&quot;http://yammi.sourceforge.net/plugins.html&quot;&gt;http://yammi.sourceforge.net/plugins.html&lt;/a&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Playqueue Template</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This template is used for displaying the playqueue.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>PreferencesDialog</name>
+    <message>
+        <source>choose entry</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create CD Label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export to m3u Playlist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>MusicBrainz Search</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>enter password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>choose trash directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>new item</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>new command</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>single</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>new custom list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>true</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Replacements for command (single mode)
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>or custom list (group mode):
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>{newline} (newline)
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>{index} (index of a song within a selection)
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>{directoryDialog} (directory dialog, returns chosen directory)
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>{fileDialog} (file dialog, returns chosen file)
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>{inputString} (input string dialog, returns entered string)
+
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Replacements for command (group mode):
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>{customList} (custom list, directly)
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>{customListFile} (filename of custom list)
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>{customListViaFile} (custom list, via file / cat command)
+</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
         <source>Yammi</source>
-        <translation>Yammi</translation>
+        <translation type="obsolete">Yammi</translation>
     </message>
     <message>
         <source>Error parsing configuration file!</source>
-        <translation>Virhe luettaessa asetustiedostoa!</translation>
+        <translation type="obsolete">Virhe luettaessa asetustiedostoa!</translation>
     </message>
     <message>
         <source>Reading preferences from an other version of Yammi
 In Yammi 0.8.2, the default action configuration
 (eg. for double click) has slightly changed...
 ...please check your settings!</source>
-        <translation>Luetaan asetukset vanhemmasta Yammin versiosta
+        <translation type="obsolete">Luetaan asetukset vanhemmasta Yammin versiosta
 Yammin versiosta 0.8.2 lähtien oletusasetukset
 (esim. tuplaklikkaus) ovat muuttuneet.
 Tarkista asetuksesi!</translation>
     </message>
     <message>
         <source>yammi</source>
-        <translation>Yammi</translation>
+        <translation type="obsolete">Yammi</translation>
     </message>
     <message>
         <source>Saving preferences failed!</source>
-        <translation>Asetusten tallentaminen epäonnistui!</translation>
+        <translation type="obsolete">Asetusten tallentaminen epäonnistui!</translation>
     </message>
     <message>
         <source>Could not save preferences!</source>
-        <translation>Asetusten tallennus ei onnistunut!</translation>
+        <translation type="obsolete">Asetusten tallennus ei onnistunut!</translation>
     </message>
     <message>
         <source>Could not create directory .yammi. Maybe you have no write access to directory %1!</source>
-        <translation>Ei voitu luoda .yammi hakemistoa. Puuttuuko kirjoitusoikeus %1 hakemistoon?</translation>
+        <translation type="obsolete">Ei voitu luoda .yammi hakemistoa. Puuttuuko kirjoitusoikeus %1 hakemistoon?</translation>
     </message>
     <message>
         <source>Could not create directory categories!</source>
-        <translation>Kategoria hakemiston luonti epäonnistui!</translation>
+        <translation type="obsolete">Kategoria hakemiston luonti epäonnistui!</translation>
     </message>
     <message>
         <source>Could not create dirctory media!</source>
-        <translation>Media hakemiston luonti epäonnistui!</translation>
+        <translation type="obsolete">Media hakemiston luonti epäonnistui!</translation>
+    </message>
+    <message>
+        <source>New Category ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>{wish}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>file not readable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>tags not correct </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>filename not consistent </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>directory not consistent </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>no such action</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>{filename} (without path)
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>{absoluteFilename} (including path)
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>{filenameWithoutSuffix} (without path, without suffix)
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>{suffix} (without leading dot)
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>{path} (without filename)
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>{artist}, {title}, {album}, {comment} (corresponding to the tags)
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>{bitrate} (in kbps)
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>{length} (length in format mm:ss)
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>{lengthInSeconds} (length in seconds)
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>{trackNr} (Track number)
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>{trackNr2Digit} (as above, but padded with zero if necessary)
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>never</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Artist</source>
+        <translation type="unfinished">Artisti</translation>
+    </message>
+    <message>
+        <source>Title</source>
+        <translation type="unfinished">Kappale</translation>
+    </message>
+    <message>
+        <source>Album</source>
+        <translation type="unfinished">Levy</translation>
+    </message>
+    <message>
+        <source>Length</source>
+        <translation type="unfinished">Kesto</translation>
+    </message>
+    <message>
+        <source>Year</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>TrackNr</source>
+        <translation type="unfinished">RaitaNro</translation>
+    </message>
+    <message>
+        <source>Genre</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>AddedTo</source>
+        <translation type="unfinished">Lisätty</translation>
+    </message>
+    <message>
+        <source>Bitrate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Filename</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Path</source>
+        <translation type="unfinished">Polku</translation>
+    </message>
+    <message>
+        <source>Comment</source>
+        <translation type="unfinished">Kommentti</translation>
+    </message>
+    <message>
+        <source>Last Played</source>
+        <translation type="unfinished">Viimeksi Soitettu</translation>
     </message>
 </context>
 <context>
@@ -682,7 +1455,7 @@ Tarkista asetuksesi!</translation>
     </message>
     <message>
         <source>song info...</source>
-        <translation>Kappaleen tiedot</translation>
+        <translation type="obsolete">Kappaleen tiedot</translation>
     </message>
     <message>
         <source>tag information</source>
@@ -730,7 +1503,7 @@ Tarkista asetuksesi!</translation>
     </message>
     <message>
         <source>Added to database</source>
-        <translation>Lisätty tietokantaan</translation>
+        <translation type="obsolete">Lisätty tietokantaan</translation>
     </message>
     <message>
         <source>Indicates the date when this song was added to the database</source>
@@ -738,11 +1511,11 @@ Tarkista asetuksesi!</translation>
     </message>
     <message>
         <source>not implemented yet...</source>
-        <translation>Tätä toimintoa ei ole toteutettu vielä</translation>
+        <translation type="obsolete">Tätä toimintoa ei ole toteutettu vielä</translation>
     </message>
     <message>
         <source>Last time played</source>
-        <translation>Viimeksi toistettu</translation>
+        <translation type="obsolete">Viimeksi toistettu</translation>
     </message>
     <message>
         <source>read only</source>
@@ -758,11 +1531,11 @@ Tarkista asetuksesi!</translation>
     </message>
     <message>
         <source>proposed Filename:</source>
-        <translation>Ehdotus tiedostonnimeksi</translation>
+        <translation type="obsolete">Ehdotus tiedostonnimeksi</translation>
     </message>
     <message>
         <source>Shows the filename that Yammi would propose using the defined filename pattern.</source>
-        <translation>Näyttää tiedostonnimen jota Yammi ehdottaa, noudattaen määritettyä nimeämistapaa.</translation>
+        <translation type="obsolete">Näyttää tiedostonnimen jota Yammi ehdottaa, noudattaen määritettyä nimeämistapaa.</translation>
     </message>
     <message>
         <source>Filename</source>
@@ -774,15 +1547,46 @@ Tarkista asetuksesi!</translation>
     </message>
     <message>
         <source>lists all media containing this song</source>
-        <translation>Näyttää kaikki mediat, joilla tämä kappale sijaitsee.</translation>
+        <translation type="obsolete">Näyttää kaikki mediat, joilla tämä kappale sijaitsee.</translation>
     </message>
     <message>
         <source>Media</source>
-        <translation>Media</translation>
+        <translation type="obsolete">Media</translation>
     </message>
     <message>
         <source>Bitrate</source>
         <translation>Bitrate</translation>
+    </message>
+    <message>
+        <source>Added</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>not implemented yet ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Last played</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>song info ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>correct to</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UpdateDatabaseDialog</name>
+    <message>
+        <source>Update Database (harddisk)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>choose scan directory</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -793,14 +1597,14 @@ Tarkista asetuksesi!</translation>
     </message>
     <message>
         <source>Start Scan...</source>
-        <translation>Aloita kappalehaku</translation>
+        <translation type="obsolete">Aloita kappalehaku</translation>
     </message>
     <message>
         <source>Note: 
 For long scans, please stop the media player
 and clear its playlist before starting the scan.
 (Yammi might get confused otherwise...)</source>
-        <translation>Huom:
+        <translation type="obsolete">Huom:
 Jos haet kappaleita koko kovalevyltä,
 pysäytä soitto-ohjelma haun ajaksi.
 (Voi sekoittaa Yammin hakua)</translation>
@@ -833,59 +1637,142 @@ pysäytä soitto-ohjelma haun ajaksi.
         <source>Cancel</source>
         <translation>Peruuta</translation>
     </message>
+    <message>
+        <source>Start Scan ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>filename pattern (eg. &quot;*.mp3 *.ogg&quot;)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>follow symbolic links</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose whether yammi should follow symbolic links when traversing the directory structure</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UpdateDatabaseMediaDialogBase</name>
     <message>
         <source>Update Database - Scan Media</source>
-        <translation>Päivitä tietokanta - hae medialta</translation>
+        <translation type="obsolete">Päivitä tietokanta - hae medialta</translation>
     </message>
     <message>
         <source>...</source>
-        <translation>...</translation>
+        <translation type="obsolete">...</translation>
     </message>
     <message>
         <source>choose directory</source>
-        <translation>Valitse hakemisto</translation>
+        <translation type="obsolete">Valitse hakemisto</translation>
     </message>
     <message>
         <source>media directory</source>
-        <translation>Media hakemisto</translation>
+        <translation type="obsolete">Media hakemisto</translation>
     </message>
     <message>
         <source>yammi will search in this directory (and recursive in all subdirectories) for new song files</source>
-        <translation>Yammi etsii tästä hakemistosta ja kaikista sen alihakemistosta uusia kappaleita tietokantaan.</translation>
+        <translation type="obsolete">Yammi etsii tästä hakemistosta ja kaikista sen alihakemistosta uusia kappaleita tietokantaan.</translation>
     </message>
     <message>
         <source>Start Scan...</source>
-        <translation>Aloita haku</translation>
+        <translation type="obsolete">Aloita haku</translation>
     </message>
     <message>
         <source>Options for scanning a media (e.g. CD)</source>
-        <translation>Valinnat kappaleiden hakuun medialta (esim. CD)</translation>
+        <translation type="obsolete">Valinnat kappaleiden hakuun medialta (esim. CD)</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Peruuta</translation>
+        <translation type="obsolete">Peruuta</translation>
     </message>
     <message>
         <source>name of medium</source>
-        <translation>Median nimi</translation>
+        <translation type="obsolete">Median nimi</translation>
     </message>
     <message>
         <source>pattern of files to import</source>
-        <translation>Tiedostopäätteet jotka huomioidaan haussa</translation>
+        <translation type="obsolete">Tiedostopäätteet jotka huomioidaan haussa</translation>
     </message>
     <message>
         <source>mount directory</source>
-        <translation>Liitoshakemisto</translation>
+        <translation type="obsolete">Liitoshakemisto</translation>
+    </message>
+</context>
+<context>
+    <name>Yammi::XineEngine</name>
+    <message>
+        <source>Yammi could not initialize xine.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>xine was unable to initialize any audio drivers.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Yammi could not create a new xine stream.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The host is unknown for the URL: &lt;i&gt;%1&lt;/i&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The device name you specified seems invalid.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The network appears unreachable.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Audio output unavailable; the device is busy.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The connection was refused for the URL: &lt;i&gt;%1&lt;/i&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>xine could not find the URL: &lt;i&gt;%1&lt;/i&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Access was denied for the URL: &lt;i&gt;%1&lt;/i&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The source cannot be read for the URL: &lt;i&gt;%1&lt;/i&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>A problem occurred while loading a library or decoder.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>General Warning</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Security Warning</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unknown Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sorry, no additional information is available.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>YammiGui</name>
     <message>
         <source>Quit</source>
-        <translation>Poistu</translation>
+        <translation type="obsolete">Poistu</translation>
     </message>
     <message>
         <source>&amp;File</source>
@@ -893,11 +1780,11 @@ pysäytä soitto-ohjelma haun ajaksi.
     </message>
     <message>
         <source>Select all</source>
-        <translation>Valitse kaikki</translation>
+        <translation type="obsolete">Valitse kaikki</translation>
     </message>
     <message>
         <source>Invert selection</source>
-        <translation>Käänteinen valinta</translation>
+        <translation type="obsolete">Käänteinen valinta</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
@@ -909,19 +1796,19 @@ pysäytä soitto-ohjelma haun ajaksi.
     </message>
     <message>
         <source>Media Player Toolbar</source>
-        <translation>Soitto-ohjelman työkalurivi</translation>
+        <translation type="obsolete">Soitto-ohjelman työkalurivi</translation>
     </message>
     <message>
         <source>Song Actions Toolbar</source>
-        <translation>Kappaleen työkalurivi</translation>
+        <translation type="obsolete">Kappaleen työkalurivi</translation>
     </message>
     <message>
         <source>Removable Media Toolbar</source>
-        <translation>Siirrettävän median työkalurivi</translation>
+        <translation type="obsolete">Siirrettävän median työkalurivi</translation>
     </message>
     <message>
         <source>Sleep Mode Toolbar</source>
-        <translation>Yösoiton työkalurivi</translation>
+        <translation type="obsolete">Yösoiton työkalurivi</translation>
     </message>
     <message>
         <source>Update Automatic Folder Structure</source>
@@ -933,7 +1820,7 @@ pysäytä soitto-ohjelma haun ajaksi.
     </message>
     <message>
         <source>Columns</source>
-        <translation>Pylväät</translation>
+        <translation type="obsolete">Pylväät</translation>
     </message>
     <message>
         <source>&amp;View</source>
@@ -941,27 +1828,27 @@ pysäytä soitto-ohjelma haun ajaksi.
     </message>
     <message>
         <source>Save Database...</source>
-        <translation>Tallenna Tietokanta</translation>
+        <translation type="obsolete">Tallenna Tietokanta</translation>
     </message>
     <message>
         <source>Scan Harddisk...</source>
-        <translation>Hae kappaleita kovalevyltä</translation>
+        <translation type="obsolete">Hae kappaleita kovalevyltä</translation>
     </message>
     <message>
         <source>Scan Removable Media...</source>
-        <translation>Hae kappaleita siirrettävältä medialta</translation>
+        <translation type="obsolete">Hae kappaleita siirrettävältä medialta</translation>
     </message>
     <message>
         <source>Import Selected File(s)...</source>
-        <translation>Tuo valitut kappaleet tietokantaan</translation>
+        <translation type="obsolete">Tuo valitut kappaleet tietokantaan</translation>
     </message>
     <message>
         <source>Check Consistency...</source>
-        <translation>Tarkista tietokannan yhteneväisyys</translation>
+        <translation type="obsolete">Tarkista tietokannan yhteneväisyys</translation>
     </message>
     <message>
         <source>Grab And Encode CD-Track...</source>
-        <translation>Rippaa ja koodaa CD-raita</translation>
+        <translation type="obsolete">Rippaa ja koodaa CD-raita</translation>
     </message>
     <message>
         <source>&amp;Database</source>
@@ -969,7 +1856,7 @@ pysäytä soitto-ohjelma haun ajaksi.
     </message>
     <message>
         <source>Configure Yammi...</source>
-        <translation>Muokkaa Asetuksia</translation>
+        <translation type="obsolete">Muokkaa Asetuksia</translation>
     </message>
     <message>
         <source>&amp;Settings</source>
@@ -977,31 +1864,31 @@ pysäytä soitto-ohjelma haun ajaksi.
     </message>
     <message>
         <source>Switch to/from Playlist...</source>
-        <translation>Vaihda soittolistanäky(mään/mästä)</translation>
+        <translation type="obsolete">Vaihda soittolistanäky(mään/mästä)</translation>
     </message>
     <message>
         <source>Clear Playlist...</source>
-        <translation>Tyhjennä soittolista</translation>
+        <translation type="obsolete">Tyhjennä soittolista</translation>
     </message>
     <message>
         <source>Shuffle Playlist...</source>
-        <translation>Sekoita soittolista</translation>
+        <translation type="obsolete">Sekoita soittolista</translation>
     </message>
     <message>
         <source>&amp;Playlist</source>
-        <translation>&amp;Soittolista</translation>
+        <translation type="obsolete">&amp;Soittolista</translation>
     </message>
     <message>
         <source>Off</source>
-        <translation>Ei käytössä</translation>
+        <translation type="obsolete">Ei käytössä</translation>
     </message>
     <message>
         <source>Longest Not Played</source>
-        <translation>Kauiten soittamatta ollut</translation>
+        <translation type="obsolete">Kauiten soittamatta ollut</translation>
     </message>
     <message>
         <source>Random</source>
-        <translation>Satunnainen</translation>
+        <translation type="obsolete">Satunnainen</translation>
     </message>
     <message>
         <source>&amp;Autoplay</source>
@@ -1009,35 +1896,35 @@ pysäytä soitto-ohjelma haun ajaksi.
     </message>
     <message>
         <source>&amp;Handbook...</source>
-        <translation>&amp;Opaskirja</translation>
+        <translation type="obsolete">&amp;Opaskirja</translation>
     </message>
     <message>
         <source>&amp;About...</source>
-        <translation>&amp;Tietoja Yammista</translation>
+        <translation type="obsolete">&amp;Tietoja Yammista</translation>
     </message>
     <message>
         <source>&amp;Help</source>
-        <translation>&amp;Ohje</translation>
+        <translation type="obsolete">&amp;Ohje</translation>
     </message>
     <message>
         <source>Media Player Controls</source>
-        <translation>Soitto-ohjelman hallinta</translation>
+        <translation type="obsolete">Soitto-ohjelman hallinta</translation>
     </message>
     <message>
         <source>Play/Pause (F1)</source>
-        <translation>Toista/Tauko (F1)</translation>
+        <translation type="obsolete">Toista/Tauko (F1)</translation>
     </message>
     <message>
         <source>Stop</source>
-        <translation>Pysäytä</translation>
+        <translation type="obsolete">Pysäytä</translation>
     </message>
     <message>
         <source>Skip backward (F2 / SHIFT-F2)</source>
-        <translation>Siirry takaisinpäin (F2 / Shift-F2)</translation>
+        <translation type="obsolete">Siirry takaisinpäin (F2 / Shift-F2)</translation>
     </message>
     <message>
         <source>Skip forward (F3 / SHIFT-F3)</source>
-        <translation>Siirry eteenpäin (F3 / SHIFT-F3)</translation>
+        <translation type="obsolete">Siirry eteenpäin (F3 / SHIFT-F3)</translation>
     </message>
     <message>
         <source>Search:</source>
@@ -1049,11 +1936,11 @@ pysäytä soitto-ohjelma haun ajaksi.
     </message>
     <message>
         <source>to wishlist</source>
-        <translation>toivelistalle</translation>
+        <translation type="obsolete">toivelistalle</translation>
     </message>
     <message>
         <source>Add this entry to the database as a &quot;wish&quot;</source>
-        <translation>Lisää merkintä tietokannan &quot;toivelistaan&quot;</translation>
+        <translation type="obsolete">Lisää merkintä tietokannan &quot;toivelistaan&quot;</translation>
     </message>
     <message>
         <source>Song Actions</source>
@@ -1061,79 +1948,79 @@ pysäytä soitto-ohjelma haun ajaksi.
     </message>
     <message>
         <source>Enqueue at end (F5, SHIFT-F5 for random order)</source>
-        <translation>Lisää soittolistan loppuun (F5, SHIFT-F5 satunnaisjärjestykseen)</translation>
+        <translation type="obsolete">Lisää soittolistan loppuun (F5, SHIFT-F5 satunnaisjärjestykseen)</translation>
     </message>
     <message>
         <source>Enqueue as next (F6, SHIFT-F6 for random order)</source>
-        <translation>Lisää soittolistaan seuraavaksi (F6, SHIFT-F6 satunnaisjärjestykseen)</translation>
+        <translation type="obsolete">Lisää soittolistaan seuraavaksi (F6, SHIFT-F6 satunnaisjärjestykseen)</translation>
     </message>
     <message>
         <source>Play now (F7 / SHIFT-F7)</source>
-        <translation>Toista nyt (F7 / Shift-F7)</translation>
+        <translation type="obsolete">Toista nyt (F7 / Shift-F7)</translation>
     </message>
     <message>
         <source>Dequeue Song (F8)</source>
-        <translation>Poista soittolistalta (F8)</translation>
+        <translation type="obsolete">Poista soittolistalta (F8)</translation>
     </message>
     <message>
         <source>Clear playlist (SHIFT-F8)</source>
-        <translation>Tyhjennä soittolista (Shift-F8)</translation>
+        <translation type="obsolete">Tyhjennä soittolista (Shift-F8)</translation>
     </message>
     <message>
         <source>Prelisten (start) (F9)</source>
-        <translation>Esikuuntelu (alusta) (F9)</translation>
+        <translation type="obsolete">Esikuuntelu (alusta) (F9)</translation>
     </message>
     <message>
         <source>Prelisten (middle) (F10)</source>
-        <translation>Esikuuntelu (puolivälistä) (F10)</translation>
+        <translation type="obsolete">Esikuuntelu (puolivälistä) (F10)</translation>
     </message>
     <message>
         <source>Prelisten (end) (F11)</source>
-        <translation>Esikuuntelu (lopusta) (F11)</translation>
+        <translation type="obsolete">Esikuuntelu (lopusta) (F11)</translation>
     </message>
     <message>
         <source>Stop prelisten (F12)</source>
-        <translation>Lopeta esikuuntelu (F12)</translation>
+        <translation type="obsolete">Lopeta esikuuntelu (F12)</translation>
     </message>
     <message>
         <source>Info...</source>
-        <translation>Näytä tiedot</translation>
+        <translation type="obsolete">Näytä tiedot</translation>
     </message>
     <message>
         <source>Switch to/from Playlist (CTRL-P)</source>
-        <translation>Vaihda soittolistanäky(mään/mästä) (Ctrl-P)</translation>
+        <translation type="obsolete">Vaihda soittolistanäky(mään/mästä) (Ctrl-P)</translation>
     </message>
     <message>
         <source>Jukebox Functions</source>
-        <translation>Jukebox toiminnot</translation>
+        <translation type="obsolete">Jukebox toiminnot</translation>
     </message>
     <message>
         <source>Needed media:</source>
-        <translation>Tarvittava media:</translation>
+        <translation type="obsolete">Tarvittava media:</translation>
     </message>
     <message>
         <source>load</source>
-        <translation>Liitä</translation>
+        <translation type="obsolete">Liitä</translation>
     </message>
     <message>
         <source>Sleep Mode</source>
-        <translation>Yösoittotila</translation>
+        <translation type="obsolete">Yösoittotila</translation>
     </message>
     <message>
         <source>Sleep mode:</source>
-        <translation>Yösoittotila:</translation>
+        <translation type="obsolete">Yösoittotila:</translation>
     </message>
     <message>
         <source>(disabled)</source>
-        <translation>(poissa käytöstä)</translation>
+        <translation type="obsolete">(poissa käytöstä)</translation>
     </message>
     <message>
         <source>change sleep mode</source>
-        <translation>Muuta yösoittotilaa</translation>
+        <translation type="obsolete">Muuta yösoittotilaa</translation>
     </message>
     <message>
         <source>number songs until shutdown</source>
-        <translation>kappalemäärä ennen ohjelman sammutusta</translation>
+        <translation type="obsolete">kappalemäärä ennen ohjelman sammutusta</translation>
     </message>
     <message>
         <source>Quick Browser</source>
@@ -1161,7 +2048,7 @@ pysäytä soitto-ohjelma haun ajaksi.
     </message>
     <message>
         <source>Media</source>
-        <translation>Mediat</translation>
+        <translation type="obsolete">Mediat</translation>
     </message>
     <message>
         <source>Playlist</source>
@@ -1193,18 +2080,18 @@ pysäytä soitto-ohjelma haun ajaksi.
     </message>
     <message>
         <source>Welcome to Yammi </source>
-        <translation>Tervetuloa Yammiin</translation>
+        <translation type="obsolete">Tervetuloa Yammiin</translation>
     </message>
     <message>
         <source>Yammi</source>
-        <translation>Yammi</translation>
+        <translation type="obsolete">Yammi</translation>
     </message>
     <message>
         <source>Yammi - Yet Another Music Manager I...
 
 
 </source>
-        <translation>Yammi - Yet Another Music Manager I...
+        <translation type="obsolete">Yammi - Yet Another Music Manager I...
 	
 	
 </translation>
@@ -1213,7 +2100,7 @@ pysäytä soitto-ohjelma haun ajaksi.
         <source>It looks like you are starting Yammi the first time...
 
 </source>
-        <translation>Näyttää että käytät Yammia ensimmäistä kertaa...
+        <translation type="obsolete">Näyttää että käytät Yammia ensimmäistä kertaa...
 
 </translation>
     </message>
@@ -1221,73 +2108,73 @@ pysäytä soitto-ohjelma haun ajaksi.
         <source>   Welcome to convenient song lookups and organization!
 
 </source>
-        <translation>   Tervetuloa käyttämään kätevää kappalehaku- ja musiikinhallintatietokantaa.
+        <translation type="obsolete">   Tervetuloa käyttämään kätevää kappalehaku- ja musiikinhallintatietokantaa.
 
 </translation>
     </message>
     <message>
         <source>Please edit the settings (Settings -&gt; Configure Yammi...)
 </source>
-        <translation>Muuta oletusasetukset (Asetukset -&gt; Muuta asetuksia)</translation>
+        <translation type="obsolete">Muuta oletusasetukset (Asetukset -&gt; Muuta asetuksia)</translation>
     </message>
     <message>
         <source>to adjust your personal configuration and options</source>
-        <translation>vastaamaan järjestelmääsi.</translation>
+        <translation type="obsolete">vastaamaan järjestelmääsi.</translation>
     </message>
     <message>
         <source>(especially the path to your media files).
 </source>
-        <translation>(määritä ainakin polku musiikkihakemistoosi)</translation>
+        <translation type="obsolete">(määritä ainakin polku musiikkihakemistoosi)</translation>
     </message>
     <message>
         <source>Then perform a database update (Database -&gt; Scan Harddisk...)
 </source>
-        <translation>Tämän jälkeen päivitä tietokanta (Tietokanta -&gt; Hae kappaleita kovalevyltä)</translation>
+        <translation type="obsolete">Tämän jälkeen päivitä tietokanta (Tietokanta -&gt; Hae kappaleita kovalevyltä)</translation>
     </message>
     <message>
         <source>to scan your harddisk for media files.
 
 </source>
-        <translation>etsiäksesi kappaleita kovalevyltä.</translation>
+        <translation type="obsolete">etsiäksesi kappaleita kovalevyltä.</translation>
     </message>
     <message>
         <source>Have fun using Yammi...
 
 </source>
-        <translation>Hauskoja hetkiä Yammin parissa</translation>
+        <translation type="obsolete">Hauskoja hetkiä Yammin parissa</translation>
     </message>
     <message>
         <source>Check out Yammi&apos;s website for new versions and other info:
 </source>
-        <translation>Katso myös lisää tietoja ja mahdollisia päivityksiä Yammin kotisivulta:</translation>
+        <translation type="obsolete">Katso myös lisää tietoja ja mahdollisia päivityksiä Yammin kotisivulta:</translation>
     </message>
     <message>
         <source>http://yammi.sourceforge.net</source>
-        <translation>http://yammi.sourceforge.net</translation>
+        <translation type="obsolete">http://yammi.sourceforge.net</translation>
     </message>
     <message>
         <source>Save changes?
 
 </source>
-        <translation>Tallenna muutokset?</translation>
+        <translation type="obsolete">Tallenna muutokset?</translation>
     </message>
     <message>
         <source>If you don&apos;t save, all changes will be lost
 </source>
-        <translation>Jos et tallenna, kaikki muutokset menetetään</translation>
+        <translation type="obsolete">Jos et tallenna, kaikki muutokset menetetään</translation>
     </message>
     <message>
         <source>and the database might become inconsistent...
 </source>
-        <translation>ja tietokantaan voi tulla epäyhtenevyyksiä</translation>
+        <translation type="obsolete">ja tietokantaan voi tulla epäyhtenevyyksiä</translation>
     </message>
     <message>
         <source>Yes</source>
-        <translation>Kyllä</translation>
+        <translation type="obsolete">Kyllä</translation>
     </message>
     <message>
         <source>No</source>
-        <translation>Ei</translation>
+        <translation type="obsolete">Ei</translation>
     </message>
     <message>
         <source>Yammi - not playing</source>
@@ -1315,123 +2202,123 @@ pysäytä soitto-ohjelma haun ajaksi.
     </message>
     <message>
         <source>New Category...</source>
-        <translation>Uusi kategoria</translation>
+        <translation type="obsolete">Uusi kategoria</translation>
     </message>
     <message>
         <source>Song Name</source>
-        <translation>Kappaleen nimi</translation>
+        <translation type="obsolete">Kappaleen nimi</translation>
     </message>
     <message>
         <source>...Enqueue</source>
-        <translation>Soittolistaan</translation>
+        <translation type="obsolete">Soittolistaan</translation>
     </message>
     <message>
         <source>...Enqueue (random)</source>
-        <translation>Soittolistaan satunnaisjärjestyksessä</translation>
+        <translation type="obsolete">Soittolistaan satunnaisjärjestyksessä</translation>
     </message>
     <message>
         <source>...Enqueue as next</source>
-        <translation>Soittolistaan seuraavaksi</translation>
+        <translation type="obsolete">Soittolistaan seuraavaksi</translation>
     </message>
     <message>
         <source>...Enqueue as next (random)</source>
-        <translation>Soittolistaan seuraavaksi satunnaisjärjestyksessä</translation>
+        <translation type="obsolete">Soittolistaan seuraavaksi satunnaisjärjestyksessä</translation>
     </message>
     <message>
         <source>...Play now!</source>
-        <translation>Soita nyt</translation>
+        <translation type="obsolete">Soita nyt</translation>
     </message>
     <message>
         <source>...Dequeue</source>
-        <translation>Poista soittolistalta</translation>
+        <translation type="obsolete">Poista soittolistalta</translation>
     </message>
     <message>
         <source>Play/Enqueue...</source>
-        <translation>Toista/Soittolistalle</translation>
+        <translation type="obsolete">Toista/Soittolistalle</translation>
     </message>
     <message>
         <source>...start</source>
-        <translation>..alusta</translation>
+        <translation type="obsolete">..alusta</translation>
     </message>
     <message>
         <source>...middle</source>
-        <translation>..keskeltä</translation>
+        <translation type="obsolete">..keskeltä</translation>
     </message>
     <message>
         <source>...end</source>
-        <translation>..lopusta</translation>
+        <translation type="obsolete">..lopusta</translation>
     </message>
     <message>
         <source>Prelisten to...</source>
-        <translation>Esikuuntele</translation>
+        <translation type="obsolete">Esikuuntele</translation>
     </message>
     <message>
         <source>Insert Into/Remove From...</source>
-        <translation>Liitä/poista</translation>
+        <translation type="obsolete">Liitä/poista</translation>
     </message>
     <message>
         <source>...Artist</source>
-        <translation>Artisti</translation>
+        <translation type="obsolete">Artisti</translation>
     </message>
     <message>
         <source>...Album</source>
-        <translation>Levy</translation>
+        <translation type="obsolete">Levy</translation>
     </message>
     <message>
         <source>...Genre</source>
-        <translation>Laji</translation>
+        <translation type="obsolete">Laji</translation>
     </message>
     <message>
         <source>Go to folder...</source>
-        <translation>Mene kansioon</translation>
+        <translation type="obsolete">Mene kansioon</translation>
     </message>
     <message>
         <source>Entry</source>
-        <translation>Merkintä</translation>
+        <translation type="obsolete">Merkintä</translation>
     </message>
     <message>
         <source>Artist</source>
-        <translation>Artisti</translation>
+        <translation type="obsolete">Artisti</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation>Kappale</translation>
+        <translation type="obsolete">Kappale</translation>
     </message>
     <message>
         <source>Album</source>
-        <translation>Levy</translation>
+        <translation type="obsolete">Levy</translation>
     </message>
     <message>
         <source>Search for similar...</source>
-        <translation>Etsi samankaltaisia</translation>
+        <translation type="obsolete">Etsi samankaltaisia</translation>
     </message>
     <message>
         <source>Delete...</source>
-        <translation>Poista</translation>
+        <translation type="obsolete">Poista</translation>
     </message>
     <message>
         <source>Move file to...</source>
-        <translation>Siirrä tiedosto</translation>
+        <translation type="obsolete">Siirrä tiedosto</translation>
     </message>
     <message>
         <source>Check Consistency</source>
-        <translation>Tarkista yhtenevyys</translation>
+        <translation type="obsolete">Tarkista yhtenevyys</translation>
     </message>
     <message>
         <source>Burn to Media...</source>
-        <translation>Polta medialle</translation>
+        <translation type="obsolete">Polta medialle</translation>
     </message>
     <message>
         <source>Advanced...</source>
-        <translation>Lisätoiminnot</translation>
+        <translation type="obsolete">Lisätoiminnot</translation>
     </message>
     <message>
         <source>Plugins...</source>
-        <translation>Lisäosat</translation>
+        <translation type="obsolete">Lisäosat</translation>
     </message>
     <message>
         <source>Two identical songs</source>
-        <translation>Identtiset kappaleet</translation>
+        <translation type="obsolete">Identtiset kappaleet</translation>
     </message>
     <message>
         <source>Keep both</source>
@@ -1439,11 +2326,11 @@ pysäytä soitto-ohjelma haun ajaksi.
     </message>
     <message>
         <source>Keep s1</source>
-        <translation>Pidä kappale 1</translation>
+        <translation type="obsolete">Pidä kappale 1</translation>
     </message>
     <message>
         <source>Keep s2</source>
-        <translation>Pidä kappale 2</translation>
+        <translation type="obsolete">Pidä kappale 2</translation>
     </message>
     <message>
         <source>%1 songs selected</source>
@@ -1459,23 +2346,23 @@ pysäytä soitto-ohjelma haun ajaksi.
     </message>
     <message>
         <source>Get input parameter</source>
-        <translation>Hae lähdevalitsimet</translation>
+        <translation type="obsolete">Hae lähdevalitsimet</translation>
     </message>
     <message>
         <source>Type in argument for plugin:</source>
-        <translation>Syötä valitsimet lisäosalle:</translation>
+        <translation type="obsolete">Syötä valitsimet lisäosalle:</translation>
     </message>
     <message>
         <source>Executing song plugin cmd...</source>
-        <translation>Suoritetaan lisäosa kappaleelle</translation>
+        <translation type="obsolete">Suoritetaan lisäosa kappaleelle</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Peruuta</translation>
+        <translation type="obsolete">Peruuta</translation>
     </message>
     <message>
         <source>progress</source>
-        <translation>Edistyminen</translation>
+        <translation type="obsolete">Edistyminen</translation>
     </message>
     <message>
         <source>Execute the following command on each selected song?
@@ -1506,7 +2393,7 @@ pysäytä soitto-ohjelma haun ajaksi.
     </message>
     <message>
         <source>test</source>
-        <translation>Kokeilu</translation>
+        <translation type="obsolete">Kokeilu</translation>
     </message>
     <message>
         <source>Mass editing: %1 songs</source>
@@ -1522,43 +2409,43 @@ pysäytä soitto-ohjelma haun ajaksi.
     </message>
     <message>
         <source>%d:%02d:%02d (hh:mm:ss)</source>
-        <translation>%d:%02d:%02d (tt:mm:ss)</translation>
+        <translation type="obsolete">%d:%02d:%02d (tt:mm:ss)</translation>
     </message>
     <message>
         <source>%2d:%02d (mm:ss)</source>
-        <translation>%2d:%02d (mm:ss)</translation>
+        <translation type="obsolete">%2d:%02d (mm:ss)</translation>
     </message>
     <message>
         <source>%1 MB (%2 Bytes)</source>
-        <translation>%1 MB (%2 tavua)</translation>
+        <translation type="obsolete">%1 MB (%2 tavua)</translation>
     </message>
     <message>
         <source>collection name</source>
-        <translation>kokoelman nimi</translation>
+        <translation type="obsolete">kokoelman nimi</translation>
     </message>
     <message>
         <source>Please enter collection name:</source>
-        <translation>Syötä kokoelman nimi</translation>
+        <translation type="obsolete">Syötä kokoelman nimi</translation>
     </message>
     <message>
         <source>my mp3 collection</source>
-        <translation>mp3levy</translation>
+        <translation type="obsolete">mp3levy</translation>
     </message>
     <message>
         <source>collection start number</source>
-        <translation>kokoelman aloitusnumero</translation>
+        <translation type="obsolete">kokoelman aloitusnumero</translation>
     </message>
     <message>
         <source>Please enter start index:</source>
-        <translation>Valitse enter aloittaaksesi indeksoinnin:</translation>
+        <translation type="obsolete">Valitse enter aloittaaksesi indeksoinnin:</translation>
     </message>
     <message>
         <source>Preparing media...</source>
-        <translation>Valmistellaan mediaa..</translation>
+        <translation type="obsolete">Valmistellaan mediaa..</translation>
     </message>
     <message>
         <source>Preparing media </source>
-        <translation>Valmistellaan mediaa</translation>
+        <translation type="obsolete">Valmistellaan mediaa</translation>
     </message>
     <message>
         <source>Result of &quot;Burn to media&quot; process:
@@ -1594,7 +2481,7 @@ pysäytä soitto-ohjelma haun ajaksi.
   (Depending on your burning program, you might have
 
   to check an option &quot;follow symlinks&quot; or similar).</source>
-        <translation>&quot;Polta medialle&quot; edistyminen:
+        <translation type="obsolete">&quot;Polta medialle&quot; edistyminen:
 
 
   Median numero: %1, (kokoraja: %2 MB)
@@ -1630,19 +2517,19 @@ pysäytä soitto-ohjelma haun ajaksi.
     </message>
     <message>
         <source>Fine.</source>
-        <translation>Selvä.</translation>
+        <translation type="obsolete">Selvä.</translation>
     </message>
     <message>
         <source>Check consistency - settings</source>
-        <translation>Tarkista yhtenevyys - asetukset</translation>
+        <translation type="obsolete">Tarkista yhtenevyys - asetukset</translation>
     </message>
     <message>
         <source>checking %1 songs</source>
-        <translation>Tarkistetaan %1 kappaletta</translation>
+        <translation type="obsolete">Tarkistetaan %1 kappaletta</translation>
     </message>
     <message>
         <source>Checking consistency...</source>
-        <translation>Tarkistetaan yhtenevyys..</translation>
+        <translation type="obsolete">Tarkistetaan yhtenevyys..</translation>
     </message>
     <message>
         <source>Result of consistency check:
@@ -1668,7 +2555,7 @@ pysäytä soitto-ohjelma haun ajaksi.
 
   %9 double entries found
   </source>
-        <translation>Yhteneväisyystarkastuksen tulos:
+        <translation type="obsolete">Yhteneväisyystarkastuksen tulos:
 	
 	
   %1 ongelmallista kohtaa havaittu (tarkista Ongelmalliset kappaleet)
@@ -1690,11 +2577,11 @@ pysäytä soitto-ohjelma haun ajaksi.
     </message>
     <message>
         <source>yammi</source>
-        <translation>Yammi</translation>
+        <translation type="obsolete">Yammi</translation>
     </message>
     <message>
         <source>choose directory</source>
-        <translation>Valitse hakemisto</translation>
+        <translation type="obsolete">Valitse hakemisto</translation>
     </message>
     <message>
         <source>Delete %1 songs</source>
@@ -1702,78 +2589,78 @@ pysäytä soitto-ohjelma haun ajaksi.
     </message>
     <message>
         <source>playing %1</source>
-        <translation>Toistetaan %1</translation>
+        <translation type="obsolete">Toistetaan %1</translation>
     </message>
     <message>
         <source>%1 enqueued at end</source>
-        <translation>%1 lisätty soittolistaan viimeiseksi</translation>
+        <translation type="obsolete">%1 lisätty soittolistaan viimeiseksi</translation>
     </message>
     <message>
         <source>%1 enqueued as next</source>
-        <translation>%1 lisätty soittolistaan seuraavaksi</translation>
+        <translation type="obsolete">%1 lisätty soittolistaan seuraavaksi</translation>
     </message>
     <message>
         <source>song %1 dequeued</source>
-        <translation>kappale %1 poistettu soittolistalta</translation>
+        <translation type="obsolete">kappale %1 poistettu soittolistalta</translation>
     </message>
     <message>
         <source>%1 removed (file)</source>
-        <translation>%1 poistettu (tiedostoa)</translation>
+        <translation type="obsolete">%1 poistettu (tiedostoa)</translation>
     </message>
     <message>
         <source>%1 removed (db entry)</source>
-        <translation>%1 poistettu (tietokantamerkintä)</translation>
+        <translation type="obsolete">%1 poistettu (tietokantamerkintä)</translation>
     </message>
     <message>
         <source>Media player: </source>
-        <translation>Soitto-ohjelma: </translation>
+        <translation type="obsolete">Soitto-ohjelma: </translation>
     </message>
     <message>
         <source>- XMMS support: yes
 </source>
-        <translation>- XMMS tuki: kyllä
+        <translation type="obsolete">- XMMS tuki: kyllä
 </translation>
     </message>
     <message>
         <source>- XMMS support: no
 </source>
-        <translation>- XMMS tuki: ei
+        <translation type="obsolete">- XMMS tuki: ei
 </translation>
     </message>
     <message>
         <source>- Noatun support: yes
 </source>
-        <translation>- Noatun tuki: kyllä
+        <translation type="obsolete">- Noatun tuki: kyllä
 </translation>
     </message>
     <message>
         <source>- Noatun support: no
 </source>
-        <translation>- Noatun tuki: ei
+        <translation type="obsolete">- Noatun tuki: ei
 </translation>
     </message>
     <message>
         <source>- ogglibs support: yes
 </source>
-        <translation>- ogglibs tuki: kyllä
+        <translation type="obsolete">- ogglibs tuki: kyllä
 </translation>
     </message>
     <message>
         <source>- ogglibs support: no
 </source>
-        <translation>- ogglibs tuki: ei
+        <translation type="obsolete">- ogglibs tuki: ei
 </translation>
     </message>
     <message>
         <source>- id3lib support: yes
 </source>
-        <translation>- id3lib tuki: kyllä
+        <translation type="obsolete">- id3lib tuki: kyllä
 </translation>
     </message>
     <message>
         <source>- id3lib support: no
 </source>
-        <translation>- id3lib tuki: ei
+        <translation type="obsolete">- id3lib tuki: ei
 </translation>
     </message>
     <message>
@@ -1782,7 +2669,7 @@ Project home page: yammi.sourceforge.net
 
 
 </source>
-        <translation>
+        <translation type="obsolete">
 Projektin kotisivu: yammi.sourceforge.net
 
 
@@ -1792,14 +2679,14 @@ Projektin kotisivu: yammi.sourceforge.net
         <source>Contact: 
 yammi-developer@lists.sourceforge.netn
 </source>
-        <translation>Yhteystiedot:
+        <translation type="obsolete">Yhteystiedot:
 yammi-developer@lists.sourceforge.netn
 </translation>
     </message>
     <message>
         <source>have fun...
 </source>
-        <translation>pidä hauskaa..
+        <translation type="obsolete">pidä hauskaa..
 </translation>
     </message>
     <message>
@@ -1820,16 +2707,16 @@ yammi-developer@lists.sourceforge.netn
     </message>
     <message>
         <source>Remove media </source>
-        <translation>Poista media</translation>
+        <translation type="obsolete">Poista media</translation>
     </message>
     <message>
         <source> and the corresponding directory?
 (which contains the symbolic links to the songs)</source>
-        <translation> ja vastaava hakemisto? (jossa symlinkit kappaleisiin)</translation>
+        <translation type="obsolete"> ja vastaava hakemisto? (jossa symlinkit kappaleisiin)</translation>
     </message>
     <message>
         <source>Rename Media</source>
-        <translation>Nimeä media uudelleen</translation>
+        <translation type="obsolete">Nimeä media uudelleen</translation>
     </message>
     <message>
         <source>Clear complete playlist?
@@ -1843,44 +2730,44 @@ yammi-developer@lists.sourceforge.netn
     </message>
     <message>
         <source>Enter track number</source>
-        <translation>Syötä raidan numero</translation>
+        <translation type="obsolete">Syötä raidan numero</translation>
     </message>
     <message>
         <source>Please enter track number</source>
-        <translation>Anna numero raidalle</translation>
+        <translation type="obsolete">Anna numero raidalle</translation>
     </message>
     <message>
         <source>Enter artist</source>
-        <translation>Syötä artistin nimi</translation>
+        <translation type="obsolete">Syötä artistin nimi</translation>
     </message>
     <message>
         <source>Please enter artist</source>
-        <translation>Anna nimi artistille</translation>
+        <translation type="obsolete">Anna nimi artistille</translation>
     </message>
     <message>
         <source>MyArtist</source>
-        <translation>Artistin nimi</translation>
+        <translation type="obsolete">Artistin nimi</translation>
     </message>
     <message>
         <source>Enter title</source>
-        <translation>Syötä nimi kappaleelle</translation>
+        <translation type="obsolete">Syötä nimi kappaleelle</translation>
     </message>
     <message>
         <source>Please enter title</source>
-        <translation>Anna kappaleen nimi</translation>
+        <translation type="obsolete">Anna kappaleen nimi</translation>
     </message>
     <message>
         <source>Fantastic Song</source>
-        <translation>Syötä tähän kappaleen nimi</translation>
+        <translation type="obsolete">Syötä tähän kappaleen nimi</translation>
     </message>
     <message>
         <source>%1%2 - %3.mp3</source>
-        <translation>%1%2 - %3.mp3</translation>
+        <translation type="obsolete">%1%2 - %3.mp3</translation>
     </message>
     <message>
         <source>The file
 </source>
-        <translation>Kyseinen tiedostonnimi
+        <translation type="obsolete">Kyseinen tiedostonnimi
 </translation>
     </message>
     <message>
@@ -1888,22 +2775,22 @@ yammi-developer@lists.sourceforge.netn
 already exists!
 
 Please choose a different artist/title combination.</source>
-        <translation>
+        <translation type="obsolete">
 on jo olemassa!
 
 Valitse toinen artisti/kappale yhdistelmä.</translation>
     </message>
     <message>
         <source>Ok</source>
-        <translation>Ok</translation>
+        <translation type="obsolete">Ok</translation>
     </message>
     <message>
         <source>grabbing track, will be available shortly...</source>
-        <translation>raitaa ripataan, käytettävissä kohta..</translation>
+        <translation type="obsolete">raitaa ripataan, käytettävissä kohta..</translation>
     </message>
     <message>
         <source>grabbed song available</source>
-        <translation>ripattu kappale käytettävissä</translation>
+        <translation type="obsolete">ripattu kappale käytettävissä</translation>
     </message>
     <message>
         <source>Yammi tried to add the grabbed song to the database.
@@ -1911,7 +2798,7 @@ Valitse toinen artisti/kappale yhdistelmä.</translation>
 Some statistics: 
 
 </source>
-        <translation>Yammi yritti lisätä ripatut kappaleet tietokantaan.
+        <translation type="obsolete">Yammi yritti lisätä ripatut kappaleet tietokantaan.
 	
 Joitain tilastoja:
 
@@ -1929,28 +2816,28 @@ Joitain tilastoja:
     </message>
     <message>
         <source>%1 problematic issues(check in folder Problematic Songs)</source>
-        <translation>%1 ongelmallisia kohteita (tarkista Ongelmalliset kappaleet kansio)</translation>
+        <translation type="obsolete">%1 ongelmallisia kohteita (tarkista Ongelmalliset kappaleet kansio)</translation>
     </message>
     <message>
         <source>shuttind down now...</source>
-        <translation>sammutetaan nyt..</translation>
+        <translation type="obsolete">sammutetaan nyt..</translation>
     </message>
     <message>
         <source>shutting down in %1 seconds</source>
-        <translation>ohjelma suljetaan %1 sekunnin päästä</translation>
+        <translation type="obsolete">ohjelma suljetaan %1 sekunnin päästä</translation>
     </message>
     <message>
         <source>shutdown</source>
-        <translation>lopetus</translation>
+        <translation type="obsolete">lopetus</translation>
     </message>
     <message>
         <source>Save changes?
 (answering no will cancel sleep mode)</source>
-        <translation>Tallenna muutokset? (Ei peruuttaa siirtymisen yösoittotilaan)</translation>
+        <translation type="obsolete">Tallenna muutokset? (Ei peruuttaa siirtymisen yösoittotilaan)</translation>
     </message>
     <message>
         <source>Update Database (harddisk) Dialog</source>
-        <translation>Tietokannan päivitys</translation>
+        <translation type="obsolete">Tietokannan päivitys</translation>
     </message>
     <message>
         <source>Updated your database.
@@ -1972,51 +2859,496 @@ Tilastoja:
     </message>
     <message>
         <source>Update Database (media) Dialog</source>
-        <translation>Mediatietokannan päivitys</translation>
+        <translation type="obsolete">Mediatietokannan päivitys</translation>
     </message>
     <message>
         <source>You have to enter a name for the media!</source>
-        <translation>Et antanut nimeä medialle!</translation>
+        <translation type="obsolete">Et antanut nimeä medialle!</translation>
     </message>
     <message>
         <source>Okay</source>
-        <translation>Ok</translation>
+        <translation type="obsolete">Ok</translation>
     </message>
     <message>
         <source>Scanning...</source>
-        <translation>Etsitään..</translation>
+        <translation type="obsolete">Etsitään..</translation>
     </message>
     <message>
         <source>Loading song files...</source>
-        <translation>Ladataan kappaleita..</translation>
+        <translation type="obsolete">Ladataan kappaleita..</translation>
     </message>
     <message>
         <source>loading song: </source>
-        <translation>ladataan kappaletta: </translation>
+        <translation type="obsolete">ladataan kappaletta: </translation>
     </message>
     <message>
         <source>. in playlist)</source>
-        <translation>. soittolistalle)</translation>
+        <translation type="obsolete">. soittolistalle)</translation>
     </message>
     <message>
         <source>&lt;none&gt;</source>
-        <translation>&lt;Ei yhtään&gt;</translation>
+        <translation type="obsolete">&lt;Ei yhtään&gt;</translation>
     </message>
     <message>
         <source>&amp;Yes</source>
-        <translation>&amp;Kyllä</translation>
+        <translation type="obsolete">&amp;Kyllä</translation>
     </message>
     <message>
         <source>&amp;No</source>
-        <translation>&amp;Ei</translation>
+        <translation type="obsolete">&amp;Ei</translation>
     </message>
     <message>
         <source>Contact: 
 yammi-developer@lists.sourceforge.net
 </source>
-        <translation>Yhteystiedot:
+        <translation type="obsolete">Yhteystiedot:
 yammi-developer@lists.sourceforge.net	
 </translation>
+    </message>
+    <message>
+        <source>The Song Database has been modified.
+Do you want to save the changes?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Database modified</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pause</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Play</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Category ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>{wish}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Two identical songs: 
+s1: %1
+s2: %2
+Do you want to delete one of them?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete s1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete s2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>- no artist -</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>- no genre -</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>- no year -</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Load Selected Song In Mixxx Deck</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The deck in Mixxx is currently playing. Do you really want to load this song?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Artist: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>- no album -</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Album: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Genre: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Year: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Type in plugin parameter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Executing song plugin cmd ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select destination directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>never</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Your changes will affect %1 song entries.
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>
+Note: Your changes may change the filenames of the selected files!
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>
+Note: Your changes may affect the location of the selected files!
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>
+
+Do you want to continue?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete category %1 ?
+ (will be deleted immediately!)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Category name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose a Playlist to insert</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you want to fix the genre of all songs (potentially broken or incomplete from earlier versions of yammi) by re-reading all genres from available files now?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Re-Reading all genres from your files ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open file(s) to import</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Scanning ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Year</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Quit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select &amp;All</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Invert Selection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Media Player</source>
+        <translation type="unfinished">Soitto-Ohjelma</translation>
+    </message>
+    <message>
+        <source>Prelisten</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Play</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Skip Backward</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Skip &amp;Forward</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>S&amp;top</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Switch to/from Playlist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Clear Playlist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shuffle &amp;Playlist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Save Database</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Scan &amp;Harddisk ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Import Selected File(s) ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Check Consistency ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Fix Genres ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Autoplay &amp;Off</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Longest Not Played</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Random</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unknown</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Configure Yammi ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enqueue at end (append)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enqueue as next (prepend)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Play Now!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Dequeue Songs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Prelisten Start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Prelisten Middle</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Prelisten End</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stop Prelisten</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Load in Mixxx Deck 1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Load in Mixxx Deck 2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Song Info ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Goto artist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Goto album</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Goto genre</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Goto year</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search for similar entry</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search for similar artist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search for similar title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search for similar album</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Check Consistency ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Song ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move Files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Columns</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Player</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>P&amp;laylist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Main ToolBar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Track position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Go to folder ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search for similar ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Advanced ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Insert Into/Remove From ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Plugins ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Artist :  </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Title :	  </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Album :	  </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Track :	  </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Year :	  </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Genre :	  </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Comment : </source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>YammiModel</name>
+    <message>
+        <source>Error reading categories file:
+%1
+(Error: %2, line %3, column %4)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Loading categories</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Loading song history</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error reading database file:
+%1
+(Error: %2, line %3, column %4)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error reading database</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Your Song Database seems to be very old.
+You might need to create a new Database and scan your harddisk for songs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unknown Song Database version</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Loading database</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The base directory for scanning does not exist!
+Set value &quot;scanDir&quot; to an existing directory!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>scanning directory %1 ...</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

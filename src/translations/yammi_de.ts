@@ -235,34 +235,34 @@
         <translation>Prüfe Korrektheit von %1 Lieder ...</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="117"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="118"/>
         <source>file not readable</source>
         <translation>Datei nicht lesbar</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="119"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="120"/>
         <source>file not existing or readable: %1
 </source>
         <translation>Datei nicht existent oder lesbar: %1</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="122"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="123"/>
         <source>=&gt; deleting song entry %1
 </source>
         <translation>=&gt; Lösche Liedeintrag %1</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="126"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="127"/>
         <source>file not existing or readable</source>
         <translation>Datei nicht existent oder lesbar</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="131"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="132"/>
         <source>tags not correct</source>
         <translation>Tags nicht korrekt</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="139"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="140"/>
         <source>Correct tags in file
 
 	%1?
@@ -275,79 +275,79 @@
 </translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="141"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="142"/>
         <source>(Write yammi info to file tags:
 </source>
         <translation>(Schreibe Yammis informationen in den Dateitag:</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="142"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="143"/>
         <source>artist: %1, title: %2
 </source>
         <translation>Künstler: %1, Titel: %2</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="143"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="144"/>
         <source>album: %1, comment: %2
 </source>
         <translation>Album: %1, Kommentar: %2</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="144"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="145"/>
         <source>year: %1, trackNr: %2, genre: %3)</source>
         <translation>Jahr: %1, Titel-Nr.: %2, Genre: %3)</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="147"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="148"/>
         <source>(Reread tags from filename and update Yammi info)</source>
         <translation>(Tags aus Dateinamen auslesen und Yammis Information aktualisieren)</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="174"/>
         <location filename="../ConsistencyCheckDialog.cpp" line="175"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="176"/>
         <source>Yammi info written to file tags</source>
         <translation>Yammis Informationen in den Dateitag geschrieben</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="181"/>
         <location filename="../ConsistencyCheckDialog.cpp" line="182"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="183"/>
         <source>Tags reread from file and Yammi info updated</source>
         <translation>Tags erneut aus Datei gelesen und Yammis informationen aktualisiert</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="186"/>
         <location filename="../ConsistencyCheckDialog.cpp" line="187"/>
-        <location filename="../ConsistencyCheckDialog.cpp" line="190"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="188"/>
         <location filename="../ConsistencyCheckDialog.cpp" line="191"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="192"/>
         <source>Yammi info and file tags not consistent</source>
         <translation>Yammis informationen und Dateitag stimmen nicht überein</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="197"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="198"/>
         <source>filename not consistent</source>
         <translation>Dateiname nicht korrekt</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="199"/>
-        <location filename="../ConsistencyCheckDialog.cpp" line="237"/>
-        <location filename="../ConsistencyCheckDialog.cpp" line="240"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="200"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="238"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="241"/>
         <source>Filename not consistent with Yammi info</source>
         <translation>Dateiname nicht korrekt gegenüber Yammis informationen</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="200"/>
-        <location filename="../ConsistencyCheckDialog.cpp" line="247"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="201"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="248"/>
         <source>expected: %1</source>
         <translation>Erwartet: %1</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="201"/>
-        <location filename="../ConsistencyCheckDialog.cpp" line="248"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="202"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="249"/>
         <source>found: %1</source>
         <translation>Gefunden: %1</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="207"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="208"/>
         <source>Correct filename from
 	%1
 </source>
@@ -355,33 +355,33 @@
 	%1</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="208"/>
-        <location filename="../ConsistencyCheckDialog.cpp" line="256"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="209"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="257"/>
         <source>to
 	%1?</source>
         <translation>nach
 	%1?</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="233"/>
         <location filename="../ConsistencyCheckDialog.cpp" line="234"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="235"/>
         <source>Filename corrected</source>
         <translation>Dateiname korrigiert</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="244"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="245"/>
         <source>directory not consistent</source>
         <translation>Verzeichnis nicht korrekt</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="246"/>
-        <location filename="../ConsistencyCheckDialog.cpp" line="289"/>
-        <location filename="../ConsistencyCheckDialog.cpp" line="292"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="247"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="290"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="293"/>
         <source>Directory not consistent with Yammi info</source>
         <translation>Dateiname nicht korrekt gegenüber Yammis Informationen</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="254"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="255"/>
         <source>Correct path for file 
 	%1
 </source>
@@ -389,7 +389,7 @@
 	%1</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="255"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="256"/>
         <source>from
 	%1
 </source>
@@ -398,73 +398,73 @@
 </translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="282"/>
         <location filename="../ConsistencyCheckDialog.cpp" line="283"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="284"/>
         <source>Directory corrected</source>
         <translation>Verzeichnis korrigiert</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="302"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="303"/>
         <source>Step 2: check for song entries pointing to same file</source>
         <translation>Schritt 2: Prüfe auf Liedeinträge, die auf die gleiche Datei verweisen</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="318"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="328"/>
         <source>{wish}</source>
         <translation>{Wunsch}</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="327"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="337"/>
         <source>two database entries pointing to same file: %1, deleting one</source>
         <translation>Zwei Datenbankeinträge verweisen auf die gleiche Datei: %1, lösche einen</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="339"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="349"/>
         <source>Step 3: check for songs with identical primary keys</source>
         <translation>Schritt 3: Prüfe auf Lieder mit gleichem Primärschlüssel</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="358"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="375"/>
         <source>2 songs with identical primary key
 </source>
         <translation>2 Lieder mit gleichem Primärschlüssel</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="361"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="378"/>
         <source>contained twice(1)</source>
         <translation>Doppelt enthalten(1)</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="362"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="379"/>
         <source>contained twice(2)</source>
         <translation>Doppelt enthalten(2)</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="372"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="389"/>
         <source>Consistency check finished
 </source>
         <translation>Korrektheitsprüfung abgeschlossen</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="374"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="391"/>
         <source>Consistency check was cancelled
 </source>
         <translation>Korrektheitsprüfung wurde abgebrochen</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="377"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="394"/>
         <source>Your Yammi database is nice and clean!
 </source>
         <translation>Deine Yammidatenbank ist hübsch und sauber!</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="382"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="399"/>
         <source>Result of consistency check: (%1 songs)
 </source>
         <translation>Ergebnis der Korrektheitsprüfung: (%1 Lieder)</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="384"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="401"/>
         <source>%1 issues found, check folder &quot;Problematic Songs&quot; (won&apos;t be saved)
 
 </source>
@@ -473,67 +473,67 @@
 </translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="385"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="402"/>
         <source>- %1 songs not existing
 </source>
         <translation>- %1 Lieder sind nicht existent</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="387"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="404"/>
         <source>     %1 entries updated (filename cleared)
 </source>
         <translation>     %1 Einträge aktualisiert (Dateiname bereinigt)</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="388"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="405"/>
         <source>     %1 entries deleted (because not existing on any media)
 </source>
         <translation>     %1 Einträge gelöscht (da nicht existent auf einem Medium)</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="390"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="407"/>
         <source>- %1 songs with inconsistent tags
 </source>
         <translation>- %1 Lieder mit inkorrekten Tags</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="392"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="409"/>
         <source>     %1 tags corrected
 </source>
         <translation>     %1 Tags korrigiert</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="394"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="411"/>
         <source>- %1 songs with inconsistent filename
 </source>
         <translation>- %1 Lieder mit inkorrektem Dateinamen</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="396"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="413"/>
         <source>     %1 filenames corrected
 </source>
         <translation>     %1 Dateinamen korrigiert</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="398"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="415"/>
         <source>- %1 songs with inconsistent path
 </source>
         <translation>- %1 Lieder mit inkorrektem Pfad</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="400"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="417"/>
         <source>     %1 paths corrected
 </source>
         <translation>     %1 Pfade korrigiert</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="402"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="419"/>
         <source>- %1 double entries found
 </source>
         <translation>- %1 Doppelte Einträge gefunden</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="446"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="463"/>
         <source>Replacements for filename/directory pattern:
 
 </source>
@@ -601,17 +601,17 @@
 <context>
     <name>Folder</name>
     <message>
-        <location filename="../folder.cpp" line="167"/>
+        <location filename="../folder.cpp" line="156"/>
         <source>Autoplay</source>
         <translation>Autoplay</translation>
     </message>
     <message>
-        <location filename="../folder.cpp" line="177"/>
+        <location filename="../folder.cpp" line="166"/>
         <source>Folder ...</source>
         <translation>Ordner ...</translation>
     </message>
     <message>
-        <location filename="../folder.cpp" line="182"/>
+        <location filename="../folder.cpp" line="171"/>
         <source>Content ...</source>
         <translation>Inhalt ...</translation>
     </message>
@@ -619,22 +619,22 @@
 <context>
     <name>FolderCategories</name>
     <message>
-        <location filename="../foldercategories.cpp" line="58"/>
+        <location filename="../foldercategories.cpp" line="56"/>
         <source>Remove Category ...</source>
         <translation>Kategorie entfernen ...</translation>
     </message>
     <message>
-        <location filename="../foldercategories.cpp" line="59"/>
+        <location filename="../foldercategories.cpp" line="57"/>
         <source>New Category ...</source>
         <translation>Neue Kategorie ...</translation>
     </message>
     <message>
-        <location filename="../foldercategories.cpp" line="60"/>
+        <location filename="../foldercategories.cpp" line="58"/>
         <source>Rename Category ...</source>
         <translation>Kategorie umbenennen ...</translation>
     </message>
     <message>
-        <location filename="../foldercategories.cpp" line="61"/>
+        <location filename="../foldercategories.cpp" line="59"/>
         <source>Load .m3u into Category</source>
         <translation>Lade .m3u in Kategorie</translation>
     </message>
@@ -642,22 +642,22 @@
 <context>
     <name>FolderGroups</name>
     <message>
-        <location filename="../foldergroups.cpp" line="143"/>
+        <location filename="../foldergroups.cpp" line="145"/>
         <source>- no artist -</source>
         <translation>- kein Künstler -</translation>
     </message>
     <message>
-        <location filename="../foldergroups.cpp" line="152"/>
+        <location filename="../foldergroups.cpp" line="154"/>
         <source>- no album -</source>
         <translation>- kein Album -</translation>
     </message>
     <message>
-        <location filename="../foldergroups.cpp" line="158"/>
+        <location filename="../foldergroups.cpp" line="160"/>
         <source>- no genre -</source>
         <translation>- kein Genre -</translation>
     </message>
     <message>
-        <location filename="../foldergroups.cpp" line="165"/>
+        <location filename="../foldergroups.cpp" line="167"/>
         <source>- no year -</source>
         <translation>- kein Jahr -</translation>
     </message>
@@ -1397,72 +1397,72 @@ Group mode = wird einmal für die gesamte Auswahl aufgerufen</translation>
 </translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="80"/>
+        <location filename="../yammigui.cpp" line="78"/>
         <source>Artist</source>
         <translation>Künstler</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="80"/>
+        <location filename="../yammigui.cpp" line="78"/>
         <source>Title</source>
         <translation>Titel</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="80"/>
+        <location filename="../yammigui.cpp" line="78"/>
         <source>Album</source>
         <translation>Album</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="80"/>
+        <location filename="../yammigui.cpp" line="78"/>
         <source>Length</source>
         <translation>Länge</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="81"/>
+        <location filename="../yammigui.cpp" line="79"/>
         <source>Year</source>
         <translation>Jahr</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="81"/>
+        <location filename="../yammigui.cpp" line="79"/>
         <source>TrackNr</source>
         <translation>Titel-Nr</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="81"/>
+        <location filename="../yammigui.cpp" line="79"/>
         <source>Genre</source>
         <translation>Genre</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="81"/>
+        <location filename="../yammigui.cpp" line="79"/>
         <source>AddedTo</source>
         <translation>Hinzugefügt zu</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="81"/>
+        <location filename="../yammigui.cpp" line="79"/>
         <source>Bitrate</source>
         <translation>Bitrate</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="82"/>
+        <location filename="../yammigui.cpp" line="80"/>
         <source>Filename</source>
         <translation>Dateiname</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="82"/>
+        <location filename="../yammigui.cpp" line="80"/>
         <source>Path</source>
         <translation>Pfad</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="82"/>
+        <location filename="../yammigui.cpp" line="80"/>
         <source>Comment</source>
         <translation>Kommentar</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="82"/>
+        <location filename="../yammigui.cpp" line="80"/>
         <source>Last Played</source>
         <translation>Zuletzt gespielt</translation>
     </message>
     <message>
-        <location filename="../foldercategories.cpp" line="49"/>
+        <location filename="../foldercategories.cpp" line="48"/>
         <source>New Category ...</source>
         <translation>Neue Kategorie ...</translation>
     </message>
@@ -1696,67 +1696,67 @@ Group mode = wird einmal für die gesamte Auswahl aufgerufen</translation>
         <translation>Yammi konnte keinen neuen Xine-Stream erzeugen.</translation>
     </message>
     <message>
-        <location filename="../xine-engine.cpp" line="522"/>
+        <location filename="../xine-engine.cpp" line="528"/>
         <source>The host is unknown for the URL: &lt;i&gt;%1&lt;/i&gt;</source>
         <translation>Der Host ist unbekannt für die URL: &lt;i&gt;%1&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../xine-engine.cpp" line="524"/>
+        <location filename="../xine-engine.cpp" line="530"/>
         <source>The device name you specified seems invalid.</source>
         <translation>Der angegebene Gerätename scheint ungültig.</translation>
     </message>
     <message>
-        <location filename="../xine-engine.cpp" line="526"/>
+        <location filename="../xine-engine.cpp" line="532"/>
         <source>The network appears unreachable.</source>
         <translation>Das Netzwerk scheint nicht erreichbar.</translation>
     </message>
     <message>
-        <location filename="../xine-engine.cpp" line="528"/>
+        <location filename="../xine-engine.cpp" line="534"/>
         <source>Audio output unavailable; the device is busy.</source>
         <translation>Audioausgabe nicht verfügbar; Das Gerät ist belegt.</translation>
     </message>
     <message>
-        <location filename="../xine-engine.cpp" line="530"/>
+        <location filename="../xine-engine.cpp" line="536"/>
         <source>The connection was refused for the URL: &lt;i&gt;%1&lt;/i&gt;</source>
         <translation>Die Verbindung wurde zurückgewiesen für die URL: &lt;i&gt;%1&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../xine-engine.cpp" line="532"/>
+        <location filename="../xine-engine.cpp" line="538"/>
         <source>xine could not find the URL: &lt;i&gt;%1&lt;/i&gt;</source>
         <translation>Xine konnte die URL nicht finden: &lt;i&gt;%1&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../xine-engine.cpp" line="534"/>
+        <location filename="../xine-engine.cpp" line="540"/>
         <source>Access was denied for the URL: &lt;i&gt;%1&lt;/i&gt;</source>
         <translation>Zugriff wurde verweigert auf die URL: &lt;i&gt;%1&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../xine-engine.cpp" line="536"/>
+        <location filename="../xine-engine.cpp" line="542"/>
         <source>The source cannot be read for the URL: &lt;i&gt;%1&lt;/i&gt;</source>
         <translation>Die Quelle kann nicht gelesen werden für URL: &lt;i&gt;%1&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../xine-engine.cpp" line="538"/>
+        <location filename="../xine-engine.cpp" line="544"/>
         <source>A problem occurred while loading a library or decoder.</source>
         <translation>Ein Problem trat auf während des Ladens einer Bibliothek oder Decoder.</translation>
     </message>
     <message>
-        <location filename="../xine-engine.cpp" line="541"/>
+        <location filename="../xine-engine.cpp" line="547"/>
         <source>General Warning</source>
         <translation>Allgemeine Warnung</translation>
     </message>
     <message>
-        <location filename="../xine-engine.cpp" line="543"/>
+        <location filename="../xine-engine.cpp" line="549"/>
         <source>Security Warning</source>
         <translation>Sicherheitswarnung</translation>
     </message>
     <message>
-        <location filename="../xine-engine.cpp" line="545"/>
+        <location filename="../xine-engine.cpp" line="551"/>
         <source>Unknown Error</source>
         <translation>Unbekannter Fehler</translation>
     </message>
     <message>
-        <location filename="../xine-engine.cpp" line="591"/>
+        <location filename="../xine-engine.cpp" line="597"/>
         <source>Sorry, no additional information is available.</source>
         <translation>Tut mir leid, keine weitere Information verfügbar.</translation>
     </message>
@@ -1764,62 +1764,62 @@ Group mode = wird einmal für die gesamte Auswahl aufgerufen</translation>
 <context>
     <name>YammiGui</name>
     <message>
-        <location filename="../yammigui.cpp" line="267"/>
-        <location filename="../yammigui.cpp" line="2875"/>
+        <location filename="../yammigui.cpp" line="265"/>
+        <location filename="../yammigui.cpp" line="2896"/>
         <source>All Music</source>
         <translation>Gesamte Musik</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="268"/>
-        <location filename="../yammigui.cpp" line="2298"/>
+        <location filename="../yammigui.cpp" line="266"/>
+        <location filename="../yammigui.cpp" line="2315"/>
         <source>Folder: </source>
         <translation>Ordner: </translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="300"/>
+        <location filename="../yammigui.cpp" line="298"/>
         <source>The Song Database has been modified.
 Do you want to save the changes?</source>
         <translation>Die Lieddatenbank wurde geändert.
 Sollen die Änderungen gespeichert werden?</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="301"/>
+        <location filename="../yammigui.cpp" line="299"/>
         <source>Database modified</source>
         <translation>Datenbank wurde geändert</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="491"/>
+        <location filename="../yammigui.cpp" line="489"/>
         <source>Yammi - not playing</source>
         <translation>Yammi - keine Wiedergabe</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="516"/>
+        <location filename="../yammigui.cpp" line="514"/>
         <source>Pause</source>
         <translation>Pause</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="519"/>
+        <location filename="../yammigui.cpp" line="517"/>
         <source>Play</source>
         <translation>Wiedergeben</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="698"/>
-        <location filename="../yammigui.cpp" line="714"/>
+        <location filename="../yammigui.cpp" line="702"/>
+        <location filename="../yammigui.cpp" line="718"/>
         <source>Pos</source>
         <translation>Pos</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="702"/>
+        <location filename="../yammigui.cpp" line="706"/>
         <source>Played on</source>
         <translation>Abgespielt am</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="706"/>
+        <location filename="../yammigui.cpp" line="710"/>
         <source>Match</source>
         <translation>Wertung</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="710"/>
+        <location filename="../yammigui.cpp" line="714"/>
         <source>Reason</source>
         <translation>Grund</translation>
     </message>
@@ -1828,7 +1828,7 @@ Sollen die Änderungen gespeichert werden?</translation>
         <translation type="obsolete">Neue Kategorie...</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="967"/>
+        <location filename="../yammigui.cpp" line="970"/>
         <source>Two identical songs: 
 s1: %1
 s2: %2
@@ -1839,78 +1839,78 @@ s2: %2
 Soll eines von beiden gelöscht werden?</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="969"/>
+        <location filename="../yammigui.cpp" line="972"/>
         <source>Delete s1</source>
         <translation>Lösche s1</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="970"/>
+        <location filename="../yammigui.cpp" line="973"/>
         <source>Delete s2</source>
         <translation>Lösche s2</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="971"/>
+        <location filename="../yammigui.cpp" line="974"/>
         <source>Keep both</source>
         <translation>Beide behalten</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="1296"/>
+        <location filename="../yammigui.cpp" line="1299"/>
         <source>Load Selected Song In Mixxx Deck</source>
         <translation>Ausgewähltes Lied in Mixxx Deck laden</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="1297"/>
+        <location filename="../yammigui.cpp" line="1300"/>
         <source>The deck in Mixxx is currently playing. Do you really want to load this song?</source>
         <translation>Das Deck in Mixxx spielt gerade. Soll trotzdem das Lied dort geladen werden? </translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="1355"/>
+        <location filename="../yammigui.cpp" line="1358"/>
         <source>%1 songs selected</source>
         <translation>%1 Lied(er) ausgewählt</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="1367"/>
+        <location filename="../yammigui.cpp" line="1370"/>
         <source>Artist: </source>
         <translation>Künstler: </translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="1380"/>
+        <location filename="../yammigui.cpp" line="1383"/>
         <source>Album: </source>
         <translation>Album: </translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="1388"/>
+        <location filename="../yammigui.cpp" line="1391"/>
         <source>Genre: </source>
         <translation>Genre: </translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="1397"/>
+        <location filename="../yammigui.cpp" line="1400"/>
         <source>Year: </source>
         <translation>Jahr: </translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="1478"/>
+        <location filename="../yammigui.cpp" line="1489"/>
         <source>choose directory for plugin</source>
         <translation>Verzeichnis für Plugin wählen</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="1484"/>
+        <location filename="../yammigui.cpp" line="1495"/>
         <source>choose file for plugin</source>
         <translation>Datei für Plugin wählen</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="1501"/>
+        <location filename="../yammigui.cpp" line="1512"/>
         <source>Type in plugin parameter</source>
         <translation>Pluginparameter eingeben</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="1516"/>
+        <location filename="../yammigui.cpp" line="1527"/>
         <source>Execute the following command on each selected song?
 </source>
         <translation>Folgenden Befehl für jedes ausgewähltes Lied ausführen?</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="1517"/>
+        <location filename="../yammigui.cpp" line="1528"/>
         <source>(here shown: values for first song)
 
 </source>
@@ -1919,13 +1919,13 @@ Soll eines von beiden gelöscht werden?</translation>
 </translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="1559"/>
+        <location filename="../yammigui.cpp" line="1570"/>
         <source>Execute the following command:
 </source>
         <translation>Folgenden Befehl ausführen:</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="1563"/>
+        <location filename="../yammigui.cpp" line="1574"/>
         <source>
 ...
 (command truncated)</source>
@@ -1934,33 +1934,33 @@ Soll eines von beiden gelöscht werden?</translation>
 (Befehl gekürzt)</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="1587"/>
+        <location filename="../yammigui.cpp" line="1598"/>
         <source>Select destination directory</source>
         <translation>Zielverzeichnis auswählen</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="1955"/>
+        <location filename="../yammigui.cpp" line="1969"/>
         <source>Mass editing: %1 songs</source>
         <translation>Massenänderung: %1 Lieder</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="1956"/>
+        <location filename="../yammigui.cpp" line="1970"/>
         <source>Size (total)</source>
         <translation>Größe (gesamt)</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="1957"/>
+        <location filename="../yammigui.cpp" line="1971"/>
         <source>Length (total)</source>
         <translation>Länge (gesamt)</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="1985"/>
+        <location filename="../yammigui.cpp" line="1999"/>
         <source>Your changes will affect %1 song entries.
 </source>
         <translation>Deine Änderung wird %1 Liedeinträge beieinflussen.</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="1987"/>
+        <location filename="../yammigui.cpp" line="2001"/>
         <source>
 Note: Your changes may change the filenames of the selected files!
 </source>
@@ -1968,7 +1968,7 @@ Note: Your changes may change the filenames of the selected files!
 Anmerkung: Deine Änderungen können den Dateinamen der ausgewählten Datei ändern!</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="1990"/>
+        <location filename="../yammigui.cpp" line="2004"/>
         <source>
 Note: Your changes may affect the location of the selected files!
 </source>
@@ -1976,7 +1976,7 @@ Note: Your changes may affect the location of the selected files!
 Anmerkung: Deine Änderung können den Ort der ausgewählten Dateien ändern!</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="1992"/>
+        <location filename="../yammigui.cpp" line="2006"/>
         <source>
 
 Do you want to continue?</source>
@@ -1985,66 +1985,66 @@ Do you want to continue?</source>
 Möchtest Du fortfahren?</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2082"/>
+        <location filename="../yammigui.cpp" line="2097"/>
         <source>Delete %1 songs</source>
         <translation>%1 Lied(er) zu Löschen</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2204"/>
+        <location filename="../yammigui.cpp" line="2221"/>
         <source>Enter name for category</source>
         <translation>Namen für Kategorie eingeben</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2205"/>
+        <location filename="../yammigui.cpp" line="2222"/>
         <source>Please enter name of category</source>
         <translation>Bitte Namen für Kategorie eingeben</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2206"/>
+        <location filename="../yammigui.cpp" line="2223"/>
         <source>new category</source>
         <translation>Neue Kategorie</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2223"/>
+        <location filename="../yammigui.cpp" line="2240"/>
         <source>Delete category %1 ?
  (will be deleted immediately!)</source>
         <translation>Kategorie löschen %1 ? (Wird sofort gelöscht!)</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2240"/>
+        <location filename="../yammigui.cpp" line="2257"/>
         <source>Please enter new name:</source>
         <translation>Bitte neuen Namen eingeben:</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2264"/>
+        <location filename="../yammigui.cpp" line="2281"/>
         <source>Choose a Playlist to insert</source>
         <translation>Eine Wiedergabeliste zum Einfügen auswählen</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2360"/>
+        <location filename="../yammigui.cpp" line="2378"/>
         <source>Clear complete playlist?
 (%1 entries)</source>
         <translation>Ganze Wiedergabeliste leeren?
 (%1 Einträge)</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2362"/>
+        <location filename="../yammigui.cpp" line="2380"/>
         <source>including current song</source>
         <translation>Auch aktuelles Lied</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2482"/>
+        <location filename="../yammigui.cpp" line="2500"/>
         <source>Do you want to fix the genre of all songs (potentially broken or incomplete from earlier versions of yammi) by re-reading all genres from available files now?</source>
         <translation>Soll das Genre aller Lieder repariert werden (möglicherweise beschädigt oder unvollständig durch frühere Yammiversionen) durch erneutes Einlesen aller Genres aus den jetzt verfügbaren Dateien?</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2683"/>
+        <location filename="../yammigui.cpp" line="2701"/>
         <source>Open file(s) to import</source>
         <translation>Öffne Datei(en) zum Import</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2693"/>
-        <location filename="../yammigui.cpp" line="2720"/>
+        <location filename="../yammigui.cpp" line="2711"/>
+        <location filename="../yammigui.cpp" line="2738"/>
         <source>Updated your database.
 
 Statistics: 
@@ -2057,24 +2057,24 @@ Statistik:
 </translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2694"/>
-        <location filename="../yammigui.cpp" line="2721"/>
+        <location filename="../yammigui.cpp" line="2712"/>
+        <location filename="../yammigui.cpp" line="2739"/>
         <source>%1 songs added to database
 </source>
         <translation>%1 Lied(er) zur Datenbank hinzugefügt
 </translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2695"/>
-        <location filename="../yammigui.cpp" line="2722"/>
+        <location filename="../yammigui.cpp" line="2713"/>
+        <location filename="../yammigui.cpp" line="2740"/>
         <source>%1 songs corrupt (=not added)
 </source>
         <translation>%1 Lied(er) fehlerhaft (=nicht hinzugefügt)
 </translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2696"/>
-        <location filename="../yammigui.cpp" line="2723"/>
+        <location filename="../yammigui.cpp" line="2714"/>
+        <location filename="../yammigui.cpp" line="2741"/>
         <source>%1 songs problematic (check in folder Problematic Songs)
 </source>
         <translation>%1 Lied(er) problematisch (siehe Ordner Problematische Lieder)
@@ -2085,420 +2085,420 @@ Statistik:
         <translation type="obsolete">Durchsuche...</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="878"/>
+        <location filename="../yammigui.cpp" line="882"/>
         <source>New Category ...</source>
         <translation>Neue Kategorie ...</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="893"/>
-        <location filename="../yammigui.cpp" line="898"/>
+        <location filename="../yammigui.cpp" line="897"/>
+        <location filename="../yammigui.cpp" line="902"/>
         <source>{wish}</source>
         <translation>{Wunsch}</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="1028"/>
-        <location filename="../yammigui.cpp" line="1365"/>
+        <location filename="../yammigui.cpp" line="1031"/>
+        <location filename="../yammigui.cpp" line="1368"/>
         <source>- no artist -</source>
         <translation>- kein Künstler -</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="1039"/>
-        <location filename="../yammigui.cpp" line="1386"/>
+        <location filename="../yammigui.cpp" line="1042"/>
+        <location filename="../yammigui.cpp" line="1389"/>
         <source>- no genre -</source>
         <translation>- kein Genre -</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="1045"/>
-        <location filename="../yammigui.cpp" line="1393"/>
+        <location filename="../yammigui.cpp" line="1048"/>
+        <location filename="../yammigui.cpp" line="1396"/>
         <source>- no year -</source>
         <translation>- kein Jahr -</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="1376"/>
+        <location filename="../yammigui.cpp" line="1379"/>
         <source>- no album -</source>
         <translation>- kein Album -</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="1527"/>
+        <location filename="../yammigui.cpp" line="1538"/>
         <source>Executing song plugin cmd ...</source>
         <translation>Führe Liedplugin-Befehl aus ...</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="1945"/>
+        <location filename="../yammigui.cpp" line="1959"/>
         <source>never</source>
         <translation>nie</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2240"/>
+        <location filename="../yammigui.cpp" line="2257"/>
         <source>Category name</source>
         <translation>Kategoriename</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2488"/>
+        <location filename="../yammigui.cpp" line="2506"/>
         <source>Re-Reading all genres from your files ...</source>
         <translation>Erneutes Einlesen aller Genres aus deinen Dateien ...</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2706"/>
+        <location filename="../yammigui.cpp" line="2724"/>
         <source>Scanning ...</source>
         <translation>Durchsuche ...</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2850"/>
+        <location filename="../yammigui.cpp" line="2870"/>
         <source>Quick Browser</source>
         <translation>Schnellbrowser</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2878"/>
+        <location filename="../yammigui.cpp" line="2897"/>
         <source>Artists</source>
         <translation>Künstler</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2882"/>
+        <location filename="../yammigui.cpp" line="2898"/>
         <source>Albums</source>
         <translation>Album</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2886"/>
+        <location filename="../yammigui.cpp" line="2899"/>
         <source>Genre</source>
         <translation>Genre</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2890"/>
+        <location filename="../yammigui.cpp" line="2900"/>
         <source>Year</source>
         <translation>Jahr</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2894"/>
+        <location filename="../yammigui.cpp" line="2901"/>
         <source>Categories</source>
         <translation>Kategorieren</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2898"/>
+        <location filename="../yammigui.cpp" line="2894"/>
         <source>Playlist</source>
         <translation>Wiedergabeliste</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2901"/>
+        <location filename="../yammigui.cpp" line="2902"/>
         <source>Songs Played</source>
         <translation>Lieder gespielt</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2905"/>
+        <location filename="../yammigui.cpp" line="2903"/>
         <source>History</source>
         <translation>Historie</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2909"/>
+        <location filename="../yammigui.cpp" line="2904"/>
         <source>Unclassified</source>
         <translation>Unklassifiziert</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2912"/>
+        <location filename="../yammigui.cpp" line="2895"/>
         <source>Search Results</source>
         <translation>Suchergebnis</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2915"/>
+        <location filename="../yammigui.cpp" line="2906"/>
         <source>Problematic Songs</source>
         <translation>Problematische Lieder</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2918"/>
+        <location filename="../yammigui.cpp" line="2905"/>
         <source>Recent Additions</source>
         <translation>Kürzlich hinzugefügt</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2933"/>
+        <location filename="../yammigui.cpp" line="2920"/>
         <source>&amp;Quit</source>
         <translation>&amp;Beenden</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2938"/>
+        <location filename="../yammigui.cpp" line="2925"/>
         <source>Select &amp;All</source>
         <translation>&amp;Alles auswählen</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2942"/>
+        <location filename="../yammigui.cpp" line="2929"/>
         <source>&amp;Invert Selection</source>
         <translation>&amp;Auswahl umkehren</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2945"/>
+        <location filename="../yammigui.cpp" line="2932"/>
         <source>Update Automatic Folder Structure</source>
         <translation>Automatische Ordnerstruktur aktualisieren</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2953"/>
+        <location filename="../yammigui.cpp" line="2940"/>
         <source>Main Toolbar</source>
         <translation>Hauptwerkzeugleiste</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2958"/>
-        <location filename="../yammigui.cpp" line="3227"/>
+        <location filename="../yammigui.cpp" line="2945"/>
+        <location filename="../yammigui.cpp" line="3217"/>
         <source>Media Player</source>
         <translation>Media Player</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2963"/>
-        <location filename="../yammigui.cpp" line="3244"/>
+        <location filename="../yammigui.cpp" line="2950"/>
+        <location filename="../yammigui.cpp" line="3234"/>
         <source>Song Actions</source>
         <translation>Liedaktionen</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2968"/>
-        <location filename="../yammigui.cpp" line="3254"/>
-        <location filename="../yammigui.cpp" line="3291"/>
+        <location filename="../yammigui.cpp" line="2955"/>
+        <location filename="../yammigui.cpp" line="3244"/>
+        <location filename="../yammigui.cpp" line="3281"/>
         <source>Prelisten</source>
         <translation>Vorhören</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2977"/>
+        <location filename="../yammigui.cpp" line="2964"/>
         <source>&amp;Play</source>
         <translation>&amp;Wiedergeben</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2982"/>
+        <location filename="../yammigui.cpp" line="2969"/>
         <source>&amp;Skip Backward</source>
         <translation>&amp;Springe zum &amp;vorherigen</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2987"/>
+        <location filename="../yammigui.cpp" line="2974"/>
         <source>Skip &amp;Forward</source>
         <translation>Springe zum &amp;nächsten</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2992"/>
+        <location filename="../yammigui.cpp" line="2979"/>
         <source>S&amp;top</source>
         <translation>S&amp;topp</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2997"/>
+        <location filename="../yammigui.cpp" line="2984"/>
         <source>&amp;Switch to/from Playlist</source>
         <translation>&amp;Lied zu/von Wiedergabeliste hinzufügen/entfernen</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3002"/>
+        <location filename="../yammigui.cpp" line="2989"/>
         <source>&amp;Clear Playlist</source>
         <translation>Wiedergabeliste &amp;leeren</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3007"/>
+        <location filename="../yammigui.cpp" line="2994"/>
         <source>Shuffle &amp;Playlist</source>
         <translation>&amp;Wiedergabeliste zufällig sortieren</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3010"/>
+        <location filename="../yammigui.cpp" line="2997"/>
         <source>&amp;Save Database</source>
         <translation>&amp;Speichere Datenbank</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3015"/>
+        <location filename="../yammigui.cpp" line="3002"/>
         <source>Scan &amp;Harddisk ...</source>
         <translation>Festplatte &amp;durchsuchen ...</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3019"/>
+        <location filename="../yammigui.cpp" line="3006"/>
         <source>&amp;Import Selected File(s) ...</source>
         <translation>&amp;Importiere ausgewählte Datei(en) ...</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3023"/>
+        <location filename="../yammigui.cpp" line="3010"/>
         <source>&amp;Check Consistency ...</source>
         <translation>&amp;Korrektheit überprüfen ...</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3026"/>
+        <location filename="../yammigui.cpp" line="3013"/>
         <source>&amp;Fix Genres ...</source>
         <translation>&amp;Korrigiere Genres ...</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3032"/>
+        <location filename="../yammigui.cpp" line="3019"/>
         <source>Autoplay &amp;Off</source>
         <translation>Autoplay au&amp;sschalten</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3037"/>
+        <location filename="../yammigui.cpp" line="3024"/>
         <source>&amp;Longest Not Played</source>
         <translation>Am &amp;längsten nicht gespielt</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3042"/>
+        <location filename="../yammigui.cpp" line="3029"/>
         <source>&amp;Random</source>
         <translation>&amp;Zufällig</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3047"/>
+        <location filename="../yammigui.cpp" line="3034"/>
         <source>Unknown</source>
         <translation>Unbekannt</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3049"/>
+        <location filename="../yammigui.cpp" line="3036"/>
         <source>&amp;Configure Yammi ...</source>
         <translation>Yammi &amp;konfigurieren ...</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3052"/>
+        <location filename="../yammigui.cpp" line="3039"/>
         <source>Enqueue at end (append)</source>
         <translation>Lied am Ende der Wiedergabelisten anhängen</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3057"/>
+        <location filename="../yammigui.cpp" line="3044"/>
         <source>Enqueue as next (prepend)</source>
         <translation>Lied als nächstes in Wiedergabeliste einfügen</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3062"/>
+        <location filename="../yammigui.cpp" line="3049"/>
         <source>Play Now!</source>
         <translation>Jetzt abspielen!</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3067"/>
+        <location filename="../yammigui.cpp" line="3054"/>
         <source>Dequeue Songs</source>
         <translation>Lied aus Wiedergabeliste entfernen</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3072"/>
+        <location filename="../yammigui.cpp" line="3059"/>
         <source>Prelisten Start</source>
         <translation>Vorhören am Anfang</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3077"/>
+        <location filename="../yammigui.cpp" line="3064"/>
         <source>Prelisten Middle</source>
         <translation>Vorhören in der Mitte</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3082"/>
+        <location filename="../yammigui.cpp" line="3069"/>
         <source>Prelisten End</source>
         <translation>Vorhören am Ende</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3087"/>
+        <location filename="../yammigui.cpp" line="3074"/>
         <source>Stop Prelisten</source>
         <translation>Stopp vorhören</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3092"/>
+        <location filename="../yammigui.cpp" line="3079"/>
         <source>Load in Mixxx Deck 1</source>
         <translation>Lade in Mixxx Deck 1</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3096"/>
+        <location filename="../yammigui.cpp" line="3083"/>
         <source>Load in Mixxx Deck 2</source>
         <translation>Lade in Mixxx Deck 2</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3100"/>
+        <location filename="../yammigui.cpp" line="3087"/>
         <source>Song Info ...</source>
         <translation>Liedinfo ...</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3105"/>
+        <location filename="../yammigui.cpp" line="3092"/>
         <source>Goto artist</source>
         <translation>Gehe zu Künstler</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3108"/>
+        <location filename="../yammigui.cpp" line="3095"/>
         <source>Goto album</source>
         <translation>Gehe zu Album</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3111"/>
+        <location filename="../yammigui.cpp" line="3098"/>
         <source>Goto genre</source>
         <translation>Gehe zu Genre</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3114"/>
+        <location filename="../yammigui.cpp" line="3101"/>
         <source>Goto year</source>
         <translation>Gehe zu Jahr</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3117"/>
+        <location filename="../yammigui.cpp" line="3104"/>
         <source>Search for similar entry</source>
         <translation>Suche nach ähnlichem Eintrag</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3120"/>
+        <location filename="../yammigui.cpp" line="3107"/>
         <source>Search for similar artist</source>
         <translation>Suche nach ähnlichem Künstler</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3123"/>
+        <location filename="../yammigui.cpp" line="3110"/>
         <source>Search for similar title</source>
         <translation>Suche nach ähnlichem Titel</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3126"/>
+        <location filename="../yammigui.cpp" line="3113"/>
         <source>Search for similar album</source>
         <translation>Suche nach ähnlichem Album</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3129"/>
+        <location filename="../yammigui.cpp" line="3116"/>
         <source>Check Consistency ...</source>
         <translation>Prüfe Korrektheit ...</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3132"/>
+        <location filename="../yammigui.cpp" line="3119"/>
         <source>Delete Song ...</source>
         <translation>Lösche Lied ...</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3296"/>
+        <location filename="../yammigui.cpp" line="3286"/>
         <source>Go to folder ...</source>
         <translation>Gehe zu Ordner ...</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3302"/>
+        <location filename="../yammigui.cpp" line="3292"/>
         <source>Search for similar ...</source>
         <translation>Suche nach ähnlichem ...</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3308"/>
+        <location filename="../yammigui.cpp" line="3298"/>
         <source>Advanced ...</source>
         <translation>Erweitert ...</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3314"/>
+        <location filename="../yammigui.cpp" line="3304"/>
         <source>Insert Into/Remove From ...</source>
         <translation>Einfügen in/entfernen aus ...</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3316"/>
+        <location filename="../yammigui.cpp" line="3306"/>
         <source>Plugins ...</source>
         <translation>Plugins ...</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3423"/>
+        <location filename="../yammigui.cpp" line="3413"/>
         <source>Artist :  </source>
         <translation>Künstler : </translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3424"/>
+        <location filename="../yammigui.cpp" line="3414"/>
         <source>Title :	  </source>
         <translation>Titel :	 </translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3425"/>
+        <location filename="../yammigui.cpp" line="3415"/>
         <source>Album :	  </source>
         <translation>Album :	 </translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3426"/>
+        <location filename="../yammigui.cpp" line="3416"/>
         <source>Track :	  </source>
         <translation>Titel-Nr. :	 </translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3427"/>
+        <location filename="../yammigui.cpp" line="3417"/>
         <source>Year :	  </source>
         <translation>Jahr :	 </translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3428"/>
+        <location filename="../yammigui.cpp" line="3418"/>
         <source>Genre :	  </source>
         <translation>Genre :	 </translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3429"/>
+        <location filename="../yammigui.cpp" line="3419"/>
         <source>Comment : </source>
         <translation>Kommentar : </translation>
     </message>
@@ -2507,77 +2507,77 @@ Statistik:
         <translation type="obsolete">Lied löschen ...</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3135"/>
+        <location filename="../yammigui.cpp" line="3122"/>
         <source>Move Files</source>
         <translation>Verschiebe Dateien</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3148"/>
+        <location filename="../yammigui.cpp" line="3135"/>
         <source>&amp;File</source>
         <translation>&amp;Datei</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3151"/>
+        <location filename="../yammigui.cpp" line="3138"/>
         <source>&amp;Edit</source>
         <translation>&amp;Bearbeiten</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3156"/>
+        <location filename="../yammigui.cpp" line="3143"/>
         <source>&amp;View</source>
         <translation>&amp;Ansicht</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3158"/>
+        <location filename="../yammigui.cpp" line="3145"/>
         <source>Toolbars</source>
         <translation>Werkzeugleisten</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3163"/>
+        <location filename="../yammigui.cpp" line="3150"/>
         <source>&amp;Columns</source>
         <translation>&amp;Spalten</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3174"/>
+        <location filename="../yammigui.cpp" line="3161"/>
         <source>&amp;Player</source>
         <translation>&amp;Wiedergabe</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3180"/>
+        <location filename="../yammigui.cpp" line="3167"/>
         <source>P&amp;laylist</source>
         <translation>Wiedergabe&amp;liste</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3185"/>
+        <location filename="../yammigui.cpp" line="3172"/>
         <source>&amp;Database</source>
         <translation>&amp;Datenbank</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3192"/>
+        <location filename="../yammigui.cpp" line="3179"/>
         <source>&amp;Autoplay</source>
         <translation>&amp;Autoplay</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3199"/>
+        <location filename="../yammigui.cpp" line="3186"/>
         <source>&amp;Settings</source>
         <translation>&amp;Einstellungen</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3207"/>
+        <location filename="../yammigui.cpp" line="3194"/>
         <source>Main ToolBar</source>
         <translation>Hauptwerkzeugleiste</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3212"/>
+        <location filename="../yammigui.cpp" line="3200"/>
         <source>Search:</source>
         <translation>Suche:</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3215"/>
+        <location filename="../yammigui.cpp" line="3205"/>
         <source>Fuzzy search (Ctrl-F)</source>
         <translation>Unscharfe Suche (Strg-F)</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3237"/>
+        <location filename="../yammigui.cpp" line="3227"/>
         <source>Track position</source>
         <translation>Wiedergabeposition</translation>
     </message>
@@ -2624,7 +2624,7 @@ Statistik:
         <translation>Lade Liedhistorie</translation>
     </message>
     <message>
-        <location filename="../yammimodel.cpp" line="349"/>
+        <location filename="../yammimodel.cpp" line="353"/>
         <source>Error reading database file:
 %1
 (Error: %2, line %3, column %4)</source>
@@ -2633,29 +2633,29 @@ Statistik:
 (Fehler: %2, Zeile %3, Spalte %4)</translation>
     </message>
     <message>
-        <location filename="../yammimodel.cpp" line="350"/>
+        <location filename="../yammimodel.cpp" line="354"/>
         <source>Error reading database</source>
         <translation>Fehler beim Einlesen der Datenbank</translation>
     </message>
     <message>
-        <location filename="../yammimodel.cpp" line="357"/>
+        <location filename="../yammimodel.cpp" line="361"/>
         <source>Your Song Database seems to be very old.
 You might need to create a new Database and scan your harddisk for songs</source>
         <translation>Deine Lieddatenbank scheint sehr alt zu sein.
 Du musst vielleicht eine neue Datenbank anlegen und deine Festplatte nach Liedern durchsuchen</translation>
     </message>
     <message>
-        <location filename="../yammimodel.cpp" line="358"/>
+        <location filename="../yammimodel.cpp" line="362"/>
         <source>Unknown Song Database version</source>
         <translation>Unbekannte Version der Lieddatenbank</translation>
     </message>
     <message>
-        <location filename="../yammimodel.cpp" line="368"/>
+        <location filename="../yammimodel.cpp" line="372"/>
         <source>Loading database</source>
         <translation>Lade Datenbank</translation>
     </message>
     <message>
-        <location filename="../yammimodel.cpp" line="508"/>
+        <location filename="../yammimodel.cpp" line="513"/>
         <source>The base directory for scanning does not exist!
 Set value &quot;scanDir&quot; to an existing directory!</source>
         <translation>Das Basisverzeichnis zum Durchsuchen existiert nicht!
@@ -2667,7 +2667,7 @@ Setze den Wert &quot;scanDir&quot; auf ein existierendes Verzeichnis!</translati
         <translation type="obsolete">Das Basisverzeichnis zum Durchsuchen existiert nicht!</translation>
     </message>
     <message>
-        <location filename="../yammimodel.cpp" line="551"/>
+        <location filename="../yammimodel.cpp" line="556"/>
         <source>scanning directory %1 ...</source>
         <translation>Durchsuche Verzeichnis %1 ...</translation>
     </message>
