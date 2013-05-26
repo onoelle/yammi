@@ -1,0 +1,28 @@
+#!/bin/bash
+# sample script for a Yammi plugin
+# (for information about Yammi see http://yammi.sourceforge.net)
+# 2-2003 by Oliver Noelle
+# usage: yammiSampleScript <trackNr> <artist> <title> <outfile>
+#
+echo "para1: $1"
+# use quotes around filenames, as they might contain spaces! like this:
+if [ -f "$1" ]; then
+  echo "$1 is a file that exists"
+fi
+
+echo "para2: $2"
+echo "para3: $3"
+echo "para4: $4"
+echo "para5: $5"
+echo "para6: $6"
+echo "para7: $7"
+echo "para8: $8"
+echo "para9: $9"
+echo "para10: ${10}"
+echo "para11: ${11}"
+echo "para12: ${12}"
+echo "para13: ${13}"
+echo "para14: ${14}"
+
+
+

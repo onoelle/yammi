@@ -1,0 +1,316 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+<head>
+   <title>Yammi Plugin Page</title>
+</head>
+<body text="#000000" bgcolor="#FFFFFF" link="#191970" vlink="#551AA0" alink="#FE0000">
+&nbsp;
+<table CELLSPACING=0 CELLPADDING=0 WIDTH="100%" >
+
+<h1>Plugin configurations for Yammi</h1>
+
+Yammi has a simple but powerful plugin concept, that allows to execute other programs
+(eg. the CD burning program K3b) feeding them information from Yammi
+(eg. the list of files you want to burn).
+
+Here are some plugin configurations that let you do lots of useful stuff from within
+Yammi.<BR/>
+
+<BR/>
+If you want to write a new plugin, see the <a href="pluginhowto.html">Plugin Howto page</a> (and let me know about it if it is useful).
+
+<ul>
+  <li><a href="#grabAndEncode">Grab and encode script</a></li>
+  <li><a href="#shutdownScript">Shutdown script</a></li>
+  <li><a href="#musicbrainz">Perform a musicbrainz lookup</a></li>
+  <li><a href="#cdlabelgen">Create CD Label</a></li>
+  <li><a href="#exportM3u">Export to m3u Playlist</a></li>
+  <li><a href="#export2Html">Export to html page</a></li>
+  <li><a href="#burnK3bAudio">Burn with K3b(audio)</a></li>
+  <li><a href="#burnK3bData">Burn with K3b(data)</a></li>
+  <li><a href="#exportCsv">Export to csv File</a></li>
+  <li><a href="#copyTo">Copy a song file to a specific directory</a></li>
+</ul>
+
+
+
+<h3><a name="grabAndEncode">Grab and encode script</a></h3>
+This script is invoked from Yammi for quickly ripping one song from a CD, encoding it and adding it to Yammi's
+database. (For ripping and encoding more than one song, I recommend using one of the available tools.)<br>
+
+The following script is installed together with Yammi by default.
+You can easily customize it to your needs (eg. let it encode with ogg vorbis).<br>
+<pre>
+#!/bin/bash
+# script for grabbing and encoding a single track from cd
+# example script provided for Yammi (see http://yammi.sourceforge.net)
+# 3-2002 - 8-2002 by Oliver Noelle
+# usage: yammiGrabAndEncode &lt;trackNr&gt; &lt;artist&gt; &lt;title&gt; &lt;outfile&gt;
+#
+# if you want to customize this:
+# please make sure that &lt;outfile&gt; is only available when
+# grabbing and encoding is completed
+# Yammi relies on that! (it periodically checks whether &lt;outfile&gt; is existing)
+
+# step 1: rip track from cd with the help of cdparanoia
+echo "start grabbing..."
+cdparanoia -q $1 "$4.wav"
+echo "..done"
+
+# step 2: encode the ripped track with the help of notlame
+# here you can specify your encoding options like bitrate...
+echo "start encoding..."
+notlame -S -h --preset studio --ta "$2" --tt "$3" "$4".wav "$4.part"
+echo "..done"
+
+# step 3: mv the encoded mp3 file to final destination
+rm "$4.wav"
+mv "$4.part" "$4"
+
+</pre>
+
+
+
+
+
+<h3><a name="shutdownScript">Shutdown script</a></h3>
+This script is invoked if the sleep mode was activated and Yammi shuts down.
+The following entry is the default:
+<pre>
+dcop ksmserver ksmserver "logout" 0 2 0
+</pre>
+
+This has the same effect as choosing "Logout" / "Turn off computer" from the KDE menu.
+This should ensure that KDE shuts down properly, i.e. your session and open documents from
+running applications should be saved before shutting down.
+
+
+<h3><a name="musicbrainz">MusicBrainz lookup</h3>
+
+If you have the trm utility installed 
+(see <a href="http://www.musicbrainz.org/products/trmgen/download.html">http://www.musicbrainz.org/products/trmgen/download.html</a>)
+you can perform a music brainz search in konqueror for a song with a single click.
+
+<table border="2">
+  <tr>
+    <td>menu entry</td>
+    <td>MusicBrainz Search</td>
+  </tr>
+  <tr>
+    <td>command</td>
+    <td>konqueror http://www.musicbrainz.org/showtrm.html?trm=`/usr/bin/trm "{absoluteFilename}"`&</td>
+  </tr>
+  <tr>
+    <td>custom list</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>plugin mode</td>
+    <td>single</td>
+  </tr>
+</table>
+<p>
+
+<h3>Create CD Label</h3>
+
+As you can burn a selection of songs to a CD from within Yammi,
+it makes perfectly sense to generate a cover for the very same selection of songs, using the information
+that Yammi can provide about these songs (artist, title, album, length, bitrate, ...)
+The best command line tool I found is
+<a target="_parent" name="cdlabelgen" href="http://www.aczone.com/tools/cdinsert/">cdlabelgen</a>,
+which can be feeded with the entries for the cover.
+In the preferences of Yammi, you can define how one entry should look like via the custom list
+field, the following configuration creates reasonable covers with entries like:<br>
+<b>1. Sylver - Turn The Tide (4:06)</b><br>
+
+If you used Yammi to burn song files to multiple CDs (data CDs), you can use the very same steps to
+generate a cover for your Data-CDs, with the difference that it will contain about a hundred entries
+instead of about 20 as a normal Audio-CD.
+
+<table border="2">
+  <tr>
+    <td>menu entry</td>
+    <td>Create CD Label</td>
+  </tr>
+  <tr>
+    <td>command</td>
+    <td>cdlabelgen -c "{inputString:title}" -s "{inputString:subtitle}" -b -w -i "{customList}" > /tmp/cover.ps</td>
+  </tr>
+  <tr>
+    <td>custom list</td>
+    <td>{index}. {artist} - {title} ({length})%</td>
+  </tr>
+  <tr>
+    <td>plugin mode</td>
+    <td>group</td>
+  </tr>
+</table>
+<p>
+
+
+<h3><a name="exportM3u">Export to m3u Playlist</a></h3>
+Exports the selection of songs to a playlist file, readable by most media players.<br>
+
+<table border="2">
+  <tr>
+    <td>menu entry</td>
+    <td>Export as playlist (m3u)</td>
+  </tr>
+  <tr>
+    <td>command</td>
+    <td>echo -n -e "#EXTM3U {customList}" > {fileDialog}</td>
+  </tr>
+  <tr>
+    <td>custom list</td>
+    <td>#EXTINF:{lengthInSeconds},{artist} - {title}{newline}{absoluteFilename}{newline}</td>
+  </tr>
+  <tr>
+    <td>plugin mode</td>
+    <td>group</td>
+  </tr>
+</table>
+<p>
+
+
+<h3><a name="export2Html">Export to html page</a></h3>
+Exports the selection of songs to a web page (html file), viewable by all browsers.<br>
+For this plugin to work, you need the files
+<a href="playlist-header.html">playlist-header.html</a> and
+<a href="playlist-footer.html">playlist-footer.html</a>
+in the directory specified in the plugin command.
+(Save these files with the "Save link as..." function of your browser,
+they are not correct html).
+
+<table border="2">
+  <tr>
+    <td>menu entry</td>
+    <td>Export to html page</td>
+  </tr>
+  <tr>
+    <td>command</td>
+    <td>echo -n -e "`cat /home/oliver/work/playlist-header.html` {customListViaFile} `cat /home/oliver/work/playlist-footer.html`" > {fileDialog}</td>
+  </tr>
+  <tr>
+    <td>custom list</td>
+    <td>&lt;tr&gt;&lt;td&gt;{artist}&lt;/td&gt;&lt;td&gt;{title}&lt;/td&gt;&lt;td&gt;{length}&lt;/td&gt;&lt;/tr&gt;</td>
+  </tr>
+  <tr>
+    <td>plugin mode</td>
+    <td>group</td>
+  </tr>
+</table>
+<p>
+
+
+<h3><a name="burnK3bAudio"></a>Burn with K3b(audio)</h3>
+<b>Update: the new version of k3b uses --audiocd instead of --audio as a parameter.</b>
+This plugin starts K3b with a new audio project, automatically adding all selected files,
+great for burning a selection of songs from Yammi onto an audio CD playable on any CD-Player.
+(technically, first an m3u file of the current selection of songs is created and passed to k3b).
+<br>
+You will need the fantastic burning program <a target="_parent" href="http://k3b.sourceforge.net/">k3b</a> for this script to work
+(but its worth getting it!).
+<table border="2">
+  <tr>
+    <td>menu entry</td>
+    <td>Burn with K3b(audio)</td>
+  </tr>
+  <tr>
+    <td>command</td>
+    <td>echo -n -e "#EXTM3U {customList}" > /tmp/burnlist.m3u && k3b --audiocd /tmp/burnlist.m3u &</td>
+  </tr>
+  <tr>
+    <td>custom list</td>
+    <td>#EXTINF:{lengthInSeconds},{artist} - {title}{newline}{absoluteFilename}{newline}</td>
+  </tr>
+  <tr>
+    <td>plugin mode</td>
+    <td>group</td>
+  </tr>
+</table>
+<p>
+
+<h3><a name="burnK3bData"></a>Burn with K3b(data)</h3>
+<b>Update: the new version of k3b uses --datacd instead of --audio as a parameter.</b>
+This has the same effect as the plugin above, but uses a data project
+This means that you are not creating a normal audio CD but a data CD containing
+the mp3, ogg or whatever files without conversion.
+<table border="2">
+  <tr>
+    <td>menu entry</td>
+    <td>Burn with K3b(data)</td>
+  </tr>
+  <tr>
+    <td>command</td>
+    <td>k3b --datacd {customListViaFile} &</td>
+  </tr>
+  <tr>
+    <td>custom list (the underscore is to be replaced by a space)</td>
+    <td>"{absoluteFilename}"_</td>
+  </tr>
+  <tr>
+    <td>plugin mode</td>
+    <td>group</td>
+  </tr>
+</table>
+<p>
+
+
+
+
+<h3><a name="exportCsv">Export to csv File</a></h3>
+Exports the selection of songs to a list readable by a spreadsheet (eg. KSpread, Excel).<br>
+Note: Avoid the occurrence of a semicolon (";") in the tags of your songs, as it will corrupt the export format.<br>
+(Another note: On my system it took KSpread about 10 minutes to open a csv-file with 3.000 song entries... better be patient!)
+
+
+<table border="2">
+  <tr>
+    <td>menu entry</td>
+    <td>Export csv</td>
+  </tr>
+  <tr>
+    <td>command</td>
+    <td>echo -e "{customList}" > /tmp/export.csv</td>
+  </tr>
+  <tr>
+    <td>custom list</td>
+    <td>{artist};{title};{album};{length};{mediaList};{newline}</td>
+  </tr>
+  <tr>
+    <td>plugin mode</td>
+    <td>group</td>
+  </tr>
+</table>
+<p>
+
+
+
+<h3><a name="copyTo">Copy a song file to a specific directory</a></h3>
+You can use this plugin to copy a selection of songs to a specific directory, for example to transfer songs to your portable media player.<br>
+<table border="2">
+  <tr>
+    <td>menu entry</td>
+    <td>Copy to...</td>
+  </tr>
+  <tr>
+    <td>command</td>
+    <td>cp "{absoluteFilename}" "{directoryDialog}"</td>
+  </tr>
+  <tr>
+    <td>custom list</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>plugin mode</td>
+    <td>single</td>
+  </tr>
+</table>
+<p>
+
+
+<hr>
+Last update 09/3/2005.
+
+</body>
+</html>

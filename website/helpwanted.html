@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+<head>
+  <title>HELP wanted for Yammi</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="GENERATOR" content="Quanta Plus">
+</head>
+<body>
+<h1>Help wanted for Yammi!</h1>
+
+There are a few issues I could need some help on...<br>
+...so if you know a bit about programming under linux (especially autoconf/automake/packaging) read on...
+<br>
+...and let <a HREF="mailto:oli.noelle_AT_web.de" ONMOUSEOVER="window.status='Send me an E-mail' ;return true">me</a>
+know if you could help me out!
+<br>
+(Yes, I am totally lost if it comes to makefiles and configure scripts...)
+
+
+<h3>cannot compute sizeof (int)</h3>
+I had some people experiencing this problem...any ideas? (seems as if some path are not set correctly)
+
+<h3>cannot find QT</h3>
+I experienced this problem myself a couple of times... same reason as for the problem before? Missing path?
+(when this happens, always complains about "no libcrypt found" also)<br>
+Someone reported the following line in configure script was wrong and needed to be commented out:<br>
+<pre>
+ac_qt_libraries="NO"
+</pre>
+<p>
+What causes this line to be created??? Any ideas???</p>
+
+<h3>error on installing: directory /usr/local/bin not existing</h3>
+That path is probably hardcoded into my makefiles...?
+
+Where do you normally install/what variable would you use to install into the correct directory?
+
+<br>
+Where do you put documentation? I've got a handbook for Yammi, but I can't assume that /opt/kde3/share
+or similar exists, can I?
+
+<h3>missing seperator</h3>
+Some users reported the following problem when compiling (makefile screwed?): any ideas what to do?
+<pre>
+~/yammi-0.7> make
+make  all-recursive
+make[1]: Entering directory `/home/thomas/yammi-0.7'
+Making all in yammi
+make[2]: Entering directory `/home/thomas/yammi-0.7/yammi'
+Makefile:423: *** missing separator.  Stop.
+make[2]: Leaving directory `/home/thomas/yammi-0.7/yammi'
+make[1]: *** [all-recursive] Error 1
+make[1]: Leaving directory `/home/thomas/yammi-0.7'
+make: *** [all-recursive-am] Error 2
+</pre>
+
+<h3>conditional compiling</h3>
+To disable linking against certain libraries (such as libkdecore for Noatun support)
+I inserted the following lines into my "configure.in": <br>
+<pre>
+AC_ARG_ENABLE(noatun,
+[  --disable-noatun           disable support for noatun (don't use kdelibs)], enable_noatun=no, enable_noatun=yes)
+AC_MSG_CHECKING(for noatun support)
+if test "x$enable_noatun" = xyes; then
+    LIBS="-lkdecore $LIBS"
+    AC_DEFINE(ENABLE_NOATUN)
+    AC_MSG_RESULT(yes)
+else
+    echo "*** noatun support disabled ***"
+    AC_MSG_RESULT(no)
+fi
+</pre>
+The following line is in acconfig.h:
+<pre>
+#undef ENABLE_NOATUN
+</pre>
+The rationale is that the configure switch --disable-noatun should make Yammi compile withou linking against
+kdelibcore.<br>
+Is this the correct way? Anything else I should take care of?
+
+<h3>conditional compiling 2</h3>
+For disabling eg. XMMS support, I put #ifdef around the complete .h and .cpp file.<br>
+But then compiler complains about syntax errors in the .moc files:<br>
+<pre>
+xmmsplayer.moc.cpp:22: syntax error before `::' <br>
+</pre>
+How can I disable the compiling of a complete class???
+
+
+<h3>multiple configure check</h3>
+When running make, the package first seems to execute "./configure" again, even if "./configure" was run before.
+
+Where is this setting? Can I disable it?
+
+<h3>dependencies</h3>
+How can I exactly find out, which are the dependencies of Yammi?
+<br>
+I know, that it depends on ogg/vorbis libraries...but on which ones exactly?
+<br>
+From which packages do I need the devel-versions installed?
+<br>
+Can I reduce the dependencies (by linking statically to some libs)?
+
+</body>
+</html>

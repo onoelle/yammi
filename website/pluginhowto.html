@@ -1,0 +1,60 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+<head>
+   <title>Yammi Plugin Howto Page</title>
+</head>
+<body text="#000000" bgcolor="#FFFFFF" link="#191970" vlink="#551AA0" alink="#FE0000">
+&nbsp;
+<table CELLSPACING=0 CELLPADDING=0 WIDTH="100%" >
+
+<h1>Plugin concept of Yammi</h1>
+
+Yammi's plugin concept allows executing arbitrary programs for a selection of songs,
+passing the information from Yammi's database about the selected songs
+(eg. filename, artist, length, ...) to the programs as command line parameters.
+
+<h3>Plugin modes</h3>
+There are two plugin modes existing: single or group mode.<BR/>
+In <b>single mode</b>, the configured program is invoked for each selected song.
+A typical usage for single mode could be to copy the selection of songs to
+another location, ie. invoke the copy command for each song.<BR/>
+In <b>group mode</b>, the information for all selected songs is gathered into a list,
+and the configured program is invoked once for the selection and can use the list
+as input parameter. A typical usage would be to create a CD label, first gathering
+the list of songs, then invoke once the program to actually create the label.<BR/>
+
+<h2>Example for single mode</h2>
+Let's assume you have a mp3 player and conveniently want to copy a selection of songs
+from within Yammi to your player. Let's assume that your mp3 player is mounted on
+/media/player.
+
+<ul>
+<li>For <b>plugin mode</b> we choose "single mode" and leave the field <b>custom list</b>, which only
+applies to group mode, empty.</li>
+<li>For <b>menu entry</b> we choose a descriptive name like "copy to mp3 player"</li>
+<li>For <b>command</b> we choose a copy command with the appropriate placeholders, eg:
+cp "{absoluteFilename}" "/media/player/{index}_{filename}". This example will copy
+the selected files to the directory /media/player (you have to make sure that the
+player is mounted before executing the plugin), prefixing the filenames of the songs
+with their index within the selection of songs. Instead of {filename} you could also
+choose a naming pattern like {artist}/{artist} - {title}, if you need the files to 
+have a certain directory structure and/or naming convention at the target location.</li>
+
+</ul>
+
+
+<h2>Example for group mode</h2>
+Let's assume you just burned a selection of songs to CD and would like to create
+a CD label for that selection. We use a command line tool called <a href="http://www.aczone.com/tools/cdinsert/">cdlabelgen</a>,
+which does a good job in creating CD labels from command line parameters. Now we only have to feed the appropriate info from Yammi to this program as the appropriate input parameters.
+
+<ul>
+<li>For <b>plugin mode</b> we choose "group mode".</li>
+<li>In <b>custom list</b> we have to specify how one entry in our list should look like. We choose the following line: "{index}. {artist} - {title} ({length})%" to create entries like "1. Sylver - Angel (2:16)" (notice the trailing "%" which cdlabelgen requires as separator between entries"</li>
+<li>For <b>menu entry</b> we choose a descriptive name like "create CD label"</li>
+<li>For <b>command</b> we choose "cdlabelgen -c "{inputString:title}" -s "{inputString:subtitle}" -b -w -i "{customList}" > {fileDialog}". This first pops up two input dialogs asking the user for a title and subtitle, and then creates a CD label using the custom list as input, which finally gets written to a file that the user has to select. (You could also directly invoke kghostview on the created file to view it.)</li>
+
+</ul>
+
+</body>
+</html>

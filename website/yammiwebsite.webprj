@@ -1,0 +1,138 @@
+<!DOCTYPE webproject>
+<webproject>
+<project usePreviewPrefix="0" previewPrefix="file:file%3A" type="Local" name="Yammi Website" encoding="iso 8859-1" >
+<upload remote_host="yammi.sourceforge.net" remote_port="" remote_path="/home/users/o/on/onoelle/yammi_htdocs" remote_protocol="fish" user="onoelle" />
+<defaultDTD>-//w3c//dtd html 4.01 transitional//en</defaultDTD>
+<item upload_time="1096119266" modified_time="1110392080" url="bugs.html" />
+<item upload_time="1106084506" modified_time="1110479190" url="CHANGELOG.html" />
+<item upload_time="1106353096" modified_time="1110391767" url="download.html" />
+<item upload_time="1106085841" modified_time="1110299588" url="features.html" />
+<item upload_time="1093021570" modified_time="1110296028" url="index.html" />
+<item upload_time="1096109062" modified_time="1110392461" url="navigation.html" />
+<item upload_time="1102964654" modified_time="1110300373" url="plugins.html" />
+<item upload_time="1106594108" modified_time="1106594108" url="translation.html" />
+<templates>templates/</templates>
+<toolbars>toolbars/</toolbars>
+<item upload_time="" modified_time="1110309003" url="mission.html" />
+<author>Oliver Nölle</author>
+<email/>
+<exclude/>
+<item upload_time="1106084362" modified_time="1110479051" url="news.html" />
+<item upload_time="" url="pics/" />
+<item upload_time="1067165689" modified_time="1067165689" url="pics/1rightarrow.png" />
+<item upload_time="1026334618" modified_time="1026334618" url="pics/kde_icon.png" />
+<item upload_time="1026334618" modified_time="1026334618" url="pics/gfx_by_gimp.gif" />
+<item upload_time="1067165689" modified_time="1067165689" url="pics/2rightarrow.png" />
+<item upload_time="1067165696" modified_time="1067165696" url="pics/player_stop.png" />
+<item upload_time="1026334618" modified_time="1026334618" url="pics/madeWithKDev.gif" />
+<item upload_time="" url="pics/.xvpics/" />
+<item upload_time="1064133573" modified_time="1064133573" url="pics/forward.png" />
+<item upload_time="1026334618" modified_time="1026334618" url="pics/sflogo.php" />
+<item upload_time="1064133573" modified_time="1064133573" url="pics/reload.png" />
+<item upload_time="1067165696" modified_time="1067165696" url="pics/player_pause.png" />
+<item upload_time="1067165696" modified_time="1067165696" url="pics/stop.png" />
+<item upload_time="1064133573" modified_time="1064133573" url="pics/help.png" />
+<item upload_time="1092944310" modified_time="1092944310" url="pics/.xvpics/shot1.png" />
+<item upload_time="1092951357" modified_time="1092951357" url="pics/.xvpics/shot2.png" />
+<item upload_time="1092951563" modified_time="1092951563" url="pics/.xvpics/shot3.png" />
+<item upload_time="" url="docs/" />
+<item url="templates/" />
+<item url="toolbars/" />
+<item upload_time="1090866105" modified_time="1090866105" url="playlist-footer.html" />
+<item upload_time="1090865644" modified_time="1090865644" url="playlist-header.html" />
+<item modified_time="1039214994" url="yammiDmburn" />
+<item modified_time="1084829354" url="yammi_fi.qm" />
+<item modified_time="1084829349" url="yammi_fi.ts" />
+<item modified_time="1039474482" url="yammiMp3Edit" />
+<item modified_time="1044996905" url="yammiSamplePlugin" />
+<item modified_time="1110482626" url="yammiwebsite.webprj" />
+<item upload_time="1106157014" modified_time="1110207059" url="docs/screenshot.png" />
+<item upload_time="1106157225" modified_time="1110482544" url="docs/index.html" />
+<item upload_time="1095200521" modified_time="1095200521" url="yammi_nl.qm" />
+<item modified_time="1095200428" url="yammi_nl.ts" />
+<item upload_time="1100335758" modified_time="1110393941" url="pluginhowto.html" />
+<item upload_time="1106157225" modified_time="1110482544" url="docs/advancedTopics.html" />
+<item upload_time="1106157225" modified_time="1110482544" url="docs/compileAndInstall.html" />
+<item upload_time="1106157225" modified_time="1110482544" url="docs/credits.html" />
+<item upload_time="1106157225" modified_time="1110482544" url="docs/deinstallation.html" />
+<item upload_time="1106157225" modified_time="1110482544" url="docs/FAQ.html" />
+<item upload_time="1106157225" modified_time="1110482544" url="docs/folderStructure.html" />
+<item upload_time="1106157225" modified_time="1110482544" url="docs/install.html" />
+<item upload_time="1106157225" modified_time="1110482544" url="docs/introduction.html" />
+<item upload_time="1106157225" modified_time="1110482544" url="docs/keyBindings.html" />
+<item upload_time="1106157225" modified_time="1110482544" url="docs/problems.html" />
+<item upload_time="1106157225" modified_time="1110482544" url="docs/requirements.html" />
+<item upload_time="1106157225" modified_time="1110482544" url="docs/scanHarddisk.html" />
+<item upload_time="1106157225" modified_time="1110482544" url="docs/searching.html" />
+<item upload_time="1106157225" modified_time="1110482544" url="docs/settings.html" />
+<item upload_time="1106157225" modified_time="1110482544" url="docs/songActions.html" />
+<item upload_time="1106157225" modified_time="1110482544" url="docs/songColoring.html" />
+<item upload_time="1106157225" modified_time="1110482544" url="docs/songInformation.html" />
+<item upload_time="1106157225" modified_time="1110482544" url="docs/startFirstTime.html" />
+<item upload_time="1106157225" modified_time="1110482544" url="docs/tipsAndTricks.html" />
+<item upload_time="1106157225" modified_time="1110482544" url="docs/using-yammi.html" />
+<item upload_time="" url="docs/common/" />
+<item upload_time="989319628" modified_time="989319628" url="docs/common/10.png" />
+<item upload_time="989319628" modified_time="989319628" url="docs/common/1.png" />
+<item upload_time="989319628" modified_time="989319628" url="docs/common/2.png" />
+<item upload_time="989319628" modified_time="989319628" url="docs/common/3.png" />
+<item upload_time="989319628" modified_time="989319628" url="docs/common/4.png" />
+<item upload_time="989319628" modified_time="989319628" url="docs/common/5.png" />
+<item upload_time="989319628" modified_time="989319628" url="docs/common/6.png" />
+<item upload_time="989319628" modified_time="989319628" url="docs/common/7.png" />
+<item upload_time="989319628" modified_time="989319628" url="docs/common/8.png" />
+<item upload_time="989319628" modified_time="989319628" url="docs/common/9.png" />
+<item upload_time="1066328278" modified_time="1066328278" url="docs/common/appheader.html" />
+<item upload_time="973168785" modified_time="973168785" url="docs/common/artistic-license.html" />
+<item upload_time="1015321454" modified_time="1015321454" url="docs/common/bottom1.png" />
+<item upload_time="1015579442" modified_time="1015579442" url="docs/common/bottom2.png" />
+<item upload_time="973168785" modified_time="973168785" url="docs/common/bsd-license.html" />
+<item upload_time="1014320354" modified_time="1014320354" url="docs/common/docheadergears.png" />
+<item upload_time="985546536" modified_time="985546536" url="docs/common/doctop1a.png" />
+<item upload_time="985710292" modified_time="985710292" url="docs/common/doctop1b.png" />
+<item upload_time="984437401" modified_time="984437401" url="docs/common/doctop1.png" />
+<item upload_time="984437401" modified_time="984437401" url="docs/common/doctop2.png" />
+<item upload_time="1064133533" modified_time="1064133533" url="docs/common/doxygen.css" />
+<item upload_time="973243949" modified_time="973243949" url="docs/common/fdl-license" />
+<item upload_time="973791818" modified_time="973791818" url="docs/common/fdl-license.html" />
+<item upload_time="1074343972" modified_time="1074343972" url="docs/common/footer.html" />
+<item upload_time="973243949" modified_time="973243949" url="docs/common/gpl-license" />
+<item upload_time="1019732718" modified_time="1019732718" url="docs/common/gpl-license.html" />
+<item upload_time="1014324263" modified_time="1014324263" url="docs/common/grad.png" />
+<item upload_time="1014320400" modified_time="1014320400" url="docs/common/headerbg.png" />
+<item upload_time="1061455519" modified_time="1061455519" url="docs/common/header.html" />
+<item upload_time="962634171" modified_time="962634171" url="docs/common/kde-common.css" />
+<item upload_time="1077961779" modified_time="1077961779" url="docs/common/kde-default.css" />
+<item upload_time="962634171" modified_time="962634171" url="docs/common/kde-localised.css.template" />
+<item upload_time="1046681558" modified_time="1046681558" url="docs/common/kde_logo_bg.png" />
+<item upload_time="1046681558" modified_time="1046681558" url="docs/common/kde_logo.png" />
+<item upload_time="1064133533" modified_time="1064133533" url="docs/common/kde-web.css" />
+<item upload_time="1033149757" modified_time="1033149757" url="docs/common/kmenu.png" />
+<item upload_time="973243949" modified_time="973243949" url="docs/common/lgpl-license" />
+<item upload_time="973791818" modified_time="973791818" url="docs/common/lgpl-license.html" />
+<item upload_time="1074343972" modified_time="1074343972" url="docs/common/mainfooter.html" />
+<item upload_time="1016211220" modified_time="1016211220" url="docs/common/mainheader.html" />
+<item upload_time="973168785" modified_time="973168785" url="docs/common/qpl-license.html" />
+<item upload_time="984437401" modified_time="984437401" url="docs/common/shadow.png" />
+<item upload_time="1015321454" modified_time="1015321454" url="docs/common/web-docbottom.png" />
+<item upload_time="1013181707" modified_time="1013181707" url="docs/common/web-doctop.png" />
+<item upload_time="973168785" modified_time="973168785" url="docs/common/x11-license.html" />
+<item upload_time="952365350" modified_time="952365350" url="docs/common/xml.dcl" />
+<item modified_time="1110482519" url="docs/index.docbook" />
+<item modified_time="1106157216" url="docs/myreplace" />
+<item modified_time="1106350198" url="yammi-1.2-0.rc2.2mdk.i586.rpm" />
+<item modified_time="1110479061" url="start.html" />
+<item modified_time="1110393004" url="screenshots.html" />
+<item modified_time="1110482544" url="docs/chooseMediaPlayer.html" />
+<item modified_time="1092951563" url="pics/burn-to-cd.png" />
+<item modified_time="1110308084" url="pics/goto-album2.png" />
+<item modified_time="1110307935" url="pics/goto-album.png" />
+<item modified_time="1110300747" url="pics/goto-album-small.png" />
+<item modified_time="1110207996" url="pics/mass-editing.png" />
+<item modified_time="1110301051" url="pics/search-middle.png" />
+<item modified_time="1110207059" url="pics/search.png" />
+<item modified_time="1092944310" url="pics/search-small.png" />
+<item modified_time="1110207786" url="pics/songinfo.png" />
+<item modified_time="1028660627" url="pics/yammi.png" />
+</project>
+</webproject>

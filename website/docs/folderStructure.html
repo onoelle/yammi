@@ -1,0 +1,77 @@
+<html><head><title>Folder structure</title><link rel="stylesheet" href="common/kde-default.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.67.2"><meta name="keywords" content="KDE, yammi, mp3, ogg, wav, flac, tag, xmms, noatun, fuzzy search, digital music, collection, music manager, organization"><link rel="start" href="index.html" title="The yammi 1.2.1 Handbook"><link rel="up" href="using-yammi.html" title="Chapter 3. Using yammi 1.2.1"><link rel="prev" href="songColoring.html" title="Song coloring"><link rel="next" href="songActions.html" title="Song Actions"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta name="GENERATOR" content="KDE XSL Stylesheet V1.13 using libxslt"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div style="background-image: url(common/top-middle.png); width: 100%; height: 131px;"><div style="position: absolute;                      right: 0px;"><img src="common/top-right-konqueror.png" style="margin: 0px" alt=""></div><div style="position: absolute; left: 0px;"><img src="common/top-left.png" style="margin: 0px" alt=""></div><div style="position: absolute;                         top: 25px;                          right: 100px;                          text-align: right;                          font-size: xx-large;                          font-weight: bold;                          text-shadow: #fff 0px 0px 5px;                          color: #444">Folder structure</div></div><div style="margin-top: 20px; background-color: #white;                        color: black;                       margin-left: 20px;                        margin-right: 20px;"><div style="position: absolute;                          left: 20px;"><a accesskey="p" href="songColoring.html">Prev</a></div><div style="position: absolute;                          right: 20px;"><a accesskey="n" href="songActions.html">Next</a></div><div class="navCenter">Using <span class="application">yammi 1.2.1</span></div></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="folderStructure"></a>Folder structure</h2></div></div></div><p>
+The following folder structure is provided automatically:
+</p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2547387"></a>Folder "All Music"</h3></div></div></div><p>
+Contains all songs in Yammi's database.
+</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2547399"></a>Folder "Playlist"</h3></div></div></div><p>
+Contains the queue of songs, that are still to play (and includes the currently played song).
+After a song was played, it is removed from the Playlist (all played songs are listed in the folder "Songs Played").
+</p><p>
+In this folder you can move songs around to change the order of the playlist.
+However, you are not allowed to drag a song to the top position, as this is the currently played song.
+Please note that you can only drag songs if the folder is ordered
+ascending after the first column ("Pos"), which is the default ordering when you click on
+this folder.
+</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2547425"></a>Folders Albums/Artists/Genre/Year</h3></div></div></div><p>
+Contains a subfolder for every album (artist, genre, year) for which there are more than x
+songs in the database, with x=group threshold. The group threshold defaults to 5, but
+can be configured in the settings.
+</p><p>
+Please note that the default group threshold of 5 means that eg. if you add a single song from one artist there will be no folder for that artist created unless there are more than 5 songs of this artist.
+</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2547448"></a>Folder Categories</h3></div></div></div><p>
+This folder contains "categories" (normally known as "playlists") of songs,
+that can be created and filled by the user. You can add a song to a category by right-clicking on it and choosing "Insert into..." and the desired category.
+</p><p>
+The songs in each category can be ordered by dragging the songs to the desired
+position. Please note that you can only drag songs if the folder is ordered
+ascending after the first column ("Pos"), which is the default ordering when you click on
+this folder.
+</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2547472"></a>Folder History</h3></div></div></div><p>
+This folder contains the history of played songs, each song shown with the
+timestamp when it was played. For played songs to be logged, you need to activate
+"logging of played songs" in the preferences. This folder only contains the
+songs loaded from the history file at startup. Songs played in this session will
+be appended to the folder "Songs Played".
+</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2547490"></a>Folder Songs Played</h3></div></div></div><p>
+Contains all songs that have been played in this session of Yammi, together with
+a timestamp. When Yammi terminates and logging of played songs is activated (see the settings dialog), these songs will be appended to the history file, and will appear in the folder "History" the next time Yammi is started.
+</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2547507"></a>Folder Media</h3></div></div></div><p>
+Contains a subfolder for every media (eg. CD or DVD) that you prepared for burning with Yammi.
+
+Additionally contains a subfolder containing all those songs that are not contained on any media.
+This allows to easyily manage a backup of your song collection, quickly accessing those songs
+that are not yet contained on a (backup) media.
+
+When burning song files to a CD or DVD with the assistance of Yammi, the program adds
+information to its database about on which media (and under which path on that media) each song is available. This enables you to quickly find on which media you have song files,
+and it enables Yammi to request the required media to load songs into a swap directory (jukebox functionality).
+</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2547531"></a>Folder Problematic Songs</h3></div></div></div><p>
+This Folder contains songs that were found problematic when performing a consistency check or database update (eg. songs contained twice). 
+
+Note: This folder will not be saved to Yammi's database, therefore you should look at the identified problems immediately after performing a database update or consistency check.
+</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2547548"></a>Folder Search Results</h3></div></div></div><p>
+This folder contains the results of the last search.
+</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2547560"></a>Folder Recent Additions</h3></div></div></div><p>
+Yammi automatically groups into this folder the latest additions to your song database.
+</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2547573"></a>Folder Unclassified</h3></div></div></div><p>
+This folder contains all songs that are not appearing in either
+
+</p><p>
+- a category
+
+</p><p>
+- the folder "Artists"
+
+</p><p>
+- the folder "Albums"
+
+</p><p>
+This folder can assist you in organizing your songs into categories.
+</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2547598"></a>Directory structure</h3></div></div></div><p>
+Yammi does not require a specific directory structure of your song collection as Yammi keeps its own database of songs with all necessary information (artist, title, album, filename, ...).
+This song databse is saved as a simple xml file in the user's home directory (normally under ~/.kde/share/apps/yammi/songdb.xml).
+</p><p>
+However, you should not move your songfiles from outside Yammi, because Yammi will not find the files any more (although Yammi tries to detect files that have been moved on a database update).
+Therefore Yammi provides a function to move song files, which at the same time updates the information in Yammi's database.
+</p><p>
+Tip: It still helps a lot to have a fixed directory structure, like {artist}/{album}/{artist} - {title}.{suffix}, and Yammi actively supports this with its consistency check modes (which allow you to move your songs to the appropriate location and/or rename them automatically when you change tags).
+</p></div></div><div style="background-color: #white; color: black;                  margin-top: 20px; margin-left: 20px;                  margin-right: 20px;"><div style="position: absolute; left: 20px;"><a accesskey="p" href="songColoring.html">Prev</a></div><div style="position: absolute; right: 20px;"><a accesskey="n" href="songActions.html">Next</a></div><div align="center"><a accesskey="h" href="index.html">Home</a></div></div><div style="background-color: #white;   color: black;         margin-left: 20px;   margin-right: 20px;"><div class="navLeft">Song coloring </div><div class="navRight"> Song Actions</div><div class="navCenter"><a accesskey="u" href="using-yammi.html">Up</a></div></div><br><br><div class="bannerBottom" style="background-image: url(common/bottom-middle.png);                                        background-repeat: x-repeat;                                         width: 100%;                                         height: 100px;                                         bottom:0px;"><div class="BannerBottomRight"><img src="common/bottom-right.png" style="margin: 0px" alt=""></div><div class="bannerBottomLeft"><img src="common/bottom-left.png" style="margin: 0px;" alt=""></div></div></body></html>

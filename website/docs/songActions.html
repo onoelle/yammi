@@ -1,0 +1,59 @@
+<html><head><title>Song Actions</title><link rel="stylesheet" href="common/kde-default.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.67.2"><meta name="keywords" content="KDE, yammi, mp3, ogg, wav, flac, tag, xmms, noatun, fuzzy search, digital music, collection, music manager, organization"><link rel="start" href="index.html" title="The yammi 1.2.1 Handbook"><link rel="up" href="using-yammi.html" title="Chapter 3. Using yammi 1.2.1"><link rel="prev" href="folderStructure.html" title="Folder structure"><link rel="next" href="settings.html" title="Settings"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta name="GENERATOR" content="KDE XSL Stylesheet V1.13 using libxslt"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div style="background-image: url(common/top-middle.png); width: 100%; height: 131px;"><div style="position: absolute;                      right: 0px;"><img src="common/top-right-konqueror.png" style="margin: 0px" alt=""></div><div style="position: absolute; left: 0px;"><img src="common/top-left.png" style="margin: 0px" alt=""></div><div style="position: absolute;                         top: 25px;                          right: 100px;                          text-align: right;                          font-size: xx-large;                          font-weight: bold;                          text-shadow: #fff 0px 0px 5px;                          color: #444">Song Actions</div></div><div style="margin-top: 20px; background-color: #white;                        color: black;                       margin-left: 20px;                        margin-right: 20px;"><div style="position: absolute;                          left: 20px;"><a accesskey="p" href="folderStructure.html">Prev</a></div><div style="position: absolute;                          right: 20px;"><a accesskey="n" href="settings.html">Next</a></div><div class="navCenter">Using <span class="application">yammi 1.2.1</span></div></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="songActions"></a>Song Actions</h2></div></div></div><p>
+All song actions are available from the context menu (i.e. clicking on a song with the right mouse button). The most important ones are also available in the toolbar or via keyboard shortcuts.
+</p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2547651"></a>Play...</h3></div></div></div><p>
+<div class="itemizedlist"><ul type="disc"><li><p>
+Enqueue - Enqueues a song to the end of Yammi's playlist.
+</p></li><li><p>
+Enqueue as next - Enqueues a song as the next song to play in Yammi's playlist.
+</p></li><li><p>
+Play immediately - First enqueues the song as the next to play, then causes a song change, so the song
+is immediately played.
+</p></li><li><p>
+Dequeue - Dequeues a song from Yammi's playlist, ie. removes all occurrences of this song
+in Yammi's playlist (if applied on a song in the playlist, only removes that occurrence in
+the playlist).
+</p></li></ul></div>
+
+</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2547696"></a>Prelisten to...</h3></div></div></div><p>
+(only available if a second sound device is configured in the preferences)
+
+<div class="itemizedlist"><ul type="disc"><li><p>
+start - Immediately starts playing the song via the second sound device, starting from the beginning.
+</p></li><li><p>
+middle - Immediately starts playing the song via the second sound device, starting in the middle.
+</p></li><li><p>
+end - Immediately starts playing the song via the second sound device, starting close to the end.
+</p></li></ul></div>
+</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2548555"></a>Info...</h3></div></div></div><p>
+Opens a dialog showing information about the selected song(s), which also allows to edit the tags.
+</p><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id2548566"></a>Correct filename / directory</h4></div></div></div><p>
+If you have the consistency modes (keep filenames/directories consistent) activated, the checkbox "correct to" after the filename/directory will be checked, and you will see how Yammi will modify the filename or directory when you change the tag information of songs. A grey entry indicates that the filename or directory is consistent with the naming scheme you configured in the preferences, whereas a red entry indicates that it has to be corrected. If corresponding box is checked, these corrections will be made as soon as you exit the dialog with the "OK" button.
+</p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id2548585"></a>Multiple selected songs / mass editing</h4></div></div></div><p>
+If more than one song is selected, the song info dialog is slightly different:
+</p><div class="itemizedlist"><ul type="disc"><li><p>
+Yammi shows the total size and length of the selection
+</p></li><li><p>
+entries that are not exactly the same for all selected songs are shown as "!". When you change this entry, you can conveniently set that entry for all selected songs to the new value (ie. unifying that value for the whole selection). As long, as this is not changed, these entries are not touched
+</p></li><li><p>
+entries that are exactly the same can be conveniently changed for all selected songs by changing the value shown
+</p></li></ul></div></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2548622"></a>Insert into...</h3></div></div></div><p>
+Allows to insert one or more songs into an existing category or remove them from a category.
+The icon in front of the category name indicates whether the song(s) will be added or
+removed from the category. A check mark means that the song(s) is already contained.
+Selecting a category with a check will remove the song(s) from it. A check mark in brackets means that some of the selected songs are contained in the category, and selecting the category will add all songs to it.
+</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2548640"></a>Search for similar...</h3></div></div></div><p>
+This allows you to quickly search for songs from the same artist (or album or title) as the selected song. It simply takes the information you requested from the selected song and performs the usual fuzzy search with that information.
+</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2548654"></a>Advanced...</h3></div></div></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id2548659"></a>Delete</h4></div></div></div><p>
+Deleting can be done in two ways:
+</p><p>
+1. Deleting the database entry in Yammi's database (does not touch the song file).
+</p><p>
+2. Deleting the song file, which is done by moving the song file to the trash directory.
+Yammi still keeps the database entry. Usually this makes sense if the song is present on at least one media, and therefore can be loaded to the harddisk before playing via Yammi's jukebox functionality (and therefore the dialog shows you on which media that song is registered).
+</p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id2548682"></a>Move file to...</h4></div></div></div><p>
+Moves a file to another directory. The path information in Yammi's database will be updated with the new location of that file.
+</p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id2548694"></a>Check consistency...</h4></div></div></div><p>
+Performs a consistency check on the selected song(s). See "Checking consistency" in "Advanced topics".
+</p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id2548705"></a>Burn to media...</h4></div></div></div><p>
+assists in burning the selected songs to one or more media (distributing the selection of songs over multiple media according to the configured media capacity). See "Burning files" in "Advanced Topics".
+</p></div></div></div><div style="background-color: #white; color: black;                  margin-top: 20px; margin-left: 20px;                  margin-right: 20px;"><div style="position: absolute; left: 20px;"><a accesskey="p" href="folderStructure.html">Prev</a></div><div style="position: absolute; right: 20px;"><a accesskey="n" href="settings.html">Next</a></div><div align="center"><a accesskey="h" href="index.html">Home</a></div></div><div style="background-color: #white;   color: black;         margin-left: 20px;   margin-right: 20px;"><div class="navLeft">Folder structure </div><div class="navRight"> Settings</div><div class="navCenter"><a accesskey="u" href="using-yammi.html">Up</a></div></div><br><br><div class="bannerBottom" style="background-image: url(common/bottom-middle.png);                                        background-repeat: x-repeat;                                         width: 100%;                                         height: 100px;                                         bottom:0px;"><div class="BannerBottomRight"><img src="common/bottom-right.png" style="margin: 0px" alt=""></div><div class="bannerBottomLeft"><img src="common/bottom-left.png" style="margin: 0px;" alt=""></div></div></body></html>

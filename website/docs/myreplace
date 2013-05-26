@@ -1,0 +1,8 @@
+#! /bin/sh
+     # Source files are saved as "filename.txt.bak" in case of error
+     # The '&&' after cp is an additional safety feature
+     for file in *.html
+     do
+        mv $file $file.bak &&
+        sed 's|help:/common|common|g' $file.bak >$file
+     done

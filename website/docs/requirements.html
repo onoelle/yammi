@@ -1,0 +1,38 @@
+<html><head><title>Requirements</title><link rel="stylesheet" href="common/kde-default.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.67.2"><meta name="keywords" content="KDE, yammi, mp3, ogg, wav, flac, tag, xmms, noatun, fuzzy search, digital music, collection, music manager, organization"><link rel="start" href="index.html" title="The yammi 1.2.1 Handbook"><link rel="up" href="install.html" title="Chapter 2. Installation"><link rel="prev" href="install.html" title="Chapter 2. Installation"><link rel="next" href="compileAndInstall.html" title="Compilation and installation"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta name="GENERATOR" content="KDE XSL Stylesheet V1.13 using libxslt"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div style="background-image: url(common/top-middle.png); width: 100%; height: 131px;"><div style="position: absolute;                      right: 0px;"><img src="common/top-right-konqueror.png" style="margin: 0px" alt=""></div><div style="position: absolute; left: 0px;"><img src="common/top-left.png" style="margin: 0px" alt=""></div><div style="position: absolute;                         top: 25px;                          right: 100px;                          text-align: right;                          font-size: xx-large;                          font-weight: bold;                          text-shadow: #fff 0px 0px 5px;                          color: #444">Requirements</div></div><div style="margin-top: 20px; background-color: #white;                        color: black;                       margin-left: 20px;                        margin-right: 20px;"><div style="position: absolute;                          left: 20px;"><a accesskey="p" href="install.html">Prev</a></div><div style="position: absolute;                          right: 20px;"><a accesskey="n" href="compileAndInstall.html">Next</a></div><div class="navCenter">Installation</div></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="requirements"></a>Requirements</h2></div></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2484602"></a>Mandatory</h3></div></div></div><div class="itemizedlist"><ul type="disc"><li><p>
+<a href="http://www.trolltech.com/products/qt/" target="_top">Trolltech's QT</a>, version 3.2 or higher
+</p></li><li><p>
+<a href="http://developer.kde.org/~wheeler/taglib.html" target="_top">taglib</a>, version 1.3 or higher
+</p></li><li><p>
+libstdc++
+</p></li></ul></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2485278"></a>Optional (but recommended)</h3></div></div></div><div class="itemizedlist"><ul type="disc"><li><p>
+For XMMS support:
+<a href="http://www.xmms.org" target="_top">XMMS</a>, version 1.2.6 or later
+and glib (-lgtk -lgdk -lgmodule -lglib -ldl -lXi -lXext -lX11 -lm -lxmms)
+</p></li><li><p>
+For Gstreamer support (experimental):
+<a href="http://gstreamer.freedesktop.org/" target="_top">gstreamer</a> (version 0.6.x, versions 0.8.x will NOT work) and <a href="http://developer.kde.org/~wheeler/juk.html" target="_top">kgst bindings</a> (version 0.6.1)
+</p></li><li><p>
+For listening to songs on a second soundcard during playback on your primary soundcard
+you need a suited command line tool. By default these can be mpg123 (for mp3 files), ogg123 (for ogg files), mplayer (for flac files) or play (for wav files).
+</p></li><li><p>
+If you want to use the grab and encode script which can be called from within yammi,
+you need cdparanoia and (not)lame or other ripping/encoding tools, for details have a look
+at the script "yammiGrabAndEncode" included in the distribution.
+</p></li><li><p>
+Depending on your plugin configuration you might need other programs
+(such as k3b for the "Burn Audio/Data CD" plugins or cdlabelgen for the "Create CD Label" plugin).
+See the <a href="http://yammi.sourceforge.net/plugins" target="_top">Yammi plugin page</a> for details.
+</p></li></ul></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2485368"></a>...for compiling from source</h3></div></div></div><p>
+If you want to compile Yammi from source, you need additionally to the above
+mentioned requirements the following packages installed:
+</p><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id2485380"></a>Mandatory</h4></div></div></div><div class="itemizedlist"><ul type="disc"><li><p>
+Xfree86-devel
+</p></li><li><p>
+taglib-devel
+</p></li><li><p>
+qt3-devel
+</p></li></ul></div></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id2485417"></a>Optional</h4></div></div></div><div class="itemizedlist"><ul type="disc"><li><p>
+For XMMS support: xmms-devel
+</p></li><li><p>
+For Gstreamer support: gstreamer-devel
+</p></li></ul></div></div></div></div><div style="background-color: #white; color: black;                  margin-top: 20px; margin-left: 20px;                  margin-right: 20px;"><div style="position: absolute; left: 20px;"><a accesskey="p" href="install.html">Prev</a></div><div style="position: absolute; right: 20px;"><a accesskey="n" href="compileAndInstall.html">Next</a></div><div align="center"><a accesskey="h" href="index.html">Home</a></div></div><div style="background-color: #white;   color: black;         margin-left: 20px;   margin-right: 20px;"><div class="navLeft">Installation </div><div class="navRight"> Compilation and installation</div><div class="navCenter"><a accesskey="u" href="install.html">Up</a></div></div><br><br><div class="bannerBottom" style="background-image: url(common/bottom-middle.png);                                        background-repeat: x-repeat;                                         width: 100%;                                         height: 100px;                                         bottom:0px;"><div class="BannerBottomRight"><img src="common/bottom-right.png" style="margin: 0px" alt=""></div><div class="bannerBottomLeft"><img src="common/bottom-left.png" style="margin: 0px;" alt=""></div></div></body></html>

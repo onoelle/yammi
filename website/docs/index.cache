@@ -1,0 +1,796 @@
+<FILENAME filename="index.html"><html><head><title>The yammi 1.2-beta Handbook</title><link rel="stylesheet" href="help:/common/kde-default.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.48"><meta name="keywords" content="KDE, yammi, mp3, ogg, wav, tag, fuzzy search, digital music, collection, organization"><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="GENERATOR" content="KDE XSL Stylesheet V1.13 using libxslt"><link rel="home" href="index.html" title="The yammi 1.2-beta Handbook"><link rel="next" href="introduction.html" title="Chapter 1. Introduction"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tr class="header"><td colspan="2"> </td></tr><tr id="logo"><td valign="top"><img src="help:/common/kde_logo.png" alt="KDE -         The K Desktop Environment" width="296" height="79" border="0"></td><td valign="middle" align="center" id="location"><h1>The yammi 1.2-beta Handbook</h1></td></tr></table><table width="100%" class="header"><tbody><tr><td align="left" class="navLeft" width="33%"></td><td align="center" class="navCenter" width="34%"> </td><td align="right" class="navRight" width="33%"> 
+		      <a accesskey="n" href="introduction.html">Next</a></td></tr></tbody></table><div class="book"><div class="titlepage"><div><h1 class="title"><a name="id2837651"></a>The yammi 1.2-beta Handbook</h1></div><div><p class="author">  Oliver Noelle <tt>&lt;oli.noelle@web.de&gt;</tt></p></div><div>Revision <span class="releaseinfo">1.2-beta (<span class="date">2004-12-08</span>)</span></div><div><p class="copyright">Copyright © 2001, 2004 Oliver Noelle</p></div><div><div class="legalnotice"><p>Permission is granted to copy, distribute and/or modify this
+document under the terms of the GNU Free Documentation License,
+Version 1.1 or any later version published by the Free Software
+Foundation; with no Invariant Sections, with no Front-Cover Texts, and
+with no Back-Cover Texts.  A copy of the license is included in <a href="credits.html#gnu-fdl">the section entitled "GNU Free Documentation License"</a>.</p></div></div><div><div><div class="abstract"><p>(please note that this handbook needs a general update and re-formatting...)</p><p>
+Yammi ("Yet Another Music Manager I...") is a digital music collection (eg. mp3, ogg, wav files)
+manager targeted at large song collections (eg. a few thousand songs).
+It allows you to efficiently organize your music collection (edit tags, rename or move files, ...)
+and features intuitive and fast access to songs for playing or editing them.
+
+For playing songs Yammi currently supports three media player backends, namely XMMS
+(<a href="http://www.xmms.org" target="_top">X MultiMedia System</a>), 
+<a href="http://noatun.kde.org" target="_top">Noatun</a>
+or an internal <a href="http://www.arts-project.org/" target="_top">arts</a> player.
+
+</p></div></div></div><hr></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt>1. <a href="introduction.html">Introduction</a></dt><dt>2. <a href="install.html">Installation</a></dt><dd><dl><dt><a href="install.html#getyammi">How to obtain Yammi</a></dt><dt><a href="requirements.html">Requirements</a></dt><dd><dl><dt><a href="requirements.html#id2837457">Mandatory</a></dt><dt><a href="requirements.html#id2837495">Optional (but recommended)</a></dt><dt><a href="requirements.html#id2792436">...for compiling from source</a></dt></dl></dd><dt><a href="compileAndInstall.html">Compilation and installation</a></dt><dt><a href="problems.html">Problems</a></dt><dt><a href="deinstallation.html">Deinstallation</a></dt><dt><a href="startFirstTime.html">Starting the first time</a></dt></dl></dd><dt>3. <a href="using-yammi.html">Using yammi 1.2-beta</a></dt><dd><dl><dt><a href="using-yammi.html#generalUsage">General Usage</a></dt><dt><a href="scanHarddisk.html">Scanning harddisk</a></dt><dt><a href="searching.html">Searching</a></dt><dt><a href="songInformation.html">Song information</a></dt><dt><a href="songColoring.html">Song coloring</a></dt><dt><a href="folderStructure.html">Folder structure</a></dt><dd><dl><dt><a href="folderStructure.html#id2851652">Folder "All Music"</a></dt><dt><a href="folderStructure.html#id2851664">Folder "Playlist"</a></dt><dt><a href="folderStructure.html#id2851685">Folder Albums (Artists, Genre)</a></dt><dt><a href="folderStructure.html#id2851702">Folder Categories</a></dt><dt><a href="folderStructure.html#id2851723">Folder History</a></dt><dt><a href="folderStructure.html#id2851743">Folder Songs Played</a></dt><dt><a href="folderStructure.html#id2851760">Folder Media</a></dt><dt><a href="folderStructure.html#id2851797">Folder Problematic Songs</a></dt><dt><a href="folderStructure.html#id2851813">Folder Search Results</a></dt><dt><a href="folderStructure.html#id2851826">Folder Recent Additions</a></dt><dt><a href="folderStructure.html#id2851840">Folder Unclassified</a></dt><dt><a href="folderStructure.html#id2852103">Directory structure</a></dt></dl></dd><dt><a href="songActions.html">Song Actions</a></dt><dd><dl><dt><a href="songActions.html#id2852149">Play...</a></dt><dt><a href="songActions.html#id2852170">Prelisten to...</a></dt><dt><a href="songActions.html#id2852190">Info...</a></dt><dt><a href="songActions.html#id2852217">Insert into...</a></dt><dt><a href="songActions.html#id2852236">Search for similar...</a></dt><dt><a href="songActions.html#id2852252">Advanced...</a></dt></dl></dd><dt><a href="settings.html">Settings</a></dt><dt><a href="keyBindings.html">Key bindings</a></dt><dt><a href="advancedTopics.html">Advanced topics</a></dt><dd><dl><dt><a href="advancedTopics.html#id2852417">Autoplay</a></dt><dt><a href="advancedTopics.html#id2852429">Checking consistency</a></dt><dt><a href="advancedTopics.html#id2852558">Burning files</a></dt><dt><a href="advancedTopics.html#id2852630">Playlist management of yammi</a></dt><dt><a href="advancedTopics.html#id2852660">Updating song database</a></dt><dt><a href="advancedTopics.html#id2852724">Scanning removable media</a></dt><dt><a href="advancedTopics.html#id2852748">Selecting single files to add to your database</a></dt><dt><a href="advancedTopics.html#id2852764">Grabbing and encoding new songs</a></dt><dt><a href="advancedTopics.html#id2852797">Child-safe mode</a></dt><dt><a href="advancedTopics.html#id2852828">Sleep mode</a></dt><dt><a href="advancedTopics.html#id2852862">Removable Media Management</a></dt><dt><a href="advancedTopics.html#id2852919">External Scripts / Plugins</a></dt></dl></dd><dt><a href="tipsAndTricks.html">Tips and tricks...</a></dt><dt><a href="FAQ.html">FAQ</a></dt><dd><dl><dt><a href="FAQ.html#id2852988">Why does Yammi delete all played songs from the XMMS playlist?</a></dt></dl></dd></dl></dd><dt>4. <a href="credits.html">Credits and License</a></dt></dl></div><FILENAME filename="introduction.html"><html><head><title>Chapter 1. Introduction</title><link rel="stylesheet" href="help:/common/kde-default.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.48"><meta name="keywords" content="KDE, yammi, mp3, ogg, wav, tag, fuzzy search, digital music, collection, organization"><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="GENERATOR" content="KDE XSL Stylesheet V1.13 using libxslt"><link rel="home" href="index.html" title="The yammi 1.2-beta Handbook"><link rel="up" href="index.html" title="The yammi 1.2-beta Handbook"><link rel="previous" href="index.html" title="The yammi 1.2-beta Handbook"><link rel="next" href="install.html" title="Chapter 2. Installation"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tr class="header"><td colspan="2"> </td></tr><tr id="logo"><td valign="top"><img src="help:/common/kde_logo.png" alt="KDE -         The K Desktop Environment" width="296" height="79" border="0"></td><td valign="middle" align="center" id="location"><h1>Introduction</h1></td></tr></table><table width="100%" class="header"><tbody><tr><td align="left" class="navLeft" width="33%"><a accesskey="p" href="index.html">Prev</a></td><td align="center" class="navCenter" width="34%"> </td><td align="right" class="navRight" width="33%"> 
+		      <a accesskey="n" href="install.html">Next</a></td></tr></tbody></table><div class="chapter"><div class="titlepage"><div><h2 class="title"><a name="introduction"></a>Chapter 1. Introduction</h2></div></div><p>
+With the success story of the mp3 format, more and more people are creating their personal digital music collection, consisting of a few hundred upto many thousand songs in popular formats such as mp3. With a growing song collection the need for some kind of organization tool increases. This tool should assist in finding songs and do something with them (eg. play, edit, categorize, backup or delete them). Yammi is targeted at exactly these needs, well suited to manage a song collection of 10.000 songs.
+</p><p>
+Yammi enables you to
+
+<div class="itemizedlist"><ul type="disc"><li><p>
+conveniently find even misspelled songs within seconds (fuzzy search)
+</p></li><li><p>
+organize your songs into playlists (called "categories")
+</p></li><li><p>
+read and write id3 and ogg tags, easily keeping tags and filenames consistent
+</p></li><li><p>
+keep statistics by logging when a song was played (when/how many times was song x played?)
+</p></li><li><p>
+assist in burning a selection of songs to a single audio CD or
+your whole song collection to multiple data CDs (automatically distributing your songs over multiple media)
+</p></li><li><p>
+act as a jukebox, loading song files which are not on your harddisk on demand from removable media/CDs
+</p></li><li><p>
+prelisten to songs on headphone while normal playback to DJ your own party (needs a second sound card)
+</p></li><li><p>
+invoke other programs or custom scripts such as k3b, cdlabelgen, ... to burn CDs, generate CD labels or execute other commands, using the information from Yammi's song database
+</p></li></ul></div>
+</p><p>
+The feature that distinguishes this tool from others is an extremely powerful fuzzy (tolerant)
+search function, that is still as intuitive and easy as it can get:
+Type in anything that you are looking for (eg. artist, title, album, comment) and within a second Yammi
+will provide a list of "best matches", using a clever fuzzy search algorithm.
+Not knowing the exact spelling of titles or artists is no longer a problem, as Yammi will find them
+anyway - even if you are horribly misspelling them in the search.
+This fuzzy search works just as you would expect it, even with a couple of thousand songs in the database.
+Therefore you never ever have to dig through your directory structure to find a particular song.
+</p><p>
+Yammi organizes your songs into folders.
+On the one hand there are automatic folders such as one folder per artist, album, year and genre.
+On the other hand, custom folders (comparable to playlists) can be created by the user.
+In the view of each folder, songs can be sorted after
+just every available information, eg. title, artist, length, most recently added songs,
+most recently played, bitrate...
+</p><p>
+Yammi does as an excellent job on a party. In connection with XMMS'
+<a href="http://www.netcologne.de/~nc-eisenlpe2/xmms-crossfade/" target="_top">crossfading plugin</a>
+(<a href="http://volnorm.sourceforge.net/" target="_top">volume normalization</a> might be useful, too)
+and a second sound card (to prelisten to songs on a headphone) it almost replaces the DJ,
+and is still extremely easy to use even for people with little computer experience.
+</p><p>
+Yammi does also a good job in replacing your CD-player. In connection with a infrared receiver and
+<a href="http://sourceforge.net/projects/lirc/" target="_top">LIRC</a> its basic functions can be accessed
+with a remote control, even enabling you to turn off your computer via remote control
+(or let it play five more songs before shutting down).
+</p><p>
+Although I tried my best, I can take no liability that Yammi is not causing any damage
+to your song collection, your speakers or your neighbour...
+</p></div><table width="100%" class="bottom-nav"><tr><td width="33%" align="left" valign="top" class="navLeft"><a href="index.html">Prev</a></td><td width="34%" align="center" valign="top" class="navCenter"><a href="index.html">Home</a></td><td width="33%" align="right" valign="top" class="navRight"><a href="install.html">Next</a></td></tr><tr><td width="33%" align="left" class="navLeft">The yammi 1.2-beta Handbook </td><td width="34%" align="center" class="navCenter"><a href="index.html">Up</a></td><td width="33%" align="right" class="navRight"> Installation</td></tr></table></body></html></FILENAME><FILENAME filename="install.html"><html><head><title>Chapter 2. Installation</title><link rel="stylesheet" href="help:/common/kde-default.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.48"><meta name="keywords" content="KDE, yammi, mp3, ogg, wav, tag, fuzzy search, digital music, collection, organization"><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="GENERATOR" content="KDE XSL Stylesheet V1.13 using libxslt"><link rel="home" href="index.html" title="The yammi 1.2-beta Handbook"><link rel="up" href="index.html" title="The yammi 1.2-beta Handbook"><link rel="previous" href="introduction.html" title="Chapter 1. Introduction"><link rel="next" href="requirements.html" title="Requirements"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tr class="header"><td colspan="2"> </td></tr><tr id="logo"><td valign="top"><img src="help:/common/kde_logo.png" alt="KDE -         The K Desktop Environment" width="296" height="79" border="0"></td><td valign="middle" align="center" id="location"><h1>Installation</h1></td></tr></table><table width="100%" class="header"><tbody><tr><td align="left" class="navLeft" width="33%"><a accesskey="p" href="introduction.html">Prev</a></td><td align="center" class="navCenter" width="34%"> </td><td align="right" class="navRight" width="33%"> 
+		      <a accesskey="n" href="requirements.html">Next</a></td></tr></tbody></table><div class="chapter"><div class="titlepage"><div><h2 class="title"><a name="install"></a>Chapter 2. Installation</h2></div></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="getyammi"></a>How to obtain Yammi</h2></div></div><p>
+Give it a try at <a href="http://yammi.sourceforge.net" target="_top">The Yammi Homepage</a>.
+</p></div><FILENAME filename="requirements.html"><html><head><title>Requirements</title><link rel="stylesheet" href="help:/common/kde-default.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.48"><meta name="keywords" content="KDE, yammi, mp3, ogg, wav, tag, fuzzy search, digital music, collection, organization"><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="GENERATOR" content="KDE XSL Stylesheet V1.13 using libxslt"><link rel="home" href="index.html" title="The yammi 1.2-beta Handbook"><link rel="up" href="install.html" title="Chapter 2. Installation"><link rel="previous" href="install.html" title="Chapter 2. Installation"><link rel="next" href="compileAndInstall.html" title="Compilation and installation"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tr class="header"><td colspan="2"> </td></tr><tr id="logo"><td valign="top"><img src="help:/common/kde_logo.png" alt="KDE -         The K Desktop Environment" width="296" height="79" border="0"></td><td valign="middle" align="center" id="location"><h1>Requirements</h1></td></tr></table><table width="100%" class="header"><tbody><tr><td align="left" class="navLeft" width="33%"><a accesskey="p" href="install.html">Prev</a></td><td align="center" class="navCenter" width="34%">Installation</td><td align="right" class="navRight" width="33%"> 
+		      <a accesskey="n" href="compileAndInstall.html">Next</a></td></tr></tbody></table><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="requirements"></a>Requirements</h2></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id2837457"></a>Mandatory</h3></div></div><div class="itemizedlist"><ul type="disc"><li><p>
+<a href="http://www.trolltech.com/products/qt/" target="_top">Trolltech's QT</a>, version 3.x
+</p></li><li><p>
+libstdc++
+</p></li></ul></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id2837495"></a>Optional (but recommended)</h3></div></div><div class="itemizedlist"><ul type="disc"><li><p>
+For reading id3 tags: <a href="http://www.id3lib.org" target="_top">id3lib</a>, version 3.8.2 or higher
+(recommended: newest version) (-lid3 -lz)
+</p></li><li><p>
+For reading ogg tags and layer information: 
+<a href="http://www.vorbis.com/download_unix.psp" target="_top">libvorbis, libvorbisfile and libogg</a>
+(-lvorbisfile -lvorbis -logg)
+</p></li><li><p>
+For XMMS support:
+<a href="http://www.xmms.org" target="_top">XMMS</a>, version 1.2.6 or later
+and glib (-lgtk -lgdk -lgmodule -lglib -ldl -lXi -lXext -lX11 -lm -lxmms)
+</p></li><li><p>
+For listening to songs on a second soundcard during playback on your primary soundcard
+you need the command line tools mpg123 (for mp3 files), ogg123 (for ogg files) or play (for wav files).
+</p></li><li><p>
+If you want to use the ripping and encoding function offered from within yammi,
+you need cdparanoia and (not)lame or other ripping/encoding tools, for details have a look
+at the script "yammiGrabAndEncode" included in the distribution.
+</p></li><li><p>
+If you want to use certain plugins you might need other programs
+(such as k3b for the "Burn with K3b" plugins or cdlabelgen for the "Create CD Label" plugin).
+</p></li></ul></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id2792436"></a>...for compiling from source</h3></div></div><p>
+If you want to compile Yammi from source, you need additionally to the above
+mentioned requirements the following packages installed:
+</p><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="id2792450"></a>Mandatory</h4></div></div><div class="itemizedlist"><ul type="disc"><li><p>
+Xfree86-devel
+</p></li><li><p>
+qt3-devel
+</p></li></ul></div></div><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="id2792479"></a>Optional</h4></div></div><div class="itemizedlist"><ul type="disc"><li><p>
+For reading id3 tags: libz
+</p></li><li><p>
+For reading ogg tags and layer information: libvorbis-dev
+</p></li><li><p>
+For XMMS support: xmms-devel
+</p></li></ul></div></div></div></div><table width="100%" class="bottom-nav"><tr><td width="33%" align="left" valign="top" class="navLeft"><a href="install.html">Prev</a></td><td width="34%" align="center" valign="top" class="navCenter"><a href="index.html">Home</a></td><td width="33%" align="right" valign="top" class="navRight"><a href="compileAndInstall.html">Next</a></td></tr><tr><td width="33%" align="left" class="navLeft">Installation </td><td width="34%" align="center" class="navCenter"><a href="install.html">Up</a></td><td width="33%" align="right" class="navRight"> Compilation and installation</td></tr></table></body></html></FILENAME><FILENAME filename="compileAndInstall.html"><html><head><title>Compilation and installation</title><link rel="stylesheet" href="help:/common/kde-default.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.48"><meta name="keywords" content="KDE, yammi, mp3, ogg, wav, tag, fuzzy search, digital music, collection, organization"><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="GENERATOR" content="KDE XSL Stylesheet V1.13 using libxslt"><link rel="home" href="index.html" title="The yammi 1.2-beta Handbook"><link rel="up" href="install.html" title="Chapter 2. Installation"><link rel="previous" href="requirements.html" title="Requirements"><link rel="next" href="problems.html" title="Problems"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tr class="header"><td colspan="2"> </td></tr><tr id="logo"><td valign="top"><img src="help:/common/kde_logo.png" alt="KDE -         The K Desktop Environment" width="296" height="79" border="0"></td><td valign="middle" align="center" id="location"><h1>Compilation and installation</h1></td></tr></table><table width="100%" class="header"><tbody><tr><td align="left" class="navLeft" width="33%"><a accesskey="p" href="requirements.html">Prev</a></td><td align="center" class="navCenter" width="34%">Installation</td><td align="right" class="navRight" width="33%"> 
+		      <a accesskey="n" href="problems.html">Next</a></td></tr></tbody></table><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="compileAndInstall"></a>Compilation and installation</h2></div></div><p>
+Before compilation, verify that an environment variable named "KDEDIR" points to your KDE installation
+(to check, type "export" in a shell and verify that KDEDIR is set to the proper directory).
+If this variable is not set, proper installation into the correct directories cannot be guaranteed,
+and your most likely better off to type "export KDEDIR=/opt/kde3" to set this variable (using a bash and assuming that KDE was installed to /opt/kde3).
+
+In order to compile and install Yammi on your system, type the following in
+the base directory of the Yammi distribution:
+</p><p>&gt; ./configure</p><p>&gt; make</p><p>&gt; make install</p><p>
+If compilation is successful, the executable "yammi" and some other files will be installed to your KDE directories.
+</p></div><table width="100%" class="bottom-nav"><tr><td width="33%" align="left" valign="top" class="navLeft"><a href="requirements.html">Prev</a></td><td width="34%" align="center" valign="top" class="navCenter"><a href="index.html">Home</a></td><td width="33%" align="right" valign="top" class="navRight"><a href="problems.html">Next</a></td></tr><tr><td width="33%" align="left" class="navLeft">Requirements </td><td width="34%" align="center" class="navCenter"><a href="install.html">Up</a></td><td width="33%" align="right" class="navRight"> Problems</td></tr></table></body></html></FILENAME><FILENAME filename="problems.html"><html><head><title>Problems</title><link rel="stylesheet" href="help:/common/kde-default.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.48"><meta name="keywords" content="KDE, yammi, mp3, ogg, wav, tag, fuzzy search, digital music, collection, organization"><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="GENERATOR" content="KDE XSL Stylesheet V1.13 using libxslt"><link rel="home" href="index.html" title="The yammi 1.2-beta Handbook"><link rel="up" href="install.html" title="Chapter 2. Installation"><link rel="previous" href="compileAndInstall.html" title="Compilation and installation"><link rel="next" href="deinstallation.html" title="Deinstallation"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tr class="header"><td colspan="2"> </td></tr><tr id="logo"><td valign="top"><img src="help:/common/kde_logo.png" alt="KDE -         The K Desktop Environment" width="296" height="79" border="0"></td><td valign="middle" align="center" id="location"><h1>Problems</h1></td></tr></table><table width="100%" class="header"><tbody><tr><td align="left" class="navLeft" width="33%"><a accesskey="p" href="compileAndInstall.html">Prev</a></td><td align="center" class="navCenter" width="34%">Installation</td><td align="right" class="navRight" width="33%"> 
+		      <a accesskey="n" href="deinstallation.html">Next</a></td></tr></tbody></table><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="problems"></a>Problems</h2></div></div><p>
+If you experience problems with compiling or installing, please consult the README file
+included in the distribution
+which explains various switches for the configure script that might be necessary on your system.
+
+If you still experience problems, try contacting the developers, not only including information
+about the problem, but also about your system configuration. If possible, attach the
+console log of configure and make.
+</p></div><table width="100%" class="bottom-nav"><tr><td width="33%" align="left" valign="top" class="navLeft"><a href="compileAndInstall.html">Prev</a></td><td width="34%" align="center" valign="top" class="navCenter"><a href="index.html">Home</a></td><td width="33%" align="right" valign="top" class="navRight"><a href="deinstallation.html">Next</a></td></tr><tr><td width="33%" align="left" class="navLeft">Compilation and installation </td><td width="34%" align="center" class="navCenter"><a href="install.html">Up</a></td><td width="33%" align="right" class="navRight"> Deinstallation</td></tr></table></body></html></FILENAME><FILENAME filename="deinstallation.html"><html><head><title>Deinstallation</title><link rel="stylesheet" href="help:/common/kde-default.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.48"><meta name="keywords" content="KDE, yammi, mp3, ogg, wav, tag, fuzzy search, digital music, collection, organization"><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="GENERATOR" content="KDE XSL Stylesheet V1.13 using libxslt"><link rel="home" href="index.html" title="The yammi 1.2-beta Handbook"><link rel="up" href="install.html" title="Chapter 2. Installation"><link rel="previous" href="problems.html" title="Problems"><link rel="next" href="startFirstTime.html" title="Starting the first time"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tr class="header"><td colspan="2"> </td></tr><tr id="logo"><td valign="top"><img src="help:/common/kde_logo.png" alt="KDE -         The K Desktop Environment" width="296" height="79" border="0"></td><td valign="middle" align="center" id="location"><h1>Deinstallation</h1></td></tr></table><table width="100%" class="header"><tbody><tr><td align="left" class="navLeft" width="33%"><a accesskey="p" href="problems.html">Prev</a></td><td align="center" class="navCenter" width="34%">Installation</td><td align="right" class="navRight" width="33%"> 
+		      <a accesskey="n" href="startFirstTime.html">Next</a></td></tr></tbody></table><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="deinstallation"></a>Deinstallation</h2></div></div><p>
+In the base directory of the yammi distribution, type
+</p><p>&gt; make uninstall</p></div><table width="100%" class="bottom-nav"><tr><td width="33%" align="left" valign="top" class="navLeft"><a href="problems.html">Prev</a></td><td width="34%" align="center" valign="top" class="navCenter"><a href="index.html">Home</a></td><td width="33%" align="right" valign="top" class="navRight"><a href="startFirstTime.html">Next</a></td></tr><tr><td width="33%" align="left" class="navLeft">Problems </td><td width="34%" align="center" class="navCenter"><a href="install.html">Up</a></td><td width="33%" align="right" class="navRight"> Starting the first time</td></tr></table></body></html></FILENAME><FILENAME filename="startFirstTime.html"><html><head><title>Starting the first time</title><link rel="stylesheet" href="help:/common/kde-default.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.48"><meta name="keywords" content="KDE, yammi, mp3, ogg, wav, tag, fuzzy search, digital music, collection, organization"><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="GENERATOR" content="KDE XSL Stylesheet V1.13 using libxslt"><link rel="home" href="index.html" title="The yammi 1.2-beta Handbook"><link rel="up" href="install.html" title="Chapter 2. Installation"><link rel="previous" href="deinstallation.html" title="Deinstallation"><link rel="next" href="using-yammi.html" title="Chapter 3. Using yammi 1.2-beta"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tr class="header"><td colspan="2"> </td></tr><tr id="logo"><td valign="top"><img src="help:/common/kde_logo.png" alt="KDE -         The K Desktop Environment" width="296" height="79" border="0"></td><td valign="middle" align="center" id="location"><h1>Starting the first time</h1></td></tr></table><table width="100%" class="header"><tbody><tr><td align="left" class="navLeft" width="33%"><a accesskey="p" href="deinstallation.html">Prev</a></td><td align="center" class="navCenter" width="34%">Installation</td><td align="right" class="navRight" width="33%"> 
+		      <a accesskey="n" href="using-yammi.html">Next</a></td></tr></tbody></table><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="startFirstTime"></a>Starting the first time</h2></div></div><p>
+After successful installation, you can start yammi by typing "yammi" in a shell
+(if you encounter any problems or want to know what's going on it helps to have
+a look at the terminal output that yammi creates on the console).
+On first startup, yammi will create some files (usually, in ~/.kde/share/apps/yammi) 
+to store your song database, preferences settings and logfiles.
+Before you start scanning your harddisk for songs, you should edit the preferences
+(Configure -&gt; Settings...) and set the paths to the location of your song collection.
+</p></div><table width="100%" class="bottom-nav"><tr><td width="33%" align="left" valign="top" class="navLeft"><a href="deinstallation.html">Prev</a></td><td width="34%" align="center" valign="top" class="navCenter"><a href="index.html">Home</a></td><td width="33%" align="right" valign="top" class="navRight"><a href="using-yammi.html">Next</a></td></tr><tr><td width="33%" align="left" class="navLeft">Deinstallation </td><td width="34%" align="center" class="navCenter"><a href="install.html">Up</a></td><td width="33%" align="right" class="navRight"> Using yammi 1.2-beta</td></tr></table></body></html></FILENAME></div><table width="100%" class="bottom-nav"><tr><td width="33%" align="left" valign="top" class="navLeft"><a href="introduction.html">Prev</a></td><td width="34%" align="center" valign="top" class="navCenter"><a href="index.html">Home</a></td><td width="33%" align="right" valign="top" class="navRight"><a href="requirements.html">Next</a></td></tr><tr><td width="33%" align="left" class="navLeft">Introduction </td><td width="34%" align="center" class="navCenter"><a href="index.html">Up</a></td><td width="33%" align="right" class="navRight"> Requirements</td></tr></table></body></html></FILENAME><FILENAME filename="using-yammi.html"><html><head><title>Chapter 3. Using yammi 1.2-beta</title><link rel="stylesheet" href="help:/common/kde-default.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.48"><meta name="keywords" content="KDE, yammi, mp3, ogg, wav, tag, fuzzy search, digital music, collection, organization"><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="GENERATOR" content="KDE XSL Stylesheet V1.13 using libxslt"><link rel="home" href="index.html" title="The yammi 1.2-beta Handbook"><link rel="up" href="index.html" title="The yammi 1.2-beta Handbook"><link rel="previous" href="startFirstTime.html" title="Starting the first time"><link rel="next" href="scanHarddisk.html" title="Scanning harddisk"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tr class="header"><td colspan="2"> </td></tr><tr id="logo"><td valign="top"><img src="help:/common/kde_logo.png" alt="KDE -         The K Desktop Environment" width="296" height="79" border="0"></td><td valign="middle" align="center" id="location"><h1>Using yammi 1.2-beta</h1></td></tr></table><table width="100%" class="header"><tbody><tr><td align="left" class="navLeft" width="33%"><a accesskey="p" href="startFirstTime.html">Prev</a></td><td align="center" class="navCenter" width="34%"> </td><td align="right" class="navRight" width="33%"> 
+		      <a accesskey="n" href="scanHarddisk.html">Next</a></td></tr></tbody></table><div class="chapter"><div class="titlepage"><div><h2 class="title"><a name="using-yammi"></a>Chapter 3. Using yammi 1.2-beta</h2></div></div><p>
+This is how yammi looks like in action:
+<div class="screenshot"><div xmlns:doc="http://nwalsh.com/xsl/documentation/1.0" class="mediaobject"><hr><img src="screenshot.png" alt="Screenshot"><hr></div></div>
+</p><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="generalUsage"></a>General Usage</h2></div></div><p>
+The general usage of Yammi is intuitive:
+
+On the left, the "quick browser" provides a list of folders, each containing a list of songs (or subfolders).
+
+On the right, the "songlist" lists all songs contained in the selected folder.
+
+Normally you would use the quick browser to pick a selection of (or all) songs, then the songlist to
+pick one (or more) songs to play, edit, categorise, ...
+
+The most important actions are available in the toolbar, others in the menu or the context menu
+(right-click on a song or a folder).
+</p></div><FILENAME filename="scanHarddisk.html"><html><head><title>Scanning harddisk</title><link rel="stylesheet" href="help:/common/kde-default.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.48"><meta name="keywords" content="KDE, yammi, mp3, ogg, wav, tag, fuzzy search, digital music, collection, organization"><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="GENERATOR" content="KDE XSL Stylesheet V1.13 using libxslt"><link rel="home" href="index.html" title="The yammi 1.2-beta Handbook"><link rel="up" href="using-yammi.html" title="Chapter 3. Using yammi 1.2-beta"><link rel="previous" href="using-yammi.html" title="Chapter 3. Using yammi 1.2-beta"><link rel="next" href="searching.html" title="Searching"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tr class="header"><td colspan="2"> </td></tr><tr id="logo"><td valign="top"><img src="help:/common/kde_logo.png" alt="KDE -         The K Desktop Environment" width="296" height="79" border="0"></td><td valign="middle" align="center" id="location"><h1>Scanning harddisk</h1></td></tr></table><table width="100%" class="header"><tbody><tr><td align="left" class="navLeft" width="33%"><a accesskey="p" href="using-yammi.html">Prev</a></td><td align="center" class="navCenter" width="34%">Using yammi 1.2-beta</td><td align="right" class="navRight" width="33%"> 
+		      <a accesskey="n" href="searching.html">Next</a></td></tr></tbody></table><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="scanHarddisk"></a>Scanning harddisk</h2></div></div><p>
+The first step for using Yammi is to get your songs into Yammi's database by having your harddisk scanned.
+
+For this to work correctly, you should first check your configuration (Configuration-&gt;Settings) and make sure
+that the directory "base directory for scanning" is pointing to the base directory of your song collection.
+Also, give a path for "trash directory for deleted song files", as this directory is needed when
+you want to delete songs within Yammi (Yammi does not delete any files, but moves them
+to this directory and skips this directory when scanning for new songs).
+
+Now start your database update (Database-&gt;Update), which should insert all found songs into Yammi's database.
+After the update you are ready to use Yammi, for example search for songs, categorize them or enqueue them
+to your media player.
+For more information about scanning your harddisk, or for information about scanning CDs,
+see "Updating Database" in "Advanced Topics".
+</p></div><table width="100%" class="bottom-nav"><tr><td width="33%" align="left" valign="top" class="navLeft"><a href="using-yammi.html">Prev</a></td><td width="34%" align="center" valign="top" class="navCenter"><a href="index.html">Home</a></td><td width="33%" align="right" valign="top" class="navRight"><a href="searching.html">Next</a></td></tr><tr><td width="33%" align="left" class="navLeft">Using yammi 1.2-beta </td><td width="34%" align="center" class="navCenter"><a href="using-yammi.html">Up</a></td><td width="33%" align="right" class="navRight"> Searching</td></tr></table></body></html></FILENAME><FILENAME filename="searching.html"><html><head><title>Searching</title><link rel="stylesheet" href="help:/common/kde-default.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.48"><meta name="keywords" content="KDE, yammi, mp3, ogg, wav, tag, fuzzy search, digital music, collection, organization"><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="GENERATOR" content="KDE XSL Stylesheet V1.13 using libxslt"><link rel="home" href="index.html" title="The yammi 1.2-beta Handbook"><link rel="up" href="using-yammi.html" title="Chapter 3. Using yammi 1.2-beta"><link rel="previous" href="scanHarddisk.html" title="Scanning harddisk"><link rel="next" href="songInformation.html" title="Song information"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tr class="header"><td colspan="2"> </td></tr><tr id="logo"><td valign="top"><img src="help:/common/kde_logo.png" alt="KDE -         The K Desktop Environment" width="296" height="79" border="0"></td><td valign="middle" align="center" id="location"><h1>Searching</h1></td></tr></table><table width="100%" class="header"><tbody><tr><td align="left" class="navLeft" width="33%"><a accesskey="p" href="scanHarddisk.html">Prev</a></td><td align="center" class="navCenter" width="34%">Using yammi 1.2-beta</td><td align="right" class="navRight" width="33%"> 
+		      <a accesskey="n" href="songInformation.html">Next</a></td></tr></tbody></table><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="searching"></a>Searching</h2></div></div><p>
+Type in anything into the search field, Yammi immediately shows you the best matches, rated with
+a percentage (you can configure the threshold for the shown matches in the settings).
+That's basically it, simple but effective, just give it a try!
+
+Yammi looks into title, artist, album and comment for similarities.
+
+Yammi will automatically switch to the folder "Search Results" whenever you type
+in anything into the search field. Ctrl-F or ESC set the focus to the search field
+and clear it.
+</p></div><table width="100%" class="bottom-nav"><tr><td width="33%" align="left" valign="top" class="navLeft"><a href="scanHarddisk.html">Prev</a></td><td width="34%" align="center" valign="top" class="navCenter"><a href="index.html">Home</a></td><td width="33%" align="right" valign="top" class="navRight"><a href="songInformation.html">Next</a></td></tr><tr><td width="33%" align="left" class="navLeft">Scanning harddisk </td><td width="34%" align="center" class="navCenter"><a href="using-yammi.html">Up</a></td><td width="33%" align="right" class="navRight"> Song information</td></tr></table></body></html></FILENAME><FILENAME filename="songInformation.html"><html><head><title>Song information</title><link rel="stylesheet" href="help:/common/kde-default.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.48"><meta name="keywords" content="KDE, yammi, mp3, ogg, wav, tag, fuzzy search, digital music, collection, organization"><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="GENERATOR" content="KDE XSL Stylesheet V1.13 using libxslt"><link rel="home" href="index.html" title="The yammi 1.2-beta Handbook"><link rel="up" href="using-yammi.html" title="Chapter 3. Using yammi 1.2-beta"><link rel="previous" href="searching.html" title="Searching"><link rel="next" href="songColoring.html" title="Song coloring"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tr class="header"><td colspan="2"> </td></tr><tr id="logo"><td valign="top"><img src="help:/common/kde_logo.png" alt="KDE -         The K Desktop Environment" width="296" height="79" border="0"></td><td valign="middle" align="center" id="location"><h1>Song information</h1></td></tr></table><table width="100%" class="header"><tbody><tr><td align="left" class="navLeft" width="33%"><a accesskey="p" href="searching.html">Prev</a></td><td align="center" class="navCenter" width="34%">Using yammi 1.2-beta</td><td align="right" class="navRight" width="33%"> 
+		      <a accesskey="n" href="songColoring.html">Next</a></td></tr></tbody></table><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="songInformation"></a>Song information</h2></div></div><p>
+In the songlist there is one row per song, containing various information about the song.
+The following columns are available:
+
+(* = corresponds to id3/ogg tag info, + = extracted from mp3/ogg layer info)
+
+artist*
+
+title*
+
+album*
+
+length+
+
+year*
+
+track*
+
+genre*
+
+addedTo
+
+bitrate+
+
+path
+
+filename
+
+comment*
+
+last played
+
+
+Depending on the chosen folder, there may be additional columns, for example:
+
+Match (folder "Search Results")
+
+Pos (folder "Playlist" and "Categories")
+
+Played on (folder "SongsPlayed" and "History")
+
+Reason (folder "Problematic Songs")
+</p></div><table width="100%" class="bottom-nav"><tr><td width="33%" align="left" valign="top" class="navLeft"><a href="searching.html">Prev</a></td><td width="34%" align="center" valign="top" class="navCenter"><a href="index.html">Home</a></td><td width="33%" align="right" valign="top" class="navRight"><a href="songColoring.html">Next</a></td></tr><tr><td width="33%" align="left" class="navLeft">Searching </td><td width="34%" align="center" class="navCenter"><a href="using-yammi.html">Up</a></td><td width="33%" align="right" class="navRight"> Song coloring</td></tr></table></body></html></FILENAME><FILENAME filename="songColoring.html"><html><head><title>Song coloring</title><link rel="stylesheet" href="help:/common/kde-default.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.48"><meta name="keywords" content="KDE, yammi, mp3, ogg, wav, tag, fuzzy search, digital music, collection, organization"><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="GENERATOR" content="KDE XSL Stylesheet V1.13 using libxslt"><link rel="home" href="index.html" title="The yammi 1.2-beta Handbook"><link rel="up" href="using-yammi.html" title="Chapter 3. Using yammi 1.2-beta"><link rel="previous" href="songInformation.html" title="Song information"><link rel="next" href="folderStructure.html" title="Folder structure"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tr class="header"><td colspan="2"> </td></tr><tr id="logo"><td valign="top"><img src="help:/common/kde_logo.png" alt="KDE -         The K Desktop Environment" width="296" height="79" border="0"></td><td valign="middle" align="center" id="location"><h1>Song coloring</h1></td></tr></table><table width="100%" class="header"><tbody><tr><td align="left" class="navLeft" width="33%"><a accesskey="p" href="songInformation.html">Prev</a></td><td align="center" class="navCenter" width="34%">Using yammi 1.2-beta</td><td align="right" class="navRight" width="33%"> 
+		      <a accesskey="n" href="folderStructure.html">Next</a></td></tr></tbody></table><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="songColoring"></a>Song coloring</h2></div></div><p>
+The songs entries in the songlist are normally written in black, except:
+
+currently played song (red)
+
+song enqueued in playlist (blue)
+
+song already played in this session (green)
+
+song not available on local harddisk (grey) (=&gt; probably needs to be loaded before playing)
+
+song available in swap dir (dark grey) (=&gt; song is already loaded, will be only
+checked for folder "Playlist")
+</p></div><table width="100%" class="bottom-nav"><tr><td width="33%" align="left" valign="top" class="navLeft"><a href="songInformation.html">Prev</a></td><td width="34%" align="center" valign="top" class="navCenter"><a href="index.html">Home</a></td><td width="33%" align="right" valign="top" class="navRight"><a href="folderStructure.html">Next</a></td></tr><tr><td width="33%" align="left" class="navLeft">Song information </td><td width="34%" align="center" class="navCenter"><a href="using-yammi.html">Up</a></td><td width="33%" align="right" class="navRight"> Folder structure</td></tr></table></body></html></FILENAME><FILENAME filename="folderStructure.html"><html><head><title>Folder structure</title><link rel="stylesheet" href="help:/common/kde-default.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.48"><meta name="keywords" content="KDE, yammi, mp3, ogg, wav, tag, fuzzy search, digital music, collection, organization"><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="GENERATOR" content="KDE XSL Stylesheet V1.13 using libxslt"><link rel="home" href="index.html" title="The yammi 1.2-beta Handbook"><link rel="up" href="using-yammi.html" title="Chapter 3. Using yammi 1.2-beta"><link rel="previous" href="songColoring.html" title="Song coloring"><link rel="next" href="songActions.html" title="Song Actions"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tr class="header"><td colspan="2"> </td></tr><tr id="logo"><td valign="top"><img src="help:/common/kde_logo.png" alt="KDE -         The K Desktop Environment" width="296" height="79" border="0"></td><td valign="middle" align="center" id="location"><h1>Folder structure</h1></td></tr></table><table width="100%" class="header"><tbody><tr><td align="left" class="navLeft" width="33%"><a accesskey="p" href="songColoring.html">Prev</a></td><td align="center" class="navCenter" width="34%">Using yammi 1.2-beta</td><td align="right" class="navRight" width="33%"> 
+		      <a accesskey="n" href="songActions.html">Next</a></td></tr></tbody></table><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="folderStructure"></a>Folder structure</h2></div></div><p>
+The following folder structure is provided automatically:
+</p><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id2851652"></a>Folder "All Music"</h3></div></div><p>
+Contains all songs in Yammi's database.
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id2851664"></a>Folder "Playlist"</h3></div></div><p>
+Contains all songs that are still to play (including the currently played song).
+
+In this folder you can move songs around to change the order of songs to play.
+However, you are not allowed to drag a song to the top position, as this is the currently played song.
+Please note that you can only drag songs if the folder is ordered
+ascending after the first column ("Pos"), which is the default ordering when you click on
+this folder.
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id2851685"></a>Folder Albums (Artists, Genre)</h3></div></div><p>
+Contains a subfolder for every album (artist, genre) for which there are more than x
+songs in the database, with x=group threshold. The group threshold defaults to 5, but
+can be configured in the settings.
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id2851702"></a>Folder Categories</h3></div></div><p>
+This folder contains "categories" (or "playlists") of songs,
+that can be created and filled by the user.
+You can add a song to a category by right-clicking on it and choosing "Insert into..." and the
+desired category.
+The songs in each category can be ordered by dragging the songs to the desired
+position. Please note that you can only drag songs if the folder is ordered
+ascending after the first column ("Pos"), which is the default ordering when you click on
+this folder.
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id2851723"></a>Folder History</h3></div></div><p>
+This folder contains the history of played songs, each song shown with the
+timestamp when it was played. For played songs to be logged, you need to activate
+"logging of played songs" in the preferences. This folder only contains the
+songs loaded from the history file at startup. Songs played in this session will
+be appended to the folder "Songs Played".
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id2851743"></a>Folder Songs Played</h3></div></div><p>
+Contains all songs that have been played in this session of Yammi, together with
+a timestamp. When Yammi terminates, these songs will be appended to the history
+file, appearing in the folder "History" the next time Yammi starts.
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id2851760"></a>Folder Media</h3></div></div><p>
+Contains a subfolder for every media (eg. CD) that you prepared with Yammi.
+
+Additionally contains a subfolder containing all those songs that are not contained on any media.
+This allows to easyily manage a backup of your song collection, quickly accessing those songs
+that are not yet contained on a (backup) media.
+
+When burning song files to a CD with the assistance of Yammi, the program adds
+information to its database about on which media under which path each song is available.
+This enables you to quickly find on which media you have song files,
+and it enables Yammi to request the required media to load songs into a swap directory.
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id2851797"></a>Folder Problematic Songs</h3></div></div><p>
+This Folder contains songs that were found problematic when performing a
+consistency check or database update (eg. songs contained twice).
+This folder will not be saved to Yammi's database.
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id2851813"></a>Folder Search Results</h3></div></div><p>
+This folder contains the result of the last search process.
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id2851826"></a>Folder Recent Additions</h3></div></div><p>
+Yammi automatically groups into this folder the latest additions to your song database.
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id2851840"></a>Folder Unclassified</h3></div></div><p>
+This folder contains all songs that are not appearing in either
+
+- a category
+
+- the folder "Artists"
+
+- the folder "Albums"
+
+This folder can assist you in organizing your songs into categories.
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id2852103"></a>Directory structure</h3></div></div><p>
+Song files can still be organized in a directory structure according to your own needs.
+Yammi keeps its own database of songs with all necessary information
+(artist, title, album, filename, ...). This song databse is saved as a simple xml
+file in the user's home directory under $HOME/.yammi/songdb.xml.
+You should not move your songfiles from outside Yammi,
+because Yammi might not find the files any more
+(although Yammi tries to detect files that have been moved on a database update).
+Yammi provides a function to move song files,
+which at the same time updates the information in Yammi's database.
+Please make use of that function when you reorganize your songs on your harddisk.
+</p></div></div><table width="100%" class="bottom-nav"><tr><td width="33%" align="left" valign="top" class="navLeft"><a href="songColoring.html">Prev</a></td><td width="34%" align="center" valign="top" class="navCenter"><a href="index.html">Home</a></td><td width="33%" align="right" valign="top" class="navRight"><a href="songActions.html">Next</a></td></tr><tr><td width="33%" align="left" class="navLeft">Song coloring </td><td width="34%" align="center" class="navCenter"><a href="using-yammi.html">Up</a></td><td width="33%" align="right" class="navRight"> Song Actions</td></tr></table></body></html></FILENAME><FILENAME filename="songActions.html"><html><head><title>Song Actions</title><link rel="stylesheet" href="help:/common/kde-default.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.48"><meta name="keywords" content="KDE, yammi, mp3, ogg, wav, tag, fuzzy search, digital music, collection, organization"><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="GENERATOR" content="KDE XSL Stylesheet V1.13 using libxslt"><link rel="home" href="index.html" title="The yammi 1.2-beta Handbook"><link rel="up" href="using-yammi.html" title="Chapter 3. Using yammi 1.2-beta"><link rel="previous" href="folderStructure.html" title="Folder structure"><link rel="next" href="settings.html" title="Settings"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tr class="header"><td colspan="2"> </td></tr><tr id="logo"><td valign="top"><img src="help:/common/kde_logo.png" alt="KDE -         The K Desktop Environment" width="296" height="79" border="0"></td><td valign="middle" align="center" id="location"><h1>Song Actions</h1></td></tr></table><table width="100%" class="header"><tbody><tr><td align="left" class="navLeft" width="33%"><a accesskey="p" href="folderStructure.html">Prev</a></td><td align="center" class="navCenter" width="34%">Using yammi 1.2-beta</td><td align="right" class="navRight" width="33%"> 
+		      <a accesskey="n" href="settings.html">Next</a></td></tr></tbody></table><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="songActions"></a>Song Actions</h2></div></div><p>
+All song actions are available from the context menu
+(i.e. clicking on a song with the right mouse button).
+The most important ones are also available in the toolbar.
+</p><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id2852149"></a>Play...</h3></div></div><p>
+...Enqueue - Enqueues a song to the end of Yammi's playlist.
+
+...Enqueue as next - Enqueues a song as the next song to play in Yammi's playlist.
+
+...Play immediately - First enqueues the song as the next to play, then causes a song change, so the song
+is immediately played.
+
+...Dequeue - Dequeues a song from Yammi's playlist, ie. removes all occurrences of this song
+in Yammi's playlist (if applied on a song in the playlist, only removes that occurrence in
+the playlist).
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id2852170"></a>Prelisten to...</h3></div></div><p>
+(only available if a second sound device is configured in the preferences)
+
+...start - Immediately starts playing the song via the second sound device, starting from the beginning.
+
+...middle - Immediately starts playing the song via the second sound device, starting in the middle.
+
+...end - Immediately starts playing the song via the second sound device, starting close to the end.
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id2852190"></a>Info...</h3></div></div><p>
+Opens a dialog with information and edit possibility for the selected song(s).
+The dialog shows the different fields that Yammi saves in its database.
+
+Multiple selected songs / mass editing
+
+If more than one song is selected, the song info dialog is slightly different:
+- Yammi shows the total size and length of the selection
+- entries that are not exactly the same for all selected songs are shown as "!". When you change this entry, you can conveniently set that entry for all selected songs to the new value (ie. unifying that value for the whole selection). As long, as this is not changed, these entries are not touched
+- entries that are exactly the same can be conveniently changed for all selected songs by changing the value shown.
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id2852217"></a>Insert into...</h3></div></div><p>
+Allows to insert one or more songs into an existing category or remove them from a category.
+The icon in front of the category name indicates whether the song(s) will be added or
+removed from the category. A check mark means that the song(s) is already contained.
+Selecting a category with a check will remove the song(s) from it.
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id2852236"></a>Search for similar...</h3></div></div><p>
+This allows you to quickly search for songs from the same artist (or album or title)
+as the selected song. It simply gets the information you requested from the song
+and performs the usual fuzzy search with it.
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id2852252"></a>Advanced...</h3></div></div><p>
+Delete -
+Deleting can be done in two ways:
+
+1. Deleting the database entry in Yammi's database (does not touch the song file).
+
+2. Deleting the song file, which is done by moving the song file to the trash directory.
+Yammi still keeps the database entry (the song may be present on some media, and
+copied to the harddisk before playing).
+
+Move file to... - Moves a file to another directory. The path information in Yammi's database will
+be updated with the new location of that file.
+
+Check consistency - Performs a consistency check on the selected song(s).
+See "Checking consistency" in "Advanced topics".
+
+Burn to media... - assists in burning the selected songs to a media.
+See "Burning files" in "Advanced Topics".
+</p></div></div><table width="100%" class="bottom-nav"><tr><td width="33%" align="left" valign="top" class="navLeft"><a href="folderStructure.html">Prev</a></td><td width="34%" align="center" valign="top" class="navCenter"><a href="index.html">Home</a></td><td width="33%" align="right" valign="top" class="navRight"><a href="settings.html">Next</a></td></tr><tr><td width="33%" align="left" class="navLeft">Folder structure </td><td width="34%" align="center" class="navCenter"><a href="using-yammi.html">Up</a></td><td width="33%" align="right" class="navRight"> Settings</td></tr></table></body></html></FILENAME><FILENAME filename="settings.html"><html><head><title>Settings</title><link rel="stylesheet" href="help:/common/kde-default.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.48"><meta name="keywords" content="KDE, yammi, mp3, ogg, wav, tag, fuzzy search, digital music, collection, organization"><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="GENERATOR" content="KDE XSL Stylesheet V1.13 using libxslt"><link rel="home" href="index.html" title="The yammi 1.2-beta Handbook"><link rel="up" href="using-yammi.html" title="Chapter 3. Using yammi 1.2-beta"><link rel="previous" href="songActions.html" title="Song Actions"><link rel="next" href="keyBindings.html" title="Key bindings"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tr class="header"><td colspan="2"> </td></tr><tr id="logo"><td valign="top"><img src="help:/common/kde_logo.png" alt="KDE -         The K Desktop Environment" width="296" height="79" border="0"></td><td valign="middle" align="center" id="location"><h1>Settings</h1></td></tr></table><table width="100%" class="header"><tbody><tr><td align="left" class="navLeft" width="33%"><a accesskey="p" href="songActions.html">Prev</a></td><td align="center" class="navCenter" width="34%">Using yammi 1.2-beta</td><td align="right" class="navRight" width="33%"> 
+		      <a accesskey="n" href="keyBindings.html">Next</a></td></tr></tbody></table><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="settings"></a>Settings</h2></div></div><p>
+
+You can configure Yammi's settings via the menu: Settings -&gt; Configure Yammi.
+
+Only some options are explained here, the rest should be self-explanatory if you read the
+provided tool tips (stay over an item with the mouse for a while).
+
+Consistency Mode
+
+These settings determine, whether Yammi checks and modifies the id3 or ogg tags
+and filenames of your song collection. If both are activated this has the following effect:
+
+If you change eg. the title of a song via Yammi's song info dialog, Yammi will
+not only change the entry in its internal database, but also
+the id3 or ogg tags and the filename accordingly the next time it saves its database.
+Yammi uses the schema "artist - title.mp3" (or .ogg) for naming the files,
+but first tries to remove all characters that are possibly not allowed in
+filenames (on linux as well as windows (vfat) file systems),
+however no guarantee can be given that "strange" artist or title entries
+don't cause any problems with naming the files...
+Please let me know about problems concerning the naming of files so I can try to fix them.
+
+If you don't want Yammi to touch your song files in any way, you should
+leave these two settings disabled!
+However, for easy organizing your song files I found it extremely useful
+to have consistent filenames and tags at any time.
+
+See also "Checking consistency" in "Advanced topics".
+
+
+Group Threshold
+
+This value determines, how many items of one group must be present for a
+subfolder within the folder Artists/Albums/Genre to be created. If you set this
+value to 1, every artist/album/genre will appear as a subfolder, a value of 10
+only will create subfolders for artists/albums/genres which contain at least 10
+entries.
+</p></div><table width="100%" class="bottom-nav"><tr><td width="33%" align="left" valign="top" class="navLeft"><a href="songActions.html">Prev</a></td><td width="34%" align="center" valign="top" class="navCenter"><a href="index.html">Home</a></td><td width="33%" align="right" valign="top" class="navRight"><a href="keyBindings.html">Next</a></td></tr><tr><td width="33%" align="left" class="navLeft">Song Actions </td><td width="34%" align="center" class="navCenter"><a href="using-yammi.html">Up</a></td><td width="33%" align="right" class="navRight"> Key bindings</td></tr></table></body></html></FILENAME><FILENAME filename="keyBindings.html"><html><head><title>Key bindings</title><link rel="stylesheet" href="help:/common/kde-default.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.48"><meta name="keywords" content="KDE, yammi, mp3, ogg, wav, tag, fuzzy search, digital music, collection, organization"><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="GENERATOR" content="KDE XSL Stylesheet V1.13 using libxslt"><link rel="home" href="index.html" title="The yammi 1.2-beta Handbook"><link rel="up" href="using-yammi.html" title="Chapter 3. Using yammi 1.2-beta"><link rel="previous" href="settings.html" title="Settings"><link rel="next" href="advancedTopics.html" title="Advanced topics"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tr class="header"><td colspan="2"> </td></tr><tr id="logo"><td valign="top"><img src="help:/common/kde_logo.png" alt="KDE -         The K Desktop Environment" width="296" height="79" border="0"></td><td valign="middle" align="center" id="location"><h1>Key bindings</h1></td></tr></table><table width="100%" class="header"><tbody><tr><td align="left" class="navLeft" width="33%"><a accesskey="p" href="settings.html">Prev</a></td><td align="center" class="navCenter" width="34%">Using yammi 1.2-beta</td><td align="right" class="navRight" width="33%"> 
+		      <a accesskey="n" href="advancedTopics.html">Next</a></td></tr></tbody></table><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="keyBindings"></a>Key bindings</h2></div></div><p>
+The following key bindings exist: ESC or CTRL-F: Set focus to search field and clear it 
+CTRL-G: Go to the folder with the name best matching the search term.
+(Uses the fuzzy search of Yammi, press multiple times to iterate over the best matches,
+use CTRL-R to go back one folder when iterating over the best matches).
+
+<b>Ctrl</b>+<b>G</b>: go to folder
+
+F1:     Play Pause
+
+F2:     Skip backward                           (SHIFT-F2 skips without crossfading)
+
+F3:     Skip forward              (SHIFT-F3 skips without crossfading)
+
+F4:     Stop playing
+
+F5:     Add song(s) to end of playlist          (SHIFT-F5 adds them in random order)
+
+F6:     Play song(s) as next                    (SHIFT-F6 adds them in random order)
+
+F7:     Play song(s) immediately                (SHIFT + F7: play immediately without crossfading)
+
+F8:     Dequeue selected                        (SHIFT + F8: Dequeue all)
+
+F9:     Prelisten to start
+
+F10:    Prelisten to middle
+
+F11:    Prelisten to end
+
+F12:    Stop prelistening
+
+PAUSE: Enable/disable sleep mode, see "Sleep mode" under "Advanced topics"
+
+Page Up and Page Down: increase or decrease the number of songs for Yammi sleep mode
+(only takes effect, if Yammi is in sleep mode)
+
+Ctrl-S: Save song database
+
+
+Note concerning crossfading:
+If you use crossfading, it sometimes comes in handy to change to the next
+song without crossfading (e.g. to quickly listen to the next song).
+For these cases press the SHIFT key in combination with the requested action.
+
+</p></div><table width="100%" class="bottom-nav"><tr><td width="33%" align="left" valign="top" class="navLeft"><a href="settings.html">Prev</a></td><td width="34%" align="center" valign="top" class="navCenter"><a href="index.html">Home</a></td><td width="33%" align="right" valign="top" class="navRight"><a href="advancedTopics.html">Next</a></td></tr><tr><td width="33%" align="left" class="navLeft">Settings </td><td width="34%" align="center" class="navCenter"><a href="using-yammi.html">Up</a></td><td width="33%" align="right" class="navRight"> Advanced topics</td></tr></table></body></html></FILENAME><FILENAME filename="advancedTopics.html"><html><head><title>Advanced topics</title><link rel="stylesheet" href="help:/common/kde-default.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.48"><meta name="keywords" content="KDE, yammi, mp3, ogg, wav, tag, fuzzy search, digital music, collection, organization"><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="GENERATOR" content="KDE XSL Stylesheet V1.13 using libxslt"><link rel="home" href="index.html" title="The yammi 1.2-beta Handbook"><link rel="up" href="using-yammi.html" title="Chapter 3. Using yammi 1.2-beta"><link rel="previous" href="keyBindings.html" title="Key bindings"><link rel="next" href="tipsAndTricks.html" title="Tips and tricks..."></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tr class="header"><td colspan="2"> </td></tr><tr id="logo"><td valign="top"><img src="help:/common/kde_logo.png" alt="KDE -         The K Desktop Environment" width="296" height="79" border="0"></td><td valign="middle" align="center" id="location"><h1>Advanced topics</h1></td></tr></table><table width="100%" class="header"><tbody><tr><td align="left" class="navLeft" width="33%"><a accesskey="p" href="keyBindings.html">Prev</a></td><td align="center" class="navCenter" width="34%">Using yammi 1.2-beta</td><td align="right" class="navRight" width="33%"> 
+		      <a accesskey="n" href="tipsAndTricks.html">Next</a></td></tr></tbody></table><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="advancedTopics"></a>Advanced topics</h2></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id2852417"></a>Autoplay</h3></div></div><p>
+Too lazy to manually enqueue songs all the time?
+Use Yammi's autoplay functionality to let Yammi automatically enqueue songs for you!
+
+Choose a folder to enqueue songs from and choose "Autoplay" from
+the folder's context menu.
+Then set the autoplay mode from Yammi's "Autoplay" menu.
+
+Currently, Yammi offers two modes:
+
+"Random" randomly selects songs from the autoplay folder
+(Yammi does not select songs already enqueued in the playlist).
+
+"Longest not played" chooses those songs, that haven't been played for the longest time.
+For this to work correctly, you need to enable the "logging of played songs" feature in the settings
+(If more than one song haven't been played at all, Yammi chooses randomly from those songs).
+
+
+Hint:
+
+You can still manually enqueue songs without having to stop the autoplay mode.
+Yammi just fills up the playlist if there are less than 5 songs in it.
+The selected autoplay mode and folder are also saved for the next session.
+
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id2852429"></a>Checking consistency</h3></div></div><p>
+Note: This functionality changed slightly since version 0.7.
+
+The menu offers the possibility to check your complete database for consistency.
+From the context menu, you can apply this consistency check to a selection of songs.
+
+The consistency check is a tool meant to help you organizing your song collection.
+You can configure the aspects to be checked in a dialog, right now Yammi
+supports the following checks:
+
+- check media files: existing and readable?
+
+If files do not exist on the location given in Yammi's database, the entry can be
+updated with a blank filename and path (if the file is existing on a media)
+or deleted (if the file is not existing on any media).
+
+- check tags: consistent with Yammi's database?
+
+If tags are not consistent, they can be corrected in two ways (only possible for mp3 and ogg files):
+
+1. the tags in the corresponding files can be set to the values in Yammi's database
+(Yammi database =&gt; file tags, default mode).
+
+2. Yammi can re-read the tags from the files and update its database content with the new values
+(for example if you edited tags from outside Yammi).
+
+Be careful using this function, as it might overwrite all the tags in your files!
+
+
+- check filename: consistent with the configured naming scheme (such as "artist - title")?
+
+If Filenames are not consistent, they can be corrected according to the naming scheme.
+
+Be careful using this function, as it might rename all your files!
+
+
+- no song contained twice in the database?
+
+Songs are considered the same if they have the same artist, title and album.
+These three fields serve as the "primary key" for Yammi's database.
+As Yammi uses this primary key for identification (eg. for logging and categories),
+you should never have more than one song with the same primary key.
+On addings songs to your database, Yammi will add a "(2)" to the song title if the
+added song's primary key is already existing.
+
+- no two entries pointing to the same file?
+
+One of these entries will be deleted.
+
+
+
+Before writing tags or renaming files, Yammi asks you for confirmation before
+performing that operation. You can confirm for a single song or for all songs.
+
+After checking consistency, the folder ProblematicSongs contains all the
+problematic songs that were found. A column "reason" explains why a song was
+found to be problematic. This allows to resolve any inconsistencies.
+Note that this folder will not be saved for the next session, so please resolve any
+inconsistencies immediately after checking consistency.
+
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id2852558"></a>Burning files</h3></div></div><p>
+For most users, there are two reasons to burn files on CDs:
+
+1. To burn an audio CD from a selection of songs, to play it on a normal CD player
+
+2. To make an backup of some files on harddisk to CD
+(possibly to remove the files locally and use the removable media management of Yammi).
+</p><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="id2852575"></a>Burning an audio CD from a selection of songs</h4></div></div><p>
+I highly recommend the fantastic burning program K3b (http://www.k3b.org)
+to burn an audio CD.
+
+If you have k3b installed, you can simply select the songs you want to burn,
+and use the "Burn with K3b(audio)" plugin of Yammi. It will start k3b, open a new audio project
+and add all selected songs to it.
+
+In that way, burning the favorite songs of a friend to an audio CD is easy as pie:
+
+1. Create a new category
+
+2. Let your friend put all favourite songs into that category
+
+3. Mark all songs of the category and select "Burn with K3b(audio)" from the plugin menu
+
+4. Start the burning process from within K3b.
+
+5. Deliver the CD ;-)
+</p></div><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="id2852600"></a>Burning files to CDs as backup</h4></div></div><p>
+For assistance in burning files to a CD, do the following:
+
+1. Select the songs you want to burn
+
+2. In the context menu of the songlist choose "Advanced"-&gt;"Burn to Media".
+
+3. You will be asked for a name and a start index for that collection of songs.
+
+4. Now Yammi will create subfolders in the "Media" folder, taking care that none of these
+subfolders exceeds the maximum media size configured in the preferences.
+For burning the song files to CD, you can now simply invoke the "Burn with K3b(data)" plugin
+from the context menu (assuming you have installed k3b) for each created subfolder.
+
+Yammi also remembers on which media a song is contained.
+This allows to delete song files from harddisk to save space,
+and let Yammi request the corresponding media the next time the song is in the playlist,
+so that the song can be loaded from the media on demand.
+</p></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id2852630"></a>Playlist management of yammi</h3></div></div><p>
+
+Yammi takes over the playlist management of the media player and has its own folder
+named "Playlist" where you can move songs up and down, remove them from the
+playlist, or directly retrieve information about them.
+You should not directly modify the playlist of the media player any longer, as Yammi might overwrite
+your song ordering or songs added from within the media player. Yammi also disables
+the random play setting of XMMS, as this would confuse Yammi's playlist management.
+
+When Yammi is terminated, it writes all songs from its playlist back to the
+playlist of the media player (in that way, Yammi does not need to save the current playlist,
+and you can continue listen to the selected songs).
+When Yammi starts the next time, it reads the current playlist
+from the media player and again takes over the playlist management
+(unfortunately, in noatun this causes an interruption of playback).
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id2852660"></a>Updating song database</h3></div></div><p>
+The "Database" menu offers the possibility to update your database in two ways:
+By scanning your harddisk (or selecting single files to add to the database) or
+by scanning a removable media (eg. a CD).
+After choosing the corresponding entry in the "Database" menu a dialog will show up
+which allows to set the directory to scan and the file pattern for scanning.
+
+Yammi starts in the chosen directory and recursively
+scans your harddisk for new songs. It scans all files matching the given pattern
+and checks, whether the song is already contained in Yammi's database.
+For all new songs found, Yammi tries to get the song information such as
+artist, title, album... by looking at the id3(v1.x or v2.x) or ogg tags.
+If tags are not present, Yammi tries to extract the information from the
+filename, using the configured guessing scheme.
+If the filename contains an artist or title that is longer than 30 characters,
+and the tags contain only the first 30 characters (as this is the limit for id3v1.1),
+Yammi tries to take the full name from the filename (Yammi's database has basically no
+restriction for the length of the entries).
+
+Updating your song database does not touch your song files.
+Exception: If a new song is already existing at another location, either the new or old
+version will be moved to your configured trash directory.
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id2852724"></a>Scanning removable media</h3></div></div><p>
+This is quite similar to scanning your harddisk.
+The difference is that the songs added to Yammi's
+database will not contain a path and filename, but instead will contain the
+scanned media's name in their "contained on" media list.
+This means that you can't directly play these songs, but have to enqueue them,
+and load them from this media into the swap directory before playing.
+You can load songs from a media into the swap directory by using the button in the toolbar.
+If a song is already existing in the database, Yammi will just add the media
+to its media list (if not contained already), so scanning a media twice should
+not create any inconsistencies.
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id2852748"></a>Selecting single files to add to your database</h3></div></div><p>
+Sometimes you don't want to scan your harddisk, but just add one or two files to your database.
+Select the menu entry "Import Selected File(s)".
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id2852764"></a>Grabbing and encoding new songs</h3></div></div><p>
+
+Especially on a party it might come in handy to directly grab and encode
+some songs from an audio CD. Yammi offers a basic support for that, but for grabbing a large
+number of songs I recommend using one of the many tools out there.
+For grabbing and encoding a single song, choose "Grab and Encode CD Track" from the
+"Database" menu.
+You will be asked for track number, artist and title.
+Then Yammi executes in the background the script
+"yammiGrabAndEncode" (which is included in the distribution and normally installed
+in /usr/local/bin/),
+which grabs the track from CD using paranoia, and then encodes it using (not)lame.
+(You might want to customize the script to fit your needs, eg. setting the
+bitrate for lame, which is defaulting to 256kb/s. Just have a look at the script, it's easy...).
+When the script has finished, a new song file exists in the directory given in the
+preferences under "base directory for scanning".
+Yammi then automatically adds this song to its database and informs you with a dialog box.
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id2852797"></a>Child-safe mode</h3></div></div><p>
+This mode is thought for parties to protect your precious song collection from users
+deleting files or changing tags by accident.
+The following operations are not permitted, if this mode is switched
+on:
+
+- the complete "Advanced" submenu in the context menu is disabled
+
+- delete files
+
+- clear the complete playlist
+
+- update song database
+
+- check consistency
+
+Once enabled, you can only disable this feature with a password, which is: "protect".
+Alternatively, you could edit Yammi's preferences file by hand to disable this mode.
+
+Okay, this is NOT SAFE IN ANY WAY, it's just meant to protect users who have
+very little knowledge of computers to do any harm to your song collection by
+accident.
+
+For better safety, I recommend creating a new user "dj" on your computer with limited
+access rights, and start Yammi as that user.
+You can then use the command line option to specify the location of the .yammi directory
+and make that directory (and the directory with all your
+songs) read-only for the user "dj".
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id2852828"></a>Sleep mode</h3></div></div><p>
+Want to listen to a few more songs while falling asleep? But how do you turn off the computer
+then?
+
+Enable Yammi's sleep mode by pressing the button in the toolbar, and specify the number
+of songs Yammi should play before initiating a shutdown on your computer.
+
+Yammi will shut down in the following two cases:
+
+- the number of songs to play (visible and editable in the toolbar) has reached 0
+
+- the media player stops playback because the playlist is empty
+
+
+A dialog box appears giving you the possibility to cancel the shutdown.
+
+If there is a shutdown script specified in the preferences, this script will be invoked on
+shutting down.
+This can be used to shutdown the computer, simulating the functionality of a timer on a stereo.
+To shutdown your computer as a normal user, you might need to modify permissions to the
+shutdown command (eg., as root do a "chmod 6755 /sbin/shutdown").
+Be careful with changing permissions, as it may make your computer more vulnerable.
+
+Be careful with shutting down your computer in that way, as open documents might not be saved
+properly or running programs might not be terminated in a very soft way...
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id2852862"></a>Removable Media Management</h3></div></div><p>
+Yammi has support to function as a "Jukebox". That is, you don't need all your
+songfiles on your local harddisk, but can load them on demand from removable
+media (such as CDs) into a swap directory. Yammi still keeps all songs in its
+database to enable you to search and enqueue conveniently. However, before
+enqueuing the songs to the media player, Yammi will check for availability and enqueue only
+those songs that are on the harddisk.
+
+To use this jukebox functionality, you should first create a swap directory
+on your harddisk and set the path and the size limit in the preferences.
+(I recommend to create a special swap directory and not to use "/tmp/" as your
+swap dir.)
+
+To remove song files from your harddisk to gain disk space, but keep the song entries
+in Yammi's database,
+choose "Delete..." (from the context menu, "Advanced..."), and enable the checkbox
+"delete file" (and leave the "delete database entry" checkbox disabled).
+Take care only to remove song files that have a media location stored in their database
+entry (you can check this when you select "Info..." in the song context menu),
+or otherwise the deleted song will not be accessible anymore.
+
+To scan a removable media and add all the contained songs to the database,
+use "Scan removable media" from the file menu.
+
+For the removable media management, Yammi has an extra toolbar consisting of
+a media list and a "Load" button.
+In the media list, Yammi collects all the media that are needed to load the songs
+in Yammi's current playlist, the most urgent ones listed first.
+(For songs that are available on more than one media, Yammi lists all possible media
+in this list.)
+From this media list, you simply select the media that you inserted into your
+computer (eg. into your CD-Rom), and click "Load". Yammi will then load all
+songs that it needs in its current playlist from this media into the swap directory
+(given in the preferences). After loading, Yammi will update its playlist
+(and the playlist of XMMS) and update the list of needed media to reflect the changes.
+
+For the swap directory, you can give a size limit (also in the preferences).
+If the size that all the swapped song files use in this directory increases
+beyond the given limit, then Yammi will remove song files from that directory,
+using a least-recently-used (LRU) strategy.
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id2852919"></a>External Scripts / Plugins</h3></div></div><p>
+Yammi offers support to call external programs with parameters like song titles
+or filenames. This can be extremely useful for calling a program for burning songs to CD
+or for creating a CD label. 
+
+These plugins can be configured in Yammi's preferences, and are available via the
+context menu in the songlist. There are two types of plugins, the first one
+("single mode") is invoked for each song, the second one ("group mode")
+generates a list of items and invokes a program on this list.
+
+Yammi has a set of standard plugins already configured.
+For other plugin examples, have a look at Yammi's website.
+</p></div></div><table width="100%" class="bottom-nav"><tr><td width="33%" align="left" valign="top" class="navLeft"><a href="keyBindings.html">Prev</a></td><td width="34%" align="center" valign="top" class="navCenter"><a href="index.html">Home</a></td><td width="33%" align="right" valign="top" class="navRight"><a href="tipsAndTricks.html">Next</a></td></tr><tr><td width="33%" align="left" class="navLeft">Key bindings </td><td width="34%" align="center" class="navCenter"><a href="using-yammi.html">Up</a></td><td width="33%" align="right" class="navRight"> Tips and tricks...</td></tr></table></body></html></FILENAME><FILENAME filename="tipsAndTricks.html"><html><head><title>Tips and tricks...</title><link rel="stylesheet" href="help:/common/kde-default.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.48"><meta name="keywords" content="KDE, yammi, mp3, ogg, wav, tag, fuzzy search, digital music, collection, organization"><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="GENERATOR" content="KDE XSL Stylesheet V1.13 using libxslt"><link rel="home" href="index.html" title="The yammi 1.2-beta Handbook"><link rel="up" href="using-yammi.html" title="Chapter 3. Using yammi 1.2-beta"><link rel="previous" href="advancedTopics.html" title="Advanced topics"><link rel="next" href="FAQ.html" title="FAQ"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tr class="header"><td colspan="2"> </td></tr><tr id="logo"><td valign="top"><img src="help:/common/kde_logo.png" alt="KDE -         The K Desktop Environment" width="296" height="79" border="0"></td><td valign="middle" align="center" id="location"><h1>Tips and tricks...</h1></td></tr></table><table width="100%" class="header"><tbody><tr><td align="left" class="navLeft" width="33%"><a accesskey="p" href="advancedTopics.html">Prev</a></td><td align="center" class="navCenter" width="34%">Using yammi 1.2-beta</td><td align="right" class="navRight" width="33%"> 
+		      <a accesskey="n" href="FAQ.html">Next</a></td></tr></tbody></table><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="tipsAndTricks"></a>Tips and tricks...</h2></div></div><p>
+Avoid having two songs with the same artist, title and album!
+Yammi will get really confused...
+
+Yammi communicates with Xmms session 0. If you have problems with the communication,
+you might need to disable "Allow multiple instances" in Xmms (Preferences-&gt;Options).
+</p></div><table width="100%" class="bottom-nav"><tr><td width="33%" align="left" valign="top" class="navLeft"><a href="advancedTopics.html">Prev</a></td><td width="34%" align="center" valign="top" class="navCenter"><a href="index.html">Home</a></td><td width="33%" align="right" valign="top" class="navRight"><a href="FAQ.html">Next</a></td></tr><tr><td width="33%" align="left" class="navLeft">Advanced topics </td><td width="34%" align="center" class="navCenter"><a href="using-yammi.html">Up</a></td><td width="33%" align="right" class="navRight"> FAQ</td></tr></table></body></html></FILENAME><FILENAME filename="FAQ.html"><html><head><title>FAQ</title><link rel="stylesheet" href="help:/common/kde-default.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.48"><meta name="keywords" content="KDE, yammi, mp3, ogg, wav, tag, fuzzy search, digital music, collection, organization"><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="GENERATOR" content="KDE XSL Stylesheet V1.13 using libxslt"><link rel="home" href="index.html" title="The yammi 1.2-beta Handbook"><link rel="up" href="using-yammi.html" title="Chapter 3. Using yammi 1.2-beta"><link rel="previous" href="tipsAndTricks.html" title="Tips and tricks..."><link rel="next" href="credits.html" title="Chapter 4. Credits and License"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tr class="header"><td colspan="2"> </td></tr><tr id="logo"><td valign="top"><img src="help:/common/kde_logo.png" alt="KDE -         The K Desktop Environment" width="296" height="79" border="0"></td><td valign="middle" align="center" id="location"><h1>FAQ</h1></td></tr></table><table width="100%" class="header"><tbody><tr><td align="left" class="navLeft" width="33%"><a accesskey="p" href="tipsAndTricks.html">Prev</a></td><td align="center" class="navCenter" width="34%">Using yammi 1.2-beta</td><td align="right" class="navRight" width="33%"> 
+		      <a accesskey="n" href="credits.html">Next</a></td></tr></tbody></table><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="FAQ"></a>FAQ</h2></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id2852988"></a>Why does Yammi delete all played songs from the XMMS playlist?</h3></div></div><p>
+It just does so.
+If you want to listen to a series of songs again, you can
+select the songs in the "History" folder (where the songs are normally ordered
+after the time when they were played).
+</p></div></div><table width="100%" class="bottom-nav"><tr><td width="33%" align="left" valign="top" class="navLeft"><a href="tipsAndTricks.html">Prev</a></td><td width="34%" align="center" valign="top" class="navCenter"><a href="index.html">Home</a></td><td width="33%" align="right" valign="top" class="navRight"><a href="credits.html">Next</a></td></tr><tr><td width="33%" align="left" class="navLeft">Tips and tricks... </td><td width="34%" align="center" class="navCenter"><a href="using-yammi.html">Up</a></td><td width="33%" align="right" class="navRight"> Credits and License</td></tr></table></body></html></FILENAME></div><table width="100%" class="bottom-nav"><tr><td width="33%" align="left" valign="top" class="navLeft"><a href="startFirstTime.html">Prev</a></td><td width="34%" align="center" valign="top" class="navCenter"><a href="index.html">Home</a></td><td width="33%" align="right" valign="top" class="navRight"><a href="scanHarddisk.html">Next</a></td></tr><tr><td width="33%" align="left" class="navLeft">Starting the first time </td><td width="34%" align="center" class="navCenter"><a href="index.html">Up</a></td><td width="33%" align="right" class="navRight"> Scanning harddisk</td></tr></table></body></html></FILENAME><FILENAME filename="credits.html"><html><head><title>Chapter 4. Credits and License</title><link rel="stylesheet" href="help:/common/kde-default.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.48"><meta name="keywords" content="KDE, yammi, mp3, ogg, wav, tag, fuzzy search, digital music, collection, organization"><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="GENERATOR" content="KDE XSL Stylesheet V1.13 using libxslt"><link rel="home" href="index.html" title="The yammi 1.2-beta Handbook"><link rel="up" href="index.html" title="The yammi 1.2-beta Handbook"><link rel="previous" href="FAQ.html" title="FAQ"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tr class="header"><td colspan="2"> </td></tr><tr id="logo"><td valign="top"><img src="help:/common/kde_logo.png" alt="KDE -         The K Desktop Environment" width="296" height="79" border="0"></td><td valign="middle" align="center" id="location"><h1>Credits and License</h1></td></tr></table><table width="100%" class="header"><tbody><tr><td align="left" class="navLeft" width="33%"><a accesskey="p" href="FAQ.html">Prev</a></td><td align="center" class="navCenter" width="34%"> </td><td align="right" class="navRight" width="33%"> 
+		      </td></tr></tbody></table><div class="chapter"><div class="titlepage"><div><h2 class="title"><a name="credits"></a>Chapter 4. Credits and License</h2></div></div><p>
+Program copyright 2004 Oliver Noelle <tt>&lt;<a href="mailto:oli.noelle_AT_web.de">oli.noelle_AT_web.de</a>&gt;</tt>
+</p><p>
+Thanks go to...
+<div class="itemizedlist"><ul type="disc"><li><p>...Bob Lockie for spending days on completely rewriting my configure files
+</p></li><li><p>...Tom Roth for substantial feedback on the whole project, and detailed bug reports
+</p></li><li><p>...Philip Scott for contributing the reading of ogg tags
+</p></li><li><p>...Scott Wheeler for bug reports and ideas for future versions of Yammi
+</p></li><li><p>...Daniel Pichler, for preparing my sources for being internationalized and providing a german translation
+</p></li><li><p>...Stefan Gmeiner for sending a patch, cleaning up my messy sources...
+</p></li><li><p>...Sandra Taufer for providing beautiful new icons for yammi!
+</p></li><li><p>...Luis De la Parra for providing a big patch pushing yammi towards a proper kde app and cleaning up lots of things!
+</p></li></ul></div>
+</p><p>Documentation copyright 2004 Oliver Noelle</p><p><a name="gnu-fdl"></a>This documentation is licensed under the terms of the <a href="common/fdl-license.html" target="_top">GNU Free Documentation
+License</a>.</p><p>This program is licensed under the terms of the <a href="common/gpl-license.html" target="_top">GNU General Public License</a>.</p></div><table width="100%" class="bottom-nav"><tr><td width="33%" align="left" valign="top" class="navLeft"><a href="FAQ.html">Prev</a></td><td width="34%" align="center" valign="top" class="navCenter"><a href="index.html">Home</a></td><td width="33%" align="right" valign="top" class="navRight"></td></tr><tr><td width="33%" align="left" class="navLeft">FAQ </td><td width="34%" align="center" class="navCenter"><a href="index.html">Up</a></td><td width="33%" align="right" class="navRight"> </td></tr></table></body></html></FILENAME></div><table width="100%" class="bottom-nav"><tr><td width="33%" align="left" valign="top" class="navLeft"></td><td width="34%" align="center" valign="top" class="navCenter"> </td><td width="33%" align="right" valign="top" class="navRight"><a href="introduction.html">Next</a></td></tr><tr><td width="33%" align="left" class="navLeft"> </td><td width="34%" align="center" class="navCenter"> </td><td width="33%" align="right" class="navRight"> Introduction</td></tr></table></body></html></FILENAME>
+ 
