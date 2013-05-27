@@ -53,7 +53,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, const char *name, bool mod
     SpinBoxGroupThreshold->setValue(config->groupThreshold);
     CheckBoxLazyGrouping->setChecked(config->lazyGrouping);
     LineEditSearchThreshold->setText(QString("%1").arg(config->searchThreshold));
-    LineEditPlayqueueTemplate->setText(config->playqueueTemplate);
+    LineEditPlayqueueTemplate->setPlainText(config->playqueueTemplate);
 
     RadioButtonXineEngine->setChecked(config->mediaPlayer == config->MEDIA_PLAYER_XINEENGINE);
     
@@ -167,7 +167,7 @@ void PreferencesDialog::myAccept() {
     config->groupThreshold=SpinBoxGroupThreshold->value();
     config->lazyGrouping=CheckBoxLazyGrouping->isChecked();
     config->searchThreshold=atoi(LineEditSearchThreshold->text());
-    config->playqueueTemplate = LineEditPlayqueueTemplate->text();
+    config->playqueueTemplate = LineEditPlayqueueTemplate->toPlainText();
     
     if (RadioButtonXineEngine->isChecked()) {
         config->mediaPlayer = config->MEDIA_PLAYER_XINEENGINE;

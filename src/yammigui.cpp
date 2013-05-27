@@ -33,6 +33,7 @@
 #include <QProcess>
 #include <QProgressDialog>
 #include <QPushButton>
+#include <QScrollBar>
 #include <QSettings>
 #include <QSortFilterProxyModel>
 #include <QSpinBox>

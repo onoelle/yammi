@@ -93,7 +93,7 @@ void ConsistencyCheckDialog::startCheck() {
     progress.setAutoReset(false);
     progress.setAutoClose(false);
 
-    Q3TextEdit* output = TextEditOutput;
+    QTextEdit* output = TextEditOutput;
     output->append(tr("Checking consistency of %1 songs ...").arg(selectedSongs->count()));
     model->problematicSongs.clear();
 

@@ -96,7 +96,7 @@
     </spacer>
    </item>
    <item row="1" column="2" rowspan="6" colspan="2">
-    <widget class="Q3TextEdit" name="TextEditOutput">
+    <widget class="QTextEdit" name="TextEditOutput">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
        <horstretch>0</horstretch>
@@ -115,7 +115,7 @@
      <property name="frameShadow">
       <enum>QFrame::Sunken</enum>
      </property>
-     <property name="readOnly" stdset="0">
+     <property name="readOnly">
       <bool>true</bool>
      </property>
     </widget>
@@ -522,20 +522,6 @@
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
- <customwidgets>
-  <customwidget>
-   <class>Q3Frame</class>
-   <extends>QFrame</extends>
-   <header>Qt3Support/Q3Frame</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>Q3TextEdit</class>
-   <extends>Q3Frame</extends>
-   <header>q3textedit.h</header>
-   <container>1</container>
-  </customwidget>
- </customwidgets>
  <tabstops>
   <tabstop>CheckBoxCheckForExistence</tabstop>
   <tabstop>CheckBoxUpdateNonExisting</tabstop>

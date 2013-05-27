@@ -1078,7 +1078,7 @@ Group mode = executed once for the selection</string>
         </widget>
        </item>
        <item row="1" column="0">
-        <widget class="Q3TextEdit" name="LineEditPlayqueueTemplate"/>
+        <widget class="QPlainTextEdit" name="LineEditPlayqueueTemplate"/>
        </item>
       </layout>
      </widget>
@@ -1088,20 +1088,6 @@ Group mode = executed once for the selection</string>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
- <customwidgets>
-  <customwidget>
-   <class>Q3Frame</class>
-   <extends>QFrame</extends>
-   <header>Qt3Support/Q3Frame</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>Q3TextEdit</class>
-   <extends>Q3Frame</extends>
-   <header>q3textedit.h</header>
-   <container>1</container>
-  </customwidget>
- </customwidgets>
  <tabstops>
   <tabstop>ComboBoxDoubleClickAction</tabstop>
   <tabstop>ComboBoxMiddleClickAction</tabstop>
