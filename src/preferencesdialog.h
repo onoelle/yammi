@@ -18,7 +18,7 @@
 #ifndef PREFERENCESDIALOG_H
 #define PREFERENCESDIALOG_H
 
-#include "PreferencesDialogBase.h"
+#include "ui_PreferencesDialogBase.h"
 
 class Prefs;
 
@@ -27,7 +27,7 @@ class Prefs;
   *@author O.Nölle
   */
 
-class PreferencesDialog : public Preferences  {
+class PreferencesDialog : public QDialog, public Ui::Preferences  {
     Q_OBJECT
 
 public:

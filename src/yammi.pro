@@ -1,7 +1,7 @@
 
 TEMPLATE += app
 QT += xml qt3support
-CONFIG += qt qdbus debug uic3
+CONFIG += qt qdbus debug
 
 LIBS += -ltag -lxine
 
@@ -80,12 +80,9 @@ FORMS = \
     ApplyToAllBase.ui \
     ConsistencyCheckDialogBase.ui \
     DeleteDialog.ui \
+    PreferencesDialogBase.ui \
     SongInfoDialog.ui \
     UpdateDatabaseDialogBase.ui
-
-#The following line was changed from FORMS to FORMS3 by qt3to4
-FORMS3 = \
-    PreferencesDialogBase.ui \
 
 
 # translations

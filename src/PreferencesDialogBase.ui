@@ -1,1291 +1,1173 @@
-<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
-<class>Preferences</class>
-<widget class="QDialog">
-    <property name="name">
-        <cstring>Preferences</cstring>
-    </property>
-    <property name="geometry">
-        <rect>
-            <x>0</x>
-            <y>0</y>
-            <width>745</width>
-            <height>526</height>
-        </rect>
-    </property>
-    <property name="caption">
-        <string>Edit Preferences</string>
-    </property>
-    <property name="sizeGripEnabled">
-        <bool>true</bool>
-    </property>
-    <grid>
-        <property name="name">
-            <cstring>unnamed</cstring>
-        </property>
-        <spacer row="1" column="0">
-            <property name="name">
-                <cstring>Spacer2</cstring>
-            </property>
-            <property name="orientation">
-                <enum>Horizontal</enum>
-            </property>
-            <property name="sizeType">
-                <enum>Expanding</enum>
-            </property>
-            <property name="sizeHint">
-                <size>
-                    <width>155</width>
-                    <height>16</height>
-                </size>
-            </property>
-        </spacer>
-        <widget class="QPushButton" row="1" column="3">
-            <property name="name">
-                <cstring>ButtonCancel</cstring>
-            </property>
-            <property name="sizePolicy">
-                <sizepolicy>
-                    <hsizetype>0</hsizetype>
-                    <vsizetype>0</vsizetype>
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                </sizepolicy>
-            </property>
-            <property name="minimumSize">
-                <size>
-                    <width>100</width>
-                    <height>0</height>
-                </size>
-            </property>
-            <property name="text">
-                <string>Cancel</string>
-            </property>
-            <property name="toolTip" stdset="0">
-                <string>don't make any changes</string>
-            </property>
-        </widget>
-        <spacer row="1" column="4">
-            <property name="name">
-                <cstring>Spacer3</cstring>
-            </property>
-            <property name="orientation">
-                <enum>Horizontal</enum>
-            </property>
-            <property name="sizeType">
-                <enum>Expanding</enum>
-            </property>
-            <property name="sizeHint">
-                <size>
-                    <width>155</width>
-                    <height>20</height>
-                </size>
-            </property>
-        </spacer>
-        <widget class="QPushButton" row="1" column="1">
-            <property name="name">
-                <cstring>ButtonOK</cstring>
-            </property>
-            <property name="sizePolicy">
-                <sizepolicy>
-                    <hsizetype>0</hsizetype>
-                    <vsizetype>0</vsizetype>
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                </sizepolicy>
-            </property>
-            <property name="minimumSize">
-                <size>
-                    <width>100</width>
-                    <height>0</height>
-                </size>
-            </property>
-            <property name="text">
-                <string>OK</string>
-            </property>
-            <property name="toolTip" stdset="0">
-                <string>Accept &amp; Save configuration</string>
-            </property>
-        </widget>
-        <spacer row="1" column="2">
-            <property name="name">
-                <cstring>Spacer1</cstring>
-            </property>
-            <property name="orientation">
-                <enum>Horizontal</enum>
-            </property>
-            <property name="sizeType">
-                <enum>Expanding</enum>
-            </property>
-            <property name="sizeHint">
-                <size>
-                    <width>156</width>
-                    <height>20</height>
-                </size>
-            </property>
-        </spacer>
-        <widget class="QTabWidget" row="0" column="0" rowspan="1" colspan="5">
-            <property name="name">
-                <cstring>TabWidget2</cstring>
-            </property>
-            <property name="backgroundOrigin">
-                <enum>WindowOrigin</enum>
-            </property>
-            <property name="tabShape">
-                <enum>Rounded</enum>
-            </property>
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Preferences</class>
+ <widget class="QDialog" name="Preferences">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>745</width>
+    <height>526</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Edit Preferences</string>
+  </property>
+  <property name="sizeGripEnabled">
+   <bool>true</bool>
+  </property>
+  <layout class="QGridLayout">
+   <item row="1" column="0">
+    <spacer name="Spacer2">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Expanding</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>155</width>
+       <height>16</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="1" column="3">
+    <widget class="QPushButton" name="ButtonCancel">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>100</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="toolTip">
+      <string>don't make any changes</string>
+     </property>
+     <property name="text">
+      <string>Cancel</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="4">
+    <spacer name="Spacer3">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Expanding</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>155</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="1" column="1">
+    <widget class="QPushButton" name="ButtonOK">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>100</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="toolTip">
+      <string>Accept &amp; Save configuration</string>
+     </property>
+     <property name="text">
+      <string>OK</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="2">
+    <spacer name="Spacer1">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Expanding</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>156</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="0" column="0" colspan="5">
+    <widget class="QTabWidget" name="TabWidget2">
+     <property name="tabShape">
+      <enum>QTabWidget::Rounded</enum>
+     </property>
+     <widget class="QWidget" name="tab1">
+      <attribute name="title">
+       <string>General</string>
+      </attribute>
+      <layout class="QGridLayout">
+       <item row="0" column="0">
+        <widget class="Q3GroupBox" name="GroupBox3">
+         <property name="title">
+          <string>Mouse configuration / Default actions for ...</string>
+         </property>
+         <layout class="QGridLayout">
+          <property name="margin">
+           <number>11</number>
+          </property>
+          <property name="spacing">
+           <number>6</number>
+          </property>
+          <item row="1" column="0" rowspan="2">
+           <layout class="QGridLayout">
             <property name="margin">
-                <number>0</number>
+             <number>0</number>
             </property>
-            <widget class="QWidget">
-                <property name="name">
-                    <cstring>tab1</cstring>
-                </property>
-                <attribute name="title">
-                    <string>General</string>
-                </attribute>
-                <grid>
-                    <property name="name">
-                        <cstring>unnamed</cstring>
-                    </property>
-                    <widget class="QGroupBox" row="0" column="0">
-                        <property name="name">
-                            <cstring>GroupBox3</cstring>
-                        </property>
-                        <property name="title">
-                            <string>Mouse configuration / Default actions for ...</string>
-                        </property>
-                        <grid>
-                            <property name="name">
-                                <cstring>unnamed</cstring>
-                            </property>
-                            <property name="margin">
-                                <number>11</number>
-                            </property>
-                            <property name="spacing">
-                                <number>6</number>
-                            </property>
-                            <widget class="QLayoutWidget" row="1" column="0" rowspan="2" colspan="1">
-                                <property name="name">
-                                    <cstring>Layout7</cstring>
-                                </property>
-                                <grid>
-                                    <property name="name">
-                                        <cstring>unnamed</cstring>
-                                    </property>
-                                    <property name="margin">
-                                        <number>0</number>
-                                    </property>
-                                    <property name="spacing">
-                                        <number>6</number>
-                                    </property>
-                                    <widget class="QComboBox" row="0" column="1">
-                                        <property name="name">
-                                            <cstring>ComboBoxDoubleClickAction</cstring>
-                                        </property>
-                                        <property name="sizePolicy">
-                                            <sizepolicy>
-                                                <hsizetype>7</hsizetype>
-                                                <vsizetype>0</vsizetype>
-                                                <horstretch>0</horstretch>
-                                                <verstretch>0</verstretch>
-                                            </sizepolicy>
-                                        </property>
-                                        <property name="minimumSize">
-                                            <size>
-                                                <width>200</width>
-                                                <height>0</height>
-                                            </size>
-                                        </property>
-                                        <property name="toolTip" stdset="0">
-                                            <string>the action that is performed when double-clicking on a song in the song list</string>
-                                        </property>
-                                    </widget>
-                                    <widget class="QLabel" row="0" column="0">
-                                        <property name="name">
-                                            <cstring>LabelDoubleClickAction</cstring>
-                                        </property>
-                                        <property name="text">
-                                            <string>doubleclick</string>
-                                        </property>
-                                        <property name="toolTip" stdset="0">
-                                            <string>the action that is performed when double-clicking on a song in the song list</string>
-                                        </property>
-                                    </widget>
-                                    <widget class="QComboBox" row="1" column="1">
-                                        <property name="name">
-                                            <cstring>ComboBoxMiddleClickAction</cstring>
-                                        </property>
-                                        <property name="sizePolicy">
-                                            <sizepolicy>
-                                                <hsizetype>7</hsizetype>
-                                                <vsizetype>0</vsizetype>
-                                                <horstretch>0</horstretch>
-                                                <verstretch>0</verstretch>
-                                            </sizepolicy>
-                                        </property>
-                                        <property name="minimumSize">
-                                            <size>
-                                                <width>200</width>
-                                                <height>0</height>
-                                            </size>
-                                        </property>
-                                        <property name="toolTip" stdset="0">
-                                            <string>the action that is performed when clicking with middle mouse button on a song in the song list</string>
-                                        </property>
-                                    </widget>
-                                    <widget class="QLabel" row="1" column="0">
-                                        <property name="name">
-                                            <cstring>LabelMiddleClickAction</cstring>
-                                        </property>
-                                        <property name="text">
-                                            <string>middle click</string>
-                                        </property>
-                                        <property name="toolTip" stdset="0">
-                                            <string>the action that is performed when clicking with middle mouse button on a song in the song list</string>
-                                        </property>
-                                    </widget>
-                                </grid>
-                            </widget>
-                            <spacer row="1" column="1">
-                                <property name="name">
-                                    <cstring>spacer4</cstring>
-                                </property>
-                                <property name="orientation">
-                                    <enum>Horizontal</enum>
-                                </property>
-                                <property name="sizeType">
-                                    <enum>Expanding</enum>
-                                </property>
-                                <property name="sizeHint">
-                                    <size>
-                                        <width>300</width>
-                                        <height>20</height>
-                                    </size>
-                                </property>
-                            </spacer>
-                            <spacer row="2" column="1">
-                                <property name="name">
-                                    <cstring>spacer4_2</cstring>
-                                </property>
-                                <property name="orientation">
-                                    <enum>Horizontal</enum>
-                                </property>
-                                <property name="sizeType">
-                                    <enum>Expanding</enum>
-                                </property>
-                                <property name="sizeHint">
-                                    <size>
-                                        <width>300</width>
-                                        <height>20</height>
-                                    </size>
-                                </property>
-                            </spacer>
-                            <widget class="QLabel" row="0" column="0" rowspan="1" colspan="2">
-                                <property name="name">
-                                    <cstring>textLabel1_4</cstring>
-                                </property>
-                                <property name="text">
-                                    <string>You can assign default actions for a double-click or click with middle mouse buttion on a song in the songlist.</string>
-                                </property>
-                                <property name="alignment">
-                                    <set>WordBreak|AlignVCenter</set>
-                                </property>
-                            </widget>
-                        </grid>
-                    </widget>
-                    <widget class="QGroupBox" row="1" column="0">
-                        <property name="name">
-                            <cstring>GroupBoxSearching</cstring>
-                        </property>
-                        <property name="title">
-                            <string>Searching</string>
-                        </property>
-                        <grid>
-                            <property name="name">
-                                <cstring>unnamed</cstring>
-                            </property>
-                            <property name="margin">
-                                <number>11</number>
-                            </property>
-                            <property name="spacing">
-                                <number>6</number>
-                            </property>
-                            <widget class="QLayoutWidget" row="0" column="0">
-                                <property name="name">
-                                    <cstring>Layout10</cstring>
-                                </property>
-                                <grid>
-                                    <property name="name">
-                                        <cstring>unnamed</cstring>
-                                    </property>
-                                    <property name="margin">
-                                        <number>0</number>
-                                    </property>
-                                    <property name="spacing">
-                                        <number>6</number>
-                                    </property>
-                                    <widget class="QLineEdit" row="0" column="1">
-                                        <property name="name">
-                                            <cstring>LineEditSearchThreshold</cstring>
-                                        </property>
-                                        <property name="sizePolicy">
-                                            <sizepolicy>
-                                                <hsizetype>0</hsizetype>
-                                                <vsizetype>0</vsizetype>
-                                                <horstretch>0</horstretch>
-                                                <verstretch>0</verstretch>
-                                            </sizepolicy>
-                                        </property>
-                                        <property name="minimumSize">
-                                            <size>
-                                                <width>200</width>
-                                                <height>0</height>
-                                            </size>
-                                        </property>
-                                        <property name="toolTip" stdset="0">
-                                            <string>determines how many hits will be shown when searching. Must be between 0 and 100, reasonable values are around 25.</string>
-                                        </property>
-                                    </widget>
-                                    <widget class="QLabel" row="0" column="0">
-                                        <property name="name">
-                                            <cstring>LabelSearchThreshold</cstring>
-                                        </property>
-                                        <property name="text">
-                                            <string>threshold</string>
-                                        </property>
-                                        <property name="toolTip" stdset="0">
-                                            <string>determines how many hits will be shown when searching. Must be between 0 and 100, reasonable values are around 25.</string>
-                                        </property>
-                                    </widget>
-                                </grid>
-                            </widget>
-                            <spacer row="0" column="1">
-                                <property name="name">
-                                    <cstring>spacer4_4</cstring>
-                                </property>
-                                <property name="orientation">
-                                    <enum>Horizontal</enum>
-                                </property>
-                                <property name="sizeType">
-                                    <enum>Expanding</enum>
-                                </property>
-                                <property name="sizeHint">
-                                    <size>
-                                        <width>365</width>
-                                        <height>20</height>
-                                    </size>
-                                </property>
-                            </spacer>
-                        </grid>
-                    </widget>
-                </grid>
+            <property name="spacing">
+             <number>6</number>
+            </property>
+            <item row="0" column="1">
+             <widget class="QComboBox" name="ComboBoxDoubleClickAction">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>200</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="toolTip">
+               <string>the action that is performed when double-clicking on a song in the song list</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="0">
+             <widget class="QLabel" name="LabelDoubleClickAction">
+              <property name="toolTip">
+               <string>the action that is performed when double-clicking on a song in the song list</string>
+              </property>
+              <property name="text">
+               <string>doubleclick</string>
+              </property>
+              <property name="wordWrap">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QComboBox" name="ComboBoxMiddleClickAction">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>200</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="toolTip">
+               <string>the action that is performed when clicking with middle mouse button on a song in the song list</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="LabelMiddleClickAction">
+              <property name="toolTip">
+               <string>the action that is performed when clicking with middle mouse button on a song in the song list</string>
+              </property>
+              <property name="text">
+               <string>middle click</string>
+              </property>
+              <property name="wordWrap">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item row="1" column="1">
+           <spacer name="spacer4">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Expanding</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>300</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="2" column="1">
+           <spacer name="spacer4_2">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Expanding</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>300</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="0" column="0" colspan="2">
+           <widget class="QLabel" name="textLabel1_4">
+            <property name="text">
+             <string>You can assign default actions for a double-click or click with middle mouse buttion on a song in the songlist.</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignVCenter</set>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="Q3GroupBox" name="GroupBoxSearching">
+         <property name="title">
+          <string>Searching</string>
+         </property>
+         <layout class="QGridLayout">
+          <property name="margin">
+           <number>11</number>
+          </property>
+          <property name="spacing">
+           <number>6</number>
+          </property>
+          <item row="0" column="0">
+           <layout class="QGridLayout">
+            <property name="margin">
+             <number>0</number>
+            </property>
+            <property name="spacing">
+             <number>6</number>
+            </property>
+            <item row="0" column="1">
+             <widget class="QLineEdit" name="LineEditSearchThreshold">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>200</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="toolTip">
+               <string>determines how many hits will be shown when searching. Must be between 0 and 100, reasonable values are around 25.</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="0">
+             <widget class="QLabel" name="LabelSearchThreshold">
+              <property name="toolTip">
+               <string>determines how many hits will be shown when searching. Must be between 0 and 100, reasonable values are around 25.</string>
+              </property>
+              <property name="text">
+               <string>threshold</string>
+              </property>
+              <property name="wordWrap">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item row="0" column="1">
+           <spacer name="spacer4_4">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Expanding</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>365</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab2">
+      <attribute name="title">
+       <string>Database</string>
+      </attribute>
+      <widget class="Q3GroupBox" name="GroupBox2">
+       <property name="geometry">
+        <rect>
+         <x>11</x>
+         <y>11</y>
+         <width>699</width>
+         <height>69</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Path to files</string>
+       </property>
+       <layout class="QGridLayout">
+        <property name="margin">
+         <number>5</number>
+        </property>
+        <property name="spacing">
+         <number>3</number>
+        </property>
+        <item row="0" column="0">
+         <layout class="QGridLayout">
+          <property name="margin">
+           <number>0</number>
+          </property>
+          <property name="spacing">
+           <number>6</number>
+          </property>
+          <item row="1" column="2">
+           <widget class="QPushButton" name="ButtonChooseTrashDir">
+            <property name="toolTip">
+             <string>choose directory</string>
+            </property>
+            <property name="text">
+             <string>...</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="LabelTrashDir">
+            <property name="toolTip">
+             <string>songs deleted in yammi will be moved to this directory and this directory will be skipped when scanning</string>
+            </property>
+            <property name="text">
+             <string>trash directory for deleted song files</string>
+            </property>
+            <property name="wordWrap">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLineEdit" name="LineEditTrashDir">
+            <property name="toolTip">
+             <string>songs deleted in yammi will be moved to this directory and this directory will be skipped when scanning</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+      <widget class="Q3GroupBox" name="GroupBox6">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>320</y>
+         <width>700</width>
+         <height>110</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Misc</string>
+       </property>
+       <layout class="QGridLayout">
+        <property name="margin">
+         <number>5</number>
+        </property>
+        <property name="spacing">
+         <number>3</number>
+        </property>
+        <item row="0" column="0" rowspan="2" colspan="4">
+         <widget class="QCheckBox" name="CheckBoxLogging">
+          <property name="toolTip">
+           <string>logs all played songs with a timestamp to a file</string>
+          </property>
+          <property name="text">
+           <string>logging of played songs</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0" rowspan="2">
+         <widget class="QLabel" name="LabelGroupThreshold">
+          <property name="toolTip">
+           <string>the minimum number for a subfolder to be created (Folder Albums, Artists and Genres)</string>
+          </property>
+          <property name="text">
+           <string>group threshold</string>
+          </property>
+          <property name="wordWrap">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="4" rowspan="2">
+         <widget class="QCheckBox" name="CheckBoxLazyGrouping">
+          <property name="toolTip">
+           <string>if enabled, considers eg. &quot;The_Doors&quot; the same as &quot;THE DOORS&quot; for grouping</string>
+          </property>
+          <property name="text">
+           <string>lazy grouping</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="4" rowspan="2">
+         <widget class="QCheckBox" name="CheckBoxChildSafe">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="toolTip">
+           <string>if activated, some potentially dangerous actions are not allowed (eg. deleting a song). To disable this, you need a password ...</string>
+          </property>
+          <property name="text">
+           <string>child safe mode</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1" rowspan="3">
+         <widget class="QSpinBox" name="SpinBoxGroupThreshold">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>the minimum number for a subfolder to be created (Folder Albums, Artists and Genres)</string>
+          </property>
+          <property name="minimum">
+           <number>1</number>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="3">
+         <spacer name="Spacer1_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Expanding</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>90</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
+      <widget class="Q3GroupBox" name="ConsistencyMode">
+       <property name="geometry">
+        <rect>
+         <x>11</x>
+         <y>86</y>
+         <width>700</width>
+         <height>230</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Tag Handling</string>
+       </property>
+       <layout class="QGridLayout">
+        <property name="margin">
+         <number>5</number>
+        </property>
+        <property name="spacing">
+         <number>3</number>
+        </property>
+        <item row="0" column="2">
+         <widget class="QCheckBox" name="CheckBoxCapitalizeTags">
+          <property name="toolTip">
+           <string>Capitalizes artist, title and album of a newly added Song</string>
+          </property>
+          <property name="text">
+           <string>capitalize tags on new songs</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0" colspan="2">
+         <widget class="QCheckBox" name="CheckBoxTagsConsistent">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>save all changes in yammi database to the file tags immediately</string>
+          </property>
+          <property name="text">
+           <string>save tags immediately</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1" colspan="2">
+         <widget class="Q3ButtonGroup" name="buttonGroup3">
+          <property name="title">
+           <string/>
+          </property>
+          <property name="lineWidth">
+           <number>0</number>
+          </property>
+          <layout class="QGridLayout">
+           <item row="1" column="0">
+            <widget class="QRadioButton" name="RadioButtonSimpleGuessmode">
+             <property name="text">
+              <string>artist - title</string>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
             </widget>
-            <widget class="QWidget">
-                <property name="name">
-                    <cstring>tab2</cstring>
-                </property>
-                <attribute name="title">
-                    <string>Database</string>
-                </attribute>
-                <widget class="QGroupBox">
-                    <property name="name">
-                        <cstring>GroupBox2</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>11</x>
-                            <y>11</y>
-                            <width>699</width>
-                            <height>69</height>
-                        </rect>
-                    </property>
-                    <property name="title">
-                        <string>Path to files</string>
-                    </property>
-                    <grid>
-                        <property name="name">
-                            <cstring>unnamed</cstring>
-                        </property>
-                        <property name="margin">
-                            <number>5</number>
-                        </property>
-                        <property name="spacing">
-                            <number>3</number>
-                        </property>
-                        <widget class="QLayoutWidget" row="0" column="0">
-                            <property name="name">
-                                <cstring>Layout8_2</cstring>
-                            </property>
-                            <grid>
-                                <property name="name">
-                                    <cstring>unnamed</cstring>
-                                </property>
-                                <property name="margin">
-                                    <number>0</number>
-                                </property>
-                                <property name="spacing">
-                                    <number>6</number>
-                                </property>
-                                <widget class="QPushButton" row="1" column="2">
-                                    <property name="name">
-                                        <cstring>ButtonChooseTrashDir</cstring>
-                                    </property>
-                                    <property name="text">
-                                        <string>...</string>
-                                    </property>
-                                    <property name="toolTip" stdset="0">
-                                        <string>choose directory</string>
-                                    </property>
-                                </widget>
-                                <widget class="QLabel" row="1" column="0">
-                                    <property name="name">
-                                        <cstring>LabelTrashDir</cstring>
-                                    </property>
-                                    <property name="text">
-                                        <string>trash directory for deleted song files</string>
-                                    </property>
-                                    <property name="toolTip" stdset="0">
-                                        <string>songs deleted in yammi will be moved to this directory and this directory will be skipped when scanning</string>
-                                    </property>
-                                </widget>
-                                <widget class="QLineEdit" row="1" column="1">
-                                    <property name="name">
-                                        <cstring>LineEditTrashDir</cstring>
-                                    </property>
-                                    <property name="toolTip" stdset="0">
-                                        <string>songs deleted in yammi will be moved to this directory and this directory will be skipped when scanning</string>
-                                    </property>
-                                </widget>
-                            </grid>
-                        </widget>
-                    </grid>
-                </widget>
-                <widget class="QGroupBox">
-                    <property name="name">
-                        <cstring>GroupBox6</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>10</x>
-                            <y>320</y>
-                            <width>700</width>
-                            <height>110</height>
-                        </rect>
-                    </property>
-                    <property name="title">
-                        <string>Misc</string>
-                    </property>
-                    <grid>
-                        <property name="name">
-                            <cstring>unnamed</cstring>
-                        </property>
-                        <property name="margin">
-                            <number>5</number>
-                        </property>
-                        <property name="spacing">
-                            <number>3</number>
-                        </property>
-                        <widget class="QCheckBox" row="0" column="0" rowspan="2" colspan="4">
-                            <property name="name">
-                                <cstring>CheckBoxLogging</cstring>
-                            </property>
-                            <property name="text">
-                                <string>logging of played songs</string>
-                            </property>
-                            <property name="toolTip" stdset="0">
-                                <string>logs all played songs with a timestamp to a file</string>
-                            </property>
-                        </widget>
-                        <widget class="QLabel" row="2" column="0" rowspan="2" colspan="1">
-                            <property name="name">
-                                <cstring>LabelGroupThreshold</cstring>
-                            </property>
-                            <property name="text">
-                                <string>group threshold</string>
-                            </property>
-                            <property name="toolTip" stdset="0">
-                                <string>the minimum number for a subfolder to be created (Folder Albums, Artists and Genres)</string>
-                            </property>
-                        </widget>
-                        <widget class="QCheckBox" row="2" column="4" rowspan="2" colspan="1">
-                            <property name="name">
-                                <cstring>CheckBoxLazyGrouping</cstring>
-                            </property>
-                            <property name="text">
-                                <string>lazy grouping</string>
-                            </property>
-                            <property name="toolTip" stdset="0">
-                                <string>if enabled, considers eg. "The_Doors" the same as "THE DOORS" for grouping</string>
-                            </property>
-                        </widget>
-                        <widget class="QCheckBox" row="0" column="4" rowspan="2" colspan="1">
-                            <property name="name">
-                                <cstring>CheckBoxChildSafe</cstring>
-                            </property>
-                            <property name="enabled">
-                                <bool>false</bool>
-                            </property>
-                            <property name="text">
-                                <string>child safe mode</string>
-                            </property>
-                            <property name="toolTip" stdset="0">
-                                <string>if activated, some potentially dangerous actions are not allowed (eg. deleting a song). To disable this, you need a password ...</string>
-                            </property>
-                        </widget>
-                        <widget class="QSpinBox" row="1" column="1" rowspan="3" colspan="1">
-                            <property name="name">
-                                <cstring>SpinBoxGroupThreshold</cstring>
-                            </property>
-                            <property name="sizePolicy">
-                                <sizepolicy>
-                                    <hsizetype>0</hsizetype>
-                                    <vsizetype>0</vsizetype>
-                                    <horstretch>0</horstretch>
-                                    <verstretch>0</verstretch>
-                                </sizepolicy>
-                            </property>
-                            <property name="minValue">
-                                <number>1</number>
-                            </property>
-                            <property name="toolTip" stdset="0">
-                                <string>the minimum number for a subfolder to be created (Folder Albums, Artists and Genres)</string>
-                            </property>
-                        </widget>
-                        <spacer row="3" column="3">
-                            <property name="name">
-                                <cstring>Spacer1_2</cstring>
-                            </property>
-                            <property name="orientation">
-                                <enum>Horizontal</enum>
-                            </property>
-                            <property name="sizeType">
-                                <enum>Expanding</enum>
-                            </property>
-                            <property name="sizeHint">
-                                <size>
-                                    <width>90</width>
-                                    <height>20</height>
-                                </size>
-                            </property>
-                        </spacer>
-                    </grid>
-                </widget>
-                <widget class="QGroupBox">
-                    <property name="name">
-                        <cstring>ConsistencyMode</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>11</x>
-                            <y>86</y>
-                            <width>700</width>
-                            <height>230</height>
-                        </rect>
-                    </property>
-                    <property name="title">
-                        <string>Tag Handling</string>
-                    </property>
-                    <grid>
-                        <property name="name">
-                            <cstring>unnamed</cstring>
-                        </property>
-                        <property name="margin">
-                            <number>5</number>
-                        </property>
-                        <property name="spacing">
-                            <number>3</number>
-                        </property>
-                        <widget class="QCheckBox" row="0" column="2">
-                            <property name="name">
-                                <cstring>CheckBoxCapitalizeTags</cstring>
-                            </property>
-                            <property name="text">
-                                <string>capitalize tags on new songs</string>
-                            </property>
-                            <property name="toolTip" stdset="0">
-                                <string>Capitalizes artist, title and album of a newly added Song</string>
-                            </property>
-                        </widget>
-                        <widget class="QCheckBox" row="0" column="0" rowspan="1" colspan="2">
-                            <property name="name">
-                                <cstring>CheckBoxTagsConsistent</cstring>
-                            </property>
-                            <property name="enabled">
-                                <bool>true</bool>
-                            </property>
-                            <property name="sizePolicy">
-                                <sizepolicy>
-                                    <hsizetype>5</hsizetype>
-                                    <vsizetype>0</vsizetype>
-                                    <horstretch>0</horstretch>
-                                    <verstretch>0</verstretch>
-                                </sizepolicy>
-                            </property>
-                            <property name="text">
-                                <string>save tags immediately</string>
-                            </property>
-                            <property name="toolTip" stdset="0">
-                                <string>save all changes in yammi database to the file tags immediately</string>
-                            </property>
-                        </widget>
-                        <widget class="QButtonGroup" row="3" column="1" rowspan="1" colspan="2">
-                            <property name="name">
-                                <cstring>buttonGroup3</cstring>
-                            </property>
-                            <property name="lineWidth">
-                                <number>0</number>
-                            </property>
-                            <property name="title">
-                                <string></string>
-                            </property>
-                            <grid>
-                                <property name="name">
-                                    <cstring>unnamed</cstring>
-                                </property>
-                                <widget class="QRadioButton" row="1" column="0">
-                                    <property name="name">
-                                        <cstring>RadioButtonSimpleGuessmode</cstring>
-                                    </property>
-                                    <property name="text">
-                                        <string>artist - title</string>
-                                    </property>
-                                    <property name="checked">
-                                        <bool>true</bool>
-                                    </property>
-                                </widget>
-                                <widget class="QRadioButton" row="0" column="0">
-                                    <property name="name">
-                                        <cstring>RadioButtonAdvancedGuessmode</cstring>
-                                    </property>
-                                    <property name="text">
-                                        <string>/artist/album/trackNr - title</string>
-                                    </property>
-                                </widget>
-                            </grid>
-                        </widget>
-                        <widget class="QLabel" row="3" column="0">
-                            <property name="name">
-                                <cstring>LabelGuessingPattern</cstring>
-                            </property>
-                            <property name="text">
-                                <string>guessing pattern
+           </item>
+           <item row="0" column="0">
+            <widget class="QRadioButton" name="RadioButtonAdvancedGuessmode">
+             <property name="text">
+              <string>/artist/album/trackNr - title</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="LabelGuessingPattern">
+          <property name="toolTip">
+           <string>guessing pattern used when adding new songs and no tags available</string>
+          </property>
+          <property name="text">
+           <string>guessing pattern
 (if no tags available)</string>
-                            </property>
-                            <property name="toolTip" stdset="0">
-                                <string>guessing pattern used when adding new songs and no tags available</string>
-                            </property>
-                        </widget>
-                        <widget class="QCheckBox" row="2" column="0">
-                            <property name="name">
-                                <cstring>CheckBoxDirectoriesConsistent</cstring>
-                            </property>
-                            <property name="enabled">
-                                <bool>true</bool>
-                            </property>
-                            <property name="sizePolicy">
-                                <sizepolicy>
-                                    <hsizetype>5</hsizetype>
-                                    <vsizetype>0</vsizetype>
-                                    <horstretch>0</horstretch>
-                                    <verstretch>0</verstretch>
-                                </sizepolicy>
-                            </property>
-                            <property name="text">
-                                <string>keep directories consistent:</string>
-                            </property>
-                            <property name="toolTip" stdset="0">
-                                <string>Synchronizes the directories of the files according to the information in the yammi database. If activated, yammi moves your files!</string>
-                            </property>
-                        </widget>
-                        <widget class="QCheckBox" row="1" column="0">
-                            <property name="name">
-                                <cstring>CheckBoxFilenamesConsistent</cstring>
-                            </property>
-                            <property name="enabled">
-                                <bool>true</bool>
-                            </property>
-                            <property name="sizePolicy">
-                                <sizepolicy>
-                                    <hsizetype>5</hsizetype>
-                                    <vsizetype>0</vsizetype>
-                                    <horstretch>0</horstretch>
-                                    <verstretch>0</verstretch>
-                                </sizepolicy>
-                            </property>
-                            <property name="text">
-                                <string>keep filenames consistent:</string>
-                            </property>
-                            <property name="toolTip" stdset="0">
-                                <string>Synchronizes the filenames of the files according to the information in the yammi database. If activated, yammi renames your files!</string>
-                            </property>
-                        </widget>
-                        <widget class="QLineEdit" row="1" column="1" rowspan="1" colspan="2">
-                            <property name="name">
-                                <cstring>LineEditFilenamePattern</cstring>
-                            </property>
-                            <property name="sizePolicy">
-                                <sizepolicy>
-                                    <hsizetype>7</hsizetype>
-                                    <vsizetype>0</vsizetype>
-                                    <horstretch>0</horstretch>
-                                    <verstretch>0</verstretch>
-                                </sizepolicy>
-                            </property>
-                            <property name="toolTip" stdset="0">
-                                <string>The filename pattern to use for renaming files.</string>
-                            </property>
-                        </widget>
-                        <widget class="QLineEdit" row="2" column="1" rowspan="1" colspan="2">
-                            <property name="name">
-                                <cstring>LineEditDirectoriesPattern</cstring>
-                            </property>
-                            <property name="sizePolicy">
-                                <sizepolicy>
-                                    <hsizetype>7</hsizetype>
-                                    <vsizetype>0</vsizetype>
-                                    <horstretch>0</horstretch>
-                                    <verstretch>0</verstretch>
-                                </sizepolicy>
-                            </property>
-                            <property name="toolTip" stdset="0">
-                                <string>The directory pattern to use for moving files.</string>
-                            </property>
-                        </widget>
-                    </grid>
-                </widget>
-            </widget>
-            <widget class="QWidget">
-                <property name="name">
-                    <cstring>tab3</cstring>
-                </property>
-                <attribute name="title">
-                    <string>MediaPlayer</string>
-                </attribute>
-                <grid>
-                    <property name="name">
-                        <cstring>unnamed</cstring>
-                    </property>
-                    <widget class="QButtonGroup" row="0" column="0" rowspan="1" colspan="2">
-                        <property name="name">
-                            <cstring>MediaPlayerGroup</cstring>
-                        </property>
-                        <property name="sizePolicy">
-                            <sizepolicy>
-                                <hsizetype>5</hsizetype>
-                                <vsizetype>0</vsizetype>
-                                <horstretch>0</horstretch>
-                                <verstretch>0</verstretch>
-                            </sizepolicy>
-                        </property>
-                        <property name="title">
-                            <string>Media Player</string>
-                        </property>
-                        <hbox>
-                            <property name="name">
-                                <cstring>unnamed</cstring>
-                            </property>
-                            <widget class="QRadioButton">
-                                <property name="name">
-                                    <cstring>RadioButtonXineEngine</cstring>
-                                </property>
-                                <property name="text">
-                                    <string>XineEngine</string>
-                                </property>
-                                <property name="checked">
-                                    <bool>false</bool>
-                                </property>
-                                <property name="buttonGroupId">
-                                    <number>1</number>
-                                </property>
-                            </widget>
-                        </hbox>
-                    </widget>
-                </grid>
-            </widget>
-            <widget class="QWidget">
-                <property name="name">
-                    <cstring>TabPage</cstring>
-                </property>
-                <attribute name="title">
-                    <string>Prelistening</string>
-                </attribute>
-                <grid>
-                    <property name="name">
-                        <cstring>unnamed</cstring>
-                    </property>
-                    <widget class="QGroupBox" row="1" column="0">
-                        <property name="name">
-                            <cstring>secondSoundDevice</cstring>
-                        </property>
-                        <property name="title">
-                            <string>Command line tool configuration</string>
-                        </property>
-                        <grid>
-                            <property name="name">
-                                <cstring>unnamed</cstring>
-                            </property>
-                            <property name="margin">
-                                <number>11</number>
-                            </property>
-                            <property name="spacing">
-                                <number>6</number>
-                            </property>
-                            <widget class="QLabel" row="0" column="0">
-                                <property name="name">
-                                    <cstring>LabelMp3Files</cstring>
-                                </property>
-                                <property name="text">
-                                    <string>.mp3 files</string>
-                                </property>
-                                <property name="toolTip" stdset="0">
-                                    <string>Configuration of command line tool used for prelistening.</string>
-                                </property>
-                            </widget>
-                            <widget class="QLineEdit" row="0" column="1">
-                                <property name="name">
-                                    <cstring>LineEditPrelistenMp3Command</cstring>
-                                </property>
-                                <property name="toolTip" stdset="0">
-                                    <string>Configuration of command line tool used for prelistening.</string>
-                                </property>
-                            </widget>
-                            <widget class="QLabel" row="1" column="0">
-                                <property name="name">
-                                    <cstring>LabelOggFiles</cstring>
-                                </property>
-                                <property name="text">
-                                    <string>.ogg files</string>
-                                </property>
-                                <property name="toolTip" stdset="0">
-                                    <string>Configuration of command line tool used for prelistening.</string>
-                                </property>
-                            </widget>
-                            <widget class="QLabel" row="2" column="0">
-                                <property name="name">
-                                    <cstring>LabelWavFiles</cstring>
-                                </property>
-                                <property name="text">
-                                    <string>.wav files</string>
-                                </property>
-                                <property name="toolTip" stdset="0">
-                                    <string>Configuration of command line tool used for prelistening.</string>
-                                </property>
-                            </widget>
-                            <widget class="QLabel" row="3" column="0">
-                                <property name="name">
-                                    <cstring>LabelFlacFiles</cstring>
-                                </property>
-                                <property name="text">
-                                    <string>.flac files</string>
-                                </property>
-                                <property name="toolTip" stdset="0">
-                                    <string>Configuration of command line tool used for prelistening.</string>
-                                </property>
-                            </widget>
-                            <widget class="QLabel" row="4" column="0">
-                                <property name="name">
-                                    <cstring>LabelOtherFiles</cstring>
-                                </property>
-                                <property name="text">
-                                    <string>other files</string>
-                                </property>
-                                <property name="toolTip" stdset="0">
-                                    <string>Configuration of command line tool used for prelistening.</string>
-                                </property>
-                            </widget>
-                            <widget class="QLineEdit" row="1" column="1">
-                                <property name="name">
-                                    <cstring>LineEditPrelistenOggCommand</cstring>
-                                </property>
-                                <property name="toolTip" stdset="0">
-                                    <string>Configuration of command line tool used for prelistening.</string>
-                                </property>
-                            </widget>
-                            <widget class="QLineEdit" row="2" column="1">
-                                <property name="name">
-                                    <cstring>LineEditPrelistenWavCommand</cstring>
-                                </property>
-                                <property name="toolTip" stdset="0">
-                                    <string>Configuration of command line tool used for prelistening.</string>
-                                </property>
-                            </widget>
-                            <widget class="QLineEdit" row="3" column="1">
-                                <property name="name">
-                                    <cstring>LineEditPrelistenFlacCommand</cstring>
-                                </property>
-                                <property name="toolTip" stdset="0">
-                                    <string>Configuration of command line tool used for prelistening.</string>
-                                </property>
-                            </widget>
-                            <widget class="QLineEdit" row="4" column="1">
-                                <property name="name">
-                                    <cstring>LineEditPrelistenOtherCommand</cstring>
-                                </property>
-                                <property name="toolTip" stdset="0">
-                                    <string>Configuration of command line tool used for prelistening.</string>
-                                </property>
-                            </widget>
-                        </grid>
-                    </widget>
-                    <widget class="QLabel" row="0" column="0">
-                        <property name="name">
-                            <cstring>TextLabel1_3_2</cstring>
-                        </property>
-                        <property name="sizePolicy">
-                            <sizepolicy>
-                                <hsizetype>5</hsizetype>
-                                <vsizetype>1</vsizetype>
-                                <horstretch>0</horstretch>
-                                <verstretch>0</verstretch>
-                            </sizepolicy>
-                        </property>
-                        <property name="frameShape">
-                            <enum>Box</enum>
-                        </property>
-                        <property name="frameShadow">
-                            <enum>Sunken</enum>
-                        </property>
-                        <property name="lineWidth">
-                            <number>1</number>
-                        </property>
-                        <property name="margin">
-                            <number>3</number>
-                        </property>
-                        <property name="midLineWidth">
-                            <number>0</number>
-                        </property>
-                        <property name="text">
-                            <string>The prelisten functionality of Yammi allows to listen to songs on a headphone (requires a second sound device) while the normal playback of your playlist continues (very handy on a party...).
+          </property>
+          <property name="wordWrap">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QCheckBox" name="CheckBoxDirectoriesConsistent">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>Synchronizes the directories of the files according to the information in the yammi database. If activated, yammi moves your files!</string>
+          </property>
+          <property name="text">
+           <string>keep directories consistent:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QCheckBox" name="CheckBoxFilenamesConsistent">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>Synchronizes the filenames of the files according to the information in the yammi database. If activated, yammi renames your files!</string>
+          </property>
+          <property name="text">
+           <string>keep filenames consistent:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1" colspan="2">
+         <widget class="QLineEdit" name="LineEditFilenamePattern">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>The filename pattern to use for renaming files.</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1" colspan="2">
+         <widget class="QLineEdit" name="LineEditDirectoriesPattern">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>The directory pattern to use for moving files.</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="tab3">
+      <attribute name="title">
+       <string>MediaPlayer</string>
+      </attribute>
+      <layout class="QGridLayout">
+       <item row="0" column="0" colspan="2">
+        <widget class="Q3ButtonGroup" name="MediaPlayerGroup">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="title">
+          <string>Media Player</string>
+         </property>
+         <layout class="QHBoxLayout">
+          <item>
+           <widget class="QRadioButton" name="RadioButtonXineEngine">
+            <property name="text">
+             <string>XineEngine</string>
+            </property>
+            <property name="checked">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="TabPage">
+      <attribute name="title">
+       <string>Prelistening</string>
+      </attribute>
+      <layout class="QGridLayout">
+       <item row="1" column="0">
+        <widget class="Q3GroupBox" name="secondSoundDevice">
+         <property name="title">
+          <string>Command line tool configuration</string>
+         </property>
+         <layout class="QGridLayout">
+          <property name="margin">
+           <number>11</number>
+          </property>
+          <property name="spacing">
+           <number>6</number>
+          </property>
+          <item row="0" column="0">
+           <widget class="QLabel" name="LabelMp3Files">
+            <property name="toolTip">
+             <string>Configuration of command line tool used for prelistening.</string>
+            </property>
+            <property name="text">
+             <string>.mp3 files</string>
+            </property>
+            <property name="wordWrap">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLineEdit" name="LineEditPrelistenMp3Command">
+            <property name="toolTip">
+             <string>Configuration of command line tool used for prelistening.</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="LabelOggFiles">
+            <property name="toolTip">
+             <string>Configuration of command line tool used for prelistening.</string>
+            </property>
+            <property name="text">
+             <string>.ogg files</string>
+            </property>
+            <property name="wordWrap">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="LabelWavFiles">
+            <property name="toolTip">
+             <string>Configuration of command line tool used for prelistening.</string>
+            </property>
+            <property name="text">
+             <string>.wav files</string>
+            </property>
+            <property name="wordWrap">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="LabelFlacFiles">
+            <property name="toolTip">
+             <string>Configuration of command line tool used for prelistening.</string>
+            </property>
+            <property name="text">
+             <string>.flac files</string>
+            </property>
+            <property name="wordWrap">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QLabel" name="LabelOtherFiles">
+            <property name="toolTip">
+             <string>Configuration of command line tool used for prelistening.</string>
+            </property>
+            <property name="text">
+             <string>other files</string>
+            </property>
+            <property name="wordWrap">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLineEdit" name="LineEditPrelistenOggCommand">
+            <property name="toolTip">
+             <string>Configuration of command line tool used for prelistening.</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QLineEdit" name="LineEditPrelistenWavCommand">
+            <property name="toolTip">
+             <string>Configuration of command line tool used for prelistening.</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QLineEdit" name="LineEditPrelistenFlacCommand">
+            <property name="toolTip">
+             <string>Configuration of command line tool used for prelistening.</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="QLineEdit" name="LineEditPrelistenOtherCommand">
+            <property name="toolTip">
+             <string>Configuration of command line tool used for prelistening.</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="TextLabel1_3_2">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::Box</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Sunken</enum>
+         </property>
+         <property name="lineWidth">
+          <number>1</number>
+         </property>
+         <property name="midLineWidth">
+          <number>0</number>
+         </property>
+         <property name="text">
+          <string>The prelisten functionality of Yammi allows to listen to songs on a headphone (requires a second sound device) while the normal playback of your playlist continues (very handy on a party...).
 For each file type listed below, Yammi can use a different command.
-Configure each tool here, separating parameters with "|".
+Configure each tool here, separating parameters with &quot;|&quot;.
 Additionally to the usual placeholders (see the plugins tab) you can use {skipSeconds}, {skipMilliSeconds} and {skipFrames}.</string>
-                        </property>
-                        <property name="alignment">
-                            <set>WordBreak|AlignVCenter</set>
-                        </property>
-                    </widget>
-                </grid>
-            </widget>
-            <widget class="QWidget">
-                <property name="name">
-                    <cstring>tab</cstring>
-                </property>
-                <attribute name="title">
-                    <string>Plugins</string>
-                </attribute>
-                <grid>
-                    <property name="name">
-                        <cstring>unnamed</cstring>
-                    </property>
-                    <widget class="QGroupBox" row="2" column="0" rowspan="1" colspan="2">
-                        <property name="name">
-                            <cstring>GroupBox7</cstring>
-                        </property>
-                        <property name="title">
-                            <string>Plugins</string>
-                        </property>
-                        <grid>
-                            <property name="name">
-                                <cstring>unnamed</cstring>
-                            </property>
-                            <property name="margin">
-                                <number>5</number>
-                            </property>
-                            <property name="spacing">
-                                <number>3</number>
-                            </property>
-                            <widget class="Line" row="5" column="0" rowspan="1" colspan="5">
-                                <property name="name">
-                                    <cstring>Line3</cstring>
-                                </property>
-                                <property name="sizePolicy">
-                                    <sizepolicy>
-                                        <hsizetype>1</hsizetype>
-                                        <vsizetype>0</vsizetype>
-                                        <horstretch>0</horstretch>
-                                        <verstretch>0</verstretch>
-                                    </sizepolicy>
-                                </property>
-                                <property name="frameShape">
-                                    <enum>HLine</enum>
-                                </property>
-                                <property name="frameShadow">
-                                    <enum>Sunken</enum>
-                                </property>
-                                <property name="orientation">
-                                    <enum>Horizontal</enum>
-                                </property>
-                            </widget>
-                            <widget class="QLabel" row="3" column="0">
-                                <property name="name">
-                                    <cstring>TextLabelPluginMode</cstring>
-                                </property>
-                                <property name="text">
-                                    <string>Plugin Mode</string>
-                                </property>
-                            </widget>
-                            <widget class="QComboBox" row="1" column="0" rowspan="1" colspan="2">
-                                <property name="name">
-                                    <cstring>ComboBoxPlugins</cstring>
-                                </property>
-                            </widget>
-                            <widget class="QPushButton" row="2" column="0">
-                                <property name="name">
-                                    <cstring>PushButtonNewPlugin</cstring>
-                                </property>
-                                <property name="sizePolicy">
-                                    <sizepolicy>
-                                        <hsizetype>5</hsizetype>
-                                        <vsizetype>0</vsizetype>
-                                        <horstretch>0</horstretch>
-                                        <verstretch>0</verstretch>
-                                    </sizepolicy>
-                                </property>
-                                <property name="text">
-                                    <string>New Entry</string>
-                                </property>
-                            </widget>
-                            <widget class="QPushButton" row="2" column="1">
-                                <property name="name">
-                                    <cstring>PushButtonDeletePlugin</cstring>
-                                </property>
-                                <property name="sizePolicy">
-                                    <sizepolicy>
-                                        <hsizetype>5</hsizetype>
-                                        <vsizetype>0</vsizetype>
-                                        <horstretch>0</horstretch>
-                                        <verstretch>0</verstretch>
-                                    </sizepolicy>
-                                </property>
-                                <property name="text">
-                                    <string>Delete Entry</string>
-                                </property>
-                            </widget>
-                            <widget class="QComboBox" row="3" column="1">
-                                <property name="name">
-                                    <cstring>ComboBoxPluginMode</cstring>
-                                </property>
-                            </widget>
-                            <widget class="QPushButton" row="1" column="2" rowspan="1" colspan="2">
-                                <property name="name">
-                                    <cstring>PushButtonAddStandardPlugins</cstring>
-                                </property>
-                                <property name="text">
-                                    <string>Add Standard Plugins</string>
-                                </property>
-                                <property name="toolTip" stdset="0">
-                                    <string>Adds all standard plugins (if not already existing)</string>
-                                </property>
-                            </widget>
-                            <widget class="QLabel" row="2" column="2">
-                                <property name="name">
-                                    <cstring>LabelPluginSongLabelPluginSongMeMenuEntry</cstring>
-                                </property>
-                                <property name="text">
-                                    <string>menu entry</string>
-                                </property>
-                                <property name="toolTip" stdset="0">
-                                    <string>the entry to appear in the context menu</string>
-                                </property>
-                            </widget>
-                            <widget class="QLabel" row="3" column="2">
-                                <property name="name">
-                                    <cstring>LabelPluginSongCmd</cstring>
-                                </property>
-                                <property name="text">
-                                    <string>command</string>
-                                </property>
-                                <property name="toolTip" stdset="0">
-                                    <string>the script that is invoked when this plugin is chosen</string>
-                                </property>
-                            </widget>
-                            <widget class="QPushButton" row="1" column="4">
-                                <property name="name">
-                                    <cstring>PushButtonPluginReplacements</cstring>
-                                </property>
-                                <property name="sizePolicy">
-                                    <sizepolicy>
-                                        <hsizetype>1</hsizetype>
-                                        <vsizetype>0</vsizetype>
-                                        <horstretch>0</horstretch>
-                                        <verstretch>0</verstretch>
-                                    </sizepolicy>
-                                </property>
-                                <property name="text">
-                                    <string>Placeholders ...</string>
-                                </property>
-                            </widget>
-                            <widget class="QLineEdit" row="2" column="3" rowspan="1" colspan="2">
-                                <property name="name">
-                                    <cstring>LineEditPluginMenuEntry</cstring>
-                                </property>
-                                <property name="sizePolicy">
-                                    <sizepolicy>
-                                        <hsizetype>7</hsizetype>
-                                        <vsizetype>0</vsizetype>
-                                        <horstretch>0</horstretch>
-                                        <verstretch>0</verstretch>
-                                    </sizepolicy>
-                                </property>
-                                <property name="toolTip" stdset="0">
-                                    <string>the entry to appear in the context menu</string>
-                                </property>
-                            </widget>
-                            <widget class="QLineEdit" row="3" column="3" rowspan="1" colspan="2">
-                                <property name="name">
-                                    <cstring>LineEditPluginCommand</cstring>
-                                </property>
-                                <property name="sizePolicy">
-                                    <sizepolicy>
-                                        <hsizetype>7</hsizetype>
-                                        <vsizetype>0</vsizetype>
-                                        <horstretch>0</horstretch>
-                                        <verstretch>0</verstretch>
-                                    </sizepolicy>
-                                </property>
-                                <property name="toolTip" stdset="0">
-                                    <string>the script that is invoked when this plugin is chosen</string>
-                                </property>
-                            </widget>
-                            <widget class="QLineEdit" row="4" column="3" rowspan="1" colspan="2">
-                                <property name="name">
-                                    <cstring>LineEditPluginCustomList</cstring>
-                                </property>
-                                <property name="sizePolicy">
-                                    <sizepolicy>
-                                        <hsizetype>7</hsizetype>
-                                        <vsizetype>0</vsizetype>
-                                        <horstretch>0</horstretch>
-                                        <verstretch>0</verstretch>
-                                    </sizepolicy>
-                                </property>
-                                <property name="toolTip" stdset="0">
-                                    <string>defines the content of the {customList} placeholders</string>
-                                </property>
-                            </widget>
-                            <widget class="QLabel" row="0" column="0" rowspan="1" colspan="5">
-                                <property name="name">
-                                    <cstring>TextLabel1</cstring>
-                                </property>
-                                <property name="text">
-                                    <string>Plugins can be invoked on a selection of songs from the context menu.
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignVCenter</set>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
+         </property>
+         <property name="margin">
+          <number>3</number>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab">
+      <attribute name="title">
+       <string>Plugins</string>
+      </attribute>
+      <layout class="QGridLayout">
+       <item row="2" column="0" colspan="2">
+        <widget class="Q3GroupBox" name="GroupBox7">
+         <property name="title">
+          <string>Plugins</string>
+         </property>
+         <layout class="QGridLayout">
+          <property name="margin">
+           <number>5</number>
+          </property>
+          <property name="spacing">
+           <number>3</number>
+          </property>
+          <item row="5" column="0" colspan="5">
+           <widget class="Line" name="Line3">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::HLine</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Sunken</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="TextLabelPluginMode">
+            <property name="text">
+             <string>Plugin Mode</string>
+            </property>
+            <property name="wordWrap">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0" colspan="2">
+           <widget class="QComboBox" name="ComboBoxPlugins"/>
+          </item>
+          <item row="2" column="0">
+           <widget class="QPushButton" name="PushButtonNewPlugin">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>New Entry</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QPushButton" name="PushButtonDeletePlugin">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>Delete Entry</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QComboBox" name="ComboBoxPluginMode"/>
+          </item>
+          <item row="1" column="2" colspan="2">
+           <widget class="QPushButton" name="PushButtonAddStandardPlugins">
+            <property name="toolTip">
+             <string>Adds all standard plugins (if not already existing)</string>
+            </property>
+            <property name="text">
+             <string>Add Standard Plugins</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="2">
+           <widget class="QLabel" name="LabelPluginSongLabelPluginSongMeMenuEntry">
+            <property name="toolTip">
+             <string>the entry to appear in the context menu</string>
+            </property>
+            <property name="text">
+             <string>menu entry</string>
+            </property>
+            <property name="wordWrap">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="2">
+           <widget class="QLabel" name="LabelPluginSongCmd">
+            <property name="toolTip">
+             <string>the script that is invoked when this plugin is chosen</string>
+            </property>
+            <property name="text">
+             <string>command</string>
+            </property>
+            <property name="wordWrap">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="4">
+           <widget class="QPushButton" name="PushButtonPluginReplacements">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>Placeholders ...</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="3" colspan="2">
+           <widget class="QLineEdit" name="LineEditPluginMenuEntry">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="toolTip">
+             <string>the entry to appear in the context menu</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="3" colspan="2">
+           <widget class="QLineEdit" name="LineEditPluginCommand">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="toolTip">
+             <string>the script that is invoked when this plugin is chosen</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="3" colspan="2">
+           <widget class="QLineEdit" name="LineEditPluginCustomList">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="toolTip">
+             <string>defines the content of the {customList} placeholders</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0" colspan="5">
+           <widget class="QLabel" name="TextLabel1">
+            <property name="text">
+             <string>Plugins can be invoked on a selection of songs from the context menu.
 
 Single mode = executed once for each song
 Group mode = executed once for the selection</string>
-                                </property>
-                            </widget>
-                            <widget class="QLabel" row="6" column="0" rowspan="1" colspan="4">
-                                <property name="name">
-                                    <cstring>TextLabel3</cstring>
-                                </property>
-                                <property name="text">
-                                    <string>See Yammi's homepage for useful plugin configurations:</string>
-                                </property>
-                            </widget>
-                            <widget class="QLabel" row="7" column="0" rowspan="1" colspan="3">
-                                <property name="name">
-                                    <cstring>PluginUrlLabel</cstring>
-                                </property>
-                                <property name="text">
-                                    <string>&lt;a href="http://yammi.sourceforge.net/plugins.html"&gt;http://yammi.sourceforge.net/plugins.html&lt;/a&gt;</string>
-                                </property>
-                            </widget>
-                            <widget class="QLabel" row="4" column="2">
-                                <property name="name">
-                                    <cstring>LabelPluginPlaylistCustomList_2</cstring>
-                                </property>
-                                <property name="text">
-                                    <string>custom list</string>
-                                </property>
-                                <property name="toolTip" stdset="0">
-                                    <string>defines the content of the {customList} placeholders</string>
-                                </property>
-                            </widget>
-                            <widget class="QCheckBox" row="4" column="0" rowspan="1" colspan="2">
-                                <property name="name">
-                                    <cstring>CheckBoxPluginConfirm</cstring>
-                                </property>
-                                <property name="text">
-                                    <string>ask for confirmation</string>
-                                </property>
-                                <property name="toolTip" stdset="0">
-                                    <string>popup a message box before executing the command</string>
-                                </property>
-                            </widget>
-                        </grid>
-                    </widget>
-                </grid>
-            </widget>
-            <widget class="QWidget">
-                <property name="name">
-                    <cstring>TabPage1</cstring>
-                </property>
-                <attribute name="title">
-                    <string>Playqueue Template</string>
-                </attribute>
-                <grid>
-                    <property name="name">
-                        <cstring>unnamed</cstring>
-                    </property>
-                    <widget class="QLabel" row="0" column="0">
-                        <property name="name">
-                            <cstring>LabelPlayqueueTemplate</cstring>
-                        </property>
-                        <property name="text">
-                            <string>This template is used for displaying the playqueue.</string>
-                        </property>
-                    </widget>
-                    <widget class="QTextEdit" row="1" column="0">
-                        <property name="name">
-                            <cstring>LineEditPlayqueueTemplate</cstring>
-                        </property>
-                        <property name="textFormat">
-                            <enum>PlainText</enum>
-                        </property>
-                        <property name="autoFormatting">
-                            <set>AutoAll</set>
-                        </property>
-                    </widget>
-                </grid>
-            </widget>
+            </property>
+            <property name="wordWrap">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="0" colspan="4">
+           <widget class="QLabel" name="TextLabel3">
+            <property name="text">
+             <string>See Yammi's homepage for useful plugin configurations:</string>
+            </property>
+            <property name="wordWrap">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="0" colspan="3">
+           <widget class="QLabel" name="PluginUrlLabel">
+            <property name="text">
+             <string>&lt;a href=&quot;http://yammi.sourceforge.net/plugins.html&quot;&gt;http://yammi.sourceforge.net/plugins.html&lt;/a&gt;</string>
+            </property>
+            <property name="wordWrap">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="2">
+           <widget class="QLabel" name="LabelPluginPlaylistCustomList_2">
+            <property name="toolTip">
+             <string>defines the content of the {customList} placeholders</string>
+            </property>
+            <property name="text">
+             <string>custom list</string>
+            </property>
+            <property name="wordWrap">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0" colspan="2">
+           <widget class="QCheckBox" name="CheckBoxPluginConfirm">
+            <property name="toolTip">
+             <string>popup a message box before executing the command</string>
+            </property>
+            <property name="text">
+             <string>ask for confirmation</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </widget>
-    </grid>
-</widget>
-<connections>
-    <connection>
-        <sender>ButtonCancel</sender>
-        <signal>clicked()</signal>
-        <receiver>Preferences</receiver>
-        <slot>reject()</slot>
-    </connection>
-</connections>
-<tabstops>
-    <tabstop>ComboBoxDoubleClickAction</tabstop>
-    <tabstop>ComboBoxMiddleClickAction</tabstop>
-    <tabstop>LineEditSearchThreshold</tabstop>
-    <tabstop>ButtonOK</tabstop>
-    <tabstop>ButtonCancel</tabstop>
-    <tabstop>LineEditTrashDir</tabstop>
-    <tabstop>ButtonChooseTrashDir</tabstop>
-    <tabstop>CheckBoxTagsConsistent</tabstop>
-    <tabstop>CheckBoxFilenamesConsistent</tabstop>
-    <tabstop>RadioButtonSimpleGuessmode</tabstop>
-    <tabstop>CheckBoxCapitalizeTags</tabstop>
-    <tabstop>CheckBoxLogging</tabstop>
-    <tabstop>CheckBoxLazyGrouping</tabstop>
-    <tabstop>SpinBoxGroupThreshold</tabstop>
-    <tabstop>CheckBoxChildSafe</tabstop>
-    <tabstop>ComboBoxPlugins</tabstop>
-    <tabstop>PushButtonNewPlugin</tabstop>
-    <tabstop>PushButtonDeletePlugin</tabstop>
-    <tabstop>ComboBoxPluginMode</tabstop>
-    <tabstop>CheckBoxPluginConfirm</tabstop>
-    <tabstop>PushButtonAddStandardPlugins</tabstop>
-    <tabstop>PushButtonPluginReplacements</tabstop>
-    <tabstop>LineEditPluginMenuEntry</tabstop>
-    <tabstop>LineEditPluginCommand</tabstop>
-    <tabstop>LineEditPluginCustomList</tabstop>
-    <tabstop>TabWidget2</tabstop>
-</tabstops>
-<layoutdefaults spacing="6" margin="11"/>
-</UI>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="TabPage1">
+      <attribute name="title">
+       <string>Playqueue Template</string>
+      </attribute>
+      <layout class="QGridLayout">
+       <item row="0" column="0">
+        <widget class="QLabel" name="LabelPlayqueueTemplate">
+         <property name="text">
+          <string>This template is used for displaying the playqueue.</string>
+         </property>
+         <property name="wordWrap">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="Q3TextEdit" name="LineEditPlayqueueTemplate">
+         <property name="textFormat">
+          <enum>Qt::PlainText</enum>
+         </property>
+         <property name="autoFormatting">
+          <set>Q3TextEdit::AutoAll</set>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
+ <customwidgets>
+  <customwidget>
+   <class>Q3GroupBox</class>
+   <extends>QGroupBox</extends>
+   <header>Qt3Support/Q3GroupBox</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>Q3Frame</class>
+   <extends>QFrame</extends>
+   <header>Qt3Support/Q3Frame</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>Q3ButtonGroup</class>
+   <extends>Q3GroupBox</extends>
+   <header>Qt3Support/Q3ButtonGroup</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>Q3TextEdit</class>
+   <extends>Q3Frame</extends>
+   <header>q3textedit.h</header>
+  </customwidget>
+ </customwidgets>
+ <tabstops>
+  <tabstop>ComboBoxDoubleClickAction</tabstop>
+  <tabstop>ComboBoxMiddleClickAction</tabstop>
+  <tabstop>LineEditSearchThreshold</tabstop>
+  <tabstop>ButtonOK</tabstop>
+  <tabstop>ButtonCancel</tabstop>
+  <tabstop>LineEditTrashDir</tabstop>
+  <tabstop>ButtonChooseTrashDir</tabstop>
+  <tabstop>CheckBoxTagsConsistent</tabstop>
+  <tabstop>CheckBoxFilenamesConsistent</tabstop>
+  <tabstop>RadioButtonSimpleGuessmode</tabstop>
+  <tabstop>CheckBoxCapitalizeTags</tabstop>
+  <tabstop>CheckBoxLogging</tabstop>
+  <tabstop>CheckBoxLazyGrouping</tabstop>
+  <tabstop>SpinBoxGroupThreshold</tabstop>
+  <tabstop>CheckBoxChildSafe</tabstop>
+  <tabstop>ComboBoxPlugins</tabstop>
+  <tabstop>PushButtonNewPlugin</tabstop>
+  <tabstop>PushButtonDeletePlugin</tabstop>
+  <tabstop>ComboBoxPluginMode</tabstop>
+  <tabstop>CheckBoxPluginConfirm</tabstop>
+  <tabstop>PushButtonAddStandardPlugins</tabstop>
+  <tabstop>PushButtonPluginReplacements</tabstop>
+  <tabstop>LineEditPluginMenuEntry</tabstop>
+  <tabstop>LineEditPluginCommand</tabstop>
+  <tabstop>LineEditPluginCustomList</tabstop>
+  <tabstop>TabWidget2</tabstop>
+ </tabstops>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>ButtonCancel</sender>
+   <signal>clicked()</signal>
+   <receiver>Preferences</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

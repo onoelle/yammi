@@ -27,7 +27,9 @@
 
 
 PreferencesDialog::PreferencesDialog(QWidget *parent, const char *name, bool modal, Prefs* config )
-: Preferences(parent, name, modal) {
+    : QDialog(parent, name, modal)
+{
+    setupUi(this);
     this->config=config;
 
     // general
