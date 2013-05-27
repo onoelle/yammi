@@ -77,7 +77,8 @@ HEADERS = \
     yammimodel.h
 
 FORMS = \
-    ApplyToAllBase.ui
+    ApplyToAllBase.ui \
+    UpdateDatabaseDialogBase.ui
 
 #The following line was changed from FORMS to FORMS3 by qt3to4
 FORMS3 = \
@@ -85,7 +86,6 @@ FORMS3 = \
     DeleteDialog.ui \
     PreferencesDialogBase.ui \
     SongInfoDialog.ui \
-    UpdateDatabaseDialogBase.ui
 
 
 # translations

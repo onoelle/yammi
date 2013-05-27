@@ -18,7 +18,7 @@
 #ifndef UPDATEDATABASEDIALOG_H
 #define UPDATEDATABASEDIALOG_H
 
-#include "UpdateDatabaseDialogBase.h"
+#include "ui_UpdateDatabaseDialogBase.h"
 
 class Prefs;
 
@@ -26,7 +26,7 @@ class Prefs;
 /**
   *@author Oliver Nölle
   */
-class UpdateDatabaseDialog : public UpdateDatabaseDialogBase {
+class UpdateDatabaseDialog : public QDialog, public Ui::UpdateDatabaseDialogBase {
     Q_OBJECT
 public:
     UpdateDatabaseDialog(QWidget *parent, Prefs* config);

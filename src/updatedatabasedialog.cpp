@@ -23,7 +23,9 @@
 
 
 UpdateDatabaseDialog::UpdateDatabaseDialog(QWidget *parent, Prefs* config )
-: UpdateDatabaseDialogBase(parent, tr("Update Database (harddisk)"), true) {
+    : QDialog(parent, tr("Update Database (harddisk)"), true)
+{
+    setupUi(this);
     this->config = config;
     CheckBoxFollowSymlinks->setChecked(config->followSymLinks);
     LineEditScanDir->setText(config->scanDir);
