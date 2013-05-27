@@ -20,13 +20,13 @@
 #ifndef APPLYTOALLDIALOG_H
 #define APPLYTOALLDIALOG_H
 
-#include "ApplyToAllBase.h"
+#include "ui_ApplyToAllBase.h"
 
 
 /**
 @author Oliver Nölle
 */
-class ApplyToAllDialog : public ApplyToAllBase
+class ApplyToAllDialog : public QDialog, public Ui::ApplyToAllBase
 {
     Q_OBJECT
 

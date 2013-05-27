@@ -76,9 +76,11 @@ HEADERS = \
     yammigui.h \
     yammimodel.h
 
+FORMS = \
+    ApplyToAllBase.ui
+
 #The following line was changed from FORMS to FORMS3 by qt3to4
 FORMS3 = \
-    ApplyToAllBase.ui \
     ConsistencyCheckDialogBase.ui \
     DeleteDialog.ui \
     PreferencesDialogBase.ui \

@@ -67,7 +67,7 @@
 #include "yammimodel.h"
 
 // dialog includes
-#include "ApplyToAllBase.h"
+#include "applytoalldialog.h"
 #include "ConsistencyCheckDialog.h"
 #include "DeleteDialog.h"
 #include "preferencesdialog.h"
@@ -2180,7 +2180,7 @@ void YammiGui::clearPlaylist() {
     Song* save=0;
 
     bool saveCurrentSong=(currentSong!=0 && player->getStatus()!=STOPPED && model->songsToPlay.count()>1);
-    ApplyToAllBase confirm(this, "confirmDialog", true);
+    ApplyToAllDialog confirm(this);
     QString msg=QString(tr("Clear complete playlist?\n(%1 entries)")).arg(model->songsToPlay.count());
     confirm.TextLabel->setText(msg);
     confirm.CheckBoxApply->setText(tr("including current song"));
