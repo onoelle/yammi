@@ -598,6 +598,13 @@ Lied bestaat op media</translation>
     </message>
 </context>
 <context>
+    <name>FolderModel</name>
+    <message>
+        <source>never</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Preferences</name>
     <message>
         <source>Edit Preferences</source>
@@ -1393,60 +1400,52 @@ lichtelijk gewijzigd ...
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>never</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Artist</source>
-        <translation type="unfinished">Artiest</translation>
+        <translation type="obsolete">Artiest</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation type="unfinished">Titel</translation>
+        <translation type="obsolete">Titel</translation>
     </message>
     <message>
         <source>Album</source>
-        <translation type="unfinished">Album</translation>
+        <translation type="obsolete">Album</translation>
     </message>
     <message>
         <source>Length</source>
-        <translation type="unfinished">Lengte</translation>
+        <translation type="obsolete">Lengte</translation>
     </message>
     <message>
         <source>Year</source>
-        <translation type="unfinished">Jaar</translation>
+        <translation type="obsolete">Jaar</translation>
     </message>
     <message>
         <source>TrackNr</source>
-        <translation type="unfinished">Nummer</translation>
+        <translation type="obsolete">Nummer</translation>
     </message>
     <message>
         <source>Genre</source>
-        <translation type="unfinished">Genre</translation>
+        <translation type="obsolete">Genre</translation>
     </message>
     <message>
         <source>AddedTo</source>
-        <translation type="unfinished">ToegevoegdAan</translation>
+        <translation type="obsolete">ToegevoegdAan</translation>
     </message>
     <message>
         <source>Bitrate</source>
-        <translation type="unfinished">Bitrate</translation>
+        <translation type="obsolete">Bitrate</translation>
     </message>
     <message>
         <source>Filename</source>
-        <translation type="unfinished">Bestandsnaam</translation>
-    </message>
-    <message>
-        <source>Path</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Bestandsnaam</translation>
     </message>
     <message>
         <source>Comment</source>
-        <translation type="unfinished">Commentaar</translation>
+        <translation type="obsolete">Commentaar</translation>
     </message>
     <message>
         <source>Last Played</source>
-        <translation type="unfinished">Laatst Afgespeeld</translation>
+        <translation type="obsolete">Laatst Afgespeeld</translation>
     </message>
 </context>
 <context>
@@ -2293,15 +2292,15 @@ en zijn afspeellijst leeg te maken voor deze scan te starten
     </message>
     <message>
         <source>Artist</source>
-        <translation type="obsolete">Artiest</translation>
+        <translation type="unfinished">Artiest</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation type="obsolete">Titel</translation>
+        <translation type="unfinished">Titel</translation>
     </message>
     <message>
         <source>Album</source>
-        <translation type="obsolete">Album</translation>
+        <translation type="unfinished">Album</translation>
     </message>
     <message>
         <source>Search for similar...</source>
@@ -3314,6 +3313,38 @@ Do you want to continue?</source>
     <message>
         <source>Comment : </source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Length</source>
+        <translation type="unfinished">Lengte</translation>
+    </message>
+    <message>
+        <source>TrackNr</source>
+        <translation type="unfinished">Nummer</translation>
+    </message>
+    <message>
+        <source>AddedTo</source>
+        <translation type="unfinished">ToegevoegdAan</translation>
+    </message>
+    <message>
+        <source>Bitrate</source>
+        <translation type="unfinished">Bitrate</translation>
+    </message>
+    <message>
+        <source>Filename</source>
+        <translation type="unfinished">Bestandsnaam</translation>
+    </message>
+    <message>
+        <source>Path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Comment</source>
+        <translation type="unfinished">Commentaar</translation>
+    </message>
+    <message>
+        <source>Last Played</source>
+        <translation type="unfinished">Laatst Afgespeeld</translation>
     </message>
 </context>
 <context>

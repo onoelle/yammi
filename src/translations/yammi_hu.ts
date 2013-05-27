@@ -599,6 +599,13 @@ A dallam az alábbi adathordozón található</translation>
     </message>
 </context>
 <context>
+    <name>FolderModel</name>
+    <message>
+        <source>never</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Preferences</name>
     <message>
         <source>Edit Preferences</source>
@@ -1302,60 +1309,52 @@ A Yammi 0.8.2-ben az alapértelmezett műveletek
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>never</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Artist</source>
-        <translation type="unfinished">Előadó</translation>
+        <translation type="obsolete">Előadó</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation type="unfinished">Cím</translation>
+        <translation type="obsolete">Cím</translation>
     </message>
     <message>
         <source>Album</source>
-        <translation type="unfinished">Album</translation>
+        <translation type="obsolete">Album</translation>
     </message>
     <message>
         <source>Length</source>
-        <translation type="unfinished">Hossza</translation>
+        <translation type="obsolete">Hossza</translation>
     </message>
     <message>
         <source>Year</source>
-        <translation type="unfinished">Év</translation>
+        <translation type="obsolete">Év</translation>
     </message>
     <message>
         <source>TrackNr</source>
-        <translation type="unfinished">Sáv</translation>
+        <translation type="obsolete">Sáv</translation>
     </message>
     <message>
         <source>Genre</source>
-        <translation type="unfinished">Műfaj</translation>
+        <translation type="obsolete">Műfaj</translation>
     </message>
     <message>
         <source>AddedTo</source>
-        <translation type="unfinished">Hozzáadva</translation>
+        <translation type="obsolete">Hozzáadva</translation>
     </message>
     <message>
         <source>Bitrate</source>
-        <translation type="unfinished">Bitráta</translation>
+        <translation type="obsolete">Bitráta</translation>
     </message>
     <message>
         <source>Filename</source>
-        <translation type="unfinished">Fájlnév</translation>
-    </message>
-    <message>
-        <source>Path</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Fájlnév</translation>
     </message>
     <message>
         <source>Comment</source>
-        <translation type="unfinished">Megjegyzés</translation>
+        <translation type="obsolete">Megjegyzés</translation>
     </message>
     <message>
         <source>Last Played</source>
-        <translation type="unfinished">Utoljára lejátszva</translation>
+        <translation type="obsolete">Utoljára lejátszva</translation>
     </message>
 </context>
 <context>
@@ -2200,15 +2199,15 @@ Hosszú átkutatások előtt állítsa le a médialejátszót,
     </message>
     <message>
         <source>Artist</source>
-        <translation type="obsolete">Előadó</translation>
+        <translation type="unfinished">Előadó</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation type="obsolete">Cím</translation>
+        <translation type="unfinished">Cím</translation>
     </message>
     <message>
         <source>Album</source>
-        <translation type="obsolete">Album</translation>
+        <translation type="unfinished">Album</translation>
     </message>
     <message>
         <source>Search for similar...</source>
@@ -3229,6 +3228,38 @@ Do you want to continue?</source>
     <message>
         <source>Comment : </source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Length</source>
+        <translation type="unfinished">Hossza</translation>
+    </message>
+    <message>
+        <source>TrackNr</source>
+        <translation type="unfinished">Sáv</translation>
+    </message>
+    <message>
+        <source>AddedTo</source>
+        <translation type="unfinished">Hozzáadva</translation>
+    </message>
+    <message>
+        <source>Bitrate</source>
+        <translation type="unfinished">Bitráta</translation>
+    </message>
+    <message>
+        <source>Filename</source>
+        <translation type="unfinished">Fájlnév</translation>
+    </message>
+    <message>
+        <source>Path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Comment</source>
+        <translation type="unfinished">Megjegyzés</translation>
+    </message>
+    <message>
+        <source>Last Played</source>
+        <translation type="unfinished">Utoljára lejátszva</translation>
     </message>
 </context>
 <context>

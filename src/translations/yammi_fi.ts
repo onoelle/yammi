@@ -598,6 +598,13 @@ Kappale on tallennettu levylle.</translation>
     </message>
 </context>
 <context>
+    <name>FolderModel</name>
+    <message>
+        <source>never</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Preferences</name>
     <message>
         <source>Edit Preferences</source>
@@ -1391,60 +1398,40 @@ Tarkista asetuksesi!</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>never</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Artist</source>
-        <translation type="unfinished">Artisti</translation>
+        <translation type="obsolete">Artisti</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation type="unfinished">Kappale</translation>
+        <translation type="obsolete">Kappale</translation>
     </message>
     <message>
         <source>Album</source>
-        <translation type="unfinished">Levy</translation>
+        <translation type="obsolete">Levy</translation>
     </message>
     <message>
         <source>Length</source>
-        <translation type="unfinished">Kesto</translation>
-    </message>
-    <message>
-        <source>Year</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Kesto</translation>
     </message>
     <message>
         <source>TrackNr</source>
-        <translation type="unfinished">RaitaNro</translation>
-    </message>
-    <message>
-        <source>Genre</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">RaitaNro</translation>
     </message>
     <message>
         <source>AddedTo</source>
-        <translation type="unfinished">Lisätty</translation>
-    </message>
-    <message>
-        <source>Bitrate</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Filename</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Lisätty</translation>
     </message>
     <message>
         <source>Path</source>
-        <translation type="unfinished">Polku</translation>
+        <translation type="obsolete">Polku</translation>
     </message>
     <message>
         <source>Comment</source>
-        <translation type="unfinished">Kommentti</translation>
+        <translation type="obsolete">Kommentti</translation>
     </message>
     <message>
         <source>Last Played</source>
-        <translation type="unfinished">Viimeksi Soitettu</translation>
+        <translation type="obsolete">Viimeksi Soitettu</translation>
     </message>
 </context>
 <context>
@@ -2278,15 +2265,15 @@ pysäytä soitto-ohjelma haun ajaksi.
     </message>
     <message>
         <source>Artist</source>
-        <translation type="obsolete">Artisti</translation>
+        <translation type="unfinished">Artisti</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation type="obsolete">Kappale</translation>
+        <translation type="unfinished">Kappale</translation>
     </message>
     <message>
         <source>Album</source>
-        <translation type="obsolete">Levy</translation>
+        <translation type="unfinished">Levy</translation>
     </message>
     <message>
         <source>Search for similar...</source>
@@ -3300,6 +3287,38 @@ Do you want to continue?</source>
     <message>
         <source>Comment : </source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Length</source>
+        <translation type="unfinished">Kesto</translation>
+    </message>
+    <message>
+        <source>TrackNr</source>
+        <translation type="unfinished">RaitaNro</translation>
+    </message>
+    <message>
+        <source>AddedTo</source>
+        <translation type="unfinished">Lisätty</translation>
+    </message>
+    <message>
+        <source>Bitrate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Filename</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Path</source>
+        <translation type="unfinished">Polku</translation>
+    </message>
+    <message>
+        <source>Comment</source>
+        <translation type="unfinished">Kommentti</translation>
+    </message>
+    <message>
+        <source>Last Played</source>
+        <translation type="unfinished">Viimeksi Soitettu</translation>
     </message>
 </context>
 <context>
