@@ -21,8 +21,10 @@
 #include "mylist.h"
 
 
-SongInfo::SongInfo(QWidget* parent, MyList* selectedSongs) : SongInfoDialog(parent, "song info", true)
+SongInfo::SongInfo(QWidget* parent, MyList* selectedSongs)
+    : QDialog(parent, "song info", true)
 {
+    setupUi(this);
     this->selectedSongs = selectedSongs;
 }
 

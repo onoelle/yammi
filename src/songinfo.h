@@ -18,7 +18,7 @@
 #ifndef SONGINFO_H
 #define SONGINFO_H
 
-#include <SongInfoDialog.h>
+#include <ui_SongInfoDialog.h>
 
 class MyList;
 class Song;
@@ -28,7 +28,7 @@ class Song;
   *@author Brian O.Nölle
   */
 
-class SongInfo : public SongInfoDialog  {
+class SongInfo : public QDialog, public Ui::SongInfoDialog  {
    Q_OBJECT
 public: 
     SongInfo(QWidget *parent, MyList* selectedSongs);
