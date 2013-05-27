@@ -18,7 +18,9 @@
 extern YammiGui* gYammiGui;
 
 ConsistencyCheckDialog::ConsistencyCheckDialog(QWidget* parent, ConsistencyCheckParameter* para, MyList* selectedSongs, YammiModel* model)
-: CheckConsistencyDialogBase(parent, tr("Check consistency - settings"), false) {
+    : QDialog(parent, tr("Check consistency - settings"), false)
+{
+    setupUi(this);
     p=para;
     this->model = model;
     this->selectedSongs = selectedSongs;
