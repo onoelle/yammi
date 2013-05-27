@@ -119,6 +119,7 @@ void FolderGroups::update(MyList* allSongs, int sortBy) {
 void FolderGroups::createGroupFolder(MyList* group, int sortBy) {
     // create folder
     Folder *f = new Folder( this, "" );
+    f->saveSorting(getSavedSorting(), getSavedSortOrder());
 
     // add songs of currentGroup
     bool sameArtist=true;

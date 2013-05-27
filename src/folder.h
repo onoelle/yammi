@@ -73,7 +73,7 @@ public:
     bool            isSorted()                  {
         return sorted;
     }
-    void            saveSorting(int sortedBy);
+    void            saveSorting(int sortedBy, Qt::SortOrder sortOrder = Qt::AscendingOrder);
     void            saveScrollPos(int scrollPosX, int scrollPosY);
     int             getScrollPosX()             {
         return scrollPosX;
@@ -84,6 +84,9 @@ public:
     int             getSavedSorting()           {
         return sortedBy;
     }
+    Qt::SortOrder   getSavedSortOrder()           {
+        return sortOrder;
+    }
 public slots:
     void            autoplayFolder();
 
@@ -92,6 +95,7 @@ protected:
     QString			fName;
     bool			sorted;
     int             sortedBy;
+    Qt::SortOrder   sortOrder;
     int             scrollPosX;
     int             scrollPosY;
     bool            owner;

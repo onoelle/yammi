@@ -19,8 +19,6 @@
 
 #include <taglib/id3v1genres.h>
 
-#include <Q3Header>
-#include <Q3ListView>
 #include <QActionGroup>
 #include <QCheckBox>
 #include <QDebug>
@@ -36,6 +34,7 @@
 #include <QProgressDialog>
 #include <QPushButton>
 #include <QSettings>
+#include <QSortFilterProxyModel>
 #include <QSpinBox>
 #include <QSplitter>
 #include <QTextEdit>
@@ -46,8 +45,9 @@
 
 #include "ConsistencyCheckParameter.h"
 #include "folder.h"
-#include "foldergroups.h"
 #include "foldercategories.h"
+#include "foldergroups.h"
+#include "foldermodel.h"
 #include "foldersorted.h"
 #include "fuzzsrch.h"
 #include "dummyplayer.h"
@@ -60,7 +60,6 @@
 #include "songentryint.h"
 #include "songentrystring.h"
 #include "songentrytimestamp.h"
-#include "songlistitem.h"
 #include "songinfo.h"
 #include "trackpositionslider.h"
 #include "util.h"
@@ -73,11 +72,6 @@
 #include "DeleteDialog.h"
 #include "preferencesdialog.h"
 #include "updatedatabasedialog.h"
-
-
-static QString columnName[] = { QObject::tr("Artist"), QObject::tr("Title"), QObject::tr("Album"),QObject:: tr("Length"),
-                                QObject::tr("Year"), QObject::tr("TrackNr"), QObject::tr("Genre"), QObject::tr("AddedTo"), QObject::tr("Bitrate"),
-                                QObject::tr("Filename"), QObject::tr("Path"), QObject::tr("Comment"), QObject::tr("Last Played") };
 
 
 extern YammiGui* gYammiGui;
@@ -107,18 +101,16 @@ YammiGui::YammiGui() : QMainWindow( ) {
     model = new YammiModel( this );
     config()->loadConfig();
 
-    if(!setupActions()) {
-        return;
-    }
     createMainWidget( );
+    setupActions();
     createFolders( );
     createToolbars();
+    createMenuBar();
 
     // final touches before start up
     readOptions( );
 
     // from here: stuff that needs the options to be read already
-    createMenuBar();
     validState = true;
 
     updateHtmlPlaylist();
@@ -219,13 +211,15 @@ void YammiGui::saveOptions() {
     cfg.setValue("savedSongPosition", player->getCurrentTime());
     cfg.setValue("savedPlayingStatus", player->getStatus());
 
-    for(int i=0; i<MAX_COLUMN_NO; i++) {
-        cfg.setValue(QString("Column%1Visible").arg(i), columnIsVisible(i));
+    foreach (QAction* action, m_actionGroupColumnVisibility->actions()) {
+        QVariant property = action->property("column");
+        if (property.isValid()) {
+            int column = property.toInt();
+            cfg.setValue(QString("Column%1Visible").arg(column), action->isChecked());
+        }
     }
-    cfg.setValue( "columnOrder" , columnOrder);
-    for(int i=0; i<MAX_COLUMN_NO; i++) {
-        cfg.setValue( QString("column%1Width").arg(i), columnWidth[i]);
-    }
+
+    cfg.setValue( "columnsState" , songListView->horizontalHeader()->saveState());
 
     cfg.setValue("AutoplayFolder", autoplayFoldername);
     cfg.setValue("AutoplayMode", autoplayMode);
@@ -251,15 +245,19 @@ void YammiGui::readOptions() {
 
     cfg.beginGroup("General Options");
 
-    for(int i=0; i<MAX_COLUMN_NO; i++) {
-        columnVisible[i]=cfg.readBoolEntry(QString("Column%1Visible").arg(i), true);
+
+    foreach (QAction* action, m_actionGroupColumnVisibility->actions()) {
+        QVariant property = action->property("column");
+        if (property.isValid()) {
+            int column = property.toInt();
+            bool columnVisible = cfg.readBoolEntry(QString("Column%1Visible").arg(column), true);
+            action->setChecked(columnVisible);
+        }
     }
-    columnOrder=cfg.readListEntry("columnOrder");
-    if(columnOrder.count()==0) {
-        qDebug() << "no column order found, taking default order";
-    }
-    for(int i=0; i<MAX_COLUMN_NO; i++) {
-        columnWidth[i]=cfg.readNumEntry(QString("column%1Width").arg(i));
+
+    QByteArray columnsState = cfg.value("columnsState").toByteArray();
+    if (!columnsState.isEmpty()) {
+        songListView->horizontalHeader()->restoreState(columnsState);
     }
 
     autoplayFoldername=cfg.readEntry("AutoplayFolder", tr("All Music"));
@@ -487,12 +485,10 @@ void YammiGui::handleNewSong(Song* newSong) {
     currentSong=newSong;
     if(newSong==0) {
         setCaption(tr("Yammi - not playing"));
-        currentFile="";
         m_seekSlider->setupTickmarks(0);
         return;
     }
     // TODO: take swapped file?
-    currentFile=newSong->location();
     *currentSongStarted = currentSongStarted->currentDateTime();
 
     setCaption("Yammi: "+currentSong->displayName());
@@ -521,7 +517,30 @@ void YammiGui::updatePlayerStatus() {
 
 
 QString YammiGui::getColumnName(int column) {
-    return QString(columnName[column]);
+    QString ret;
+    switch (column) {
+    case FolderModel::COLUMN_POS:            ret = tr("Pos"); break;
+    case FolderModel::COLUMN_PLAYED_ON:      ret = tr("Played on"); break;
+    case FolderModel::COLUMN_MATCH:          ret = tr("Match"); break;
+    case FolderModel::COLUMN_REASON:         ret = tr("Reason"); break;
+    case FolderModel::COLUMN_ARTIST:         ret = tr("Artist"); break;
+    case FolderModel::COLUMN_TITLE:          ret = tr("Title"); break;
+    case FolderModel::COLUMN_ALBUM:          ret = tr("Album"); break;
+    case FolderModel::COLUMN_LENGTH:         ret = tr("Length"); break;
+    case FolderModel::COLUMN_YEAR:           ret = tr("Year"); break;
+    case FolderModel::COLUMN_TRACKNR:        ret = tr("TrackNr"); break;
+    case FolderModel::COLUMN_GENRE:          ret = tr("Genre"); break;
+    case FolderModel::COLUMN_ADDED_TO:       ret = tr("AddedTo"); break;
+    case FolderModel::COLUMN_BITRATE:        ret = tr("Bitrate"); break;
+    case FolderModel::COLUMN_FILENAME:       ret = tr("Filename"); break;
+    case FolderModel::COLUMN_PATH:           ret = tr("Path"); break;
+    case FolderModel::COLUMN_COMMENT:        ret = tr("Comment"); break;
+    case FolderModel::COLUMN_LAST_PLAYED:    ret = tr("Last Played"); break;
+    default:
+        break;
+    }
+
+    return ret;
 }
 
 
@@ -664,167 +683,6 @@ void YammiGui::updateView(bool startup) {
     folderRecentAdditions->update(model->recentSongs);
     if(!startup) {
         folderContentChanged();
-    }
-}
-
-/// returns true if the column should be shown
-bool YammiGui::columnIsVisible(int column) {
-    return columnVisible[column];
-}
-
-
-int YammiGui::mapToRealColumn(int column) {
-    return realColumnMap[column];
-}
-
-void YammiGui::mapVisibleColumnsToOriginals() {
-    int visibleColumn=0;
-    for(int realColumn=0; realColumn<MAX_COLUMN_NO; realColumn++) {
-        if(columnVisible[realColumn]) {
-            realColumnMap[visibleColumn]=realColumn;
-            visibleColumn++;
-        }
-    }
-}
-
-
-/** Updates listview columns.
- * Tries to maintain the size and position of columns (as good as possible, as columns are changing)
- */
-void YammiGui::updateListViewColumns() {
-    int noOldColumns=songListView->columns();
-    for(int i=0; i<noOldColumns; i++) {
-        songListView->removeColumn(0);
-    }
-    int current=0;
-
-    if(chosenFolder==folderActual) {
-        songListView->addColumn( tr("Pos"), 35);
-        current++;
-    }
-    if(chosenFolder==folderHistory || chosenFolder==folderSongsPlayed) {
-        songListView->addColumn( tr("Played on"), 135);
-        current++;
-    }
-    if(chosenFolder==folderSearchResults) {
-        songListView->addColumn( tr("Match"), 45);
-        current++;
-    }
-    if(chosenFolder==folderProblematic) {
-        songListView->addColumn( tr("Reason"), 120);
-        current++;
-    }
-    if(((QTreeWidgetItem*)chosenFolder)->parent()==folderCategories) {
-        songListView->addColumn( tr("Pos"), 35);
-        current++;
-    }
-
-    if(columnIsVisible(COLUMN_ARTIST)) {
-        songListView->addColumn( getColumnName(COLUMN_ARTIST), 200);
-        current++;
-    }
-    if(columnIsVisible(COLUMN_TITLE)) {
-        songListView->addColumn( getColumnName(COLUMN_TITLE), 200);
-        current++;
-    }
-    if(columnIsVisible(COLUMN_ALBUM)) {
-        songListView->addColumn( getColumnName(COLUMN_ALBUM), 150);
-        current++;
-    }
-    if(columnIsVisible(COLUMN_LENGTH)) {
-        songListView->addColumn( getColumnName(COLUMN_LENGTH), 50);
-        songListView->setColumnAlignment( current, Qt::AlignRight );
-        current++;
-    }
-    if(columnIsVisible(COLUMN_YEAR)) {
-        songListView->addColumn( getColumnName(COLUMN_YEAR), 50);
-        songListView->setColumnAlignment( current, Qt::AlignRight );
-        current++;
-    }
-    if(columnIsVisible(COLUMN_TRACKNR)) {
-        songListView->addColumn( getColumnName(COLUMN_TRACKNR), 40);
-        songListView->setColumnAlignment( current, Qt::AlignRight );
-        current++;
-    }
-    if(columnIsVisible(COLUMN_GENRE)) {
-        songListView->addColumn( getColumnName(COLUMN_GENRE), 40);
-        current++;
-    }
-    if(columnIsVisible(COLUMN_ADDED_TO)) {
-        songListView->addColumn( getColumnName(COLUMN_ADDED_TO), 60);
-        songListView->setColumnAlignment( current, Qt::AlignRight );
-        current++;
-    }
-    if(columnIsVisible(COLUMN_BITRATE)) {
-        songListView->addColumn( getColumnName(COLUMN_BITRATE), 40);
-        songListView->setColumnAlignment( current, Qt::AlignRight );
-        current++;
-    }
-    if(columnIsVisible(COLUMN_FILENAME)) {
-        songListView->addColumn( getColumnName(COLUMN_FILENAME), 80);
-        current++;
-    }
-    if(columnIsVisible(COLUMN_PATH)) {
-        songListView->addColumn( getColumnName(COLUMN_PATH), 80);
-        current++;
-    }
-    if(columnIsVisible(COLUMN_COMMENT)) {
-        songListView->addColumn( getColumnName(COLUMN_COMMENT), 100);
-        current++;
-    }
-    if(columnIsVisible(COLUMN_LAST_PLAYED)) {
-        songListView->addColumn( getColumnName(COLUMN_LAST_PLAYED), 100);
-        current++;
-    }
-
-    songListView->setAllColumnsShowFocus( TRUE );
-    songListView->setShowSortIndicator( TRUE );
-    songListView->setSelectionMode( Q3ListView::Extended );
-    songListView->setAllColumnsShowFocus( TRUE );
-
-
-    int noNewColumns=songListView->columns();
-    Q3Header* header=songListView->header();
-
-    // iterate through old columns, and if found in new, move to the target position
-    bool exists[MAX_COLUMN_NO];
-    for(int x=0; x<MAX_COLUMN_NO; x++) {
-        exists[x]=false;
-    }
-
-    int target=0;
-    for(int i=0; i<(int)columnOrder.count(); i++) {
-        QString search=columnOrder[i];
-        for(int j=0; j<noNewColumns; j++) {
-            if(header->label(j)==search) {
-                header->moveSection(j, target);
-                header->resizeSection(j, columnWidth[i]);
-                target++;
-                exists[j]=true;
-            }
-        }
-    }
-    // now move those that have not existed before to the front
-    target=0;
-    for(int j=0; j<noNewColumns; j++) {
-        if(!exists[j]) {
-            header->moveSection(j, target);
-            target++;
-        }
-    }
-    saveColumnSettings();
-    mapVisibleColumnsToOriginals();
-}
-
-void YammiGui::saveColumnSettings() {
-    int noColumns=songListView->columns();
-    Q3Header* header=songListView->header();
-    columnOrder.clear();
-    for(int j=0; j<noColumns; j++) {
-        int section=header->mapToSection(j);
-        columnOrder.append(header->label(section));
-        columnWidth[j]=header->sectionSize(section);
-        //    qDebug() << "j: " << j << ", section: " << section << "label: " << header->label(section) << ", size: " << header->sectionSize(section);
     }
 }
 
@@ -1098,19 +956,14 @@ void YammiGui::updateSearchResults() {
         return;
     }
 
-    if(chosenFolder!=folderSearchResults) {
-        // we better reset these settings to not confuse the user with his own changes
-        // (sort order and scroll position)
-        folderSearchResults->saveScrollPos(0, 0);
-        folderSearchResults->saveSorting(0);
-        changeToFolder(folderSearchResults);
-    }
-    songListView->setContentsPos( 0, 0);			// set scroll position to top
-    Q3ListViewItem* item=songListView->firstChild();
-    if(item) {
-        item->setSelected(true);
-        songListView->setCurrentItem(item);
-    }
+    // we better reset these settings to not confuse the user with his own changes
+    // (sort order and scroll position)
+    folderSearchResults->saveScrollPos(0, 0);
+    folderSearchResults->saveSorting(FolderModel::COLUMN_MATCH, Qt::DescendingOrder);
+    changeToFolder(folderSearchResults);
+
+    songListView->scrollToTop(); // set scroll position to top
+    songListView->selectionModel()->select(songListView->model()->index(0, 0), QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
     searchResultsUpdateNeeded=false;
 }
 
@@ -1138,8 +991,8 @@ void YammiGui::changeToFolder(Folder* newFolder, bool changeAnyway) {
         // TODO: history of visited folders, something like:
         //visitedFoldersHistory->add(chosenFolder);
 
-        chosenFolder->saveSorting(songListView->sortedBy);
-        chosenFolder->saveScrollPos(songListView->contentsX(), songListView->contentsY());
+        chosenFolder->saveSorting(songListView->sortedBy(), songListView->sortOrder());
+        chosenFolder->saveScrollPos(songListView->horizontalScrollBar()->value(), songListView->verticalScrollBar()->value());
     }
 
     // now we really change to new folder
@@ -1151,9 +1004,7 @@ void YammiGui::changeToFolder(Folder* newFolder, bool changeAnyway) {
         songListView->dontTouchFirst=false;
     }
 
-    updateListViewColumns();
-
-    folderListView->setCurrentItem((QTreeWidgetItem*)chosenFolder);
+    folderListView->setCurrentItem(chosenFolder);
     chosenFolder->QTreeWidgetItem::setSelected(true);
     folderListView->scrollTo(folderListView->currentIndex());
     folderContentChanged();
@@ -1161,111 +1012,63 @@ void YammiGui::changeToFolder(Folder* newFolder, bool changeAnyway) {
 }
 
 
-void YammiGui::folderContentChanged() {
-    songListView->clear();
-    if(chosenFolder) {
-        addFolderContent(chosenFolder);
-        if(chosenFolder == folderActual) {
-            updateCurrentSongStatus();
-            updateHtmlPlaylist();
-        }
-    }
-}
-
 void YammiGui::folderContentChanged(Folder* folder) {
-    if(folder==chosenFolder) {
-        folderContentChanged();
+    if (!folder) {
+        if(chosenFolder) {
+
+            qDebug() << "adding folder content of folder " << chosenFolder->folderName();
+            folderToAdd = chosenFolder;
+            songListView->setSorting(true, chosenFolder->getSavedSorting(), chosenFolder->getSavedSortOrder());
+
+            if(chosenFolder == folderActual) {
+                updateCurrentSongStatus();
+                updateHtmlPlaylist();
+            }
+        }
     } else {
-        songListView->triggerUpdate();
-        if(folder==folderActual) {
-            updateCurrentSongStatus();
-            updateHtmlPlaylist();
-        }
-        if(folder!=folderSearchResults) {
-            m_acceptSearchResults=false;
-        }
-    }
-}
-
-
-/**
- * recursively add the content of folder and all subfolders
- * for now: folder contains songs OR subfolders, but not both!
- */
-void YammiGui::addFolderContent(Folder* folder) {
-    folderToAdd=folder;
-    alreadyAdded=0;
-    qDebug() << "adding folder content of folder " << folder->folderName();
-
-    if(folder->songlist().count() != 0) {
-        songListView->setSorting(-1);
-        songListView->setUpdatesEnabled(false);
-        addFolderContentSnappy();
-    } else {		// no songList in that folder
-        QApplication::restoreOverrideCursor();
-    }
-}
-
-void YammiGui::addFolderContentSnappy() {
-    qDebug() << "snappy adding folder content of folder " << folderToAdd->folderName();
-    int i=0;
-    MyList::iterator it = folderToAdd->songlist().end();
-    
-    SongListItem* lastOne=(SongListItem*)songListView->firstChild();
-    if(folderToAdd->songlist().count() != 0) {
-        for (it = folderToAdd->songlist().begin(); it != folderToAdd->songlist().end() && i < alreadyAdded; it++, i++) {
-            SongListItem* check=(SongListItem*)lastOne->itemBelow();
-            if(check!=0)
-                lastOne=check;
-        }
-    
-        for (; it != folderToAdd->songlist().end() && i < alreadyAdded + 200; it++, i++) {
-            lastOne=new SongListItem( songListView, (*it)); //, lastOne);
-        }
-        alreadyAdded=i;
-    }
-    
-    // any songs left to add?
-    if(it != folderToAdd->songlist().end()) {
-        // yes, add them after processing events
-        QTimer* timer=new QTimer(this);
-        connect(timer, SIGNAL(timeout()), this, SLOT(addFolderContentSnappy()) );
-        timer->start(0, TRUE);
-    } else {		// no, we are finished
-        qDebug() << "finishing off...";
-        QApplication::restoreOverrideCursor();
-        songListView->setUpdatesEnabled(true);
-
-        int saved=chosenFolder->getSavedSorting();
-        if(saved!=0 && chosenFolder != folderRecentAdditions) {
-            bool asc=true;
-            int column;
-            if(saved<0) {
-                column=-saved-1;
-                asc=false;
-            } else {
-                column=saved-1;
-            }
-            songListView->sortedBy=saved;
-            songListView->setSorting(column, asc);
+        if(folder==chosenFolder) {
+            folderContentChanged();
         } else {
-            // special default sorting for certain folders
-            if(((QTreeWidgetItem*)chosenFolder)->parent()==folderAlbums) {
-                songListView->sortedBy=COLUMN_TRACKNR + 1;
-                songListView->setSorting(COLUMN_TRACKNR, true);
-            } else if(chosenFolder==folderRecentAdditions) {
-                songListView->sortedBy=COLUMN_ADDED_TO + 1;
-                songListView->setSorting(COLUMN_ADDED_TO, true);
-            } else {
-                // default sort order: first column
-                songListView->sortedBy=1;
-                songListView->setSorting(0);
+            if(folder==folderActual) {
+                updateCurrentSongStatus();
+                updateHtmlPlaylist();
+            }
+            if(folder!=folderSearchResults) {
+                m_acceptSearchResults=false;
             }
         }
-        int x=chosenFolder->getScrollPosX();
-        int y=chosenFolder->getScrollPosY();
-        songListView->setContentsPos(x, y);
-        folderToAdd = 0;
+    }
+
+    QHeaderView* header = songListView->horizontalHeader();
+    bool columnVisible;
+
+    columnVisible = ( (chosenFolder == folderActual) ||
+                      (chosenFolder != NULL && chosenFolder->QTreeWidgetItem::parent() == folderCategories) );
+    header->setSectionHidden(FolderModel::COLUMN_POS, !columnVisible);
+
+    columnVisible = ( (chosenFolder == folderHistory) ||
+                      (chosenFolder == folderSongsPlayed) );
+    header->setSectionHidden(FolderModel::COLUMN_PLAYED_ON, !columnVisible);
+
+    columnVisible = chosenFolder == folderSearchResults;
+    header->setSectionHidden(FolderModel::COLUMN_MATCH, !columnVisible);
+
+    columnVisible = chosenFolder == folderProblematic;
+    header->setSectionHidden(FolderModel::COLUMN_REASON, !columnVisible);
+
+    foreach (QAction* action, m_actionGroupColumnVisibility->actions()) {
+        QVariant property = action->property("column");
+        if (property.isValid()) {
+            int column = property.toInt();
+            columnVisible = action->isChecked();
+            header->setSectionHidden(column, !columnVisible);
+        }
+    }
+
+    songListViewModel->reset();
+    if (songListView && chosenFolder) {
+        songListView->horizontalScrollBar()->setValue(chosenFolder->getScrollPosX());
+        songListView->verticalScrollBar()->setValue(chosenFolder->getScrollPosY());
     }
 }
 
@@ -1334,10 +1137,11 @@ void YammiGui::slotSongChanged() {}
 
 
 /// rmb on songlist: song popup for selection
-void YammiGui::songListPopup( Q3ListViewItem*, const QPoint & point, int) {
-    // get selection
+void YammiGui::songListPopup(const QPoint& pos)
+{
+    QPoint globalPos = songListView->viewport()->mapToGlobal(pos);
     getSelectedSongs();
-    doSongPopup(point);
+    doSongPopup(globalPos);
 }
 
 void YammiGui::doSongPopup(QPoint point) {
@@ -1658,22 +1462,35 @@ long double YammiGui::diskUsage(QString path, long double sizeLimit) {
 void YammiGui::getSelectedSongs() {
     selectedSongs.clear();
 
-    if(selectionMode == SELECTION_MODE_USER_SELECTED) {
-        // get songs selected in listview
-        Q3ListViewItem* i=songListView->firstChild();
-        for(; i; i=i->itemBelow()) {						// go through list of songs
-            if(i->isSelected()) {
-                Song* s=((SongListItem*) i)->song();
-                selectedSongs.appendSong(s);
+    switch (selectionMode) {
+    case SELECTION_MODE_USER_SELECTED:
+        {
+            // get songs selected in listview
+            QAbstractItemModel* model = songListView->model();
+            foreach(QModelIndex index, songListView->selectionModel()->selection().indexes()) { // go through list of selected songs
+                if (index.column() == 0) {
+                    QVariant qv = model->data(index, FolderModel::SongEntryPointerRole);
+                    SongEntry* se = SongEntry::qvAsSe(qv);
+                    if (se) {
+                        selectedSongs.append(se);
+                    }
+                }
             }
+            break;
         }
-    }
-    if(selectionMode == SELECTION_MODE_FOLDER) {
+
+    case SELECTION_MODE_FOLDER:
         // get songs from currently selected folder: complete folder content
         // if the folder is already completely added to GUI, we take the order as shown in the songlist
         if(folderToAdd == 0) {
-            for(Q3ListViewItem* i=songListView->firstChild(); i; i=i->itemBelow()) {
-                selectedSongs.appendSong(((SongListItem*) i)->song());
+            QAbstractItemModel* model = songListView->model();
+            QModelIndex index;
+            for (int row = 0; (index = model->index(row, 0)).isValid(); row++) {
+                QVariant qv = model->data(index, FolderModel::SongEntryPointerRole);
+                SongEntry* se = SongEntry::qvAsSe(qv);
+                if (se) {
+                    selectedSongs.append(se);
+                }
             }
         } else {
             // here we are in the middle of adding all songs... (lazy adding) => take folder content directly
@@ -1682,21 +1499,18 @@ void YammiGui::getSelectedSongs() {
                 selectedSongs.appendSong((*it)->song());
             }
         }
-    }
+        break;
 
-    if(selectionMode == SELECTION_MODE_ALL) {
+    case SELECTION_MODE_ALL:
         // select all songs in database
         for (MyList::iterator it = model->allSongs.begin(); it != model->allSongs.end(); it++) {
             selectedSongs.appendSong((*it)->song());
         }
-    }
+        break;
 
-    if(selectionMode == SELECTION_MODE_CURRENT) {
-        // select only the currently selected item in the listview
-        Q3ListViewItem* i=songListView->currentItem();
-        selectedSongs.appendSong(((SongListItem*) i)->song());
+    default:
+        break;
     }
-
 }
 
 
@@ -1791,19 +1605,21 @@ void YammiGui::forSelectionPlayNow() { //FIXME - this does not work too well....
 
 void YammiGui::forSelectionDequeue( ) {
     getSelectedSongs();
-    int sortedByBefore=songListView->sortedBy;
+    int sortedByBefore=songListView->sortedBy();
     if(chosenFolder==folderActual) {
         // song chosen from playlist => dequeue only the selected song entry (not all songs with that id)
-        for(Q3ListViewItem* i=songListView->lastItem(); i; i=i->itemAbove()) {
-            if(!i->isSelected()) {
-                continue;
-            }
-            SongEntry* entry=((SongListItem*) i)->songEntry;
-            int pos=((SongEntryInt*)entry)->intInfo-1;
-            if(pos!=0 || player->getStatus()==STOPPED) {
-                // only dequeue if not currently played song (or player stopped)
-                qDebug() << "song dequeued: " << entry->song()->displayName();
-                delete model->songsToPlay.takeAt(pos);
+        foreach(QModelIndex index, songListView->selectionModel()->selection().indexes()) {
+            if (index.column() == 0) {
+                QVariant qv = songListView->model()->data(index, FolderModel::SongEntryPointerRole);
+                SongEntry* se = SongEntry::qvAsSe(qv);
+                if (se) {
+                    int pos=((SongEntryInt*)se)->intInfo-1;
+                    if(pos!=0 || player->getStatus()==STOPPED) {
+                        // only dequeue if not currently played song (or player stopped)
+                        qDebug() << "song dequeued: " << se->song()->displayName();
+                        delete model->songsToPlay.takeAt(pos);
+                    }
+                }
             }
         }
     } else {
@@ -1832,7 +1648,7 @@ void YammiGui::forSelectionDequeue( ) {
         sortedByBefore = -sortedByBefore;
     }
     int column=sortedByBefore-1;
-    songListView->setSorting(column, ascending);
+    songListView->setSorting(true, column, ascending?Qt::AscendingOrder:Qt::DescendingOrder);
 }
 
 
@@ -2059,12 +1875,7 @@ void YammiGui::forSelectionSongInfo( ) {
                 s->saveTags();
             }
             // update affected songs in view
-            for(SongListItem* i=(SongListItem*)songListView->firstChild(); i; i=(SongListItem*)i->itemBelow()) {
-                if(i->song()!=s) {
-                    continue;
-                }
-                i->setColumns(i->songEntry);
-            }
+            folderContentChanged(folderActual);
         }
         
         if(si.CheckBoxCorrectFilename->isChecked() && s->checkFilename(config()->consistencyPara->ignoreCaseInFilenames)==false) {
@@ -2146,20 +1957,15 @@ void YammiGui::deleteEntry(Song* s) {
 
 
 /// doubleClick on song
-void YammiGui::doubleClick() {
-    int action=config()->doubleClickAction;
-    forSelection(action);
+void YammiGui::doubleClicked()
+{
+    forSelection(config()->doubleClickAction);
 }
 
-
 /// middleClick on song
-void YammiGui::middleClick(int button) {
-    //	if(button==1) {			// left button
-    //    }
-
-    if(button==4) {				// middle button
-        forSelection(config()->middleClickAction);
-    }
+void YammiGui::middleClicked()
+{
+    forSelection(config()->middleClickAction);
 }
 
 
@@ -2240,7 +2046,7 @@ void YammiGui::removeCategory() {
     QString msg(tr("Delete category %1 ?\n (will be deleted immediately!)").arg(name));
     if (QMessageBox::warning(this, "", msg, QMessageBox::Yes, QMessageBox::No | QMessageBox::Escape) == QMessageBox::Yes) {
         model->removeCategory(name);
-        folderListView->setCurrentItem( (QTreeWidgetItem*)folderCategories );
+        folderListView->setCurrentItem(folderCategories);
         folderCategories->QTreeWidgetItem::setSelected(true);
         folderCategories->update(model->allCategories, model->categoryNames);
         updateSongPopup();
@@ -2261,7 +2067,7 @@ void YammiGui::renameCategory() {
 
     model->renameCategory(oldName, newName);
     qDebug() << "renamed in model...";
-    folderListView->setCurrentItem( (QTreeWidgetItem*)folderCategories );
+    folderListView->setCurrentItem(folderCategories);
     folderCategories->QTreeWidgetItem::setSelected(true);
     folderCategories->update(model->allCategories, model->categoryNames);
     qDebug() << "categories updated...";
@@ -2747,37 +2553,17 @@ void YammiGui::updateSongDatabase(QString scanDir, QString filePattern) {
 
 
 void YammiGui::stopDragging() {
-    ((FolderSorted*)chosenFolder)->syncWithListView(songListView);
     folderContentChanged();
 
     if(chosenFolder==folderActual) {
         player->syncYammi2Player();
     }
 
-    if(((QTreeWidgetItem*)chosenFolder)->parent()==folderCategories) {
+    if(chosenFolder->QTreeWidgetItem::parent()==folderCategories) {
         // we have to save the order
         model->categoriesChanged(true);
     }
 }
-
-
-
-/** selects all in songListView */
-void YammiGui::selectAll() {
-    for(Q3ListViewItem* i=songListView->firstChild(); i; i=i->itemBelow()) {
-        i->setSelected(true);
-    }
-    songListView->triggerUpdate();
-}
-
-/** inverts selection in songListView */
-void YammiGui::invertSelection() {
-    for(Q3ListViewItem* i=songListView->firstChild(); i; i=i->itemBelow()) {
-        i->setSelected(!i->isSelected());
-    }
-    songListView->triggerUpdate();
-}
-
 
 /**
  * Tells the media player to skip to the next song.
@@ -2817,9 +2603,8 @@ void YammiGui::skipBackward() {
 }
 
 
-void YammiGui::toggleColumnVisibility(QAction* action) {
-    int column = action->property("column").toInt();
-    columnVisible[column] = action->isChecked();
+void YammiGui::toggleColumnVisibility(QAction* /*action*/)
+{
     changeToFolder(chosenFolder, true);
 }
 
@@ -2872,7 +2657,13 @@ void YammiGui::createMainWidget( ) {
 
     // set up the songlist on the right
     songListView = new MyListView( centralWidget );
-    
+    songListViewModel = new FolderModel();
+    QSortFilterProxyModel* proxyModel = new QSortFilterProxyModel();
+    proxyModel->setSourceModel(songListViewModel);
+    proxyModel->setDynamicSortFilter(true);
+    songListView->setModel(proxyModel);
+    songListView->show();
+
     setCentralWidget(centralWidget);
 
     // signals of folderListView
@@ -2881,29 +2672,52 @@ void YammiGui::createMainWidget( ) {
     connect(folderListView, SIGNAL( customContextMenuRequested(const QPoint&)), this, SLOT( slotFolderPopup(const QPoint&) ) );
 
     // signals of songListView
-    connect(songListView, SIGNAL( rightButtonPressed( Q3ListViewItem *, const QPoint& , int ) ), this, SLOT( songListPopup( Q3ListViewItem *, const QPoint&, int ) ) );
-    connect(songListView, SIGNAL( doubleClicked( Q3ListViewItem * ) ), this, SLOT( doubleClick() ) );
-    connect(songListView, SIGNAL( mouseButtonClicked( int, Q3ListViewItem *, const QPoint&, int ) ), this, SLOT( middleClick(int) ) );
-    // for saving column settings
-    connect(songListView->header(), SIGNAL( sizeChange(int, int, int) ), this, SLOT( saveColumnSettings() ) );
-    connect(songListView->header(), SIGNAL( indexChange(int, int, int) ), this, SLOT( saveColumnSettings() ) );
+    connect(songListView, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(songListPopup(const QPoint&)));
+    connect(songListView, SIGNAL(doubleClicked(const QModelIndex&)), this, SLOT(doubleClicked()));
+    connect(songListView, SIGNAL(middleClicked()), this, SLOT(middleClicked()));
 }
 
 
 void YammiGui::createFolders( ) {
     folderActual = new FolderSorted(folderListView, QString(tr("Playlist")), &(model->songsToPlay));
+    folderActual->saveSorting(FolderModel::COLUMN_POS);
+
     folderSearchResults = new Folder(folderListView, QString(tr("Search Results")), &searchResults );
+    folderSearchResults->saveSorting(FolderModel::COLUMN_MATCH, Qt::DescendingOrder);
+
     folderAll = new Folder(folderListView, QString(tr("All Music")), &(model->allSongs));
+    folderAll->saveSorting(FolderModel::COLUMN_ARTIST);
+
     folderArtists = new FolderGroups(folderListView, QString( tr("Artists") ));
+    folderArtists->saveSorting(FolderModel::COLUMN_TITLE);
+
     folderAlbums = new FolderGroups(folderListView, QString( tr("Albums") ));
+    folderAlbums->saveSorting(FolderModel::COLUMN_TRACKNR);
+
     folderGenres = new FolderGroups(folderListView, QString( tr("Genre") ));
+    folderGenres->saveSorting(FolderModel::COLUMN_ARTIST);
+
     folderYears = new FolderGroups(folderListView, QString( tr("Year") ));
+    folderYears->saveSorting(FolderModel::COLUMN_ARTIST);
+
     folderCategories = new FolderCategories(folderListView, QString(tr("Categories")));
+    folderCategories->saveSorting(FolderModel::COLUMN_POS);
+
     folderSongsPlayed = new Folder(folderListView, QString(tr("Songs Played")), &(model->songsPlayed));
+    folderSongsPlayed->saveSorting(FolderModel::COLUMN_LAST_PLAYED);
+
     folderHistory = new Folder(folderListView, QString(tr("History")), &(model->songHistory));
+    folderHistory->saveSorting(FolderModel::COLUMN_PLAYED_ON);
+
     folderUnclassified = new Folder(folderListView, QString(tr("Unclassified")), &(model->unclassifiedSongs));
+    folderUnclassified->saveSorting(FolderModel::COLUMN_ARTIST);
+
     folderRecentAdditions = new Folder(folderListView, QString(tr("Recent Additions")), &(model->recentSongs));
+    folderRecentAdditions->saveSorting(FolderModel::COLUMN_ADDED_TO);
+
     folderProblematic = new Folder(folderListView, QString(tr("Problematic Songs")) );
+    folderProblematic->saveSorting(FolderModel::COLUMN_REASON);
+
 
     // signals of folders
     connect(folderCategories, SIGNAL( CategoryNew() ), this, SLOT(newCategory()));
@@ -2913,7 +2727,7 @@ void YammiGui::createFolders( ) {
 }
 
 
-bool YammiGui::setupActions()
+void YammiGui::setupActions()
 {
     QStyle* style = QApplication::style();
 
@@ -2924,10 +2738,10 @@ bool YammiGui::setupActions()
 
     m_actionSelectAll = new QAction(tr("Select &All"), this);
     m_actionSelectAll->setShortcut(QKeySequence::SelectAll);
-    connect(m_actionSelectAll, SIGNAL(triggered()), this, SLOT(selectAll()));
+    connect(m_actionSelectAll, SIGNAL(triggered()), songListView, SLOT(selectAll()));
 
     m_actionInvertSelection = new QAction(tr("&Invert Selection"), this);
-    connect(m_actionInvertSelection, SIGNAL(triggered()), this, SLOT(invertSelection()));
+    connect(m_actionInvertSelection, SIGNAL(triggered()), songListView, SLOT(invertSelection()));
 
     m_actionUpdateView = new QAction(tr("Update Automatic Folder Structure"), this);
     m_actionUpdateView->setIcon(style->standardIcon(QStyle::SP_BrowserReload));
@@ -3121,8 +2935,6 @@ bool YammiGui::setupActions()
 
     m_actionMoveFiles = new QAction(tr("Move Files"), this);
     connect(m_actionMoveFiles, SIGNAL(triggered()), this, SLOT(forSelectionMove()));
-
-    return true;
 }
 
 
@@ -3148,12 +2960,12 @@ void YammiGui::createMenuBar()
     subMenu->addAction(m_actionToggleSongActionsToolbar);
 
     menu = menuBar()->addMenu(tr("&Columns"));
-    for (int column = 0; column < 13; column++) {
-        action = new QAction(columnName[column], this);
+    for (int column = FolderModel::COLUMN_ARTIST; column < FolderModel::MAX_COLUMN_NO; column++) {
+        action = new QAction(getColumnName(column), this);
         action->setCheckable(true);
         action->setProperty("column", column);
         action->setName(QString("Column%1").arg(column));
-        action->setChecked(columnVisible[column]);
+        action->setChecked(true);
         m_actionGroupColumnVisibility->addAction(action);
         menu->addAction(action);
     }
@@ -3461,4 +3273,29 @@ QString YammiGui::songComment() {
 int YammiGui::songYear() {
 
     return currentSong->year;
+}
+
+bool YammiGui::dragDropAllowed(int row)
+{
+    bool ret = true;
+
+    if (chosenFolder != folderActual &&
+        chosenFolder->QTreeWidgetItem::parent() != folderCategories)
+    {
+        ret = false;
+    }
+
+    if (songListView->sortedBy() != FolderModel::COLUMN_POS ||
+        songListView->sortOrder() != Qt::AscendingOrder)
+    {
+        ret = false;
+    }
+
+    if (chosenFolder == folderActual &&
+        row == 0)
+    {
+        ret = false;
+    }
+
+    return ret;
 }

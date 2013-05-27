@@ -18,7 +18,7 @@
 #ifndef MYLISTVIEW_H
 #define MYLISTVIEW_H
 
-#include <Q3ListView>
+#include <QTableView>
 
 class Song;
 class QKeyEvent;
@@ -29,33 +29,27 @@ class QMouseEvent;
   *@author Oliver Nölle
   */
 
-class MyListView : public Q3ListView  {
+class MyListView : public QTableView  {
     Q_OBJECT
 public:
-    MyListView(QWidget *parent=0, const char *name=0);
+    MyListView(QWidget *parent=0);
     ~MyListView();
 
     bool dragging;
-    int sortedBy;
-    int oldSortOrder;
     bool dontTouchFirst;
     void simulateKeyPressEvent(QKeyEvent* e);
+    void setSorting(bool enabled, int column = -1, Qt::SortOrder sortOrder = Qt::AscendingOrder);
+    int sortedBy();
+    Qt::SortOrder sortOrder();
+
+signals:
+    void middleClicked();
 
 protected:
-    Song* dragSong;
-    QPoint dragPoint;
-    int dragStartedAtIndex;
-    Q3ListViewItem* dragItem;
-    QWidget* parent;
+    virtual void mouseReleaseEvent(QMouseEvent* event);
 
-    void contentsMouseMoveEvent ( QMouseEvent * e);
-    void contentsMousePressEvent ( QMouseEvent * e);
-    void contentsMouseReleaseEvent ( QMouseEvent * e);
-
-protected slots:
-    void simulateMouseMove();
 public slots:
-    void sortColumnChanged(int column);
+    void invertSelection();
 };
 
 #endif

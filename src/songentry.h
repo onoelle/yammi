@@ -19,6 +19,7 @@
 #define SONGENTRY_H
 
 #include <QString>
+#include <QVariant>
 
 class Song;
 
@@ -37,6 +38,10 @@ public:
     virtual int compare (int, SongEntry*) { return 0; } ;
     virtual QString getKey(int);
     virtual QString getColumn(int);
+
+    static QVariant seAsQv(SongEntry* se);
+    static SongEntry* qvAsSe(QVariant qv);
+
 protected:
     Song* songPtr;
 };

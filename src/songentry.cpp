@@ -36,3 +36,13 @@ QString SongEntry::getColumn(int)
 {
     return QString("");
 }
+
+QVariant SongEntry::seAsQv(SongEntry* se)
+{
+    return QVariant((int)se);
+}
+
+SongEntry* SongEntry::qvAsSe(QVariant qv)
+{
+    return  (SongEntry *)qv.toInt();
+}

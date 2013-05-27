@@ -16,9 +16,10 @@ SOURCES = \
     applytoalldialog.cpp \
     ConsistencyCheckDialog.cpp \
     ConsistencyCheckParameter.cpp \
-    foldercategories.cpp \
     folder.cpp \
+    foldercategories.cpp \
     foldergroups.cpp \
+    foldermodel.cpp \
     foldersorted.cpp \
     fuzzsrch.cpp \
     main.cpp \
@@ -36,7 +37,6 @@ SOURCES = \
     songentrystring.cpp \
     songentrytimestamp.cpp \
     songinfo.cpp \
-    songlistitem.cpp \
     trackpositionslider.cpp \
     updatedatabasedialog.cpp \
     util.cpp \
@@ -49,9 +49,10 @@ HEADERS = \
     ConsistencyCheckDialog.h \
     ConsistencyCheckParameter.h \
     dummyplayer.h \
+    folder.h \
     foldercategories.h \
     foldergroups.h \
-    folder.h \
+    foldermodel.h \
     foldersorted.h \
     fuzzsrch.h \
     mediaplayer.h \
@@ -68,7 +69,6 @@ HEADERS = \
     songentrytimestamp.h \
     song.h \
     songinfo.h \
-    songlistitem.h \
     trackpositionslider.h \
     updatedatabasedialog.h \
     util.h \

@@ -19,9 +19,16 @@
 
 #include <QMenu>
 
+#include "foldercategories.h"
+#include "foldersorted.h"
+#include "mylistview.h"
 #include "yammigui.h"
+#include "yammimodel.h"
 
 extern YammiGui* gYammiGui;
+
+
+
 
 
 // constructs a top-level folder
@@ -92,6 +99,7 @@ void Folder::init(QString name)
   sortedBy=0;
   scrollPosX=0;
   scrollPosY=0;
+    saveSorting(0, Qt::AscendingOrder);
 }
 
 // clean up
@@ -181,9 +189,10 @@ void Folder::autoplayFolder()
 /**
  * Saves the view settings (ordering, which song is at top).
  */
-void Folder::saveSorting(int sortedBy)
+void Folder::saveSorting(int sortedBy, Qt::SortOrder sortOrder)
 {
-  this->sortedBy=sortedBy;
+    this->sortedBy = sortedBy;
+    this->sortOrder = sortOrder;
 }
 
 /**

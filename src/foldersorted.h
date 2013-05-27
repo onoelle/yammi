@@ -40,7 +40,6 @@ public:
 	virtual void		insertSong(Song* s, int index);
 	virtual void		removeSong(Song* s);
 	
-	void						syncWithListView(MyListView* listView);
 	void						correctOrder();
 };
 

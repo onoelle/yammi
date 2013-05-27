@@ -18,7 +18,6 @@
 #include "foldersorted.h"
 
 #include "mylistview.h"
-#include "songlistitem.h"
 #include "songentryint.h"
 
 
@@ -105,23 +104,3 @@ void FolderSorted::correctOrder()
 	setText(0, fName+QString(" (%1)").arg(songList->count()));
 	songList->dirty=true;
 }
-
-/**
- * syncs the folder entries with the ones shown in the list
- * so far: only works if sorted after position
- * => only for sorted folders
- */
-void FolderSorted::syncWithListView(MyListView* listView)
-{
-	songList->clear();		// don't use folder->clearSongs() as it affects the list!
-	// what if order reverse?
-	int index=1;
-	for(Q3ListViewItem* i=listView->firstChild(); i; i=i->itemBelow()) {
-		// don't use addEntry for the same reason...
-		songList->append(new SongEntryInt( ((SongListItem*)i)->song(), index));
-		index++;
-	}
-	updateTitle();
-	songList->dirty=true;
-}
-

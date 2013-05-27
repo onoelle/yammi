@@ -18,17 +18,14 @@
 #ifndef YAMMIGUI_H
 #define YAMMIGUI_H
 
-#define MAX_COLUMN_NO 15
-
 #include <QMainWindow>
 #include <QTimer>
 #include <QWaitCondition>
 
+#include "folder.h"
 #include "mylist.h"
 
 
-class Q3ListView;
-class Q3ListViewItem;
 class QActionGroup;
 class QMenu;
 class QModelIndex;
@@ -48,9 +45,10 @@ class MediaPlayer;
 class MyDateTime;
 class MyListView;
 class Folder;
-class FolderGroups;
-class FolderSorted;
 class FolderCategories;
+class FolderGroups;
+class FolderModel;
+class FolderSorted;
 class Song;
 class SearchThread;
 class TrackPositionSlider;
@@ -71,12 +69,6 @@ public:
      * Determines the way the playlist is filled up when it contains less then 5 songs.
      */
     enum AutoplayMode { AUTOPLAY_OFF = 0, AUTOPLAY_LNP = 1, AUTOPLAY_RANDOM = 2, AUTOPLAY_FOLDER = 10, FUZZY_FOLDER_LIST_SIZE = 50 };
-    /**
-     * Enumeration for the available columns.
-     */
-    enum Columns {COLUMN_ARTIST = 0, COLUMN_TITLE = 1, COLUMN_ALBUM = 2, COLUMN_LENGTH = 3, COLUMN_YEAR = 4,  COLUMN_TRACKNR = 5,
-                  COLUMN_GENRE = 6, COLUMN_ADDED_TO = 7, COLUMN_BITRATE = 8, COLUMN_FILENAME = 9, COLUMN_PATH = 10, COLUMN_COMMENT = 11,
-                  COLUMN_LAST_PLAYED = 12 };
 
     /**
      * The selection mode determines for which songs an action is to be executed
@@ -88,8 +80,7 @@ public:
      * that the selection mode is set properly before invoking the slot, and to restore the selection
      * mode afterwards again.
      */
-    enum SelectionMode {SELECTION_MODE_USER_SELECTED = 0, SELECTION_MODE_FOLDER = 1, SELECTION_MODE_ALL = 2, SELECTION_MODE_CURRENT = 3,
-                        SELECTION_MODE_CUSTOM = 4};
+    enum SelectionMode {SELECTION_MODE_USER_SELECTED = 0, SELECTION_MODE_FOLDER = 1, SELECTION_MODE_ALL = 2};
 
 public:
     YammiGui();
@@ -179,7 +170,7 @@ protected slots:
     void toolbarToggled(QAction* action);
 private:
     /** Setup UI-actions*/
-    bool setupActions( );
+    void setupActions();
 
 private:
     bool validState;
@@ -191,6 +182,7 @@ private:
 public:
     QString replacePrelistenSkip(QString input, int lengthInSeconds, int skipTo);
     void stopDragging();
+    bool dragDropAllowed(int row);
     void requestSearchResultsUpdate(MyList* results);
     YammiModel* getModel() {
         return model;
@@ -199,22 +191,16 @@ public:
         return validState;
     };
 
-    bool columnIsVisible(int column);
-    int mapToRealColumn(int column);
-    void mapVisibleColumnsToOriginals();
     QString getColumnName(int column);
 
 public slots:
-    void songListPopup(Q3ListViewItem*, const QPoint&, int);
+    void songListPopup(const QPoint& pos);
     void deleteEntry(Song* s);
     void slotFolderChanged(const QModelIndex& current, const QModelIndex& previous);
     void updatePlaylist();
     void updateHtmlPlaylist();
     
     void updatePlayerStatus();
-
-    void selectAll();
-    void invertSelection();
 
     // forSelection methods
     // ********************
@@ -288,6 +274,7 @@ public slots:
 public:
     MediaPlayer*  player;
     MyListView* songListView;
+    FolderModel* songListViewModel;
     QTextEdit* playlistPart;
     Folder* chosenFolder;
     QWaitCondition searchFieldChangedIndicator;
@@ -310,15 +297,12 @@ public:
     Folder* fuzzyFolderList[FUZZY_FOLDER_LIST_SIZE];
     QString fuzzyFolderName;
     int fuzzyFolderNo;
-    bool columnVisible[MAX_COLUMN_NO];
-    int realColumnMap[MAX_COLUMN_NO];
     
     /** this list contains a selection of songs to work on */
     MyList selectedSongs;
     MyList searchResults;
     bool isScanning;
     void updateSongPopup();
-    void updateListViewColumns();
     void setSelectionMode(SelectionMode mode);
 
 protected:
@@ -345,20 +329,8 @@ protected:
 
 
     YammiModel* model;
-    // file that is currently played by player
-    QString currentFile;
     // the thread doing the fuzzy search in background
     SearchThread* searchThread;
-
-
-
-    // move the following into a (desktop)settings class?
-    int           geometryX;
-    int           geometryY;
-    int           geometryWidth;
-    int           geometryHeight;
-    QStringList   columnOrder;
-    int           columnWidth[MAX_COLUMN_NO];
 
     SelectionMode selectionMode;
 
@@ -369,7 +341,6 @@ protected:
 
     // folders
     Folder* folderAll;
-    Folder* folderSearchResults;
 
 
     // protected methods
@@ -378,8 +349,7 @@ protected:
     void		forSelection(int action);
     void          gotoFuzzyFolder(bool backward);
     void          changeToFolder(Folder* newFolder, bool changeAnyway=false);
-    void          folderContentChanged();
-    void          folderContentChanged(Folder* folder);
+    void          folderContentChanged(Folder* folder = NULL);
     void          updateCurrentSongStatus();
     void          autoFillPlaylist();
     Folder*       getFolderByName(QString foldername);
@@ -398,13 +368,14 @@ protected:
     FolderGroups* folderGenres;
     FolderGroups* folderYears;
     Folder* 			folderUnclassified;
-    Folder*				folderProblematic;
-    Folder*				folderHistory;				// songs played sometime
+public:
+    Folder* folderProblematic;
+    Folder* folderHistory; // songs played sometime
+    Folder* folderSearchResults;
+protected:
 
     Folder*				folderToAdd;					// for snappy folder adding in background
     Folder*       toFromRememberFolder;
-    int						alreadyAdded;
-    void					addFolderContent(Folder* folder);
     int           autoplayMode;
 
 
@@ -419,7 +390,6 @@ protected slots:
 
 
     void toFromPlaylist();
-    void saveColumnSettings();
 
     void setPreferences();
     void configureKeys();
@@ -434,8 +404,8 @@ protected slots:
     void slotFolderPopup(const QPoint& point);
     void adjustSongPopup();
 
-    void doubleClick();
-    void middleClick(int button);
+    void doubleClicked();
+    void middleClicked();
 
     void saveDatabase();
     void updateSongDatabaseHarddisk();
@@ -455,7 +425,6 @@ protected slots:
     void loadM3uIntoCategory();
 
     void pluginOnFolder();
-    void addFolderContentSnappy();
 
     void slotLoadInMixxxDeck1();
     void slotLoadInMixxxDeck2();
