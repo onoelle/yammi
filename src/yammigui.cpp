@@ -69,12 +69,22 @@
 // dialog includes
 #include "applytoalldialog.h"
 #include "ConsistencyCheckDialog.h"
-#include "DeleteDialog.h"
+#include "ui_DeleteDialog.h"
 #include "preferencesdialog.h"
 #include "updatedatabasedialog.h"
 
 
 extern YammiGui* gYammiGui;
+
+class DeleteDialog : public QDialog, public Ui::DeleteDialog
+{
+public:
+    DeleteDialog(QWidget *parent, const char *name, bool modal)
+        : QDialog(parent, name, modal)
+    {
+        setupUi(this);
+    };
+};
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 YammiGui::YammiGui() : QMainWindow( ) {

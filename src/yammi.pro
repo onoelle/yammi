@@ -78,12 +78,12 @@ HEADERS = \
 
 FORMS = \
     ApplyToAllBase.ui \
+    DeleteDialog.ui \
     UpdateDatabaseDialogBase.ui
 
 #The following line was changed from FORMS to FORMS3 by qt3to4
 FORMS3 = \
     ConsistencyCheckDialogBase.ui \
-    DeleteDialog.ui \
     PreferencesDialogBase.ui \
     SongInfoDialog.ui \
 
