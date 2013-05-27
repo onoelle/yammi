@@ -120,7 +120,7 @@
       </attribute>
       <layout class="QGridLayout">
        <item row="0" column="0">
-        <widget class="Q3GroupBox" name="GroupBox3">
+        <widget class="QGroupBox" name="GroupBox3">
          <property name="title">
           <string>Mouse configuration / Default actions for ...</string>
          </property>
@@ -254,7 +254,7 @@
         </widget>
        </item>
        <item row="1" column="0">
-        <widget class="Q3GroupBox" name="GroupBoxSearching">
+        <widget class="QGroupBox" name="GroupBoxSearching">
          <property name="title">
           <string>Searching</string>
          </property>
@@ -332,7 +332,7 @@
       <attribute name="title">
        <string>Database</string>
       </attribute>
-      <widget class="Q3GroupBox" name="GroupBox2">
+      <widget class="QGroupBox" name="GroupBox2">
        <property name="geometry">
         <rect>
          <x>11</x>
@@ -393,7 +393,7 @@
         </item>
        </layout>
       </widget>
-      <widget class="Q3GroupBox" name="GroupBox6">
+      <widget class="QGroupBox" name="GroupBox6">
        <property name="geometry">
         <rect>
          <x>10</x>
@@ -492,7 +492,7 @@
         </item>
        </layout>
       </widget>
-      <widget class="Q3GroupBox" name="ConsistencyMode">
+      <widget class="QGroupBox" name="ConsistencyMode">
        <property name="geometry">
         <rect>
          <x>11</x>
@@ -538,35 +538,6 @@
           <property name="text">
            <string>save tags immediately</string>
           </property>
-         </widget>
-        </item>
-        <item row="3" column="1" colspan="2">
-         <widget class="Q3ButtonGroup" name="buttonGroup3">
-          <property name="title">
-           <string/>
-          </property>
-          <property name="lineWidth">
-           <number>0</number>
-          </property>
-          <layout class="QGridLayout">
-           <item row="1" column="0">
-            <widget class="QRadioButton" name="RadioButtonSimpleGuessmode">
-             <property name="text">
-              <string>artist - title</string>
-             </property>
-             <property name="checked">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="0">
-            <widget class="QRadioButton" name="RadioButtonAdvancedGuessmode">
-             <property name="text">
-              <string>/artist/album/trackNr - title</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
          </widget>
         </item>
         <item row="3" column="0">
@@ -647,6 +618,32 @@
           </property>
          </widget>
         </item>
+        <item row="3" column="1" colspan="2">
+         <widget class="QGroupBox" name="buttonGroup3">
+          <property name="title">
+           <string/>
+          </property>
+          <layout class="QGridLayout">
+           <item row="1" column="0">
+            <widget class="QRadioButton" name="RadioButtonSimpleGuessmode">
+             <property name="text">
+              <string>artist - title</string>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="0">
+            <widget class="QRadioButton" name="RadioButtonAdvancedGuessmode">
+             <property name="text">
+              <string>/artist/album/trackNr - title</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
        </layout>
       </widget>
      </widget>
@@ -656,7 +653,7 @@
       </attribute>
       <layout class="QGridLayout">
        <item row="0" column="0" colspan="2">
-        <widget class="Q3ButtonGroup" name="MediaPlayerGroup">
+        <widget class="QGroupBox" name="MediaPlayerGroup">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -687,8 +684,45 @@
        <string>Prelistening</string>
       </attribute>
       <layout class="QGridLayout">
+       <item row="0" column="0">
+        <widget class="QLabel" name="TextLabel1_3_2">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::Box</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Sunken</enum>
+         </property>
+         <property name="lineWidth">
+          <number>1</number>
+         </property>
+         <property name="midLineWidth">
+          <number>0</number>
+         </property>
+         <property name="text">
+          <string>The prelisten functionality of Yammi allows to listen to songs on a headphone (requires a second sound device) while the normal playback of your playlist continues (very handy on a party...).
+For each file type listed below, Yammi can use a different command.
+Configure each tool here, separating parameters with &quot;|&quot;.
+Additionally to the usual placeholders (see the plugins tab) you can use {skipSeconds}, {skipMilliSeconds} and {skipFrames}.</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignVCenter</set>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
+         </property>
+         <property name="margin">
+          <number>3</number>
+         </property>
+        </widget>
+       </item>
        <item row="1" column="0">
-        <widget class="Q3GroupBox" name="secondSoundDevice">
+        <widget class="QGroupBox" name="secondSoundDevice">
          <property name="title">
           <string>Command line tool configuration</string>
          </property>
@@ -802,43 +836,6 @@
          </layout>
         </widget>
        </item>
-       <item row="0" column="0">
-        <widget class="QLabel" name="TextLabel1_3_2">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="frameShape">
-          <enum>QFrame::Box</enum>
-         </property>
-         <property name="frameShadow">
-          <enum>QFrame::Sunken</enum>
-         </property>
-         <property name="lineWidth">
-          <number>1</number>
-         </property>
-         <property name="midLineWidth">
-          <number>0</number>
-         </property>
-         <property name="text">
-          <string>The prelisten functionality of Yammi allows to listen to songs on a headphone (requires a second sound device) while the normal playback of your playlist continues (very handy on a party...).
-For each file type listed below, Yammi can use a different command.
-Configure each tool here, separating parameters with &quot;|&quot;.
-Additionally to the usual placeholders (see the plugins tab) you can use {skipSeconds}, {skipMilliSeconds} and {skipFrames}.</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignVCenter</set>
-         </property>
-         <property name="wordWrap">
-          <bool>true</bool>
-         </property>
-         <property name="margin">
-          <number>3</number>
-         </property>
-        </widget>
-       </item>
       </layout>
      </widget>
      <widget class="QWidget" name="tab">
@@ -847,7 +844,7 @@ Additionally to the usual placeholders (see the plugins tab) you can use {skipSe
       </attribute>
       <layout class="QGridLayout">
        <item row="2" column="0" colspan="2">
-        <widget class="Q3GroupBox" name="GroupBox7">
+        <widget class="QGroupBox" name="GroupBox7">
          <property name="title">
           <string>Plugins</string>
          </property>
@@ -1081,14 +1078,7 @@ Group mode = executed once for the selection</string>
         </widget>
        </item>
        <item row="1" column="0">
-        <widget class="Q3TextEdit" name="LineEditPlayqueueTemplate">
-         <property name="textFormat">
-          <enum>Qt::PlainText</enum>
-         </property>
-         <property name="autoFormatting">
-          <set>Q3TextEdit::AutoAll</set>
-         </property>
-        </widget>
+        <widget class="Q3TextEdit" name="LineEditPlayqueueTemplate"/>
        </item>
       </layout>
      </widget>
@@ -1100,27 +1090,16 @@ Group mode = executed once for the selection</string>
  <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
  <customwidgets>
   <customwidget>
-   <class>Q3GroupBox</class>
-   <extends>QGroupBox</extends>
-   <header>Qt3Support/Q3GroupBox</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
    <class>Q3Frame</class>
    <extends>QFrame</extends>
    <header>Qt3Support/Q3Frame</header>
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>Q3ButtonGroup</class>
-   <extends>Q3GroupBox</extends>
-   <header>Qt3Support/Q3ButtonGroup</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
    <class>Q3TextEdit</class>
    <extends>Q3Frame</extends>
    <header>q3textedit.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <tabstops>
