@@ -41,7 +41,7 @@ void ConsistencyCheckParameter::setDefaults()
 	deleteEmptyDirectories=false;
 	ignoreCaseInFilenames=false;
 	updateNonExisting=false;
-	filenamePattern = "{artist} - {title}.{suffix}";
+    filenamePattern = "{trackNr2Digit} {artist} - {title}.{suffix}";
 	directoryPattern = "{artist}/{album}";
 }	
 	

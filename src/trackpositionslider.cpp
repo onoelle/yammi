@@ -27,25 +27,31 @@
 #include "song.h"
 
 
-TrackPositionSlider::TrackPositionSlider(Qt::Orientation orientation, QWidget *parent, const char *name) : QSlider(orientation, parent, name)
+class TrackPositionSliderMouseEvent: public QMouseEvent
 {
-    setLineStep(1*1000);
+public:
+    TrackPositionSliderMouseEvent(QMouseEvent& e) : QMouseEvent(e) {}
+    void setButton(Qt::MouseButton button) { b = button; mouseState = button; }
+};
+
+
+TrackPositionSlider::TrackPositionSlider(Qt::Orientation orientation, QWidget *parent) : QSlider(orientation, parent)
+{
+    setSingleStep(1*1000);
     setPageStep(10*1000);
     setTracking( true );    
 }
 
 void TrackPositionSlider::mousePressEvent(QMouseEvent *e)
 {
-	if(e->button() == Qt::LeftButton) {
-    	QMouseEvent reverse(QEvent::MouseButtonPress, e->pos(), Qt::MidButton, e->state());
-    	QSlider::mousePressEvent(&reverse); 
-        //emit sliderPressed();
+    TrackPositionSliderMouseEvent reverse(*e);
+    reverse.setButton(Qt::MidButton);
+    if(e->button() == Qt::LeftButton) {
+        QSlider::mousePressEvent(&reverse);
         emit sliderMoved(value());
-	}
-	else if(e->button() == Qt::MidButton) {
-    	QMouseEvent reverse(QEvent::MouseButtonPress, e->pos(), Qt::MidButton, e->state());
-    	QSlider::mousePressEvent(&reverse); 
-	}
+    } else if(e->button() == Qt::MidButton) {
+        QSlider::mousePressEvent(&reverse);
+    }
 }
 
 
@@ -58,14 +64,14 @@ void TrackPositionSlider::setupTickmarks(Song* song)
 {
     if(song == 0) {
         setRange(0, 0);
-        setTickmarks(QSlider::NoTicks);
+        setTickPosition(QSlider::NoTicks);
         setValue(0);
         setEnabled(false);
     }
     else {
         setRange(0, song->length*1000);
         setValue(0);
-        setTickmarks(QSlider::TicksBelow);
+        setTickPosition(QSlider::TicksBelow);
         setTickInterval(1000*60);
         setEnabled(true);        
         updateGeometry();

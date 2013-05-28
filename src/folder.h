@@ -105,6 +105,7 @@ protected:
     Folder(const Folder&);
     Folder& operator=(const Folder&);
 
+    QAction* m_actionAutoPlayAction;
 };
 
 #endif

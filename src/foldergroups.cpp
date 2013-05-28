@@ -67,9 +67,9 @@ void FolderGroups::update(MyList* allSongs, int sortBy) {
         if(gYammiGui->config()->lazyGrouping) {
             // lazy grouping is not guaranteed to work, as the sorting might be different
             // (we sort once, and scan in linear time)
-            QString last2=last.upper();
+            QString last2=last.toUpper();
             last2=last2.replace(QRegExp("_"), " ");
-            QString next2=next.upper();
+            QString next2=next.toUpper();
             next2=next2.replace(QRegExp("_"), " ");
             same=(last2==next2);
         } else

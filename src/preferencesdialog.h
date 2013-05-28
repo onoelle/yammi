@@ -31,7 +31,7 @@ class PreferencesDialog : public QDialog, public Ui::Preferences  {
     Q_OBJECT
 
 public:
-    PreferencesDialog(QWidget *parent, const char *name, bool modal, Prefs* config);
+    PreferencesDialog(QWidget *parent, Prefs* config);
     ~PreferencesDialog();
 
 public slots:

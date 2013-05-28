@@ -131,10 +131,10 @@ bool Song::create(const QString location, bool capitalizeTags) {
         return false;
     }
     filename = fi->fileName();
-    path = fi->dirPath(TRUE);
+    path = fi->absolutePath();
     filesize=fi->size();
     QString saveFilename(fi->fileName());
-    QString savePath(fi->dirPath(TRUE));
+    QString savePath(fi->absolutePath());
     delete fi;
     fi = 0;
 
@@ -149,8 +149,8 @@ bool Song::create(const QString location, bool capitalizeTags) {
     
 
     // simplify whitespaces
-    artist=artist.simplifyWhiteSpace();
-    title=title.simplifyWhiteSpace();
+    artist=artist.simplified();
+    title=title.simplified();
 
     if(capitalizeTags) {
         // capitalize after spaces (any exceptions?)
@@ -187,13 +187,13 @@ bool Song::readTags(QString filename) {
         qDebug() << "reading tags: tags are empty in file " << filename;
         return false;
     }
-    album = TStringToQString( tag->album() ).stripWhiteSpace();
-    artist = TStringToQString( tag->artist() ).stripWhiteSpace();
-    title = TStringToQString( tag->title() ).stripWhiteSpace();
-    comment = TStringToQString( tag->comment() ).stripWhiteSpace();
+    album = TStringToQString( tag->album() ).trimmed();
+    artist = TStringToQString( tag->artist() ).trimmed();
+    title = TStringToQString( tag->title() ).trimmed();
+    comment = TStringToQString( tag->comment() ).trimmed();
     year = (int) tag->year();
     trackNr = (int) tag->track();
-    genre = TStringToQString ( tag->genre() ).stripWhiteSpace();
+    genre = TStringToQString ( tag->genre() ).trimmed();
     return true;
 }
 
@@ -221,7 +221,7 @@ bool Song::readLayerInfo(QString filename) {
     }
 
     // taglib was not successful
-    if(filename.right(4).upper()==".WAV") {
+    if(filename.right(4).toUpper()==".WAV") {
         if(getWavInfo(filename)) {
             return true;
         }
@@ -257,7 +257,7 @@ bool Song::checkFilename(bool ignoreCase) {
         return true;
     } else {
         if(ignoreCase) {
-            return ((constructFilename().upper())==(filename.upper()));
+            return ((constructFilename().toUpper())==(filename.toUpper()));
         } else {
             return (constructFilename()==filename);
         }
@@ -273,7 +273,7 @@ bool Song::checkDirectory(bool ignoreCase) {
         return true;
     } else {
         if(ignoreCase) {
-            return ((constructPath().upper())==(path.upper()));
+            return ((constructPath().toUpper())==(path.toUpper()));
         } else {
             return (constructPath()==path);
         }
@@ -294,7 +294,7 @@ void Song::guessTagsFromFilename(QString filename, QString path, QString* artist
     *artist="";
     *title="";
     QString guessBase=filename;
-    int suffixPosition=guessBase.findRev('.');
+    int suffixPosition=guessBase.lastIndexOf('.');
     if(suffixPosition != -1) {
         // remove suffix if there is one
         guessBase=guessBase.left(suffixPosition);
@@ -302,16 +302,16 @@ void Song::guessTagsFromFilename(QString filename, QString path, QString* artist
     guessBase=guessBase.replace( QRegExp("_"), " " );                           // replace "_" with " "
 
     if(gYammiGui->config()->guessingMode == Prefs::GUESSING_MODE_SIMPLE) {
-        int pos=guessBase.find('-');
+        int pos=guessBase.indexOf('-');
         if(pos!=-1) {
             *artist=guessBase.left(pos);
-            *artist=artist->simplifyWhiteSpace();
+            *artist=artist->simplified();
             *title=guessBase.right(guessBase.length()-pos-1);
-            *title=title->simplifyWhiteSpace();
+            *title=title->simplified();
         } else {
             *artist="unknown";
             *title=guessBase;
-            *title=title->simplifyWhiteSpace();
+            *title=title->simplified();
         }
         return;
     }
@@ -320,21 +320,21 @@ void Song::guessTagsFromFilename(QString filename, QString path, QString* artist
         // eg "/artist/album/01 - trackname.mp3"
         //    pos1  pos2
 
-        int pos2=path.findRev('/');
+        int pos2=path.lastIndexOf('/');
         if(pos2>0) {
-            int pos1=path.findRev('/', pos2-1);
+            int pos1=path.lastIndexOf('/', pos2-1);
             if(pos1>0) {
                 *artist=path.mid(pos1+1, pos2-pos1-1);
             }
             *album=path.mid(pos2+1);
         }
 
-        int pos=guessBase.find('-');
+        int pos=guessBase.indexOf('-');
         if(pos!=-1) {
             *title=guessBase.mid(pos+1);
-            *title=title->simplifyWhiteSpace();
+            *title=title->simplified();
             QString trackNrStr=guessBase.left(pos);
-            trackNr=atoi(trackNrStr);
+            trackNr=trackNrStr.toInt();
         } else {
             *title=guessBase;
         }
@@ -358,7 +358,7 @@ bool Song::getWavInfo(QString filename) {
     if( wavFile.open( QIODevice::ReadOnly ) ) {
         QDataStream stream( &wavFile );
         WaveHeader header;
-        stream.readRawBytes((char*)&header, sizeof(WaveHeader));
+        stream.readRawData((char*)&header, sizeof(WaveHeader));
         wavFile.close();
         //    qDebug() << "header data: nChannels: " << header.nChannels << ", wBitsPerSample: " << header.wBitsPerSample;
         //    qDebug() << "nSamplesPerSec: " << header.nSamplesPerSec << ", filesize: " << header.filesize << ", avgBytesPerSec: " << header.nAvgBytesPerSec;
@@ -495,6 +495,11 @@ bool Song::saveTags() {
         qDebug() << "saving tags: tag == 0 in file " << filename;
         return false;
     }
+
+// from /usr/include/taglib/tstring.h is currently not for Qt4 prepared
+#undef QStringToTString
+#define QStringToTString(s) TagLib::String(s.toUtf8().data(), TagLib::String::UTF8)
+
     tag->setAlbum(QStringToTString(album));
     tag->setArtist(QStringToTString(artist));
     tag->setTitle(QStringToTString(title));
@@ -528,7 +533,7 @@ bool Song::correctFilename() {
     // bug in windows-filesystem?
     // renaming fails if new and old are just different in case
     QDir currentDir=QDir("/");
-    if(newname.upper()==oldname.upper()) {
+    if(newname.toUpper()==oldname.toUpper()) {
         if(!currentDir.rename(oldname, oldname+".xxx")) {
             qDebug() << "WARNING: renaming: new filename equals old filename (except case), and renaming failed (" << newFilename << ")";
             return false;
@@ -549,7 +554,7 @@ bool Song::correctFilename() {
         return false;
     }
     QString dummy="test";
-    touchFile.writeBlock(dummy, dummy.length());
+    touchFile.write(dummy.toAscii(), dummy.length());
     touchFile.close();
 
     QFileInfo fi(newname);
@@ -684,10 +689,10 @@ QString Song::capitalize(QString str) {
     // do nothing with the empty string
     if(str=="")
         return str;
-    str[0] = str.at(0).upper();
+    str[0] = str.at(0).toUpper();
     for(int pos=1; pos<str.length(); pos++) {
         if(str.at(pos-1)==' ')
-            str[pos]=str.at(pos).upper();
+            str[pos]=str.at(pos).toUpper();
     }
     return str;
 }
@@ -731,15 +736,15 @@ QString Song::getSuffix() {
     if(filename=="!") {
         return "!";
     }
+    if (base.isEmpty()) {
+        return "";
+    }
 
-    int suffixLength=base.findRev('.');
+    int suffixLength=base.lastIndexOf('.');
     if(suffixLength==-1) {
         return "";
     }
     QString suffix=base.mid(suffixLength+1);
-    if(base.toInt()==0) {
-        return "";
-    }
     return suffix;
 }
 
@@ -839,7 +844,7 @@ QString Song::replacePlaceholders(QString input, int index) {
 
     // filename without suffix
     QString filenameWithoutSuffix;
-    int suffixPos = filename.findRev('.');
+    int suffixPos = filename.lastIndexOf('.');
     if(suffixPos == -1) {
         filenameWithoutSuffix = filename;
     }
@@ -872,7 +877,7 @@ QString Song::replacePlaceholders(QString input, int index) {
     input.replace(QRegExp("\\{lengthInSeconds\\}"), QString("%1").arg(length));
     input.replace(QRegExp("\\{newline\\}"), "\n");
     input.replace(QRegExp("\\{trackNr\\}"), trackNrStr);
-    input.replace(QRegExp("\\{trackNr2Digit\\}"), trackNrStr.rightJustify(2,'0'));
+    input.replace(QRegExp("\\{trackNr2Digit\\}"), trackNrStr.rightJustified(2,'0'));
     return input;
 }
 

@@ -37,7 +37,7 @@ void Util::deleteDirectoryIfEmpty(QString path, QString noDeleteDir) {
     }
     QDir d;
     if(d.rmdir(path)) {
-        int lastSlashIndex=path.findRev('/');
+        int lastSlashIndex=path.lastIndexOf('/');
         QString frontPath=path.left(lastSlashIndex);
         deleteDirectoryIfEmpty(frontPath, noDeleteDir);
     }
@@ -52,7 +52,7 @@ bool Util::ensurePathExists(QString path) {
     if(path.length()<=1) {
         return true;
     }
-    int lastSlashIndex=path.findRev('/');
+    int lastSlashIndex=path.lastIndexOf('/');
     if(lastSlashIndex==-1) {
         return false;
     }
@@ -129,8 +129,8 @@ bool copyFile(const QString &oldFilePath, const QString &newFilePath)
   char* buffer = new char[BUFFER_SIZE];
   while(!oldFile.atEnd())
   {
-    Q_ULONG len = oldFile.readBlock( buffer, BUFFER_SIZE );
-    newFile.writeBlock( buffer, len );
+    qint64 len = oldFile.read( buffer, BUFFER_SIZE );
+    newFile.write( buffer, len );
   }
 
   //deallocate buffer

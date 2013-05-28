@@ -39,29 +39,30 @@ void FolderCategories::update(QList<MyList*> allCategories, QStringList category
 {
 	// we have to delete all existing items first!
     while (childCount()) {
-        qDebug() << "deleting item";
+        //qDebug() << "deleting item";
         QTreeWidgetItem* toDelete = QTreeWidgetItem::child(0);
 		delete(toDelete);
 	}
 	
-    folderPopup = new QMenu( 0 );
-    folderPopup->insertItem(QObject::tr("New Category ..."), this, SLOT(newCategory()));
+    folderPopup = new QMenu(tr("Folder ..."));
+    folderPopup->addAction(QObject::tr("New Category ..."), this, SLOT(newCategory()));
 	
 	int count=0;
     for (QList<MyList*>::iterator it = allCategories.begin(); it != allCategories.end(); it++, count++) {
 		FolderSorted *f = new FolderSorted( this, categoryNames[count] );
-        qDebug() << "calling f->update()";
+        //qDebug() << "calling f->update()";
         f->update(**it);
-        f->folderPopup = new QMenu( 0 );
-        f->folderPopup->insertItem(tr("Remove Category ..."), this, SLOT(removeCategory()));
-        f->folderPopup->insertItem(tr("New Category ..."), this, SLOT(newCategory()));
-        f->folderPopup->insertItem(tr("Rename Category ..."), this, SLOT(renameCategory()));
-        f->folderPopup->insertItem(tr("Load .m3u into Category"), this, SLOT(loadM3uIntoCategory()));
-        f->folderPopup->setItemChecked(13, true);
+        f->folderPopup = new QMenu(tr("Folder ..."));
+        f->folderPopup->addAction(tr("Remove Category ..."), this, SLOT(removeCategory()));
+        f->folderPopup->addAction(tr("New Category ..."), this, SLOT(newCategory()));
+        f->folderPopup->addAction(tr("Rename Category ..."), this, SLOT(renameCategory()));
+        f->folderPopup->addAction(tr("Load .m3u into Category"), this, SLOT(loadM3uIntoCategory()));
+        if (m_actionAutoPlayAction)
+            m_actionAutoPlayAction->setChecked(true);
 	}
 	setText(0, fName+QString(" (%1)").arg(count));
-    qDebug() << "calling sortChildItems()";
+    //qDebug() << "calling sortChildItems()";
     sortChildren(0, Qt::AscendingOrder);
-    qDebug() << "...done";
+    //qDebug() << "...done";
 }
 

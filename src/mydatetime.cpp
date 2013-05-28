@@ -17,8 +17,6 @@
 
 #include "mydatetime.h"
 
-#include <stdio.h>
-
 
 MyDateTime::MyDateTime()
 {
@@ -37,21 +35,11 @@ MyDateTime::MyDateTime(QDateTime t)
 
 QString MyDateTime::writeToString()
 {
-	QString x;		
-	x=x.sprintf("%02d/%02d/%04d, %02d:%02d:%02d", date().day(), date().month(), date().year(), time().hour(), time().minute(), time().second() );
-//	QString str=QString("%1/%2/%3, %4:%5:%6").arg( date().day() ).arg( date().month() ).arg( date().year() ).arg( time().hour() ).arg( time().minute() ).arg( time().second() );
-	return x;
+    return this->toString("dd/MM/yyyy, hh:mm:ss");
 }
 
 
 void MyDateTime::readFromString(QString str)
 {
-	int dd, mm, yyyy;
-	int h, m, s;
-	char sep1, sep2, sep3, sep3b, sep4, sep5;
-	// read date as "dd/mm/yyyy, hh:mm:ss"
-	sscanf(str, "%d%c%d%c%d%c%c%d%c%d%c%d", &dd, &sep1, &mm, &sep2, &yyyy, &sep3, &sep3b, &h, &sep4, &m, &sep5, &s);
-    // qDebug() << "dd: " << dd << ", mm: " << mm << ", yyyy: " << yyyy;
-	this->setDate(QDate (yyyy, mm, dd));
-	this->setTime(QTime (h, m, s));
+    *this = QDateTime::fromString(str, "dd/MM/yyyy, hh:mm:ss");
 }

@@ -266,7 +266,7 @@ QMimeData* FolderModel::mimeData(const QModelIndexList &indexes) const
     foreach (QModelIndex index, indexes) {
         if (index.isValid()) {
             QVariant qv = data(index, SongEntryPointerRole);
-            int ptr = qv.asInt();
+            int ptr = qv.toInt();
             QPoint rowcol(index.column(), index.row());
             stream << ptr << rowcol;
         }

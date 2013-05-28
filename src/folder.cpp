@@ -90,6 +90,9 @@ void Folder::clearSongs()
 // tooltip???
 void Folder::init(QString name)
 {
+    m_actionAutoPlayAction = new QAction(tr("Autoplay"), this);
+    m_actionAutoPlayAction->setCheckable(true);
+    connect(m_actionAutoPlayAction, SIGNAL(triggered()), this, SLOT(autoplayFolder()));
 	fName=name;
 	setText( 0, fName );
 	folderPopup=0;
@@ -161,22 +164,21 @@ void Folder::popup(QPoint point, QMenu* contentMenu)
 {
   allPopup=new QMenu();
   // autoplay
-  allPopup->insertItem(tr("Autoplay"), this, SLOT(autoplayFolder()), 0, 13);
+  allPopup->addAction(m_actionAutoPlayAction);
   if(gYammiGui->autoplayFoldername==this->folderName()) {
-    allPopup->setItemChecked(13, true);
-  }
-  else {
-    allPopup->setItemChecked(13, false);
+      m_actionAutoPlayAction->setChecked(true);
+  } else {
+      m_actionAutoPlayAction->setChecked(false);
   }
 
   // folder popup as defined in subclass
   if (folderPopup) {
-        allPopup->insertItem(tr("Folder ..."), folderPopup);
+        allPopup->addMenu(folderPopup);
   }
 
   // content menu (if folder contains at least one song)
 	if (contentMenu) {
-        allPopup->insertItem(tr("Content ..."), contentMenu);
+        allPopup->addMenu(contentMenu);
   }
 	allPopup->exec(point);
 }

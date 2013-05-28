@@ -32,10 +32,10 @@ int main( int argc, char **argv )
 
     /* set the search path, so the Qt resource system could find the icons and pictures */
     QDir::addSearchPath("icons", QCoreApplication::applicationDirPath() + "/icons");
-    QDir::addSearchPath("icons", QDir::currentDirPath() + "/icons");
+    QDir::addSearchPath("icons", QDir::currentPath() + "/icons");
 
     QDir::addSearchPath("translations", QCoreApplication::applicationDirPath() + "/translations");
-    QDir::addSearchPath("translations", QDir::currentDirPath() + "/translations");
+    QDir::addSearchPath("translations", QDir::currentPath() + "/translations");
 
     QString directory = "translations:";
     QString filename = QString("yammi_%1").arg(QLocale::system().name().toLower());
@@ -72,7 +72,7 @@ int main( int argc, char **argv )
         }
     }
 
-	app.setMainWidget( yammi );
+    QObject::connect(&app, SIGNAL(lastWindowClosed()), &app, SLOT(quit()));
 	yammi->show();
 	
     // give yammi a chance for a first draw

@@ -69,7 +69,7 @@ void MyListView::simulateKeyPressEvent(QKeyEvent* e)
 void MyListView::mouseReleaseEvent(QMouseEvent* event)
 {
     QTableView::mouseReleaseEvent(event);
-    if (event->button() == Qt::MiddleButton) {
+    if (event->button() == Qt::MidButton) {
         emit middleClicked();
     }
 }

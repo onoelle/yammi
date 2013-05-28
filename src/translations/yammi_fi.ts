@@ -238,7 +238,7 @@
     <name>ConsistencyCheckDialog</name>
     <message>
         <source>Check consistency - settings</source>
-        <translation type="unfinished">Tarkista yhtenevyys - asetukset</translation>
+        <translation type="obsolete">Tarkista yhtenevyys - asetukset</translation>
     </message>
     <message>
         <source>Checking %1 songs</source>
@@ -483,6 +483,10 @@
 </source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Currently is checking for duplicates disabled because it is not working correclty and will damage your database!</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>DeleteDialog</name>
@@ -550,14 +554,6 @@ Kappale on tallennettu levylle.</translation>
         <source>Autoplay</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>Folder ...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Content ...</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>FolderCategories</name>
@@ -575,6 +571,10 @@ Kappale on tallennettu levylle.</translation>
     </message>
     <message>
         <source>Load .m3u into Category</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Folder ...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1568,10 +1568,6 @@ Tarkista asetuksesi!</translation>
 <context>
     <name>UpdateDatabaseDialog</name>
     <message>
-        <source>Update Database (harddisk)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>choose scan directory</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1919,7 +1915,7 @@ pysäytä soitto-ohjelma haun ajaksi.
     </message>
     <message>
         <source>Fuzzy search (Ctrl-F)</source>
-        <translation>Sumea haku (Ctrl-F)</translation>
+        <translation type="obsolete">Sumea haku (Ctrl-F)</translation>
     </message>
     <message>
         <source>to wishlist</source>
@@ -2953,26 +2949,6 @@ Do you want to delete one of them?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Artist: </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>- no album -</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Album: </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Genre: </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Year: </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Type in plugin parameter</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3233,10 +3209,6 @@ Do you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Main ToolBar</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Track position</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3319,6 +3291,15 @@ Do you want to continue?</source>
     <message>
         <source>Last Played</source>
         <translation type="unfinished">Viimeksi Soitettu</translation>
+    </message>
+    <message>
+        <source>Content ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Fuzzy search (Ctrl-F)
+Goto fuzzy matching folder (Ctrl-G)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

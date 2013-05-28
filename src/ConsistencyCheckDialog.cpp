@@ -18,7 +18,7 @@
 extern YammiGui* gYammiGui;
 
 ConsistencyCheckDialog::ConsistencyCheckDialog(QWidget* parent, ConsistencyCheckParameter* para, MyList* selectedSongs, YammiModel* model)
-    : QDialog(parent, tr("Check consistency - settings"), false)
+    : QDialog(parent)
 {
     setupUi(this);
     p=para;
@@ -63,7 +63,7 @@ void ConsistencyCheckDialog::myAccept() {
     p->checkTags=CheckBoxCheckTags->isChecked();
     p->ignoreCaseInFilenames=CheckBoxIgnoreCase->isChecked();
     p->correctTags=CheckBoxCorrectTags->isChecked();
-    p->correctTagsDirection=ComboBoxCorrectTagsDirection->currentItem();
+    p->correctTagsDirection=ComboBoxCorrectTagsDirection->currentIndex();
     p->checkFilenames=CheckBoxCheckFilenames->isChecked();
     p->correctFilenames=CheckBoxCorrectFilenames->isChecked();
     p->checkDirectories=CheckBoxCheckDirectories->isChecked();
@@ -301,7 +301,8 @@ void ConsistencyCheckDialog::startCheck() {
 
 
     // 2. check for songs contained twice
-    if(!progress.wasCanceled() && p->checkDoubles) {
+    output->append("! " + tr("Currently is checking for duplicates disabled because it is not working correclty and will damage your database!"));
+    if(!progress.wasCanceled() && /*p->checkDoubles*/false) {
         progress.setLabelText(tr("Step 2: check for song entries pointing to same file"));
         progress.setRange(0, model->allSongs.count());
         progress.setValue(0);

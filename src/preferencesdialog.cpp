@@ -26,8 +26,8 @@
 #include "song.h"
 
 
-PreferencesDialog::PreferencesDialog(QWidget *parent, const char *name, bool modal, Prefs* config )
-    : QDialog(parent, name, modal)
+PreferencesDialog::PreferencesDialog(QWidget *parent, Prefs* config )
+    : QDialog(parent)
 {
     setupUi(this);
     this->config=config;
@@ -58,13 +58,13 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, const char *name, bool mod
     RadioButtonXineEngine->setChecked(config->mediaPlayer == config->MEDIA_PLAYER_XINEENGINE);
     
     for(int i=0; i<Song::getMaxSongAction(); i++) {
-        ComboBoxDoubleClickAction->insertItem(Song::getSongAction(i));
+        ComboBoxDoubleClickAction->addItem(Song::getSongAction(i));
     }
-    ComboBoxDoubleClickAction->setCurrentItem(config->doubleClickAction);
+    ComboBoxDoubleClickAction->setCurrentIndex(config->doubleClickAction);
     for(int i=0; i<Song::getMaxSongAction(); i++) {
-        ComboBoxMiddleClickAction->insertItem(Song::getSongAction(i));
+        ComboBoxMiddleClickAction->addItem(Song::getSongAction(i));
     }
-    ComboBoxMiddleClickAction->setCurrentItem(config->middleClickAction);
+    ComboBoxMiddleClickAction->setCurrentIndex(config->middleClickAction);
 
     // plugins
     //////////
@@ -104,10 +104,10 @@ void PreferencesDialog::insertPluginValues() {
     _pluginMode= config->pluginMode;
     _pluginConfirm= config->pluginConfirm;
 
-    ComboBoxPlugins->insertItem(tr("choose entry"));
-    ComboBoxPlugins->insertStringList(_pluginMenuEntry);
-    ComboBoxPluginMode->insertItem("single");
-    ComboBoxPluginMode->insertItem("group");
+    ComboBoxPlugins->addItem(tr("choose entry"));
+    ComboBoxPlugins->insertItems(1, _pluginMenuEntry);
+    ComboBoxPluginMode->addItem("single");
+    ComboBoxPluginMode->addItem("group");
     updatePlugin(0);
 }
 
@@ -141,8 +141,8 @@ void PreferencesDialog::myAccept() {
         config->trashDir+="/";
     if(config->scanDir.right(1)!="/")
         config->scanDir+="/";
-    config->doubleClickAction=(Song::action)ComboBoxDoubleClickAction->currentItem();
-    config->middleClickAction=(Song::action)ComboBoxMiddleClickAction->currentItem();
+    config->doubleClickAction=(Song::action)ComboBoxDoubleClickAction->currentIndex();
+    config->middleClickAction=(Song::action)ComboBoxMiddleClickAction->currentIndex();
     config->logging=CheckBoxLogging->isChecked();
     config->capitalizeTags=CheckBoxCapitalizeTags->isChecked();
     config->tagsConsistent=CheckBoxTagsConsistent->isChecked();
@@ -153,7 +153,7 @@ void PreferencesDialog::myAccept() {
     
     if(config->childSafe && !CheckBoxChildSafe->isChecked()) {
         bool ok;
-        QString passwd=QString(QInputDialog::getText(tr("password"), tr("enter password"), QLineEdit::Password, QString(""), &ok, this ));
+        QString passwd=QString(QInputDialog::getText(this, tr("password"), tr("enter password"), QLineEdit::Password, QString(""), &ok ));
         if(passwd=="protect")
             config->childSafe=false;
     } else {
@@ -166,7 +166,7 @@ void PreferencesDialog::myAccept() {
     config->prelistenOtherCommand=LineEditPrelistenOtherCommand->text();
     config->groupThreshold=SpinBoxGroupThreshold->value();
     config->lazyGrouping=CheckBoxLazyGrouping->isChecked();
-    config->searchThreshold=atoi(LineEditSearchThreshold->text());
+    config->searchThreshold=LineEditSearchThreshold->text().toInt();
     config->playqueueTemplate = LineEditPlayqueueTemplate->toPlainText();
     
     if (RadioButtonXineEngine->isChecked()) {
@@ -186,7 +186,7 @@ void PreferencesDialog::myAccept() {
 
 // file dialog for trash dir
 void PreferencesDialog::chooseTrashDir() {
-    QString dir = QFileDialog::getExistingDirectory(LineEditTrashDir->text(), this, NULL, tr("choose trash directory"));
+    QString dir = QFileDialog::getExistingDirectory(this, tr("choose trash directory"), LineEditTrashDir->text());
     if(!dir.isNull()) {
         LineEditTrashDir->setText(dir);
     }
@@ -218,38 +218,38 @@ void PreferencesDialog::updatePlugin(int newPos) {
         CheckBoxPluginConfirm->setEnabled(true);
         ComboBoxPluginMode->setEnabled(true);
         if(_pluginMode[newPos-1]=="single") {
-            ComboBoxPluginMode->setCurrentItem(0);
+            ComboBoxPluginMode->setCurrentIndex(0);
         }
         if(_pluginMode[newPos-1]=="group") {
-            ComboBoxPluginMode->setCurrentItem(1);
+            ComboBoxPluginMode->setCurrentIndex(1);
         }
     }
 }
 
 void PreferencesDialog::updatePluginMenuEntry(const QString& newText) {
-    int pos=ComboBoxPlugins->currentItem();
+    int pos=ComboBoxPlugins->currentIndex();
     if(pos==0)
         return;
     _pluginMenuEntry[pos-1] = newText;
-    ComboBoxPlugins->changeItem(newText, pos);
+    ComboBoxPlugins->setItemText(pos, newText);
 }
 
 void PreferencesDialog::updatePluginCommand(const QString& newText) {
-    int pos=ComboBoxPlugins->currentItem();
+    int pos=ComboBoxPlugins->currentIndex();
     if(pos==0)
         return;
     _pluginCommand[pos-1] = newText;
 }
 
 void PreferencesDialog::updatePluginCustomList(const QString& newText) {
-    int pos=ComboBoxPlugins->currentItem();
+    int pos=ComboBoxPlugins->currentIndex();
     if(pos==0)
         return;
     _pluginCustomList[pos-1] = newText;
 }
 
 void PreferencesDialog::updatePluginMode(int newPos) {
-    int pos=ComboBoxPlugins->currentItem();
+    int pos=ComboBoxPlugins->currentIndex();
     if(pos==0)
         return;
     if(newPos==0) {
@@ -263,45 +263,45 @@ void PreferencesDialog::updatePluginMode(int newPos) {
 }
 
 void PreferencesDialog::updatePluginConfirm(bool checked) {
-    int pos=ComboBoxPlugins->currentItem();
+    int pos=ComboBoxPlugins->currentIndex();
     if(pos==0)
         return;
     _pluginConfirm[pos-1] = checked ? "true" : "false";
 }
 
 void PreferencesDialog::newPlugin() {
-    ComboBoxPlugins->insertItem(tr("new item"));
+    ComboBoxPlugins->addItem(tr("new item"));
     _pluginMenuEntry.append(tr("new item"));
     _pluginCommand.append(tr("new command"));
     _pluginMode.append(tr("single"));
     _pluginCustomList.append(tr("new custom list"));
     _pluginConfirm.append(tr("true"));
-    ComboBoxPlugins->setCurrentItem(ComboBoxPlugins->count()-1);
+    ComboBoxPlugins->setCurrentIndex(ComboBoxPlugins->count()-1);
     updatePlugin(ComboBoxPlugins->count()-1);
 }
 
 void PreferencesDialog::newPlugin(QString name, QString command, QString mode, QString customList, QString confirm) {
-    ComboBoxPlugins->insertItem(name);
+    ComboBoxPlugins->addItem(name);
     _pluginMenuEntry.append(name);
     _pluginCommand.append(command);
     _pluginMode.append(mode);
     _pluginCustomList.append(customList);
     _pluginConfirm.append(confirm);
-    ComboBoxPlugins->setCurrentItem(ComboBoxPlugins->count()-1);
+    ComboBoxPlugins->setCurrentIndex(ComboBoxPlugins->count()-1);
     updatePlugin(ComboBoxPlugins->count()-1);
 }
 
 void PreferencesDialog::deletePlugin() {
-    int pos=ComboBoxPlugins->currentItem();
+    int pos=ComboBoxPlugins->currentIndex();
     if(pos==0)
         return;
     ComboBoxPlugins->removeItem(pos);
-    _pluginMenuEntry.remove(_pluginMenuEntry.at(pos-1));
-    _pluginCommand.remove(_pluginCommand.at(pos-1));
-    _pluginMode.remove(_pluginMode.at(pos-1));
-    _pluginCustomList.remove(_pluginCustomList.at(pos-1));
-    _pluginConfirm.remove(_pluginConfirm.at(pos-1));
-    ComboBoxPlugins->setCurrentItem(0);
+    _pluginMenuEntry.removeAt(pos-1);
+    _pluginCommand.removeAt(pos-1);
+    _pluginMode.removeAt(pos-1);
+    _pluginCustomList.removeAt(pos-1);
+    _pluginConfirm.removeAt(pos-1);
+    ComboBoxPlugins->setCurrentIndex(0);
     updatePlugin(0);
 }
 

@@ -23,7 +23,7 @@
 
 
 UpdateDatabaseDialog::UpdateDatabaseDialog(QWidget *parent, Prefs* config )
-    : QDialog(parent, tr("Update Database (harddisk)"), true)
+    : QDialog(parent)
 {
     setupUi(this);
     this->config = config;
@@ -47,7 +47,7 @@ void UpdateDatabaseDialog::myAccept() {
 
 // file dialog for scan dir
 void UpdateDatabaseDialog::chooseScanDir() {
-    QString dir = QFileDialog::getExistingDirectory(LineEditScanDir->text(), this, NULL, tr("choose scan directory"));
+    QString dir = QFileDialog::getExistingDirectory(this, tr("choose scan directory"), LineEditScanDir->text());
     if(!dir.isNull()) {
         LineEditScanDir->setText(dir);
     }

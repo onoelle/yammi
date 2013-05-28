@@ -4,27 +4,27 @@
 <context>
     <name>ApplyToAllBase</name>
     <message>
-        <location filename="../ApplyToAllBase.ui" line="16"/>
+        <location filename="../ApplyToAllBase.ui" line="14"/>
         <source>confirm</source>
         <translation>Bestätigen</translation>
     </message>
     <message>
-        <location filename="../ApplyToAllBase.ui" line="33"/>
+        <location filename="../ApplyToAllBase.ui" line="26"/>
         <source>Yes</source>
         <translation>Ja</translation>
     </message>
     <message>
-        <location filename="../ApplyToAllBase.ui" line="41"/>
+        <location filename="../ApplyToAllBase.ui" line="33"/>
         <source>No</source>
         <translation>Nein</translation>
     </message>
     <message>
-        <location filename="../ApplyToAllBase.ui" line="49"/>
+        <location filename="../ApplyToAllBase.ui" line="40"/>
         <source>Abort</source>
         <translation>Abbrechen</translation>
     </message>
     <message>
-        <location filename="../ApplyToAllBase.ui" line="65"/>
+        <location filename="../ApplyToAllBase.ui" line="57"/>
         <source>apply answer to all affected items</source>
         <translation>Antwort auf alle betroffenen Elemente anwenden</translation>
     </message>
@@ -32,12 +32,12 @@
 <context>
     <name>CheckConsistencyDialogBase</name>
     <message>
-        <location filename="../ConsistencyCheckDialogBase.ui" line="16"/>
+        <location filename="../ConsistencyCheckDialogBase.ui" line="14"/>
         <source>Check consistency of song database</source>
         <translation>Korrektheit der Lieddatenbank überprüfen</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialogBase.ui" line="50"/>
+        <location filename="../ConsistencyCheckDialogBase.ui" line="42"/>
         <source>Consistency Check</source>
         <translation>Korrektheit überprüfen</translation>
     </message>
@@ -46,7 +46,7 @@
         <translation type="obsolete">Überprüfung beginnen...</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialogBase.ui" line="82"/>
+        <location filename="../ConsistencyCheckDialogBase.ui" line="71"/>
         <source>Exit</source>
         <translation>Verlassen</translation>
     </message>
@@ -55,151 +55,151 @@
         <translation type="obsolete">Ersetzungsmuster...</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialogBase.ui" line="66"/>
+        <location filename="../ConsistencyCheckDialogBase.ui" line="58"/>
         <source>Start Check ...</source>
         <translation>Überprüfung beginnen ...</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialogBase.ui" line="90"/>
+        <location filename="../ConsistencyCheckDialogBase.ui" line="78"/>
         <source>Pattern Replacements ...</source>
         <translation>Ersetzungsmuster ...</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialogBase.ui" line="140"/>
+        <location filename="../ConsistencyCheckDialogBase.ui" line="380"/>
         <source>check directories</source>
         <translation>Verzeichnisse prüfen</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialogBase.ui" line="143"/>
+        <location filename="../ConsistencyCheckDialogBase.ui" line="377"/>
         <source>Checks, whether the directories correspond to the configured directory scheme</source>
         <translation>Prüfen, ob die Verzeichnisse zum konfigurierten Verzeichnisschema passen</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialogBase.ui" line="151"/>
+        <location filename="../ConsistencyCheckDialogBase.ui" line="390"/>
         <source>correct inconsistent directories</source>
         <translation>Inkorrekte Verzeichnisse korrigieren</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialogBase.ui" line="154"/>
+        <location filename="../ConsistencyCheckDialogBase.ui" line="387"/>
         <source>If directories differ from the configured directory scheme, the files will be moved</source>
         <translation>Wenn Verzeichnisse vom konfigurierten Verzeichnisschema abweichen werden die Dateien verschoben</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialogBase.ui" line="179"/>
+        <location filename="../ConsistencyCheckDialogBase.ui" line="416"/>
         <source>delete empty directories</source>
         <translation>Leere Verzeichnisse löschen</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialogBase.ui" line="182"/>
+        <location filename="../ConsistencyCheckDialogBase.ui" line="413"/>
         <source>If directories are empty after moving files, these will be removed.</source>
         <translation>Beim Dateien Verschieben leergewordene Verzeichnisse entfernen.</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialogBase.ui" line="207"/>
-        <location filename="../ConsistencyCheckDialogBase.ui" line="507"/>
+        <location filename="../ConsistencyCheckDialogBase.ui" line="333"/>
+        <location filename="../ConsistencyCheckDialogBase.ui" line="442"/>
         <source>pattern:</source>
         <translation>Muster:</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialogBase.ui" line="210"/>
-        <location filename="../ConsistencyCheckDialogBase.ui" line="218"/>
-        <location filename="../ConsistencyCheckDialogBase.ui" line="510"/>
-        <location filename="../ConsistencyCheckDialogBase.ui" line="526"/>
+        <location filename="../ConsistencyCheckDialogBase.ui" line="330"/>
+        <location filename="../ConsistencyCheckDialogBase.ui" line="349"/>
+        <location filename="../ConsistencyCheckDialogBase.ui" line="439"/>
+        <location filename="../ConsistencyCheckDialogBase.ui" line="452"/>
         <source>The filename pattern to use for renaming files.</source>
         <translation>Dieses Dateinamensmuster für das Umbenenen der Dateien verwenden.</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialogBase.ui" line="263"/>
+        <location filename="../ConsistencyCheckDialogBase.ui" line="113"/>
         <source>output of consistency check</source>
         <translation>Ausgabe der Korrektheitsprüfung</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialogBase.ui" line="296"/>
+        <location filename="../ConsistencyCheckDialogBase.ui" line="147"/>
         <source>check for existence of files</source>
         <translation>Prüfen, ob Dateien existieren</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialogBase.ui" line="299"/>
+        <location filename="../ConsistencyCheckDialogBase.ui" line="144"/>
         <source>Checks, whether the file is existing and readable</source>
         <translation>Prüfen, ob die Datei existiert und lesbar ist</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialogBase.ui" line="307"/>
+        <location filename="../ConsistencyCheckDialogBase.ui" line="157"/>
         <source>update/delete non existing entries</source>
         <translation>Aktualisiere/Lösche nicht existierende Einträge</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialogBase.ui" line="310"/>
+        <location filename="../ConsistencyCheckDialogBase.ui" line="154"/>
         <source>Entries not existing at their saved location are updated (existing on media) or deleted (not existing on any media)</source>
         <translation>Einträge, die nicht an ihrem gespeicherten Ort sind aktualisieren (existieren auf Medium) oder gelöscht (existieren auf keinem Medium)</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialogBase.ui" line="362"/>
+        <location filename="../ConsistencyCheckDialogBase.ui" line="204"/>
         <source>check tags</source>
         <translation>Tags überprüfen</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialogBase.ui" line="365"/>
+        <location filename="../ConsistencyCheckDialogBase.ui" line="201"/>
         <source>Checks, whether the (mp3/ogg) tags are consistent with Yammi&apos;s database</source>
         <translation>Überprüfe, ob die (mp3/ogg) Tags mit denen in Yammis Datenbank übereinstimmen</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialogBase.ui" line="405"/>
+        <location filename="../ConsistencyCheckDialogBase.ui" line="250"/>
         <source>Yammi database =&gt; File Tags</source>
         <translation>Yammi Datenbank =&gt; Datei Tags</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialogBase.ui" line="410"/>
+        <location filename="../ConsistencyCheckDialogBase.ui" line="255"/>
         <source>File Tags =&gt; Yammi database</source>
         <translation>Datei Tags =&gt; Yammi Datenbank</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialogBase.ui" line="430"/>
+        <location filename="../ConsistencyCheckDialogBase.ui" line="266"/>
         <source>correct inconsistent tags</source>
         <translation>Korrigiere inkorrekte Tags</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialogBase.ui" line="433"/>
+        <location filename="../ConsistencyCheckDialogBase.ui" line="263"/>
         <source>If tags do not correspond to the information in Yammi&apos;s database, they wil be corrected.</source>
         <translation>Wenn Tags nicht mit den Informationen in Yammis Datenbank übereinstimmen werden sie korrigiert.</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialogBase.ui" line="468"/>
+        <location filename="../ConsistencyCheckDialogBase.ui" line="297"/>
         <source>check filenames</source>
         <translation>Dateinamen prüfen</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialogBase.ui" line="471"/>
+        <location filename="../ConsistencyCheckDialogBase.ui" line="294"/>
         <source>Checks, whether the filenames correspond to the configured filename scheme</source>
         <translation>Prüfen, ob die Dateinamen mit dem konfigurierten Dateinamensschema übereinstimmen</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialogBase.ui" line="479"/>
+        <location filename="../ConsistencyCheckDialogBase.ui" line="307"/>
         <source>correct inconsistent filenames</source>
         <translation>Korrigiere inkorrekte Dateinamen</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialogBase.ui" line="482"/>
+        <location filename="../ConsistencyCheckDialogBase.ui" line="304"/>
         <source>If filenames differ from the configured filename scheme, they will be corrected</source>
         <translation>Wenn die Dateinamen vom konfigurierten Dateinamensschema abweichen werden sie korrigiert</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialogBase.ui" line="561"/>
+        <location filename="../ConsistencyCheckDialogBase.ui" line="483"/>
         <source>check for doubles</source>
         <translation>Auf Duplikate prüfen</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialogBase.ui" line="564"/>
+        <location filename="../ConsistencyCheckDialogBase.ui" line="480"/>
         <source>checks for entries that are contained twice in Yammi&apos;s database</source>
         <translation>Prüfe auf Einträge die in Yammis Datenbank mehrfach enthalten sind</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialogBase.ui" line="599"/>
+        <location filename="../ConsistencyCheckDialogBase.ui" line="514"/>
         <source>ignore case in filename checks</source>
         <translation>Ignoriere Groß-/Kleinschreibung in Dateinamensprüfung</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialogBase.ui" line="602"/>
+        <location filename="../ConsistencyCheckDialogBase.ui" line="511"/>
         <source>ignore case differences in filename / directory check</source>
         <translation>Ignoriere Groß-/Kleinschreibung in Dateinamen-/Verzeichnisprüfung</translation>
     </message>
@@ -207,12 +207,11 @@
 <context>
     <name>ConsistencyCheckDialog</name>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="21"/>
         <source>Check consistency - settings</source>
-        <translation>Korrekheitsprüfung - Einstellungen</translation>
+        <translation type="obsolete">Korrekheitsprüfung - Einstellungen</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="27"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="29"/>
         <source>Checking %1 songs</source>
         <translation>Prüfe %1 Lied(er)</translation>
     </message>
@@ -225,44 +224,46 @@
         <translation type="obsolete">Prüfe Korrektheit von %1 Lieder ...</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="87"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="89"/>
         <source>Step 1: checking all songs in database ...</source>
         <translation>Schritt 1: Prüfe alle Lieder in der Datenbank ...</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="95"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="97"/>
         <source>Checking consistency of %1 songs ...</source>
         <translation>Prüfe Korrektheit von %1 Lieder ...</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="118"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="120"/>
         <source>file not readable</source>
         <translation>Datei nicht lesbar</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="120"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="122"/>
         <source>file not existing or readable: %1
 </source>
-        <translation>Datei nicht existent oder lesbar: %1</translation>
+        <translation>Datei nicht existent oder lesbar: %1
+</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="123"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="125"/>
         <source>=&gt; deleting song entry %1
 </source>
-        <translation>=&gt; Lösche Liedeintrag %1</translation>
+        <translation>=&gt; Lösche Liedeintrag %1
+</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="127"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="129"/>
         <source>file not existing or readable</source>
         <translation>Datei nicht existent oder lesbar</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="132"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="134"/>
         <source>tags not correct</source>
         <translation>Tags nicht korrekt</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="140"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="142"/>
         <source>Correct tags in file
 
 	%1?
@@ -275,121 +276,126 @@
 </translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="142"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="144"/>
         <source>(Write yammi info to file tags:
 </source>
-        <translation>(Schreibe Yammis informationen in den Dateitag:</translation>
-    </message>
-    <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="143"/>
-        <source>artist: %1, title: %2
-</source>
-        <translation>Künstler: %1, Titel: %2</translation>
-    </message>
-    <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="144"/>
-        <source>album: %1, comment: %2
-</source>
-        <translation>Album: %1, Kommentar: %2</translation>
+        <translation>(Schreibe Yammis informationen in den Dateitag:
+</translation>
     </message>
     <message>
         <location filename="../ConsistencyCheckDialog.cpp" line="145"/>
+        <source>artist: %1, title: %2
+</source>
+        <translation>Künstler: %1, Titel: %2
+</translation>
+    </message>
+    <message>
+        <location filename="../ConsistencyCheckDialog.cpp" line="146"/>
+        <source>album: %1, comment: %2
+</source>
+        <translation>Album: %1, Kommentar: %2
+</translation>
+    </message>
+    <message>
+        <location filename="../ConsistencyCheckDialog.cpp" line="147"/>
         <source>year: %1, trackNr: %2, genre: %3)</source>
         <translation>Jahr: %1, Titel-Nr.: %2, Genre: %3)</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="148"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="150"/>
         <source>(Reread tags from filename and update Yammi info)</source>
         <translation>(Tags aus Dateinamen auslesen und Yammis Information aktualisieren)</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="175"/>
-        <location filename="../ConsistencyCheckDialog.cpp" line="176"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="177"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="178"/>
         <source>Yammi info written to file tags</source>
         <translation>Yammis Informationen in den Dateitag geschrieben</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="182"/>
-        <location filename="../ConsistencyCheckDialog.cpp" line="183"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="184"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="185"/>
         <source>Tags reread from file and Yammi info updated</source>
         <translation>Tags erneut aus Datei gelesen und Yammis informationen aktualisiert</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="187"/>
-        <location filename="../ConsistencyCheckDialog.cpp" line="188"/>
-        <location filename="../ConsistencyCheckDialog.cpp" line="191"/>
-        <location filename="../ConsistencyCheckDialog.cpp" line="192"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="189"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="190"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="193"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="194"/>
         <source>Yammi info and file tags not consistent</source>
         <translation>Yammis informationen und Dateitag stimmen nicht überein</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="198"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="200"/>
         <source>filename not consistent</source>
         <translation>Dateiname nicht korrekt</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="200"/>
-        <location filename="../ConsistencyCheckDialog.cpp" line="238"/>
-        <location filename="../ConsistencyCheckDialog.cpp" line="241"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="202"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="240"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="243"/>
         <source>Filename not consistent with Yammi info</source>
         <translation>Dateiname nicht korrekt gegenüber Yammis informationen</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="201"/>
-        <location filename="../ConsistencyCheckDialog.cpp" line="248"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="203"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="250"/>
         <source>expected: %1</source>
         <translation>Erwartet: %1</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="202"/>
-        <location filename="../ConsistencyCheckDialog.cpp" line="249"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="204"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="251"/>
         <source>found: %1</source>
         <translation>Gefunden: %1</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="208"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="210"/>
         <source>Correct filename from
 	%1
 </source>
         <translation>Korrigiere Dateiname von
-	%1</translation>
+	%1
+</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="209"/>
-        <location filename="../ConsistencyCheckDialog.cpp" line="257"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="211"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="259"/>
         <source>to
 	%1?</source>
         <translation>nach
 	%1?</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="234"/>
-        <location filename="../ConsistencyCheckDialog.cpp" line="235"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="236"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="237"/>
         <source>Filename corrected</source>
         <translation>Dateiname korrigiert</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="245"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="247"/>
         <source>directory not consistent</source>
         <translation>Verzeichnis nicht korrekt</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="247"/>
-        <location filename="../ConsistencyCheckDialog.cpp" line="290"/>
-        <location filename="../ConsistencyCheckDialog.cpp" line="293"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="249"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="292"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="295"/>
         <source>Directory not consistent with Yammi info</source>
         <translation>Dateiname nicht korrekt gegenüber Yammis Informationen</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="255"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="257"/>
         <source>Correct path for file 
 	%1
 </source>
         <translation>Korrigiere Pfad der Date 
-	%1</translation>
+	%1
+</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="256"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="258"/>
         <source>from
 	%1
 </source>
@@ -398,73 +404,83 @@
 </translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="283"/>
-        <location filename="../ConsistencyCheckDialog.cpp" line="284"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="285"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="286"/>
         <source>Directory corrected</source>
         <translation>Verzeichnis korrigiert</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="303"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="304"/>
+        <source>Currently is checking for duplicates disabled because it is not working correclty and will damage your database!</source>
+        <translation>Im Moment ist die Duplikatprüfung abgeschaltet da sie nicht korrekt arbeitet und die Datenbank zerstört!</translation>
+    </message>
+    <message>
+        <location filename="../ConsistencyCheckDialog.cpp" line="306"/>
         <source>Step 2: check for song entries pointing to same file</source>
         <translation>Schritt 2: Prüfe auf Liedeinträge, die auf die gleiche Datei verweisen</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="328"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="331"/>
         <source>{wish}</source>
         <translation>{Wunsch}</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="337"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="340"/>
         <source>two database entries pointing to same file: %1, deleting one</source>
         <translation>Zwei Datenbankeinträge verweisen auf die gleiche Datei: %1, lösche einen</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="349"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="352"/>
         <source>Step 3: check for songs with identical primary keys</source>
         <translation>Schritt 3: Prüfe auf Lieder mit gleichem Primärschlüssel</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="375"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="378"/>
         <source>2 songs with identical primary key
 </source>
-        <translation>2 Lieder mit gleichem Primärschlüssel</translation>
+        <translation>2 Lieder mit gleichem Primärschlüssel
+</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="378"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="381"/>
         <source>contained twice(1)</source>
         <translation>Doppelt enthalten(1)</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="379"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="382"/>
         <source>contained twice(2)</source>
         <translation>Doppelt enthalten(2)</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="389"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="392"/>
         <source>Consistency check finished
 </source>
-        <translation>Korrektheitsprüfung abgeschlossen</translation>
-    </message>
-    <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="391"/>
-        <source>Consistency check was cancelled
-</source>
-        <translation>Korrektheitsprüfung wurde abgebrochen</translation>
+        <translation>Korrektheitsprüfung abgeschlossen
+</translation>
     </message>
     <message>
         <location filename="../ConsistencyCheckDialog.cpp" line="394"/>
+        <source>Consistency check was cancelled
+</source>
+        <translation>Korrektheitsprüfung wurde abgebrochen
+</translation>
+    </message>
+    <message>
+        <location filename="../ConsistencyCheckDialog.cpp" line="397"/>
         <source>Your Yammi database is nice and clean!
 </source>
-        <translation>Deine Yammidatenbank ist hübsch und sauber!</translation>
+        <translation>Deine Yammidatenbank ist hübsch und sauber!
+</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="399"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="402"/>
         <source>Result of consistency check: (%1 songs)
 </source>
-        <translation>Ergebnis der Korrektheitsprüfung: (%1 Lieder)</translation>
+        <translation>Ergebnis der Korrektheitsprüfung: (%1 Lieder)
+</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="401"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="404"/>
         <source>%1 issues found, check folder &quot;Problematic Songs&quot; (won&apos;t be saved)
 
 </source>
@@ -473,67 +489,77 @@
 </translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="402"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="405"/>
         <source>- %1 songs not existing
 </source>
-        <translation>- %1 Lieder sind nicht existent</translation>
-    </message>
-    <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="404"/>
-        <source>     %1 entries updated (filename cleared)
-</source>
-        <translation>     %1 Einträge aktualisiert (Dateiname bereinigt)</translation>
-    </message>
-    <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="405"/>
-        <source>     %1 entries deleted (because not existing on any media)
-</source>
-        <translation>     %1 Einträge gelöscht (da nicht existent auf einem Medium)</translation>
+        <translation>- %1 Lieder sind nicht existent
+</translation>
     </message>
     <message>
         <location filename="../ConsistencyCheckDialog.cpp" line="407"/>
+        <source>     %1 entries updated (filename cleared)
+</source>
+        <translation>     %1 Einträge aktualisiert (Dateiname bereinigt)
+</translation>
+    </message>
+    <message>
+        <location filename="../ConsistencyCheckDialog.cpp" line="408"/>
+        <source>     %1 entries deleted (because not existing on any media)
+</source>
+        <translation>     %1 Einträge gelöscht (da nicht existent auf einem Medium)
+</translation>
+    </message>
+    <message>
+        <location filename="../ConsistencyCheckDialog.cpp" line="410"/>
         <source>- %1 songs with inconsistent tags
 </source>
-        <translation>- %1 Lieder mit inkorrekten Tags</translation>
+        <translation>- %1 Lieder mit inkorrekten Tags
+</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="409"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="412"/>
         <source>     %1 tags corrected
 </source>
-        <translation>     %1 Tags korrigiert</translation>
+        <translation>     %1 Tags korrigiert
+</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="411"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="414"/>
         <source>- %1 songs with inconsistent filename
 </source>
-        <translation>- %1 Lieder mit inkorrektem Dateinamen</translation>
+        <translation>- %1 Lieder mit inkorrektem Dateinamen
+</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="413"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="416"/>
         <source>     %1 filenames corrected
 </source>
-        <translation>     %1 Dateinamen korrigiert</translation>
+        <translation>     %1 Dateinamen korrigiert
+</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="415"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="418"/>
         <source>- %1 songs with inconsistent path
 </source>
-        <translation>- %1 Lieder mit inkorrektem Pfad</translation>
+        <translation>- %1 Lieder mit inkorrektem Pfad
+</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="417"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="420"/>
         <source>     %1 paths corrected
 </source>
-        <translation>     %1 Pfade korrigiert</translation>
+        <translation>     %1 Pfade korrigiert
+</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="419"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="422"/>
         <source>- %1 double entries found
 </source>
-        <translation>- %1 Doppelte Einträge gefunden</translation>
+        <translation>- %1 Doppelte Einträge gefunden
+</translation>
     </message>
     <message>
-        <location filename="../ConsistencyCheckDialog.cpp" line="463"/>
+        <location filename="../ConsistencyCheckDialog.cpp" line="466"/>
         <source>Replacements for filename/directory pattern:
 
 </source>
@@ -545,47 +571,47 @@
 <context>
     <name>DeleteDialog</name>
     <message>
-        <location filename="../DeleteDialog.ui" line="24"/>
+        <location filename="../DeleteDialog.ui" line="20"/>
         <source>DeleteDialog</source>
         <translation>Löschdialog</translation>
     </message>
     <message>
-        <location filename="../DeleteDialog.ui" line="52"/>
+        <location filename="../DeleteDialog.ui" line="44"/>
         <source>delete database entry (in Yammi&apos;s database)</source>
         <translation>Lösche Datenbankeintrag (in Yammis Datenbank)</translation>
     </message>
     <message>
-        <location filename="../DeleteDialog.ui" line="55"/>
+        <location filename="../DeleteDialog.ui" line="41"/>
         <source>deletes the database entry in Yammi&apos;s database (does not affect the file)</source>
         <translation>Löscht den Datenbankeintrag in Yammis Datenbank (ändert nicht die Datei)</translation>
     </message>
     <message>
-        <location filename="../DeleteDialog.ui" line="77"/>
+        <location filename="../DeleteDialog.ui" line="64"/>
         <source>Delete a song entry and/or its file</source>
         <translation>Lösche einen Liedeintrag and/oder dessen Datei</translation>
     </message>
     <message>
-        <location filename="../DeleteDialog.ui" line="107"/>
+        <location filename="../DeleteDialog.ui" line="93"/>
         <source>delete file (on harddisk)</source>
         <translation>Lösche Datei (auf der Festplatte)</translation>
     </message>
     <message>
-        <location filename="../DeleteDialog.ui" line="110"/>
+        <location filename="../DeleteDialog.ui" line="90"/>
         <source>deletes the file on harddisk (if you keep the database entry, this song needs to be loaded for playing)</source>
         <translation>Löscht die Datei auf der Festplatte (wenn der Datenbankeintrag behalten wird, wird ein Laden des Lieds zum Abspielen benötigt)</translation>
     </message>
     <message>
-        <location filename="../DeleteDialog.ui" line="126"/>
+        <location filename="../DeleteDialog.ui" line="106"/>
         <source>song to delete ...</source>
         <translation>Zu löschendes Lied ...</translation>
     </message>
     <message>
-        <location filename="../DeleteDialog.ui" line="142"/>
+        <location filename="../DeleteDialog.ui" line="122"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../DeleteDialog.ui" line="175"/>
+        <location filename="../DeleteDialog.ui" line="151"/>
         <source>Cancel</source>
         <translation>Abbrechen</translation>
     </message>
@@ -601,23 +627,27 @@
 <context>
     <name>Folder</name>
     <message>
-        <location filename="../folder.cpp" line="164"/>
+        <location filename="../folder.cpp" line="93"/>
         <source>Autoplay</source>
         <translation>Autoplay</translation>
     </message>
     <message>
-        <location filename="../folder.cpp" line="174"/>
         <source>Folder ...</source>
-        <translation>Ordner ...</translation>
+        <translation type="obsolete">Ordner ...</translation>
     </message>
     <message>
-        <location filename="../folder.cpp" line="179"/>
         <source>Content ...</source>
-        <translation>Inhalt ...</translation>
+        <translation type="obsolete">Inhalt ...</translation>
     </message>
 </context>
 <context>
     <name>FolderCategories</name>
+    <message>
+        <location filename="../foldercategories.cpp" line="47"/>
+        <location filename="../foldercategories.cpp" line="55"/>
+        <source>Folder ...</source>
+        <translation>Ordner ...</translation>
+    </message>
     <message>
         <location filename="../foldercategories.cpp" line="56"/>
         <source>Remove Category ...</source>
@@ -673,303 +703,303 @@
 <context>
     <name>Preferences</name>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="16"/>
+        <location filename="../PreferencesDialogBase.ui" line="14"/>
         <source>Edit Preferences</source>
         <translation>Einstellungen ändern</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="61"/>
+        <location filename="../PreferencesDialogBase.ui" line="54"/>
         <source>Cancel</source>
         <translation>Abbrechen</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="64"/>
+        <location filename="../PreferencesDialogBase.ui" line="51"/>
         <source>don&apos;t make any changes</source>
         <translation>Keine Änderungen durchführen</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="103"/>
+        <location filename="../PreferencesDialogBase.ui" line="92"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="106"/>
+        <location filename="../PreferencesDialogBase.ui" line="89"/>
         <source>Accept &amp; Save configuration</source>
         <translation>Konfiguration übernehmen und speichern</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="144"/>
+        <location filename="../PreferencesDialogBase.ui" line="119"/>
         <source>General</source>
         <translation>Allgemein</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="200"/>
-        <location filename="../PreferencesDialogBase.ui" line="211"/>
+        <location filename="../PreferencesDialogBase.ui" line="157"/>
+        <location filename="../PreferencesDialogBase.ui" line="164"/>
         <source>the action that is performed when double-clicking on a song in the song list</source>
         <translation>Diese Aktion wird durchgeführt wenn ein Lied in der Liedliste doppelgeklickt wird</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="208"/>
+        <location filename="../PreferencesDialogBase.ui" line="167"/>
         <source>doubleclick</source>
         <translation>Doppelklick</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="233"/>
-        <location filename="../PreferencesDialogBase.ui" line="244"/>
+        <location filename="../PreferencesDialogBase.ui" line="189"/>
+        <location filename="../PreferencesDialogBase.ui" line="196"/>
         <source>the action that is performed when clicking with middle mouse button on a song in the song list</source>
         <translation>Diese Aktion wird durchgeführt wenn mit der mittleren Maustaste ein Lied in der Liedliste angeklickt wird</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="241"/>
+        <location filename="../PreferencesDialogBase.ui" line="199"/>
         <source>middle click</source>
         <translation>Klick mit mittlerer Maustaste</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="288"/>
+        <location filename="../PreferencesDialogBase.ui" line="243"/>
         <source>You can assign default actions for a double-click or click with middle mouse buttion on a song in the songlist.</source>
         <translation>Du kannst Standardaktionen für Doppelklicks und Klicks mit der mittleren Maustaste auf Lieder in der Liedliste zuordnen.</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="301"/>
+        <location filename="../PreferencesDialogBase.ui" line="259"/>
         <source>Searching</source>
         <translation>Suche</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="346"/>
-        <location filename="../PreferencesDialogBase.ui" line="357"/>
+        <location filename="../PreferencesDialogBase.ui" line="291"/>
+        <location filename="../PreferencesDialogBase.ui" line="298"/>
         <source>determines how many hits will be shown when searching. Must be between 0 and 100, reasonable values are around 25.</source>
         <translation>Legt die Anzahl an Ergebnissen fest, die bei einer Suche angezeigt werden. Muss zwischen 0 und 100 liegen, vernünftige Werte sind bei 25.</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="354"/>
+        <location filename="../PreferencesDialogBase.ui" line="301"/>
         <source>threshold</source>
         <translation>Schwelle</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="388"/>
+        <location filename="../PreferencesDialogBase.ui" line="333"/>
         <source>Database</source>
         <translation>Datenbank</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="403"/>
+        <location filename="../PreferencesDialogBase.ui" line="345"/>
         <source>Path to files</source>
         <translation>Pfad zu Dateien</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="434"/>
+        <location filename="../PreferencesDialogBase.ui" line="368"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="437"/>
+        <location filename="../PreferencesDialogBase.ui" line="365"/>
         <source>choose directory</source>
         <translation>Verzeichnis auswählen</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="445"/>
+        <location filename="../PreferencesDialogBase.ui" line="378"/>
         <source>trash directory for deleted song files</source>
         <translation>Abfallverzeichnis für gelöschte Lieddateien</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="448"/>
-        <location filename="../PreferencesDialogBase.ui" line="456"/>
+        <location filename="../PreferencesDialogBase.ui" line="375"/>
+        <location filename="../PreferencesDialogBase.ui" line="388"/>
         <source>songs deleted in yammi will be moved to this directory and this directory will be skipped when scanning</source>
         <translation>Lieder, die in Yammi gelöscht werden, werden in dieses Verzeichnis verschoben und dieses Verzeichnis wird beim Durchsuchen ausgenommen</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="476"/>
+        <location filename="../PreferencesDialogBase.ui" line="406"/>
         <source>Misc</source>
         <translation>Verschiedenes</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="493"/>
+        <location filename="../PreferencesDialogBase.ui" line="421"/>
         <source>logging of played songs</source>
         <translation>Protokollieren aller gespielten Lieder</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="496"/>
+        <location filename="../PreferencesDialogBase.ui" line="418"/>
         <source>logs all played songs with a timestamp to a file</source>
         <translation>Protokolliert alle gespielten Lieder mit Zeitstempel in eine Datei</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="504"/>
+        <location filename="../PreferencesDialogBase.ui" line="431"/>
         <source>group threshold</source>
         <translation>Gruppierungsschwelle</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="507"/>
-        <location filename="../PreferencesDialogBase.ui" line="551"/>
+        <location filename="../PreferencesDialogBase.ui" line="428"/>
+        <location filename="../PreferencesDialogBase.ui" line="470"/>
         <source>the minimum number for a subfolder to be created (Folder Albums, Artists and Genres)</source>
         <translation>Die kleinste Nummer für die ein Unterordner angelegt wird (Ordner Album, Künstler und Genres)</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="515"/>
+        <location filename="../PreferencesDialogBase.ui" line="444"/>
         <source>lazy grouping</source>
         <translation>Einfache Gruppierung</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="518"/>
+        <location filename="../PreferencesDialogBase.ui" line="441"/>
         <source>if enabled, considers eg. &quot;The_Doors&quot; the same as &quot;THE DOORS&quot; for grouping</source>
         <translation>Wenn aktiviert, wird z. B. &quot;The_Doors&quot; und &quot;THE DOORS&quot; zur Gruppierung als gleich angesehen</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="529"/>
+        <location filename="../PreferencesDialogBase.ui" line="457"/>
         <source>child safe mode</source>
         <translation>Kinderschutzmodus</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="155"/>
+        <location filename="../PreferencesDialogBase.ui" line="125"/>
         <source>Mouse configuration / Default actions for ...</source>
         <translation>Mauskonfiguration / Standardaktionen für ...</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="532"/>
+        <location filename="../PreferencesDialogBase.ui" line="454"/>
         <source>if activated, some potentially dangerous actions are not allowed (eg. deleting a song). To disable this, you need a password ...</source>
         <translation>Wenn aktiviert sind einige möglicherweise schädlichen Funktionen nicht erlaubt (z. B. Löschen eines Liedes). Um dies zu deaktivieren wird ein Passwort benötigt ...</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="586"/>
+        <location filename="../PreferencesDialogBase.ui" line="505"/>
         <source>Tag Handling</source>
         <translation>Handhabung von Tags</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="603"/>
+        <location filename="../PreferencesDialogBase.ui" line="520"/>
         <source>capitalize tags on new songs</source>
         <translation>Tags von neuen Liedern in Großbuchstaben</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="606"/>
+        <location filename="../PreferencesDialogBase.ui" line="517"/>
         <source>Capitalizes artist, title and album of a newly added Song</source>
         <translation>Künstler, Titel und Album von neu hinzugefügten Liedern werden in Großbuchstaben umgewandelt</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="625"/>
+        <location filename="../PreferencesDialogBase.ui" line="539"/>
         <source>save tags immediately</source>
         <translation>Speichere Tags sofort</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="628"/>
+        <location filename="../PreferencesDialogBase.ui" line="536"/>
         <source>save all changes in yammi database to the file tags immediately</source>
         <translation>Speichere alle Änderungen in Yammis Datenbank sofort in den Dateitags</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="650"/>
+        <location filename="../PreferencesDialogBase.ui" line="630"/>
         <source>artist - title</source>
         <translation>artist - title</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="661"/>
+        <location filename="../PreferencesDialogBase.ui" line="640"/>
         <source>/artist/album/trackNr - title</source>
         <translation>/artist/album/trackNr - title</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="671"/>
+        <location filename="../PreferencesDialogBase.ui" line="549"/>
         <source>guessing pattern
 (if no tags available)</source>
         <translation>Muster zum Mutmaßen
 (falls keine Tags verfügbar sein)</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="675"/>
+        <location filename="../PreferencesDialogBase.ui" line="546"/>
         <source>guessing pattern used when adding new songs and no tags available</source>
         <translation>Muster zum Mutmaßen wird verwendet wenn neue Lieder hinzugefügt werden, diese aber keine Tags enthalten</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="694"/>
+        <location filename="../PreferencesDialogBase.ui" line="572"/>
         <source>keep directories consistent:</source>
         <translation>Halte Verzeichnisse konsistent:</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="697"/>
+        <location filename="../PreferencesDialogBase.ui" line="569"/>
         <source>Synchronizes the directories of the files according to the information in the yammi database. If activated, yammi moves your files!</source>
         <translation>Synchronisiere die Verzeichnisse von Dateien gemäß den informationen in Yammis Datenbank. Wenn aktiviert, wird Yammi deine Dateien verschieben!</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="716"/>
+        <location filename="../PreferencesDialogBase.ui" line="591"/>
         <source>keep filenames consistent:</source>
         <translation>Halte Dateinamen konsistent:</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="719"/>
+        <location filename="../PreferencesDialogBase.ui" line="588"/>
         <source>Synchronizes the filenames of the files according to the information in the yammi database. If activated, yammi renames your files!</source>
         <translation>Synchronisiere die Dateinamen von Dateien gemäß den informationen in Yammis Datenbank. Wenn aktiviert, wird Yammi deine Dateien umbenennen!</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="735"/>
+        <location filename="../PreferencesDialogBase.ui" line="604"/>
         <source>The filename pattern to use for renaming files.</source>
         <translation>Dieses Dateinamensmuster für das Umbenenen der Dateien verwenden.</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="751"/>
+        <location filename="../PreferencesDialogBase.ui" line="617"/>
         <source>The directory pattern to use for moving files.</source>
         <translation>Verzeichnismuster um Dateien zu verschieben.</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="762"/>
+        <location filename="../PreferencesDialogBase.ui" line="652"/>
         <source>MediaPlayer</source>
         <translation>MediaPlayer</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="781"/>
+        <location filename="../PreferencesDialogBase.ui" line="664"/>
         <source>Media Player</source>
         <translation>Media Player</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="792"/>
+        <location filename="../PreferencesDialogBase.ui" line="670"/>
         <source>XineEngine</source>
         <translation>XineEngine</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="810"/>
+        <location filename="../PreferencesDialogBase.ui" line="684"/>
         <source>Prelistening</source>
         <translation>Vorhören</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="821"/>
+        <location filename="../PreferencesDialogBase.ui" line="727"/>
         <source>Command line tool configuration</source>
         <translation>Befehlszeilenkonfiguration</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="838"/>
+        <location filename="../PreferencesDialogBase.ui" line="742"/>
         <source>.mp3 files</source>
         <translation>.mp3-Dateien</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="841"/>
-        <location filename="../PreferencesDialogBase.ui" line="849"/>
-        <location filename="../PreferencesDialogBase.ui" line="860"/>
-        <location filename="../PreferencesDialogBase.ui" line="871"/>
-        <location filename="../PreferencesDialogBase.ui" line="882"/>
-        <location filename="../PreferencesDialogBase.ui" line="893"/>
-        <location filename="../PreferencesDialogBase.ui" line="901"/>
-        <location filename="../PreferencesDialogBase.ui" line="909"/>
-        <location filename="../PreferencesDialogBase.ui" line="917"/>
-        <location filename="../PreferencesDialogBase.ui" line="925"/>
+        <location filename="../PreferencesDialogBase.ui" line="739"/>
+        <location filename="../PreferencesDialogBase.ui" line="752"/>
+        <location filename="../PreferencesDialogBase.ui" line="759"/>
+        <location filename="../PreferencesDialogBase.ui" line="772"/>
+        <location filename="../PreferencesDialogBase.ui" line="785"/>
+        <location filename="../PreferencesDialogBase.ui" line="798"/>
+        <location filename="../PreferencesDialogBase.ui" line="811"/>
+        <location filename="../PreferencesDialogBase.ui" line="818"/>
+        <location filename="../PreferencesDialogBase.ui" line="825"/>
+        <location filename="../PreferencesDialogBase.ui" line="832"/>
         <source>Configuration of command line tool used for prelistening.</source>
         <translation>Konfiguration der Befehlszeile für Programme zum Vorhören.</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="857"/>
+        <location filename="../PreferencesDialogBase.ui" line="762"/>
         <source>.ogg files</source>
         <translation>.ogg-Dateien</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="868"/>
+        <location filename="../PreferencesDialogBase.ui" line="775"/>
         <source>.wav files</source>
         <translation>.wav-Dateien</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="879"/>
+        <location filename="../PreferencesDialogBase.ui" line="788"/>
         <source>.flac files</source>
         <translation>.flac-Dateien</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="890"/>
+        <location filename="../PreferencesDialogBase.ui" line="801"/>
         <source>other files</source>
         <translation>Andere Dateien</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="958"/>
+        <location filename="../PreferencesDialogBase.ui" line="708"/>
         <source>The prelisten functionality of Yammi allows to listen to songs on a headphone (requires a second sound device) while the normal playback of your playlist continues (very handy on a party...).
 For each file type listed below, Yammi can use a different command.
 Configure each tool here, separating parameters with &quot;|&quot;.
@@ -980,71 +1010,71 @@ Konfiguriere jeden Befehl hier, trenne die Parameter mit einem &quot;|&quot;.
 Zusätzlich zu den üblichen Platzhaltern (siehe Plugins-Reiter) können diese benutzt werden: {skipSeconds}, {skipMilliSeconds} und {skipFrames}.</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="974"/>
-        <location filename="../PreferencesDialogBase.ui" line="985"/>
+        <location filename="../PreferencesDialogBase.ui" line="843"/>
+        <location filename="../PreferencesDialogBase.ui" line="849"/>
         <source>Plugins</source>
         <translation>Plugins</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="1024"/>
+        <location filename="../PreferencesDialogBase.ui" line="877"/>
         <source>Plugin Mode</source>
         <translation>Pluginmodus</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="1045"/>
+        <location filename="../PreferencesDialogBase.ui" line="896"/>
         <source>New Entry</source>
         <translation>Neuer Eintrag</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="1061"/>
+        <location filename="../PreferencesDialogBase.ui" line="909"/>
         <source>Delete Entry</source>
         <translation>Lösche Eintrag</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="1074"/>
+        <location filename="../PreferencesDialogBase.ui" line="922"/>
         <source>Add Standard Plugins</source>
         <translation>Standard Plugins hinzufügen</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="1077"/>
+        <location filename="../PreferencesDialogBase.ui" line="919"/>
         <source>Adds all standard plugins (if not already existing)</source>
         <translation>Fügt alle Standardplugins hinzu (falls es sie noch nicht gibt)</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="1085"/>
+        <location filename="../PreferencesDialogBase.ui" line="932"/>
         <source>menu entry</source>
         <translation>Menüeintrag</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="1088"/>
-        <location filename="../PreferencesDialogBase.ui" line="1131"/>
+        <location filename="../PreferencesDialogBase.ui" line="929"/>
+        <location filename="../PreferencesDialogBase.ui" line="974"/>
         <source>the entry to appear in the context menu</source>
         <translation>Der Eintrag erscheint im Kontextmenü</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="1096"/>
+        <location filename="../PreferencesDialogBase.ui" line="945"/>
         <source>command</source>
         <translation>Befehl</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="1099"/>
-        <location filename="../PreferencesDialogBase.ui" line="1147"/>
+        <location filename="../PreferencesDialogBase.ui" line="942"/>
+        <location filename="../PreferencesDialogBase.ui" line="987"/>
         <source>the script that is invoked when this plugin is chosen</source>
         <translation>Dieser Befehl wird ausgeführt wenn das Plugin ausgewählt wird</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="1115"/>
+        <location filename="../PreferencesDialogBase.ui" line="961"/>
         <source>Placeholders ...</source>
         <translation>Platzhalter ...</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="1163"/>
-        <location filename="../PreferencesDialogBase.ui" line="1201"/>
+        <location filename="../PreferencesDialogBase.ui" line="1000"/>
+        <location filename="../PreferencesDialogBase.ui" line="1040"/>
         <source>defines the content of the {customList} placeholders</source>
         <translation>definiert den Inhalt der {customList} Platzhalter</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="1171"/>
+        <location filename="../PreferencesDialogBase.ui" line="1007"/>
         <source>Plugins can be invoked on a selection of songs from the context menu.
 
 Single mode = executed once for each song
@@ -1055,37 +1085,37 @@ Single mode = wird für jedes Lied einmal aufgerufen
 Group mode = wird einmal für die gesamte Auswahl aufgerufen</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="1182"/>
+        <location filename="../PreferencesDialogBase.ui" line="1020"/>
         <source>See Yammi&apos;s homepage for useful plugin configurations:</source>
         <translation>Siehe Yammis Homepage für nützliche Pluginkonfigurationen:</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="1190"/>
+        <location filename="../PreferencesDialogBase.ui" line="1030"/>
         <source>&lt;a href=&quot;http://yammi.sourceforge.net/plugins.html&quot;&gt;http://yammi.sourceforge.net/plugins.html&lt;/a&gt;</source>
         <translation>&lt;a href=&quot;http://yammi.sourceforge.net/plugins.html&quot;&gt;http://yammi.sourceforge.net/plugins.html&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="1198"/>
+        <location filename="../PreferencesDialogBase.ui" line="1043"/>
         <source>custom list</source>
         <translation>Benutzerdefinierte Liste</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="1209"/>
+        <location filename="../PreferencesDialogBase.ui" line="1056"/>
         <source>ask for confirmation</source>
         <translation>Frage nach Bestätigung</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="1212"/>
+        <location filename="../PreferencesDialogBase.ui" line="1053"/>
         <source>popup a message box before executing the command</source>
         <translation>Zeige Benachrichtigungsfenster vor dem Ausführen des Befehls</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="1224"/>
+        <location filename="../PreferencesDialogBase.ui" line="1067"/>
         <source>Playqueue Template</source>
         <translation>Wiedergabelisten-Vorlage</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialogBase.ui" line="1235"/>
+        <location filename="../PreferencesDialogBase.ui" line="1073"/>
         <source>This template is used for displaying the playqueue.</source>
         <translation>Diese Vorlage wird verwendet um die Wiedergabeliste anzuzeigen.</translation>
     </message>
@@ -1093,12 +1123,12 @@ Group mode = wird einmal für die gesamte Auswahl aufgerufen</translation>
 <context>
     <name>PreferencesDialog</name>
     <message>
-        <location filename="../preferencesdialog.cpp" line="105"/>
+        <location filename="../preferencesdialog.cpp" line="107"/>
         <source>choose entry</source>
         <translation>Eintrag auswählen</translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.cpp" line="274"/>
+        <location filename="../preferencesdialog.cpp" line="276"/>
         <source>single</source>
         <translation>einzeln</translation>
     </message>
@@ -1107,103 +1137,103 @@ Group mode = wird einmal für die gesamte Auswahl aufgerufen</translation>
         <translation type="obsolete">Gruppe</translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.cpp" line="114"/>
-        <location filename="../preferencesdialog.cpp" line="115"/>
+        <location filename="../preferencesdialog.cpp" line="116"/>
+        <location filename="../preferencesdialog.cpp" line="117"/>
         <source>Create CD Label</source>
         <translation>CD-Label erstellen</translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.cpp" line="118"/>
-        <location filename="../preferencesdialog.cpp" line="119"/>
+        <location filename="../preferencesdialog.cpp" line="120"/>
+        <location filename="../preferencesdialog.cpp" line="121"/>
         <source>Export to m3u Playlist</source>
         <translation>Exportiere in m3u-Wiedergabeliste</translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.cpp" line="122"/>
-        <location filename="../preferencesdialog.cpp" line="123"/>
+        <location filename="../preferencesdialog.cpp" line="124"/>
+        <location filename="../preferencesdialog.cpp" line="125"/>
         <source>MusicBrainz Search</source>
         <translation>MusicBrainz Suche</translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.cpp" line="154"/>
+        <location filename="../preferencesdialog.cpp" line="156"/>
         <source>password</source>
         <translation>Passwort</translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.cpp" line="154"/>
+        <location filename="../preferencesdialog.cpp" line="156"/>
         <source>enter password</source>
         <translation>Passwort eingeben</translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.cpp" line="187"/>
+        <location filename="../preferencesdialog.cpp" line="189"/>
         <source>choose trash directory</source>
         <translation>Abfallverzeichnis auswählen</translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.cpp" line="271"/>
-        <location filename="../preferencesdialog.cpp" line="272"/>
+        <location filename="../preferencesdialog.cpp" line="273"/>
+        <location filename="../preferencesdialog.cpp" line="274"/>
         <source>new item</source>
         <translation>Neuer Eintrag</translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.cpp" line="273"/>
+        <location filename="../preferencesdialog.cpp" line="275"/>
         <source>new command</source>
         <translation>Neuer Befehl</translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.cpp" line="275"/>
+        <location filename="../preferencesdialog.cpp" line="277"/>
         <source>new custom list</source>
         <translation>Neue benutzerdefinierte Liste</translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.cpp" line="276"/>
+        <location filename="../preferencesdialog.cpp" line="278"/>
         <source>true</source>
         <translation>wahr</translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.cpp" line="308"/>
+        <location filename="../preferencesdialog.cpp" line="310"/>
         <source>Replacements for command (single mode)
 </source>
         <translation>Ersetzungen für Befehl (Einzelmodus)
 </translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.cpp" line="309"/>
+        <location filename="../preferencesdialog.cpp" line="311"/>
         <source>or custom list (group mode):
 </source>
         <translation>oder benutzerdefinierte Liste (Gruppenmodus):
 </translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.cpp" line="311"/>
+        <location filename="../preferencesdialog.cpp" line="313"/>
         <source>{newline} (newline)
 </source>
         <translation>{newline} (Zeilenvorschub)
 </translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.cpp" line="312"/>
+        <location filename="../preferencesdialog.cpp" line="314"/>
         <source>{index} (index of a song within a selection)
 </source>
         <translation>{index} (Index eines Lieds in einer Auswahl)
 </translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.cpp" line="313"/>
+        <location filename="../preferencesdialog.cpp" line="315"/>
         <source>{directoryDialog} (directory dialog, returns chosen directory)
 </source>
         <translation>{directoryDialog} (Verzeichnisdialog, liefert ausgewähltes Verzeichnis)
 </translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.cpp" line="314"/>
+        <location filename="../preferencesdialog.cpp" line="316"/>
         <source>{fileDialog} (file dialog, returns chosen file)
 </source>
         <translation>{fileDialog} (Datei Dialog, liefert ausgewählte Datei)
 </translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.cpp" line="315"/>
+        <location filename="../preferencesdialog.cpp" line="317"/>
         <source>{inputString} (input string dialog, returns entered string)
 
 </source>
@@ -1212,28 +1242,28 @@ Group mode = wird einmal für die gesamte Auswahl aufgerufen</translation>
 </translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.cpp" line="317"/>
+        <location filename="../preferencesdialog.cpp" line="319"/>
         <source>Replacements for command (group mode):
 </source>
         <translation>Ersetzungen für Befehle (Gruppenmodus):
 </translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.cpp" line="318"/>
+        <location filename="../preferencesdialog.cpp" line="320"/>
         <source>{customList} (custom list, directly)
 </source>
         <translation>{customList} (Benutzerdefinierte Liste, direkt)
 </translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.cpp" line="319"/>
+        <location filename="../preferencesdialog.cpp" line="321"/>
         <source>{customListFile} (filename of custom list)
 </source>
         <translation>{customListFile} (Dateiname einer benutzerdefinierten Liste)
 </translation>
     </message>
     <message>
-        <location filename="../preferencesdialog.cpp" line="320"/>
+        <location filename="../preferencesdialog.cpp" line="322"/>
         <source>{customListViaFile} (custom list, via file / cat command)
 </source>
         <translation>{customListViaFile} (benutzerdefinierte Liste aus Datei / cat Befehl)
@@ -1243,27 +1273,27 @@ Group mode = wird einmal für die gesamte Auswahl aufgerufen</translation>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../song.cpp" line="644"/>
+        <location filename="../song.cpp" line="649"/>
         <source>{wish}</source>
         <translation>{Wunsch}</translation>
     </message>
     <message>
-        <location filename="../song.cpp" line="652"/>
+        <location filename="../song.cpp" line="657"/>
         <source>file not readable</source>
         <translation>Datei nicht lesbar</translation>
     </message>
     <message>
-        <location filename="../song.cpp" line="660"/>
+        <location filename="../song.cpp" line="665"/>
         <source>tags not correct </source>
         <translation>Tags nicht korrekt</translation>
     </message>
     <message>
-        <location filename="../song.cpp" line="668"/>
+        <location filename="../song.cpp" line="673"/>
         <source>filename not consistent </source>
         <translation>Dateiname nicht korrekt</translation>
     </message>
     <message>
-        <location filename="../song.cpp" line="676"/>
+        <location filename="../song.cpp" line="681"/>
         <source>directory not consistent </source>
         <translation>Verzeichnisname nicht korrekt</translation>
     </message>
@@ -1324,81 +1354,81 @@ Group mode = wird einmal für die gesamte Auswahl aufgerufen</translation>
         <translation type="obsolete">Aus Wiedergabeliste entfernen</translation>
     </message>
     <message>
-        <location filename="../song.cpp" line="808"/>
+        <location filename="../song.cpp" line="813"/>
         <source>no such action</source>
         <translation>Keine solche Aktion</translation>
     </message>
     <message>
-        <location filename="../song.cpp" line="818"/>
+        <location filename="../song.cpp" line="823"/>
         <source>{filename} (without path)
 </source>
         <translation>{filename} (ohne Pfad)</translation>
     </message>
     <message>
-        <location filename="../song.cpp" line="819"/>
+        <location filename="../song.cpp" line="824"/>
         <source>{absoluteFilename} (including path)
 </source>
         <translation>{absoluteFilename} (beinhaltet Pfad)
 </translation>
     </message>
     <message>
-        <location filename="../song.cpp" line="820"/>
+        <location filename="../song.cpp" line="825"/>
         <source>{filenameWithoutSuffix} (without path, without suffix)
 </source>
         <translation>{filenameWithoutSuffix} (ohne Pfad, ohne Erweiterung)
 </translation>
     </message>
     <message>
-        <location filename="../song.cpp" line="821"/>
+        <location filename="../song.cpp" line="826"/>
         <source>{suffix} (without leading dot)
 </source>
         <translation>{suffix} (ohne führenden Punkt)
 </translation>
     </message>
     <message>
-        <location filename="../song.cpp" line="822"/>
+        <location filename="../song.cpp" line="827"/>
         <source>{path} (without filename)
 </source>
         <translation>{path} (ohne Dateiname)
 </translation>
     </message>
     <message>
-        <location filename="../song.cpp" line="823"/>
+        <location filename="../song.cpp" line="828"/>
         <source>{artist}, {title}, {album}, {comment} (corresponding to the tags)
 </source>
         <translation>{artist}, {title}, {album}, {comment} (wie in den Tags angegeben)
 </translation>
     </message>
     <message>
-        <location filename="../song.cpp" line="824"/>
+        <location filename="../song.cpp" line="829"/>
         <source>{bitrate} (in kbps)
 </source>
         <translation>{bitrate} (in kbps)
 </translation>
     </message>
     <message>
-        <location filename="../song.cpp" line="825"/>
+        <location filename="../song.cpp" line="830"/>
         <source>{length} (length in format mm:ss)
 </source>
         <translation>{length} (Länge im Format mm:ss)
 </translation>
     </message>
     <message>
-        <location filename="../song.cpp" line="826"/>
+        <location filename="../song.cpp" line="831"/>
         <source>{lengthInSeconds} (length in seconds)
 </source>
         <translation>{lengthInSeconds} (Länge in Sekunden)
 </translation>
     </message>
     <message>
-        <location filename="../song.cpp" line="827"/>
+        <location filename="../song.cpp" line="832"/>
         <source>{trackNr} (Track number)
 </source>
         <translation>{trackNr} (Titel-Nr.)
 </translation>
     </message>
     <message>
-        <location filename="../song.cpp" line="828"/>
+        <location filename="../song.cpp" line="833"/>
         <source>{trackNr2Digit} (as above, but padded with zero if necessary)
 </source>
         <translation>{trackNr2Digit} (wie oben, nur mit Nullen aufgefüllt falls notwendig)
@@ -1469,123 +1499,123 @@ Group mode = wird einmal für die gesamte Auswahl aufgerufen</translation>
 <context>
     <name>SongInfoDialog</name>
     <message>
-        <location filename="../SongInfoDialog.ui" line="24"/>
+        <location filename="../SongInfoDialog.ui" line="20"/>
         <source>show and edit song info</source>
         <translation>Liedinformation anzeigen und ändern</translation>
     </message>
     <message>
-        <location filename="../SongInfoDialog.ui" line="44"/>
+        <location filename="../SongInfoDialog.ui" line="121"/>
         <source>tag information</source>
         <translation>Taginformationen</translation>
     </message>
     <message>
-        <location filename="../SongInfoDialog.ui" line="76"/>
+        <location filename="../SongInfoDialog.ui" line="142"/>
         <source>Album</source>
         <translation>Album</translation>
     </message>
     <message>
-        <location filename="../SongInfoDialog.ui" line="89"/>
+        <location filename="../SongInfoDialog.ui" line="155"/>
         <source>Comment</source>
         <translation>Kommentar</translation>
     </message>
     <message>
-        <location filename="../SongInfoDialog.ui" line="97"/>
+        <location filename="../SongInfoDialog.ui" line="165"/>
         <source>Year</source>
         <translation>Jahr</translation>
     </message>
     <message>
-        <location filename="../SongInfoDialog.ui" line="105"/>
+        <location filename="../SongInfoDialog.ui" line="175"/>
         <source>Title</source>
         <translation>Titel</translation>
     </message>
     <message>
-        <location filename="../SongInfoDialog.ui" line="143"/>
+        <location filename="../SongInfoDialog.ui" line="211"/>
         <source>Track</source>
         <translation>Titel-Nr</translation>
     </message>
     <message>
-        <location filename="../SongInfoDialog.ui" line="151"/>
+        <location filename="../SongInfoDialog.ui" line="221"/>
         <source>Genre</source>
         <translation>Genre</translation>
     </message>
     <message>
-        <location filename="../SongInfoDialog.ui" line="159"/>
+        <location filename="../SongInfoDialog.ui" line="231"/>
         <source>Artist</source>
         <translation>Künstler</translation>
     </message>
     <message>
-        <location filename="../SongInfoDialog.ui" line="188"/>
+        <location filename="../SongInfoDialog.ui" line="260"/>
         <source>database info</source>
         <translation>Datenbankinformation</translation>
     </message>
     <message>
-        <location filename="../SongInfoDialog.ui" line="205"/>
+        <location filename="../SongInfoDialog.ui" line="272"/>
         <source>Added</source>
         <translation>Hinzugefügt</translation>
     </message>
     <message>
-        <location filename="../SongInfoDialog.ui" line="216"/>
+        <location filename="../SongInfoDialog.ui" line="282"/>
         <source>Indicates the date when this song was added to the database</source>
         <translation>Zeigt das Datum an, an dem das Lied zur Datenbank hinzugefügt wurde</translation>
     </message>
     <message>
-        <location filename="../SongInfoDialog.ui" line="233"/>
+        <location filename="../SongInfoDialog.ui" line="295"/>
         <source>not implemented yet ...</source>
         <translation>Noch nicht implementiert ...</translation>
     </message>
     <message>
-        <location filename="../SongInfoDialog.ui" line="319"/>
+        <location filename="../SongInfoDialog.ui" line="95"/>
         <source>song info ...</source>
         <translation>Liedinformation ...</translation>
     </message>
     <message>
-        <location filename="../SongInfoDialog.ui" line="244"/>
+        <location filename="../SongInfoDialog.ui" line="311"/>
         <source>Last played</source>
         <translation>Zuletzt wiedergegeben</translation>
     </message>
     <message>
-        <location filename="../SongInfoDialog.ui" line="254"/>
+        <location filename="../SongInfoDialog.ui" line="35"/>
         <source>Cancel</source>
         <translation>Abbrechen</translation>
     </message>
     <message>
-        <location filename="../SongInfoDialog.ui" line="262"/>
+        <location filename="../SongInfoDialog.ui" line="42"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../SongInfoDialog.ui" line="344"/>
+        <location filename="../SongInfoDialog.ui" line="324"/>
         <source>read only</source>
         <translation>Nur lesend</translation>
     </message>
     <message>
-        <location filename="../SongInfoDialog.ui" line="361"/>
+        <location filename="../SongInfoDialog.ui" line="336"/>
         <source>Size</source>
         <translation>Größe</translation>
     </message>
     <message>
-        <location filename="../SongInfoDialog.ui" line="369"/>
+        <location filename="../SongInfoDialog.ui" line="346"/>
         <source>Path</source>
         <translation>Pfad</translation>
     </message>
     <message>
-        <location filename="../SongInfoDialog.ui" line="377"/>
+        <location filename="../SongInfoDialog.ui" line="356"/>
         <source>Length</source>
         <translation>Länge</translation>
     </message>
     <message>
-        <location filename="../SongInfoDialog.ui" line="401"/>
+        <location filename="../SongInfoDialog.ui" line="379"/>
         <source>Bitrate</source>
         <translation>Bitrate</translation>
     </message>
     <message>
-        <location filename="../SongInfoDialog.ui" line="457"/>
+        <location filename="../SongInfoDialog.ui" line="431"/>
         <source>Filename</source>
         <translation>Dateiname</translation>
     </message>
     <message>
-        <location filename="../SongInfoDialog.ui" line="465"/>
-        <location filename="../SongInfoDialog.ui" line="507"/>
+        <location filename="../SongInfoDialog.ui" line="441"/>
+        <location filename="../SongInfoDialog.ui" line="480"/>
         <source>correct to</source>
         <translation>Korrigieren zu</translation>
     </message>
@@ -1593,12 +1623,11 @@ Group mode = wird einmal für die gesamte Auswahl aufgerufen</translation>
 <context>
     <name>UpdateDatabaseDialog</name>
     <message>
-        <location filename="../updatedatabasedialog.cpp" line="26"/>
         <source>Update Database (harddisk)</source>
-        <translation>Aktualisiere Datenbank (Festplatte)</translation>
+        <translation type="obsolete">Aktualisiere Datenbank (Festplatte)</translation>
     </message>
     <message>
-        <location filename="../updatedatabasedialog.cpp" line="48"/>
+        <location filename="../updatedatabasedialog.cpp" line="50"/>
         <source>choose scan directory</source>
         <translation>Verzeichnis zum Durchsuchen auswählen</translation>
     </message>
@@ -1606,7 +1635,7 @@ Group mode = wird einmal für die gesamte Auswahl aufgerufen</translation>
 <context>
     <name>UpdateDatabaseDialogBase</name>
     <message>
-        <location filename="../UpdateDatabaseDialogBase.ui" line="16"/>
+        <location filename="../UpdateDatabaseDialogBase.ui" line="14"/>
         <source>Update Database - Scan Harddisk</source>
         <translation>Datenbank aktualisieren - Durchsuche Festplatte</translation>
     </message>
@@ -1615,59 +1644,59 @@ Group mode = wird einmal für die gesamte Auswahl aufgerufen</translation>
         <translation type="obsolete">Durchsuchen starten...</translation>
     </message>
     <message>
-        <location filename="../UpdateDatabaseDialogBase.ui" line="44"/>
+        <location filename="../UpdateDatabaseDialogBase.ui" line="35"/>
         <source>Start Scan ...</source>
         <translation>Durchsuchen starten ...</translation>
     </message>
     <message>
-        <location filename="../UpdateDatabaseDialogBase.ui" line="52"/>
+        <location filename="../UpdateDatabaseDialogBase.ui" line="45"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../UpdateDatabaseDialogBase.ui" line="55"/>
+        <location filename="../UpdateDatabaseDialogBase.ui" line="42"/>
         <source>choose directory</source>
         <translation>Verzeichnis auswählen</translation>
     </message>
     <message>
-        <location filename="../UpdateDatabaseDialogBase.ui" line="63"/>
-        <location filename="../UpdateDatabaseDialogBase.ui" line="115"/>
+        <location filename="../UpdateDatabaseDialogBase.ui" line="52"/>
+        <location filename="../UpdateDatabaseDialogBase.ui" line="102"/>
         <source>filename pattern (eg. &quot;*.mp3 *.ogg&quot;)</source>
         <translation>Dateinamensmuster (z. B.&quot;*.mp3 *.ogg&quot;) </translation>
     </message>
     <message>
-        <location filename="../UpdateDatabaseDialogBase.ui" line="71"/>
-        <location filename="../UpdateDatabaseDialogBase.ui" line="82"/>
+        <location filename="../UpdateDatabaseDialogBase.ui" line="59"/>
+        <location filename="../UpdateDatabaseDialogBase.ui" line="66"/>
         <source>yammi will search in this directory (and recursive in all subdirectories) for new song files</source>
         <translation>Yammi wird in diesem Verzeichnis (und rekursiv in allen Unterverzeichnissen) nach neuen Liedern suchen</translation>
     </message>
     <message>
-        <location filename="../UpdateDatabaseDialogBase.ui" line="79"/>
+        <location filename="../UpdateDatabaseDialogBase.ui" line="69"/>
         <source>base directory for scanning</source>
         <translation>Basisverzeichnis zum Durchsuchen</translation>
     </message>
     <message>
-        <location filename="../UpdateDatabaseDialogBase.ui" line="104"/>
+        <location filename="../UpdateDatabaseDialogBase.ui" line="92"/>
         <source>Options for scanning your harddisk</source>
         <translation>Optionen zum Durchsuchen der Festplatte</translation>
     </message>
     <message>
-        <location filename="../UpdateDatabaseDialogBase.ui" line="112"/>
+        <location filename="../UpdateDatabaseDialogBase.ui" line="105"/>
         <source>pattern of files to import</source>
         <translation>Dateinamenmuster zum Import</translation>
     </message>
     <message>
-        <location filename="../UpdateDatabaseDialogBase.ui" line="131"/>
+        <location filename="../UpdateDatabaseDialogBase.ui" line="121"/>
         <source>Cancel</source>
         <translation>Abbrechen</translation>
     </message>
     <message>
-        <location filename="../UpdateDatabaseDialogBase.ui" line="142"/>
+        <location filename="../UpdateDatabaseDialogBase.ui" line="134"/>
         <source>follow symbolic links</source>
         <translation>Symbolischen Links folgen</translation>
     </message>
     <message>
-        <location filename="../UpdateDatabaseDialogBase.ui" line="145"/>
+        <location filename="../UpdateDatabaseDialogBase.ui" line="131"/>
         <source>Choose whether yammi should follow symbolic links when traversing the directory structure</source>
         <translation>Soll Yammi symbolischen Links folgen während die Verzeichnisstruktur durchgegangen wird </translation>
     </message>
@@ -1675,82 +1704,82 @@ Group mode = wird einmal für die gesamte Auswahl aufgerufen</translation>
 <context>
     <name>Yammi::XineEngine</name>
     <message>
-        <location filename="../xine-engine.cpp" line="57"/>
+        <location filename="../xine-engine.cpp" line="56"/>
         <source>Yammi could not initialize xine.</source>
         <translation>Yammi konnte Xine nicht initialisieren.</translation>
     </message>
     <message>
-        <location filename="../xine-engine.cpp" line="95"/>
+        <location filename="../xine-engine.cpp" line="94"/>
         <source>xine was unable to initialize any audio drivers.</source>
         <translation>Xine konnte keine Audiotreiber initialisieren.</translation>
     </message>
     <message>
-        <location filename="../xine-engine.cpp" line="103"/>
+        <location filename="../xine-engine.cpp" line="102"/>
         <source>Yammi could not create a new xine stream.</source>
         <translation>Yammi konnte keinen neuen Xine-Stream erzeugen.</translation>
     </message>
     <message>
-        <location filename="../xine-engine.cpp" line="528"/>
+        <location filename="../xine-engine.cpp" line="527"/>
         <source>The host is unknown for the URL: &lt;i&gt;%1&lt;/i&gt;</source>
         <translation>Der Host ist unbekannt für die URL: &lt;i&gt;%1&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../xine-engine.cpp" line="530"/>
+        <location filename="../xine-engine.cpp" line="529"/>
         <source>The device name you specified seems invalid.</source>
         <translation>Der angegebene Gerätename scheint ungültig.</translation>
     </message>
     <message>
-        <location filename="../xine-engine.cpp" line="532"/>
+        <location filename="../xine-engine.cpp" line="531"/>
         <source>The network appears unreachable.</source>
         <translation>Das Netzwerk scheint nicht erreichbar.</translation>
     </message>
     <message>
-        <location filename="../xine-engine.cpp" line="534"/>
+        <location filename="../xine-engine.cpp" line="533"/>
         <source>Audio output unavailable; the device is busy.</source>
         <translation>Audioausgabe nicht verfügbar; Das Gerät ist belegt.</translation>
     </message>
     <message>
-        <location filename="../xine-engine.cpp" line="536"/>
+        <location filename="../xine-engine.cpp" line="535"/>
         <source>The connection was refused for the URL: &lt;i&gt;%1&lt;/i&gt;</source>
         <translation>Die Verbindung wurde zurückgewiesen für die URL: &lt;i&gt;%1&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../xine-engine.cpp" line="538"/>
+        <location filename="../xine-engine.cpp" line="537"/>
         <source>xine could not find the URL: &lt;i&gt;%1&lt;/i&gt;</source>
         <translation>Xine konnte die URL nicht finden: &lt;i&gt;%1&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../xine-engine.cpp" line="540"/>
+        <location filename="../xine-engine.cpp" line="539"/>
         <source>Access was denied for the URL: &lt;i&gt;%1&lt;/i&gt;</source>
         <translation>Zugriff wurde verweigert auf die URL: &lt;i&gt;%1&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../xine-engine.cpp" line="542"/>
+        <location filename="../xine-engine.cpp" line="541"/>
         <source>The source cannot be read for the URL: &lt;i&gt;%1&lt;/i&gt;</source>
         <translation>Die Quelle kann nicht gelesen werden für URL: &lt;i&gt;%1&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../xine-engine.cpp" line="544"/>
+        <location filename="../xine-engine.cpp" line="543"/>
         <source>A problem occurred while loading a library or decoder.</source>
         <translation>Ein Problem trat auf während des Ladens einer Bibliothek oder Decoder.</translation>
     </message>
     <message>
-        <location filename="../xine-engine.cpp" line="547"/>
+        <location filename="../xine-engine.cpp" line="546"/>
         <source>General Warning</source>
         <translation>Allgemeine Warnung</translation>
     </message>
     <message>
-        <location filename="../xine-engine.cpp" line="549"/>
+        <location filename="../xine-engine.cpp" line="548"/>
         <source>Security Warning</source>
         <translation>Sicherheitswarnung</translation>
     </message>
     <message>
-        <location filename="../xine-engine.cpp" line="551"/>
+        <location filename="../xine-engine.cpp" line="550"/>
         <source>Unknown Error</source>
         <translation>Unbekannter Fehler</translation>
     </message>
     <message>
-        <location filename="../xine-engine.cpp" line="597"/>
+        <location filename="../xine-engine.cpp" line="596"/>
         <source>Sorry, no additional information is available.</source>
         <translation>Tut mir leid, keine weitere Information verfügbar.</translation>
     </message>
@@ -1758,61 +1787,61 @@ Group mode = wird einmal für die gesamte Auswahl aufgerufen</translation>
 <context>
     <name>YammiGui</name>
     <message>
-        <location filename="../yammigui.cpp" line="263"/>
-        <location filename="../yammigui.cpp" line="2688"/>
+        <location filename="../yammigui.cpp" line="277"/>
+        <location filename="../yammigui.cpp" line="2697"/>
         <source>All Music</source>
         <translation>Gesamte Musik</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="264"/>
-        <location filename="../yammigui.cpp" line="2121"/>
+        <location filename="../yammigui.cpp" line="278"/>
+        <location filename="../yammigui.cpp" line="2133"/>
         <source>Folder: </source>
         <translation>Ordner: </translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="296"/>
+        <location filename="../yammigui.cpp" line="310"/>
         <source>The Song Database has been modified.
 Do you want to save the changes?</source>
         <translation>Die Lieddatenbank wurde geändert.
 Sollen die Änderungen gespeichert werden?</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="297"/>
+        <location filename="../yammigui.cpp" line="311"/>
         <source>Database modified</source>
         <translation>Datenbank wurde geändert</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="487"/>
+        <location filename="../yammigui.cpp" line="501"/>
         <source>Yammi - not playing</source>
         <translation>Yammi - keine Wiedergabe</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="510"/>
+        <location filename="../yammigui.cpp" line="524"/>
         <source>Pause</source>
         <translation>Pause</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="513"/>
+        <location filename="../yammigui.cpp" line="527"/>
         <source>Play</source>
         <translation>Wiedergeben</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="522"/>
+        <location filename="../yammigui.cpp" line="536"/>
         <source>Pos</source>
         <translation>Pos</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="523"/>
+        <location filename="../yammigui.cpp" line="537"/>
         <source>Played on</source>
         <translation>Abgespielt am</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="524"/>
+        <location filename="../yammigui.cpp" line="538"/>
         <source>Match</source>
         <translation>Wertung</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="525"/>
+        <location filename="../yammigui.cpp" line="539"/>
         <source>Reason</source>
         <translation>Grund</translation>
     </message>
@@ -1821,7 +1850,7 @@ Sollen die Änderungen gespeichert werden?</translation>
         <translation type="obsolete">Neue Kategorie...</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="828"/>
+        <location filename="../yammigui.cpp" line="860"/>
         <source>Two identical songs: 
 s1: %1
 s2: %2
@@ -1832,78 +1861,74 @@ s2: %2
 Soll eines von beiden gelöscht werden?</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="830"/>
+        <location filename="../yammigui.cpp" line="862"/>
         <source>Delete s1</source>
         <translation>Lösche s1</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="831"/>
+        <location filename="../yammigui.cpp" line="863"/>
         <source>Delete s2</source>
         <translation>Lösche s2</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="832"/>
+        <location filename="../yammigui.cpp" line="864"/>
         <source>Keep both</source>
         <translation>Beide behalten</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="1102"/>
+        <location filename="../yammigui.cpp" line="1134"/>
         <source>Load Selected Song In Mixxx Deck</source>
         <translation>Ausgewähltes Lied in Mixxx Deck laden</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="1103"/>
+        <location filename="../yammigui.cpp" line="1135"/>
         <source>The deck in Mixxx is currently playing. Do you really want to load this song?</source>
         <translation>Das Deck in Mixxx spielt gerade. Soll trotzdem das Lied dort geladen werden? </translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="1162"/>
+        <location filename="../yammigui.cpp" line="1194"/>
         <source>%1 songs selected</source>
         <translation>%1 Lied(er) ausgewählt</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="1174"/>
         <source>Artist: </source>
-        <translation>Künstler: </translation>
+        <translation type="obsolete">Künstler: </translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="1187"/>
         <source>Album: </source>
-        <translation>Album: </translation>
+        <translation type="obsolete">Album: </translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="1195"/>
         <source>Genre: </source>
-        <translation>Genre: </translation>
+        <translation type="obsolete">Genre: </translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="1204"/>
         <source>Year: </source>
-        <translation>Jahr: </translation>
+        <translation type="obsolete">Jahr: </translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="1293"/>
+        <location filename="../yammigui.cpp" line="1302"/>
         <source>choose directory for plugin</source>
         <translation>Verzeichnis für Plugin wählen</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="1299"/>
+        <location filename="../yammigui.cpp" line="1308"/>
         <source>choose file for plugin</source>
         <translation>Datei für Plugin wählen</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="1316"/>
+        <location filename="../yammigui.cpp" line="1325"/>
         <source>Type in plugin parameter</source>
         <translation>Pluginparameter eingeben</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="1331"/>
+        <location filename="../yammigui.cpp" line="1340"/>
         <source>Execute the following command on each selected song?
 </source>
         <translation>Folgenden Befehl für jedes ausgewähltes Lied ausführen?</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="1332"/>
+        <location filename="../yammigui.cpp" line="1341"/>
         <source>(here shown: values for first song)
 
 </source>
@@ -1912,13 +1937,13 @@ Soll eines von beiden gelöscht werden?</translation>
 </translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="1374"/>
+        <location filename="../yammigui.cpp" line="1383"/>
         <source>Execute the following command:
 </source>
         <translation>Folgenden Befehl ausführen:</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="1378"/>
+        <location filename="../yammigui.cpp" line="1387"/>
         <source>
 ...
 (command truncated)</source>
@@ -1927,33 +1952,33 @@ Soll eines von beiden gelöscht werden?</translation>
 (Befehl gekürzt)</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="1402"/>
+        <location filename="../yammigui.cpp" line="1411"/>
         <source>Select destination directory</source>
         <translation>Zielverzeichnis auswählen</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="1785"/>
+        <location filename="../yammigui.cpp" line="1794"/>
         <source>Mass editing: %1 songs</source>
         <translation>Massenänderung: %1 Lieder</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="1786"/>
+        <location filename="../yammigui.cpp" line="1795"/>
         <source>Size (total)</source>
         <translation>Größe (gesamt)</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="1787"/>
+        <location filename="../yammigui.cpp" line="1796"/>
         <source>Length (total)</source>
         <translation>Länge (gesamt)</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="1815"/>
+        <location filename="../yammigui.cpp" line="1827"/>
         <source>Your changes will affect %1 song entries.
 </source>
         <translation>Deine Änderung wird %1 Liedeinträge beieinflussen.</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="1817"/>
+        <location filename="../yammigui.cpp" line="1829"/>
         <source>
 Note: Your changes may change the filenames of the selected files!
 </source>
@@ -1961,7 +1986,7 @@ Note: Your changes may change the filenames of the selected files!
 Anmerkung: Deine Änderungen können den Dateinamen der ausgewählten Datei ändern!</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="1820"/>
+        <location filename="../yammigui.cpp" line="1832"/>
         <source>
 Note: Your changes may affect the location of the selected files!
 </source>
@@ -1969,7 +1994,7 @@ Note: Your changes may affect the location of the selected files!
 Anmerkung: Deine Änderung können den Ort der ausgewählten Dateien ändern!</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="1822"/>
+        <location filename="../yammigui.cpp" line="1834"/>
         <source>
 
 Do you want to continue?</source>
@@ -1978,66 +2003,66 @@ Do you want to continue?</source>
 Möchtest Du fortfahren?</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="1908"/>
+        <location filename="../yammigui.cpp" line="1920"/>
         <source>Delete %1 songs</source>
         <translation>%1 Lied(er) zu Löschen</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2027"/>
+        <location filename="../yammigui.cpp" line="2039"/>
         <source>Enter name for category</source>
         <translation>Namen für Kategorie eingeben</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2028"/>
+        <location filename="../yammigui.cpp" line="2040"/>
         <source>Please enter name of category</source>
         <translation>Bitte Namen für Kategorie eingeben</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2029"/>
+        <location filename="../yammigui.cpp" line="2041"/>
         <source>new category</source>
         <translation>Neue Kategorie</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2046"/>
+        <location filename="../yammigui.cpp" line="2058"/>
         <source>Delete category %1 ?
  (will be deleted immediately!)</source>
         <translation>Kategorie löschen %1 ? (Wird sofort gelöscht!)</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2063"/>
+        <location filename="../yammigui.cpp" line="2075"/>
         <source>Please enter new name:</source>
         <translation>Bitte neuen Namen eingeben:</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2087"/>
+        <location filename="../yammigui.cpp" line="2099"/>
         <source>Choose a Playlist to insert</source>
         <translation>Eine Wiedergabeliste zum Einfügen auswählen</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2184"/>
+        <location filename="../yammigui.cpp" line="2196"/>
         <source>Clear complete playlist?
 (%1 entries)</source>
         <translation>Ganze Wiedergabeliste leeren?
 (%1 Einträge)</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2186"/>
+        <location filename="../yammigui.cpp" line="2198"/>
         <source>including current song</source>
         <translation>Auch aktuelles Lied</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2306"/>
+        <location filename="../yammigui.cpp" line="2318"/>
         <source>Do you want to fix the genre of all songs (potentially broken or incomplete from earlier versions of yammi) by re-reading all genres from available files now?</source>
         <translation>Soll das Genre aller Lieder repariert werden (möglicherweise beschädigt oder unvollständig durch frühere Yammiversionen) durch erneutes Einlesen aller Genres aus den jetzt verfügbaren Dateien?</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2507"/>
+        <location filename="../yammigui.cpp" line="2519"/>
         <source>Open file(s) to import</source>
         <translation>Öffne Datei(en) zum Import</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2517"/>
-        <location filename="../yammigui.cpp" line="2544"/>
+        <location filename="../yammigui.cpp" line="2529"/>
+        <location filename="../yammigui.cpp" line="2556"/>
         <source>Updated your database.
 
 Statistics: 
@@ -2050,24 +2075,24 @@ Statistik:
 </translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2518"/>
-        <location filename="../yammigui.cpp" line="2545"/>
+        <location filename="../yammigui.cpp" line="2530"/>
+        <location filename="../yammigui.cpp" line="2557"/>
         <source>%1 songs added to database
 </source>
         <translation>%1 Lied(er) zur Datenbank hinzugefügt
 </translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2519"/>
-        <location filename="../yammigui.cpp" line="2546"/>
+        <location filename="../yammigui.cpp" line="2531"/>
+        <location filename="../yammigui.cpp" line="2558"/>
         <source>%1 songs corrupt (=not added)
 </source>
         <translation>%1 Lied(er) fehlerhaft (=nicht hinzugefügt)
 </translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2520"/>
-        <location filename="../yammigui.cpp" line="2547"/>
+        <location filename="../yammigui.cpp" line="2532"/>
+        <location filename="../yammigui.cpp" line="2559"/>
         <source>%1 songs problematic (check in folder Problematic Songs)
 </source>
         <translation>%1 Lied(er) problematisch (siehe Ordner Problematische Lieder)
@@ -2078,477 +2103,510 @@ Statistik:
         <translation type="obsolete">Durchsuche...</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="740"/>
+        <location filename="../yammigui.cpp" line="755"/>
         <source>New Category ...</source>
         <translation>Neue Kategorie ...</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="755"/>
-        <location filename="../yammigui.cpp" line="760"/>
+        <location filename="../yammigui.cpp" line="782"/>
+        <location filename="../yammigui.cpp" line="787"/>
         <source>{wish}</source>
         <translation>{Wunsch}</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="889"/>
-        <location filename="../yammigui.cpp" line="1172"/>
+        <location filename="../yammigui.cpp" line="921"/>
         <source>- no artist -</source>
         <translation>- kein Künstler -</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="900"/>
-        <location filename="../yammigui.cpp" line="1193"/>
+        <location filename="../yammigui.cpp" line="932"/>
         <source>- no genre -</source>
         <translation>- kein Genre -</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="906"/>
-        <location filename="../yammigui.cpp" line="1200"/>
+        <location filename="../yammigui.cpp" line="938"/>
         <source>- no year -</source>
         <translation>- kein Jahr -</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="1183"/>
         <source>- no album -</source>
-        <translation>- kein Album -</translation>
+        <translation type="obsolete">- kein Album -</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="1342"/>
+        <location filename="../yammigui.cpp" line="1351"/>
         <source>Executing song plugin cmd ...</source>
         <translation>Führe Liedplugin-Befehl aus ...</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="1775"/>
+        <location filename="../yammigui.cpp" line="1784"/>
         <source>never</source>
         <translation>nie</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2063"/>
+        <location filename="../yammigui.cpp" line="2075"/>
         <source>Category name</source>
         <translation>Kategoriename</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2312"/>
+        <location filename="../yammigui.cpp" line="2324"/>
         <source>Re-Reading all genres from your files ...</source>
         <translation>Erneutes Einlesen aller Genres aus deinen Dateien ...</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2530"/>
+        <location filename="../yammigui.cpp" line="2542"/>
         <source>Scanning ...</source>
         <translation>Durchsuche ...</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2655"/>
+        <location filename="../yammigui.cpp" line="2664"/>
         <source>Quick Browser</source>
         <translation>Schnellbrowser</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2691"/>
+        <location filename="../yammigui.cpp" line="2700"/>
         <source>Artists</source>
         <translation>Künstler</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2694"/>
+        <location filename="../yammigui.cpp" line="2703"/>
         <source>Albums</source>
         <translation>Album</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="532"/>
-        <location filename="../yammigui.cpp" line="2697"/>
+        <location filename="../yammigui.cpp" line="546"/>
+        <location filename="../yammigui.cpp" line="2706"/>
         <source>Genre</source>
         <translation>Genre</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="530"/>
-        <location filename="../yammigui.cpp" line="2700"/>
+        <location filename="../yammigui.cpp" line="544"/>
+        <location filename="../yammigui.cpp" line="2709"/>
         <source>Year</source>
         <translation>Jahr</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2703"/>
+        <location filename="../yammigui.cpp" line="2712"/>
         <source>Categories</source>
         <translation>Kategorieren</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2682"/>
+        <location filename="../yammigui.cpp" line="2691"/>
         <source>Playlist</source>
         <translation>Wiedergabeliste</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2706"/>
+        <location filename="../yammigui.cpp" line="2715"/>
         <source>Songs Played</source>
         <translation>Lieder gespielt</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2709"/>
+        <location filename="../yammigui.cpp" line="2718"/>
         <source>History</source>
         <translation>Historie</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2712"/>
+        <location filename="../yammigui.cpp" line="2721"/>
         <source>Unclassified</source>
         <translation>Unklassifiziert</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2685"/>
+        <location filename="../yammigui.cpp" line="2694"/>
         <source>Search Results</source>
         <translation>Suchergebnis</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2718"/>
+        <location filename="../yammigui.cpp" line="2727"/>
         <source>Problematic Songs</source>
         <translation>Problematische Lieder</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2715"/>
+        <location filename="../yammigui.cpp" line="2724"/>
         <source>Recent Additions</source>
         <translation>Kürzlich hinzugefügt</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="526"/>
+        <location filename="../yammigui.cpp" line="540"/>
         <source>Artist</source>
         <translation>Künstler</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="527"/>
+        <location filename="../yammigui.cpp" line="541"/>
         <source>Title</source>
         <translation>Titel</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="528"/>
+        <location filename="../yammigui.cpp" line="542"/>
         <source>Album</source>
         <translation>Album</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="529"/>
+        <location filename="../yammigui.cpp" line="543"/>
         <source>Length</source>
         <translation>Länge</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="531"/>
+        <location filename="../yammigui.cpp" line="545"/>
         <source>TrackNr</source>
         <translation>Titel-Nr</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="533"/>
+        <location filename="../yammigui.cpp" line="547"/>
         <source>AddedTo</source>
         <translation>Hinzugefügt am</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="534"/>
+        <location filename="../yammigui.cpp" line="548"/>
         <source>Bitrate</source>
         <translation>Bitrate</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="535"/>
+        <location filename="../yammigui.cpp" line="549"/>
         <source>Filename</source>
         <translation>Dateiname</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="536"/>
+        <location filename="../yammigui.cpp" line="550"/>
         <source>Path</source>
         <translation>Pfad</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="537"/>
+        <location filename="../yammigui.cpp" line="551"/>
         <source>Comment</source>
         <translation>Kommentar</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="538"/>
+        <location filename="../yammigui.cpp" line="552"/>
         <source>Last Played</source>
         <translation>Zuletzt gespielt</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2734"/>
+        <location filename="../yammigui.cpp" line="2743"/>
         <source>&amp;Quit</source>
         <translation>&amp;Beenden</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2739"/>
+        <location filename="../yammigui.cpp" line="2748"/>
         <source>Select &amp;All</source>
         <translation>&amp;Alles auswählen</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2743"/>
+        <location filename="../yammigui.cpp" line="2752"/>
         <source>&amp;Invert Selection</source>
         <translation>&amp;Auswahl umkehren</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2746"/>
+        <location filename="../yammigui.cpp" line="2755"/>
         <source>Update Automatic Folder Structure</source>
         <translation>Automatische Ordnerstruktur aktualisieren</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2754"/>
+        <location filename="../yammigui.cpp" line="2763"/>
+        <location filename="../yammigui.cpp" line="3015"/>
         <source>Main Toolbar</source>
         <translation>Hauptwerkzeugleiste</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2759"/>
-        <location filename="../yammigui.cpp" line="3029"/>
+        <location filename="../yammigui.cpp" line="2768"/>
+        <location filename="../yammigui.cpp" line="3038"/>
         <source>Media Player</source>
         <translation>Media Player</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2764"/>
-        <location filename="../yammigui.cpp" line="3046"/>
+        <location filename="../yammigui.cpp" line="2773"/>
+        <location filename="../yammigui.cpp" line="3055"/>
         <source>Song Actions</source>
         <translation>Liedaktionen</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2769"/>
-        <location filename="../yammigui.cpp" line="3056"/>
-        <location filename="../yammigui.cpp" line="3093"/>
+        <location filename="../yammigui.cpp" line="2778"/>
+        <location filename="../yammigui.cpp" line="3065"/>
+        <location filename="../yammigui.cpp" line="3102"/>
         <source>Prelisten</source>
         <translation>Vorhören</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2778"/>
+        <location filename="../yammigui.cpp" line="2787"/>
         <source>&amp;Play</source>
         <translation>&amp;Wiedergeben</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2783"/>
+        <location filename="../yammigui.cpp" line="2792"/>
         <source>&amp;Skip Backward</source>
         <translation>&amp;Springe zum &amp;vorherigen</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2788"/>
+        <location filename="../yammigui.cpp" line="2797"/>
         <source>Skip &amp;Forward</source>
         <translation>Springe zum &amp;nächsten</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2793"/>
+        <location filename="../yammigui.cpp" line="2802"/>
         <source>S&amp;top</source>
         <translation>S&amp;topp</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2798"/>
+        <location filename="../yammigui.cpp" line="2807"/>
         <source>&amp;Switch to/from Playlist</source>
         <translation>&amp;Springe zu/von Wiedergabeliste</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2803"/>
+        <location filename="../yammigui.cpp" line="2812"/>
         <source>&amp;Clear Playlist</source>
         <translation>Wiedergabeliste &amp;leeren</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2808"/>
+        <location filename="../yammigui.cpp" line="2817"/>
         <source>Shuffle &amp;Playlist</source>
         <translation>&amp;Wiedergabeliste zufällig sortieren</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2811"/>
+        <location filename="../yammigui.cpp" line="2820"/>
         <source>&amp;Save Database</source>
         <translation>&amp;Speichere Datenbank</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2816"/>
+        <location filename="../yammigui.cpp" line="2825"/>
         <source>Scan &amp;Harddisk ...</source>
         <translation>Festplatte &amp;durchsuchen ...</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2820"/>
+        <location filename="../yammigui.cpp" line="2829"/>
         <source>&amp;Import Selected File(s) ...</source>
         <translation>&amp;Importiere ausgewählte Datei(en) ...</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2824"/>
+        <location filename="../yammigui.cpp" line="2833"/>
         <source>&amp;Check Consistency ...</source>
         <translation>&amp;Korrektheit überprüfen ...</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2827"/>
+        <location filename="../yammigui.cpp" line="2836"/>
         <source>&amp;Fix Genres ...</source>
         <translation>&amp;Korrigiere Genres ...</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2833"/>
+        <location filename="../yammigui.cpp" line="2842"/>
         <source>Autoplay &amp;Off</source>
         <translation>Autoplay au&amp;sschalten</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2838"/>
+        <location filename="../yammigui.cpp" line="2847"/>
         <source>&amp;Longest Not Played</source>
         <translation>Am &amp;längsten nicht gespielt</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2843"/>
+        <location filename="../yammigui.cpp" line="2852"/>
         <source>&amp;Random</source>
         <translation>&amp;Zufällig</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2848"/>
+        <location filename="../yammigui.cpp" line="2857"/>
         <source>Unknown</source>
         <translation>Unbekannt</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2850"/>
+        <location filename="../yammigui.cpp" line="2859"/>
         <source>&amp;Configure Yammi ...</source>
         <translation>Yammi &amp;konfigurieren ...</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2853"/>
+        <location filename="../yammigui.cpp" line="2862"/>
         <source>Enqueue at end (append)</source>
         <translation>Lied am Ende der Wiedergabelisten anhängen</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2858"/>
+        <location filename="../yammigui.cpp" line="2867"/>
         <source>Enqueue as next (prepend)</source>
         <translation>Lied als nächstes in Wiedergabeliste einfügen</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2863"/>
+        <location filename="../yammigui.cpp" line="2872"/>
         <source>Play Now!</source>
         <translation>Jetzt abspielen!</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2868"/>
+        <location filename="../yammigui.cpp" line="2877"/>
         <source>Dequeue Songs</source>
         <translation>Lied aus Wiedergabeliste entfernen</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2873"/>
+        <location filename="../yammigui.cpp" line="2882"/>
         <source>Prelisten Start</source>
         <translation>Vorhören am Anfang</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2878"/>
+        <location filename="../yammigui.cpp" line="2887"/>
         <source>Prelisten Middle</source>
         <translation>Vorhören in der Mitte</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2883"/>
+        <location filename="../yammigui.cpp" line="2892"/>
         <source>Prelisten End</source>
         <translation>Vorhören am Ende</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2888"/>
+        <location filename="../yammigui.cpp" line="2897"/>
         <source>Stop Prelisten</source>
         <translation>Stopp vorhören</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2893"/>
+        <location filename="../yammigui.cpp" line="2902"/>
         <source>Load in Mixxx Deck 1</source>
         <translation>Lade in Mixxx Deck 1</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2897"/>
+        <location filename="../yammigui.cpp" line="2906"/>
         <source>Load in Mixxx Deck 2</source>
         <translation>Lade in Mixxx Deck 2</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2901"/>
+        <location filename="../yammigui.cpp" line="2910"/>
         <source>Song Info ...</source>
         <translation>Liedinfo ...</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2906"/>
+        <location filename="../yammigui.cpp" line="2915"/>
         <source>Goto artist</source>
         <translation>Gehe zu Künstler</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2909"/>
+        <location filename="../yammigui.cpp" line="2918"/>
         <source>Goto album</source>
         <translation>Gehe zu Album</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2912"/>
+        <location filename="../yammigui.cpp" line="2921"/>
         <source>Goto genre</source>
         <translation>Gehe zu Genre</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2915"/>
+        <location filename="../yammigui.cpp" line="2924"/>
         <source>Goto year</source>
         <translation>Gehe zu Jahr</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2918"/>
+        <location filename="../yammigui.cpp" line="2927"/>
         <source>Search for similar entry</source>
         <translation>Suche nach ähnlichem Eintrag</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2921"/>
+        <location filename="../yammigui.cpp" line="2930"/>
         <source>Search for similar artist</source>
         <translation>Suche nach ähnlichem Künstler</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2924"/>
+        <location filename="../yammigui.cpp" line="2933"/>
         <source>Search for similar title</source>
         <translation>Suche nach ähnlichem Titel</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2927"/>
+        <location filename="../yammigui.cpp" line="2936"/>
         <source>Search for similar album</source>
         <translation>Suche nach ähnlichem Album</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2930"/>
+        <location filename="../yammigui.cpp" line="2939"/>
         <source>Check Consistency ...</source>
         <translation>Prüfe Korrektheit ...</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2933"/>
+        <location filename="../yammigui.cpp" line="2942"/>
         <source>Delete Song ...</source>
         <translation>Lösche Lied ...</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3098"/>
+        <location filename="../yammigui.cpp" line="3027"/>
+        <source>Fuzzy search (Ctrl-F)
+Goto fuzzy matching folder (Ctrl-G)</source>
+        <translation>Unscharfe Suche (Strg-F)
+Gehe zu ungefähr passenden Ordner (Strg+G)</translation>
+    </message>
+    <message>
+        <source>Media Player Toolbar</source>
+        <translation type="obsolete">Werkzeugleiste für Medienwiedergabe</translation>
+    </message>
+    <message>
+        <source>Song Actions Toolbar</source>
+        <translation type="obsolete">Werkzeugleiste für Liedaktionen</translation>
+    </message>
+    <message>
+        <source>Prelisten Toolbar</source>
+        <translation type="obsolete">Werkzeugleiste für Vorhöraktionen</translation>
+    </message>
+    <message>
+        <source>MediaPlayerToolbar</source>
+        <translation type="obsolete">MediaPlayerToolbar</translation>
+    </message>
+    <message>
+        <source>SongActionsToolbar</source>
+        <translation type="obsolete">SongActionsToolbar</translation>
+    </message>
+    <message>
+        <source>PrelistenToolbar</source>
+        <translation type="obsolete">PrelistenToolbar</translation>
+    </message>
+    <message>
+        <location filename="../yammigui.cpp" line="3086"/>
+        <source>Content ...</source>
+        <translation>Inhalt ...</translation>
+    </message>
+    <message>
+        <location filename="../yammigui.cpp" line="3107"/>
         <source>Go to folder ...</source>
         <translation>Gehe zu Ordner ...</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3104"/>
+        <location filename="../yammigui.cpp" line="3113"/>
         <source>Search for similar ...</source>
         <translation>Suche nach ähnlichem ...</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3110"/>
+        <location filename="../yammigui.cpp" line="3119"/>
         <source>Advanced ...</source>
         <translation>Erweitert ...</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3116"/>
+        <location filename="../yammigui.cpp" line="3124"/>
         <source>Insert Into/Remove From ...</source>
         <translation>Einfügen in/entfernen aus ...</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3118"/>
+        <location filename="../yammigui.cpp" line="3127"/>
         <source>Plugins ...</source>
         <translation>Plugins ...</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3225"/>
+        <location filename="../yammigui.cpp" line="3236"/>
         <source>Artist :  </source>
         <translation>Künstler : </translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3226"/>
+        <location filename="../yammigui.cpp" line="3237"/>
         <source>Title :	  </source>
         <translation>Titel :	 </translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3227"/>
+        <location filename="../yammigui.cpp" line="3238"/>
         <source>Album :	  </source>
         <translation>Album :	 </translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3228"/>
+        <location filename="../yammigui.cpp" line="3239"/>
         <source>Track :	  </source>
         <translation>Titel-Nr. :	 </translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3229"/>
+        <location filename="../yammigui.cpp" line="3240"/>
         <source>Year :	  </source>
         <translation>Jahr :	 </translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3230"/>
+        <location filename="../yammigui.cpp" line="3241"/>
         <source>Genre :	  </source>
         <translation>Genre :	 </translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3231"/>
+        <location filename="../yammigui.cpp" line="3242"/>
         <source>Comment : </source>
         <translation>Kommentar : </translation>
     </message>
@@ -2557,77 +2615,75 @@ Statistik:
         <translation type="obsolete">Lied löschen ...</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2936"/>
+        <location filename="../yammigui.cpp" line="2945"/>
         <source>Move Files</source>
         <translation>Verschiebe Dateien</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2947"/>
+        <location filename="../yammigui.cpp" line="2956"/>
         <source>&amp;File</source>
         <translation>&amp;Datei</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2950"/>
+        <location filename="../yammigui.cpp" line="2959"/>
         <source>&amp;Edit</source>
         <translation>&amp;Bearbeiten</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2955"/>
+        <location filename="../yammigui.cpp" line="2964"/>
         <source>&amp;View</source>
         <translation>&amp;Ansicht</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2957"/>
+        <location filename="../yammigui.cpp" line="2966"/>
         <source>Toolbars</source>
         <translation>Werkzeugleisten</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2962"/>
+        <location filename="../yammigui.cpp" line="2972"/>
         <source>&amp;Columns</source>
         <translation>&amp;Spalten</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2973"/>
+        <location filename="../yammigui.cpp" line="2983"/>
         <source>&amp;Player</source>
         <translation>&amp;Wiedergabe</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2979"/>
+        <location filename="../yammigui.cpp" line="2989"/>
         <source>P&amp;laylist</source>
         <translation>Wiedergabe&amp;liste</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2984"/>
+        <location filename="../yammigui.cpp" line="2994"/>
         <source>&amp;Database</source>
         <translation>&amp;Datenbank</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2991"/>
+        <location filename="../yammigui.cpp" line="3001"/>
         <source>&amp;Autoplay</source>
         <translation>&amp;Autoplay</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="2998"/>
+        <location filename="../yammigui.cpp" line="3008"/>
         <source>&amp;Settings</source>
         <translation>&amp;Einstellungen</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3006"/>
         <source>Main ToolBar</source>
-        <translation>Hauptwerkzeugleiste</translation>
+        <translation type="obsolete">Hauptwerkzeugleiste</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3012"/>
+        <location filename="../yammigui.cpp" line="3022"/>
         <source>Search:</source>
         <translation>Suche:</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3017"/>
         <source>Fuzzy search (Ctrl-F)</source>
-        <translation>Unscharfe Suche (Strg-F)</translation>
+        <translation type="obsolete">Unscharfe Suche (Strg-F)</translation>
     </message>
     <message>
-        <location filename="../yammigui.cpp" line="3039"/>
+        <location filename="../yammigui.cpp" line="3049"/>
         <source>Track position</source>
         <translation>Wiedergabeposition</translation>
     </message>
@@ -2655,7 +2711,7 @@ Statistik:
 <context>
     <name>YammiModel</name>
     <message>
-        <location filename="../yammimodel.cpp" line="80"/>
+        <location filename="../yammimodel.cpp" line="81"/>
         <source>Error reading categories file:
 %1
 (Error: %2, line %3, column %4)</source>
@@ -2664,17 +2720,17 @@ Statistik:
 (Fehler: %2, Zeile %3, Spalte %4)</translation>
     </message>
     <message>
-        <location filename="../yammimodel.cpp" line="146"/>
+        <location filename="../yammimodel.cpp" line="148"/>
         <source>Loading categories</source>
         <translation>Lade Kategorien</translation>
     </message>
     <message>
-        <location filename="../yammimodel.cpp" line="189"/>
+        <location filename="../yammimodel.cpp" line="191"/>
         <source>Loading song history</source>
         <translation>Lade Liedhistorie</translation>
     </message>
     <message>
-        <location filename="../yammimodel.cpp" line="353"/>
+        <location filename="../yammimodel.cpp" line="355"/>
         <source>Error reading database file:
 %1
 (Error: %2, line %3, column %4)</source>
@@ -2683,29 +2739,29 @@ Statistik:
 (Fehler: %2, Zeile %3, Spalte %4)</translation>
     </message>
     <message>
-        <location filename="../yammimodel.cpp" line="354"/>
+        <location filename="../yammimodel.cpp" line="356"/>
         <source>Error reading database</source>
         <translation>Fehler beim Einlesen der Datenbank</translation>
     </message>
     <message>
-        <location filename="../yammimodel.cpp" line="361"/>
+        <location filename="../yammimodel.cpp" line="363"/>
         <source>Your Song Database seems to be very old.
 You might need to create a new Database and scan your harddisk for songs</source>
         <translation>Deine Lieddatenbank scheint sehr alt zu sein.
 Du musst vielleicht eine neue Datenbank anlegen und deine Festplatte nach Liedern durchsuchen</translation>
     </message>
     <message>
-        <location filename="../yammimodel.cpp" line="362"/>
+        <location filename="../yammimodel.cpp" line="364"/>
         <source>Unknown Song Database version</source>
         <translation>Unbekannte Version der Lieddatenbank</translation>
     </message>
     <message>
-        <location filename="../yammimodel.cpp" line="372"/>
+        <location filename="../yammimodel.cpp" line="374"/>
         <source>Loading database</source>
         <translation>Lade Datenbank</translation>
     </message>
     <message>
-        <location filename="../yammimodel.cpp" line="513"/>
+        <location filename="../yammimodel.cpp" line="515"/>
         <source>The base directory for scanning does not exist!
 Set value &quot;scanDir&quot; to an existing directory!</source>
         <translation>Das Basisverzeichnis zum Durchsuchen existiert nicht!
@@ -2717,7 +2773,7 @@ Setze den Wert &quot;scanDir&quot; auf ein existierendes Verzeichnis!</translati
         <translation type="obsolete">Das Basisverzeichnis zum Durchsuchen existiert nicht!</translation>
     </message>
     <message>
-        <location filename="../yammimodel.cpp" line="556"/>
+        <location filename="../yammimodel.cpp" line="558"/>
         <source>scanning directory %1 ...</source>
         <translation>Durchsuche Verzeichnis %1 ...</translation>
     </message>

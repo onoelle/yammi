@@ -22,7 +22,7 @@
 
 
 SongInfo::SongInfo(QWidget* parent, MyList* selectedSongs)
-    : QDialog(parent, "song info", true)
+    : QDialog(parent)
 {
     setupUi(this);
     this->selectedSongs = selectedSongs;
@@ -94,7 +94,10 @@ void SongInfo::update()
     else {
         color.setNamedColor("grey");
     }
-    ReadOnlyProposedFilename->setPaletteForegroundColor(color);
+    QPalette p;
+    p = ReadOnlyProposedFilename->palette();
+    p.setColor(ReadOnlyProposedFilename->foregroundRole(), color);
+    ReadOnlyProposedFilename->setPalette(p);
     ReadOnlyProposedFilename->setText(_proposedFilename);
     
     if(pathCorrections) {
@@ -103,7 +106,9 @@ void SongInfo::update()
     else {
         color.setNamedColor("grey");
     }
-    ReadOnlyProposedPath->setPaletteForegroundColor(color);
+    p = ReadOnlyProposedPath->palette();
+    p.setColor(ReadOnlyProposedPath->foregroundRole(), color);
+    ReadOnlyProposedPath->setPalette(p);
     ReadOnlyProposedPath->setText(_proposedPath);
     
     if(change || (filenameCorrections && CheckBoxCorrectFilename->isChecked()) || (pathCorrections && CheckBoxCorrectPath->isChecked()) ) {
@@ -133,14 +138,14 @@ bool SongInfo::applyChanges(Song* s) {
         change=true;
     }
     if(LineEditYear->text()!="!") {
-        int tryYear=atoi(LineEditYear->text());
+        int tryYear=LineEditYear->text().toInt();
         if(tryYear!=s->year) {
             change=true;
             s->year = tryYear;
         }
     }
     if(LineEditTrack->text()!="!") {
-        int tryTrackNr=atoi(LineEditTrack->text());
+        int tryTrackNr=LineEditTrack->text().toInt();
         if(tryTrackNr!=s->trackNr) {
             change=true;
             s->trackNr = tryTrackNr;

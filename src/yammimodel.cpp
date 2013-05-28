@@ -22,6 +22,7 @@
 #include <QDomDocument>
 #include <QMessageBox>
 #include <QProgressDialog>
+#include <QTextCodec>
 #include <QTextStream>
 // TODO: avoid the gui-stuff includes in yammimodel
 
@@ -77,7 +78,7 @@ bool YammiModel::readList(MyList* list, QString filename)
     int errorColumn;
     QDomDocument doc;
     if( !doc.setContent(&f, false, &errorMsg, &errorLine, &errorColumn) ) {
-        QString msg = QString(tr("Error reading categories file:\n%1\n(Error: %2, line %3, column %4)") ).arg(f.name()).arg(errorMsg).arg(errorLine).arg(errorColumn);
+        QString msg = QString(tr("Error reading categories file:\n%1\n(Error: %2, line %3, column %4)") ).arg(f.fileName()).arg(errorMsg).arg(errorLine).arg(errorColumn);
         qCritical() << "Error reading file contents: " << filename << endl << msg;
         f.close();
         return false;
@@ -137,7 +138,8 @@ void YammiModel::readCategories() {
 		categoriesChanged(false);
 		return;
 	}
-	QString filter("*.xml");
+    QStringList filter;
+    filter << "*.xml";
 	QStringList cats = d.entryList(filter, QDir::Files, QDir::DirsFirst);
 
     int total=cats.count();
@@ -151,7 +153,7 @@ void YammiModel::readCategories() {
     int progressCount=0;
     for( QStringList::Iterator it = cats.begin(); it!=cats.end(); ++it, progressCount++ ) {
         dia.setValue(progressCount);
-        QString filename(d.absPath()+ "/" + (*it));
+        QString filename(d.absolutePath()+ "/" + (*it));
         qDebug() << "category found: " << filename;
 		if(readList(0, filename)) {
 			count++;
@@ -266,7 +268,7 @@ void YammiModel::saveHistory() {
         return;
     }
     QTextStream str(&file);
-    str.setEncoding(QTextStream::UnicodeUTF8);
+    str.setCodec(QTextCodec::codecForName("UTF-8"));
     doc.save(str, 2);
     file.close();
     qDebug() << "done";
@@ -326,7 +328,7 @@ bool YammiModel::saveList(MyList* list, QString path, QString filename)
         return false;
     }
     QTextStream str(&file);
-    str.setEncoding(QTextStream::UnicodeUTF8);
+    str.setCodec(QTextCodec::codecForName("UTF-8"));
     doc.save(str, 2);
     file.close();
     return true;
@@ -350,7 +352,7 @@ void YammiModel::readSongDatabase(  ) {
     int errorColumn;
     if( !doc.setContent(&f, false, &errorMsg, &errorLine, &errorColumn) ) {
         f.close();
-        QString msg = QString(tr("Error reading database file:\n%1\n(Error: %2, line %3, column %4)") ).arg(f.name()).arg(errorMsg).arg(errorLine).arg(errorColumn);
+        QString msg = QString(tr("Error reading database file:\n%1\n(Error: %2, line %3, column %4)") ).arg(f.fileName()).arg(errorMsg).arg(errorLine).arg(errorColumn);
         QMessageBox::warning(NULL, tr("Error reading database"), msg, QMessageBox::Ok, QMessageBox::NoButton);
         return;
     }
@@ -465,7 +467,7 @@ void YammiModel::saveSongDatabase() {
         return;
     }
     QTextStream str(&file);
-    str.setEncoding(QTextStream::UnicodeUTF8);
+    str.setCodec(QTextCodec::codecForName("UTF-8"));
     doc.save(str, 2);
     file.close();
 
@@ -565,7 +567,7 @@ bool YammiModel::traverse(QString path, bool followSymLinks, QString filePattern
     QFileInfoList list = d.entryInfoList();
     progress->setRange(0, list.count());
     int filesScanned=0;
-    for(QFileInfoListIterator it = list.begin(); it != list.end(); ++it ) {
+    for(QFileInfoList::iterator it = list.begin(); it != list.end(); ++it ) {
         filesScanned++;
         progress->setValue(filesScanned);
         if(progress->wasCanceled()) {
@@ -580,7 +582,7 @@ bool YammiModel::traverse(QString path, bool followSymLinks, QString filePattern
     d2.setFilter(QDir::Dirs | QDir::Readable  | QDir::Hidden);
     d2.setSorting( QDir::Name );
     QFileInfoList list2 = d2.entryInfoList();
-    for(QFileInfoListIterator it2 = list2.begin(); it2 != list2.end(); ++it2) {
+    for(QFileInfoList::iterator it2 = list2.begin(); it2 != list2.end(); ++it2) {
         if(it2->fileName()=="." || it2->fileName()=="..") {
             continue;
         }
@@ -624,7 +626,7 @@ void YammiModel::fixGenres(QProgressDialog* progress) {
 
 // adds a single songfile to the database
 void YammiModel::addSongToDatabase(QString filename) {
-    qDebug() << "scanning file '" << filename << "'...";
+    //qDebug() << "scanning file '" << filename << "'...";
     bool found=false;
     for (MyList::Iterator it = allSongs.begin(); it != allSongs.end(); it++) {
         Song* s = (*it)->song();
@@ -710,7 +712,7 @@ void YammiModel::addSongToDatabase(QString filename) {
     }
     // new song, not in database yet
     allSongs.appendSong(newSong);
-    qDebug() << "Song added to database: " << newSong->displayName();
+    //qDebug() << "Song added to database: " << newSong->displayName();
     entriesAdded++;
     allSongsChanged(true);
 }
@@ -725,7 +727,7 @@ QStringList* YammiModel::readM3uFile(QString filename) {
         return list;
     QTextStream stream(&file);
     while(!stream.atEnd()) {
-        QString line=stream.readLine().stripWhiteSpace();
+        QString line=stream.readLine().trimmed();
         if(line.startsWith("#")) {
             // skip lines starting with #
             continue;
@@ -746,7 +748,7 @@ void YammiModel::removeCategory(QString categoryName) {
         if(name==categoryName) {
             qDebug() << "category found, deleting...";
             allCategories.removeAll(ptr);
-            categoryNames.remove(categoryNames.at(i));
+            categoryNames.removeAt(i);
             QString file = config()->databaseDir + "categories/" + name + ".xml";
             qDebug() << "file to delete:" << file;
             QDir d;
@@ -835,7 +837,7 @@ void YammiModel::markPlaylists(Song* s) {
 // returns 0 if no song entry found
 Song* YammiModel::getSongFromFilename(QString filename) {
     // strip filename to relative name
-    int pos=filename.findRev('/', -1);
+    int pos=filename.lastIndexOf('/', -1);
     QString lookFor=filename.right(filename.length()-pos-1);
 
     for (MyList::Iterator it = allSongs.begin(); it != allSongs.end(); it++) {
@@ -871,7 +873,7 @@ QString YammiModel::checkAvailability(Song* s) {
  * Does NOT emit the playlistChanged() signal!
  */
 bool YammiModel::skipUnplayableSongs(bool firstTwo) {
-    qDebug() << "skipUnplayableSongs()";
+    //qDebug() << "skipUnplayableSongs()";
     QString location;
     bool songsRemoved = false;
     while( !songsToPlay.isEmpty() ) {

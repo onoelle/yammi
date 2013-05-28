@@ -16,7 +16,6 @@
 
 #include <QApplication>
 #include <QByteArray>
-#include <QCustomEvent>
 #include <QDebug>
 #include <QDesktopServices>
 #include <QEvent>
@@ -135,7 +134,7 @@ namespace Yammi {
     void
     XineEngine::syncYammi2Player()
     {
-        qDebug() << "XineEngine::syncYammi2Player()";
+        //qDebug() << "XineEngine::syncYammi2Player()";
 
         bool haveToUpdate=model->skipUnplayableSongs();
 
@@ -149,7 +148,7 @@ namespace Yammi {
             songEntry = playlist->at(0);
         }
         if (songEntry) {
-            qDebug() << "playlist->at(0): " << songEntry->song()->displayName();
+            //qDebug() << "playlist->at(0): " << songEntry->song()->displayName();
 
             if(m_currentSong == songEntry->song()) {
                 if(haveToUpdate) {
@@ -164,10 +163,10 @@ namespace Yammi {
 
             QString location = model->checkAvailability( songEntry->song() );
             qDebug() << "returned location: " << location;
-            file.setName(location);
+            file.setFileName(location);
             m_currentSong = songEntry->song();
             if (!file.exists()) {
-                qDebug() << "ERROR: location not valid: " << file.name();
+                qDebug() << "ERROR: location not valid: " << file.fileName();
                 return;
             }
         }
@@ -179,11 +178,11 @@ namespace Yammi {
        // why doesn't xine do this? I cannot say.
        xine_close( m_stream );
 
-       qDebug() << "Before xine_open() *****";
+       //qDebug() << "Before xine_open() *****";
 
-       if( xine_open( m_stream, QFile::encodeName( file.name() ) ) )
+       if( xine_open( m_stream, QFile::encodeName( file.fileName() ) ) )
        {
-          qDebug() << "After xine_open() *****";
+          //qDebug() << "After xine_open() *****";
 
           #ifndef XINE_SAFE_MODE
           //we must ensure the scope is pruned of old buffers
@@ -472,7 +471,7 @@ namespace Yammi {
 
             qDebug() << "XINE_EVENT_UI_SET_TITLE";
 
-            QApplication::postEvent( xe, new QCustomEvent( 3003 ) );
+            //QApplication::postEvent( xe, new QCustomEvent( 3003 ) );
 
             break;
 
@@ -480,11 +479,11 @@ namespace Yammi {
             qDebug() << "XINE_EVENT_UI_PLAYBACK_FINISHED";
 
             //emit signal from GUI thread
-            QApplication::postEvent( xe, new QCustomEvent(3000) );
+            //QApplication::postEvent( xe, new QCustomEvent(3000) );
             break;
 
         case XINE_EVENT_PROGRESS: {
-            xine_progress_data_t* pd = (xine_progress_data_t*)xineEvent->data;
+            /*xine_progress_data_t* pd = (xine_progress_data_t*)xineEvent->data;
 
             QString
             msg = "%1 %2%";
@@ -494,7 +493,7 @@ namespace Yammi {
             QCustomEvent *e = new QCustomEvent( 3002 );
             e->setData( new QString( msg ) );
 
-            QApplication::postEvent( xe, e );
+            QApplication::postEvent( xe, e );*/
 
         }   break;
 
@@ -596,12 +595,12 @@ namespace Yammi {
                 }
                 else message += tr("Sorry, no additional information is available.");
 
-                QApplication::postEvent( xe, new QCustomEvent(QEvent::Type(3001), new QString(message)) );
+                //QApplication::postEvent( xe, new QCustomEvent(QEvent::Type(3001), new QString(message)) );
             }
 
         } //case
         case XINE_EVENT_UI_CHANNELS_CHANGED: //Flameeyes used this for last.fm track changes
-            QApplication::postEvent( xe, new QCustomEvent(QEvent::Type(3005) ) );
+            //QApplication::postEvent( xe, new QCustomEvent(QEvent::Type(3005) ) );
         break;
         } //switch
 

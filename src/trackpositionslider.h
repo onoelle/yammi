@@ -38,7 +38,7 @@ class TrackPositionSlider : public QSlider
 	Q_OBJECT
 
 public:
-    TrackPositionSlider(Qt::Orientation orientation, QWidget *parent, const char *name);
+    TrackPositionSlider(Qt::Orientation orientation, QWidget *parent);
 	void setupTickmarks(Song* song);
     
 signals:

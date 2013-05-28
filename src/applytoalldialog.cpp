@@ -22,7 +22,7 @@
 
 
 ApplyToAllDialog::ApplyToAllDialog(QWidget* parent)
- : QDialog(parent, "confirm dialog", true)
+ : QDialog(parent)
 {
     setupUi(this);
     connect( PushButtonAbort, SIGNAL( clicked() ), this, SLOT( abort() ) );

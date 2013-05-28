@@ -218,7 +218,7 @@ public slots:
     }
     void forSelectionPrelisten(int where);
     void forSelectionMove();
-    void forSelectionPlugin(int pluginIndex);
+    void forSelectionPlugin();
     void forSelectionCheckConsistency();
 
     /** Enqueue the selected songs at the end of the Playlist.
@@ -322,7 +322,6 @@ protected:
     QMenu* songCategoryPopup;
     QMenu* songPopup;
     QMenu* songPrelistenPopup;
-    QMenu* songGoToPopup;
     QMenu* songAdvancedPopup;
     QMenu* pluginPopup;
     QMenu* folderPopup;
@@ -414,7 +413,7 @@ protected slots:
     void updateView(bool startup=false);
 
     void addToWishList();
-    void toCategory(int index);
+    void toCategory();
 
     void onTimer();
 
@@ -481,6 +480,7 @@ private:
     QAction* m_actionCheckConsistencySelection;
     QAction* m_actionDeleteSong;
     QAction* m_actionMoveFiles;
+    QAction* m_actionSongPopupHeader;
 };
 
 #endif
