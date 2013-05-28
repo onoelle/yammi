@@ -1164,6 +1164,10 @@ Additionally to the usual placeholders (see the plugins tab) you can use {skipSe
         <source>This template is used for displaying the playqueue.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>PhononEngine</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PreferencesDialog</name>
