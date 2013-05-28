@@ -66,7 +66,7 @@ Prefs* YammiModel::config()
  * Not existing songs will be forgotten.
  * Creates a new category, if no folder given.
  */
-bool YammiModel::readList(MyList* list, QString filename)
+bool YammiModel::readList(MyList* list, QString filename, SongKeyMap* map)
 {
     QFile f(filename);
     if ( !f.open( QIODevice::ReadOnly ) ) {
@@ -108,7 +108,14 @@ bool YammiModel::readList(MyList* list, QString filename)
         QString title  = e.attribute("title");
         QString album  = e.attribute("album");
         // search for item in allSongs
-        Song* s = allSongs.getSongByKey(artist, title, album);
+        Song* s = NULL;
+        if (map) {
+            s = (*map)[artist][title][album];
+        }
+        if (!s) {
+            s = allSongs.getSongByKey(artist, title, album);
+        }
+
         if(!s) {
             qWarning() << "Song not found in database : " << artist << "/" << title << "/" << album;
         } else {
@@ -121,12 +128,19 @@ bool YammiModel::readList(MyList* list, QString filename)
 	return true;
 }
 
+void YammiModel::createSongKeyMap(MyList* list, SongKeyMap* map)
+{
+    foreach (SongEntry* songEntry, *list) {
+        Song* song = songEntry->song();
+        (*map)[song->artist][song->title][song->album] = song;
+    }
+}
 
 /**
  * Reads in all xml-files found in the database directory.
  * Each xml file should represent one category.
  */
-void YammiModel::readCategories() {
+void YammiModel::readCategories(SongKeyMap* map) {
 	QString categoryDir(config()->databaseDir + "categories");
     qDebug() << "Reading categories from " << categoryDir;
 
@@ -155,17 +169,17 @@ void YammiModel::readCategories() {
         dia.setValue(progressCount);
         QString filename(d.absolutePath()+ "/" + (*it));
         qDebug() << "category found: " << filename;
-		if(readList(0, filename)) {
-			count++;
-		}
+        if(readList(0, filename, map)) {
+            count++;
+        }
     }
-        qDebug() << count << " categories read";
+    qDebug() << count << " categories read";
     categoriesChanged(false);
 }
 
 
 // Reads song history
-void YammiModel::readHistory() {
+void YammiModel::readHistory(SongKeyMap* map) {
     QString filename = config()->databaseDir + "history.xml";
     qDebug() << "reading song history from " << filename;
 
@@ -203,7 +217,13 @@ void YammiModel::readHistory() {
         QString timestamp = e.attribute("timestamp", "");
 
         // search for item in allSongs
-        Song* s = allSongs.getSongByKey(artist, title, album);
+        Song* s = NULL;
+        if (map) {
+            s = (*map)[artist][title][album];
+        }
+        if (!s) {
+            s = allSongs.getSongByKey(artist, title, album);
+        }
         if(!s) {
             qWarning()<<"history item "<<artist<<"/"<<title<<"/"<<album<<" not found in song database";
         } else {

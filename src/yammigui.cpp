@@ -170,13 +170,16 @@ void YammiGui::loadDatabase() {
     QSettings cfg;
     cfg.beginGroup("General Options");
 
-    model->readCategories();
-    model->readHistory();
+    SongKeyMap map;
+    model->createSongKeyMap(&model->allSongs, &map);
+
+    model->readCategories(&map);
+    model->readHistory(&map);
     player->finishInitialization();
-    
+
     bool restorePlaylistOnStartup = true;            // TODO: make this configurable
     if(restorePlaylistOnStartup) {
-        model->readList(&(model->songsToPlay), config()->databaseDir + "playqueue.xml");
+        model->readList(&(model->songsToPlay), config()->databaseDir + "playqueue.xml", &map);
         folderActual->update(folderActual->songlist());
         player->syncYammi2Player();
         if(folderActual->songlist().count() > 0) {

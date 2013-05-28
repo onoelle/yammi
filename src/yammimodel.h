@@ -30,6 +30,7 @@ class YammiGui;
 class ConsistencyCheckParameter;
 class Prefs;
 
+typedef QMap<QString/*artist*/, QMap<QString/*title*/, QMap<QString/*album*/, Song*> > > SongKeyMap;
 
 /**
  * this is the model of Yammi
@@ -77,8 +78,8 @@ public:
     bool allSongsChanged();
     void allSongsChanged(bool changed);
 
-    void readCategories();
-    bool readList(MyList* list, QString filename);
+    void readCategories(SongKeyMap* map);
+    bool readList(MyList* list, QString filename, SongKeyMap* map);
     void saveCategories();
     bool saveList(MyList* list, QString path, QString filename);
 
@@ -92,12 +93,13 @@ public:
     void readSongDatabase(  );
     void saveSongDatabase();
 
-    void readHistory();
+    void readHistory(SongKeyMap* map);
     void saveHistory();
 
     void markPlaylists(Song* s);
     QStringList* readM3uFile(QString filename);
 
+    void createSongKeyMap(MyList* list, SongKeyMap* map);
 
 public slots:
     void save();
