@@ -114,6 +114,9 @@
      <property name="tabShape">
       <enum>QTabWidget::Rounded</enum>
      </property>
+     <property name="currentIndex">
+      <number>2</number>
+     </property>
      <widget class="QWidget" name="tab1">
       <attribute name="title">
        <string>General</string>
@@ -668,6 +671,16 @@
            <widget class="QRadioButton" name="RadioButtonXineEngine">
             <property name="text">
              <string>XineEngine</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QRadioButton" name="RadioButtonPhononEngine">
+            <property name="text">
+             <string>PhononEngine</string>
             </property>
             <property name="checked">
              <bool>false</bool>

@@ -54,6 +54,7 @@
 #include "dummyplayer.h"
 #include "mediaplayer.h"
 #include "mylistview.h"
+#include "phonon-engine.h"
 #include "prefs.h"
 #include "searchthread.h"
 #include "song.h"
@@ -2245,6 +2246,8 @@ void YammiGui::onTimer() {
         // 		if(!isSongSliderGrabbed && player->getStatus() != PAUSED) {
         m_seekSlider->setValue(current);
         //     }
+    } else {
+        m_seekSlider->setValue(0);
     }
 }
 
@@ -2627,6 +2630,9 @@ void YammiGui::loadMediaPlayer( ) {
     switch( config()->mediaPlayer ) {
     case Prefs::MEDIA_PLAYER_XINEENGINE:
         player = new Yammi::XineEngine(model);
+        break;
+    case Prefs::MEDIA_PLAYER_PHONONENGINE:
+        player = new Yammi::PhononEngine(model);
         break;
     case Prefs::MEDIA_PLAYER_DUMMY:
     default:

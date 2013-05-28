@@ -1,6 +1,6 @@
 
 TEMPLATE += app
-QT += xml
+QT += xml phonon
 CONFIG += qt qdbus debug
 
 LIBS += -ltag -lxine
@@ -27,6 +27,7 @@ SOURCES = \
     mydatetime.cpp \
     mylist.cpp \
     mylistview.cpp \
+    phonon-engine.cpp \
     preferencesdialog.cpp \
     prefs.cpp \
     searchthread.cpp \
@@ -59,6 +60,7 @@ HEADERS = \
     mydatetime.h \
     mylist.h \
     mylistview.h \
+    phonon-engine.h \
     preferencesdialog.h \
     prefs.h \
     searchthread.h \
