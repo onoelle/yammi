@@ -4,9 +4,15 @@
 **
 *****************************************************************************/
 
+#include <time.h>
+
 #include <QApplication>
 #include <QDebug>
+#include <QDir>
+#ifdef USE_QDBUS
 #include <QtDBus>
+#endif
+#include <QTranslator>
 
 #include "config.h"
 #include "yammigui.h"
@@ -60,6 +66,7 @@ int main( int argc, char **argv )
 		return 1;
 	}
 
+#ifdef USE_QDBUS
     if (!QDBusConnection::sessionBus().isConnected()) {
         qCritical() << "Cannot connect to the D-Bus session bus.\n"
                 "To start it, run:\n"
@@ -71,6 +78,7 @@ int main( int argc, char **argv )
             QDBusConnection::sessionBus().registerObject("/YammiGui", yammi, QDBusConnection::ExportScriptableSlots);
         }
     }
+#endif
 
     QObject::connect(&app, SIGNAL(lastWindowClosed()), &app, SLOT(quit()));
 	yammi->show();

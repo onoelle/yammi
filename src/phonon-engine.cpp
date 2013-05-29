@@ -48,6 +48,7 @@ namespace Yammi {
         connect(m_mediaObject, SIGNAL(stateChanged(Phonon::State,Phonon::State)), this, SLOT(stateChanged(Phonon::State,Phonon::State)));
         connect(m_mediaObject, SIGNAL(currentSourceChanged(Phonon::MediaSource)), this, SLOT(sourceChanged(Phonon::MediaSource)));
         connect(m_mediaObject, SIGNAL(aboutToFinish()), this, SLOT(aboutToFinish()));
+        connect(m_mediaObject, SIGNAL(finished()), this, SLOT(finished()));
 
         Phonon::createPath(m_mediaObject, m_audioOutput);
     }
@@ -100,8 +101,10 @@ namespace Yammi {
             }
         }
 
-        m_mediaObject->setCurrentSource(file.fileName());
-        playlistChanged();
+        if (!file.fileName().isEmpty() || m_mediaObject->currentSource().fileName() != file.fileName()) {
+            m_mediaObject->setCurrentSource(file.fileName());
+            emit playlistChanged();
+        }
 
        return;
     }
@@ -273,7 +276,6 @@ namespace Yammi {
         // remove the first song and sync playlist again
         playlist->removeFirst( );
         syncYammi2Player();
-        emit playlistChanged();
         if(!m_currentSong) {
             return false;
         }
@@ -373,6 +375,16 @@ namespace Yammi {
     PhononEngine::aboutToFinish()
     {
         //qDebug() << "PhononEngine::aboutToFinish";
+    }
+
+    void
+    PhononEngine::finished()
+    {
+        //qDebug() << "PhononEngine::finished";
+#ifdef Q_OS_WIN32
+        stop();
+        /* for some reason when one songs ends in windows we do not change here to the next song */
+#endif
     }
 
 } //namespace Yammi

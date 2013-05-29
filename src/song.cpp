@@ -17,11 +17,11 @@
 
 #include "song.h"
 
-#include <taglib/audioproperties.h>
-#include <taglib/fileref.h>
-#include <taglib/id3v1genres.h>    //used to load genre list
-#include <taglib/tag.h>
-#include <taglib/tstring.h>
+#include <audioproperties.h>
+#include <fileref.h>
+#include <id3v1genres.h>    //used to load genre list
+#include <tag.h>
+#include <tstring.h>
 
 #include <QDebug>
 #include <QDir>
@@ -171,7 +171,7 @@ bool Song::create(const QString location, bool capitalizeTags) {
  * @return true if at least one tag could be read and was not empty, false otherwise.
  */
 bool Song::readTags(QString filename) {
-    TagLib::FileRef f(QFile::encodeName(filename));
+    TagLib::FileRef f(QFile::encodeName(filename).data());
     if(f.isNull()) {
         qDebug() << "reading tags: could not create TagLib::FileRef for file " << filename;
         return false;
@@ -203,7 +203,7 @@ bool Song::readTags(QString filename) {
  * @return true if properties could be read, false otherwise.
  */
 bool Song::readLayerInfo(QString filename) {
-    TagLib::FileRef f(QFile::encodeName(filename));
+    TagLib::FileRef f(QFile::encodeName(filename).data());
     if(f.isNull()) {
         qDebug() << "reading layer info: could not create TagLib::FileRef for file " << filename;
     }
@@ -484,7 +484,7 @@ bool Song::saveTags() {
         return false;
     }
 
-    TagLib::FileRef f(QFile::encodeName(filename));
+    TagLib::FileRef f(QFile::encodeName(filename).data());
     if(f.isNull()) {
         qDebug() << "saving tags: could not create TagLib::FileRef for file " << filename;
         return false;

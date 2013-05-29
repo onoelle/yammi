@@ -1,18 +1,31 @@
 
+unix {
+    CONFIG += qdbus
+    INCLUDEPATH += /usr/include/taglib
+    LIBS += -ltag -lxine
+    SOURCES += xine-engine.cpp
+    HEADERS += xine-engine.h
+    DEFINES += USE_XINE USE_QDBUS
+    QMAKE_LRELEASE = $$[QT_INSTALL_BINS]/lrelease-qt4
+    #QMAKE_CXX = ccache g++
+    #QMAKE_CXX = clang++
+}
+win32 {
+    taglib.path = F:\\taglib-1.8\\taglib
+    INCLUDEPATH += $${taglib.path}\\Headers
+    LIBS += -L$${taglib.path} -ltag
+    QMAKE_LRELEASE = $$[QT_INSTALL_BINS]\\lrelease.exe
+}
+
 TEMPLATE += app
 QT += xml phonon
-CONFIG += qt qdbus debug
-
-LIBS += -ltag -lxine
+CONFIG += qt debug
 
 MOC_DIR = .moc
 OBJECTS_DIR = .obj
 UI_DIR = .ui
 
-#QMAKE_CXX=ccache g++
-QMAKE_CLEAN += yammi
-
-SOURCES = \
+SOURCES += \
     applytoalldialog.cpp \
     ConsistencyCheckDialog.cpp \
     ConsistencyCheckParameter.cpp \
@@ -41,11 +54,10 @@ SOURCES = \
     trackpositionslider.cpp \
     updatedatabasedialog.cpp \
     util.cpp \
-    xine-engine.cpp \
     yammigui.cpp \
     yammimodel.cpp
 
-HEADERS = \
+HEADERS += \
     applytoalldialog.h \
     ConsistencyCheckDialog.h \
     ConsistencyCheckParameter.h \
@@ -74,7 +86,6 @@ HEADERS = \
     trackpositionslider.h \
     updatedatabasedialog.h \
     util.h \
-    xine-engine.h \
     yammigui.h \
     yammimodel.h
 
@@ -96,19 +107,40 @@ TRANSLATIONS = \
     translations/yammi_it.ts \
     translations/yammi_nl.ts
 
-updateqm.commands = lrelease-qt4 yammi.pro
-updateqm.target = updateqm
-QMAKE_EXTRA_TARGETS += updateqm
+updateqm.input = TRANSLATIONS
+updateqm.output = ${QMAKE_FILE_PATH}/${QMAKE_FILE_BASE}.qm
+updateqm.commands = $$QMAKE_LRELEASE ${QMAKE_FILE_IN} -qm ${QMAKE_FILE_PATH}/${QMAKE_FILE_BASE}.qm
+updateqm.CONFIG += no_link
+QMAKE_EXTRA_COMPILERS += updateqm
+POST_TARGETDEPS += compiler_updateqm_make_all
 
 
 # installation
-yammi.path = $$(HOME)/bin/yammi
-yammi.files = yammi
+unix {
+    yammi.path = $$(HOME)/bin/yammi
+    yammi.files = yammi
+}
+win32 {
+    yammi.path = ./bin/yammi
+    yammi.files = Debug/yammi.exe
+    # also copy at least these dlls into folder ./bin/yammi/:
+    #   F:\taglib-1.8\taglib\libtag.dll
+    #   E:\Qt\4.8.4\bin\mingwm10.dll
+    #   E:\Qt\4.8.4\bin\libgcc_s_dw2-1.dll
+    #   E:\Qt\4.8.4\bin\QtCored4.dll
+    #   E:\Qt\4.8.4\bin\QtGuid4.dll
+    #   E:\Qt\4.8.4\bin\QtXmld4.dll
+    #   E:\Qt\4.8.4\bin\phonond4.dll
+    # or put a cmd file near yammi.exe and add the paths like here:
+    #   @echo off
+    #   set PATH=%PATH%;F:\taglib-1.8\taglib;E:\Qt\4.8.4\bin
+    #   .\yammi.exe
+}
 
-yammi-icons.path = $${yammi.path}/icons
-yammi-icons.files = icons/*
+yammi_icons.path = $${yammi.path}/icons
+yammi_icons.files = icons/*
 
-yammi-translations.path = $${yammi.path}/translations
-yammi-translations.files = translations/*.qm
+yammi_translations.path = $${yammi.path}/translations
+yammi_translations.files = $${replace(TRANSLATIONS, .ts, .qm)}
 
-INSTALLS += yammi yammi-icons yammi-translations
+INSTALLS += yammi yammi_icons yammi_translations

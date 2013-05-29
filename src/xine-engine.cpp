@@ -193,7 +193,7 @@ namespace Yammi {
           xine_post_wire( source, target );
           #endif
 
-          playlistChanged();
+          emit playlistChanged();
 
           return;
        }

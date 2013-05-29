@@ -17,7 +17,7 @@
 
 #include "mylist.h"
 
-#include <taglib/id3v1genres.h>
+#include <id3v1genres.h>
 
 #include <tr1/functional>
 

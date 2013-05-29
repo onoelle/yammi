@@ -100,6 +100,7 @@ namespace Yammi {
         void stateChanged(Phonon::State newState, Phonon::State oldState);
         void sourceChanged(const Phonon::MediaSource &source);
         void aboutToFinish();
+        void finished();
 
     private:
         Phonon::MediaObject* m_mediaObject;

@@ -17,7 +17,7 @@
 
 #include "yammigui.h"
 
-#include <taglib/id3v1genres.h>
+#include <id3v1genres.h>
 
 #include <QActionGroup>
 #include <QCheckBox>
@@ -40,7 +40,9 @@
 #include <QSplitter>
 #include <QTextEdit>
 #include <QTextStream>
+#ifdef USE_QDBUS
 #include <QtDBus>
+#endif
 #include <QToolBar>
 #include <QToolTip>
 
@@ -65,7 +67,9 @@
 #include "songinfo.h"
 #include "trackpositionslider.h"
 #include "util.h"
+#ifdef USE_XINE
 #include "xine-engine.h"
+#endif
 #include "yammimodel.h"
 
 // dialog includes
@@ -74,6 +78,11 @@
 #include "ui_DeleteDialog.h"
 #include "preferencesdialog.h"
 #include "updatedatabasedialog.h"
+
+#ifdef Q_OS_WIN32
+#undef DeleteFile
+/* some include pulls windows headers in which define DeleteFile to DeleteFileW/A - then the Song::DeleteFile could not be found anymore */
+#endif
 
 
 extern YammiGui* gYammiGui;
@@ -1120,6 +1129,7 @@ void YammiGui::slotLoadInMixxxDeck2()
 
 void YammiGui::loadSelectedSongInMixxxDeck(int deckNumber)
 {
+#ifdef USE_QDBUS
     bool doLoad = true;
 
     getSelectedSongs();
@@ -1165,6 +1175,7 @@ void YammiGui::loadSelectedSongInMixxxDeck(int deckNumber)
             qDebug() << "Call to slotLoadToDeck failed:" << qPrintable(reply.error().message());
         }
     }
+#endif
 }
 
 
@@ -1247,6 +1258,7 @@ void YammiGui::adjustSongPopup() {
     m_actionMoveFiles->setEnabled(enable);
 
     bool isMixRunning = false;
+#ifdef USE_QDBUS
     getSelectedSongs();
     if (selectedSongs.count() == 1) {
         QDBusInterface iface("org.mixxx", "/PlayerManager", "", QDBusConnection::sessionBus());
@@ -1256,6 +1268,7 @@ void YammiGui::adjustSongPopup() {
             qDebug() << "QDBusInterface failed:" << qPrintable(QDBusConnection::sessionBus().lastError().message());
         }
     }
+#endif
     m_actionLoadInMixxxDeck1->setVisible(isMixRunning);
     m_actionLoadInMixxxDeck2->setVisible(isMixRunning);
 }
@@ -2631,9 +2644,11 @@ void YammiGui::toggleColumnVisibility(QAction* /*action*/)
 void YammiGui::loadMediaPlayer( ) {
     player = 0;
     switch( config()->mediaPlayer ) {
+#ifdef USE_XINE
     case Prefs::MEDIA_PLAYER_XINEENGINE:
         player = new Yammi::XineEngine(model);
         break;
+#endif
     case Prefs::MEDIA_PLAYER_PHONONENGINE:
         player = new Yammi::PhononEngine(model);
         break;
