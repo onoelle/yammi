@@ -554,7 +554,7 @@ void YammiModel::updateSongDatabase(QStringList list) {
         QString filename(*it);
         if(filename.endsWith(".m3u")) {
             QStringList* playlist = readM3uFile(filename);
-            for(QStringList::Iterator it2 = playlist->begin();it2 != playlist->end();++it) {
+            for(QStringList::Iterator it2 = playlist->begin();it2 != playlist->end(); ++it2) {
                 addSongToDatabase(QString(*it2));
             }
             delete playlist;
