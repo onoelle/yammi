@@ -1166,6 +1166,10 @@ Additionally to the usual placeholders (see the plugins tab) you can use {skipSe
         <source>PhononEngine</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>QMediaPlayerEngine</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PreferencesDialog</name>
@@ -3303,6 +3307,18 @@ Do you want to continue?</source>
     <message>
         <source>Fuzzy search (Ctrl-F)
 Goto fuzzy matching folder (Ctrl-G)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mi&amp;nimize</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ma&amp;ximize</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Restore</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
