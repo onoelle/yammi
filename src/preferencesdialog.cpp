@@ -55,9 +55,23 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, Prefs* config )
     LineEditSearchThreshold->setText(QString("%1").arg(config->searchThreshold));
     LineEditPlayqueueTemplate->setPlainText(config->playqueueTemplate);
 
+#ifdef USE_XINE
     RadioButtonXineEngine->setChecked(config->mediaPlayer == config->MEDIA_PLAYER_XINEENGINE);
+#else
+    RadioButtonXineEngine->setVisible(false);
+#endif
+
+#ifdef USE_PHONON
     RadioButtonPhononEngine->setChecked(config->mediaPlayer == config->MEDIA_PLAYER_PHONONENGINE);
+#else
+    RadioButtonPhononEngine->setVisible(false);
+#endif
+
+#ifdef USE_QMEDIAPLAYER
     RadioButtonQMediaPlayerEngine->setChecked(config->mediaPlayer == config->MEDIA_PLAYER_QMEDIAPLAYERENGINE);
+#else
+    RadioButtonQMediaPlayerEngine->setVisible(false);
+#endif
 
     for(int i=0; i<Song::getMaxSongAction(); i++) {
         ComboBoxDoubleClickAction->addItem(Song::getSongAction(i));

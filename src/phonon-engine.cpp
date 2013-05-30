@@ -17,17 +17,10 @@
 
 #ifdef USE_PHONON
 
-#include <QApplication>
-#include <QByteArray>
 #include <QDebug>
-#include <QDesktopServices>
-#include <QEvent>
 #include <QFile>
-#include <QMessageBox>
-#include <QMutex>
-#include <QWaitCondition>
 
-#include "prefs.h"
+#include "song.h"
 #include "songentryint.h"
 #include "yammimodel.h"
 

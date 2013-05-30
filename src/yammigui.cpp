@@ -68,9 +68,7 @@
 #include "songinfo.h"
 #include "trackpositionslider.h"
 #include "util.h"
-#ifdef USE_XINE
 #include "xine-engine.h"
-#endif
 #include "yammimodel.h"
 
 // dialog includes
