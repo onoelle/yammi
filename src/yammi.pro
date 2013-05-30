@@ -5,6 +5,8 @@
 
     !win32:DEFINES += USE_QDBUS
 
+    contains(QT_VERSION, ^5\\.[0-9]*\\..*): DEFINES = USE_QMEDIAPLAYER
+
     DEFINES += USE_TAGLIB
 
     !win32:DEFINES += USE_XINE
@@ -23,6 +25,7 @@ contains(DEFINES, USE_PHONON): QT += phonon
 contains(QT_VERSION, ^4\\.[0-9]*\\..*): contains(DEFINES, USE_QDBUS): CONFIG += qdbus
 contains(QT_VERSION, ^5\\.[0-9]*\\..*): contains(DEFINES, USE_QDBUS): QT += dbus
 contains(QT_VERSION, ^5\\.[0-9]*\\..*): QT += widgets
+contains(DEFINES, USE_QMEDIAPLAYER): QT += multimedia
 
 unix {
     contains(DEFINES, USE_TAGLIB): INCLUDEPATH += /usr/include/taglib
@@ -67,6 +70,7 @@ SOURCES += \
     phonon-engine.cpp \
     preferencesdialog.cpp \
     prefs.cpp \
+    qmediaplayer-engine.cpp \
     searchthread.cpp \
     song.cpp \
     songentry.cpp \
@@ -100,6 +104,7 @@ HEADERS += \
     phonon-engine.h \
     preferencesdialog.h \
     prefs.h \
+    qmediaplayer-engine.h \
     searchthread.h \
     songentry.h \
     songentryint2.h \

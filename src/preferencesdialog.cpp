@@ -57,6 +57,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, Prefs* config )
 
     RadioButtonXineEngine->setChecked(config->mediaPlayer == config->MEDIA_PLAYER_XINEENGINE);
     RadioButtonPhononEngine->setChecked(config->mediaPlayer == config->MEDIA_PLAYER_PHONONENGINE);
+    RadioButtonQMediaPlayerEngine->setChecked(config->mediaPlayer == config->MEDIA_PLAYER_QMEDIAPLAYERENGINE);
 
     for(int i=0; i<Song::getMaxSongAction(); i++) {
         ComboBoxDoubleClickAction->addItem(Song::getSongAction(i));
@@ -174,6 +175,8 @@ void PreferencesDialog::myAccept() {
         config->mediaPlayer = config->MEDIA_PLAYER_XINEENGINE;
     } else if (RadioButtonPhononEngine->isChecked()) {
         config->mediaPlayer = config->MEDIA_PLAYER_PHONONENGINE;
+    } else if (RadioButtonQMediaPlayerEngine->isChecked()) {
+        config->mediaPlayer = config->MEDIA_PLAYER_QMEDIAPLAYERENGINE;
     }
 
     // plugins

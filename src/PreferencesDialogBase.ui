@@ -687,6 +687,16 @@
             </property>
            </widget>
           </item>
+          <item>
+           <widget class="QRadioButton" name="RadioButtonQMediaPlayerEngine">
+            <property name="text">
+             <string>QMediaPlayerEngine</string>
+            </property>
+            <property name="checked">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
          </layout>
         </widget>
        </item>
