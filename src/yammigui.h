@@ -20,6 +20,7 @@
 
 #include <QMainWindow>
 #include <QTimer>
+#include <QSystemTrayIcon>
 #include <QWaitCondition>
 
 #include "folder.h"
@@ -271,6 +272,8 @@ public slots:
 
     void autoplayFolder();
 
+    virtual void changeEvent(QEvent *e);
+
 public:
     MediaPlayer*  player;
     MyListView* songListView;
@@ -311,6 +314,7 @@ protected:
     void createFolders( );
     void createMainWidget( );
     void createToolbars();
+    void createTrayIcon();
     static int randomNum(int numbers = RAND_MAX);
 
     // gui
@@ -318,6 +322,7 @@ protected:
     QTreeWidget* folderListView;
     QSplitter* centralWidget;
     QSplitter* leftWidget;
+    QSystemTrayIcon* trayIcon;
 
     QMenu* songCategoryPopup;
     QMenu* songPopup;
@@ -429,6 +434,9 @@ protected slots:
     void slotLoadInMixxxDeck2();
     void loadSelectedSongInMixxxDeck(int deckNumber);
 
+    void trayIconActivated(QSystemTrayIcon::ActivationReason reason);
+    void trayIconMenuAboutToHide();
+
 private:
     QAction* m_actionQuit;
     QAction* m_actionSelectAll;
@@ -481,6 +489,9 @@ private:
     QAction* m_actionDeleteSong;
     QAction* m_actionMoveFiles;
     QAction* m_actionSongPopupHeader;
+    QAction* m_actionMinimize;
+    QAction* m_actionMaximize;
+    QAction* m_actionRestore;
 };
 
 #endif

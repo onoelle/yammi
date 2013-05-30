@@ -126,6 +126,7 @@ YammiGui::YammiGui() : QMainWindow( ) {
     createFolders( );
     createToolbars();
     createMenuBar();
+    createTrayIcon();
 
     // final touches before start up
     readOptions( );
@@ -137,6 +138,8 @@ YammiGui::YammiGui() : QMainWindow( ) {
     /* only to update playlistPart. For some reason the background is only drawn
        when the image was already loaded as normal image inside the playlistPart
        (see playqueueTemplate) */
+
+    trayIcon->show();
 }
 
 /**
@@ -2160,6 +2163,13 @@ void YammiGui::autoplayRandom() {
     autoplayMode = AUTOPLAY_RANDOM;
 }
 
+void YammiGui::changeEvent(QEvent *e)
+{
+    QMainWindow::changeEvent(e);
+    m_actionMinimize->setEnabled(!isMinimized());
+    m_actionMaximize->setEnabled(!isMaximized());
+    m_actionRestore->setEnabled(isMaximized() || isMinimized());
+}
 
 /// invoke an externally configured program/script on the content of a folder
 void YammiGui::pluginOnFolder() {
@@ -2673,6 +2683,38 @@ void YammiGui::loadMediaPlayer( ) {
     qDebug() << "Media Player : " << player->getName( );
 }
 
+void YammiGui::trayIconActivated(QSystemTrayIcon::ActivationReason reason)
+{
+    switch (reason) {
+    case QSystemTrayIcon::Trigger:
+        if (!isMinimized()) {
+            showMinimized();
+        } else {
+            showNormal();
+        }
+        break;
+    case QSystemTrayIcon::Context:
+        foreach (QAction* action, trayIcon->contextMenu()->actions()) {
+            action->setProperty("disabledShortcut", action->shortcut().toString());
+            action->setShortcut(QKeySequence());
+        }
+        break;
+    default:
+        break;
+    }
+}
+
+void YammiGui::trayIconMenuAboutToHide()
+{
+    foreach (QAction* action, trayIcon->contextMenu()->actions()) {
+        QVariant qv = action->property("disabledShortcut");
+        if (qv.isValid() && !qv.toString().isEmpty()) {
+            action->setShortcut(QKeySequence::fromString(qv.toString()));
+            action->setProperty("disabledShortcut", QVariant());
+        }
+    }
+}
+
 /**
  * Create main gui of Yammi
  */
@@ -2978,6 +3020,18 @@ void YammiGui::setupActions()
 
     m_actionMoveFiles = new QAction(tr("Move Files"), this);
     connect(m_actionMoveFiles, SIGNAL(triggered()), this, SLOT(forSelectionMove()));
+
+    m_actionMinimize = new QAction(tr("Mi&nimize"), this);
+    connect(m_actionMinimize, SIGNAL(triggered()), this, SLOT(showMinimized()));
+
+    m_actionMaximize = new QAction(tr("Ma&ximize"), this);
+    connect(m_actionMaximize, SIGNAL(triggered()), this, SLOT(showMaximized()));
+
+    m_actionRestore = new QAction(tr("&Restore"), this);
+    connect(m_actionRestore, SIGNAL(triggered()), this, SLOT(showNormal()));
+
+    m_actionQuit = new QAction(tr("&Quit"), this);
+    connect(m_actionQuit, SIGNAL(triggered()), qApp, SLOT(quit()));
 }
 
 
@@ -3043,6 +3097,35 @@ void YammiGui::createMenuBar()
     menu->addAction(m_actionConfigureYammi);
 }
 
+void YammiGui::createTrayIcon()
+{
+    QStyle* style = QApplication::style();
+
+    QMenu* trayIconMenu = new QMenu(this);
+
+    trayIconMenu->addAction(m_actionQuit);
+    m_actionQuit->setIcon(style->standardIcon(QStyle::SP_DialogCloseButton)); /* set icon here again, or in KDE4 from wheezy the icon disappears */
+
+    trayIconMenu->addSeparator();
+
+    trayIconMenu->addAction(m_actionMinimize);
+    trayIconMenu->addAction(m_actionMaximize);
+    trayIconMenu->addAction(m_actionRestore);
+
+    trayIconMenu->addSeparator();
+
+    trayIconMenu->addAction(m_actionPlayPause);
+    trayIconMenu->addAction(m_actionSkipBackward);
+    trayIconMenu->addAction(m_actionSkipForward);
+    trayIconMenu->addAction(m_actionStop);
+
+    trayIcon = new QSystemTrayIcon(this);
+    trayIcon->setContextMenu(trayIconMenu);
+    trayIcon->setIcon(QIcon("icons:yammi.png"));
+
+    connect(trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(trayIconActivated(QSystemTrayIcon::ActivationReason)));
+    connect(trayIcon->contextMenu(), SIGNAL(aboutToHide()), this, SLOT(trayIconMenuAboutToHide()));
+}
 
 void YammiGui::createToolbars()
 {
