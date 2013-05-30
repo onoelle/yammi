@@ -42,7 +42,11 @@ void Prefs::setDefaultValues(void) {
     // general
     mediaPlayer = MEDIA_PLAYER_XINEENGINE;
     yammiVersion = VERSION;
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+    databaseDir = QStandardPaths::standardLocations(QStandardPaths::DataLocation)[0] + "/";
+#else
     databaseDir = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + "/";
+#endif
     trashDir = QDir::homePath() + "/Desktop/Trash";
     scanDir = "/mp3/inbox/";
     scanPattern = "*.mp3 *.ogg *.wav *.wma *.m4a *.flac";

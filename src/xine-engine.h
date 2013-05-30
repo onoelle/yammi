@@ -20,6 +20,8 @@
 #ifndef YAMMIXINE_ENGINE_H
 #define YAMMIXINE_ENGINE_H
 
+#ifdef USE_XINE
+
 extern "C"
 {
     #include <sys/types.h>
@@ -112,5 +114,7 @@ namespace Yammi {
     };
 
 }; //namespace Yammi
+
+#endif //USE_XINE
 
 #endif //YAMMIXINE_ENGINE_H

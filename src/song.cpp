@@ -554,7 +554,7 @@ bool Song::correctFilename() {
         return false;
     }
     QString dummy="test";
-    touchFile.write(dummy.toAscii(), dummy.length());
+    touchFile.write(dummy.toLatin1(), dummy.length());
     touchFile.close();
 
     QFileInfo fi(newname);

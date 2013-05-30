@@ -1,24 +1,48 @@
 
+# Features:
+        # phonon is not available anymore in Qt5 ... grr
+    contains(QT_VERSION, ^4\\.[0-9]*\\..*): DEFINES = USE_PHONON
+
+    !win32:DEFINES += USE_QDBUS
+
+    DEFINES += USE_TAGLIB
+
+    !win32:DEFINES += USE_XINE
+#
+
+
+# Workarounds
+    # error from moc with Qt5: usr/include/c++/4.6/bits/stl_relops.:68: Parse error at "std"
+    # probably only in debian, should not harm anyone else
+    #QMAKE_CXX = ccache g++-4.6
+    #INCLUDEPATH += /usr/include/c++/4.6/i486-linux-gnu
+#
+
+
+contains(DEFINES, USE_PHONON): QT += phonon
+contains(QT_VERSION, ^4\\.[0-9]*\\..*): contains(DEFINES, USE_QDBUS): CONFIG += qdbus
+contains(QT_VERSION, ^5\\.[0-9]*\\..*): contains(DEFINES, USE_QDBUS): QT += dbus
+contains(QT_VERSION, ^5\\.[0-9]*\\..*): QT += widgets
+
 unix {
-    CONFIG += qdbus
-    INCLUDEPATH += /usr/include/taglib
-    LIBS += -ltag -lxine
-    SOURCES += xine-engine.cpp
-    HEADERS += xine-engine.h
-    DEFINES += USE_XINE USE_QDBUS
-    QMAKE_LRELEASE = $$[QT_INSTALL_BINS]/lrelease-qt4
+    contains(DEFINES, USE_TAGLIB): INCLUDEPATH += /usr/include/taglib
+    contains(DEFINES, USE_TAGLIB): LIBS += -ltag
+
+    contains(DEFINES, USE_XINE): LIBS += -lxine
+
+    QMAKE_LRELEASE = $$[QT_INSTALL_BINS]/lrelease
     #QMAKE_CXX = ccache g++
     #QMAKE_CXX = clang++
 }
 win32 {
-    taglib.path = F:\\taglib-1.8\\taglib
-    INCLUDEPATH += $${taglib.path}\\Headers
-    LIBS += -L$${taglib.path} -ltag
+    contains(DEFINES, USE_TAGLIB): INCLUDEPATH += F:\\taglib-1.8\\taglib\\Headers
+    contains(DEFINES, USE_TAGLIB): LIBS += -LF:\\taglib-1.8\\taglib -ltag
+
     QMAKE_LRELEASE = $$[QT_INSTALL_BINS]\\lrelease.exe
 }
 
 TEMPLATE += app
-QT += xml phonon
+QT += xml
 CONFIG += qt debug
 
 MOC_DIR = .moc
@@ -54,6 +78,7 @@ SOURCES += \
     trackpositionslider.cpp \
     updatedatabasedialog.cpp \
     util.cpp \
+    xine-engine.cpp \
     yammigui.cpp \
     yammimodel.cpp
 
@@ -86,6 +111,7 @@ HEADERS += \
     trackpositionslider.h \
     updatedatabasedialog.h \
     util.h \
+    xine-engine.h \
     yammigui.h \
     yammimodel.h
 

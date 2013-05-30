@@ -48,7 +48,11 @@ MyListView::MyListView(QWidget *parent) : QTableView(parent) {
     setDropIndicatorShown(true);
     setDragDropMode(QTableView::InternalMove);
     horizontalHeader()->setDefaultAlignment(Qt::AlignLeft);
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+    horizontalHeader()->setSectionsMovable(true);
+#else
     horizontalHeader()->setMovable(true);
+#endif
 }
 
 MyListView::~MyListView() {}

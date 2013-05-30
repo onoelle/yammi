@@ -15,6 +15,8 @@
 
 #include "phonon-engine.h"
 
+#ifdef USE_PHONON
+
 #include <QApplication>
 #include <QByteArray>
 #include <QDebug>
@@ -388,3 +390,5 @@ namespace Yammi {
     }
 
 } //namespace Yammi
+
+#endif //USE_PHONON

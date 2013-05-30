@@ -214,11 +214,11 @@ void YammiGui::loadDatabase() {
     }
     folderContentChanged(folderActual);
     
-    checkTimer.setSingleShot(FALSE);
+    checkTimer.setSingleShot(false);
     checkTimer.start(100);
-    regularTimer.setSingleShot(FALSE);
+    regularTimer.setSingleShot(false);
     regularTimer.start(500);
-    searchResultsTimer.setSingleShot(FALSE);
+    searchResultsTimer.setSingleShot(false);
     searchResultsTimer.start(10);
     cfg.endGroup();
 }
@@ -590,17 +590,17 @@ void YammiGui::gotoFuzzyFolder(bool backward) {//HERE
 
         searchStr=" "+searchStr+" ";
         FuzzySearch fs;
-        fs.initialize(searchStr.toLower().toAscii(), 2, 4);			// STEP 1
+        fs.initialize(searchStr.toLower().toLatin1(), 2, 4);			// STEP 1
 
 
         for (int i = 0; i < folderListView->topLevelItemCount(); i++) {
             QTreeWidgetItem* item = folderListView->topLevelItem(i);
             Folder* f = (Folder*)item;
-            fs.checkNext(f->folderName().toLower().toAscii(), (void*)f);				// STEP 2 (top-level folder)
+            fs.checkNext(f->folderName().toLower().toLatin1(), (void*)f);				// STEP 2 (top-level folder)
             for (int j = 0; j < item->childCount(); j++) {
                 QTreeWidgetItem* item2 = item->child(j);
                 Folder* f2 = (Folder*)item2;
-                fs.checkNext(f2->folderName().toLower().toAscii(), (void*)f2);				// STEP 2 (subfolders)
+                fs.checkNext(f2->folderName().toLower().toLatin1(), (void*)f2);				// STEP 2 (subfolders)
             }
         }
 
@@ -1374,7 +1374,7 @@ void YammiGui::forSelectionPlugin() {
             if(progress.wasCanceled()) {
                 return;
             }
-            system(cmd2.toAscii());
+            system(cmd2.toLatin1());
         }
     }
 
@@ -1390,7 +1390,7 @@ void YammiGui::forSelectionPlugin() {
         QString customListFilename(config()->databaseDir+"customlist.temp");
         QFile customListFile(customListFilename);
         customListFile.open(QIODevice::WriteOnly);
-        customListFile.write(customList.toAscii(), customList.length());
+        customListFile.write(customList.toLatin1(), customList.length());
         customListFile.close();
         cmd.replace(QRegExp("\\{customList\\}"), customList);
         cmd.replace(QRegExp("\\{customListFile\\}"), customListFilename);
@@ -1409,7 +1409,7 @@ void YammiGui::forSelectionPlugin() {
                 return;
             }
         }
-        system(cmd.toAscii());
+        system(cmd.toLatin1());
     }
 }
 
@@ -2649,9 +2649,11 @@ void YammiGui::loadMediaPlayer( ) {
         player = new Yammi::XineEngine(model);
         break;
 #endif
+#ifdef USE_PHONON
     case Prefs::MEDIA_PLAYER_PHONONENGINE:
         player = new Yammi::PhononEngine(model);
         break;
+#endif
     case Prefs::MEDIA_PLAYER_DUMMY:
     default:
         player = new DummyPlayer( model );
@@ -2684,7 +2686,11 @@ void YammiGui::createMainWidget( ) {
     
     // set up the quick browser on the left
     folderListView = new QTreeWidget( leftWidget );
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+    folderListView->header()->setSectionsClickable(false);
+#else
     folderListView->header()->setClickable(false);
+#endif
     folderListView->headerItem()->setText(0, tr("Quick Browser"));
     folderListView->setRootIsDecorated(true);
 

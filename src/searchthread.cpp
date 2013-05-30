@@ -66,7 +66,7 @@ void SearchThread::run() {
 			// start fuzzy search
 			QString searchStr=" " + currentSearchTerm +" ";
 			FuzzySearch fs;
-            fs.initialize(searchStr.toLower().toAscii(), 2, 4);			// STEP 1
+            fs.initialize(searchStr.toLower().toLatin1(), 2, 4);			// STEP 1
 			// search through all songs
 			QString composed;
             for(MyList::iterator it = gYammiGui->getModel()->allSongs.begin(); it != gYammiGui->getModel()->allSongs.end(); it++) {
@@ -79,7 +79,7 @@ void SearchThread::run() {
 					// if tags incomplete use filename for search
 					composed=s->filename+"- "+composed;
 				}
-                fs.checkNext(composed.toLower().toAscii(), (void*)s);				// STEP 2
+                fs.checkNext(composed.toLower().toLatin1(), (void*)s);				// STEP 2
 			}
 			if(searchTerm==currentSearchTerm) {
 				// background search completed without change in search term

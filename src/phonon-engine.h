@@ -21,6 +21,8 @@
 #ifndef PHONON_ENGINE_H
 #define PHONON_ENGINE_H
 
+#ifdef USE_PHONON
+
 #include <Phonon/AudioOutput>
 #include <Phonon/MediaObject>
 
@@ -110,5 +112,7 @@ namespace Yammi {
     };
 
 }; //namespace Yammi
+
+#endif //USE_PHONON
 
 #endif //PHONON_ENGINE_H

@@ -14,6 +14,8 @@
 
 #include "xine-engine.h"
 
+#ifdef USE_XINE
+
 #include <QApplication>
 #include <QByteArray>
 #include <QDebug>
@@ -34,7 +36,12 @@
 
 
 ///returns the configuration we will use. there is no KInstance, so using this hacked up method.
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+static inline QByteArray configPath() { return QFile::encodeName(QStandardPaths::standardLocations(QStandardPaths::DataLocation)[0] + "/xine-config" ); }
+#else
 static inline QByteArray configPath() { return QFile::encodeName(QDesktopServices::storageLocation(QDesktopServices::DataLocation) + "/xine-config" ); }
+#endif
+
 
 
 namespace Yammi {
@@ -618,3 +625,5 @@ namespace Yammi {
     }
 
 } //namespace Yammi
+
+#endif //USE_XINE
