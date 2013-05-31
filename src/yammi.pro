@@ -138,6 +138,14 @@ TRANSLATIONS = \
     translations/yammi_it.ts \
     translations/yammi_nl.ts
 
+update-ts.commands = lupdate -locations absolute -pro yammi.pro
+update-ts.target = update-ts
+QMAKE_EXTRA_TARGETS += update-ts
+
+stage-ts.commands = lupdate -locations none -pro yammi.pro && git add $${TRANSLATIONS}
+stage-ts.target = stage-ts
+QMAKE_EXTRA_TARGETS += stage-ts
+
 updateqm.input = TRANSLATIONS
 updateqm.output = ${QMAKE_FILE_PATH}/${QMAKE_FILE_BASE}.qm
 updateqm.commands = $$QMAKE_LRELEASE ${QMAKE_FILE_IN} -qm ${QMAKE_FILE_PATH}/${QMAKE_FILE_BASE}.qm
