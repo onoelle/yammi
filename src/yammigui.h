@@ -40,6 +40,7 @@ class QSplitter;
 class QTextEdit;
 class QTreeWidget;
 class QTreeWidgetItem;
+class QxtGlobalShortcut;
 
 class YammiModel;
 class MediaPlayer;
@@ -315,6 +316,7 @@ protected:
     void createMainWidget( );
     void createToolbars();
     void createTrayIcon();
+    void createGlobalShortcuts();
     static int randomNum(int numbers = RAND_MAX);
 
     // gui
@@ -492,6 +494,11 @@ private:
     QAction* m_actionMinimize;
     QAction* m_actionMaximize;
     QAction* m_actionRestore;
+
+    QxtGlobalShortcut* m_shortcutSkipBackward;
+    QxtGlobalShortcut* m_shortcutPlayPause;
+    QxtGlobalShortcut* m_shortcutStop;
+    QxtGlobalShortcut* m_shortcutSkipForward;
 };
 
 #endif

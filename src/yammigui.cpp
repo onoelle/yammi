@@ -45,6 +45,9 @@
 #endif
 #include <QToolBar>
 #include <QToolTip>
+#ifdef USE_QXT
+#include <QxtGlobalShortcut>
+#endif
 
 #include "ConsistencyCheckParameter.h"
 #include "folder.h"
@@ -127,6 +130,7 @@ YammiGui::YammiGui() : QMainWindow( ) {
     createToolbars();
     createMenuBar();
     createTrayIcon();
+    createGlobalShortcuts();
 
     // final touches before start up
     readOptions( );
@@ -2697,6 +2701,19 @@ void YammiGui::trayIconActivated(QSystemTrayIcon::ActivationReason reason)
         foreach (QAction* action, trayIcon->contextMenu()->actions()) {
             action->setProperty("disabledShortcut", action->shortcut().toString());
             action->setShortcut(QKeySequence());
+#if USE_QXT
+            if (action == m_actionSkipBackward)
+                action->setShortcut(m_shortcutSkipBackward->shortcut());
+
+            if (action == m_actionPlayPause)
+                action->setShortcut(m_shortcutPlayPause->shortcut());
+
+            if (action == m_actionStop)
+                action->setShortcut(m_shortcutStop->shortcut());
+
+            if (action == m_actionSkipForward)
+                action->setShortcut(m_shortcutSkipForward->shortcut());
+#endif
         }
         break;
     default:
@@ -3097,6 +3114,32 @@ void YammiGui::createMenuBar()
     menu->addAction(m_actionConfigureYammi);
 }
 
+void YammiGui::createGlobalShortcuts()
+{
+#if USE_QXT
+    m_shortcutSkipBackward = new QxtGlobalShortcut(this);
+    connect(m_shortcutSkipBackward, SIGNAL(activated()), this, SLOT(skipBackward()));
+    m_shortcutSkipBackward->setShortcut(QKeySequence("Meta+y"));
+
+    m_shortcutPlayPause = new QxtGlobalShortcut(this);
+    connect(m_shortcutPlayPause, SIGNAL(activated()), this, SLOT(playPause()));
+    m_shortcutPlayPause->setShortcut(QKeySequence("Meta+x"));
+
+    m_shortcutStop = new QxtGlobalShortcut(this);
+    connect(m_shortcutStop, SIGNAL(activated()), this, SLOT(stop()));
+    m_shortcutStop->setShortcut(QKeySequence("Meta+c"));
+
+    m_shortcutSkipForward = new QxtGlobalShortcut(this);
+    connect(m_shortcutSkipForward, SIGNAL(activated()), this, SLOT(skipForward()));
+    m_shortcutSkipForward->setShortcut(QKeySequence("Meta+v"));
+#else
+    m_shortcutSkipBackward = NULL;
+    m_shortcutPlayPause = NULL;
+    m_shortcutStop = NULL;
+    m_shortcutSkipForward = NULL;
+#endif
+}
+
 void YammiGui::createTrayIcon()
 {
     QStyle* style = QApplication::style();
@@ -3114,10 +3157,10 @@ void YammiGui::createTrayIcon()
 
     trayIconMenu->addSeparator();
 
-    trayIconMenu->addAction(m_actionPlayPause);
     trayIconMenu->addAction(m_actionSkipBackward);
-    trayIconMenu->addAction(m_actionSkipForward);
+    trayIconMenu->addAction(m_actionPlayPause);
     trayIconMenu->addAction(m_actionStop);
+    trayIconMenu->addAction(m_actionSkipForward);
 
     trayIcon = new QSystemTrayIcon(this);
     trayIcon->setContextMenu(trayIconMenu);
