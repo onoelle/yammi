@@ -2695,6 +2695,7 @@ void YammiGui::trayIconActivated(QSystemTrayIcon::ActivationReason reason)
             showMinimized();
         } else {
             showNormal();
+            activateWindow();
         }
         break;
     case QSystemTrayIcon::Context:
