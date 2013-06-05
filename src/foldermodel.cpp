@@ -45,7 +45,17 @@ int FolderModel::columnCount(const QModelIndex & /*parent*/) const
     return MAX_COLUMN_NO;
 }
 
-QVariant FolderModel::dataDisplayRole(const QModelIndex &index, int /*role*/) const
+QVariant helper_dataDisplayRoleDateTime(QDateTime dt)
+{
+    if (dt.isValid()) {
+        return dt.date().toString(Qt::DefaultLocaleShortDate) +
+                dt.time().toString(" hh:mm:ss");
+    } else {
+        return QVariant();
+    }
+}
+
+QVariant FolderModel::dataDisplayRole(const QModelIndex &index) const
 {
     QVariant ret;
     SongEntry* songEntry = SongEntry::qvAsSe(data(index, SongEntryPointerRole));
@@ -53,16 +63,12 @@ QVariant FolderModel::dataDisplayRole(const QModelIndex &index, int /*role*/) co
         Song* s = songEntry->song();
         switch (index.column()) {
         case COLUMN_POS:
+        case COLUMN_MATCH:
+        case COLUMN_REASON:
             ret = songEntry->getColumn(0);
             break;
         case COLUMN_PLAYED_ON:
-            ret = songEntry->getColumn(0);
-            break;
-        case COLUMN_MATCH:
-            ret = songEntry->getColumn(0);
-            break;
-        case COLUMN_REASON:
-            ret = songEntry->getColumn(0);
+            ret = helper_dataDisplayRoleDateTime(songEntry->getColumnData(0).toDateTime());
             break;
         case COLUMN_ARTIST:
             ret = s->artist;
@@ -96,7 +102,7 @@ QVariant FolderModel::dataDisplayRole(const QModelIndex &index, int /*role*/) co
             ret = s->genre;
             break;
         case COLUMN_ADDED_TO:
-            ret = s->addedTo.writeToString();
+            ret = helper_dataDisplayRoleDateTime(s->addedTo);
             break;
         case COLUMN_BITRATE:
             if (s->bitrate != 0) {
@@ -120,7 +126,7 @@ QVariant FolderModel::dataDisplayRole(const QModelIndex &index, int /*role*/) co
                 never.setDate(QDate(1900,1,1));
                 never.setTime(QTime(0,0,0));
                 if (s->lastPlayed != never) {
-                    ret = s->lastPlayed.writeToString();
+                    ret = helper_dataDisplayRoleDateTime(s->lastPlayed);
                 } else {
                     ret = tr("never");
                 }
@@ -133,7 +139,7 @@ QVariant FolderModel::dataDisplayRole(const QModelIndex &index, int /*role*/) co
     return ret;
 }
 
-QVariant FolderModel::dataTextColorRole(const QModelIndex &index, int /*role*/) const
+QVariant FolderModel::dataTextColorRole(const QModelIndex &index) const
 {
     QVariant ret;
     SongEntry* songEntry = SongEntry::qvAsSe(data(index, SongEntryPointerRole));
@@ -168,7 +174,7 @@ QVariant FolderModel::dataTextColorRole(const QModelIndex &index, int /*role*/) 
     return ret;
 }
 
-QVariant FolderModel::dataTextAlignmentRole(const QModelIndex &index, int /*role*/) const
+QVariant FolderModel::dataTextAlignmentRole(const QModelIndex &index) const
 {
     QVariant ret;
 
@@ -187,7 +193,7 @@ QVariant FolderModel::dataTextAlignmentRole(const QModelIndex &index, int /*role
     return ret;
 }
 
-QVariant FolderModel::dataSongEntryPointerRole(const QModelIndex &index, int /*role*/) const
+QVariant FolderModel::dataSongEntryPointerRole(const QModelIndex &index) const
 {
     QVariant ret;
 
@@ -204,17 +210,59 @@ QVariant FolderModel::dataSongEntryPointerRole(const QModelIndex &index, int /*r
     return ret;
 }
 
+QVariant FolderModel::dataSongEntrySortDataRole(const QModelIndex &index) const
+{
+    QVariant ret;
+
+    ret = dataDisplayRole(index);
+
+    int column = index.column();
+    SongEntry* songEntry = SongEntry::qvAsSe(data(index, SongEntryPointerRole));
+    if (songEntry) {
+        Song* s = songEntry->song();
+
+        switch (column) {
+        case COLUMN_PLAYED_ON:
+            ret = songEntry->getColumnData(0);
+            if (ret == tr("never"))
+                ret = QDateTime();
+            break;
+        case COLUMN_ADDED_TO:
+            ret = s->addedTo;
+            break;
+        case COLUMN_LAST_PLAYED:
+            ret = s->lastPlayed;
+            break;
+        case COLUMN_BITRATE:
+            ret = s->bitrate;
+            break;
+        case COLUMN_LENGTH:
+            ret = s->length;
+            break;
+        case COLUMN_TRACKNR:
+            ret = s->trackNr;
+            break;
+        default:
+            break;
+        }
+    }
+
+    return ret;
+}
+
 QVariant FolderModel::data(const QModelIndex &index, int role) const
 {
     switch (role) {
     case Qt::DisplayRole:
-        return dataDisplayRole(index, role);
+        return dataDisplayRole(index);
     case Qt::TextColorRole:
-        return dataTextColorRole(index, role);
+        return dataTextColorRole(index);
     case Qt::TextAlignmentRole:
-        return dataTextAlignmentRole(index, role);
+        return dataTextAlignmentRole(index);
     case SongEntryPointerRole:
-        return dataSongEntryPointerRole(index, role);
+        return dataSongEntryPointerRole(index);
+    case SongEntrySortDataRole:
+        return dataSongEntrySortDataRole(index);
     }
     return QVariant();
 }

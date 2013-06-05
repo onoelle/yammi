@@ -36,6 +36,7 @@ public:
     virtual int compare(int column, SongEntry* other);
     virtual QString getKey(int no);
     virtual QString getColumn(int no);
+    virtual QVariant getColumnData(int no);
     MyDateTime timestamp;
 protected:
 };

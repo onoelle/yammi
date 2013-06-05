@@ -52,3 +52,11 @@ QString SongEntryTimestamp::getColumn(int no)
 	else
 		return QString("");
 }
+
+QVariant SongEntryTimestamp::getColumnData(int no)
+{
+    if (no == 0)
+        return timestamp;
+    else
+        return QVariant();
+}

@@ -46,7 +46,8 @@ public:
                    MAX_COLUMN_NO
                  };
 
-    enum UserItemDataRole { SongEntryPointerRole = Qt::UserRole + 1 };
+    enum UserItemDataRole { SongEntryPointerRole = Qt::UserRole + 1,
+                            SongEntrySortDataRole = Qt::UserRole + 2    };
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const ;
     int columnCount(const QModelIndex &parent = QModelIndex()) const;
@@ -61,10 +62,11 @@ public:
     void reset();
 
 private:
-    QVariant dataDisplayRole(const QModelIndex &index, int role) const;
-    QVariant dataTextColorRole(const QModelIndex &index, int role) const;
-    QVariant dataSongEntryPointerRole(const QModelIndex &index, int role) const;
-    QVariant dataTextAlignmentRole(const QModelIndex &index, int role) const;
+    QVariant dataDisplayRole(const QModelIndex &index) const;
+    QVariant dataTextAlignmentRole(const QModelIndex &index) const;
+    QVariant dataTextColorRole(const QModelIndex &index) const;
+    QVariant dataSongEntryPointerRole(const QModelIndex &index) const;
+    QVariant dataSongEntrySortDataRole(const QModelIndex &index) const;
 };
 
 #endif //FOLDERMODEL_H

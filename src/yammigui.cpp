@@ -2763,6 +2763,7 @@ void YammiGui::createMainWidget( ) {
     songListViewModel = new FolderModel();
     QSortFilterProxyModel* proxyModel = new QSortFilterProxyModel();
     proxyModel->setSourceModel(songListViewModel);
+    proxyModel->setSortRole(FolderModel::SongEntrySortDataRole);
     proxyModel->setDynamicSortFilter(true);
     songListView->setModel(proxyModel);
     songListView->show();
