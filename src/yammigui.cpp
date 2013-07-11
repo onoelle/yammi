@@ -2838,7 +2838,7 @@ void YammiGui::setupActions()
     m_actionQuit = new QAction(tr("&Quit"), this);
     m_actionQuit->setShortcut(QKeySequence::Quit);
     m_actionQuit->setIcon(style->standardIcon(QStyle::SP_DialogCloseButton));
-    connect(m_actionQuit, SIGNAL(triggered()), qApp, SLOT(quit()));
+    connect(m_actionQuit, SIGNAL(triggered()), this, SLOT(close()));
 
     m_actionSelectAll = new QAction(tr("Select &All"), this);
     m_actionSelectAll->setShortcut(QKeySequence::SelectAll);
@@ -3048,9 +3048,6 @@ void YammiGui::setupActions()
 
     m_actionRestore = new QAction(tr("&Restore"), this);
     connect(m_actionRestore, SIGNAL(triggered()), this, SLOT(showNormal()));
-
-    m_actionQuit = new QAction(tr("&Quit"), this);
-    connect(m_actionQuit, SIGNAL(triggered()), qApp, SLOT(quit()));
 }
 
 

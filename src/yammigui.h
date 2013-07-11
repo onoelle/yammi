@@ -145,7 +145,7 @@ protected:
     /** read general Options again and initialize all variables*/
     void readOptions();
 
-    void closeEvent(QCloseEvent *event);
+    virtual void closeEvent(QCloseEvent *event);
 
     /**
      * queryClose is called before the window is closed, either by the user
