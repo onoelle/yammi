@@ -17,11 +17,13 @@
 
 #include "song.h"
 
+#ifdef USE_TAGLIB
 #include <audioproperties.h>
 #include <fileref.h>
 #include <id3v1genres.h>    //used to load genre list
 #include <tag.h>
 #include <tstring.h>
+#endif /*USE_TAGLIB*/
 
 #include <QDebug>
 #include <QDir>
@@ -171,6 +173,7 @@ bool Song::create(const QString location, bool capitalizeTags) {
  * @return true if at least one tag could be read and was not empty, false otherwise.
  */
 bool Song::readTags(QString filename) {
+#ifdef USE_TAGLIB
     TagLib::FileRef f(QFile::encodeName(filename).data());
     if(f.isNull()) {
         qDebug() << "reading tags: could not create TagLib::FileRef for file " << filename;
@@ -195,6 +198,10 @@ bool Song::readTags(QString filename) {
     trackNr = (int) tag->track();
     genre = TStringToQString ( tag->genre() ).trimmed();
     return true;
+#else
+    Q_UNUSED(filename);
+    return false;
+#endif /*USE_TAGLIB*/
 }
 
 /**
@@ -203,6 +210,7 @@ bool Song::readTags(QString filename) {
  * @return true if properties could be read, false otherwise.
  */
 bool Song::readLayerInfo(QString filename) {
+#ifdef USE_TAGLIB
     TagLib::FileRef f(QFile::encodeName(filename).data());
     if(f.isNull()) {
         qDebug() << "reading layer info: could not create TagLib::FileRef for file " << filename;
@@ -230,6 +238,9 @@ bool Song::readLayerInfo(QString filename) {
         }
     }
     qDebug() << "reading layer info: not successful => length and bitrate set to 0";
+#else
+    Q_UNUSED(filename);
+#endif /*USE_TAGLIB*/
     return false;
 }
 
@@ -473,6 +484,7 @@ bool Song::checkTags() {
  * @return true if tags have been successfully written.
  */
 bool Song::saveTags() {
+#ifdef USE_TAGLIB
     qDebug() << "trying to save tags on file " << filename;
     QString filename = location();
     if(filename=="") {
@@ -512,6 +524,9 @@ bool Song::saveTags() {
         qDebug() << "saving tags: error on writing tags";
     }
     return success;
+#else
+    return false;
+#endif /*USE_TAGLIB*/
 }
 
 /**

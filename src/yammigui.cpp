@@ -17,7 +17,9 @@
 
 #include "yammigui.h"
 
+#ifdef USE_TAGLIB
 #include <id3v1genres.h>
+#endif
 
 #include <QActionGroup>
 #include <QCheckBox>
@@ -1709,9 +1711,11 @@ void YammiGui::forSelectionSongInfo( ) {
     // fill combobox with genres, but sort them first
     QStringList genreList;
     genreList.append("");
+#ifdef USE_TAGLIB
     for(int genreNr=0; !(TagLib::ID3v1::genre(genreNr).isNull()); genreNr++) {
         genreList.append(TStringToQString(TagLib::ID3v1::genre(genreNr)));
     }
+#endif
     genreList.sort();
     for ( QStringList::Iterator it = genreList.begin(); it != genreList.end(); ++it ) {
         si.ComboBoxGenre->addItem(*it);

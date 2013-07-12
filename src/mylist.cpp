@@ -17,8 +17,6 @@
 
 #include "mylist.h"
 
-#include <id3v1genres.h>
-
 #include <tr1/functional>
 
 #include "song.h"
