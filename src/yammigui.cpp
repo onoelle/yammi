@@ -1183,7 +1183,9 @@ void YammiGui::loadSelectedSongInMixxxDeck(int deckNumber)
             qDebug() << "Call to slotLoadToDeck failed:" << qPrintable(reply.error().message());
         }
     }
-#endif
+#else
+    Q_UNUSED(deckNumber);
+#endif /*USE_QDBUS*/
 }
 
 
