@@ -46,7 +46,7 @@ namespace Yammi {
 
         virtual bool finishInitialization();
 
-        /** Checks if the current song has finished and stxine the next one */
+        /** Checks if the current song has finished and starts the next one */
         virtual void check();
 
         /** @return the player's current status */
