@@ -73,6 +73,7 @@
 #include "songinfo.h"
 #include "trackpositionslider.h"
 #include "util.h"
+#include "vlc-engine.h"
 #include "xine-engine.h"
 #include "yammimodel.h"
 
@@ -2676,6 +2677,11 @@ void YammiGui::loadMediaPlayer( ) {
 #ifdef USE_QMEDIAPLAYER
     case Prefs::MEDIA_PLAYER_QMEDIAPLAYERENGINE:
         player = new Yammi::QMediaPlayerEngine(model);
+        break;
+#endif
+#ifdef USE_VLC
+    case Prefs::MEDIA_PLAYER_VLCENGINE:
+        player = new Yammi::VlcEngine(model);
         break;
 #endif
     case Prefs::MEDIA_PLAYER_DUMMY:

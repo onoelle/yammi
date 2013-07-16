@@ -73,6 +73,12 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, Prefs* config )
     RadioButtonQMediaPlayerEngine->setVisible(false);
 #endif
 
+#ifdef USE_VLC
+    RadioButtonVlcEngine->setChecked(config->mediaPlayer == config->MEDIA_PLAYER_VLCENGINE);
+#else
+    RadioButtonVlcEngine->setVisible(false);
+#endif
+
     for(int i=0; i<Song::getMaxSongAction(); i++) {
         ComboBoxDoubleClickAction->addItem(Song::getSongAction(i));
     }
@@ -191,6 +197,8 @@ void PreferencesDialog::myAccept() {
         config->mediaPlayer = config->MEDIA_PLAYER_PHONONENGINE;
     } else if (RadioButtonQMediaPlayerEngine->isChecked()) {
         config->mediaPlayer = config->MEDIA_PLAYER_QMEDIAPLAYERENGINE;
+    } else if (RadioButtonVlcEngine->isChecked()) {
+        config->mediaPlayer = config->MEDIA_PLAYER_VLCENGINE;
     }
 
     // plugins

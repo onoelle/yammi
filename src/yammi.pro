@@ -12,6 +12,8 @@
     DEFINES += USE_TAGLIB
 
     !win32:DEFINES += USE_XINE
+
+    DEFINES += USE_VLC
 #
 
 
@@ -37,6 +39,10 @@ unix {
     contains(DEFINES, USE_TAGLIB): LIBS += -ltag
 
     contains(DEFINES, USE_XINE): LIBS += -lxine
+
+    # $(pkg-config --cflags libvlc)
+    # $(pkg-config --libs libvlc)
+    contains(DEFINES, USE_VLC): LIBS += -lvlc
 
     QMAKE_LRELEASE = $$[QT_INSTALL_BINS]/lrelease
     #QMAKE_CXX = ccache g++
@@ -87,6 +93,7 @@ SOURCES += \
     trackpositionslider.cpp \
     updatedatabasedialog.cpp \
     util.cpp \
+    vlc-engine.cpp \
     xine-engine.cpp \
     yammigui.cpp \
     yammimodel.cpp
@@ -121,6 +128,7 @@ HEADERS += \
     trackpositionslider.h \
     updatedatabasedialog.h \
     util.h \
+    vlc-engine.h \
     xine-engine.h \
     yammigui.h \
     yammimodel.h

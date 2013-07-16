@@ -41,6 +41,7 @@ public:
     static const int MEDIA_PLAYER_XINEENGINE = 1;
     static const int MEDIA_PLAYER_PHONONENGINE = 2;
     static const int MEDIA_PLAYER_QMEDIAPLAYERENGINE = 3;
+    static const int MEDIA_PLAYER_VLCENGINE = 4;
     static const int GUESSING_MODE_SIMPLE = 0;
     static const int GUESSING_MODE_ADVANCED = 1;
 
