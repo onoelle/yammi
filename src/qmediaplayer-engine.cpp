@@ -198,6 +198,7 @@ namespace Yammi {
             break;
         case QMediaPlayer::PausedState:
             ret = PAUSED;
+            break;
         default:
             break;
         }
@@ -222,9 +223,6 @@ namespace Yammi {
     {
         //qDebug() << "QMediaPlayerEngine::getCurrentTime" << m_mediaPlayer->position();
 
-        if (m_mediaPlayer->state() == QMediaPlayer::PausedState) {
-            qDebug() << "PausedState" << m_mediaPlayer->position();
-        }
         return m_mediaPlayer->position();
     }
 
