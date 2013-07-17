@@ -1137,6 +1137,10 @@ Additionally to the usual placeholders (see the plugins tab) you can use {skipSe
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>VlcEngine</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>the script that is invoked when this plugin is chosen</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3069,6 +3073,10 @@ Do you want to continue?</source>
     <message>
         <source>Media Player</source>
         <translation type="unfinished">Media Speler</translation>
+    </message>
+    <message>
+        <source>Time Display</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Prelisten</source>

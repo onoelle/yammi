@@ -3207,6 +3207,10 @@ Puede ser necesario crear                           una nueva base de datos y es
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>VlcEngine</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Prelistening</source>
         <translation type="unfinished">Pre-escucha</translation>
     </message>
@@ -4220,6 +4224,10 @@ Estadísticas:
     <message>
         <source>Media Player</source>
         <translation type="unfinished">Reproductor</translation>
+    </message>
+    <message>
+        <source>Time Display</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Song Actions</source>

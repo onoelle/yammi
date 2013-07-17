@@ -775,6 +775,10 @@
         <translation>QMediaPlayerEngine</translation>
     </message>
     <message>
+        <source>VlcEngine</source>
+        <translation>VlcEngine</translation>
+    </message>
+    <message>
         <source>Prelistening</source>
         <translation>Vorhören</translation>
     </message>
@@ -1893,6 +1897,10 @@ Statistik:
     <message>
         <source>Media Player</source>
         <translation>Media Player</translation>
+    </message>
+    <message>
+        <source>Time Display</source>
+        <translation>Time Display</translation>
     </message>
     <message>
         <source>Song Actions</source>

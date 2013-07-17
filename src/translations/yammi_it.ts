@@ -3539,6 +3539,10 @@ da spazio nelle nuove canzoni</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>VlcEngine</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Prelistening</source>
         <translation type="unfinished">Preascolto</translation>
     </message>
@@ -4576,6 +4580,10 @@ Statistiche
     <message>
         <source>Media Player</source>
         <translation type="unfinished">Media Player</translation>
+    </message>
+    <message>
+        <source>Time Display</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Song Actions</source>
