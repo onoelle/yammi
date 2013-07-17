@@ -276,7 +276,7 @@ namespace Yammi {
             totalTime = libvlc_media_get_duration(m);
             libvlc_media_release(m);
         }
-        qDebug() << "VlcEngine::getTotalTime" << totalTime;
+        //qDebug() << "VlcEngine::getTotalTime" << totalTime;
         return totalTime;
     }
 

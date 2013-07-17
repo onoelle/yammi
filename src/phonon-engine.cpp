@@ -251,7 +251,7 @@ namespace Yammi {
     int
     PhononEngine::getTotalTime()
     {
-        qDebug() << "PhononEngine::getTotalTime";
+        //qDebug() << "PhononEngine::getTotalTime";
 
         return m_mediaObject->totalTime();
     }
