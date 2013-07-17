@@ -43,6 +43,7 @@ class QTreeWidgetItem;
 class QxtGlobalShortcut;
 
 class YammiModel;
+class YammiLCDNumber;
 class MediaPlayer;
 class MyDateTime;
 class MyListView;
@@ -177,6 +178,7 @@ private:
 private:
     bool validState;
     TrackPositionSlider* m_seekSlider;
+    YammiLCDNumber* m_lcdDisplay;
     QLineEdit* m_searchField;
     bool searchResultsUpdateNeeded;
     bool m_acceptSearchResults;
@@ -447,6 +449,7 @@ private:
     QActionGroup* m_actionGroupToggleToolbar;
     QAction* m_actionToggleMainToolbar;
     QAction* m_actionToggleMediaPlayerToolbar;
+    QAction* m_actionToggleTimeDisplayToolbar;
     QAction* m_actionToggleSongActionsToolbar;
     QAction* m_actionTogglePrelistenToolbar;
     QActionGroup* m_actionGroupColumnVisibility;

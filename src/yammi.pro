@@ -96,6 +96,7 @@ SOURCES += \
     vlc-engine.cpp \
     xine-engine.cpp \
     yammigui.cpp \
+    yammilcdnumber.cpp \
     yammimodel.cpp
 
 HEADERS += \
@@ -131,6 +132,7 @@ HEADERS += \
     vlc-engine.h \
     xine-engine.h \
     yammigui.h \
+    yammilcdnumber.h \
     yammimodel.h
 
 FORMS = \

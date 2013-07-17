@@ -75,6 +75,7 @@
 #include "util.h"
 #include "vlc-engine.h"
 #include "xine-engine.h"
+#include "yammilcdnumber.h"
 #include "yammimodel.h"
 
 // dialog includes
@@ -274,10 +275,21 @@ void YammiGui::readOptions() {
     centralWidget->restoreState(cfg.value("splitterHorizontal").toByteArray());
     leftWidget->restoreState(cfg.value("splitterVertical").toByteArray());
 
-    findChild<QAction*>("MainToolbar")->setChecked(!findChild<QToolBar*>("MainToolbar")->isHidden());
-    findChild<QAction*>("MediaPlayerToolbar")->setChecked(!findChild<QToolBar*>("MediaPlayerToolbar")->isHidden());
-    findChild<QAction*>("SongActionsToolbar")->setChecked(!findChild<QToolBar*>("SongActionsToolbar")->isHidden());
-    findChild<QAction*>("PrelistenToolbar")->setChecked(!findChild<QToolBar*>("PrelistenToolbar")->isHidden());
+    QAction* a;
+    a = findChild<QAction*>("MainToolbar");
+    if (a) a->setChecked(!findChild<QToolBar*>("MainToolbar")->isHidden());
+
+    a = findChild<QAction*>("MediaPlayerToolbar");
+    if (a) a->setChecked(!findChild<QToolBar*>("MediaPlayerToolbar")->isHidden());
+
+    a = findChild<QAction*>("TimeDisplayToolbar");
+    if (a) a->setChecked(!findChild<QToolBar*>("TimeDisplayToolbar")->isHidden());
+
+    a = findChild<QAction*>("SongActionsToolbar");
+    if (a) a->setChecked(!findChild<QToolBar*>("SongActionsToolbar")->isHidden());
+
+    a = findChild<QAction*>("PrelistenToolbar");
+    if (a) a->setChecked(!findChild<QToolBar*>("PrelistenToolbar")->isHidden());
 
     cfg.beginGroup("General Options");
 
@@ -2281,9 +2293,11 @@ void YammiGui::onTimer() {
         int current = player->getCurrentTime();
         // 		if(!isSongSliderGrabbed && player->getStatus() != PAUSED) {
         m_seekSlider->setValue(current);
+        m_lcdDisplay->update(current, player->getTotalTime());
         //     }
     } else {
         m_seekSlider->setValue(0);
+        m_lcdDisplay->update(0, 0);
     }
 }
 
@@ -2877,6 +2891,11 @@ void YammiGui::setupActions()
     m_actionToggleMediaPlayerToolbar->setObjectName("MediaPlayerToolbar");
     m_actionGroupToggleToolbar->addAction(m_actionToggleMediaPlayerToolbar);
 
+    m_actionToggleTimeDisplayToolbar = new QAction(tr("Time Display"), this);
+    m_actionToggleTimeDisplayToolbar->setCheckable(true);
+    m_actionToggleTimeDisplayToolbar->setObjectName("TimeDisplayToolbar");
+    m_actionGroupToggleToolbar->addAction(m_actionToggleTimeDisplayToolbar);
+
     m_actionToggleSongActionsToolbar = new QAction(tr("Song Actions"), this);
     m_actionToggleSongActionsToolbar->setCheckable(true);
     m_actionToggleSongActionsToolbar->setObjectName("SongActionsToolbar");
@@ -3082,6 +3101,7 @@ void YammiGui::createMenuBar()
     subMenu = menu->addMenu(tr("Toolbars"));
     subMenu->addAction(m_actionToggleMainToolbar);
     subMenu->addAction(m_actionToggleMediaPlayerToolbar);
+    subMenu->addAction(m_actionToggleTimeDisplayToolbar);
     subMenu->addAction(m_actionToggleSongActionsToolbar);
     subMenu->addAction(m_actionTogglePrelistenToolbar);
 
@@ -3222,6 +3242,11 @@ void YammiGui::createToolbars()
     connect(m_seekSlider,SIGNAL(myWheelEvent(int)),this,SLOT(seekWithWheel(int)));
     mediaPlayerToolBar->addWidget(m_seekSlider);
 
+    QToolBar* timeDisplayToolBar = new QToolBar(tr("Time Display"), this);
+    timeDisplayToolBar->setObjectName("TimeDisplayToolbar");
+    addToolBar(timeDisplayToolBar);
+    m_lcdDisplay = new YammiLCDNumber(timeDisplayToolBar);
+    timeDisplayToolBar->setMinimumSize(100, 30);
 
     QToolBar* songActionsToolBar = new QToolBar(tr("Song Actions"), this);
     songActionsToolBar->setObjectName("SongActionsToolbar");
