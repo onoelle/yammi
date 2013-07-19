@@ -224,6 +224,7 @@ public slots:
     void forSelectionMove();
     void forSelectionPlugin();
     void forSelectionCheckConsistency();
+    void openFolderInFileManager();
 
     /** Enqueue the selected songs at the end of the Playlist.
      * If the Shift key is pressed, the songs are shuffled before being appended */
@@ -490,6 +491,7 @@ private:
     QAction* m_actionSearchSimilarArtist;
     QAction* m_actionSearchSimilarTitle;
     QAction* m_actionSimilarAlbum;
+    QAction* m_actionOpenFolderInFilemanager;
     QAction* m_actionCheckConsistencySelection;
     QAction* m_actionDeleteSong;
     QAction* m_actionMoveFiles;

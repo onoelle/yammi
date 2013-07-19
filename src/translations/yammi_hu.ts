@@ -3154,6 +3154,10 @@ Do you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Open Folder in Filemanager ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>&amp;Columns</source>
         <translation type="unfinished"></translation>
     </message>

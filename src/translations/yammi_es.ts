@@ -4394,6 +4394,10 @@ Estadísticas:
         <translation type="unfinished">Mover archivos</translation>
     </message>
     <message>
+        <source>Open Folder in Filemanager ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Mi&amp;nimize</source>
         <translation type="unfinished"></translation>
     </message>

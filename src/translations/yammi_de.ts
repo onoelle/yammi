@@ -2063,6 +2063,10 @@ Statistik:
         <translation>Lösche Lied ...</translation>
     </message>
     <message>
+        <source>Open Folder in Filemanager ...</source>
+        <translation>Öffne Ordner in Dateimanager ...</translation>
+    </message>
+    <message>
         <source>Mi&amp;nimize</source>
         <translation>Mi&amp;nimieren</translation>
     </message>

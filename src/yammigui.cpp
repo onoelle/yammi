@@ -1277,6 +1277,7 @@ void YammiGui::adjustSongPopup() {
     m_actionPrelistenStart->setEnabled(enable);
     m_actionPrelistenMiddle->setEnabled(enable);
     m_actionPrelistenEnd->setEnabled(enable);
+    m_actionOpenFolderInFilemanager->setEnabled(enable);
     m_actionCheckConsistencySelection->setEnabled(enable);
     m_actionMoveFiles->setEnabled(enable);
 
@@ -1579,6 +1580,16 @@ void YammiGui::forSelectionCheckConsistency() {
     folderProblematic->update(model->problematicSongs);
     folderContentChanged(folderProblematic);
     folderContentChanged(chosenFolder);
+}
+
+
+void YammiGui::openFolderInFileManager() {
+    getSelectedSongs();
+    if (selectedSongs.count() >= 1) {
+        MyList::iterator it = selectedSongs.begin();
+        QString cmd = QString("xdg-open \"%1\"").arg((*it)->song()->path);
+        system(cmd.toUtf8());
+    }
 }
 
 
@@ -3071,6 +3082,9 @@ void YammiGui::setupActions()
     m_actionMoveFiles = new QAction(tr("Move Files"), this);
     connect(m_actionMoveFiles, SIGNAL(triggered()), this, SLOT(forSelectionMove()));
 
+    m_actionOpenFolderInFilemanager = new QAction(tr("Open Folder in Filemanager ..."), this);
+    connect(m_actionOpenFolderInFilemanager, SIGNAL(triggered()), this, SLOT(openFolderInFileManager()));
+
     m_actionMinimize = new QAction(tr("Mi&nimize"), this);
     connect(m_actionMinimize, SIGNAL(triggered()), this, SLOT(showMinimized()));
 
@@ -3313,6 +3327,7 @@ void YammiGui::createSongPopup() {
     subMenu->addAction(m_actionSimilarAlbum);
 
     subMenu = songPopup->addMenu(tr("Advanced ..."));
+    subMenu->addAction(m_actionOpenFolderInFilemanager);
     subMenu->addAction(m_actionCheckConsistencySelection);
     subMenu->addAction(m_actionDeleteSong);
     subMenu->addAction(m_actionMoveFiles);
