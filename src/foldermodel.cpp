@@ -143,6 +143,10 @@ QVariant FolderModel::dataDisplayRole(const QModelIndex &index) const
 QVariant FolderModel::dataTextColorRole(const QModelIndex &index) const
 {
     QColor ret;
+    if (gYammiGui->config()->thisIsSecondYammi) {
+        ret = QColor(Qt::white);
+    }
+
     SongEntry* songEntry = SongEntry::qvAsSe(data(index, SongEntryPointerRole));
     if (songEntry) {
         Song* s = songEntry->song();

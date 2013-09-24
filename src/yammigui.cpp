@@ -230,13 +230,15 @@ void YammiGui::loadDatabase() {
         player->syncYammi2Player();
         if(folderActual->songlist().count() > 0) {
             m_seekSlider->setupTickmarks(folderActual->firstSong());
-            int savedSongPosition = cfg.value("savedSongPosition", 0).toInt();
-            if(savedSongPosition != 0) {
-                player->jumpTo(savedSongPosition);
-            }
-            int savedPlayingStatus = cfg.value("savedPlayingStatus", STOPPED).toInt();
-            if(savedPlayingStatus==PLAYING && player->getStatus()!=PLAYING ) {
-                player->play();
+            if (!config()->thisIsSecondYammi) {
+                int savedSongPosition = cfg.value("savedSongPosition", 0).toInt();
+                if (savedSongPosition != 0) {
+                    player->jumpTo(savedSongPosition);
+                }
+                int savedPlayingStatus = cfg.value("savedPlayingStatus", STOPPED).toInt();
+                if (savedPlayingStatus == PLAYING && player->getStatus() != PLAYING) {
+                    player->play();
+                }
             }
         }
     }
@@ -262,7 +264,7 @@ void YammiGui::loadDatabase() {
 
 void YammiGui::saveOptions() {
 
-    if (model->config()->thisIsSecondYammi)
+    if (config()->thisIsSecondYammi)
         return;
 
     qDebug() << "saveOptions() ";
@@ -389,7 +391,7 @@ bool YammiGui::queryClose() {
         }
     }
 
-    if (model->config()->thisIsSecondYammi)
+    if (config()->thisIsSecondYammi)
         return true;
 
     if(config()->logging && model->songsPlayed.count()>2) {
@@ -402,7 +404,7 @@ bool YammiGui::queryClose() {
 
 bool YammiGui::queryExit() {
     qDebug() << "queryExit() ";
-    if (!model->config()->thisIsSecondYammi) {
+    if (!config()->thisIsSecondYammi) {
         saveOptions();
     }
     player->quit( );
@@ -3207,7 +3209,7 @@ void YammiGui::createMenuBar()
     QAction* action;
 
     menu = menuBar()->addMenu(tr("&File"));
-    if (!model->config()->thisIsSecondYammi) {
+    if (!config()->thisIsSecondYammi) {
         menu->addAction(m_actionSecondYammi);
     }
     menu->addAction(m_actionQuit);
