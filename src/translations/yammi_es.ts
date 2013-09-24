@@ -3211,6 +3211,18 @@ Puede ser necesario crear                           una nueva base de datos y es
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Sound Device which is used when a second Yammi is started for e.g. Prelistening on head phones.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>First Sound Device</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Second Sound Device</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Prelistening</source>
         <translation type="unfinished">Pre-escucha</translation>
     </message>
@@ -3288,6 +3300,14 @@ Additionally to the usual placeholders (see the plugins tab) you can use {skipSe
     <message>
         <source>the script that is invoked when this plugin is chosen</source>
         <translation type="unfinished">script que es invocado para todos los temas seleccionados</translation>
+    </message>
+    <message>
+        <source>Output devices</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sound Device which is used for normal output.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Placeholders ...</source>
@@ -3754,6 +3774,10 @@ Modo grupo = ejecutado una vez para la selección</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>xine_config_lookup_entry failed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Yammi could not create a new xine stream.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4202,6 +4226,10 @@ Estadísticas:
         <translation type="unfinished">Última vez</translation>
     </message>
     <message>
+        <source>&amp;Second Yammi</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>&amp;Quit</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4343,6 +4371,10 @@ Estadísticas:
     </message>
     <message>
         <source>Load in Mixxx Deck 2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enqueue as next in Other Yammi</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

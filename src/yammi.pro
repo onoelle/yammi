@@ -14,6 +14,8 @@
     !win32:DEFINES += USE_XINE
 
     DEFINES += USE_VLC
+
+    !win32:DEFINES += USE_ASOUND
 #
 
 
@@ -43,6 +45,8 @@ unix {
     # $(pkg-config --cflags libvlc)
     # $(pkg-config --libs libvlc)
     contains(DEFINES, USE_VLC): LIBS += -lvlc
+
+    contains(DEFINES, USE_ASOUND): LIBS += -lasound
 
     QMAKE_LRELEASE = $$[QT_INSTALL_BINS]/lrelease
     #QMAKE_CXX = ccache g++

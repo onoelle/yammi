@@ -23,6 +23,7 @@
 #include <QFile>
 #include <QUrl>
 
+#include "prefs.h"
 #include "song.h"
 #include "songentryint.h"
 #include "yammimodel.h"
@@ -39,7 +40,7 @@ namespace Yammi {
     {
         qDebug() << "VlcEngine::VlcEngine";
 
-        const char* argv[] = {
+        const char* argv[100] = {
             "--intf=dummy",
             "--vout=dummy",
             "--ignore-config",
@@ -54,7 +55,18 @@ namespace Yammi {
             "--album-art=0",
             "-v", // -vvv -vv -v
             0 };
-        int argc = (sizeof(argv) / sizeof(char*))-1;
+        int argc;
+        for (argc = 0; argv[argc] != 0; argc++)
+            ;
+
+        QString device = model->config()->getSoundDevice();
+        QByteArray deviceArg;
+        if (!device.isEmpty()) {
+            argv[argc++] = "--aout=alsa";
+            deviceArg.append("--alsa-audio-device=").append(device);
+            argv[argc++] = deviceArg.data();
+        }
+
         m_inst = libvlc_new(argc, argv);
         m_mediaPlayer = libvlc_media_player_new(m_inst);
     }

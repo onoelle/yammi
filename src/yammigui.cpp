@@ -103,6 +103,28 @@ public:
     };
 };
 
+QIcon loadAndConvertIconToGrayScale(QString path)
+{
+    QImage image(path);
+    QRgb col;
+    int gray;
+    int width = image.width();
+    int height = image.height();
+    for (int i = 0; i < width; ++i)
+    {
+        for (int j = 0; j < height; ++j)
+        {
+            col = image.pixel(i, j);
+            if (qAlpha(col)) {
+                gray = qGray(col);
+                image.setPixel(i, j, qRgb(gray, gray, gray));
+            }
+        }
+    }
+    return QIcon(QPixmap().fromImage(image));
+}
+
+
 /////////////////////////////////////////////////////////////////////////////////////////////
 YammiGui::YammiGui() : QMainWindow( ) {
     currentSongStarted = new MyDateTime();
@@ -135,6 +157,11 @@ YammiGui::YammiGui() : QMainWindow( ) {
     createMenuBar();
     createTrayIcon();
     createGlobalShortcuts();
+
+    if (config()->thisIsSecondYammi) {
+        setWindowIcon(loadAndConvertIconToGrayScale("icons:yammi.png"));
+        qApp->setStyleSheet("QTreeWidget, QListView, MyListView, QTextEdit#playlistPart { background-color: #404040; color: white }");
+    }
 
     // final touches before start up
     readOptions( );
@@ -234,6 +261,10 @@ void YammiGui::loadDatabase() {
 }
 
 void YammiGui::saveOptions() {
+
+    if (model->config()->thisIsSecondYammi)
+        return;
+
     qDebug() << "saveOptions() ";
 
     QSettings cfg;
@@ -356,10 +387,13 @@ bool YammiGui::queryClose() {
         default:
             return false;
         }
-    } else { //the db has not changed, but save history anyways...(only if more than 2 songs to add)
-        if(config()->logging && model->songsPlayed.count()>2) {
-            model->saveHistory();
-        }
+    }
+
+    if (model->config()->thisIsSecondYammi)
+        return true;
+
+    if(config()->logging && model->songsPlayed.count()>2) {
+        model->saveHistory();
     }
     // save playlist
     model->saveList(&(model->songsToPlay), config()->databaseDir, "playqueue");    
@@ -368,7 +402,9 @@ bool YammiGui::queryClose() {
 
 bool YammiGui::queryExit() {
     qDebug() << "queryExit() ";
-    saveOptions();
+    if (!model->config()->thisIsSecondYammi) {
+        saveOptions();
+    }
     player->quit( );
     return true;
 }
@@ -447,6 +483,13 @@ void YammiGui::updateHtmlPlaylist()
     formattedTime.sprintf("%d:%02d", length/(60*60), (length % (60*60))/60);
     htmlTemplate.replace(QRegExp("\\{noSongsToPlay\\}"), QString("%1").arg(noSongsToPlay));
     htmlTemplate.replace(QRegExp("\\{timeToPlay\\}"), formattedTime);
+
+    if (config()->thisIsSecondYammi) {
+        htmlTemplate.replace("\"icons:playlistbackground.jpg\"", "\"\"");
+        htmlTemplate.replace("#0000ff", "#9999ff");
+        htmlTemplate.replace("#00ff00", "#99ff99");
+        htmlTemplate.replace("#ff0000", "#ff9999");
+    }
     
     QString htmlSource("");
     
@@ -1201,6 +1244,42 @@ void YammiGui::loadSelectedSongInMixxxDeck(int deckNumber)
 #endif /*USE_QDBUS*/
 }
 
+void YammiGui::slotEnqueueAsNextInOtherYammi()
+{
+#ifdef USE_QDBUS
+    getSelectedSongs();
+    if (selectedSongs.count() == 1) {
+
+        QDBusInterface iface(config()->getDBusServiceOtherYammi(), config()->getDBusPathOtherYammi(), "", QDBusConnection::sessionBus());
+
+        QString file = selectedSongs.first()->song()->location();
+        QDBusReply<void> reply = iface.call("slotEnqueueAsNextByLocation", file);
+        if (reply.isValid()) {
+            qDebug() << "Call to slotEnqueueAsNextByLocation succeeded";
+        } else {
+            qDebug() << "Call to slotEnqueueAsNextByLocation failed:" << qPrintable(reply.error().message());
+        }
+    }
+#endif /*USE_QDBUS*/
+}
+
+void YammiGui::slotEnqueueAsNextByLocation(QString location)
+{
+    Song* s = model->getSongFromFilename(location);
+    if (s) {
+        if(model->songsToPlay.count()==0 || currentSong!=model->songsToPlay.at(0)->song() || player->getStatus() != PLAYING) {
+            model->songsToPlay.insert(0, new SongEntryInt(s, 13));
+        } else {
+            model->songsToPlay.insert(1, new SongEntryInt(s, 13));
+        }
+    } else {
+        qDebug() << "Song not in database" << location;
+    }
+
+    folderActual->correctOrder();
+    player->syncYammi2Player();
+    folderContentChanged(folderActual);
+}
 
 /// user clicked on a song
 void YammiGui::slotSongChanged() {}
@@ -1282,6 +1361,7 @@ void YammiGui::adjustSongPopup() {
     m_actionMoveFiles->setEnabled(enable);
 
     bool isMixRunning = false;
+    bool isOtherYammiRunning = false;
 #ifdef USE_QDBUS
     getSelectedSongs();
     if (selectedSongs.count() == 1) {
@@ -1292,9 +1372,20 @@ void YammiGui::adjustSongPopup() {
             qDebug() << "QDBusInterface failed:" << qPrintable(QDBusConnection::sessionBus().lastError().message());
         }
     }
+    if (selectedSongs.count() == 1) {
+
+        QDBusInterface iface(config()->getDBusServiceOtherYammi(), config()->getDBusPathOtherYammi(), "", QDBusConnection::sessionBus());
+
+        if (iface.isValid()) {
+            isOtherYammiRunning = true;
+        } else {
+            qDebug() << "QDBusInterface failed:" << qPrintable(QDBusConnection::sessionBus().lastError().message());
+        }
+    }
 #endif
     m_actionLoadInMixxxDeck1->setVisible(isMixRunning);
     m_actionLoadInMixxxDeck2->setVisible(isMixRunning);
+    m_actionEnqueueAsNextInOtherYammi->setVisible(isOtherYammiRunning);
 }
 
 
@@ -2782,6 +2873,7 @@ void YammiGui::createMainWidget( ) {
 
     // setup html playlist view
     playlistPart = new QTextEdit(leftWidget);
+    playlistPart->setObjectName("playlistPart");
     playlistPart->setReadOnly(true);
     playlistPart->setLineWrapMode(QTextEdit::NoWrap);
     
@@ -2871,6 +2963,10 @@ void YammiGui::createFolders( ) {
 void YammiGui::setupActions()
 {
     QStyle* style = QApplication::style();
+
+    m_actionSecondYammi = new QAction(tr("&Second Yammi"), this);
+    m_actionSecondYammi->setIcon(loadAndConvertIconToGrayScale("icons:yammi.png"));
+    connect(m_actionSecondYammi, SIGNAL(triggered()), this, SLOT(startSecondYammi()));
 
     m_actionQuit = new QAction(tr("&Quit"), this);
     m_actionQuit->setShortcut(QKeySequence::Quit);
@@ -3044,6 +3140,14 @@ void YammiGui::setupActions()
     m_actionLoadInMixxxDeck2->setIcon(QIcon("icons:mixxx-icon.png"));
     connect(m_actionLoadInMixxxDeck2, SIGNAL(triggered()), this, SLOT(slotLoadInMixxxDeck2()));
 
+    m_actionEnqueueAsNextInOtherYammi = new QAction(tr("Enqueue as next in Other Yammi"), this);
+    if (config()->thisIsSecondYammi) {
+        m_actionEnqueueAsNextInOtherYammi->setIcon(QIcon("icons:yammi.png"));
+    } else {
+        m_actionEnqueueAsNextInOtherYammi->setIcon(loadAndConvertIconToGrayScale("icons:yammi.png"));
+    }
+    connect(m_actionEnqueueAsNextInOtherYammi, SIGNAL(triggered()), this, SLOT(slotEnqueueAsNextInOtherYammi()));
+
     m_actionSongInfo = new QAction(tr("Song Info ..."), this);
     m_actionSongInfo->setShortcut(QKeySequence(Qt::Key_I));
     m_actionSongInfo->setIcon(style->standardIcon(QStyle::QStyle::SP_FileDialogDetailedView));
@@ -3103,6 +3207,9 @@ void YammiGui::createMenuBar()
     QAction* action;
 
     menu = menuBar()->addMenu(tr("&File"));
+    if (!model->config()->thisIsSecondYammi) {
+        menu->addAction(m_actionSecondYammi);
+    }
     menu->addAction(m_actionQuit);
 
     menu = menuBar()->addMenu(tr("&Edit"));
@@ -3209,7 +3316,11 @@ void YammiGui::createTrayIcon()
 
     trayIcon = new QSystemTrayIcon(this);
     trayIcon->setContextMenu(trayIconMenu);
-    trayIcon->setIcon(QIcon("icons:yammi.png"));
+    if (!config()->thisIsSecondYammi) {
+        trayIcon->setIcon(QIcon("icons:yammi.png"));
+    } else {
+        trayIcon->setIcon(loadAndConvertIconToGrayScale("icons:yammi.png"));
+    }
 
     connect(trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(trayIconActivated(QSystemTrayIcon::ActivationReason)));
     connect(trayIcon->contextMenu(), SIGNAL(aboutToHide()), this, SLOT(trayIconMenuAboutToHide()));
@@ -3308,6 +3419,7 @@ void YammiGui::createSongPopup() {
     songPopup->addAction(m_actionSongInfo);
     songPopup->addAction(m_actionLoadInMixxxDeck1);
     songPopup->addAction(m_actionLoadInMixxxDeck2);
+    songPopup->addAction(m_actionEnqueueAsNextInOtherYammi);
 
     subMenu = songPopup->addMenu(tr("Prelisten"));
     subMenu->addAction(m_actionPrelistenStart);
@@ -3520,4 +3632,16 @@ bool YammiGui::dragDropAllowed(int row)
     }
 
     return ret;
+}
+
+void YammiGui::startSecondYammi()
+{
+    config()->saveConfig();
+
+    QString program = QCoreApplication::applicationFilePath();
+    QStringList arguments;
+    arguments << "-secondYammi";
+
+    QProcess* myProcess = new QProcess(this);
+    myProcess->start(program, arguments);
 }

@@ -779,6 +779,18 @@
         <translation>VlcEngine</translation>
     </message>
     <message>
+        <source>Sound Device which is used when a second Yammi is started for e.g. Prelistening on head phones.</source>
+        <translation>Audiogerät welches von einem als zweites gestarteten Yammi verwendet wird z.B. um Vorzuhöhren auf Kopfhöhrer.</translation>
+    </message>
+    <message>
+        <source>First Sound Device</source>
+        <translation>Erstes Audiogerät</translation>
+    </message>
+    <message>
+        <source>Second Sound Device</source>
+        <translation>Zweites Audiogerät</translation>
+    </message>
+    <message>
         <source>Prelistening</source>
         <translation>Vorhören</translation>
     </message>
@@ -859,6 +871,14 @@ Zusätzlich zu den üblichen Platzhaltern (siehe Plugins-Reiter) können diese b
     <message>
         <source>the script that is invoked when this plugin is chosen</source>
         <translation>Dieser Befehl wird ausgeführt wenn das Plugin ausgewählt wird</translation>
+    </message>
+    <message>
+        <source>Output devices</source>
+        <translation>Ausgabegeräte</translation>
+    </message>
+    <message>
+        <source>Sound Device which is used for normal output.</source>
+        <translation>Audiogerät welches im normalen Betrieb verwendet wird.</translation>
     </message>
     <message>
         <source>Placeholders ...</source>
@@ -1414,6 +1434,10 @@ Group mode = wird einmal für die gesamte Auswahl aufgerufen</translation>
         <translation>Xine konnte keine Audiotreiber initialisieren.</translation>
     </message>
     <message>
+        <source>xine_config_lookup_entry failed.</source>
+        <translation>xine_config_lookup_entry fehlgeschlagen.</translation>
+    </message>
+    <message>
         <source>Yammi could not create a new xine stream.</source>
         <translation>Yammi konnte keinen neuen Xine-Stream erzeugen.</translation>
     </message>
@@ -1875,6 +1899,10 @@ Statistik:
         <translation>Zuletzt gespielt</translation>
     </message>
     <message>
+        <source>&amp;Second Yammi</source>
+        <translation>&amp;Zweiter Yammi</translation>
+    </message>
+    <message>
         <source>&amp;Quit</source>
         <translation>&amp;Beenden</translation>
     </message>
@@ -2017,6 +2045,10 @@ Statistik:
     <message>
         <source>Load in Mixxx Deck 2</source>
         <translation>Lade in Mixxx Deck 2</translation>
+    </message>
+    <message>
+        <source>Enqueue as next in Other Yammi</source>
+        <translation>Lied als nächstes in anderem Yammi einfügen</translation>
     </message>
     <message>
         <source>Song Info ...</source>

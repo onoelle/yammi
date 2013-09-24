@@ -17,9 +17,11 @@
 
 #ifdef USE_PHONON
 
+#include <Phonon/BackendCapabilities>
 #include <QDebug>
 #include <QFile>
 
+#include "prefs.h"
 #include "song.h"
 #include "songentryint.h"
 #include "yammimodel.h"
@@ -35,6 +37,19 @@ namespace Yammi {
         qDebug() << "PhononEngine::PhononEngine";
 
         m_audioOutput = new Phonon::AudioOutput(Phonon::MusicCategory, this);
+        QString device = model->config()->getSoundDevice();
+        if (!device.isEmpty()) {
+            QList<Phonon::AudioOutputDevice> audioOutputDevices = Phonon::BackendCapabilities::availableAudioOutputDevices();
+            foreach (Phonon::AudioOutputDevice i, audioOutputDevices) {
+                qDebug() << i.name() << i.property("deviceIds");
+                QStringList deviceIds = i.property("deviceIds").toStringList();
+                if (deviceIds.contains(device)) {
+                    qDebug() << "using: " << i.name() << i.property("deviceIds");
+                    m_audioOutput->setOutputDevice(i);
+                    break;
+                }
+            }
+        }
         m_mediaObject = new Phonon::MediaObject(this);
 
         //m_mediaObject->setTickInterval(1000);

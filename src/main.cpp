@@ -15,6 +15,7 @@
 #include <QTranslator>
 
 #include "config.h"
+#include "prefs.h"
 #include "yammigui.h"
 
 
@@ -74,10 +75,10 @@ int main( int argc, char **argv )
                 "To start it, run:\n"
                 "\teval `dbus-launch --auto-syntax`";
     } else {
-        if (!QDBusConnection::sessionBus().registerService("net.sf.yammi.yammi.YammiGui")) {
+        if (!QDBusConnection::sessionBus().registerService(yammi->config()->getDBusService())) {
             qCritical() << qPrintable(QDBusConnection::sessionBus().lastError().message());
         } else {
-            QDBusConnection::sessionBus().registerObject("/YammiGui", yammi, QDBusConnection::ExportScriptableSlots);
+            QDBusConnection::sessionBus().registerObject(yammi->config()->getDBusPath(), yammi, QDBusConnection::ExportScriptableSlots);
         }
     }
 #endif

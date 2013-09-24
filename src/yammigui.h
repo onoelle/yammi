@@ -130,6 +130,8 @@ public slots:
     Q_SCRIPTABLE void stop();
     Q_SCRIPTABLE void playPause();
 
+    Q_SCRIPTABLE void slotEnqueueAsNextByLocation(QString location);
+
     /* At the command line this call is possible then:
              qdbus net.sf.yammi.yammi.YammiGui /YammiGui net.sourceforge.yammi.yammi.YammiGui.playPause
     */
@@ -438,11 +440,16 @@ protected slots:
     void slotLoadInMixxxDeck1();
     void slotLoadInMixxxDeck2();
     void loadSelectedSongInMixxxDeck(int deckNumber);
+    void slotEnqueueAsNextInOtherYammi();
 
     void trayIconActivated(QSystemTrayIcon::ActivationReason reason);
     void trayIconMenuAboutToHide();
 
+    void startSecondYammi();
+
 private:
+
+    QAction* m_actionSecondYammi;
     QAction* m_actionQuit;
     QAction* m_actionSelectAll;
     QAction* m_actionInvertSelection;
@@ -482,6 +489,7 @@ private:
     QAction* m_actionStopPrelisten;
     QAction* m_actionLoadInMixxxDeck1;
     QAction* m_actionLoadInMixxxDeck2;
+    QAction* m_actionEnqueueAsNextInOtherYammi;
     QAction* m_actionSongInfo;
     QAction* m_actionGotoFolderArtist;
     QAction* m_actionGotoFolderAlbum;

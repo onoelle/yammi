@@ -1050,6 +1050,26 @@ Additionally to the usual placeholders (see the plugins tab) you can use {skipSe
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Sound Device which is used when a second Yammi is started for e.g. Prelistening on head phones.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>First Sound Device</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Output devices</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sound Device which is used for normal output.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Second Sound Device</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>the script that is invoked when this plugin is chosen</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1627,6 +1647,10 @@ Hosszú átkutatások előtt állítsa le a médialejátszót,
     </message>
     <message>
         <source>xine was unable to initialize any audio drivers.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>xine_config_lookup_entry failed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2974,6 +2998,10 @@ Do you want to continue?</source>
         <translation type="unfinished">Év</translation>
     </message>
     <message>
+        <source>&amp;Second Yammi</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>&amp;Quit</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3103,6 +3131,10 @@ Do you want to continue?</source>
     </message>
     <message>
         <source>Load in Mixxx Deck 2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enqueue as next in Other Yammi</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

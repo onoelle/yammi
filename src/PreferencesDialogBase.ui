@@ -117,7 +117,7 @@
      <property name="currentIndex">
       <number>2</number>
      </property>
-     <widget class="QWidget" name="tab1">
+     <widget class="QWidget" name="tabGeneral">
       <attribute name="title">
        <string>General</string>
       </attribute>
@@ -331,7 +331,7 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tab2">
+     <widget class="QWidget" name="tabDatabase">
       <attribute name="title">
        <string>Database</string>
       </attribute>
@@ -650,12 +650,12 @@
        </layout>
       </widget>
      </widget>
-     <widget class="QWidget" name="tab3">
+     <widget class="QWidget" name="tabMediaPlayer">
       <attribute name="title">
        <string>MediaPlayer</string>
       </attribute>
-      <layout class="QGridLayout">
-       <item row="0" column="0" colspan="2">
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
         <widget class="QGroupBox" name="MediaPlayerGroup">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -710,9 +710,95 @@
          </layout>
         </widget>
        </item>
+       <item>
+        <widget class="QGroupBox" name="grpSoundDevices">
+         <property name="title">
+          <string>Output devices</string>
+         </property>
+         <layout class="QGridLayout">
+          <property name="margin">
+           <number>11</number>
+          </property>
+          <property name="spacing">
+           <number>6</number>
+          </property>
+          <item row="0" column="0">
+           <widget class="QLabel" name="lblFirstYammiSoundDevice">
+            <property name="toolTip">
+             <string>Sound Device which is used for normal output.</string>
+            </property>
+            <property name="text">
+             <string>First Sound Device</string>
+            </property>
+            <property name="wordWrap">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QComboBox" name="cboFirstYammiSoundDevice">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="toolTip">
+             <string>Sound Device which is used when a second Yammi is started for e.g. Prelistening on head phones.</string>
+            </property>
+            <property name="editable">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="lblSecondYammiSoundDevice">
+            <property name="toolTip">
+             <string>Sound Device which is used when a second Yammi is started for e.g. Prelistening on head phones.</string>
+            </property>
+            <property name="text">
+             <string>Second Sound Device</string>
+            </property>
+            <property name="wordWrap">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QComboBox" name="cboSecondYammiSoundDevice">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="toolTip">
+             <string>Sound Device which is used when a second Yammi is started for e.g. Prelistening on head phones.</string>
+            </property>
+            <property name="editable">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="TabPage">
+     <widget class="QWidget" name="tabPrelistening">
       <attribute name="title">
        <string>Prelistening</string>
       </attribute>
@@ -755,7 +841,7 @@ Additionally to the usual placeholders (see the plugins tab) you can use {skipSe
         </widget>
        </item>
        <item row="1" column="0">
-        <widget class="QGroupBox" name="secondSoundDevice">
+        <widget class="QGroupBox" name="grpPrelistening">
          <property name="title">
           <string>Command line tool configuration</string>
          </property>
@@ -871,7 +957,7 @@ Additionally to the usual placeholders (see the plugins tab) you can use {skipSe
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tab">
+     <widget class="QWidget" name="tabPlugins">
       <attribute name="title">
        <string>Plugins</string>
       </attribute>
@@ -1095,7 +1181,7 @@ Group mode = executed once for the selection</string>
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="TabPage1">
+     <widget class="QWidget" name="tabPlayQueueTemplate">
       <attribute name="title">
        <string>Playqueue Template</string>
       </attribute>

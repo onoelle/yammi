@@ -17,6 +17,7 @@
 
 #include "prefs.h"
 
+#include <QApplication>
 #include <QDebug>
 #include <QDesktopServices>
 #include <QDir>
@@ -67,6 +68,13 @@ void Prefs::setDefaultValues(void) {
     prelistenWavCommand = "play|-d|/dev/dsp1|'{absoluteFilename}'|trim|{skipSamples}";
     prelistenFlacCommand = "mplayer|-ss|{skipSeconds}|-ao|oss:/dev/dsp1|'{absoluteFilename}'";
     prelistenOtherCommand ="";
+    firstYammiSoundDevice = "";
+    secondYammiSoundDevice = "";
+    QStringList cmdline_args = QApplication::arguments();
+    thisIsSecondYammi = false;
+    if (cmdline_args.contains("-secondYammi", Qt::CaseInsensitive)) {
+        thisIsSecondYammi = true;
+    }
     
     groupThreshold = 5;
     lazyGrouping = false;
@@ -132,6 +140,8 @@ bool Prefs::loadConfig( ) {
     prelistenWavCommand          = cfg.value("prelistenWavCommand", prelistenWavCommand).toString();
     prelistenFlacCommand         = cfg.value("prelistenFlacCommand", prelistenFlacCommand).toString();
     prelistenOtherCommand        = cfg.value("prelistenOtherCommand", prelistenOtherCommand).toString();
+    firstYammiSoundDevice        = cfg.value("firstYammiSoundDevice", firstYammiSoundDevice).toString();
+    secondYammiSoundDevice       = cfg.value("secondYammiSoundDevice", secondYammiSoundDevice).toString();
     groupThreshold               = cfg.value("groupThreshold", groupThreshold).toInt();
     if(groupThreshold < 1) {
         groupThreshold = 1;
@@ -202,6 +212,8 @@ bool Prefs::saveConfig( ) {
     cfg.setValue("prelistenWavCommand", prelistenWavCommand);
     cfg.setValue("prelistenFlacCommand", prelistenFlacCommand);
     cfg.setValue("prelistenOtherCommand", prelistenOtherCommand);
+    cfg.setValue("firstYammiSoundDevice", firstYammiSoundDevice);
+    cfg.setValue("secondYammiSoundDevice", secondYammiSoundDevice);
     cfg.setValue("groupThreshold", groupThreshold);
     cfg.setValue("lazyGrouping", lazyGrouping);
     cfg.setValue("searchThreshold", searchThreshold);
@@ -241,4 +253,52 @@ bool Prefs::saveConfig( ) {
     return true;
 }
 
+QString Prefs::getSoundDevice()
+{
+    if (!thisIsSecondYammi) {
+        return firstYammiSoundDevice;
+    } else {
+        return secondYammiSoundDevice;
+    }
+}
 
+#define DBUS_SERVICE_FIRST  "net.sf.yammi.yammi.YammiGui"
+#define DBUS_PATH_FIRST     "/YammiGui"
+#define DBUS_SERVICE_SECOND "net.sf.yammi.yammi.SecondYammiGui"
+#define DBUS_PATH_SECOND    "/SecondYammiGui"
+
+QString Prefs::getDBusService()
+{
+    if (!thisIsSecondYammi) {
+        return DBUS_SERVICE_FIRST;
+    } else {
+        return DBUS_SERVICE_SECOND;
+    }
+}
+
+QString Prefs::getDBusPath()
+{
+    if (!thisIsSecondYammi) {
+        return DBUS_PATH_FIRST;
+    } else {
+        return DBUS_PATH_SECOND;
+    }
+}
+
+QString Prefs::getDBusServiceOtherYammi()
+{
+    if (thisIsSecondYammi) {
+        return DBUS_SERVICE_FIRST;
+    } else {
+        return DBUS_SERVICE_SECOND;
+    }
+}
+
+QString Prefs::getDBusPathOtherYammi()
+{
+    if (thisIsSecondYammi) {
+        return DBUS_PATH_FIRST;
+    } else {
+        return DBUS_PATH_SECOND;
+    }
+}

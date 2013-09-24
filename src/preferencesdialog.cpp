@@ -21,6 +21,10 @@
 #include <QInputDialog>
 #include <QMessageBox>
 
+#ifdef USE_ASOUND
+#include <alsa/asoundlib.h>
+#endif
+
 #include "ConsistencyCheckParameter.h"
 #include "prefs.h"
 #include "song.h"
@@ -50,6 +54,31 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, Prefs* config )
     LineEditPrelistenWavCommand->setText(config->prelistenWavCommand);
     LineEditPrelistenFlacCommand->setText(config->prelistenFlacCommand);
     LineEditPrelistenOtherCommand->setText(config->prelistenOtherCommand);
+
+    cboFirstYammiSoundDevice->addItem("");
+    cboSecondYammiSoundDevice->addItem("");
+#ifdef USE_ASOUND
+    char **hints;
+    int err = snd_device_name_hint(-1, "pcm", (void***)&hints);
+    if (err == 0) {
+        char** n = hints;
+        while (*n != NULL) {
+
+            char *name = snd_device_name_get_hint(*n, "NAME");
+
+            if (name != NULL && 0 != strcmp("null", name)) {
+                cboFirstYammiSoundDevice->addItem(name);
+                cboSecondYammiSoundDevice->addItem(name);
+                free(name);
+            }
+            n++;
+        }
+        snd_device_name_free_hint((void**)hints);
+    }
+#endif
+    cboFirstYammiSoundDevice->setEditText(config->firstYammiSoundDevice);
+    cboSecondYammiSoundDevice->setEditText(config->secondYammiSoundDevice);
+
     SpinBoxGroupThreshold->setValue(config->groupThreshold);
     CheckBoxLazyGrouping->setChecked(config->lazyGrouping);
     LineEditSearchThreshold->setText(QString("%1").arg(config->searchThreshold));
@@ -186,6 +215,8 @@ void PreferencesDialog::myAccept() {
     config->prelistenWavCommand=LineEditPrelistenWavCommand->text();
     config->prelistenFlacCommand=LineEditPrelistenFlacCommand->text();
     config->prelistenOtherCommand=LineEditPrelistenOtherCommand->text();
+    config->firstYammiSoundDevice = cboFirstYammiSoundDevice->currentText();
+    config->secondYammiSoundDevice = cboSecondYammiSoundDevice->currentText();
     config->groupThreshold=SpinBoxGroupThreshold->value();
     config->lazyGrouping=CheckBoxLazyGrouping->isChecked();
     config->searchThreshold=LineEditSearchThreshold->text().toInt();

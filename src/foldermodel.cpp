@@ -23,6 +23,7 @@
 
 #include "folder.h"
 #include "foldersorted.h"
+#include "prefs.h"
 #include "yammigui.h"
 #include "yammimodel.h"
 
@@ -141,7 +142,7 @@ QVariant FolderModel::dataDisplayRole(const QModelIndex &index) const
 
 QVariant FolderModel::dataTextColorRole(const QModelIndex &index) const
 {
-    QVariant ret;
+    QColor ret;
     SongEntry* songEntry = SongEntry::qvAsSe(data(index, SongEntryPointerRole));
     if (songEntry) {
         Song* s = songEntry->song();
@@ -170,6 +171,9 @@ QVariant FolderModel::dataTextColorRole(const QModelIndex &index) const
 
           if (gYammiGui->currentSong == s) // current song in red
               ret = QColor(Qt::red);
+    }
+    if (gYammiGui->config()->thisIsSecondYammi) {
+        ret = ret.lighter(175);
     }
     return ret;
 }

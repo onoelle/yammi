@@ -65,6 +65,12 @@ public:
      */
     bool saveConfig( );
 
+    QString getSoundDevice();
+    QString getDBusService();
+    QString getDBusPath();
+    QString getDBusServiceOtherYammi();
+    QString getDBusPathOtherYammi();
+
     ///////////////////////////////////////
     // directory where song database file and categories can be found
     QString databaseDir;
@@ -111,6 +117,10 @@ public:
     QString prelistenWavCommand;
     QString prelistenFlacCommand;
     QString prelistenOtherCommand;
+
+    QString firstYammiSoundDevice;
+    QString secondYammiSoundDevice;
+    bool thisIsSecondYammi;
     
     /** Group threshold */
     int groupThreshold;

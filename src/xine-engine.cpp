@@ -68,8 +68,17 @@ namespace Yammi {
         xine_engine_set_param( m_xine, XINE_ENGINE_PARAM_VERBOSITY, 99 );
         #endif
 
-        xine_config_load( m_xine, configPath() );
-        qDebug() << "w00t" << QString(configPath());
+        QString path;
+
+        const char *xinerc;
+        xinerc = getenv("XINERC");
+        if (!xinerc || !*xinerc) {
+            path = configPath();
+        } else {
+            path = xinerc;
+        }
+        xine_config_load(m_xine, path.toUtf8());
+        qDebug() << "path to xine config:" << QString(path);
 
         xine_init( m_xine );
 
@@ -95,12 +104,23 @@ namespace Yammi {
     bool
     XineEngine::makeNewStream()
     {
-       m_audioPort = xine_open_audio_driver( m_xine, "auto", NULL );
-       if( !m_audioPort ) {
-          //TODO make engine method that is the same but parents the dialog for us
-          QMessageBox::critical( 0, "Yammi", tr("xine was unable to initialize any audio drivers.") );
-          return false;
-       }
+        m_audioPort = xine_open_audio_driver( m_xine, "alsa", NULL );
+        if( !m_audioPort ) {
+            //TODO make engine method that is the same but parents the dialog for us
+            QMessageBox::critical( 0, "Yammi", tr("xine was unable to initialize any audio drivers.") );
+            return false;
+        }
+
+        QString device = model->config()->getSoundDevice();
+        if (!device.isEmpty()) {
+            xine_cfg_entry_t cfg_entry;
+            if (!xine_config_lookup_entry(m_xine, "audio.device.alsa_front_device", &cfg_entry)) {
+                QMessageBox::critical( 0, "Yammi", tr("xine_config_lookup_entry failed.") );
+            } else {
+                cfg_entry.str_value = device.toUtf8().data();
+                xine_config_update_entry(m_xine, &cfg_entry);
+            }
+        }
 
        m_stream = xine_stream_new( m_xine, m_audioPort, NULL );
        if( !m_stream ) {
@@ -226,30 +246,32 @@ namespace Yammi {
     {
         qDebug() << "XineEngine::play";
 
-        if( xine_get_param( m_stream, XINE_PARAM_SPEED ) == XINE_SPEED_PAUSE )
-        {
-            xine_set_param( m_stream, XINE_PARAM_SPEED, XINE_SPEED_NORMAL );
-            status = getStatus();
-            emit statusChanged();
-        } else {
-            if( !ensureStream() )
-                return false;
-
-            const bool has_audio     = xine_get_stream_info( m_stream, XINE_STREAM_INFO_HAS_AUDIO );
-            const bool audio_handled = xine_get_stream_info( m_stream, XINE_STREAM_INFO_AUDIO_HANDLED );
-
-            if (has_audio && audio_handled && xine_play( m_stream, 0, 0/*offset*/ ))
+        if (m_stream) {
+            if( xine_get_param( m_stream, XINE_PARAM_SPEED ) == XINE_SPEED_PAUSE )
             {
+                xine_set_param( m_stream, XINE_PARAM_SPEED, XINE_SPEED_NORMAL );
+                status = getStatus();
+                emit statusChanged();
+            } else {
+                if( !ensureStream() )
+                    return false;
+
+                const bool has_audio     = xine_get_stream_info( m_stream, XINE_STREAM_INFO_HAS_AUDIO );
+                const bool audio_handled = xine_get_stream_info( m_stream, XINE_STREAM_INFO_AUDIO_HANDLED );
+
+                if (has_audio && audio_handled && xine_play( m_stream, 0, 0/*offset*/ ))
+                {
+                    status = getStatus();
+                    emit statusChanged();
+
+                    return true;
+                }
+
                 status = getStatus();
                 emit statusChanged();
 
-                return true;
+                xine_close( m_stream );
             }
-
-            status = getStatus();
-            emit statusChanged();
-
-            xine_close( m_stream );
         }
 
         return false;
