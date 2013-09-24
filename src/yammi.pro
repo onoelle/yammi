@@ -175,7 +175,7 @@ POST_TARGETDEPS += compiler_updateqm_make_all
 
 # installation
 unix {
-    yammi.path = $$(HOME)/bin/yammi
+    yammi.path = $$(HOME)/bin/yammi-bin
     yammi.files = yammi
 }
 win32 {
@@ -201,4 +201,7 @@ yammi_icons.files = icons/*
 yammi_translations.path = $${yammi.path}/translations
 yammi_translations.files = $${replace(TRANSLATIONS, .ts, .qm)}
 
-INSTALLS += yammi yammi_icons yammi_translations
+unix:yammi_symlink.path = $${yammi.path}
+unix:yammi_symlink.commands = ln -sf "$${yammi.path}/yammi" "$${yammi.path}/../yammi"
+
+INSTALLS += yammi yammi_icons yammi_translations yammi_symlink
