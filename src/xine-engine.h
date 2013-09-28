@@ -111,6 +111,7 @@ namespace Yammi {
         xine_event_queue_t *m_eventQueue;
         xine_post_t        *m_post;
         Song*               m_currentSong;
+        bool                m_emitPlaylistChanged;
     };
 
 }; //namespace Yammi

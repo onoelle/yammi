@@ -55,6 +55,7 @@ namespace Yammi {
             , m_eventQueue( 0 )
             , m_post( 0 )
             , m_currentSong( 0 )
+            , m_emitPlaylistChanged(true)
     {
         LOGSTART("XineEngine::XineEngine");
 
@@ -185,7 +186,7 @@ namespace Yammi {
             //qDebug() << "playlist->at(0): " << songEntry->song()->displayName();
 
             if(m_currentSong == songEntry->song()) {
-                if(haveToUpdate) {
+                if(haveToUpdate && m_emitPlaylistChanged) {
                     emit playlistChanged();
                 }
                 return;
@@ -227,8 +228,9 @@ namespace Yammi {
           xine_post_wire( source, target );
           #endif
 
-          emit playlistChanged();
-
+          if (m_emitPlaylistChanged) {
+              emit playlistChanged();
+          }
           return;
        }
        else
@@ -463,14 +465,20 @@ namespace Yammi {
 
         // remove the first song and sync playlist again
         playlist->removeFirst( );
+
+        m_emitPlaylistChanged = false;
         syncYammi2Player();
-        emit playlistChanged();
+        m_emitPlaylistChanged = true;
+
         if(!m_currentSong) {
             return false;
         }
         if(savedStatus == PLAYING) {
             play();
         }
+
+        emit playlistChanged();
+
         return true;
     }
 
