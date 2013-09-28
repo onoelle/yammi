@@ -204,4 +204,7 @@ yammi_translations.files = $${replace(TRANSLATIONS, .ts, .qm)}
 unix:yammi_symlink.path = $${yammi.path}
 unix:yammi_symlink.commands = ln -sf "$${yammi.path}/yammi" "$${yammi.path}/../yammi"
 
-INSTALLS += yammi yammi_icons yammi_translations yammi_symlink
+unix:yammi_shortcut.path = $$(HOME)/.local/share/applications
+unix:yammi_shortcut.commands = sed -e "s,/home/user,$$(HOME),g" yammi.desktop.in > $${yammi_shortcut.path}/yammi.desktop && chmod +x $${yammi_shortcut.path}/yammi.desktop
+
+INSTALLS += yammi yammi_icons yammi_translations yammi_symlink yammi_shortcut

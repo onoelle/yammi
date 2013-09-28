@@ -1,0 +1,19 @@
+[Desktop Entry]
+Comment[de]=
+Comment=
+Exec=/home/user/bin/yammi-bin/yammi
+GenericName[de]=Yammi - Yet Another Music Manager I...
+GenericName=Yammi - Yet Another Music Manager I...
+Icon=/home/user/bin/yammi-bin/icons/yammi.png
+MimeType=
+Name[de]=Yammi
+Name=Yammi
+Path=/home/user/bin/yammi-bin
+StartupNotify=true
+Terminal=false
+TerminalOptions=
+Type=Application
+X-DBUS-ServiceName=
+X-DBUS-StartupType=
+X-KDE-SubstituteUID=false
+X-KDE-Username=
