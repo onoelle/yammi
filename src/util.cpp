@@ -23,6 +23,31 @@
 #include <QDebug>
 #include <QDir>
 #include <QString>
+#include <QTime>
+
+static int m_logdepth = 0;
+
+LogClass::LogClass(QString i_function)
+    : m_function(i_function),
+      m_start(QTime::currentTime())
+{
+    m_logdepth++;
+    log() << "begin";
+}
+
+LogClass::~LogClass()
+{
+    log() << "end. (duration" << m_start.msecsTo(QTime::currentTime()) << "ms)";
+    m_logdepth--;
+}
+
+QDebug LogClass::log()
+{
+    return qDebug() << QTime::currentTime().toString("hh:mm:ss.zzz").toUtf8().data()
+                    << QString(m_logdepth, QChar(' ')).toUtf8().data()
+                    << m_function.toUtf8().data();
+}
+
 
 /**
  * Deletes a directory if empty.

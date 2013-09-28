@@ -28,6 +28,7 @@
 
 #include "prefs.h"
 #include "songentryint.h"
+#include "util.h"
 #include "yammimodel.h"
 
 
@@ -55,7 +56,7 @@ namespace Yammi {
             , m_post( 0 )
             , m_currentSong( 0 )
     {
-        qDebug() << "'Bringing joy to small mexican gerbils, a few weeks at a time.'\n";
+        LOGSTART("XineEngine::XineEngine");
 
         m_xine = xine_new();
 
@@ -91,6 +92,8 @@ namespace Yammi {
 
     XineEngine::~XineEngine()
     {
+        LOGSTART("XineEngine::~XineEngine");
+
         if( m_xine )       xine_config_save( m_xine, configPath() );
 
         if( m_stream )     xine_close( m_stream );
@@ -104,6 +107,8 @@ namespace Yammi {
     bool
     XineEngine::makeNewStream()
     {
+        LOGSTART("XineEngine::makeNewStream");
+
         m_audioPort = xine_open_audio_driver( m_xine, "alsa", NULL );
         if( !m_audioPort ) {
             //TODO make engine method that is the same but parents the dialog for us
@@ -152,6 +157,8 @@ namespace Yammi {
     bool
     XineEngine::ensureStream()
     {
+        //LOGSTART("XineEngine::ensureStream");
+
        if( !m_stream )
           return makeNewStream();
 
@@ -161,7 +168,7 @@ namespace Yammi {
     void
     XineEngine::syncYammi2Player()
     {
-        //qDebug() << "XineEngine::syncYammi2Player()";
+        //LOGSTART("XineEngine::syncYammi2Player");
 
         bool haveToUpdate=model->skipUnplayableSongs();
 
@@ -238,13 +245,15 @@ namespace Yammi {
     void
     XineEngine::clearPlaylist()
     {
+        LOGSTART("XineEngine::clearPlaylist");
+
         emit playlistChanged( );
     }
 
     bool
     XineEngine::play()
     {
-        qDebug() << "XineEngine::play";
+        LOGSTART("XineEngine::play");
 
         if (m_stream) {
             if( xine_get_param( m_stream, XINE_PARAM_SPEED ) == XINE_SPEED_PAUSE )
@@ -280,6 +289,8 @@ namespace Yammi {
     bool
     XineEngine::stop()
     {
+        LOGSTART("XineEngine::stop");
+
 #if 0
         if ( !m_stream )
            return false;
@@ -301,7 +312,7 @@ namespace Yammi {
     bool
     XineEngine::pause()
     {
-        qDebug() << "XineEngine::pause";
+        LOGSTART("XineEngine::pause");
 
         if ( !m_stream )
             return false;
@@ -321,6 +332,8 @@ namespace Yammi {
     bool
     XineEngine::playPause()
     {
+        LOGSTART("XineEngine::playPause");
+
         switch (getStatus()) {
         case PLAYING:
             pause();
@@ -338,6 +351,8 @@ namespace Yammi {
     void
     XineEngine::check()
     {
+        //LOGSTART("XineEngine::check");
+
         PlayerStatus s = getStatus( );
         if( s != status ) {
             if( status == PLAYING && s == STOPPED ) {
@@ -358,6 +373,8 @@ namespace Yammi {
     PlayerStatus
     XineEngine::getStatus()
     {
+        //LOGSTART("XineEngine::getStatus");
+
         if ( !m_stream)
            return STOPPED;
 
@@ -373,6 +390,8 @@ namespace Yammi {
     QString
     XineEngine::getCurrentFile()
     {
+        LOGSTART("XineEngine::getCurrentFile");
+
         if( m_currentSong ) {
             return model->checkAvailability( m_currentSong );
         } else {
@@ -383,6 +402,8 @@ namespace Yammi {
     int
     XineEngine::getCurrentTime()
     {
+        //LOGSTART("XineEngine::getCurrentTime");
+
         if ( getStatus() == STOPPED )
            return 0;
 
@@ -409,6 +430,8 @@ namespace Yammi {
     int
     XineEngine::getTotalTime()
     {
+        //LOGSTART("XineEngine::getTotalTime");
+
         if ( !m_stream )
            return 0;
 
@@ -429,6 +452,8 @@ namespace Yammi {
     bool
     XineEngine::skipForward(bool)
     {
+        LOGSTART("XineEngine::skipForward");
+
         if( playlist->count() < 2 ) {
             // there is no "next song"
             return false;
@@ -452,6 +477,8 @@ namespace Yammi {
     bool
     XineEngine::skipBackward(bool withoutCrossfading)
     {
+        LOGSTART("XineEngine::skipBackward");
+
         Song* last = 0;
         if (!playlist->isEmpty()) {
             last = playlist->at(0)->song();
@@ -465,6 +492,8 @@ namespace Yammi {
     bool
     XineEngine::jumpTo( int ms )
     {
+        //LOGSTART("XineEngine::jumpTo");
+
         if( !ensureStream() )
             return false;
 
@@ -488,6 +517,8 @@ namespace Yammi {
     void
     XineEngine::XineEventListener( void *p, const xine_event_t* xineEvent )
     {
+        //LOGSTART("XineEngine::XineEventListener");
+
         time_t current;
 
         if( !p ) return;
@@ -639,10 +670,13 @@ namespace Yammi {
     void
     XineEngine::quit()
     {
+        LOGSTART("XineEngine::quit");
     }
 
     bool
     XineEngine::finishInitialization() {
+        LOGSTART("XineEngine::finishInitialization");
+
         return true;
     }
 

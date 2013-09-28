@@ -20,7 +20,10 @@
 #ifndef UTIL_H
 #define UTIL_H
 
-class QString;
+#include <QString>
+#include <QTime>
+
+class QDebug;
 
 
 /**
@@ -32,6 +35,18 @@ public:
 	static void deleteDirectoryIfEmpty(QString path, QString noDeleteDir);
 	static bool ensurePathExists(QString path);	
 };
+
+class LogClass {
+public:
+    LogClass(QString i_function);
+    ~LogClass();
+    QDebug log();
+private:
+    QString m_function;
+    QTime m_start;
+};
+#define LOGSTART(f) LogClass log(f);
+
 
 bool moveFile(const QString &oldName, const QString &newName);
 bool copyFile(const QString &oldFilePath, const QString &newFilePath);
