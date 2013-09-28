@@ -109,7 +109,7 @@ namespace Yammi {
     {
         LOGSTART("XineEngine::makeNewStream");
 
-        m_audioPort = xine_open_audio_driver( m_xine, "alsa", NULL );
+        m_audioPort = xine_open_audio_driver( m_xine, "auto", NULL );
         if( !m_audioPort ) {
             //TODO make engine method that is the same but parents the dialog for us
             QMessageBox::critical( 0, "Yammi", tr("xine was unable to initialize any audio drivers.") );
@@ -120,7 +120,7 @@ namespace Yammi {
         if (!device.isEmpty()) {
             xine_cfg_entry_t cfg_entry;
             if (!xine_config_lookup_entry(m_xine, "audio.device.alsa_front_device", &cfg_entry)) {
-                QMessageBox::critical( 0, "Yammi", tr("xine_config_lookup_entry failed.") );
+                QMessageBox::critical( 0, "Yammi", tr("xine_config_lookup_entry failed. Setting sound device is not possible when Xine uses PulseAudio.") );
             } else {
                 cfg_entry.str_value = device.toUtf8().data();
                 xine_config_update_entry(m_xine, &cfg_entry);
