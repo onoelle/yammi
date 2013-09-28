@@ -744,7 +744,7 @@
              </sizepolicy>
             </property>
             <property name="toolTip">
-             <string>Sound Device which is used when a second Yammi is started for e.g. Prelistening on head phones.</string>
+             <string>Sound Device which is used for normal output.</string>
             </property>
             <property name="editable">
              <bool>true</bool>
