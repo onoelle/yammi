@@ -45,7 +45,7 @@ public:
 	void			appendSong(Song* s);					// appends <s> as simple SongEntry
 	void			appendList(MyList* list);			// appends a whole list of song entrys
 	void			removeSong(Song* toDelete);		// removes all occurences of SongEntry with pointer to <toDelete>
-	int				containsSong(Song* lookup);		// returns the number of occurences of the song
+    int containsSong(Song* lookup); // returns if this list contains the song
   int       containsSelection(MyList* selection);
 	Song*			getSongByKey(QString artist, QString title, QString album);
 

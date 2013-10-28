@@ -80,15 +80,15 @@ void MyList::removeSong(Song* toDelete)
 }
 
 
-// returns the number of occurrences of this song
+// returns if this list contains the song
 int MyList::containsSong(Song* lookup)
 {
-	int count=0;
-    for (iterator it = begin(); it != end(); it++) {
+    int found = 0;
+    for (iterator it = begin(); it != end() && found == 0; it++) {
         if ((*it)->song() == lookup)
-			count++;
-	}
-	return count;
+            found = 1;
+    }
+    return found;
 }
 
 
