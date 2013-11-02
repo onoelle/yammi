@@ -1124,6 +1124,10 @@ void YammiGui::changeToFolder(Folder* newFolder, bool changeAnyway) {
 
 
 void YammiGui::folderContentChanged(Folder* folder) {
+    if (chosenFolder) {
+        chosenFolder->saveSorting(songListView->sortedBy(), songListView->sortOrder());
+        chosenFolder->saveScrollPos(songListView->horizontalScrollBar()->value(), songListView->verticalScrollBar()->value());
+    }
     if (!folder) {
         if(chosenFolder) {
 
