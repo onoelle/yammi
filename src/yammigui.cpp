@@ -1250,6 +1250,40 @@ void YammiGui::loadSelectedSongInMixxxDeck(int deckNumber)
 #endif /*USE_QDBUS*/
 }
 
+void YammiGui::slotLoadSelectedSongInMixxxAutoDJ()
+{
+#ifdef USE_QDBUS
+    bool doLoad = true;
+
+    getSelectedSongs();
+    if (selectedSongs.count() < 1) {
+        doLoad = false;
+    }
+
+    QDBusInterface iface("org.mixxx", "/AutoDJFeature", "", QDBusConnection::sessionBus());
+    if (doLoad) {
+        if (iface.isValid()) {
+            for (MyList::iterator it = selectedSongs.begin(); it != selectedSongs.end() && doLoad; it++) {
+                SongEntry* s = *it;
+                QString file = s->song()->location();
+                QDBusReply<void> reply = iface.call("enqueueInAutoDJ", file);
+                if (reply.isValid()) {
+                    qDebug() << "Call to enqueueInAutoDJ succeeded";
+                } else {
+                    qDebug() << "Call to enqueueInAutoDJ failed:" << qPrintable(reply.error().message());
+                    doLoad = false;
+                }
+            }
+        } else {
+            qDebug() << "QDBusInterface failed:" << qPrintable(QDBusConnection::sessionBus().lastError().message());
+        }
+    }
+
+#else
+    Q_UNUSED(deckNumber);
+#endif /*USE_QDBUS*/
+}
+
 void YammiGui::slotEnqueueAsNextInOtherYammi()
 {
 #ifdef USE_QDBUS
@@ -1366,14 +1400,23 @@ void YammiGui::adjustSongPopup() {
     m_actionCheckConsistencySelection->setEnabled(enable);
     m_actionMoveFiles->setEnabled(enable);
 
-    bool isMixRunning = false;
+    bool isMixxxRunning = false;
+    bool isMixxxAutoDJRunning = false;
     bool isOtherYammiRunning = false;
 #ifdef USE_QDBUS
     getSelectedSongs();
     if (selectedSongs.count() == 1) {
         QDBusInterface iface("org.mixxx", "/PlayerManager", "", QDBusConnection::sessionBus());
         if (iface.isValid()) {
-            isMixRunning = true;
+            isMixxxRunning = true;
+        } else {
+            qDebug() << "QDBusInterface failed:" << qPrintable(QDBusConnection::sessionBus().lastError().message());
+        }
+    }
+    if (selectedSongs.count() >= 1) {
+        QDBusInterface iface("org.mixxx", "/AutoDJFeature", "", QDBusConnection::sessionBus());
+        if (iface.isValid()) {
+            isMixxxAutoDJRunning = true;
         } else {
             qDebug() << "QDBusInterface failed:" << qPrintable(QDBusConnection::sessionBus().lastError().message());
         }
@@ -1389,8 +1432,9 @@ void YammiGui::adjustSongPopup() {
         }
     }
 #endif
-    m_actionLoadInMixxxDeck1->setVisible(isMixRunning);
-    m_actionLoadInMixxxDeck2->setVisible(isMixRunning);
+    m_actionLoadInMixxxDeck1->setVisible(isMixxxRunning);
+    m_actionLoadInMixxxDeck2->setVisible(isMixxxRunning);
+    m_actionLoadInMixxxAutoDJ->setVisible(isMixxxAutoDJRunning);
     m_actionEnqueueAsNextInOtherYammi->setVisible(isOtherYammiRunning);
 }
 
@@ -3146,6 +3190,10 @@ void YammiGui::setupActions()
     m_actionLoadInMixxxDeck2->setIcon(QIcon("icons:mixxx-icon.png"));
     connect(m_actionLoadInMixxxDeck2, SIGNAL(triggered()), this, SLOT(slotLoadInMixxxDeck2()));
 
+    m_actionLoadInMixxxAutoDJ = new QAction(tr("Load in Mixxx AutoDJ"), this);
+    m_actionLoadInMixxxAutoDJ->setIcon(QIcon("icons:mixxx-icon.png"));
+    connect(m_actionLoadInMixxxAutoDJ, SIGNAL(triggered()), this, SLOT(slotLoadSelectedSongInMixxxAutoDJ()));
+
     m_actionEnqueueAsNextInOtherYammi = new QAction(tr("Enqueue as next in Other Yammi"), this);
     if (config()->thisIsSecondYammi) {
         m_actionEnqueueAsNextInOtherYammi->setIcon(QIcon("icons:yammi.png"));
@@ -3425,6 +3473,7 @@ void YammiGui::createSongPopup() {
     songPopup->addAction(m_actionSongInfo);
     songPopup->addAction(m_actionLoadInMixxxDeck1);
     songPopup->addAction(m_actionLoadInMixxxDeck2);
+    songPopup->addAction(m_actionLoadInMixxxAutoDJ);
     songPopup->addAction(m_actionEnqueueAsNextInOtherYammi);
 
     subMenu = songPopup->addMenu(tr("Prelisten"));

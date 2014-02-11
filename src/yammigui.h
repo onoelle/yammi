@@ -440,6 +440,7 @@ protected slots:
     void slotLoadInMixxxDeck1();
     void slotLoadInMixxxDeck2();
     void loadSelectedSongInMixxxDeck(int deckNumber);
+    void slotLoadSelectedSongInMixxxAutoDJ();
     void slotEnqueueAsNextInOtherYammi();
 
     void trayIconActivated(QSystemTrayIcon::ActivationReason reason);
@@ -489,6 +490,7 @@ private:
     QAction* m_actionStopPrelisten;
     QAction* m_actionLoadInMixxxDeck1;
     QAction* m_actionLoadInMixxxDeck2;
+    QAction* m_actionLoadInMixxxAutoDJ;
     QAction* m_actionEnqueueAsNextInOtherYammi;
     QAction* m_actionSongInfo;
     QAction* m_actionGotoFolderArtist;
