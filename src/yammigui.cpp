@@ -1806,19 +1806,27 @@ void YammiGui::forSelectionDequeue( ) {
     int sortedByBefore=songListView->sortedBy();
     if(chosenFolder==folderActual) {
         // song chosen from playlist => dequeue only the selected song entry (not all songs with that id)
+        QList<int> posToDel;
         foreach(QModelIndex index, songListView->selectionModel()->selection().indexes()) {
             if (index.column() == 0) {
                 QVariant qv = songListView->model()->data(index, FolderModel::SongEntryPointerRole);
                 SongEntry* se = SongEntry::qvAsSe(qv);
                 if (se) {
                     int pos=((SongEntryInt*)se)->intInfo-1;
-                    if(pos!=0 || player->getStatus()==STOPPED) {
+                    if ((pos != 0 || player->getStatus()==STOPPED) && pos < model->songsToPlay.count()) {
                         // only dequeue if not currently played song (or player stopped)
                         qDebug() << "song dequeued: " << se->song()->displayName();
-                        delete model->songsToPlay.takeAt(pos);
+                        posToDel << pos;
+                        /* Saved in temporary because deleting here would change index.
+                         * TODO: replace this ugly removing of songs - probably altogether
+                         * with current list handling ... */
                     }
                 }
             }
+        }
+        qSort(posToDel);
+        for (int i = posToDel.count()-1; i >= 0; i--) {
+            delete model->songsToPlay.takeAt(posToDel[i]);
         }
     } else {
         // song chosen from other folder => dequeue ALL occurrences of each selected song
