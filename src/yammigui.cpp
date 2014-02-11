@@ -1124,10 +1124,6 @@ void YammiGui::changeToFolder(Folder* newFolder, bool changeAnyway) {
 
 
 void YammiGui::folderContentChanged(Folder* folder) {
-    if (chosenFolder) {
-        chosenFolder->saveSorting(songListView->sortedBy(), songListView->sortOrder());
-        chosenFolder->saveScrollPos(songListView->horizontalScrollBar()->value(), songListView->verticalScrollBar()->value());
-    }
     if (!folder) {
         if(chosenFolder) {
 
@@ -1182,8 +1178,7 @@ void YammiGui::folderContentChanged(Folder* folder) {
 
     songListViewModel->reset();
     if (songListView && chosenFolder) {
-        songListView->horizontalScrollBar()->setValue(chosenFolder->getScrollPosX());
-        songListView->verticalScrollBar()->setValue(chosenFolder->getScrollPosY());
+        songListView->scroll(chosenFolder->getScrollPosX(), chosenFolder->getScrollPosY());
     }
 }
 
@@ -1748,7 +1743,7 @@ void YammiGui::forSelectionEnqueue( ) {
     }
     folderActual->correctOrder();
     player->syncYammi2Player();
-    folderContentChanged(folderActual);
+    folderContentChanged(chosenFolder);
 }
 
 void YammiGui::forSelectionEnqueueAsNext( ) {
@@ -1773,7 +1768,9 @@ void YammiGui::forSelectionEnqueueAsNext( ) {
 
     folderActual->correctOrder();
     player->syncYammi2Player();
-    folderContentChanged(folderActual);
+    chosenFolder->saveSorting(songListView->sortedBy(), songListView->sortOrder());
+    chosenFolder->saveScrollPos(songListView->horizontalScrollBar()->value(), songListView->verticalScrollBar()->value());
+    folderContentChanged(chosenFolder);
 }
 
 
