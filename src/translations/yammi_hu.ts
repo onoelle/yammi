@@ -1650,7 +1650,7 @@ Hosszú átkutatások előtt állítsa le a médialejátszót,
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>xine_config_lookup_entry failed.</source>
+        <source>xine_config_lookup_entry failed. Setting sound device is not possible when Xine uses PulseAudio.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3131,6 +3131,10 @@ Do you want to continue?</source>
     </message>
     <message>
         <source>Load in Mixxx Deck 2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Load in Mixxx AutoDJ</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

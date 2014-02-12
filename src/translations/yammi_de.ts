@@ -1435,7 +1435,11 @@ Group mode = wird einmal für die gesamte Auswahl aufgerufen</translation>
     </message>
     <message>
         <source>xine_config_lookup_entry failed.</source>
-        <translation>xine_config_lookup_entry fehlgeschlagen.</translation>
+        <translation type="obsolete">xine_config_lookup_entry fehlgeschlagen.</translation>
+    </message>
+    <message>
+        <source>xine_config_lookup_entry failed. Setting sound device is not possible when Xine uses PulseAudio.</source>
+        <translation>xine_config_lookup_entry fehlgeschlagen. Sound device festlegen ist nicht möglich bei Benutzung von PulseAudio.</translation>
     </message>
     <message>
         <source>Yammi could not create a new xine stream.</source>
@@ -2045,6 +2049,10 @@ Statistik:
     <message>
         <source>Load in Mixxx Deck 2</source>
         <translation>Lade in Mixxx Deck 2</translation>
+    </message>
+    <message>
+        <source>Load in Mixxx AutoDJ</source>
+        <translation>Lade in Mixxx AutoDJ</translation>
     </message>
     <message>
         <source>Enqueue as next in Other Yammi</source>
