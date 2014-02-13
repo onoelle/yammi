@@ -1,4 +1,4 @@
-From 398f83d9fd5a517823d495863c3452723a926adc Mon Sep 17 00:00:00 2001
+From 2f87184adb21ba807e639e6fbdbf3e58fc34e24a Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Bernhard=20=C3=9Cbelacker?= <bernhardu@vr-web.de>
 Date: Wed, 15 May 2013 22:20:00 +0200
 Subject: [PATCH 1/4] Make debian/control work on Debian Wheezy.

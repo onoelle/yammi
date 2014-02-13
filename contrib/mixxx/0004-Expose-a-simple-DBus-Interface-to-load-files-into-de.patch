@@ -1,20 +1,20 @@
-From 0ee105fb275569a921f76d4ba7b1022977127cd0 Mon Sep 17 00:00:00 2001
+From 28ce69e959b05a4a2fa754ed597e714c96c63d45 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Bernhard=20=C3=9Cbelacker?= <bernhardu@vr-web.de>
-Date: Tue, 11 Feb 2014 21:05:09 +0100
-Subject: [PATCH 3/4] Expose a simple DBus-Interface to load files into decks
+Date: Thu, 13 Feb 2014 19:05:44 +0100
+Subject: [PATCH 4/4] Expose a simple DBus-Interface to load files into decks
  and AutoDJ from extern.
 
 ---
  mixxx/build/depends.py              |    1 +
- mixxx/src/library/autodjfeature.cpp |   10 ++++++++++
- mixxx/src/library/autodjfeature.h   |    4 ++++
+ mixxx/src/library/autodjfeature.cpp |   16 ++++++++++++++++
+ mixxx/src/library/autodjfeature.h   |    6 ++++++
  mixxx/src/library/library.cpp       |    2 +-
  mixxx/src/library/library.h         |    3 +++
  mixxx/src/main.cpp                  |   20 ++++++++++++++++++++
  mixxx/src/mixxx.h                   |    3 +++
  mixxx/src/playermanager.cpp         |   10 ++++++++++
  mixxx/src/playermanager.h           |    9 ++++++++-
- 9 files changed, 60 insertions(+), 2 deletions(-)
+ 9 files changed, 68 insertions(+), 2 deletions(-)
 
 diff --git a/mixxx/build/depends.py b/mixxx/build/depends.py
 index d209ff8..4611868 100644
@@ -29,10 +29,10 @@ index d209ff8..4611868 100644
                  build.env.Append(LIBS = 'QtWebKit')
          elif build.platform_is_windows:
 diff --git a/mixxx/src/library/autodjfeature.cpp b/mixxx/src/library/autodjfeature.cpp
-index 3f23312..77dcd6d 100644
+index 3f23312..a55277f 100644
 --- a/mixxx/src/library/autodjfeature.cpp
 +++ b/mixxx/src/library/autodjfeature.cpp
-@@ -96,3 +96,13 @@ bool AutoDJFeature::dragMoveAccept(QUrl url) {
+@@ -96,3 +96,19 @@ bool AutoDJFeature::dragMoveAccept(QUrl url) {
      QFileInfo file(url.toLocalFile());
      return SoundSourceProxy::isFilenameSupported(file.fileName());
  }
@@ -46,17 +46,25 @@ index 3f23312..77dcd6d 100644
 +    m_pAutoDJView->onShow();
 +    return retval;
 +}
++
++int AutoDJFeature::getAutoDJQueueLength()
++{
++    int playlistId = m_playlistDao.getPlaylistIdFromName(AUTODJ_TABLE);
++    return m_playlistDao.tracksInPlaylist(playlistId);
++}
 diff --git a/mixxx/src/library/autodjfeature.h b/mixxx/src/library/autodjfeature.h
-index 2562bf0..d503c23 100644
+index 2562bf0..efaf68c 100644
 --- a/mixxx/src/library/autodjfeature.h
 +++ b/mixxx/src/library/autodjfeature.h
-@@ -37,6 +37,10 @@ class AutoDJFeature : public LibraryFeature {
+@@ -37,6 +37,12 @@ class AutoDJFeature : public LibraryFeature {
  
    public slots:
      void activate();
 +    Q_SCRIPTABLE bool enqueueInAutoDJ(QString location);
++    Q_SCRIPTABLE int getAutoDJQueueLength();
 +    /* At the command line this call is possible then:
 +             qdbus org.mixxx /AutoDJFeature org.mixxx.Mixxx.AutoDJFeature.enqueueInAutoDJ /path/to/filename.mp3
++             qdbus org.mixxx /AutoDJFeature org.mixxx.Mixxx.AutoDJFeature.getAutoDJQueueLength
 +    */
  
    private:

@@ -1,4 +1,4 @@
-From d5f6631f38f79e553b70b7d5ddd3e39f92964da7 Mon Sep 17 00:00:00 2001
+From 19d9b8ec616c165417f53f3097a5c9b10550f344 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Bernhard=20=C3=9Cbelacker?= <bernhardu@vr-web.de>
 Date: Wed, 15 May 2013 22:20:52 +0200
 Subject: [PATCH 2/4] Add .gitignore
