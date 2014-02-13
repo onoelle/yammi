@@ -3175,6 +3175,10 @@ Do you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Feed into Mixxx AutoDJ</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>&amp;Configure Yammi ...</source>
         <translation type="unfinished"></translation>
     </message>

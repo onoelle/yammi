@@ -2007,6 +2007,10 @@ Statistik:
         <translation>Unbekannt</translation>
     </message>
     <message>
+        <source>Feed into Mixxx AutoDJ</source>
+        <translation>Lade in Mixxx AutoDJ</translation>
+    </message>
+    <message>
         <source>&amp;Configure Yammi ...</source>
         <translation>Yammi &amp;konfigurieren ...</translation>
     </message>

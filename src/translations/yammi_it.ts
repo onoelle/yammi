@@ -4686,6 +4686,10 @@ Statistiche
         <translation type="unfinished">Sconosciuto</translation>
     </message>
     <message>
+        <source>Feed into Mixxx AutoDJ</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>&amp;Configure Yammi ...</source>
         <translation type="unfinished"></translation>
     </message>
