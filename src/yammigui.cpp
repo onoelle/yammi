@@ -2421,7 +2421,37 @@ void YammiGui::clearPlaylist() {
 
 
 
+void YammiGui::feedAutoplayQueueIntoMixxxAutoDJ()
+{
+#ifdef USE_QDBUS
 
+    QDBusInterface iface("org.mixxx", "/AutoDJFeature", "", QDBusConnection::sessionBus());
+    if (iface.isValid()) {
+        QDBusReply<int> reply = iface.call("getAutoDJQueueLength");
+        if (reply.isValid()) {
+            if (reply.value() <= 1) {
+                SongEntry* s = model->songsToPlay.takeAt(0);
+                QString file = s->song()->location();
+                QDBusReply<void> reply = iface.call("enqueueInAutoDJ", file);
+                if (reply.isValid()) {
+                    qDebug() << "Call to enqueueInAutoDJ succeeded and dequeuing song: " << s->song()->displayName();
+                    delete s;
+                    folderActual->correctOrder();
+                    player->syncYammi2Player();
+                    folderContentChanged(folderActual);
+                } else {
+                    qDebug() << "Call to enqueueInAutoDJ failed:" << qPrintable(reply.error().message());
+                }
+            }
+        } else {
+            qDebug() << "Call to getAutoDJQueueLength failed:" << qPrintable(reply.error().message());
+        }
+    } else {
+        qDebug() << "QDBusInterface failed:" << qPrintable(QDBusConnection::sessionBus().lastError().message());
+    }
+
+#endif /*USE_QDBUS*/
+}
 
 
 /**
@@ -2441,6 +2471,13 @@ void YammiGui::onTimer() {
     // check for autplay function: fill up playlist?
     if(folderActual->songlist().count()<5 && autoplayMode!=AUTOPLAY_OFF && this->autoplayFoldername!="") {
         autoFillPlaylist();
+    }
+
+    if (m_actionAutoplayFeedMixxx->isChecked() &&
+        folderActual->songlist().count() > 0  &&
+        (player->getStatus() != STOPPED || player->getStatus() != PAUSED))
+    {
+        feedAutoplayQueueIntoMixxxAutoDJ();
     }
 
     // perform these actions only if player is playing or paused
@@ -3143,6 +3180,9 @@ void YammiGui::setupActions()
 
     m_actionCurrentAutoPlay = new QAction(tr("Unknown"), this); //m_currentAutoPlay = new KAction(tr("Unknown"),0,0,0,0,actionCollection(),"autoplay_folder");
 
+    m_actionAutoplayFeedMixxx = new QAction(tr("Feed into Mixxx AutoDJ"), this);
+    m_actionAutoplayFeedMixxx->setCheckable(true);
+
     m_actionConfigureYammi = new QAction(tr("&Configure Yammi ..."), this);
     connect(m_actionConfigureYammi, SIGNAL(triggered()), this, SLOT(setPreferences()));
 
@@ -3319,6 +3359,8 @@ void YammiGui::createMenuBar()
     menu->addAction(m_actionAutoplayRandom);
     menu->addSeparator();
     menu->addAction(m_actionCurrentAutoPlay);
+    menu->addSeparator();
+    menu->addAction(m_actionAutoplayFeedMixxx);
 
     menu = menuBar()->addMenu(tr("&Settings"));
     menu->addAction(m_actionConfigureYammi);

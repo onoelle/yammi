@@ -363,6 +363,7 @@ protected:
     void          folderContentChanged(Folder* folder = NULL);
     void          updateCurrentSongStatus();
     void          autoFillPlaylist();
+    void          feedAutoplayQueueIntoMixxxAutoDJ();
     Folder*       getFolderByName(QString foldername);
     void 			    decide(Song* s1, Song* s2);
     long double   diskUsage(QString path, long double sizeLimit);
@@ -479,6 +480,7 @@ private:
     QAction* m_actionAutoplayLnp;
     QAction* m_actionAutoplayRandom;
     QAction* m_actionCurrentAutoPlay;
+    QAction* m_actionAutoplayFeedMixxx;
     QAction* m_actionConfigureYammi;
     QAction* m_actionEnqueueAtEnd;
     QAction* m_actionEnqueueAsNext;
