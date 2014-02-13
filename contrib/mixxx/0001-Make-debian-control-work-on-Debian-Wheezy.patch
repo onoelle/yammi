@@ -1,0 +1,42 @@
+From 398f83d9fd5a517823d495863c3452723a926adc Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Bernhard=20=C3=9Cbelacker?= <bernhardu@vr-web.de>
+Date: Wed, 15 May 2013 22:20:00 +0200
+Subject: [PATCH 1/4] Make debian/control work on Debian Wheezy.
+
+---
+ mixxx/build/debian/control |   12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
+
+diff --git a/mixxx/build/debian/control b/mixxx/build/debian/control
+index 52ea4a8..724681e 100644
+--- a/mixxx/build/debian/control
++++ b/mixxx/build/debian/control
+@@ -3,7 +3,7 @@ Section: sound
+ Priority: optional
+ Maintainer: Ubuntu MOTU Developers <ubuntu-motu@lists.ubuntu.com>
+ XSBC-Original-Maintainer: RJ Ryan <rryan@mixxx.org>
+-Build-Depends: debhelper (>= 4.0.0), pkg-config, docbook-to-man, xlibmesa-gl-dev, libglu1-mesa-dev, libqt4-opengl-dev | libqt4-dev (>= 4.6.0), scons, libjack-dev, portaudio19-dev, libid3tag0-dev, libmad0-dev, libogg-dev, libsndfile1-dev, libasound2-dev, libvorbis-dev, libsoundtouch1-dev, libmp4v2-dev, libfaad-dev, libportmidi-dev, libtag1-dev, libshout-dev, vamp-plugin-sdk, libprotobuf-dev, protobuf-compiler, libusb-1.0-0-dev
++Build-Depends: debhelper (>= 4.0.0), pkg-config, docbook-to-man, mesa-common-dev, libglu1-mesa-dev, libqt4-opengl-dev | libqt4-dev (>= 4.6.0), scons, libjack-dev, portaudio19-dev, libid3tag0-dev, libmad0-dev, libogg-dev, libsndfile1-dev, libasound2-dev, libvorbis-dev, libsoundtouch1-dev, libmp4v2-dev, libfaad-dev, libportmidi-dev, libtag1-dev, libshout-dev, vamp-plugin-sdk, libprotobuf-dev, protobuf-compiler, libusb-1.0-0-dev
+ Standards-Version: 3.7.3
+ Homepage: http://www.mixxx.org/
+ 
+@@ -15,12 +15,10 @@ Recommends: libmp3lame0
+ Suggests: pdf-viewer
+ Replaces: mixxx-data
+ Description: Free Digital DJ software. Start making live DJ mixes today.
+-Mixxx is free DJ software that gives you everything you need to perform live DJ mixes.
+-Blend songs together with automatic BPM matching and remix on-the-fly with looping
+-and hot cues. Whether you're a pro DJ or just getting started, Mixxx has you covered.
+-
+-Mixxx works with ALSA, JACK, OSS and supports many popular DJ controllers.
+-
++ Mixxx is free DJ software that gives you everything you need to perform live DJ mixes.
++ Blend songs together with automatic BPM matching and remix on-the-fly with looping
++ and hot cues. Whether you're a pro DJ or just getting started, Mixxx has you covered.
++ Mixxx works with ALSA, JACK, OSS and supports many popular DJ controllers.
+  Features include:
+   - Parallel or split scratchable waveform displays
+   - Waveform summaries
+-- 
+1.7.10.4
+

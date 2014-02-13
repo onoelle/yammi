@@ -1,0 +1,41 @@
+From d5f6631f38f79e553b70b7d5ddd3e39f92964da7 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Bernhard=20=C3=9Cbelacker?= <bernhardu@vr-web.de>
+Date: Wed, 15 May 2013 22:20:52 +0200
+Subject: [PATCH 2/4] Add .gitignore
+
+---
+ .gitignore |   22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
+ create mode 100644 .gitignore
+
+diff --git a/.gitignore b/.gitignore
+new file mode 100644
+index 0000000..d24b840
+--- /dev/null
++++ b/.gitignore
+@@ -0,0 +1,22 @@
++*.o
++mixxx/.sconf_temp/
++mixxx/.sconsign.dblite
++mixxx/build/*.pyc
++mixxx/build-stamp
++mixxx/build/debian/files
++mixxx/build/debian/mixxx/
++mixxx/build/debian/mixxx.*debhelper*
++mixxx/build/debian/mixxx.substvars
++mixxx/build/debian/tmp/
++mixxx/cache
++mixxx/config.log
++mixxx/configure-stamp
++mixxx/lib/soundtouch-1.6.0/*.os
++mixxx/lin32_build/
++mixxx/mixxx
++mixxx/mixxx.1
++mixxx/res/qrc_mixxx.cc
++mixxx_*.dsc
++mixxx_*.tar.gz
++mixxx_*.changes
++mixxx_*.deb
+-- 
+1.7.10.4
+

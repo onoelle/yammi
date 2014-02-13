@@ -1,0 +1,214 @@
+From 0ee105fb275569a921f76d4ba7b1022977127cd0 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Bernhard=20=C3=9Cbelacker?= <bernhardu@vr-web.de>
+Date: Tue, 11 Feb 2014 21:05:09 +0100
+Subject: [PATCH 3/4] Expose a simple DBus-Interface to load files into decks
+ and AutoDJ from extern.
+
+---
+ mixxx/build/depends.py              |    1 +
+ mixxx/src/library/autodjfeature.cpp |   10 ++++++++++
+ mixxx/src/library/autodjfeature.h   |    4 ++++
+ mixxx/src/library/library.cpp       |    2 +-
+ mixxx/src/library/library.h         |    3 +++
+ mixxx/src/main.cpp                  |   20 ++++++++++++++++++++
+ mixxx/src/mixxx.h                   |    3 +++
+ mixxx/src/playermanager.cpp         |   10 ++++++++++
+ mixxx/src/playermanager.h           |    9 ++++++++-
+ 9 files changed, 60 insertions(+), 2 deletions(-)
+
+diff --git a/mixxx/build/depends.py b/mixxx/build/depends.py
+index d209ff8..4611868 100644
+--- a/mixxx/build/depends.py
++++ b/mixxx/build/depends.py
+@@ -220,6 +220,7 @@ class Qt(Dependence):
+             build.env.Append(LIBS = 'QtXml')
+             build.env.Append(LIBS = 'QtNetwork')
+             build.env.Append(LIBS = 'QtScript')
++            build.env.Append(LIBS = 'QtDBus')
+             if use_qtwebkit:
+                 build.env.Append(LIBS = 'QtWebKit')
+         elif build.platform_is_windows:
+diff --git a/mixxx/src/library/autodjfeature.cpp b/mixxx/src/library/autodjfeature.cpp
+index 3f23312..77dcd6d 100644
+--- a/mixxx/src/library/autodjfeature.cpp
++++ b/mixxx/src/library/autodjfeature.cpp
+@@ -96,3 +96,13 @@ bool AutoDJFeature::dragMoveAccept(QUrl url) {
+     QFileInfo file(url.toLocalFile());
+     return SoundSourceProxy::isFilenameSupported(file.fileName());
+ }
++
++bool AutoDJFeature::enqueueInAutoDJ(QString location)
++{
++    QList<QUrl> l;
++    l << QUrl(location);
++
++    bool retval = dropAccept(l, NULL);
++    m_pAutoDJView->onShow();
++    return retval;
++}
+diff --git a/mixxx/src/library/autodjfeature.h b/mixxx/src/library/autodjfeature.h
+index 2562bf0..d503c23 100644
+--- a/mixxx/src/library/autodjfeature.h
++++ b/mixxx/src/library/autodjfeature.h
+@@ -37,6 +37,10 @@ class AutoDJFeature : public LibraryFeature {
+ 
+   public slots:
+     void activate();
++    Q_SCRIPTABLE bool enqueueInAutoDJ(QString location);
++    /* At the command line this call is possible then:
++             qdbus org.mixxx /AutoDJFeature org.mixxx.Mixxx.AutoDJFeature.enqueueInAutoDJ /path/to/filename.mp3
++    */
+ 
+   private:
+     ConfigObject<ConfigValue>* m_pConfig;
+diff --git a/mixxx/src/library/library.cpp b/mixxx/src/library/library.cpp
+index 2f5daf2..003207b 100644
+--- a/mixxx/src/library/library.cpp
++++ b/mixxx/src/library/library.cpp
+@@ -59,7 +59,7 @@ Library::Library(QObject* parent, ConfigObject<ConfigValue>* pConfig, bool first
+     }
+ #endif
+ 
+-    addFeature(new AutoDJFeature(this, pConfig, m_pTrackCollection));
++    addFeature(m_pAutoDJFeature = new AutoDJFeature(this, pConfig, m_pTrackCollection));
+     m_pPlaylistFeature = new PlaylistFeature(this, m_pTrackCollection, pConfig);
+     addFeature(m_pPlaylistFeature);
+     m_pCrateFeature = new CrateFeature(this, m_pTrackCollection, pConfig);
+diff --git a/mixxx/src/library/library.h b/mixxx/src/library/library.h
+index 5c6b4ba..8d3c112 100644
+--- a/mixxx/src/library/library.h
++++ b/mixxx/src/library/library.h
+@@ -29,6 +29,7 @@ class PlaylistFeature;
+ class CrateFeature;
+ class LibraryControl;
+ class MixxxKeyboard;
++class AutoDJFeature;
+ 
+ class Library : public QObject {
+     Q_OBJECT
+@@ -54,6 +55,7 @@ public:
+     }
+ 
+     //static Library* buildDefaultLibrary();
++    AutoDJFeature* getAutoDJFeature() { return m_pAutoDJFeature; };
+ 
+   public slots:
+     void slotShowTrackModel(QAbstractItemModel* model);
+@@ -86,6 +88,7 @@ public:
+     const static QString m_sAutoDJViewName;
+     MixxxLibraryFeature* m_pMixxxLibraryFeature;
+     PlaylistFeature* m_pPlaylistFeature;
++    AutoDJFeature* m_pAutoDJFeature;
+     CrateFeature* m_pCrateFeature;
+ #ifdef __PROMO__
+     class PromoTracksFeature;
+diff --git a/mixxx/src/main.cpp b/mixxx/src/main.cpp
+index 3c5995d..a86ea67 100644
+--- a/mixxx/src/main.cpp
++++ b/mixxx/src/main.cpp
+@@ -17,6 +17,7 @@
+ 
+ #include <QThread>
+ #include <QDir>
++#include <QtDBus>
+ #include <QtDebug>
+ #include <qapplication.h>
+ #include <qfont.h>
+@@ -35,6 +36,9 @@
+ #include "qsplashscreen.h"
+ #include "errordialoghandler.h"
+ #include "defs_version.h"
++#include "playermanager.h"
++#include "library/library.h"
++#include "library/autodjfeature.h"
+ 
+ #ifdef __LADSPA__
+ #include <ladspa/ladspaloader.h>
+@@ -281,8 +285,24 @@ int main(int argc, char * argv[])
+      }
+ #endif
+ 
++    if (!QDBusConnection::sessionBus().isConnected()) {
++        fprintf(stderr, "Cannot connect to the D-Bus session bus.\n"
++                "To start it, run:\n"
++                "\teval `dbus-launch --auto-syntax`\n");
++        return 1;
++    }
++
++    if (!QDBusConnection::sessionBus().registerService("org.mixxx")) {
++        fprintf(stderr, "%s\n", qPrintable(QDBusConnection::sessionBus().lastError().message()));
++        exit(1);
++    }
++
+     MixxxApp* mixxx = new MixxxApp(&a, args);
+ 
++    QDBusConnection::sessionBus().registerObject("/MixxxApp", mixxx, QDBusConnection::ExportScriptableSlots);
++    QDBusConnection::sessionBus().registerObject("/PlayerManager", mixxx->getPlayerManager(), QDBusConnection::ExportScriptableSlots);
++    QDBusConnection::sessionBus().registerObject("/AutoDJFeature", mixxx->getLibrary()->getAutoDJFeature(), QDBusConnection::ExportScriptableSlots);
++
+     //a.setMainWidget(mixxx);
+     QObject::connect(&a, SIGNAL(lastWindowClosed()), &a, SLOT(quit()));
+ 
+diff --git a/mixxx/src/mixxx.h b/mixxx/src/mixxx.h
+index 5f410d7..1200b9d 100644
+--- a/mixxx/src/mixxx.h
++++ b/mixxx/src/mixxx.h
+@@ -68,6 +68,9 @@ class MixxxApp : public QMainWindow {
+     void setToolTips(int tt);
+     void rebootMixxxView();
+ 
++    PlayerManager* getPlayerManager() { return m_pPlayerManager; };
++    Library* getLibrary() { return m_pLibrary; };
++
+   public slots:
+ 
+     //void slotQuitFullScreen();
+diff --git a/mixxx/src/playermanager.cpp b/mixxx/src/playermanager.cpp
+index ce6267b..64eedd1 100644
+--- a/mixxx/src/playermanager.cpp
++++ b/mixxx/src/playermanager.cpp
+@@ -368,4 +368,14 @@ void PlayerManager::slotLoadTrackIntoNextAvailableSampler(TrackPointer pTrack)
+     }
+ }
+ 
++bool PlayerManager::slotIsDeckPlaying(int deckNumber)
++{
++    QString group = groupForDeck(deckNumber-1);
++    ControlObject* play =
++        ControlObject::getControl(ConfigKey(group, "play"));
+ 
++    if (play && play->get() > 0.0) {
++        return true;
++    }
++    return false;
++}
+diff --git a/mixxx/src/playermanager.h b/mixxx/src/playermanager.h
+index fb70610..fac5709 100644
+--- a/mixxx/src/playermanager.h
++++ b/mixxx/src/playermanager.h
+@@ -91,7 +91,7 @@ class PlayerManager : public QObject {
+     // Slots for loading tracks to decks
+     void slotLoadTrackIntoNextAvailableDeck(TrackPointer pTrack);
+     // Loads the location to the deck. deckNumber is 1-indexed
+-    void slotLoadToDeck(QString location, int deckNumber);
++    Q_SCRIPTABLE void slotLoadToDeck(QString location, int deckNumber);
+ 
+     // Loads the location to the preview deck. previewDeckNumber is 1-indexed
+     void slotLoadToPreviewDeck(QString location, int previewDeckNumber);
+@@ -104,6 +104,13 @@ class PlayerManager : public QObject {
+     void slotNumSamplersControlChanged(double v);
+     void slotNumPreviewDecksControlChanged(double v);
+ 
++    Q_SCRIPTABLE bool slotIsDeckPlaying(int deckNumber);
++
++    /* At the command line this call is possible then:
++             qdbus org.mixxx /PlayerManager org.mixxx.Mixxx.PlayerManager.slotLoadToDeck /path/to/filename.mp3 1
++             qdbus org.mixxx /PlayerManager org.mixxx.Mixxx.PlayerManager.slotIsDeckPlaying 1
++    */
++
+   signals:
+     void loadLocationToPlayer(QString location, QString group);
+ 
+-- 
+1.7.10.4
+
