@@ -1803,7 +1803,7 @@ void YammiGui::forSelectionPlayNow() { //FIXME - this does not work too well....
 
 void YammiGui::forSelectionDequeue( ) {
     getSelectedSongs();
-    int sortedByBefore=songListView->sortedBy();
+    bool dirty = false;
     if(chosenFolder==folderActual) {
         // song chosen from playlist => dequeue only the selected song entry (not all songs with that id)
         QList<int> posToDel;
@@ -1827,6 +1827,7 @@ void YammiGui::forSelectionDequeue( ) {
         qSort(posToDel);
         for (int i = posToDel.count()-1; i >= 0; i--) {
             delete model->songsToPlay.takeAt(posToDel[i]);
+            dirty = true;
         }
     } else {
         // song chosen from other folder => dequeue ALL occurrences of each selected song
@@ -1842,19 +1843,17 @@ void YammiGui::forSelectionDequeue( ) {
                     delete model->songsToPlay.takeAt(i);
                     qDebug() << "song dequeued: " << s->displayName();
                     i--;
+                    dirty = true;
                 }
             }
         }
     }
-    folderActual->correctOrder();
-    player->syncYammi2Player();
-    folderContentChanged(folderActual);
-    bool ascending = (sortedByBefore>0);
-    if(!ascending) {
-        sortedByBefore = -sortedByBefore;
+
+    if (dirty) {
+        folderActual->correctOrder();
+        player->syncYammi2Player();
+        folderContentChanged(folderActual);
     }
-    int column=sortedByBefore-1;
-    songListView->setSorting(true, column, ascending?Qt::AscendingOrder:Qt::DescendingOrder);
 }
 
 
