@@ -629,6 +629,7 @@ QString YammiGui::getColumnName(int column) {
     case FolderModel::COLUMN_PATH:           ret = tr("Path"); break;
     case FolderModel::COLUMN_COMMENT:        ret = tr("Comment"); break;
     case FolderModel::COLUMN_LAST_PLAYED:    ret = tr("Last Played"); break;
+    case FolderModel::COLUMN_EXTENSION:      ret = tr("Extension"); break;
     default:
         break;
     }

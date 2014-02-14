@@ -19,6 +19,7 @@
 
 #include "foldermodel.h"
 
+#include <QFileInfo>
 #include <QMimeData>
 
 #include "folder.h"
@@ -112,6 +113,9 @@ QVariant FolderModel::dataDisplayRole(const QModelIndex &index) const
             break;
         case COLUMN_FILENAME:
             ret = s->filename;
+            break;
+        case COLUMN_EXTENSION:
+            ret = QFileInfo(s->filename).suffix().toLower();
             break;
         case COLUMN_PATH:
             ret = s->path;

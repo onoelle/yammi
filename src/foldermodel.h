@@ -43,6 +43,7 @@ public:
                    COLUMN_PATH,
                    COLUMN_COMMENT,
                    COLUMN_LAST_PLAYED,
+                   COLUMN_EXTENSION,
                    MAX_COLUMN_NO
                  };
 

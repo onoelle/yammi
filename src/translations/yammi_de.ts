@@ -1903,6 +1903,10 @@ Statistik:
         <translation>Zuletzt gespielt</translation>
     </message>
     <message>
+        <source>Extension</source>
+        <translation>Erweiterung</translation>
+    </message>
+    <message>
         <source>&amp;Second Yammi</source>
         <translation>&amp;Zweiter Yammi</translation>
     </message>

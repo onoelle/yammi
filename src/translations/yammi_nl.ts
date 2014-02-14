@@ -3083,6 +3083,10 @@ Do you want to continue?</source>
         <translation type="unfinished">Jaar</translation>
     </message>
     <message>
+        <source>Extension</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>&amp;Second Yammi</source>
         <translation type="unfinished"></translation>
     </message>
