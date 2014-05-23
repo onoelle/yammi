@@ -326,7 +326,7 @@ QMimeData* FolderModel::mimeData(const QModelIndexList &indexes) const
     foreach (QModelIndex index, indexes) {
         if (index.isValid()) {
             QVariant qv = data(index, SongEntryPointerRole);
-            int ptr = qv.toInt();
+            quint64 ptr = (quint64)qv.value<void*>();
             QPoint rowcol(index.column(), index.row());
             stream << ptr << rowcol;
         }
@@ -354,7 +354,7 @@ bool FolderModel::dropMimeData(const QMimeData *mimedata, Qt::DropAction action,
     QDataStream stream(&encodedData, QIODevice::ReadOnly);
 
     while (!stream.atEnd()) {
-        int ptr;
+        quint64 ptr;
         QPoint rowcol;
         stream >> ptr >> rowcol;
 

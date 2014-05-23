@@ -39,10 +39,10 @@ QString SongEntry::getColumn(int)
 
 QVariant SongEntry::seAsQv(SongEntry* se)
 {
-    return QVariant((int)se);
+    return qVariantFromValue((void*)se);
 }
 
 SongEntry* SongEntry::qvAsSe(QVariant qv)
 {
-    return  (SongEntry *)qv.toInt();
+    return (SongEntry*) qv.value<void*>();
 }
