@@ -16,12 +16,12 @@ Dependencies:
 - xine library
 - TagLib
 
-This command should get you all development stuff you need:
-  at Debian Squeeze:
-    apt-get install build-essential libqt4-dev libxine-dev libtag1-dev
-
+This command should get you all development and runtime stuff you need:
   at Debian Wheezy:
-    apt-get install build-essential libqt4-dev libxine2-dev libtag1-dev
+    apt-get install build-essential git libqt4-dev libxine2-dev libtag1-dev libasound2-dev libphonon-dev libvlc-dev libqxt-dev
+
+  at Debian Jessie:
+    apt-get install build-essential git gdb libqt4-dev libxine2-dev libtag1-dev libasound2-dev libphonon-dev libvlc-dev libqxt-dev   libxine2-plugins
 
 
 
@@ -30,7 +30,7 @@ Getting and building the source from GIT:
   $ git clone git://git.code.sf.net/p/yammi/git yammi-git
   $ cd yammi-git/src
   $ qmake-qt4
-  $ make all updateqm
+  $ make all
 
 And you are done. Right now you should be able to run Yammi from the source tree:
   $ ./yammi
