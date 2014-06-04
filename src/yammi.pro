@@ -1,11 +1,11 @@
 
 # Features:
         # phonon is not available anymore in Qt5 ... grr
-    contains(QT_VERSION, ^4\\.[0-9]*\\..*): DEFINES = USE_PHONON
+    contains(QT_VERSION, ^4\\.[0-9]*\\..*): DEFINES += USE_PHONON
 
     !win32:DEFINES += USE_QDBUS
 
-    contains(QT_VERSION, ^5\\.[0-9]*\\..*): DEFINES = USE_QMEDIAPLAYER
+    contains(QT_VERSION, ^5\\.[0-9]*\\..*): DEFINES += USE_QMEDIAPLAYER
 
     unix:DEFINES += USE_QXT
 
@@ -49,7 +49,7 @@ unix {
     contains(DEFINES, USE_ASOUND): LIBS += -lasound
 
     QMAKE_LRELEASE = $$[QT_INSTALL_BINS]/lrelease
-    #QMAKE_CXX = ccache g++
+    #QMAKE_CXX = CCACHE_DIR=/tmp/yammi-ccache ccache g++
     #QMAKE_CXX = clang++
 }
 win32 {
