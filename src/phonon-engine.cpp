@@ -112,7 +112,7 @@ namespace Yammi {
         }
 
         if (!file.fileName().isEmpty() || m_mediaObject->currentSource().fileName() != file.fileName()) {
-            m_mediaObject->setCurrentSource(file.fileName());
+            m_mediaObject->setCurrentSource(QUrl(file.fileName()));
             emit playlistChanged();
         }
 
