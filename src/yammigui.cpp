@@ -1134,7 +1134,6 @@ void YammiGui::folderContentChanged(Folder* folder) {
 
             if(chosenFolder == folderActual) {
                 updateCurrentSongStatus();
-                updateHtmlPlaylist();
             }
         }
     } else {
@@ -1143,7 +1142,6 @@ void YammiGui::folderContentChanged(Folder* folder) {
         } else {
             if(folder==folderActual) {
                 updateCurrentSongStatus();
-                updateHtmlPlaylist();
             }
             if(folder!=folderSearchResults) {
                 m_acceptSearchResults=false;
@@ -1181,6 +1179,8 @@ void YammiGui::folderContentChanged(Folder* folder) {
     if (songListView && chosenFolder) {
         songListView->scroll(chosenFolder->getScrollPosX(), chosenFolder->getScrollPosY());
     }
+
+    updateHtmlPlaylist();
 }
 
 void YammiGui::slotLoadInMixxxDeck1()
