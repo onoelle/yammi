@@ -24,6 +24,7 @@
 #include <QFile>
 #include <QMessageBox>
 #include <QMutex>
+#include <QProcessEnvironment>
 #include <QWaitCondition>
 
 #include "prefs.h"
@@ -110,10 +111,14 @@ namespace Yammi {
     {
         LOGSTART("XineEngine::makeNewStream");
 
-        m_audioPort = xine_open_audio_driver( m_xine, "auto", NULL );
+        QString driver = QProcessEnvironment::systemEnvironment().value("YAMMI_XINE_DRIVER", "auto");
+
+        m_audioPort = xine_open_audio_driver( m_xine, driver.toUtf8(), NULL );
         if( !m_audioPort ) {
             //TODO make engine method that is the same but parents the dialog for us
-            QMessageBox::critical( 0, "Yammi", tr("xine was unable to initialize any audio drivers.") );
+            QString message = tr("xine was unable to initialize any audio drivers.");
+            message.append("\ndriver=").append(driver);
+            QMessageBox::critical( 0, "Yammi", message);
             return false;
         }
 
