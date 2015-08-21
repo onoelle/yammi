@@ -1,0 +1,36 @@
+
+pcm.dmix0 {
+    type plug
+    slave.pcm "dmix:CARD=0"
+}
+ctl.dmix0 {
+    type hw
+    card 0
+}
+
+pcm.dmix1 {
+    type plug
+    slave.pcm "dmix:CARD=1"
+}
+ctl.dmix1 {
+    type hw
+    card 1
+}
+
+pcm.dmix2 {
+    type plug
+    slave.pcm "dmix:CARD=2"
+}
+ctl.dmix2 {
+    type hw
+    card 2
+}
+
+pcm.dmix3 {
+    type plug
+    slave.pcm "dmix:CARD=3"
+}
+ctl.dmix3 {
+    type hw
+    card 3
+}
