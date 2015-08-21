@@ -66,6 +66,7 @@ public:
     bool saveConfig( );
 
     QString getSoundDevice();
+    QString getSoundDeviceParameter();
     QString getDBusService();
     QString getDBusPath();
     QString getDBusServiceOtherYammi();
@@ -121,6 +122,7 @@ public:
     QString firstYammiSoundDevice;
     QString secondYammiSoundDevice;
     bool thisIsSecondYammi;
+    QString soundDeviceParameter;
     
     /** Group threshold */
     int groupThreshold;

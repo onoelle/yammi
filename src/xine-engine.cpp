@@ -24,7 +24,6 @@
 #include <QFile>
 #include <QMessageBox>
 #include <QMutex>
-#include <QProcessEnvironment>
 #include <QWaitCondition>
 
 #include "prefs.h"
@@ -111,7 +110,14 @@ namespace Yammi {
     {
         LOGSTART("XineEngine::makeNewStream");
 
-        QString driver = QProcessEnvironment::systemEnvironment().value("YAMMI_XINE_DRIVER", "auto");
+        QStringList soundDeviceParameter = model->config()->getSoundDeviceParameter().split(' ');
+        QString driver = "auto";
+        foreach (const QString &elem, soundDeviceParameter) {
+            QStringList a = elem.split('=');
+            if (a.count() == 2 && a.at(0) == "YAMMI_XINE_DRIVER") {
+                driver = a.at(1);
+            }
+        }
 
         m_audioPort = xine_open_audio_driver( m_xine, driver.toUtf8(), NULL );
         if( !m_audioPort ) {

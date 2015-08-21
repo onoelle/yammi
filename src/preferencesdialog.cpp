@@ -78,6 +78,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, Prefs* config )
 #endif
     cboFirstYammiSoundDevice->setEditText(config->firstYammiSoundDevice);
     cboSecondYammiSoundDevice->setEditText(config->secondYammiSoundDevice);
+    edtSoundDeviceParameter->setText(config->soundDeviceParameter);
 
     SpinBoxGroupThreshold->setValue(config->groupThreshold);
     CheckBoxLazyGrouping->setChecked(config->lazyGrouping);
@@ -217,6 +218,7 @@ void PreferencesDialog::myAccept() {
     config->prelistenOtherCommand=LineEditPrelistenOtherCommand->text();
     config->firstYammiSoundDevice = cboFirstYammiSoundDevice->currentText();
     config->secondYammiSoundDevice = cboSecondYammiSoundDevice->currentText();
+    config->soundDeviceParameter = edtSoundDeviceParameter->text();
     config->groupThreshold=SpinBoxGroupThreshold->value();
     config->lazyGrouping=CheckBoxLazyGrouping->isChecked();
     config->searchThreshold=LineEditSearchThreshold->text().toInt();

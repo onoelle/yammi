@@ -70,6 +70,7 @@ void Prefs::setDefaultValues(void) {
     prelistenOtherCommand ="";
     firstYammiSoundDevice = "";
     secondYammiSoundDevice = "";
+    soundDeviceParameter = "";
     QStringList cmdline_args = QApplication::arguments();
     thisIsSecondYammi = false;
     if (cmdline_args.contains("-secondYammi", Qt::CaseInsensitive)) {
@@ -142,6 +143,7 @@ bool Prefs::loadConfig( ) {
     prelistenOtherCommand        = cfg.value("prelistenOtherCommand", prelistenOtherCommand).toString();
     firstYammiSoundDevice        = cfg.value("firstYammiSoundDevice", firstYammiSoundDevice).toString();
     secondYammiSoundDevice       = cfg.value("secondYammiSoundDevice", secondYammiSoundDevice).toString();
+    soundDeviceParameter         = cfg.value("soundDeviceParameter", soundDeviceParameter).toString();
     groupThreshold               = cfg.value("groupThreshold", groupThreshold).toInt();
     if(groupThreshold < 1) {
         groupThreshold = 1;
@@ -214,6 +216,7 @@ bool Prefs::saveConfig( ) {
     cfg.setValue("prelistenOtherCommand", prelistenOtherCommand);
     cfg.setValue("firstYammiSoundDevice", firstYammiSoundDevice);
     cfg.setValue("secondYammiSoundDevice", secondYammiSoundDevice);
+    cfg.setValue("soundDeviceParameter", soundDeviceParameter);
     cfg.setValue("groupThreshold", groupThreshold);
     cfg.setValue("lazyGrouping", lazyGrouping);
     cfg.setValue("searchThreshold", searchThreshold);
@@ -260,6 +263,11 @@ QString Prefs::getSoundDevice()
     } else {
         return secondYammiSoundDevice;
     }
+}
+
+QString Prefs::getSoundDeviceParameter()
+{
+    return soundDeviceParameter;
 }
 
 #define DBUS_SERVICE_FIRST  "net.sf.yammi.yammi.YammiGui"
