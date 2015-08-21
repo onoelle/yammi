@@ -128,7 +128,16 @@
           <string>Mouse configuration / Default actions for ...</string>
          </property>
          <layout class="QGridLayout">
-          <property name="margin">
+          <property name="leftMargin">
+           <number>11</number>
+          </property>
+          <property name="topMargin">
+           <number>11</number>
+          </property>
+          <property name="rightMargin">
+           <number>11</number>
+          </property>
+          <property name="bottomMargin">
            <number>11</number>
           </property>
           <property name="spacing">
@@ -136,7 +145,16 @@
           </property>
           <item row="1" column="0" rowspan="2">
            <layout class="QGridLayout">
-            <property name="margin">
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
              <number>0</number>
             </property>
             <property name="spacing">
@@ -262,7 +280,16 @@
           <string>Searching</string>
          </property>
          <layout class="QGridLayout">
-          <property name="margin">
+          <property name="leftMargin">
+           <number>11</number>
+          </property>
+          <property name="topMargin">
+           <number>11</number>
+          </property>
+          <property name="rightMargin">
+           <number>11</number>
+          </property>
+          <property name="bottomMargin">
            <number>11</number>
           </property>
           <property name="spacing">
@@ -270,7 +297,16 @@
           </property>
           <item row="0" column="0">
            <layout class="QGridLayout">
-            <property name="margin">
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
              <number>0</number>
             </property>
             <property name="spacing">
@@ -348,7 +384,16 @@
         <string>Path to files</string>
        </property>
        <layout class="QGridLayout">
-        <property name="margin">
+        <property name="leftMargin">
+         <number>5</number>
+        </property>
+        <property name="topMargin">
+         <number>5</number>
+        </property>
+        <property name="rightMargin">
+         <number>5</number>
+        </property>
+        <property name="bottomMargin">
          <number>5</number>
         </property>
         <property name="spacing">
@@ -356,7 +401,16 @@
         </property>
         <item row="0" column="0">
          <layout class="QGridLayout">
-          <property name="margin">
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
            <number>0</number>
           </property>
           <property name="spacing">
@@ -409,7 +463,16 @@
         <string>Misc</string>
        </property>
        <layout class="QGridLayout">
-        <property name="margin">
+        <property name="leftMargin">
+         <number>5</number>
+        </property>
+        <property name="topMargin">
+         <number>5</number>
+        </property>
+        <property name="rightMargin">
+         <number>5</number>
+        </property>
+        <property name="bottomMargin">
          <number>5</number>
         </property>
         <property name="spacing">
@@ -508,7 +571,16 @@
         <string>Tag Handling</string>
        </property>
        <layout class="QGridLayout">
-        <property name="margin">
+        <property name="leftMargin">
+         <number>5</number>
+        </property>
+        <property name="topMargin">
+         <number>5</number>
+        </property>
+        <property name="rightMargin">
+         <number>5</number>
+        </property>
+        <property name="bottomMargin">
          <number>5</number>
         </property>
         <property name="spacing">
@@ -716,7 +788,16 @@
           <string>Output devices</string>
          </property>
          <layout class="QGridLayout">
-          <property name="margin">
+          <property name="leftMargin">
+           <number>11</number>
+          </property>
+          <property name="topMargin">
+           <number>11</number>
+          </property>
+          <property name="rightMargin">
+           <number>11</number>
+          </property>
+          <property name="bottomMargin">
            <number>11</number>
           </property>
           <property name="spacing">
@@ -846,7 +927,16 @@ Additionally to the usual placeholders (see the plugins tab) you can use {skipSe
           <string>Command line tool configuration</string>
          </property>
          <layout class="QGridLayout">
-          <property name="margin">
+          <property name="leftMargin">
+           <number>11</number>
+          </property>
+          <property name="topMargin">
+           <number>11</number>
+          </property>
+          <property name="rightMargin">
+           <number>11</number>
+          </property>
+          <property name="bottomMargin">
            <number>11</number>
           </property>
           <property name="spacing">
@@ -968,7 +1058,16 @@ Additionally to the usual placeholders (see the plugins tab) you can use {skipSe
           <string>Plugins</string>
          </property>
          <layout class="QGridLayout">
-          <property name="margin">
+          <property name="leftMargin">
+           <number>5</number>
+          </property>
+          <property name="topMargin">
+           <number>5</number>
+          </property>
+          <property name="rightMargin">
+           <number>5</number>
+          </property>
+          <property name="bottomMargin">
            <number>5</number>
           </property>
           <property name="spacing">
