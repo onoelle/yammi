@@ -1,0 +1,52 @@
+From fecadf6679a531acaf47512a5482fd8b24a84dc6 Mon Sep 17 00:00:00 2001
+From: Benutzer <benutzer@mai2014>
+Date: Fri, 21 Aug 2015 20:11:05 +0200
+Subject: Disable pasuspender.
+
+---
+ build/debian/menu          | 2 +-
+ build/debian/mixxx.desktop | 2 +-
+ res/linux/mixxx.desktop    | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/build/debian/menu b/build/debian/menu
+index c945aa3..1d492fa 100644
+--- a/build/debian/menu
++++ b/build/debian/menu
+@@ -2,6 +2,6 @@
+   needs="X11" \
+   section="Apps/Sound" \
+   title="Mixxx" \
+-  command="/usr/bin/pasuspender /usr/bin/mixxx" \
++  command="/usr/bin/mixxx" \
+   icon="/usr/share/pixmaps/mixxx.xpm" \
+   icon16x16="/usr/share/pixmaps/mixxx-16.xpm"
+diff --git a/build/debian/mixxx.desktop b/build/debian/mixxx.desktop
+index b0deac0..6a50b0c 100644
+--- a/build/debian/mixxx.desktop
++++ b/build/debian/mixxx.desktop
+@@ -3,7 +3,7 @@ Version=1.0
+ Name=Mixxx
+ GenericName=Digital DJ interface
+ Comment=A digital DJ interface
+-Exec=pasuspender mixxx
++Exec=mixxx
+ Terminal=false
+ Icon=mixxx-icon
+ Type=Application
+diff --git a/res/linux/mixxx.desktop b/res/linux/mixxx.desktop
+index 0584457..6a50b0c 100644
+--- a/res/linux/mixxx.desktop
++++ b/res/linux/mixxx.desktop
+@@ -3,7 +3,7 @@ Version=1.0
+ Name=Mixxx
+ GenericName=Digital DJ interface
+ Comment=A digital DJ interface
+-Exec=pasuspender mixxx || mixxx
++Exec=mixxx
+ Terminal=false
+ Icon=mixxx-icon
+ Type=Application
+-- 
+2.1.4
+
