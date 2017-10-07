@@ -1884,7 +1884,7 @@ void YammiGui::forSelectionSongInfo( ) {
     QStringList genreList;
     genreList.append("");
 #ifdef USE_TAGLIB
-    for(int genreNr=0; !(TagLib::ID3v1::genre(genreNr).isNull()); genreNr++) {
+    for(int genreNr=0; !(TagLib::ID3v1::genre(genreNr).isEmpty()); genreNr++) {
         genreList.append(TStringToQString(TagLib::ID3v1::genre(genreNr)));
     }
 #endif
