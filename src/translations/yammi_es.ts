@@ -3199,10 +3199,6 @@ Puede ser necesario crear                           una nueva base de datos y es
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>PhononEngine</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>QMediaPlayerEngine</source>
         <translation type="unfinished"></translation>
     </message>

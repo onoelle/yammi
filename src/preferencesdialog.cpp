@@ -91,12 +91,6 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, Prefs* config )
     RadioButtonXineEngine->setVisible(false);
 #endif
 
-#ifdef USE_PHONON
-    RadioButtonPhononEngine->setChecked(config->mediaPlayer == config->MEDIA_PLAYER_PHONONENGINE);
-#else
-    RadioButtonPhononEngine->setVisible(false);
-#endif
-
 #ifdef USE_QMEDIAPLAYER
     RadioButtonQMediaPlayerEngine->setChecked(config->mediaPlayer == config->MEDIA_PLAYER_QMEDIAPLAYERENGINE);
 #else
@@ -226,8 +220,6 @@ void PreferencesDialog::myAccept() {
     
     if (RadioButtonXineEngine->isChecked()) {
         config->mediaPlayer = config->MEDIA_PLAYER_XINEENGINE;
-    } else if (RadioButtonPhononEngine->isChecked()) {
-        config->mediaPlayer = config->MEDIA_PLAYER_PHONONENGINE;
     } else if (RadioButtonQMediaPlayerEngine->isChecked()) {
         config->mediaPlayer = config->MEDIA_PLAYER_QMEDIAPLAYERENGINE;
     } else if (RadioButtonVlcEngine->isChecked()) {

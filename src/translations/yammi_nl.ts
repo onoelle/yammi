@@ -1189,10 +1189,6 @@ Additionally to the usual placeholders (see the plugins tab) you can use {skipSe
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>PhononEngine</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>QMediaPlayerEngine</source>
         <translation type="unfinished"></translation>
     </message>

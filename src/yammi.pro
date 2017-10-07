@@ -1,8 +1,5 @@
 
 # Features:
-        # phonon is not available anymore in Qt5 ... grr
-    contains(QT_VERSION, ^4\\.[0-9]*\\..*): DEFINES += USE_PHONON
-
     !win32:DEFINES += USE_QDBUS
 
     contains(QT_VERSION, ^5\\.[0-9]*\\..*): DEFINES += USE_QMEDIAPLAYER
@@ -25,7 +22,6 @@
 #
 
 
-contains(DEFINES, USE_PHONON): QT += phonon
 contains(QT_VERSION, ^4\\.[0-9]*\\..*): contains(DEFINES, USE_QDBUS): CONFIG += qdbus
 contains(QT_VERSION, ^5\\.[0-9]*\\..*): contains(DEFINES, USE_QDBUS): QT += dbus
 contains(QT_VERSION, ^5\\.[0-9]*\\..*): QT += widgets
@@ -78,7 +74,6 @@ SOURCES += \
     mydatetime.cpp \
     mylist.cpp \
     mylistview.cpp \
-    phonon-engine.cpp \
     preferencesdialog.cpp \
     prefs.cpp \
     qmediaplayer-engine.cpp \
@@ -114,7 +109,6 @@ HEADERS += \
     mydatetime.h \
     mylist.h \
     mylistview.h \
-    phonon-engine.h \
     preferencesdialog.h \
     prefs.h \
     qmediaplayer-engine.h \
@@ -184,7 +178,6 @@ win32 {
     #   E:\Qt\4.8.4\bin\QtCored4.dll
     #   E:\Qt\4.8.4\bin\QtGuid4.dll
     #   E:\Qt\4.8.4\bin\QtXmld4.dll
-    #   E:\Qt\4.8.4\bin\phonond4.dll
     # or put a cmd file near yammi.exe and add the paths like here:
     #   @echo off
     #   set PATH=%PATH%;F:\taglib-1.8\taglib;E:\Qt\4.8.4\bin

@@ -3531,10 +3531,6 @@ da spazio nelle nuove canzoni</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>PhononEngine</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>QMediaPlayerEngine</source>
         <translation type="unfinished"></translation>
     </message>

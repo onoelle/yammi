@@ -59,7 +59,6 @@
 #include "dummyplayer.h"
 #include "mediaplayer.h"
 #include "mylistview.h"
-#include "phonon-engine.h"
 #include "prefs.h"
 #include "qmediaplayer-engine.h"
 #include "searchthread.h"
@@ -2872,11 +2871,6 @@ void YammiGui::loadMediaPlayer( ) {
 #ifdef USE_XINE
     case Prefs::MEDIA_PLAYER_XINEENGINE:
         player = new Yammi::XineEngine(model);
-        break;
-#endif
-#ifdef USE_PHONON
-    case Prefs::MEDIA_PLAYER_PHONONENGINE:
-        player = new Yammi::PhononEngine(model);
         break;
 #endif
 #ifdef USE_QMEDIAPLAYER

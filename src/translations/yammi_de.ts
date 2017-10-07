@@ -767,10 +767,6 @@
         <translation>XineEngine</translation>
     </message>
     <message>
-        <source>PhononEngine</source>
-        <translation>PhononEngine</translation>
-    </message>
-    <message>
         <source>QMediaPlayerEngine</source>
         <translation>QMediaPlayerEngine</translation>
     </message>

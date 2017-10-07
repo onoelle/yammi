@@ -750,16 +750,6 @@
            </widget>
           </item>
           <item>
-           <widget class="QRadioButton" name="RadioButtonPhononEngine">
-            <property name="text">
-             <string>PhononEngine</string>
-            </property>
-            <property name="checked">
-             <bool>false</bool>
-            </property>
-           </widget>
-          </item>
-          <item>
            <widget class="QRadioButton" name="RadioButtonQMediaPlayerEngine">
             <property name="text">
              <string>QMediaPlayerEngine</string>
