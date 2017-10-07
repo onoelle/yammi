@@ -37,6 +37,7 @@
 #include <QPushButton>
 #include <QScrollBar>
 #include <QSettings>
+#include <QShortcut>
 #include <QSortFilterProxyModel>
 #include <QSpinBox>
 #include <QSplitter>
@@ -47,9 +48,6 @@
 #endif
 #include <QToolBar>
 #include <QToolTip>
-#ifdef USE_QXT
-#include <QxtGlobalShortcut>
-#endif
 
 #include "ConsistencyCheckParameter.h"
 #include "folder.h"
@@ -156,7 +154,6 @@ YammiGui::YammiGui() : QMainWindow( ) {
     createToolbars();
     createMenuBar();
     createTrayIcon();
-    createGlobalShortcuts();
 
     if (config()->thisIsSecondYammi) {
         setWindowIcon(loadAndConvertIconToGrayScale("icons:yammi.png"));
@@ -2918,32 +2915,34 @@ void YammiGui::trayIconActivated(QSystemTrayIcon::ActivationReason reason)
             activateWindow();
         }
         break;
-    case QSystemTrayIcon::Context:
-        foreach (QAction* action, trayIcon->contextMenu()->actions()) {
-            action->setProperty("disabledShortcut", action->shortcut().toString());
-            action->setShortcut(QKeySequence());
-#if USE_QXT
-            if (action == m_actionSkipBackward)
-                action->setShortcut(m_shortcutSkipBackward->shortcut());
-
-            if (action == m_actionPlayPause)
-                action->setShortcut(m_shortcutPlayPause->shortcut());
-
-            if (action == m_actionStop)
-                action->setShortcut(m_shortcutStop->shortcut());
-
-            if (action == m_actionSkipForward)
-                action->setShortcut(m_shortcutSkipForward->shortcut());
-#endif
-        }
-        break;
     default:
         break;
     }
 }
 
+void YammiGui::trayIconMenuAboutToShow()
+{
+    foreach (QAction* action, trayIcon->contextMenu()->actions()) {
+        action->setProperty("disabledShortcut", action->shortcut().toString());
+        action->setShortcut(QKeySequence());
+        if (action == m_actionSkipBackward)
+            action->setShortcut(m_shortcutSkipBackward->key());
+
+        if (action == m_actionPlayPause)
+            action->setShortcut(m_shortcutPlayPause->key());
+
+        if (action == m_actionStop)
+            action->setShortcut(m_shortcutStop->key());
+
+        if (action == m_actionSkipForward)
+            action->setShortcut(m_shortcutSkipForward->key());
+    }
+}
+
+// TODO: aboutToHide not called in Qt 5.7.1 ?
 void YammiGui::trayIconMenuAboutToHide()
 {
+    qDebug() << "YammiGui::trayIconMenuAboutToHide";
     foreach (QAction* action, trayIcon->contextMenu()->actions()) {
         QVariant qv = action->property("disabledShortcut");
         if (qv.isValid() && !qv.toString().isEmpty()) {
@@ -3113,21 +3112,29 @@ void YammiGui::setupActions()
     m_actionPlayPause->setShortcut(QKeySequence(Qt::Key_F1));
     m_actionPlayPause->setIcon(style->standardIcon(QStyle::SP_MediaPlay));
     connect(m_actionPlayPause, SIGNAL(triggered()), this, SLOT(playPause()));
+    m_shortcutPlayPause = new QShortcut(QKeySequence("Meta+x"), this);
+    connect(m_shortcutPlayPause, SIGNAL(activated()), m_actionPlayPause, SLOT(trigger()));
 
     m_actionSkipBackward = new QAction(tr("&Skip Backward"), this);
     m_actionSkipBackward->setShortcut(QKeySequence(Qt::Key_F2));
     m_actionSkipBackward->setIcon(style->standardIcon(QStyle::SP_MediaSkipBackward));
     connect(m_actionSkipBackward, SIGNAL(triggered()), this, SLOT(skipBackward()));
+    m_shortcutSkipBackward = new QShortcut(QKeySequence("Meta+y"), this);
+    connect(m_shortcutSkipBackward, SIGNAL(activated()), m_actionSkipBackward, SLOT(trigger()));
 
     m_actionSkipForward = new QAction(tr("Skip &Forward"), this);
     m_actionSkipForward->setShortcut(QKeySequence(Qt::Key_F3));
     m_actionSkipForward->setIcon(style->standardIcon(QStyle::SP_MediaSkipForward));
     connect(m_actionSkipForward, SIGNAL(triggered()), this, SLOT(skipForward()));
+    m_shortcutStop = new QShortcut(QKeySequence("Meta+v"), this);
+    connect(m_shortcutStop, SIGNAL(activated()), m_actionSkipForward, SLOT(trigger()));
 
     m_actionStop = new QAction(tr("S&top"), this);
     m_actionStop->setShortcut(QKeySequence(Qt::Key_F4));
     m_actionStop->setIcon(style->standardIcon(QStyle::SP_MediaStop));
     connect(m_actionStop, SIGNAL(triggered()), this, SLOT(stop()));
+    m_shortcutSkipForward = new QShortcut(QKeySequence("Meta+c"), this);
+    connect(m_shortcutSkipForward, SIGNAL(activated()), m_actionStop, SLOT(trigger()));
 
     m_actionToFromPlaylist = new QAction(tr("&Switch to/from Playlist"), this);
     m_actionToFromPlaylist->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_P));
@@ -3367,32 +3374,6 @@ void YammiGui::createMenuBar()
     menu->addAction(m_actionConfigureYammi);
 }
 
-void YammiGui::createGlobalShortcuts()
-{
-#if USE_QXT
-    m_shortcutSkipBackward = new QxtGlobalShortcut(this);
-    connect(m_shortcutSkipBackward, SIGNAL(activated()), this, SLOT(skipBackward()));
-    m_shortcutSkipBackward->setShortcut(QKeySequence("Meta+y"));
-
-    m_shortcutPlayPause = new QxtGlobalShortcut(this);
-    connect(m_shortcutPlayPause, SIGNAL(activated()), this, SLOT(playPause()));
-    m_shortcutPlayPause->setShortcut(QKeySequence("Meta+x"));
-
-    m_shortcutStop = new QxtGlobalShortcut(this);
-    connect(m_shortcutStop, SIGNAL(activated()), this, SLOT(stop()));
-    m_shortcutStop->setShortcut(QKeySequence("Meta+c"));
-
-    m_shortcutSkipForward = new QxtGlobalShortcut(this);
-    connect(m_shortcutSkipForward, SIGNAL(activated()), this, SLOT(skipForward()));
-    m_shortcutSkipForward->setShortcut(QKeySequence("Meta+v"));
-#else
-    m_shortcutSkipBackward = NULL;
-    m_shortcutPlayPause = NULL;
-    m_shortcutStop = NULL;
-    m_shortcutSkipForward = NULL;
-#endif
-}
-
 void YammiGui::createTrayIcon()
 {
     QStyle* style = QApplication::style();
@@ -3424,6 +3405,7 @@ void YammiGui::createTrayIcon()
     }
 
     connect(trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(trayIconActivated(QSystemTrayIcon::ActivationReason)));
+    connect(trayIcon->contextMenu(), SIGNAL(aboutToShow()), this, SLOT(trayIconMenuAboutToShow()));
     connect(trayIcon->contextMenu(), SIGNAL(aboutToHide()), this, SLOT(trayIconMenuAboutToHide()));
 }
 

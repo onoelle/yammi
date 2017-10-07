@@ -7,8 +7,6 @@
 
     contains(QT_VERSION, ^5\\.[0-9]*\\..*): DEFINES += USE_QMEDIAPLAYER
 
-    unix:DEFINES += USE_QXT
-
     DEFINES += USE_TAGLIB
 
     !win32:DEFINES += USE_XINE
@@ -32,8 +30,6 @@ contains(QT_VERSION, ^4\\.[0-9]*\\..*): contains(DEFINES, USE_QDBUS): CONFIG += 
 contains(QT_VERSION, ^5\\.[0-9]*\\..*): contains(DEFINES, USE_QDBUS): QT += dbus
 contains(QT_VERSION, ^5\\.[0-9]*\\..*): QT += widgets
 contains(DEFINES, USE_QMEDIAPLAYER): QT += multimedia
-contains(DEFINES, USE_QXT): CONFIG += qxt
-contains(DEFINES, USE_QXT): QXT += core gui
 
 
 unix {

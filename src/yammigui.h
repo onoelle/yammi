@@ -34,13 +34,13 @@ class QKeyEvent;
 class QLineEdit;
 class QPushButton;
 class QProcess;
+class QShortcut;
 class QSlider;
 class QSpinBox;
 class QSplitter;
 class QTextEdit;
 class QTreeWidget;
 class QTreeWidgetItem;
-class QxtGlobalShortcut;
 
 class YammiModel;
 class YammiLCDNumber;
@@ -321,7 +321,6 @@ protected:
     void createMainWidget( );
     void createToolbars();
     void createTrayIcon();
-    void createGlobalShortcuts();
     static int randomNum(int numbers = RAND_MAX);
 
     // gui
@@ -445,6 +444,7 @@ protected slots:
     void slotEnqueueAsNextInOtherYammi();
 
     void trayIconActivated(QSystemTrayIcon::ActivationReason reason);
+    void trayIconMenuAboutToShow();
     void trayIconMenuAboutToHide();
 
     void startSecondYammi();
@@ -512,10 +512,10 @@ private:
     QAction* m_actionMaximize;
     QAction* m_actionRestore;
 
-    QxtGlobalShortcut* m_shortcutSkipBackward;
-    QxtGlobalShortcut* m_shortcutPlayPause;
-    QxtGlobalShortcut* m_shortcutStop;
-    QxtGlobalShortcut* m_shortcutSkipForward;
+    QShortcut* m_shortcutSkipBackward;
+    QShortcut* m_shortcutPlayPause;
+    QShortcut* m_shortcutStop;
+    QShortcut* m_shortcutSkipForward;
 };
 
 #endif
