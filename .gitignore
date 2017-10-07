@@ -1,17 +1,17 @@
-src/*.ui~
-src/.obj
-src/.moc
-src/.ui
-src/Makefile
-src/yammi
-src/*.pro.user
-src/translations/yammi_*.qm
-src/.qmake.stash
+yammi/*.ui~
+yammi/.obj
+yammi/.moc
+yammi/.ui
+yammi/Makefile
+yammi/yammi
+yammi/*.pro.user
+yammi/translations/yammi_*.qm
 yammi-build*
+.qmake.stash
 
 #android
 build-yammi*
 
 #MacOS
 .DS_Store
-src/yammi.app/
+yammi/yammi.app/
