@@ -1,0 +1,15 @@
+Source: yammi
+Section: unknown
+Priority: optional
+Maintainer: Bernhard Übelacker <bernhardu@mailbox.org>
+Build-Depends: debhelper (>= 9)
+Standards-Version: 3.9.8
+Homepage: <insert the upstream URL, if relevant>
+#Vcs-Git: https://anonscm.debian.org/collab-maint/yammi.git
+#Vcs-Browser: https://anonscm.debian.org/cgit/collab-maint/yammi.git
+
+Package: yammi
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: <insert up to 60 chars description>
+ <insert long description, indented with spaces>

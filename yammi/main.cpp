@@ -38,11 +38,11 @@ int main( int argc, char **argv )
     app.setApplicationName("yammi");
 
     /* set the search path, so the Qt resource system could find the icons and pictures */
-    QDir::addSearchPath("icons", QCoreApplication::applicationDirPath() + "/icons");
+    QDir::addSearchPath("icons", QCoreApplication::applicationDirPath() + "/../share/yammi/icons");
     QDir::addSearchPath("icons", QDir::currentPath() + "/icons");
     QDir::addSearchPath("icons", QDir::currentPath() + "/../src/icons");
 
-    QDir::addSearchPath("translations", QCoreApplication::applicationDirPath() + "/translations");
+    QDir::addSearchPath("translations", QCoreApplication::applicationDirPath() + "/../share/yammi/translations");
     QDir::addSearchPath("translations", QDir::currentPath() + "/translations");
     QDir::addSearchPath("translations", QDir::currentPath() + "/../src/translations");
 

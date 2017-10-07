@@ -1,14 +1,14 @@
 [Desktop Entry]
 Comment[de]=
 Comment=
-Exec=/home/user/bin/yammi-bin/yammi
+Exec=/usr/bin/yammi
 GenericName[de]=Yammi - Yet Another Music Manager I...
 GenericName=Yammi - Yet Another Music Manager I...
-Icon=/home/user/bin/yammi-bin/icons/yammi.png
+Icon=/usr/share/yammi/icons/yammi.png
 MimeType=
 Name[de]=Yammi
 Name=Yammi
-Path=/home/user/bin/yammi-bin
+Path=/usr/bin
 StartupNotify=true
 Terminal=false
 TerminalOptions=

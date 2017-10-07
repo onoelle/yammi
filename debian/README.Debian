@@ -1,0 +1,16 @@
+yammi for Debian
+---------------
+
+    export DEBEMAIL="bernhardu@mailbox.org"
+    export DEBFULLNAME="Bernhard Übelacker"
+
+    mv yammi-git yammi-20171007
+    cd           yammi-20171007
+    mv .git $PWD.git
+    echo "gitdir: $PWD.git" > .git
+    dh_make --single --copyright gpl2 --createorig
+
+    export DEB_BUILD_OPTIONS="parallel=9"
+    dpkg-buildpackage -j8 -b -uc -tc
+
+ -- Bernhard Übelacker <bernhardu@mailbox.org>  Sat, 07 Oct 2017 20:10:18 +0200

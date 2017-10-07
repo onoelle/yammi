@@ -43,6 +43,14 @@ unix {
     QMAKE_LRELEASE = $$[QT_INSTALL_BINS]/lrelease
     #QMAKE_CXX = CCACHE_DIR=/tmp/yammi-ccache ccache g++
     #QMAKE_CXX = clang++
+
+    isEmpty(PREFIX) {
+      PREFIX = /usr
+    }
+    BINDIR = $$PREFIX/bin
+    ICONDIR = $$PREFIX/share/yammi/icons
+    TRANSDIR = $$PREFIX/share/yammi/translations
+    SHORTCUTDIR = $$PREFIX/share/applications
 }
 win32 {
     contains(DEFINES, USE_TAGLIB): INCLUDEPATH += F:\\taglib-1.8\\taglib\\Headers
@@ -160,12 +168,12 @@ updateqm.output = ${QMAKE_FILE_PATH}/${QMAKE_FILE_BASE}.qm
 updateqm.commands = $$QMAKE_LRELEASE ${QMAKE_FILE_IN} -qm ${QMAKE_FILE_PATH}/${QMAKE_FILE_BASE}.qm
 updateqm.CONFIG += no_link
 QMAKE_EXTRA_COMPILERS += updateqm
-POST_TARGETDEPS += compiler_updateqm_make_all
+PRE_TARGETDEPS += compiler_updateqm_make_all
 
 
 # installation
 unix {
-    yammi.path = $$(HOME)/bin/yammi-bin
+    yammi.path = $$BINDIR
     yammi.files = yammi
 }
 win32 {
@@ -184,16 +192,14 @@ win32 {
     #   .\yammi.exe
 }
 
-yammi_icons.path = $${yammi.path}/icons
+yammi_icons.path = $$ICONDIR
 yammi_icons.files = icons/*
 
-yammi_translations.path = $${yammi.path}/translations
+yammi_translations.path = $$TRANSDIR
+yammi_translations.CONFIG += no_check_exist
 yammi_translations.files = $${replace(TRANSLATIONS, .ts, .qm)}
 
-unix:yammi_symlink.path = $${yammi.path}
-unix:yammi_symlink.commands = ln -sf "$${yammi.path}/yammi" "$${yammi.path}/../yammi"
+unix:yammi_shortcut.path = $$SHORTCUTDIR
+unix:yammi_shortcut.files = yammi.desktop
 
-unix:yammi_shortcut.path = $$(HOME)/.local/share/applications
-unix:yammi_shortcut.commands = sed -e "s,/home/user,$$(HOME),g" yammi.desktop.in > $${yammi_shortcut.path}/yammi.desktop && chmod +x $${yammi_shortcut.path}/yammi.desktop
-
-INSTALLS += yammi yammi_icons yammi_translations yammi_symlink yammi_shortcut
+INSTALLS += yammi yammi_icons yammi_translations yammi_shortcut
