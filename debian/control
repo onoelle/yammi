@@ -2,7 +2,14 @@ Source: yammi
 Section: unknown
 Priority: optional
 Maintainer: Bernhard Übelacker <bernhardu@mailbox.org>
-Build-Depends: debhelper (>= 9)
+Build-Depends: debhelper (>= 9),
+               libasound2-dev,
+               libtag1-dev,
+               libvlc-dev,
+               libxine2-dev,
+               qtbase5-dev,
+               qtmultimedia5-dev,
+               qttools5-dev-tools
 Standards-Version: 3.9.8
 Homepage: <insert the upstream URL, if relevant>
 #Vcs-Git: https://anonscm.debian.org/collab-maint/yammi.git
