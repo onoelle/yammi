@@ -1346,40 +1346,48 @@ void YammiGui::adjustSongPopup() {
     }
     m_actionSongPopupHeader->setText(label);
 
-    // for each category: determine whether all, some or no songs of selection are contained
-    int k=0;
-    for (QList<MyList*>::iterator it = model->allCategories.begin(); it != model->allCategories.end(); it++, k++) {
-        MyList* category = *it;
+    if (selected < 4000) {
+        // for each category: determine whether all, some or no songs of selection are contained
+        int k=0;
+        for (QList<MyList*>::iterator it = model->allCategories.begin(); it != model->allCategories.end(); it++, k++) {
+            MyList* category = *it;
 
-        QAction* actionToChange = NULL;
-        foreach (QAction* action, songCategoryPopup->actions()) {
-            QVariant qv = action->property("id");
-            if (qv.isValid()) {
-                if (qv.toInt() == (10000 + k)) {
-                    actionToChange = action;
+            QAction* actionToChange = NULL;
+            foreach (QAction* action, songCategoryPopup->actions()) {
+                QVariant qv = action->property("id");
+                if (qv.isValid()) {
+                    if (qv.toInt() == (10000 + k)) {
+                        actionToChange = action;
+                    }
+                }
+            }
+            if (actionToChange) {
+                int mode=category->containsSelection(&selectedSongs);
+                switch(mode) {
+                case 0:
+                    actionToChange->setIcon(QIcon("icons:notin.xpm"));
+                    break;
+                case 1:
+                    actionToChange->setIcon(QIcon("icons:some_in.xpm"));
+                    break;
+                case 2:
+                    actionToChange->setIcon(QIcon("icons:in.xpm"));
+                    break;
                 }
             }
         }
-        if (actionToChange) {
-            int mode=category->containsSelection(&selectedSongs);
-            switch(mode) {
-            case 0:
-                actionToChange->setIcon(QIcon("icons:notin.xpm"));
-                break;
-            case 1:
-                actionToChange->setIcon(QIcon("icons:some_in.xpm"));
-                break;
-            case 2:
-                actionToChange->setIcon(QIcon("icons:in.xpm"));
-                break;
-            }
-        }
+    } else {
+
     }
 
     // for songs not on local harddisk: disable certain menu entries
     // only if exactly one song selected!
     bool enable=true;
     if(selected==1 && first->filename=="") {
+        enable=false;
+    }
+
+    if (selected >= 4000) {
         enable=false;
     }
 
@@ -1391,6 +1399,11 @@ void YammiGui::adjustSongPopup() {
     m_actionOpenFolderInFilemanager->setEnabled(enable);
     m_actionCheckConsistencySelection->setEnabled(enable);
     m_actionMoveFiles->setEnabled(enable);
+    m_actionSongInfo->setEnabled(enable);
+    songCategoryPopup->setEnabled(enable);
+    gotoPopup->setEnabled(enable);
+    searchSimilarPopup->setEnabled(enable);
+    advancedPopup->setEnabled(enable);
 
     bool isMixxxRunning = false;
     bool isMixxxAutoDJRunning = false;
@@ -3504,23 +3517,23 @@ void YammiGui::createSongPopup() {
     subMenu->addAction(m_actionPrelistenMiddle);
     subMenu->addAction(m_actionPrelistenEnd);
 
-    subMenu = songPopup->addMenu(tr("Go to folder ..."));
-    subMenu->addAction(m_actionGotoFolderArtist);
-    subMenu->addAction(m_actionGotoFolderAlbum);
-    subMenu->addAction(m_actionGotoFolderGenre);
-    subMenu->addAction(m_actionGotoFolderYear);
+    gotoPopup = songPopup->addMenu(tr("Go to folder ..."));
+    gotoPopup->addAction(m_actionGotoFolderArtist);
+    gotoPopup->addAction(m_actionGotoFolderAlbum);
+    gotoPopup->addAction(m_actionGotoFolderGenre);
+    gotoPopup->addAction(m_actionGotoFolderYear);
 
-    subMenu = songPopup->addMenu(tr("Search for similar ..."));
-    subMenu->addAction(m_actionSearchSimilarEntry);
-    subMenu->addAction(m_actionSearchSimilarArtist);
-    subMenu->addAction(m_actionSearchSimilarTitle);
-    subMenu->addAction(m_actionSimilarAlbum);
+    searchSimilarPopup = songPopup->addMenu(tr("Search for similar ..."));
+    searchSimilarPopup->addAction(m_actionSearchSimilarEntry);
+    searchSimilarPopup->addAction(m_actionSearchSimilarArtist);
+    searchSimilarPopup->addAction(m_actionSearchSimilarTitle);
+    searchSimilarPopup->addAction(m_actionSimilarAlbum);
 
-    subMenu = songPopup->addMenu(tr("Advanced ..."));
-    subMenu->addAction(m_actionOpenFolderInFilemanager);
-    subMenu->addAction(m_actionCheckConsistencySelection);
-    subMenu->addAction(m_actionDeleteSong);
-    subMenu->addAction(m_actionMoveFiles);
+    advancedPopup = songPopup->addMenu(tr("Advanced ..."));
+    advancedPopup->addAction(m_actionOpenFolderInFilemanager);
+    advancedPopup->addAction(m_actionCheckConsistencySelection);
+    advancedPopup->addAction(m_actionDeleteSong);
+    advancedPopup->addAction(m_actionMoveFiles);
 
     songCategoryPopup = new QMenu(tr("Insert Into/Remove From ..."), songPopup);
     songPopup->addMenu(songCategoryPopup);

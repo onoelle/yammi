@@ -336,6 +336,9 @@ protected:
     QMenu* songAdvancedPopup;
     QMenu* pluginPopup;
     QMenu* folderPopup;
+    QMenu* gotoPopup;
+    QMenu* searchSimilarPopup;
+    QMenu* advancedPopup;
 
 
     YammiModel* model;
