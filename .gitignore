@@ -6,6 +6,7 @@ src/Makefile
 src/yammi
 src/*.pro.user
 src/translations/yammi_*.qm
+src/.qmake.stash
 yammi-build*
 
 #android
