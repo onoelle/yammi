@@ -10,7 +10,6 @@ yammi for Debian
     echo "gitdir: $PWD.git" > .git
     dh_make --single --copyright gpl2 --createorig
 
-    export DEB_BUILD_OPTIONS="parallel=9"
-    dpkg-buildpackage -j8 -b -uc -tc
+    dpkg-buildpackage -b -uc -tc
 
  -- Bernhard Übelacker <bernhardu@mailbox.org>  Sat, 07 Oct 2017 20:10:18 +0200
