@@ -583,6 +583,8 @@ void YammiGui::handleNewSong(Song* newSong) {
 
     setWindowTitle("Yammi: "+currentSong->displayName());
     m_current_song_label->setText(currentSong->displayName());
+    m_current_song_label->adjustSize();
+    menuBar()->adjustSize();
     m_seekSlider->setupTickmarks(currentSong);
 }
 
@@ -3384,7 +3386,7 @@ void YammiGui::createMenuBar()
 
     m_current_song_label = new QLabel("");
     m_current_song_label->setWordWrap(false);
-    m_current_song_label->setMargin(2);
+    m_current_song_label->setMargin(3);
     m_current_song_label->setAlignment(Qt::AlignRight);
     m_current_song_label->setStyleSheet("font-size: 16pt; color:red");
     m_current_song_label->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
