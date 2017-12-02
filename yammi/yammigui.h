@@ -31,6 +31,7 @@ class QActionGroup;
 class QMenu;
 class QModelIndex;
 class QKeyEvent;
+class QLabel;
 class QLineEdit;
 class QPushButton;
 class QProcess;
@@ -514,6 +515,8 @@ private:
     QAction* m_actionMinimize;
     QAction* m_actionMaximize;
     QAction* m_actionRestore;
+
+    QLabel* m_current_song_label;
 
     QShortcut* m_shortcutSkipBackward;
     QShortcut* m_shortcutPlayPause;

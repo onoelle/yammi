@@ -574,6 +574,7 @@ void YammiGui::handleNewSong(Song* newSong) {
     currentSong=newSong;
     if(newSong==0) {
         setWindowTitle(tr("Yammi - not playing"));
+        m_current_song_label->setText("");
         m_seekSlider->setupTickmarks(0);
         return;
     }
@@ -581,6 +582,7 @@ void YammiGui::handleNewSong(Song* newSong) {
     *currentSongStarted = currentSongStarted->currentDateTime();
 
     setWindowTitle("Yammi: "+currentSong->displayName());
+    m_current_song_label->setText(currentSong->displayName());
     m_seekSlider->setupTickmarks(currentSong);
 }
 
@@ -3379,6 +3381,14 @@ void YammiGui::createMenuBar()
 
     menu = menuBar()->addMenu(tr("&Settings"));
     menu->addAction(m_actionConfigureYammi);
+
+    m_current_song_label = new QLabel("");
+    m_current_song_label->setWordWrap(false);
+    m_current_song_label->setMargin(2);
+    m_current_song_label->setAlignment(Qt::AlignRight);
+    m_current_song_label->setStyleSheet("font-size: 16pt; color:red");
+    m_current_song_label->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
+    menuBar()->setCornerWidget(m_current_song_label, Qt::TopRightCorner);
 }
 
 void YammiGui::createTrayIcon()
