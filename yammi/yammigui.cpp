@@ -1548,7 +1548,8 @@ void YammiGui::forSelectionPlugin() {
             if(progress.wasCanceled()) {
                 return;
             }
-            system(cmd2.toLatin1());
+            int ret = system(cmd2.toLatin1());
+            qDebug() << "system(\"" << cmd << "\") returned " << ret;
         }
     }
 
@@ -1583,7 +1584,8 @@ void YammiGui::forSelectionPlugin() {
                 return;
             }
         }
-        system(cmd.toLatin1());
+        int ret = system(cmd.toLatin1());
+        qDebug() << "system(\"" << cmd << "\") returned " << ret;
     }
 }
 
@@ -1738,7 +1740,8 @@ void YammiGui::openFolderInFileManager() {
     if (selectedSongs.count() >= 1) {
         MyList::iterator it = selectedSongs.begin();
         QString cmd = QString("xdg-open \"%1\"").arg((*it)->song()->path);
-        system(cmd.toUtf8());
+        int ret = system(cmd.toUtf8());
+        qDebug() << "system(\"" << cmd << "\") returned " << ret;
     }
 }
 
