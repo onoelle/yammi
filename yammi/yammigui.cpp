@@ -3476,7 +3476,9 @@ void YammiGui::createToolbars()
     timeDisplayToolBar->setObjectName("TimeDisplayToolbar");
     addToolBar(timeDisplayToolBar);
     m_lcdDisplay = new YammiLCDNumber(timeDisplayToolBar);
-    timeDisplayToolBar->setMinimumSize(100, 30);
+    m_lcdDisplay->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    timeDisplayToolBar->setMinimumSize(140, 30);
+    timeDisplayToolBar->addWidget(m_lcdDisplay);
 
     QToolBar* songActionsToolBar = new QToolBar(tr("Song Actions"), this);
     songActionsToolBar->setObjectName("SongActionsToolbar");
