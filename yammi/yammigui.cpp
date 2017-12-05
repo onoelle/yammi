@@ -1826,8 +1826,9 @@ void YammiGui::forSelectionPlayNow() { //FIXME - this does not work too well....
     //this is not really clean, but...
     if(stateBefore == PLAYING) {
         player->skipForward(shiftPressed);
+    } else {
+        player->play();
     }
-    player->play();
 }
 
 void YammiGui::forSelectionDequeue( ) {
