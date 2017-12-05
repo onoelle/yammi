@@ -31,6 +31,10 @@ int main( int argc, char **argv )
 {
 	srand(time(NULL));
 
+    //setenv("PULSE_PROP_application.name", "Yammi Music Player", 1);
+    setenv("PULSE_PROP_application.icon_name", "yammi", 1);
+    setenv("PULSE_PROP_media.role", "music", 1);
+
     QApplication app(argc, argv);
     //KAboutData about("yammi", QT_TR_NOOP("Yammi"), version, QT_TR_NOOP("Yammi - Yet Another Music Manager I ..."), KAboutData::License_GPL, "(C) 2001-2005 by Oliver Noelle", "", "http://yammi.sourceforge.net", "yammi-developer@lists.sourceforge.net");
     app.setOrganizationName("yammi");
