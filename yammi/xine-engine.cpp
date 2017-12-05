@@ -366,6 +366,7 @@ namespace Yammi {
             dummy.lock();
             QWaitCondition waitCondition;
             waitCondition.wait(&dummy, 100); //usleep( 100000 );
+            dummy.unlock();
         }
 
         return time;
