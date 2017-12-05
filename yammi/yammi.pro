@@ -49,6 +49,7 @@ unix {
     }
     BINDIR = $$PREFIX/bin
     ICONDIR = $$PREFIX/share/yammi/icons
+    APPICONDIR = $$PREFIX/share/icons/hicolor
     TRANSDIR = $$PREFIX/share/yammi/translations
     SHORTCUTDIR = $$PREFIX/share/applications
 }
@@ -202,4 +203,7 @@ yammi_translations.files = $${replace(TRANSLATIONS, .ts, .qm)}
 unix:yammi_shortcut.path = $$SHORTCUTDIR
 unix:yammi_shortcut.files = yammi.desktop
 
-INSTALLS += yammi yammi_icons yammi_translations yammi_shortcut
+unix:yammi_app_icons_128x128.path = $$APPICONDIR/128x128/apps
+unix:yammi_app_icons_128x128.files = icons/yammi.png
+
+INSTALLS += yammi yammi_icons yammi_translations yammi_shortcut yammi_app_icons_128x128
