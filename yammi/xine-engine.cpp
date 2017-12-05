@@ -608,7 +608,13 @@ namespace Yammi {
         } //case
         case XINE_EVENT_UI_CHANNELS_CHANGED: //Flameeyes used this for last.fm track changes
             //QApplication::postEvent( xe, new QCustomEvent(QEvent::Type(3005) ) );
-        break;
+            break;
+        case XINE_EVENT_AUDIO_LEVEL:
+            //LOGSTART("XineEngine::XineEventListener") << "XINE_EVENT_AUDIO_LEVEL";
+            break;
+        default:
+            LOGSTART("XineEngine::XineEventListener") << "Unknown xineEvent->type" << xineEvent->type;
+            break;
         } //switch
 
         #undef xe
