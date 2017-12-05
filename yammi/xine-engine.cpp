@@ -32,9 +32,6 @@
 #include "yammimodel.h"
 
 
-//define this to use xine in a more standard way
-#define XINE_SAFE_MODE
-
 
 ///returns the configuration we will use. there is no KInstance, so using this hacked up method.
 #if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
@@ -66,9 +63,7 @@ namespace Yammi {
            //return false;
         }
 
-        #ifdef XINE_SAFE_MODE
-        xine_engine_set_param( m_xine, XINE_ENGINE_PARAM_VERBOSITY, 99 );
-        #endif
+        //xine_engine_set_param( m_xine, XINE_ENGINE_PARAM_VERBOSITY, 99 );
 
         QString path;
 
@@ -128,18 +123,6 @@ namespace Yammi {
              m_eventQueue = xine_event_new_queue( m_stream ),
              &XineEngine::XineEventListener,
              (void*)this );
-
-       #ifndef XINE_SAFE_MODE
-       //implemented in xine-scope.h
-       //m_post = scope_plugin_new( m_xine, m_audioPort );
-
-       xine_set_param( m_stream, XINE_PARAM_METRONOM_PREBUFFER, 6000 );
-       xine_set_param( m_stream, XINE_PARAM_IGNORE_VIDEO, 1 );
-       #endif
-
-        #ifndef XINE_SAFE_MODE
-        startTimer( 200 ); //prunes the scope
-        #endif
     }
 
     XineEngine::~XineEngine()
@@ -206,15 +189,6 @@ namespace Yammi {
        {
           //qDebug() << "After xine_open() *****";
 
-          #ifndef XINE_SAFE_MODE
-          //we must ensure the scope is pruned of old buffers
-          timerEvent( 0 );
-
-          xine_post_out_t *source = xine_get_audio_source( m_stream );
-          xine_post_in_t  *target = (xine_post_in_t*)xine_post_input( m_post, const_cast<char*>("audio in") );
-          xine_post_wire( source, target );
-          #endif
-
           if (m_emitPlaylistChanged) {
               emit playlistChanged();
           }
@@ -222,10 +196,7 @@ namespace Yammi {
        }
        else
        {
-          #ifdef XINE_PARAM_GAPLESS_SWITCH
-            if ( xine_check_version(1,1,1) )
-                xine_set_param( m_stream, XINE_PARAM_GAPLESS_SWITCH, 0);
-          #endif
+           qDebug() << "xine_open(" << file.fileName() << ") failed?";
        }
 
        return;
