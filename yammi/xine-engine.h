@@ -102,8 +102,6 @@ namespace Yammi {
 
     private:
         static void XineEventListener( void*, const xine_event_t* );
-        bool makeNewStream();
-        bool ensureStream();
 
         xine_t             *m_xine;
         xine_stream_t      *m_stream;

@@ -84,32 +84,6 @@ namespace Yammi {
 
         xine_init( m_xine );
 
-        makeNewStream();
-
-        #ifndef XINE_SAFE_MODE
-        startTimer( 200 ); //prunes the scope
-        #endif
-    }
-
-    XineEngine::~XineEngine()
-    {
-        LOGSTART("XineEngine::~XineEngine");
-
-        if( m_xine )       xine_config_save( m_xine, configPath() );
-
-        if( m_stream )     xine_close( m_stream );
-        if( m_eventQueue ) xine_event_dispose_queue( m_eventQueue );
-        if( m_stream )     xine_dispose( m_stream );
-        if( m_audioPort )  xine_close_audio_driver( m_xine, m_audioPort );
-        if( m_post )       xine_post_dispose( m_xine, m_post );
-        if( m_xine )       xine_exit( m_xine );
-    }
-
-    bool
-    XineEngine::makeNewStream()
-    {
-        LOGSTART("XineEngine::makeNewStream");
-
         QStringList soundDeviceParameter = model->config()->getSoundDeviceParameter().split(' ');
         QString driver = "auto";
         foreach (const QString &elem, soundDeviceParameter) {
@@ -125,7 +99,7 @@ namespace Yammi {
             QString message = tr("xine was unable to initialize any audio drivers.");
             message.append("\ndriver=").append(driver);
             QMessageBox::critical( 0, "Yammi", message);
-            return false;
+            return;
         }
 
         QString device = model->config()->getSoundDevice();
@@ -144,7 +118,7 @@ namespace Yammi {
           xine_close_audio_driver( m_xine, m_audioPort );
           m_audioPort = NULL;
           QMessageBox::critical( 0, "Yammi", tr("Yammi could not create a new xine stream.") );
-          return false;
+          return;
        }
 
        if( m_eventQueue )
@@ -162,19 +136,24 @@ namespace Yammi {
        xine_set_param( m_stream, XINE_PARAM_METRONOM_PREBUFFER, 6000 );
        xine_set_param( m_stream, XINE_PARAM_IGNORE_VIDEO, 1 );
        #endif
-       return true;
+
+        #ifndef XINE_SAFE_MODE
+        startTimer( 200 ); //prunes the scope
+        #endif
     }
 
-    // Makes sure an audio port and a stream exist.
-    bool
-    XineEngine::ensureStream()
+    XineEngine::~XineEngine()
     {
-        //LOGSTART("XineEngine::ensureStream");
+        LOGSTART("XineEngine::~XineEngine");
 
-       if( !m_stream )
-          return makeNewStream();
+        if( m_xine )       xine_config_save( m_xine, configPath() );
 
-       return true;
+        if( m_stream )     xine_close( m_stream );
+        if( m_eventQueue ) xine_event_dispose_queue( m_eventQueue );
+        if( m_stream )     xine_dispose( m_stream );
+        if( m_audioPort )  xine_close_audio_driver( m_xine, m_audioPort );
+        if( m_post )       xine_post_dispose( m_xine, m_post );
+        if( m_xine )       xine_exit( m_xine );
     }
 
     void
@@ -216,9 +195,6 @@ namespace Yammi {
                 return;
             }
         }
-
-        if( !ensureStream() )
-            return;
 
        // for users who stubbonly refuse to use DMIX or buy a good soundcard
        // why doesn't xine do this? I cannot say.
@@ -275,9 +251,6 @@ namespace Yammi {
                 status = getStatus();
                 emit statusChanged();
             } else {
-                if( !ensureStream() )
-                    return false;
-
                 const bool has_audio     = xine_get_stream_info( m_stream, XINE_STREAM_INFO_HAS_AUDIO );
                 const bool audio_handled = xine_get_stream_info( m_stream, XINE_STREAM_INFO_AUDIO_HANDLED );
 
@@ -304,22 +277,9 @@ namespace Yammi {
     {
         LOGSTART("XineEngine::stop");
 
-#if 0
-        if ( !m_stream )
-           return false;
-
-        xine_stop( m_stream );
-        xine_close( m_stream );
-        xine_set_param( m_stream, XINE_PARAM_AUDIO_CLOSE_DEVICE, 1);
-
-        emit statusChanged();
-
-        return true;
-#else
         pause();
         jumpTo(0);
         return true;
-#endif
     }
 
     bool
@@ -512,9 +472,6 @@ namespace Yammi {
     XineEngine::jumpTo( int ms )
     {
         //LOGSTART("XineEngine::jumpTo");
-
-        if( !ensureStream() )
-            return false;
 
         if( xine_get_param( m_stream, XINE_PARAM_SPEED ) == XINE_SPEED_PAUSE ) {
             // FIXME this is a xine API issue really, they need to add a seek function
