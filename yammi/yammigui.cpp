@@ -142,6 +142,7 @@ YammiGui::YammiGui() : QMainWindow( ) {
     controlPressed = false;
     shiftPressed = false;
     toFromRememberFolder = 0;
+    skipBigFolderRefresh = 0;
 
 
     model = new YammiModel( this );
@@ -445,6 +446,9 @@ YammiGui::~YammiGui() {
  */
 void YammiGui::updatePlaylist() {
     //qDebug() << "updatePlaylist called";
+
+    skipBigFolderRefresh++;
+
     if(folderActual->songlist().count()>0) {
         model->currentSongFilenameAtStartPlay=folderActual->firstSong()->location();
     }
@@ -460,6 +464,7 @@ void YammiGui::updatePlaylist() {
     folderActual->correctOrder();
     player->syncYammi2Player();
     folderContentChanged(folderActual);
+    skipBigFolderRefresh--;
 }
 
 /**
@@ -1124,7 +1129,10 @@ void YammiGui::changeToFolder(Folder* newFolder, bool changeAnyway) {
 }
 
 
-void YammiGui::folderContentChanged(Folder* folder) {
+void YammiGui::folderContentChanged(Folder* folder)
+{
+    LOGSTART_SILENT;
+
     if (!folder) {
         if(chosenFolder) {
 
@@ -1175,9 +1183,13 @@ void YammiGui::folderContentChanged(Folder* folder) {
         }
     }
 
-    songListViewModel->reset();
-    if (songListView && chosenFolder) {
-        songListView->scroll(chosenFolder->getScrollPosX(), chosenFolder->getScrollPosY());
+    if (skipBigFolderRefresh && songListViewModel->rowCount() > 2000) {
+        yDebug() << "Skipping update of big folder" << skipBigFolderRefresh;
+    } else {
+        songListViewModel->reset();
+        if (songListView && chosenFolder) {
+            songListView->scroll(chosenFolder->getScrollPosX(), chosenFolder->getScrollPosY());
+        }
     }
 
     updateHtmlPlaylist();
@@ -2873,8 +2885,10 @@ void YammiGui::skipBackward() {
         delete model->songsPlayed.takeAt(model->songsPlayed.count()-1);
     }
     folderSongsPlayed->updateTitle();
+    skipBigFolderRefresh++;
     folderContentChanged(folderActual);
     folderContentChanged(folderSongsPlayed);
+    skipBigFolderRefresh--;
 }
 
 

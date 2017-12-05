@@ -392,6 +392,7 @@ protected:
     Folder*				folderToAdd;					// for snappy folder adding in background
     Folder*       toFromRememberFolder;
     int           autoplayMode;
+    int           skipBigFolderRefresh;
 
 
     // protected slots
