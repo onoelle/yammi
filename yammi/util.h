@@ -38,14 +38,17 @@ public:
 
 class LogClass {
 public:
-    LogClass(QString i_function);
+    LogClass(QString i_function, bool silent = false);
     ~LogClass();
     QDebug log();
 private:
     QString m_function;
     QTime m_start;
+    bool m_silent;
 };
-#define LOGSTART(f) LogClass log(f);
+#define LOGSTART_SILENT LogClass log(__FUNCTION__, true)
+#define LOGSTART LogClass log(__FUNCTION__)
+#define yDebug log.log
 
 
 bool moveFile(const QString &oldName, const QString &newName);

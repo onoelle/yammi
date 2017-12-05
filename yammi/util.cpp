@@ -27,17 +27,20 @@
 
 static int m_logdepth = 0;
 
-LogClass::LogClass(QString i_function)
+LogClass::LogClass(QString i_function, bool silent /*= false*/)
     : m_function(i_function),
-      m_start(QTime::currentTime())
+      m_start(QTime::currentTime()),
+      m_silent(silent)
 {
     m_logdepth++;
-    log() << "begin";
+    if (!m_silent)
+        log() << "begin";
 }
 
 LogClass::~LogClass()
 {
-    log() << "end. (duration" << m_start.msecsTo(QTime::currentTime()) << "ms)";
+    if (!m_silent)
+        log() << "end. (duration" << m_start.msecsTo(QTime::currentTime()) << "ms)";
     m_logdepth--;
 }
 
