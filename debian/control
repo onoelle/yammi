@@ -11,12 +11,18 @@ Build-Depends: debhelper (>= 10),
                qtmultimedia5-dev,
                qttools5-dev-tools
 Standards-Version: 3.9.8
-Homepage: <insert the upstream URL, if relevant>
+Homepage: http://yammi.sourceforge.net/
 #Vcs-Git: https://anonscm.debian.org/collab-maint/yammi.git
-#Vcs-Browser: https://anonscm.debian.org/cgit/collab-maint/yammi.git
+Vcs-Browser: https://sourceforge.net/p/yammi/git/ci/master/tree/
 
 Package: yammi
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: <insert up to 60 chars description>
- <insert long description, indented with spaces>
+Description: Yammi - Yet Another Music Manager I...
+ Yammi is a digital music manager targeted at listening to and managing
+ large song collections on your computer (eg. a few thousand songs).
+ .
+ Yammi's mission is to make music management on your computer as easy and
+ efficient as it should be, and Yammi's strength is its easy way of
+ finding songs via fuzzy search and/or navigation through the
+ automatically created folders.
