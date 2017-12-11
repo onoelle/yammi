@@ -248,8 +248,7 @@ void YammiGui::loadDatabase() {
     } else {
         changeToFolder(folderAll, true);
     }
-    folderContentChanged(folderActual);
-    
+
     checkTimer.setSingleShot(false);
     checkTimer.start(100);
     regularTimer.setSingleShot(false);
