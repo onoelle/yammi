@@ -227,8 +227,6 @@ QVariant FolderModel::dataSongEntrySortDataRole(const QModelIndex &index) const
 {
     QVariant ret;
 
-    ret = dataDisplayRole(index);
-
     int column = index.column();
     SongEntry* songEntry = SongEntry::qvAsSe(data(index, SongEntryPointerRole));
     if (songEntry) {
@@ -259,6 +257,9 @@ QVariant FolderModel::dataSongEntrySortDataRole(const QModelIndex &index) const
             break;
         }
     }
+
+    if (!ret.isValid())
+        ret = dataDisplayRole(index);
 
     return ret;
 }
