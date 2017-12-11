@@ -32,6 +32,7 @@ extern YammiGui* gYammiGui;
 
 
 const QString SongEntryMimeType = "pointer/SongEntry";
+QString neverPlayedString;
 
 int FolderModel::rowCount(const QModelIndex & /*parent*/) const
 {
@@ -133,7 +134,7 @@ QVariant FolderModel::dataDisplayRole(const QModelIndex &index) const
                 if (s->lastPlayed != never) {
                     ret = helper_dataDisplayRoleDateTime(s->lastPlayed);
                 } else {
-                    ret = tr("never");
+                    ret = neverPlayedString;
                 }
             }
             break;
@@ -236,7 +237,7 @@ QVariant FolderModel::dataSongEntrySortDataRole(const QModelIndex &index) const
         switch (column) {
         case COLUMN_PLAYED_ON:
             ret = songEntry->getColumnData(0);
-            if (ret == tr("never"))
+            if (ret == neverPlayedString)
                 ret = QDateTime();
             break;
         case COLUMN_ADDED_TO:
@@ -383,6 +384,7 @@ bool FolderModel::dropMimeData(const QMimeData *mimedata, Qt::DropAction action,
 
 void FolderModel::reset()
 {
+    neverPlayedString = tr("never");
     beginResetModel();
     endResetModel();
 }
