@@ -264,7 +264,6 @@ namespace Yammi {
         if( xine_get_param( m_stream, XINE_PARAM_SPEED ) != XINE_SPEED_PAUSE )
         {
             xine_set_param( m_stream, XINE_PARAM_SPEED, XINE_SPEED_PAUSE );
-            xine_set_param( m_stream, XINE_PARAM_AUDIO_CLOSE_DEVICE, 1);
             status = getStatus();
             emit statusChanged();
 
