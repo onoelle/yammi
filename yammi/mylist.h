@@ -36,6 +36,20 @@ class Song;
 class MyList : public QList<SongEntry*> {
 
 public: 
+    enum enumSortBy {
+        ByTitle = 1,
+        ByArtist = 2,
+        ByAlbum = 3,
+        ByFilename = 4,
+        ByAddedTo = 5,
+        ByTrack = 6,
+        ByYear = 7,
+        ByGenre = 8,
+        ByPath = 9,
+        ByLastPlayed = 10,
+        ByKey = ByArtist + 16*ByTitle + 256*ByAlbum,
+    };
+
 	MyList();
   MyList(MyList* listToCopy);
 	~MyList();
@@ -55,19 +69,6 @@ public:
   void			setSortOrderAndSort(int newSortOrder, bool sortAnyway=false);
   void      reverse();
   void      shuffle();
-	
-	static const int ByTitle=1;
-	static const int ByArtist=2;
-	static const int ByAlbum=3;
-	static const int ByFilename=4;
-	static const int ByAddedTo=5;
-	static const int ByTrack=6;
-	static const int ByYear=7;
-	static const int ByGenre=8;
-	static const int ByPath=9;
-	static const int ByLastPlayed=10;
-	static const int ByKey=ByArtist + 16*ByTitle + 256*ByAlbum;
-	
 	
 	
 	bool			dirty;
