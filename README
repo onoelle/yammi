@@ -36,10 +36,10 @@ And you are done. Right now you should be able to run Yammi from the source tree
 
 Buidling a Debian package for Stretch:
 --------------------------------------
-  # apt install git debhelper libasound2-dev libtag1-dev libvlc-dev libxine2-dev qtbase5-dev qtmultimedia5-dev qttools5-dev-tools
+  # apt install git debhelper build-essential libasound2-dev libtag1-dev libvlc-dev libxine2-dev qtbase5-dev qtmultimedia5-dev qttools5-dev-tools
   $ git clone git://git.code.sf.net/p/yammi/git yammi-git
   $ cd yammi-git
-  $ dpkg-buildpackage -b
+  $ dpkg-buildpackage -b -uc
 
 
 The configuration lies in following files and directories:
